@@ -1,0 +1,326 @@
+Title: Temporal dynamics of Levy flights of photons in a hot vapor
+
+URL Source: https://arxiv.org/pdf/2603.18967v1
+
+Published Time: Fri, 20 Mar 2026 01:16:56 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+# Temporal dynamics of L´ evy flights of photons in a hot vapor 
+
+R. V. M. de Almeida Filho, 1 J. C. de Aquino Carvalho, 1
+
+T. Passerat de Silans, 2 M. H. G. de Miranda, 1 and M. O. Ara´ ujo 1, ∗
+
+> 1
+
+Departamento de F´ ısica, Universidade Federal de Pernambuco, 50670-901, Recife, Pernambuco, Brazil 
+
+> 2
+
+Departamento de F´ ısica, CCEN, Universidade Federal da Para´ ıba, Caixa Postal 5008, 58051-900, Jo˜ ao Pessoa, Para´ ıba, Brazil 
+
+(Dated: March 20, 2026) Multiple scattering of light by resonant vapor is characterized by L´ evy-type superdiffusion with a step size distribution P (x) ∝ 1/x 1+ α, with 0 < α < 2. The L´ evy parameter α was measured from P (x), steady fluorescence, frequency-dependent fluorescence and time-resolved transmission, all of them in the forward direction. Here we report first measurements of this quantity from time-resolved backward fluorescence, i.e., photons that are backward diffused from light pulses exciting a hot rubidium vapor. We show experimentally that α can be extracted from this diffuse reflection, and the results are consistent with time-resolved transmission (i.e., photons that are forward diffused) and steady frequency-dependent forward fluorescence. Theoretical simulations are consistent with these results. We also show that, although we measure α = 1 for both transmission and reflection, the backward photons have a non-negligible amount of single scattering events even for high density, contrary to the forward photons where multiple scattering dominates. 
+
+I. INTRODUCTION 
+
+Random walk of particles have applications in a large variety of systems, with the Brownian motion of particles the most known example. This motion is characterized by a random walk with successive jumps of size x, per-formed with finite step-size variance within a Gaussian distribution. However, in the last decades, random walks with diverging step-size variance were extensively stud-ied, known as L´ evy flights or L´ evy walks. For this kind of random walk, the probability distribution for the step size x is given by P (x) ∝ 1/x α+1 , where 0 < α < 2 is the L´ evy parameter. L´ evy flights or walks are encoun-tered in several kind of systems, ranging from animal foraging [1, 2], phonon transport in nanowires [3] and isolation of individuals between populations [4]. Light propagation in turbid media is often described by standard random walk and diffusion equations, like in biological tissues [5] and cold atoms [6]. However, in as-trophysics [7], photonic materials dubbed L´ evy glasses [8] and hot atomic vapors [9], L´ evy flights can provide the correct statistical framework to describe superdiffusive transport of photons. In astrophysics and hot vapors, the L´ evy statistics arises from multiple resonant scat-tering events and cannot be fully described by normal Brownian diffusion. In this process, photons are absorbed and re-emitted by the atoms with a different frequency which depends on the atomic velocity and collisions. Be-cause of Doppler and eventual collisional broadening, the re-emitted photons have their frequncies non-correlated with the input frequency (i.e., complete frequency re-distribution), which allows some photons to appear in the far spectral wings and they travel long distances before being reabsorbed [10–12]. These long and rare  
+
+> ∗michelle.oaraujo@ufpe.br
+
+flights produce a power-law step size distribution with 
+
+α = 1 ( α = 0 .5) for non-collisional (collisional) broaden-ing, defining the experimental signature of L´ evy flights and superdiffusion. Modelling photon propagation in al-kaline vapor as a L´ evy flight gives an accurate physical description of radiation trapping [13] and enables precise experimental studies of light transport and L´ evy param-eters under tunable conditions [14]. Signatures of L´ evy flights in atomic vapors were ob-served from the direct measurement of the step length distribution [9], the radial diffuse transmission [15, 16] and laser-frequency-dependent diffuse transmission [14, 17]. Time-resolved transmission was observed in the 1980s in sodium vapor for broad excitation [18] and data were analysed with transport radiative transfer equa-tion [10, 11]. On the other hand, experiments with ul-trashort laser pulses were performed in L´ evy glasses [19], where the walk dimension was measured. In all these works, it was considered a slab geometry for the medium and the output photons were collected at the surface op-posite to the laser input, i.e., photons in the forward direction or diffuse transmission. In this work, we investigate the backward time-resolved scattered photons, i.e., the diffuse reflection, for photons in a hot atomic Rb vapor. We take advantage of a much higher number of detected photons, which im-plies a significantly higher signal-to-noise ratio (SNR). As a result, we achieved an SNR more than 50 times higher than that obtained from transmitted fluorescence mea-surements. We extract the L´ evy parameter and clearly distinguish between single and multiple scattering, where the number of scattered photons is, respectively, small and large. For comparison, we also present results for the forward time-resolved transmission (diffuse transmission) and for the total diffuse transmission by scanning the in-cident laser detuning. Monte Carlo simulations confirm and support our experimental results. In addition, we show that at high density, diffuse transmission is com-
+
+> arXiv:2603.18967v1 [physics.optics] 19 Mar 2026
+
+2posed totally by multiple scattered photons, whereas for the diffuse reflection, an amount of 30% of the scattered photons have performed a single scattering event.  
+
+> II. THEORY
+
+We consider an atomic vapor at a temperature T and density n = n(T ). After a photon has been absorbed by an atom and emitted by spontaneous emission, it trav-els a distance x whose probability distribution is given by P (x). The photon is emitted with a new frequency which depends on the incident frequency and the atom velocity. Assuming that the photon performs Nsc steps before leaving the vapor, for large Nsc we have complete frequency redistribution [20] and P (x) is given by 
+
+P (x) = 
+
+Z ∞−∞ 
+
+k2(∆) e−k(∆) x d∆ x→∞ 
+
+−−−−→ 1
+
+xα+1 , (1) where ∆ = ω − ω0 is the photon detuning, with ω as the photon frequency and ω0 as the atomic resonance frequency, k(∆) = nσ 0f (∆) is the absorption coefficient, 
+
+n is the atom density and σ0 is the resonant cross section. 
+
+f (∆) is the line shape, a Voigt profile given by 
+
+f (∆) ∝ 1
+
+√πu 
+
+Z ∞−∞ 
+
+e−v2/u 2
+
+1 + 4(∆ − kv )2/Γ2 dv . (2) In Eq. 2, v is the component of the atom velocity par-allel to the photon, u = p2kB T /M is the most probable velocity, M is the atomic mass, T is the vapor tempera-ture, kB is the Boltzmann constant and Γ is the atomic natural linewidth. Eq. 2 takes into account the atom nat-ural lineshape and the Doppler broadening. Approaching the Voigt profile core by a Doppler profile and from Eqs. 1 and 2, the parameter α, sometimes called L´ evy index or L´ evy exponent, is equal to α = 1. For collisional broad-ening, Eq. 2 is replaced by a Lorentzian function with width Γ col ≫ Γ and leads to Eq. 1 with α = 0 .5. If the vapor cell has a slab geometry whose walls are at the positions z = 0 and z = L along an z axis, and if photons enter at z0 ≳ 0 (0 < z 0 ≪ L), the temporal photon intensity profile at the forward exit surface ( z =
+
+L) is called diffuse transmission. For large t, it is given by an exponential decay [15, 19, 21] 
+
+Tdiff (t) ∼ e−t/τ , (3) where [19] 
+
+τ ∝ Ld , (4) and d is called fractal dimension with d = α [21]. This exponential decay was also reported in theories with ra-diative transport equation [10, 11], where the time decay rates were given as τ ∝ b0
+
+√ln b0 ∝ b0 for Doppler broad-ening, where b0 = nσ 0L is the resonant optical depth of the vapor. On the other hand, the temporal intensity profile at the backward exit surface ( z = 0) is called diffuse reflection, and for large t is given by [21] 
+
+Rdiff (t) ∼ e−t/τ , (5) i.e., the same exponential dependence as Tdiff (t). This suggests that it is possible to observe L´ evy signatures from the backward transmission, and this is the aim of the present work. Also, a good signal-to-noise ratio is expected for photon collection in the backward direction, due to the so-called Ohm’s law for photons [22, 23], i.e., 
+
+Tdiff → 0 for large L for atoms in a slab geometry, which implies in increasing Rdiff for large L. In this work, we replace L by the vapor density n in Eq. 4, since we keep 
+
+L constant and vary n.  
+
+> III. EXPERIMENT A. Setup
+
+Our experimental setup consists of a heated rubidium vapor cell, illuminated by a low-power homemade diode laser, resonant with the D2 line of rubidium ( λ = 780 .24 nm) and frequency stabilized by a saturated absorp-tion setup (see Fig. 1). The laser beam is sent to a monomode PM optical fiber (not shown in Fig. 1). At the cell entrance, the laser beam is linearly polarized and has a diameter of 2 mm and 50 μW power. The pho-todetectors PD1 and PD2 are detectors from ThorLabs, model APD120A/M, and collect the laser transmission (PD1; coherent transmission) and the emitted fluores-cence (PD2) in the forward direction [diffuse transmis-sion; Figs. 1(a) and (b)] or in the backward direction [Fig. 1(c)]. Both fluorescences are made of photons that performed a random walk in the vapor, and are collected by PD2 by means of a 30 mm focal lens, placed at a distance of approximately 10 cm from the oven aperture and at an angle of θ = 30 ◦ from the laser direction. This angle is relatively large in order to minimize the scattered light by cell walls from coherent transmission. The cell is cylindrical where its main axis is placed perpendicularly to the laser beam direction. The cell has a length of 9 cm and a radius 1 .25 cm. This cell setup was necessary because when directing the laser along the cell length, we observed a small diffuse transmission, i.e., practically no photons passing through the end. The cell is placed in a homemade oven that heats the entire unit. The oven has a circular aperture of diameter 2 cm (not shown in Fig. 1), from where the coherent transmission and the fluorescence exit. 3 
+
+> FIG. 1. (a) Scheme of the experimental setup. The laser diode (LD) is stabilized by a saturated-absorption spectroscopy (SA). The laser goes to a Rb cell in an oven. The photodetec-tors PD1 and PD2 measures, respectively, the coherent trans-mission and the diffuse transmission. (b) and (c) An AOM produces pulses. Its first-order beam (not shown) drives the vapor in order to measure the temporal diffuse transmission (b) or the diffuse reflection (c).
+
+The laser coherent transmission as a function of the incident laser detuning ∆ is theoretically adjusted in or-der to determine the vapor density n. For this, we adjust the coherent transmission (measured by photodetector PD1) with the Beer-Lambert law, Tcoh (∆) ∝ e−nσ (∆) L,where the density n is kept as the free parameter and the cross section σ(∆) takes into account the whole hyperfine structure of 85 Rb and 87 Rb. It is given by [24] 
+
+σ(∆) = λ2
+
+2π
+
+" 3X 
+
+> F=2 4
+
+X 
+
+> F′=1
+
+2F + 1 
+
+P3
+
+> F1=2
+
+(2 F1 + 1) 
+
+× SF F ′
+
+1 + 4( ω − ωF F ′ )2/Γ2 ++
+
+> 2
+
+X 
+
+> F=1 3
+
+X 
+
+> F′=0
+
+2F + 1 
+
+P2
+
+> F1=1
+
+(2 F1 + 1) 
+
+× SF F ′
+
+1 + 4( ω − ωF F ′ )2/Γ2
+
+
+
+, (6) where SF F ′ are transition factors calculated from the Clebsch-Gordan and the Wigner 3-j coefficients [25] and 
+
+ωF F ′ is the transition frequency from the level F to F ′.Temperatures range from 20 ◦C to 145 ◦C, which corre-spond to densities from 4 .6×10 15 to 4 .2×10 19 atoms/m 3,respectively. Errorbars for the density were calculated for a set of few measurements with same temperature, and correspond to approximately 15% of its mean value. In order to measure the temporal dynamics of the dif-fuse reflection and transmission, the laser has its fre-quency stabilized in the transition F = 2 → F ′ = 1 , 2, 3of 87 Rb. The vapor is driven by square pulses of du-ration 16 μs, generated by the +1 order of an acousto-optical modulator (AOM) from Isomet, model 232A-1. The +1 order corresponds to 80 MHz above the transi-tion F = 2 → F ′ = 3 of 87 Rb. Note that due to the large Doppler broadening of the vapor, typically ∼ 500 MHz, the exact value of the photon input frequency is not im-portant, since it will be resonant with the vapor energy level or line inside this width. The AOM is placed at the focus of a telescope made of two lenses of focal distances 10 mm, in order to improve the pulse extinction time. Two detection schemes were employed: diffuse transmis-sion [Fig. 1(b)] and diffuse reflection [Fig. 1(c)]. Each measured fluorescence for a fixed density is averaged for 2,000 cycles, corresponding to 2 −3 hours of data acqui-sition. To validate our experimental setup, we measure α us-ing the method of ref. [14], done for a Cs vapor, which consists in scanning the incident laser frequency ω in or-der to measure the frequency-dependent diffuse trans-mission Tdiff (∆). Then we collect Tdiff (0), where ∆ = 0 corresponds to the transition F = 2 → F ′ = 3 of 87 Rb, and plots it as a function of the vapor density n.The diffuse transmission as a function of the detuning is shown in Fig. 2(a) for different temperatures when the laser is scanned around the transition F = 2 → F ′ =1, 2, 3 of 87 Rb D2 line. Note that Tdiff (0) is not equal to the minimum of Tdiff (∆) because the reference transition is close to the transition F = 3 → F ′ = 2 , 3, 4 of 85 Rb, so there is an overlap of wings of both Rb isotopes at ∆ = 0. Fig. 2(b) shows Tdiff (0) plotted as a function of the vapor density n, collected from T = 70 ◦C ( n =1.8 × 10 17 atoms/m 3) to T = 110 ◦C ( n = 3 .3 × 10 18 
+
+atoms/m 3). Between 30 ◦C and 70 ◦C and above 110 ◦C, 4        
+
+> FIG. 2. (a) Diffuse transmission Tdiff (∆) as a function of the laser detuning for three different temperatures: 30 ◦C (dark blue), 70 ◦C (red) and 110 ◦C (black). The top grey curve is the Rb saturated absorption (S.A.). (b) Measured diffuse transmission Tdiff (0) as a function of sample density n(black circles). The red dashed line is a fit of the experimental data with Eq. 7. .
+
+Tdiff (0) versus n is constant [not shown in Fig. 2(b)], due to low photon scattering number and detector noise level, respectively. It was shown [14–16] that Tdiff (0) scales with n accord-ing to 
+
+Tdiff (0) = Cnα/ 2 , (7) where C is an arbitrary constant. We adjust our data with Eq. 7 by keeping C and α as free parameters. This gives α = 1 .0 ± 0.1, i.e., consistent with α = 1. Er-rorbars for Tdiff (0) were evaluated as the same way as those for n, i.e., by averaging a set of few measurements with same temperature and are approximately 20% of its mean value for a fixed n.To investigate the possibility of collisions in our data, we estimate the atom-atom collisional rate as Γcol = βn , (8) where β = 9 × 10 −8 Hz ·cm 3 [26]. For the range of den-sities in Fig. 2(b), this gives Γ col between 15 kHz (for 
+
+n ≈ 2 × 10 17 atoms/m 3) and 300 kHz (for n ≈ 3 × 10 18 
+
+atoms/ m3). Simulations were done from T = 50 ◦C to 
+
+T = 130 ◦C, which gives Γ col between 4 kHz and 1 MHz (see details about the simulation methods in section IV). Also, we performed simulations by superestimating Eq. 8 by a factor of five and ten. Our simulations are in agree-ment with α = 1. It is important to point out that ref. [14] reported a change from α = 1 to α = 0 .5 for Cs vapor as n increases. Also, no collision effects were observed in the data of ref. [15], for a Rb vapor in a thin disk-shaped cell with densities up to n = 1 × 10 20 
+
+atoms/m 3. 
+
+> B. Experimental results
+
+From the setup of Figs. 1(b) and (c), we extract, re-spectively, the temporal diffuse transmission Tdiff (t) and the temporal diffuse reflection Rdiff (t) as a function of the time t, for a given density n. Typical curves are shown in Figs. 3(a) and 4(a). The curves were normal-ized by their mean value in the range t/τ 0 ∈ [−12 , −9] (i.e., before the AOM switch off) and correspond to ≈ 200 points. The time t is normalized by the Rb natural time decay rate τ0 = 1 /Γ ≈ 26 ns. At the lowest temperature, 
+
+T = 20 ◦C [density n = 4 .6 × 10 15 atoms/m 3; not shown in Fig. 2(a)], density is not high enough and the decay is approximately equal to the laser switch off extinction generated by the AOM, which is 16 ns. For all tem-peratures, we identify an exponential decay in the range 
+
+I(t) ∈ [0 .3, 0.8], where I(t) = {Tdiff (t), R diff (t)}.For Tdiff (t), data were acquired from T = 24 ◦C ( n =6.1 × 10 15 atoms/m 3) to T = 80 ◦C ( n = 3 .6 × 10 17 
+
+atoms/m 3). For higher temperatures, few photons are collected and we have a bad signal-to-noise ratio, and consequently no data in the mentioned range. On the other hand, for Rdiff (t), we have achieved temperatures of T = 145 ◦C ( n = 4 .2 × 10 19 atoms/m 3). Also, we checked that Rdiff (t) curves saturate and collapse from 
+
+T > 115 ◦C ( n > 4.7 × 10 18 atoms/m 3) [not shown in Fig. 4(a)]. Note that the total amount of forward diffuse photons, given by Eq. 7 for a slab geometry [15], tend to zero for large n, which means that the total amount of backward diffuse photons tend to the input photon number. The temporal decay rate of these curves were extracted by using an exponential function I(t) = Ae −t/τ [15, 19, 21], where A and τ were kept as free parameters. Then, we plot τ versus the density n. A theoretical fitting is done using a power-law equation [21]: 
+
+τ = Bn α , (9) where B and α were kept as free parameters. 5
+
+FIG. 3. (a) Normalized temporal diffuse transmission Tdiff (t)as a function of the normalized time t/τ 0 for three different temperatures: 30 ◦C (red), 70 ◦C (blue) and 80 ◦C (gray). The dashed black lines are the respective theoretical fitting curves in the interval I(t)/I 0 ∈ [0 .3, 0.8]. (b) Decay times τ /τ 0 as a function of the density n from Tdiff (t) shown in panel (a). The different colors separate low and high densities. The dashed lines are the respective theoretical adjusts using Eq. 9. 
+
+The experimental data for τ and the corresponding fitting curves are given in Figs. 3(b) and 4(b) for the dif-fuse transmission and reflection, respectively. We see two dominant regions: for low density, we have α ≈ 0, i.e., a constant region, whereas for high densities α is close to unity. We extract α = 1 .2 ± 0.2 for the transmission data and α = 0 .9±0.1 for the reflection data, which is in agree-ment with the expected α = 1 and confirms that there are signatures of L´ evy flights from the backward fluorescence. This is the main result of this work. Note that these data are also in agreement with the frequency-dependent dif-fuse transmission (Fig. 2). We also checked that our data is consistent with the predictions from radiative trans-port equation [10], namely, τ /τ 0 ∝ n√ln n ≈ n for large 
+
+n.
+
+IV. SIMULATIONS 
+
+The observation of L´ evy statistics from the backward fluorescence (Fig. 4), discussed in the last section, is due to the L´ evy flights of backward photons and it is in agree-
+
+FIG. 4. (a) Normalized temporal diffuse reflection Rdiff (t) as a function of the normalized time t/τ 0 for three different tem-peratures: 20 ◦C (blue; n = 4 .6×10 15 atoms/m 3), 80 ◦C (gray; 
+
+n = 3 .7 × 10 17 atoms/m 3) and 125 ◦C (red; n = 9 .7 × 10 18 
+
+atoms/m 3). The dashed black lines are the respective theoret-ical fitting curves in the interval Rdiff (t)/R 0 ∈ [0 .3, 0.8]. (b) Decay times τ /τ 0 as a function of the density n from Rdiff (t)shown in panel (a). The different colors separate low and high densities. The dashed lines are the respective theoretical ad-justs using a power law function. 
+
+ment with the observed data from the forward fluores-cence, for both temporal dynamics (Fig. 3) and steady frequency-dependent (Fig. 2). However, for low densities [blue dots in Figs. 3(b) and 4(b)], the observed data are not compatible with a L´ evy statistics. At the same time, for high n, since the photon has its first absorption close to the input cell window and due to the spatial isotropy of spontaneous emission, it may be backward scattered and leave the vapor after a single scattering event. To address these and other questions, we perform Monte Carlo simulations to compare with our data. The simulations methods are discussed elsewhere [28]. In sim-plified words, we send a number Nph of photons with detuning ∆ = 0 into a vapor with density n and tem-perature T . For each photon, we draw the step length 
+
+x the photon walks before finding a two-level atom. The probability distribution of x for a given detuning is P∆(x) = e−k(∆) x, where k(∆) is the vapor absorp-tion coefficient given by k(∆) = nσ 0f (∆) and Eq. 2. After finding an atom, we draw the scattering direction 6of the photon and calculate its new ∆, where ∆ is re-distributed by Doppler effect and depends on the atom velocity components, which are drawn from a Maxwell-Boltzmann distribution with temperature T . Then, we draw x from P∆(x) for this new detuning, and we re-peat the steps until the photon leaves the cell. The cell is modelled as in the experiment, with same dimensions and orientation (see subsection III A). After the photon leaves the cell, we save its number of scattering events 
+
+Nsc and its output detuning ∆. The method described above does not take into ac-count atomic collisions. To simulate collisional effects, we replace Γ in Eq. 2 by Γ tot = Γ + Γ col , where Γ col is the collisional rate, given by Eq. 8. Then we define the collision probability as Pcol = Γ col /(Γ+Γ col ) [14], and we draw a number between 0 and 1 to compare with Pcol . If a collision does not occur, we calculate the new detuning ∆ as before. If a collision occurs, we draw the new pho-ton detuning ∆ from a Lorentzian distribution of width Γcol and then we correct it by Doppler effect only in the emission.  
+
+> A. Increase of the scattered photons in the backward direction
+
+The total number Nsc of scattered photons (no mat-ter their output detuning and how many steps they per-formed before leaving the vapor) can be collected in the forward region (between 0 ◦ and 90 ◦ from the incidence direction) or in the backward direction (from 90 ◦ to 180 ◦
+
+from the incidence direction). These quantities are the total diffuse transmission and reflection, respectively. For our experimental data, they correspond to the steady val-ues of the temporal diffuse and reflection, i.e., before the laser pulse is extinguished. Figure 5 displays the total transmission and reflection as a function of the density n, as well as the experimen-tal data for the diffuse reflection for comparison. The experimental data are the average value of the diffuse re-flection Rdiff (t) in the time range t/τ 0 ∈ [−12 , −9]. We see [Fig. 5(a)] that Rdiff saturates, and our experimen-tal data [Fig. 5(b)] follows the same behavior. Mean-while, Tdiff tends to zero. A theoretical adjust from the third value of n with Eq. 7 [not shown in Fig. 5(a)] gives 
+
+α = 1 .07 ± 0.07, consistent with L´ evy flights. This is to be compared with the so-called Ohm’s law for photon scattering [22], observed in cold atoms [23, 27], where the diffuse transmission decays with 1 /n . 
+
+> B. Single and multiple scattering in the decay dynamics
+
+In order to simulate the temporal emitted fluores-cences, named diffuse transmission and diffuse reflection, we assume that the Nph photons enter at the cell at the same time, and thus we obtain a histogram of the number 10 16 10 17 10 18 10 19 10 20 
+
+10 −2 
+
+10 −1 
+
+10 0
+
+n (atoms/m 3)diffusion 
+
+# a)    
+
+> FIG. 5. (a) Steady diffuse transmission (blue circles) and reflection (black asterisks) from simulations as a function of the vapor density. The vertical axis is normalized by the total amount of input photons, which is 2 ,000. (b) Experimental diffuse reflection in arbitrary units in the steady state as a function of density.
+
+of exiting photons as a function of Nsc . Note that the time the photon spent in the vapor is given by τ = Nsc τ0,since the travel time between two scattering events is negligible. To simulate the effect of a square pulse of du-ration ∆ tp driving the vapor, we make an convolution of the obtained histogram and a square pulse [29]. Then, we normalize its maximum value to unity. Figure 6(a) compares directly the normalized temporal diffuse transmission and reflection, for several tempera-tures. At low temperatures (i.e., low n), both curves are similar with a single predominant exponential decay. However, at high temperatures (i.e., high n), whereas a single exponential decay is present for diffuse transmis-sion, two exponential decays are present in diffuse reflec-tion: a fast decay, for I(t)/I (0) > 10 −1, and a late ex-ponential decay, for I(t)/I (0) < 10 −1. We adjust these decays with an exponential law in each time range in order to extract the time decay rates. The time decay rates are plotted in Fig. 6(b). For 
+
+Tdiff (t), the fit range is I(t) ∈ [0 .01 , 0.9]. A fit with Eq. 9 leads to α = 0 .92 ± 0.05. For Rdiff (t), τ extracted in the early-time interval I(t)/I (0) ∈ [0 .2, 0.8] gives α ≈ 0.5[not shown in Fig. 6(b)], whereas τ extracted from the 70 2000 4000 6000 8000 
+
+10 −3 
+
+10 −2 
+
+10 −1 
+
+10 0
+
+t/ τ0
+
+> I(t)
+
+# (a) 
+
+10 16 10 17 10 18 10 19 10 20 
+
+10 −1 
+
+10 0
+
+10 1
+
+10 2
+
+10 3
+
+10 4
+
+n (atoms/m 3)
+
+> τfit /τ0
+
+# (b) 
+
+FIG. 6. (a) Normalized temporal fluorescences as a function of the time for 30 ◦C (black; n = 9 .5 × 10 15 atoms/m 3), 70 ◦C(blue; n = 1 .8 × 10 17 atoms/m 3), 110 ◦C (red; n = 3 .3 × 10 18 
+
+atoms/m 3) and 150 ◦C (green; n = 6 .0 × 10 19 atoms/m 3). Full lines (dashed lines) are for diffuse transmission (diffuse reflection). (b) Normalized decay times τ /τ 0 as a function of the density n from the temporal diffuse transmission (blue circles) and diffuse reflection (red asterisks). The full black line is the theoretical curve τ /τ 0 ∝ nα with α = 1. 
+
+late time region I(t)/I (0) ∈ [0 .01 , 0.1] gives α = 0 .8 ±
+
+0.2. For comparison, a curve τ ∝ n1 is also shown. We find total agreement with our experiment. Note that the simulations were performed with two-level atoms, and due to this we do not expect quantitative agreement. 
+
+C. Presence of single scattering in diffuse reflection for high density 
+
+At low density n, many photons leave the vapor with low scattering event number, typically Nsc = 1, both for diffuse transmission and reflection. As n increases, the typical step length ℓ between two scattering events, given by ℓ = 1 /[nσ 0f (0)], decreases, so more photons perform more scattering events before leaving the vapor. Also, the distance z0 travelled by the photon between the cell input wall and the first scattering event is of order of 
+
+z0 ∼ ℓ. This number becomes close to μm for high den-sities, which means that for diffuse reflection, there is a significant amount of photons which are scattered with low Nsc , since the first scattering event occur close to the 20 40 60 80 100 120 140 
+
+0
+
+0.25 
+
+0.5 
+
+0.75 
+
+1
+
+T (°C) ratio 
+
+# (a) 
+
+20 40 60 80 100 120 140 
+
+0
+
+0.25 
+
+0.5 
+
+0.75 
+
+1
+
+T (°C) ratio 
+
+# (b) 
+
+FIG. 7. Ratio between the amount of scattered photons (ratio S.S.) for a fixed Nsc and the total amount of scattered photons for a fixed temperature, for (a) diffuse transmission and (b) diffused reflection. Legend: Nsc = 1 (blue ◦), Nsc = 1 (red 
+
+⋄), Nsc = 3 (black □), Nsc = 4 (magenta ×) and Nsc ≥ 5(green ∗). 
+
+cell wall and the scattering is isotropic. We quantify the number of scattering events performed by the photons both for diffuse transmission and reflec-tion after they left the vapor. Fig. 7 displays the results. The vertical axis is the number of photons which left the vapor with a given Nsc in a given direction (transmis-sion or reflection) divided by the total amount of photons scattered in the same direction, for a fixed temperature. Temperatures go from 30 ◦C to 150 ◦C, which implies in densities from n = 9 .5×10 15 to n = 6 .0×10 19 atoms/m 3,respectively. For diffuse transmission [Fig. 7(a)], the amount of photons which performed low scattering events (Nsc ≤ 4) decreases quickly for increasing temperature T ,becoming zero for T ≥ 100 ◦C ( n ≥ 1.6×10 18 atoms/m 3). This means that in this range almost all photons (0 .9, i.e., 90%) leave the vapor performing Nsc ≥ 5 scattering events. This means multiple scattering, complete fre-quency redistribution and consequently a single decay for Tdiff (t), observed in both experimental and theoreti-cal results. On the other hand, for the photons emitted backward [Fig. 7(b)], the amount of single scattered pho-tons ( Nsc = 1) tends to a steady value of 0 .20 (i.e., 20%) for T ≥ 100 ◦C. For Nsc = 2 and Nsc = 3, we have, re-spectively, a fraction of 0 .09 and 0 .06. This means that 
+
+∼ 35% of the diffuse reflected photons have performed 8few scattering events before leaving the medium, even for high density, which would imply in partial frequency redistribution and a L´ evy parameter of α > 1 [30]. On the other hand, the fraction of scattered photons with 
+
+Nsc ≥ 5 is approximately 0 .50, i.e., 50%. However, we still see α = 1 in the temporal dynamics, meaning that these ∼ 50% of photons dominate the statistics of the emitted fluorescence in the backward direction for large times and lead to the observation of α = 1.  
+
+> V. CONCLUSIONS
+
+We have studied the temporal dynamics of L´ evy flights in a hot rubidium vapor as a function of its density, and we have shown that it is possible to see L´ evy signatures from the fluorescence emitted backward (diffuse reflec-tion). We observed in this regime the L´ evy parameter 
+
+α = 1, which is consistent with the forward emitted flu-orescence (diffuse transmission) in the temporal regime and in the stationary regime. Monte Carlo simulations confirm our findings. All simulations were done for two-level atoms, where the results are found to be consistent with previous experiments [24]. The impact of the atomic multilevel structure was studied recently [31]. For increasing density vapor, the photons tend to be scattered backward, which represents a significant im-provement of signal-to-noise ratio compared to diffuse transmission. However, we have a significant amount of photons emitted after few scattering events, specially sin-gle scattering, in contrast with the forward fluorescence where almost all photons have performed multiple steps. It is surprising that a collected fluorescence is composed of half of photons performing a single scattering event and the few multiple scattered photons dominate the ob-served value of α.This work is a first investigation of the L´ evy parameter via backscattered light. Extensions of this work include the short excitation regime, where the excitation dura-tion is smaller than the atomic lifetime and would imply in different behavior of the photons during the random walk with respect to their time scales. In this context, normal diffusion has been observed in biological tissue [5] and L´ evy diffusion in L´ evy glasses [19]. We hope this work can contribute to further investigations of photon diffusion. 
+
+> ACKNOWLEDGEMENTS
+
+We thank Sandra S. Vianna for borrowing the cell oven and detectors, and Naudson L. L. Matias and Nico-las A. Pessoa for helping on the experimental setup and data analysis, respectively. We also acknowl-edge the financial support from UFPB, UFPE and the agencies Army Research Office (Grant No. W911NF-23-1-0287), Coordena¸ c˜ ao de Aperfei¸ coamento de Pes-soal de N´ ıvel Superior (CAPES), Conselho Nacional de Desenvolvimento Cient´ ıfico e Tecnol´ ogico (CNPq), Funda¸ c˜ ao de Amparo `a Ciˆ encia do Estado de Per-nambuco (FACEPE), FAPESP (2021/06535-0), National Quantum Information Institute (INCT-IQ, No. 410 465469/2014-0)/CNPq, and the National Photonics In-stitute (INCT-INFo, No. 409174/2024-6)/CNPq.                              
+
+> [1] G. M. Viswanathan, V. Afanasyev, S. V. Buldyrev, E. J. Murphy, P. A. Prince, and H. E. Stanley, Nature 381 ,413 (1996). [2] A. M. Edwards, R. A. Phillips, N. W. Watkins, M. P. Freeman, E. J. Murphy, V. Afanasyev, S. V. Buldyrev, M. G. E. da Luz, E. P. Raposo, H. E. Stanley, and G. M. Viswanathan, Nature 449 , 1044 (2007). [3] J. Li, L. Weng, J. Xie, J. Amrit, and A. Ramiere, Physical Review E 105 , 064123 (2022). [4] T. B. Smith and D. B. Weissman, G3: Genes, Genomes, Genetics 13 , jkad023 (2023). [5] V. V. Chernomordik, D. W. Hattery, D. Grosenick, H. Wabnitz, H. H. Rinneberg, K. T. Moesta, P. M. Schlag, and A. H. Gandjbakhche, Journal of Biomedical Optics
+> 7, 80 (2002). [6] G. Labeyrie, E. Vaujour, C. A. M¨ uller, D. Delande, C. Miniatura, D. Wilkowski, and R. Kaiser, Physical Review Letters 91 , 223904 (2003). [7] V. V. Ivanov and J. M. Dlugach, Journal of Quantitative Spectroscopy and Radiative Transfer 323 , 108999 (2024). [8] P. Barthelemy, J. Bertolotti, and D. S. Wiersma, Nature
+> 453 , 495 (2008). [9] N. Mercadier, W. Guerin, M. Chevrollier, and R. Kaiser, Nature Physics 5, 602 (2009). [10] T. Holstein, Physical Review 72 , 1212 (1947). [11] T. Holstein, Physical Review 83 , 1159 (1951). [12] A. R. Alves-Pereira, E. J. Nunes-Pereira, J. M. G. Mart-inho, and M. N. Berberan-Santos, The Journal of Chem-ical Physics 126 , 154505 (2007). [13] M. Chevrollier, Contemporary Physics 53 , 227 (2012). [14] A. S. M. Macedo, J. P. Lopez, and T. Passerat de Silans, Physical Review E 104 , 054143 (2021). [15] Q. Baudouin, R. Pierrat, A. Eloy, E. J. Nunes-Pereira, P.-A. Cuniasse, N. Mercadier, and R. Kaiser, Physical Review E 90 , 052114 (2014). [16] M. O. Ara´ ujo, T. P. de Silans, and R. Kaiser, Physical Review E 103 , L010101 (2021). [17] J. P. Lopez, A. S. M. Macedo, M. O. Ara´ ujo, and T. Passerat de Silans, Physical Review A 107 , 013501 (2023). [18] T. Colbert and J. Huennekens, Physical Review A 41 ,6145 (1990). [19] R. Savo, M. Burresi, T. Svensson, K. Vynck, and D. S. Wiersma, Physical Review A 90 , 023839 (2014). [20] E. Pereira, J. M. G. Martinho, and M. N. Berberan- San-tos, Physical Review Letters 93 , 120201 (2004). [21] J. Klinger, R. Voituriez, and O. B´ enichou, Physical Re-view E 107 , 054109 (2023).
+
+9
+
+[22] M. C. W. van Rossum and T. M. Nieuwenhuizen, Review of Modern Physics 71 , 313 (1999). [23] W. Guerin, M. Rouabah, and R. Kaiser, Journal of Mod-ern Optics 64 , 895 (2017). [24] N. Mercadier, M. Chevrollier, W. Guerin, and R. Kaiser, Physical Review A 87 , 063837 (2013). [25] D. A. Steck, Rubidium D Line Data, http://steck.us/alkalidata, 2025. [26] L. Weller, R. J. Bettles, P. Siddons, C. S. Adams, and I. G. Hughes, Journal of Physics B: Atomic, Molecular and Optical Physics 44 , 195006 (2011). [27] G. Labeyrie, D. Delande, C. M¨ uller, C. Miniatura, and R. Kaiser, Optics Communications 243 , 157 (2004). [28] J. C. de A. Carvalho, M. Ori´ a, M. Chevrollier, H. L. D. de S. Cavalcante, and T. Passerat de Silans, Physical Review A 91 , 053846 (2015). [29] G. Labeyrie, R. Kaiser, and D. Delande, Applied Physics B 81 , 1001 (2005). [30] M. Chevrollier, N. Mercadier, W. Guerin, and R. Kaiser, The European Physical Journal D 58 , 161 (2010). [31] I. C. Nunes, M. O. Ara´ ujo, J. P. Lopez, and T. Passerat de Silans, Journal of Quantitative Spectroscopy and Ra-diative Transfer 343 , 109481 (2025).

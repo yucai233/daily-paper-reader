@@ -1,0 +1,482 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-03-23T20:18:21.947601+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 11,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2603.18306v1",
+      "title": "Fast and Generalizable NeRF Architecture Selection for Satellite Scene Reconstruction",
+      "abstract": "Neural Radiance Fields (NeRF) have emerged as a powerful approach for photorealistic 3D reconstruction from multi-view images. However, deploying NeRF for satellite imagery remains challenging. Each scene requires individual training, and optimizing architectures via Neural Architecture Search (NAS) demands hours to days of GPU time. While existing approaches focus on architectural improvements, our SHAP analysis reveals that multi-view consistency, rather than model architecture, determines reconstruction quality. Based on this insight, we develop PreSCAN, a predictive framework that estimates NeRF quality prior to training using lightweight geometric and photometric descriptors. PreSCAN selects suitable architectures in < 30 seconds with < 1 dB prediction error, achieving 1000$\\times$ speedup over NAS. We further demonstrate PreSCAN's deployment utility on edge platforms (Jetson Orin), where combining its predictions with offline cost profiling reduces inference power by 26% and latency by 43% with minimal quality loss. Experiments on DFC2019 datasets confirm that PreSCAN generalizes across diverse satellite scenes without retraining.",
+      "authors": [
+        "Devjyoti Chakraborty",
+        "Zaki Sukma",
+        "Rakandhiya D. Rachmanto",
+        "Kriti Ghosh",
+        "In Kee Kim",
+        "Suchendra M. Bhandarkar",
+        "Lakshmish Ramaswamy",
+        "Nancy K. O'Hare",
+        "Deepak Mishra"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-03-18T21:42:39+00:00",
+      "link": "https://arxiv.org/pdf/2603.18306v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "neural radiance fields architecture selection and optimization",
+      "llm_evidence_cn": "神经辐射场架构选择与优化",
+      "llm_evidence": "神经辐射场架构选择与优化",
+      "canonical_evidence": "神经辐射场架构选择与优化",
+      "llm_tldr_en": "Proposes a framework to predict NeRF reconstruction quality and select architectures for satellite imagery.",
+      "llm_tldr_cn": "提出了一种预测 NeRF 重建质量并为卫星图像选择合适架构的框架。",
+      "llm_tldr": "提出了一种预测 NeRF 重建质量并为卫星图像选择合适架构的框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2603.15811v1",
+      "title": "Feed-forward Gaussian Registration for Head Avatar Creation and Editing",
+      "abstract": "We present MATCH (Multi-view Avatars from Topologically Corresponding Heads), a multi-view Gaussian registration method for high-quality head avatar creation and editing. State-of-the-art multi-view head avatar methods require time-consuming head tracking followed by expensive avatar optimization, often resulting in a total creation time of more than one day. MATCH, in contrast, directly predicts Gaussian splat textures in correspondence from calibrated multi-view images in just 0.5 seconds per frame, without requiring data preprocessing. The learned intra-subject correspondence across frames enables fast creation of personalized head avatars, while correspondence across subjects supports applications such as expression transfer, optimization-free tracking, semantic editing, and identity interpolation. We establish these correspondences end-to-end using a transformer-based model that predicts Gaussian splat textures in the fixed UV layout of a template mesh. To achieve this, we introduce a novel registration-guided attention block, where each UV-map token attends exclusively to image tokens depicting its corresponding mesh region. This design improves efficiency and performance compared to dense cross-view attention. MATCH outperforms existing methods in novel-view synthesis, geometry registration, and head avatar generation, while making avatar creation 10 times faster than the closest competing baseline. The code and model weights are available on the project website.",
+      "authors": [
+        "Malte Prinzler",
+        "Paulo Gotardo",
+        "Siyu Tang",
+        "Timo Bolkart"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-16T18:42:30+00:00",
+      "link": "https://arxiv.org/pdf/2603.15811v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural rendering using Gaussian splatting for avatars",
+      "llm_evidence_cn": "使用高斯泼溅进行头像的神经渲染",
+      "llm_evidence": "使用高斯泼溅进行头像的神经渲染",
+      "canonical_evidence": "使用高斯泼溅进行头像的神经渲染",
+      "llm_tldr_en": "Predicts Gaussian splat textures from multi-view images for fast head avatar creation and editing.",
+      "llm_tldr_cn": "从多视图图像中预测高斯泼溅纹理，用于快速创建和编辑头部头像。",
+      "llm_tldr": "从多视图图像中预测高斯泼溅纹理，用于快速创建和编辑头部头像。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.14669v1",
+      "title": "RenderMem: Rendering as Spatial Memory Retrieval",
+      "abstract": "Embodied reasoning is inherently viewpoint-dependent: what is visible, occluded, or reachable depends critically on where the agent stands. However, existing spatial memory systems for embodied agents typically store either multi-view observations or object-centric abstractions, making it difficult to perform reasoning with explicit geometric grounding. We introduce RenderMem, a spatial memory framework that treats rendering as the interface between 3D world representations and spatial reasoning. Instead of storing fixed observations, RenderMem maintains a 3D scene representation and generates query-conditioned visual evidence by rendering the scene from viewpoints implied by the query. This enables embodied agents to reason directly about line-of-sight, visibility, and occlusion from arbitrary perspectives. RenderMem is fully compatible with existing vision-language models and requires no modification to standard architectures. Experiments in the AI2-THOR environment show consistent improvements on viewpoint-dependent visibility and occlusion queries over prior memory baselines.",
+      "authors": [
+        "JooHyun Park",
+        "HyeongYeop Kang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-03-15T23:53:40+00:00",
+      "link": "https://arxiv.org/pdf/2603.14669v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "rendering as interface for 3D world representations",
+      "llm_evidence_cn": "将渲染作为3D世界表示的接口",
+      "llm_evidence": "将渲染作为3D世界表示的接口",
+      "canonical_evidence": "将渲染作为3D世界表示的接口",
+      "llm_tldr_en": "Introduces RenderMem, a framework using rendering to bridge 3D scene representations and spatial reasoning.",
+      "llm_tldr_cn": "引入RenderMem框架，利用渲染技术连接3D场景表示与空间推理。",
+      "llm_tldr": "引入RenderMem框架，利用渲染技术连接3D场景表示与空间推理。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.16103v1",
+      "title": "NanoGS: Training-Free Gaussian Splat Simplification",
+      "abstract": "3D Gaussian Splat (3DGS) enables high-fidelity, real-time novel view synthesis by representing scenes with large sets of anisotropic primitives, but often requires millions of Splats, incurring significant storage and transmission costs. Most existing compression methods rely on GPU-intensive post-training optimization with calibrated images, limiting practical deployment. We introduce NanoGS, a training-free and lightweight framework for Gaussian Splat simplification. Instead of relying on image-based rendering supervision, NanoGS formulates simplification as local pairwise merging over a sparse spatial graph. The method approximates a pair of Gaussians with a single primitive using mass preserved moment matching and evaluates merge quality through a principled merge cost between the original mixture and its approximation. By restricting merge candidates to local neighborhoods and selecting compatible pairs efficiently, NanoGS produces compact Gaussian representations while preserving scene structure and appearance. NanoGS operates directly on existing Gaussian Splat models, runs efficiently on CPU, and preserves the standard 3DGS parameterization, enabling seamless integration with existing rendering pipelines. Experiments demonstrate that NanoGS substantially reduces primitive count while maintaining high rendering fidelity, providing an efficient and practical solution for Gaussian Splat simplification. Our project website is available at https://saliteta.github.io/NanoGS/.",
+      "authors": [
+        "Butian Xiong",
+        "Rong Liu",
+        "Tiantian Zhou",
+        "Meida Chen",
+        "Zhiwen Fan",
+        "Andrew Feng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-03-17T03:58:02+00:00",
+      "link": "https://arxiv.org/pdf/2603.16103v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "simplification of 3D Gaussian Splatting primitives for efficient rendering",
+      "llm_evidence_cn": "简化3D高斯泼溅原语以实现高效渲染",
+      "llm_evidence": "简化3D高斯泼溅原语以实现高效渲染",
+      "canonical_evidence": "简化3D高斯泼溅原语以实现高效渲染",
+      "llm_tldr_en": "NanoGS simplifies 3D Gaussian Splatting through training-free merging to reduce storage and transmission costs.",
+      "llm_tldr_cn": "NanoGS通过免训练的合并方法简化3D高斯泼溅，从而降低存储和传输成本。",
+      "llm_tldr": "NanoGS通过免训练的合并方法简化3D高斯泼溅，从而降低存储和传输成本。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.16099v1",
+      "title": "OneWorld: Taming Scene Generation with 3D Unified Representation Autoencoder",
+      "abstract": "Existing diffusion-based 3D scene generation methods primarily operate in 2D image/video latent spaces, which makes maintaining cross-view appearance and geometric consistency inherently challenging. To bridge this gap, we present OneWorld, a framework that performs diffusion directly within a coherent 3D representation space. Central to our approach is the 3D Unified Representation Autoencoder (3D-URAE); it leverages pretrained 3D foundation models and augments their geometry-centric nature by injecting appearance and distilling semantics into a unified 3D latent space. Furthermore, we introduce token-level Cross-View-Correspondence (CVC) consistency loss to explicitly enforce structural alignment across views, and propose Manifold-Drift Forcing (MDF) to mitigate train-inference exposure bias and shape a robust 3D manifold by mixing drifted and original representations. Comprehensive experiments demonstrate that OneWorld generates high-quality 3D scenes with superior cross-view consistency compared to state-of-the-art 2D-based methods. Our code will be available at https://github.com/SensenGao/OneWorld.",
+      "authors": [
+        "Sensen Gao",
+        "Zhaoqing Wang",
+        "Qihang Cao",
+        "Dongdong Yu",
+        "Changhu Wang",
+        "Tongliang Liu",
+        "Mingming Gong",
+        "Jiawang Bian"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-17T03:43:37+00:00",
+      "link": "https://arxiv.org/pdf/2603.16099v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "3D unified representation for scene generation and appearance consistency",
+      "llm_evidence_cn": "用于场景生成和外观一致性的3D统一表示",
+      "llm_evidence": "用于场景生成和外观一致性的3D统一表示",
+      "canonical_evidence": "用于场景生成和外观一致性的3D统一表示",
+      "llm_tldr_en": "OneWorld uses a 3D Unified Representation Autoencoder for consistent 3D scene generation and appearance.",
+      "llm_tldr_cn": "OneWorld使用3D统一表示自编码器来实现一致的3D场景生成和外观表现。",
+      "llm_tldr": "OneWorld使用3D统一表示自编码器来实现一致的3D场景生成和外观表现。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.17382v1",
+      "title": "VisionNVS: Self-Supervised Inpainting for Novel View Synthesis under the Virtual-Shift Paradigm",
+      "abstract": "A fundamental bottleneck in Novel View Synthesis (NVS) for autonomous driving is the inherent supervision gap on novel trajectories: models are tasked with synthesizing unseen views during inference, yet lack ground truth images for these shifted poses during training. In this paper, we propose VisionNVS, a camera-only framework that fundamentally reformulates view synthesis from an ill-posed extrapolation problem into a self-supervised inpainting task. By introducing a ``Virtual-Shift'' strategy, we use monocular depth proxies to simulate occlusion patterns and map them onto the original view. This paradigm shift allows the use of raw, recorded images as pixel-perfect supervision, effectively eliminating the domain gap inherent in previous approaches. Furthermore, we address spatial consistency through a Pseudo-3D Seam Synthesis strategy, which integrates visual data from adjacent cameras during training to explicitly model real-world photometric discrepancies and calibration errors. Experiments demonstrate that VisionNVS achieves superior geometric fidelity and visual quality compared to LiDAR-dependent baselines, offering a robust solution for scalable driving simulation.",
+      "authors": [
+        "Hongbo Lu",
+        "Liang Yao",
+        "Chenghao He",
+        "Fan Liu",
+        "Wenlong Liao",
+        "Tao He",
+        "Pai Peng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-18T05:57:46+00:00",
+      "link": "https://arxiv.org/pdf/2603.17382v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "novel view synthesis and neural rendering for autonomous driving",
+      "llm_evidence_cn": "自动驾驶的新视角合成与神经渲染",
+      "llm_evidence": "自动驾驶的新视角合成与神经渲染",
+      "canonical_evidence": "自动驾驶的新视角合成与神经渲染",
+      "llm_tldr_en": "Reformulates novel view synthesis as a self-supervised inpainting task using monocular depth proxies.",
+      "llm_tldr_cn": "利用单目深度代理将新视角合成重新定义为自监督修复任务。",
+      "llm_tldr": "利用单目深度代理将新视角合成重新定义为自监督修复任务。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.17720v1",
+      "title": "VolumeDP: Modeling Volumetric Representation for Manipulation Policy Learning",
+      "abstract": "Imitation learning is a prominent paradigm for robotic manipulation. However, existing visual imitation methods map 2D image observations directly to 3D action outputs, imposing a 2D-3D mismatch that hinders spatial reasoning and degrades robustness. We present VolumeDP, a policy architecture that restores spatial alignment by explicitly reasoning in 3D. VolumeDP first lifts image features into a Volumetric Representation via cross-attention. It then selects task-relevant voxels with a learnable module and converts them into a compact set of spatial tokens, markedly reducing computation while preserving action-critical geometry. Finally, a multi-token decoder conditions on the entire token set to predict actions, thereby avoiding lossy aggregation that collapses multiple spatial tokens into a single descriptor. VolumeDP achieves a state-of-the-art average success rate of 88.8% on the LIBERO simulation benchmark, outperforming the strongest baseline by a substantial 14.8% improvement. It also delivers large performance gains over prior methods on the ManiSkill and LIBERO-Plus benchmarks. Real-world experiments further demonstrate higher success rates and robust generalization to novel spatial layouts, camera viewpoints, and environment backgrounds. Code will be released.",
+      "authors": [
+        "Tianxing Zhou",
+        "Feiyang Xue",
+        "Zhangchen Ye",
+        "Tianyuan Yuan",
+        "Hang Zhao",
+        "Tao Jiang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-03-18T13:40:24+00:00",
+      "link": "https://arxiv.org/pdf/2603.17720v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "lifts image features into a Volumetric Representation",
+      "llm_evidence_cn": "将图像特征提升为体积表示",
+      "llm_evidence": "将图像特征提升为体积表示",
+      "canonical_evidence": "将图像特征提升为体积表示",
+      "llm_tldr_en": "Proposes a policy architecture that uses volumetric representations for 3D spatial reasoning in robotics.",
+      "llm_tldr_cn": "提出一种利用体积表示进行机器人3D空间推理的策略架构。",
+      "llm_tldr": "提出一种利用体积表示进行机器人3D空间推理的策略架构。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.17735v1",
+      "title": "TAPESTRY: From Geometry to Appearance via Consistent Turntable Videos",
+      "abstract": "Automatically generating photorealistic and self-consistent appearances for untextured 3D models is a critical challenge in digital content creation. The advancement of large-scale video generation models offers a natural approach: directly synthesizing 360-degree turntable videos (TTVs), which can serve not only as high-quality dynamic previews but also as an intermediate representation to drive texture synthesis and neural rendering. However, existing general-purpose video diffusion models struggle to maintain strict geometric consistency and appearance stability across the full range of views, making their outputs ill-suited for high-quality 3D reconstruction. To this end, we introduce TAPESTRY, a framework for generating high-fidelity TTVs conditioned on explicit 3D geometry. We reframe the 3D appearance generation task as a geometry-conditioned video diffusion problem: given a 3D mesh, we first render and encode multi-modal geometric features to constrain the video generation process with pixel-level precision, thereby enabling the creation of high-quality and consistent TTVs. Building upon this, we also design a method for downstream reconstruction tasks from the TTV input, featuring a multi-stage pipeline with 3D-Aware Inpainting. By rotating the model and performing a context-aware secondary generation, this pipeline effectively completes self-occluded regions to achieve full surface coverage. The videos generated by TAPESTRY are not only high-quality dynamic previews but also serve as a reliable, 3D-aware intermediate representation that can be seamlessly back-projected into UV textures or used to supervise neural rendering methods like 3DGS. This enables the automated creation of production-ready, complete 3D assets from untextured meshes. Experimental results demonstrate that our method outperforms existing approaches in both video consistency and final reconstruction quality.",
+      "authors": [
+        "Yan Zeng",
+        "Haoran Jiang",
+        "Kaixin Yao",
+        "Qixuan Zhang",
+        "Longwen Zhang",
+        "Lan Xu",
+        "Jingyi Yu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-18T14:02:09+00:00",
+      "link": "https://arxiv.org/pdf/2603.17735v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural rendering and appearance synthesis for 3D models",
+      "llm_evidence_cn": "3D 模型的神经渲染与外观合成",
+      "llm_evidence": "3D 模型的神经渲染与外观合成",
+      "canonical_evidence": "3D 模型的神经渲染与外观合成",
+      "llm_tldr_en": "Generates consistent turntable videos to drive texture synthesis and neural rendering for 3D models.",
+      "llm_tldr_cn": "生成一致的转盘视频，以驱动 3D 模型的纹理合成和神经渲染。",
+      "llm_tldr": "生成一致的转盘视频，以驱动 3D 模型的纹理合成和神经渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.18967v1",
+      "title": "Temporal dynamics of Levy flights of photons in a hot vapor",
+      "abstract": "Multiple scattering of light by resonant vapor is characterized by Levy-type superdiffusion with a step size distribution $P(x) \\propto 1/x^{1+α}$, with $0 < α < 2$. The Levy parameter $α$ was measured from $P(x)$, steady fluorescence, frequency-dependent fluorescence and time-resolved transmission, all of them in the forward direction. Here we report first measurements of this quantity from timeresolved backward fluorescence, i.e., photons that are backward diffused from light pulses exciting a hot rubidium vapor. We show experimentally that $α$ can be extracted from this diffuse reflection, and the results are consistent with time-resolved transmission (i.e., photons that are forward diffused) and steady frequency-dependent forward fluorescence. Theoretical simulations are consistent with these results. We also show that, although we measure $α = 1$ for both transmission and reflection, the backward photons have a non-negligible amount of single scattering events even for high density, contrary to the forward photons where multiple scattering dominates.",
+      "authors": [
+        "Ricardo V. M. de Almeida Filho",
+        "Joao C. de Aquino Carvalho",
+        "Thierry Passerat de Silans",
+        "Marcio H. G. de Miranda",
+        "Michelle O. Araújo"
+      ],
+      "primary_category": "physics.optics",
+      "categories": [
+        "physics.optics",
+        "physics.atom-ph"
+      ],
+      "published": "2026-03-19T14:33:24+00:00",
+      "link": "https://arxiv.org/pdf/2603.18967v1",
+      "tags": [
+        "keyword:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multiple scattering of light in participating media (hot vapor)",
+      "llm_evidence_cn": "参与介质（热蒸汽）中的光线多重散射",
+      "llm_evidence": "参与介质（热蒸汽）中的光线多重散射",
+      "canonical_evidence": "参与介质（热蒸汽）中的光线多重散射",
+      "llm_tldr_en": "Studies the temporal dynamics of multiple scattering and Levy flights of photons in resonant vapor.",
+      "llm_tldr_cn": "研究了共振蒸汽中光子多重散射和莱维飞行的动力学特性。",
+      "llm_tldr": "研究了共振蒸汽中光子多重散射和莱维飞行的动力学特性。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "deep learning for multiple scattering in volumes",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.19682v1",
+      "title": "3D Gaussian Splatting with Self-Constrained Priors for High Fidelity Surface Reconstruction",
+      "abstract": "Rendering 3D surfaces has been revolutionized within the modeling of radiance fields through either 3DGS or NeRF. Although 3DGS has shown advantages over NeRF in terms of rendering quality or speed, there is still room for improvement in recovering high fidelity surfaces through 3DGS. To resolve this issue, we propose a self-constrained prior to constrain the learning of 3D Gaussians, aiming for more accurate depth rendering. Our self-constrained prior is derived from a TSDF grid that is obtained by fusing the depth maps rendered with current 3D Gaussians. The prior measures a distance field around the estimated surface, offering a band centered at the surface for imposing more specific constraints on 3D Gaussians, such as removing Gaussians outside the band, moving Gaussians closer to the surface, and encouraging larger or smaller opacity in a geometry-aware manner. More importantly, our prior can be regularly updated by the most recent depth images which are usually more accurate and complete. In addition, the prior can also progressively narrow the band to tighten the imposed constraints. We justify our idea and report our superiority over the state-of-the-art methods in evaluations on widely used benchmarks.",
+      "authors": [
+        "Takeshi Noda",
+        "Yu-Shen Liu",
+        "Zhizhong Han"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-20T06:31:03+00:00",
+      "link": "https://arxiv.org/pdf/2603.19682v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting and Radiance Fields for surface reconstruction",
+      "llm_evidence_cn": "用于表面重建的3D高斯泼溅与辐射场",
+      "llm_evidence": "用于表面重建的3D高斯泼溅与辐射场",
+      "canonical_evidence": "用于表面重建的3D高斯泼溅与辐射场",
+      "llm_tldr_en": "Enhances 3D Gaussian Splatting with self-constrained priors for high-fidelity surface reconstruction.",
+      "llm_tldr_cn": "通过自约束先验增强3D高斯泼溅，以实现高保真表面重建。",
+      "llm_tldr": "通过自约束先验增强3D高斯泼溅，以实现高保真表面重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.19613v1",
+      "title": "OrbitNVS: Harnessing Video Diffusion Priors for Novel View Synthesis",
+      "abstract": "Novel View Synthesis (NVS) aims to generate unseen views of a 3D object given a limited number of known views. Existing methods often struggle to synthesize plausible views for unobserved regions, particularly under single-view input, and still face challenges in maintaining geometry- and appearance-consistency. To address these issues, we propose OrbitNVS, which reformulates NVS as an orbit video generation task. Through tailored model design and training strategies, we adapt a pre-trained video generation model to the NVS task, leveraging its rich visual priors to achieve high-quality view synthesis. Specifically, we incorporate camera adapters into the video model to enable accurate camera control. To enhance two key properties of 3D objects, geometry and appearance, we design a normal map generation branch and use normal map features to guide the synthesis of the target views via attention mechanism, thereby improving geometric consistency. Moreover, we apply a pixel-space supervision to alleviate blurry appearance caused by spatial compression in the latent space. Extensive experiments show that OrbitNVS significantly outperforms previous methods on the GSO and OmniObject3D benchmarks, especially in the challenging single-view setting (\\eg, +2.9 dB and +2.4 dB PSNR).",
+      "authors": [
+        "Jinglin Liang",
+        "Zijian Zhou",
+        "Rui Huang",
+        "Shuangping Huang",
+        "Yichen Gong"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-20T03:40:36+00:00",
+      "link": "https://arxiv.org/pdf/2603.19613v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "novel view synthesis and geometry consistency",
+      "llm_evidence_cn": "新视角合成与几何一致性",
+      "llm_evidence": "新视角合成与几何一致性",
+      "canonical_evidence": "新视角合成与几何一致性",
+      "llm_tldr_en": "OrbitNVS uses video diffusion priors to improve geometry and appearance consistency in novel view synthesis.",
+      "llm_tldr_cn": "OrbitNVS利用视频扩散先验提升新视角合成中的几何与外观一致性。",
+      "llm_tldr": "OrbitNVS利用视频扩散先验提升新视角合成中的几何与外观一致性。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.20176v1",
+      "title": "LagerNVS: Latent Geometry for Fully Neural Real-time Novel View Synthesis",
+      "abstract": "Recent work has shown that neural networks can perform 3D tasks such as Novel View Synthesis (NVS) without explicit 3D reconstruction. Even so, we argue that strong 3D inductive biases are still helpful in the design of such networks. We show this point by introducing LagerNVS, an encoder-decoder neural network for NVS that builds on `3D-aware' latent features. The encoder is initialized from a 3D reconstruction network pre-trained using explicit 3D supervision. This is paired with a lightweight decoder, and trained end-to-end with photometric losses. LagerNVS achieves state-of-the-art deterministic feed-forward Novel View Synthesis (including 31.4 PSNR on Re10k), with and without known cameras, renders in real time, generalizes to in-the-wild data, and can be paired with a diffusion decoder for generative extrapolation.",
+      "authors": [
+        "Stanislaw Szymanowicz",
+        "Minghao Chen",
+        "Jianyuan Wang",
+        "Christian Rupprecht",
+        "Andrea Vedaldi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-20T17:53:06+00:00",
+      "link": "https://arxiv.org/pdf/2603.20176v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural novel view synthesis without explicit 3D reconstruction",
+      "llm_evidence_cn": "无需显式3D重建的神经新视角合成",
+      "llm_evidence": "无需显式3D重建的神经新视角合成",
+      "canonical_evidence": "无需显式3D重建的神经新视角合成",
+      "llm_tldr_en": "Introduces LagerNVS, an encoder-decoder network for real-time neural novel view synthesis using latent features.",
+      "llm_tldr_cn": "引入LagerNVS，一种利用潜在特征进行实时神经新视角合成的编码器-解码器网络。",
+      "llm_tldr": "引入LagerNVS，一种利用潜在特征进行实时神经新视角合成的编码器-解码器网络。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
