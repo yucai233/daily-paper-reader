@@ -1,0 +1,512 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-03-23T04:00:07.485881+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 21,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2603.20128v1",
+      "title": "Generalizable NGP-SR: Generalizable Neural Radiance Fields Super-Resolution via Neural Graph Primitives",
+      "abstract": "Neural Radiance Fields (NeRF) achieve photorealistic novel view synthesis but become costly when high-resolution (HR) rendering is required, as HR outputs demand dense sampling and higher-capacity models. Moreover, naively super-resolving per-view renderings in 2D often breaks multi-view consistency. We propose Generalizable NGP-SR, a 3D-aware super-resolution framework that reconstructs an HR radiance field directly from low-resolution (LR) posed images. Built on Neural Graphics Primitives (NGP), NGP-SR conditions radiance prediction on 3D coordinates and learned local texture tokens, enabling recovery of high-frequency details within the radiance field and producing view-consistent HR novel views without external HR references or post-hoc 2D upsampling. Importantly, our model is generalizable: once trained, it can be applied to unseen scenes and rendered from novel viewpoints without per-scene optimization. Experiments on multiple datasets show that NGP-SR consistently improves both reconstruction quality and runtime efficiency over prior NeRF-based super-resolution methods, offering a practical solution for scalable high-resolution novel view synthesis.",
+      "authors": [
+        "Wanqi Yuan",
+        "Omkar Sharad Mayekar",
+        "Connor Pennington",
+        "Nianyi Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-20T16:50:16+00:00",
+      "link": "https://arxiv.org/pdf/2603.20128v1",
+      "tags": [
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Generalizable Neural Radiance Fields via Neural Graph Primitives",
+      "llm_evidence_cn": "通过神经图形原语实现可泛化的神经辐射场",
+      "llm_evidence": "通过神经图形原语实现可泛化的神经辐射场",
+      "canonical_evidence": "通过神经图形原语实现可泛化的神经辐射场",
+      "llm_tldr_en": "A 3D-aware super-resolution framework for NeRF that reconstructs high-resolution radiance fields from LR images.",
+      "llm_tldr_cn": "一种NeRF三维感知超分辨率框架，可从低分辨率图像重建高分辨率辐射场。",
+      "llm_tldr": "一种NeRF三维感知超分辨率框架，可从低分辨率图像重建高分辨率辐射场。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.15368v1",
+      "title": "IRIS: Intersection-aware Ray-based Implicit Editable Scenes",
+      "abstract": "Neural Radiance Fields achieve high-fidelity scene representation but suffer from costly training and rendering, while 3D Gaussian splatting offers real-time performance with strong empirical results. Recently, solutions that harness the best of both worlds by using Gaussians as proxies to guide neural field evaluations, still suffer from significant computational inefficiencies. They typically rely on stochastic volumetric sampling to aggregate features, which severely limits rendering performance. To address this issue, a novel framework named IRIS (Intersection-aware Ray-based Implicit Editable Scenes) is introduced as a method designed for efficient and interactive scene editing. To overcome the limitations of standard ray marching, an analytical sampling strategy is employed that precisely identifies interaction points between rays and scene primitives, effectively eliminating empty space processing. Furthermore, to address the computational bottleneck of spatial neighbor lookups, a continuous feature aggregation mechanism is introduced that operates directly along the ray. By interpolating latent attributes from sorted intersections, costly 3D searches are bypassed, ensuring geometric consistency, enabling high-fidelity, real-time rendering, and flexible shape editing. Code can be found at https://github.com/gwilczynski95/iris.",
+      "authors": [
+        "Grzegorz Wilczyński",
+        "Mikołaj Zieliński",
+        "Krzysztof Byrski",
+        "Joanna Waczyńska",
+        "Dominik Belter",
+        "Przemysław Spurek"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-16T14:44:32+00:00",
+      "link": "https://arxiv.org/pdf/2603.15368v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Overcoming limitations of standard ray marching for efficient rendering",
+      "llm_evidence_cn": "克服标准光线步进的限制以实现高效渲染",
+      "llm_evidence": "克服标准光线步进的限制以实现高效渲染",
+      "canonical_evidence": "克服标准光线步进的限制以实现高效渲染",
+      "llm_tldr_en": "Introduces IRIS to accelerate neural field rendering by using analytical sampling to replace ray marching.",
+      "llm_tldr_cn": "引入IRIS框架，通过解析采样取代传统光线步进，加速神经场渲染与编辑。",
+      "llm_tldr": "引入IRIS框架，通过解析采样取代传统光线步进，加速神经场渲染与编辑。",
+      "llm_tags": [
+        "query:q5"
+      ],
+      "matched_query_tag": "query:q5",
+      "matched_query_text": "neural acceleration of volume ray marching",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2603.14001v1",
+      "title": "PhyGaP: Physically-Grounded Gaussians with Polarization Cues",
+      "abstract": "Recent advances in 3D Gaussian Splatting (3DGS) have demonstrated great success in modeling reflective 3D objects and their interaction with the environment via deferred rendering (DR). However, existing methods often struggle with correctly reconstructing physical attributes such as albedo and reflectance, and therefore they do not support high-fidelity relighting. Observing that this limitation stems from the lack of shape and material information in RGB images, we present PhyGaP, a physically-grounded 3DGS method that leverages polarization cues to facilitate precise reflection decomposition and visually consistent relighting of reconstructed objects. Specifically, we design a polarimetric deferred rendering (PolarDR) process to model polarization by reflection, and a self-occlusion-aware environment map building technique (GridMap) to resolve indirect lighting of non-convex objects. We validate on multiple synthetic and real-world scenes, including those featuring only partial polarization cues, that PhyGaP not only excels in reconstructing the appearance and surface normal of reflective 3D objects (~2 dB in PSNR and 45.7% in Cosine Distance better than existing RGB-based methods on average), but also achieves state-of-the-art inverse rendering and relighting capability. Our code will be released soon.",
+      "authors": [
+        "Jiale Wu",
+        "Xiaoyang Bai",
+        "Zongqi He",
+        "Weiwei Xu",
+        "Yifan Peng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-14T16:03:19+00:00",
+      "link": "https://arxiv.org/pdf/2603.14001v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "physically-grounded 3D Gaussian Splatting with deferred rendering",
+      "llm_evidence_cn": "具有延迟渲染的物理基础3D高斯泼溅",
+      "llm_evidence": "具有延迟渲染的物理基础3D高斯泼溅",
+      "canonical_evidence": "具有延迟渲染的物理基础3D高斯泼溅",
+      "llm_tldr_en": "Enhances 3DGS with polarization cues for better material decomposition and physically-grounded rendering.",
+      "llm_tldr_cn": "利用偏振线索增强3DGS，以实现更好的材质分解和物理基础渲染。",
+      "llm_tldr": "利用偏振线索增强3DGS，以实现更好的材质分解和物理基础渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.14023v1",
+      "title": "High-speed Imaging through Turbulence with Event-based Light Fields",
+      "abstract": "This work introduces and demonstrates the first system capable of imaging fast-moving extended non-rigid objects through strong atmospheric turbulence at high frame rate. Event cameras are a novel sensing architecture capable of estimating high-speed imagery at thousands of frames per second. However, on their own event cameras are unable to disambiguate scene motion from turbulence. In this work, we overcome this limitation using event-based light field cameras: By simultaneously capturing multiple views of a scene, event-based light field cameras and machine learning-based reconstruction algorithms are able to disambiguate motion-induced dynamics, which produce events that are strongly correlated across views, from turbulence-induced dynamics, which produce events that are weakly correlated across view. Tabletop experiments demonstrate event-based light field can overcome strong turbulence while imaging high-speed objects traveling at up to 16,000 pixels per second.",
+      "authors": [
+        "Yu-Hsiang Huang",
+        "Levi Burner",
+        "Sachin Shah",
+        "Ziyuan Qu",
+        "Adithya Pediredla",
+        "Christopher A. Metzler"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-14T16:54:35+00:00",
+      "link": "https://arxiv.org/pdf/2603.14023v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Imaging through atmospheric turbulence using light fields and ML",
+      "llm_evidence_cn": "利用光场和机器学习在气流扰动下成像",
+      "llm_evidence": "利用光场和机器学习在气流扰动下成像",
+      "canonical_evidence": "利用光场和机器学习在气流扰动下成像",
+      "llm_tldr_en": "Combines event-based light field cameras with machine learning to image objects through strong atmospheric turbulence.",
+      "llm_tldr_cn": "结合事件光场相机与机器学习，实现在强气流扰动下的高速成像。",
+      "llm_tldr": "结合事件光场相机与机器学习，实现在强气流扰动下的高速成像。",
+      "llm_tags": [
+        "query:q8"
+      ],
+      "matched_query_tag": "query:q8",
+      "matched_query_text": "neural radiance fields for participating media and atmospheric effects",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.14684v1",
+      "title": "E2EGS: Event-to-Edge Gaussian Splatting for Pose-Free 3D Reconstruction",
+      "abstract": "The emergence of neural radiance fields (NeRF) and 3D Gaussian splatting (3DGS) has advanced novel view synthesis (NVS). These methods, however, require high-quality RGB inputs and accurate corresponding poses, limiting robustness under real-world conditions such as fast camera motion or adverse lighting. Event cameras, which capture brightness changes at each pixel with high temporal resolution and wide dynamic range, enable precise sensing of dynamic scenes and offer a promising solution. However, existing event-based NVS methods either assume known poses or rely on depth estimation models that are bounded by their initial observations, failing to generalize as the camera traverses previously unseen regions. We present E2EGS, a pose-free framework operating solely on event streams. Our key insight is that edge information provides rich structural cues essential for accurate trajectory estimation and high-quality NVS. To extract edges from noisy event streams, we exploit the distinct spatio-temporal characteristics of edges and non-edge regions. The event camera's movement induces consistent events along edges, while non-edge regions produce sparse noise. We leverage this through a patch-based temporal coherence analysis that measures local variance to extract edges while robustly suppressing noise. The extracted edges guide structure-aware Gaussian initialization and enable edge-weighted losses throughout initialization, tracking, and bundle adjustment. Extensive experiments on both synthetic and real datasets demonstrate that E2EGS achieves superior reconstruction quality and trajectory accuracy, establishing a fully pose-free paradigm for event-based 3D reconstruction.",
+      "authors": [
+        "Yunsoo Kim",
+        "Changki Sung",
+        "Dasol Hong",
+        "Hyun Myung"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-16T00:40:28+00:00",
+      "link": "https://arxiv.org/pdf/2603.14684v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural radiance fields and 3D Gaussian splatting for reconstruction",
+      "llm_evidence_cn": "用于重建的神经辐射场和3D高斯泼溅技术",
+      "llm_evidence": "用于重建的神经辐射场和3D高斯泼溅技术",
+      "canonical_evidence": "用于重建的神经辐射场和3D高斯泼溅技术",
+      "llm_tldr_en": "A pose-free framework using event cameras and Gaussian splatting for robust 3D reconstruction.",
+      "llm_tldr_cn": "一种利用事件相机和高斯泼溅进行鲁棒3D重建的无位姿框架。",
+      "llm_tldr": "一种利用事件相机和高斯泼溅进行鲁棒3D重建的无位姿框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.14232v1",
+      "title": "S2GS: Streaming Semantic Gaussian Splatting for Online Scene Understanding and Reconstruction",
+      "abstract": "Existing offline feed-forward methods for joint scene understanding and reconstruction on long image streams often repeatedly perform global computation over an ever-growing set of past observations, causing runtime and GPU memory to increase rapidly with sequence length and limiting scalability. We propose Streaming Semantic Gaussian Splatting (S2GS), a strictly causal, incremental 3D Gaussian semantic field framework: it does not leverage future frames and continuously updates scene geometry, appearance, and instance-level semantics without reprocessing historical frames, enabling scalable online joint reconstruction and understanding. S2GS adopts a geometry-semantic decoupled dual-backbone design: the geometry branch performs causal modeling to drive incremental Gaussian updates, while the semantic branch leverages a 2D foundation vision model and a query-driven decoder to predict segmentation masks and identity embeddings, further stabilized by query-level contrastive alignment and lightweight online association with an instance memory. Experiments show that S2GS matches or outperforms strong offline baselines on joint reconstruction-and-understanding benchmarks, while significantly improving long-horizon scalability: it processes 1,000+ frames with much slower growth in runtime and GPU memory, whereas offline global-processing baselines typically run out of memory at around 80 frames under the same setting.",
+      "authors": [
+        "Renhe Zhang",
+        "Yuyang Tan",
+        "Jingyu Gong",
+        "Zhizhong Zhang",
+        "Lizhuang Ma",
+        "Yuan Xie",
+        "Xin Tan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-15T05:48:55+00:00",
+      "link": "https://arxiv.org/pdf/2603.14232v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "incremental 3D Gaussian semantic field framework",
+      "llm_evidence_cn": "增量式3D高斯语义场框架",
+      "llm_evidence": "增量式3D高斯语义场框架",
+      "canonical_evidence": "增量式3D高斯语义场框架",
+      "llm_tldr_en": "A streaming framework for online 3D scene reconstruction and semantic understanding using Gaussian splatting.",
+      "llm_tldr_cn": "一种使用高斯泼溅进行在线3D场景重建和语义理解的流式框架。",
+      "llm_tldr": "一种使用高斯泼溅进行在线3D场景重建和语义理解的流式框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.16133v1",
+      "title": "DualPrim: Compact 3D Reconstruction with Positive and Negative Primitives",
+      "abstract": "Neural reconstructions often trade structure for fidelity, yielding dense and unstructured meshes with irregular topology and weak part boundaries that hinder editing, animation, and downstream asset reuse. We present DualPrim, a compact and structured 3D reconstruction framework. Unlike additive-only implicit or primitive methods, DualPrim represents shapes with positive and negative superquadrics: the former builds the bases while the latter carves local volumes through a differentiable operator, enabling topology-aware modeling of holes and concavities. This additive-subtractive design increases the representational power without sacrificing compactness or differentiability. We embed DualPrim in a volumetric differentiable renderer, enabling end-to-end learning from multi-view images and seamless mesh export via closed-form boolean difference. Empirically, DualPrim delivers state-of-the-art accuracy and produces compact, structured, and interpretable outputs that better satisfy downstream needs than additive-only alternatives.",
+      "authors": [
+        "Xiaoxu Meng",
+        "Zhongmin Chen",
+        "Bo Yang",
+        "Weikai Chen",
+        "Weixiao Liu",
+        "Lin Gao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-17T05:36:53+00:00",
+      "link": "https://arxiv.org/pdf/2603.16133v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "volumetric differentiable renderer for 3D reconstruction",
+      "llm_evidence_cn": "用于3D重建的体积可微渲染器",
+      "llm_evidence": "用于3D重建的体积可微渲染器",
+      "canonical_evidence": "用于3D重建的体积可微渲染器",
+      "llm_tldr_en": "A compact 3D reconstruction framework using positive and negative primitives embedded in a volumetric renderer.",
+      "llm_tldr_cn": "一种使用正负原语并嵌入体积可微渲染器中的紧凑型3D重建框架。",
+      "llm_tldr": "一种使用正负原语并嵌入体积可微渲染器中的紧凑型3D重建框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.14241v1",
+      "title": "CamLit: Unified Video Diffusion with Explicit Camera and Lighting Control",
+      "abstract": "We present CamLit, the first unified video diffusion model that jointly performs novel view synthesis (NVS) and relighting from a single input image. Given one reference image, a user-defined camera trajectory, and an environment map, CamLit synthesizes a video of the scene from new viewpoints under the specified illumination. Within a single generative process, our model produces temporally coherent and spatially aligned outputs, including relit novel-view frames and corresponding albedo frames, enabling high-quality control of both camera pose and lighting. Qualitative and quantitative experiments demonstrate that CamLit achieves high-fidelity outputs on par with state-of-the-art methods in both novel view synthesis and relighting, without sacrificing visual quality in either task. We show that a single generative model can effectively integrate camera and lighting control, simplifying the video generation pipeline while maintaining competitive performance and consistent realism.",
+      "authors": [
+        "Zhiyi Kuang",
+        "Chengan He",
+        "Egor Zakharov",
+        "Yuxuan Xue",
+        "Shunsuke Saito",
+        "Olivier Maury",
+        "Timur Bagautdinov",
+        "Youyi Zheng",
+        "Giljoo Nam"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-15T06:28:46+00:00",
+      "link": "https://arxiv.org/pdf/2603.14241v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "novel view synthesis and relighting with explicit lighting control",
+      "llm_evidence_cn": "具有显式光照控制的新视角合成与重打光",
+      "llm_evidence": "具有显式光照控制的新视角合成与重打光",
+      "canonical_evidence": "具有显式光照控制的新视角合成与重打光",
+      "llm_tldr_en": "A video diffusion model for novel view synthesis and relighting with explicit camera and light control.",
+      "llm_tldr_cn": "一种视频扩散模型，支持具有显式相机和光照控制的新视角合成与重打光。",
+      "llm_tldr": "一种视频扩散模型，支持具有显式相机和光照控制的新视角合成与重打光。",
+      "llm_tags": [
+        "query:q8"
+      ],
+      "matched_query_tag": "query:q8",
+      "matched_query_text": "neural radiance fields for participating media and atmospheric effects",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.16211v1",
+      "title": "Leveling3D: Leveling Up 3D Reconstruction with Feed-Forward 3D Gaussian Splatting and Geometry-Aware Generation",
+      "abstract": "Feed-forward 3D reconstruction has revolutionized 3D vision, providing a powerful baseline for downstream tasks such as novel-view synthesis with 3D Gaussian Splatting. Previous works explore fixing the corrupted rendering results with a diffusion model. However, they lack geometric concern and fail at filling the missing area on the extrapolated view. In this work, we introduce Leveling3D, a novel pipeline that integrates feed-forward 3D reconstruction with geometrical-consistent generation to enable holistic simultaneous reconstruction and generation. We propose a geometry-aware leveling adapter, a lightweight technique that aligns internal knowledge in the diffusion model with the geometry prior from the feed-forward model. The leveling adapter enables generation on the artifact area of the extrapolated novel views caused by underconstrained regions of the 3D representation. Specifically, to learn a more diverse distributed generation, we introduce the palette filtering strategy for training, and a test-time masking refinement to prevent messy boundaries along the fixing regions. More importantly, the enhanced extrapolated novel views from Leveling3D could be used as the inputs for feed-forward 3DGS, leveling up the 3D reconstruction. We achieve SOTA performance on public datasets, including tasks such as novel-view synthesis and depth estimation.",
+      "authors": [
+        "Yiming Huang",
+        "Baixiang Huang",
+        "Beilei Cui",
+        "Chi Kit Ng",
+        "Long Bai",
+        "Hongliang Ren"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-17T07:40:45+00:00",
+      "link": "https://arxiv.org/pdf/2603.16211v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "feed-forward 3D Gaussian Splatting for reconstruction and synthesis",
+      "llm_evidence_cn": "用于重建和合成的前馈3D高斯喷溅",
+      "llm_evidence": "用于重建和合成的前馈3D高斯喷溅",
+      "canonical_evidence": "用于重建和合成的前馈3D高斯喷溅",
+      "llm_tldr_en": "Integrates feed-forward 3D reconstruction with geometry-aware generation using Gaussian Splatting.",
+      "llm_tldr_cn": "将前馈3D重建与使用高斯喷溅的几何感知生成相结合。",
+      "llm_tldr": "将前馈3D重建与使用高斯喷溅的几何感知生成相结合。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.14457v1",
+      "title": "Towards Versatile Opti-Acoustic Sensor Fusion and Volumetric Mapping",
+      "abstract": "Accurate 3D volumetric mapping is critical for autonomous underwater vehicles operating in obstacle-rich environments. Vision-based perception provides high-resolution data but fails in turbid conditions, while sonar is robust to lighting and turbidity but suffers from low resolution and elevation ambiguity. This paper presents a volumetric mapping framework that fuses a stereo sonar pair with a monocular camera to enable safe navigation under varying visibility conditions. Overlapping sonar fields of view resolve elevation ambiguity, producing fully defined 3D point clouds at each time step. The framework identifies regions of interest in camera images, associates them with corresponding sonar returns, and combines sonar range with camera-derived elevation cues to generate additional 3D points. Each 3D point is assigned a confidence value reflecting its reliability. These confidence-weighted points are fused using a Gaussian Process Volumetric Mapping framework that prioritizes the most reliable measurements. Experimental comparisons with other opti-acoustic and sonar-based approaches, along with field tests in a marina environment, demonstrate the method's effectiveness in capturing complex geometries and preserving critical information for robot navigation in both clear and turbid conditions. Our code is open-source to support community adoption.",
+      "authors": [
+        "Ivana Collado-Gonzalez",
+        "John McConnell",
+        "Brendan Englot"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-03-15T16:06:28+00:00",
+      "link": "https://arxiv.org/pdf/2603.14457v1",
+      "tags": [
+        "keyword:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "volumetric mapping and perception in turbid conditions",
+      "llm_evidence_cn": "体积映射与混浊环境下的感知",
+      "llm_evidence": "体积映射与混浊环境下的感知",
+      "canonical_evidence": "体积映射与混浊环境下的感知",
+      "llm_tldr_en": "A framework for opti-acoustic sensor fusion and volumetric mapping in underwater environments.",
+      "llm_tldr_cn": "一种用于水下环境的光声传感器融合和体积映射框架。",
+      "llm_tldr": "一种用于水下环境的光声传感器融合和体积映射框架。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; NeRF for volumetric data and participating media; differentiable volume rendering for cloud simulation; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; neural radiance fields for participating media and atmospheric effects; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.17227v1",
+      "title": "Adaptive Anchor Policies for Efficient 4D Gaussian Streaming",
+      "abstract": "Dynamic scene reconstruction with Gaussian Splatting has enabled efficient streaming for real-time rendering and free-viewpoint video. However, most pipelines rely on fixed anchor selection such as Farthest Point Sampling (FPS), typically using 8,192 anchors regardless of scene complexity, which over-allocates computation under strict budgets. We propose Efficient Gaussian Streaming (EGS), a plug-in, budget-aware anchor sampler that replaces FPS with a reinforcement-learned policy while keeping the Gaussian streaming reconstruction backbone unchanged. The policy jointly selects an anchor budget and a subset of informative anchors under discrete constraints, balancing reconstruction quality and runtime using spatial features of the Gaussian representation. We evaluate EGS in two settings: fast rendering, which prioritizes runtime efficiency, and high-quality refinement, which enables additional optimization. Experiments on dynamic multi-view datasets show consistent improvements in the quality--efficiency trade-off over FPS sampling. On unseen data, in fast rendering at 256 anchors ($32\\times$ fewer than 8,192), EGS improves PSNR by $+0.52$--$0.61$\\,dB while running $1.29$--$1.35\\times$ faster than IGS@8192 (N3DV and MeetingRoom). In high-quality refinement, EGS remains competitive with the full-anchor baseline at substantially lower anchor budgets. \\emph{Code and pretrained checkpoints will be released upon acceptance.} \\keywords{4D Gaussian Splatting \\and 4D Gaussian Streaming \\and Reinforcement Learning}",
+      "authors": [
+        "Ashim Dahal",
+        "Rabab Abdelfattah",
+        "Nick Rahimi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-18T00:18:11+00:00",
+      "link": "https://arxiv.org/pdf/2603.17227v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "accelerating 4D Gaussian streaming for real-time rendering",
+      "llm_evidence_cn": "加速4D高斯流式传输以实现实时渲染",
+      "llm_evidence": "加速4D高斯流式传输以实现实时渲染",
+      "canonical_evidence": "加速4D高斯流式传输以实现实时渲染",
+      "llm_tldr_en": "Proposes a reinforcement-learned policy to optimize anchor selection for efficient dynamic scene rendering.",
+      "llm_tldr_cn": "提出一种强化学习策略来优化锚点选择，从而实现高效的动态场景渲染。",
+      "llm_tldr": "提出一种强化学习策略来优化锚点选择，从而实现高效的动态场景渲染。",
+      "llm_tags": [
+        "query:q10"
+      ],
+      "matched_query_tag": "query:q10",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.14965v1",
+      "title": "GeoNVS: Geometry Grounded Video Diffusion for Novel View Synthesis",
+      "abstract": "Novel view synthesis requires strong 3D geometric consistency and the ability to generate visually coherent images across diverse viewpoints. While recent camera-controlled video diffusion models show promising results, they often suffer from geometric distortions and limited camera controllability. To overcome these challenges, we introduce GeoNVS, a geometry-grounded novel-view synthesizer that enhances both geometric fidelity and camera controllability through explicit 3D geometric guidance. Our key innovation is the Gaussian Splat Feature Adapter (GS-Adapter), which lifts input-view diffusion features into 3D Gaussian representations, renders geometry-constrained novel-view features, and adaptively fuses them with diffusion features to correct geometrically inconsistent representations. Unlike prior methods that inject geometry at the input level, GS-Adapter operates in feature space, avoiding view-dependent color noise that degrades structural consistency. Its plug-and-play design enables zero-shot compatibility with diverse feed-forward geometry models without additional training, and can be adapted to other video diffusion backbones. Experiments across 9 scenes and 18 settings demonstrate state-of-the-art performance, achieving 11.3% and 14.9% improvements over SEVA and CameraCtrl, with up to 2x reduction in translation error and 7x in Chamfer Distance.",
+      "authors": [
+        "Minjun Kang",
+        "Inkyu Shin",
+        "Taeyeop Lee",
+        "Myungchul Kim",
+        "In So Kweon",
+        "Kuk-Jin Yoon"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-16T08:23:00+00:00",
+      "link": "https://arxiv.org/pdf/2603.14965v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Gaussian Splat Feature Adapter for geometry-constrained novel-view features",
+      "llm_evidence_cn": "用于几何约束新视角特征的Gaussian Splat特征适配器",
+      "llm_evidence": "用于几何约束新视角特征的Gaussian Splat特征适配器",
+      "canonical_evidence": "用于几何约束新视角特征的Gaussian Splat特征适配器",
+      "llm_tldr_en": "GeoNVS uses 3D Gaussian representations to guide video diffusion for consistent novel view synthesis.",
+      "llm_tldr_cn": "GeoNVS利用3D高斯表示引导视频扩散模型，实现几何一致的新视角合成。",
+      "llm_tldr": "GeoNVS利用3D高斯表示引导视频扩散模型，实现几何一致的新视角合成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.17236v1",
+      "title": "Neural Radiance Maps for Extraterrestrial Navigation and Path Planning",
+      "abstract": "Autonomous vehicles such as the Mars rovers currently lead the vanguard of surface exploration on extraterrestrial planets and moons. In order to accelerate the pace of exploration and science objectives, it is critical to plan safe and efficient paths for these vehicles. However, current rover autonomy is limited by a lack of global maps which can be easily constructed and stored for onboard re-planning. Recently, Neural Radiance Fields (NeRFs) have been introduced as a detailed 3D scene representation which can be trained from sparse 2D images and efficiently stored. We propose to use NeRFs to construct maps for online use in autonomous navigation, and present a planning framework which leverages the NeRF map to integrate local and global information. Our approach interpolates local cost observations across global regions using kernel ridge regression over terrain features extracted from the NeRF map, allowing the rover to re-route itself around untraversable areas discovered during online operation. We validate our approach in high-fidelity simulation and demonstrate lower cost and higher percentage success rate path planning compared to various baselines.",
+      "authors": [
+        "Adam Dai",
+        "Shubh Gupta",
+        "Grace Gao"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV"
+      ],
+      "published": "2026-03-18T00:39:20+00:00",
+      "link": "https://arxiv.org/pdf/2603.17236v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "NeRF for 3D scene representation and extraterrestrial navigation",
+      "llm_evidence_cn": "用于3D场景表示和地外导航的NeRF",
+      "llm_evidence": "用于3D场景表示和地外导航的NeRF",
+      "canonical_evidence": "用于3D场景表示和地外导航的NeRF",
+      "llm_tldr_en": "Uses Neural Radiance Fields to construct global maps for autonomous rover navigation and path planning.",
+      "llm_tldr_cn": "利用神经辐射场（NeRF）构建全局地图，用于自主漫游车的导航和路径规划。",
+      "llm_tldr": "利用神经辐射场（NeRF）构建全局地图，用于自主漫游车的导航和路径规划。",
+      "llm_tags": [
+        "query:q3"
+      ],
+      "matched_query_tag": "query:q3",
+      "matched_query_text": "NeRF for volumetric data and participating media",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
