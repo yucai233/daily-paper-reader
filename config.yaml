@@ -25,3 +25,48 @@ subscriptions:
     stage: A
     diff_threshold_pct: 15
   keyword_recall_mode: or
+  intent_profiles:
+    - tag: 神经体渲染
+      description: 使用神经网络或深度学习方法进行体积云与体渲染的相关论文
+      enabled: true
+      keywords:
+        - keyword: neural volume rendering
+          keyword_cn: 神经体渲染
+          query: neural volume rendering techniques and architectures
+        - keyword: volumetric clouds
+          keyword_cn: 体积云
+          query: deep learning for volumetric cloud rendering
+        - keyword: neural radiance fields
+          keyword_cn: 神经辐射场
+          query: NeRF for volumetric data and participating media
+        - keyword: differentiable rendering
+          keyword_cn: 可微渲染
+          query: differentiable volume rendering for cloud simulation
+        - keyword: volume ray marching
+          keyword_cn: 体积光线步进
+          query: neural acceleration of volume ray marching
+        - keyword: multiple scattering
+          keyword_cn: 多重散射
+          query: deep learning for multiple scattering in volumes
+      intent_queries:
+        - query: deep learning methods for volumetric cloud rendering and simulation
+          query_cn: 用于体积云渲染与模拟的深度学习方法
+          enabled: true
+          source: manual
+          note: ''
+        - query: neural radiance fields for participating media and atmospheric effects
+          query_cn: 用于参与介质和大气效果的神经辐射场
+          enabled: true
+          source: manual
+          note: ''
+        - query: state of the art in neural volume rendering for clouds
+          query_cn: 云层神经体渲染的最新技术
+          enabled: true
+          source: manual
+          note: ''
+        - query: accelerating volume rendering with neural networks
+          query_cn: 利用神经网络加速体渲染
+          enabled: true
+          source: manual
+          note: ''
+      updated_at: '2026-03-23T03:55:28.226Z'
