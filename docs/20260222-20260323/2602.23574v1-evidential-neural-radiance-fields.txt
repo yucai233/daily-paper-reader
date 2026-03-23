@@ -1,0 +1,4656 @@
+Title: Evidential Neural Radiance Fields
+
+URL Source: https://arxiv.org/pdf/2602.23574v1
+
+Published Time: Mon, 02 Mar 2026 01:20:25 GMT
+
+Number of Pages: 23
+
+Markdown Content:
+# Evidential Neural Radiance Fields 
+
+## Ruxiao Duan Yale University 
+
+> ruxiao.duan@yale.edu
+
+## Alex Wong Yale University 
+
+> alex.wong@yale.edu
+
+## Abstract 
+
+Understanding sources of uncertainty is fundamental to trustworthy three-dimensional scene modeling. While re-cent advances in neural radiance fields (NeRFs) achieve impressive accuracy in scene reconstruction and novel view synthesis, the lack of uncertainty estimation significantly limits their deployment in safety-critical settings. Exist-ing uncertainty quantification methods for NeRFs fail to capture both aleatoric and epistemic uncertainty. Among those that do quantify one or the other, many of them either compromise rendering quality or incur significant compu-tational overhead to obtain uncertainty estimates. To ad-dress these issues, we introduce Evidential Neural Radiance Fields, a probabilistic approach that seamlessly integrates with the NeRF rendering process and enables direct quan-tification of both aleatoric and epistemic uncertainty from a single forward pass. We compare multiple uncertainty quantification methods on three standardized benchmarks, where our approach demonstrates state-of-the-art scene re-construction fidelity and uncertainty estimation quality. 
+
+## 1. Introduction 
+
+Predictive uncertainty of deep neural networks originates from two different sources, data and model, and the two types of uncertainty are respectively referred to as aleatoric uncertainty (AU) and epistemic uncertainty (EU) [14, 17]. Aleatoric (data) uncertainty stems from intrinsic random-ness of the data generation process, while epistemic (model) uncertainty arises from model’s lack of knowledge [9, 12]. Understanding both types of predictive uncertainty is essen-tial for building models that are not only accurate but also reliable and explainable under various conditions. Neural radiance fields (NeRFs) [24] have achieved re-markable performance in three-dimensional (3D) scene re-construction and novel view synthesis, yet their incapability of quantifying predictive uncertainty poses significant chal-lenges for their broader adoption in safety-critical domains such as autonomous driving [11], medical imaging [44], and robotics [43], where precise and prompt quantification of predictive uncertainty remains crucial. We consider an essential but overlooked research ques-tion: How should a NeRF report what it does not know (epistemic uncertainty) versus what the data cannot re-solve (aleatoric uncertainty), without sacrificing render-ing fidelity or speed? Existing uncertainty quantification (UQ) methods for NeRFs generally fall into three cate-gories: closed-form likelihood models, which are unable to capture epistemic uncertainty [22, 28, 34, 35], Bayesian methods, which typically necessitate sampling during infer-ence [7, 36, 37], and ensemble approaches, which require training multiple models [21, 40]. None of these methods quantifies both types of uncertainty with a single forward pass, and many of them have to sacrifice prediction accu-racy to obtain uncertainty estimates. Among the existing uncertainty quantification ap-proaches, a normal-distribution-based method [17] treat each output as distributional parameters, where its mean represents the prediction and variance encodes the uncer-tainty. This formulation and its variants have been widely adopted in not only NeRFs [22, 28, 29] but also other radi-ance field frameworks such as DVGO [38, 39] and Gaus-sian Splatting [18, 20]. While computationally efficient, this paradigm inherently models only aleatoric uncertainty and fails to account for epistemic uncertainty. To address these limitations of existing work, we propose Evidential Neural Radiance Fields (Evidential NeRFs), a probabilistic framework to quantify both aleatoric and epis-temic uncertainty of NeRFs through a single forward pass. Our method extends the probabilistic formulation of radi-ance modeling by treating the predicted mean and vari-ance of pixel radiance themselves as random variables gov-erned by a higher-order evidential distribution, yielding closed-form predictive uncertainties through the NeRF ren-dering process. Unlike prior evidential deep learning meth-ods [1, 33], which regress evidential distribution parame-ters, we adapt evidential reasoning to the volumetric struc-ture of NeRFs, enabling them to predict aleatoric and epis-temic uncertainties directly instead of having to reformulate them from evidential parameters. Beyond the technical limitations of existing approaches 
+
+> arXiv:2602.23574v1 [cs.CV] 27 Feb 2026
+
+– which we address with Evidential NeRF – we also ob-served that current uncertainty quantification benchmarks lack standardization. Methods are often evaluated using dif-ferent architectures, data splits, and training setups, making direct comparisons difficult. To mitigate these confounding factors, we establish a new benchmark designed to isolate and evaluate the UQ methods themselves. We reproduce recent approaches on the nerfacto architecture and run each method three times independently, reporting averaged met-rics. Under this standardized evaluation, our method consis-tently ranks within the top three across all metrics, if not the first. The remaining top-performing methods are ensemble-based, which incur substantial computational cost and are unsuitable for real-time applications. In contrast, our ap-proach is the second-fastest overall; we are only 0.04 FPS slower than the fastest method, but deliver significantly bet-ter performance across all metrics. Our contributions can be summarized as follows. • We are the first to present a framework for neural radiance fields to quantify both aleatoric and epistemic uncertain-ties in 3D scene reconstructions. • We provide detailed mathematical derivations showing how aleatoric and epistemic uncertainties can be propa-gated from voxels to pixels under proper independence assumptions, enabling seamless integration of evidential deep learning with the volumetric rendering paradigm. • We establish a standardized benchmark for faithful com-parison of UQ methods for NeRFs, ensuring experimental fidelity and reproducibility by releasing codebase. 
+
+## 2. Related Work 
+
+Neural radiance fields. NeRFs [24] represent a 3D scene as a plenoptic function which can be learned from a sparse set of input views. Realized as a deep neural network, the plenoptic function maps spatial locations and viewing di-rections to their volume densities and radiance. NeRFs pro-duce high-fidelity reconstructions and photorealistic novel view renderings, and numerous variants in architectures, loss functions, and sampling strategies have been proposed to further improve the model’s training efficiency, inference speed, and rendering quality [2–6, 8, 13, 15, 26, 27, 42, 45]. 
+
+Uncertainty quantification for NeRFs. UQ methods for NeRFs generally follow three schools of thought. First, closed-form likelihood models. NeRF-W [22] and ActiveNeRF [28] follow the same probabilistic framework in [17] to model ray colors by normal distributions. MixN-eRF [35] and FlipNeRF [34], though not proposed as UQ methods, model ray colors by mixtures of Laplace distribu-tions to represent the multimodal nature of radiance. These approaches employ closed-form probabilistic distributions to model pixel colors, enabling efficient training and uncer-tainty inference, but overlooking epistemic uncertainty, due to the deterministic nature of the selected distributions. Second, Bayesian methods. Monte Carlo dropout [7] estimates epistemic uncertainty by interpreting dropout as variational inference and performing multiple stochastic forward passes at test time. S-NeRF [36] and CF-NeRF [37] learn a probability distribution over all the possible radi-ance fields and approximate the posterior distribution with stochastic variational inference [19] and conditional nor-malizing flows [30]. BayesRays [10] derives a volumet-ric epistemic uncertainty field of a pre-trained NeRF model based on spatial perturbations and Bayesian Laplace ap-proximation [31]. While these approaches provide epis-temic uncertainty estimates, they typically incur significant computational overhead at inference, either due to repeated sampling or post-hoc learning of uncertainty fields. Third, ensemble methods. Deep ensembles [21] estimate epistemic uncertainty by training multiple models indepen-dently and measuring their prediction variance during in-ference. Density-aware NeRF Ensembles (DANE) [40] fur-ther incorporates a density-based epistemic term that cap-tures uncertainty in scene geometry and appearance, which is added to the uncertainty estimated by standard ensem-bles. Ensemble-based methods impose the most significant computation and memory overheads, as each model must be trained, stored, and separately evaluated during inference. 
+
+Evidential deep learning. Based on the theory of sub-jective logic [16], evidential deep learning (EDL) [33] is first introduced for classification uncertainty quantification based on a single network and later extended to regres-sion [1]. EDL considers model learning as a process of evidence collection, in which each training sample adds support to a higher-order evidential distribution, which is a Dirichlet distribution for classification and a Normal Inverse-Gamma distribution for regression [1, 33]. The probability distribution from which predictions are drawn is assumed to have random parameters sampled from the evidential distribution, and the aleatoric and epistemic pre-dictive uncertainties can be directly obtained by a single forward propagation. Though effective in standard regres-sion, EDL is not naively compatible with NeRF learning paradigm due to its hierarchical volumetric formulation: As NeRFs receive supervision after volumetric rendering, evi-dential parameters tied to voxel-level predictions cannot be learned directly from pixel-level observations. 
+
+## 3. Preliminaries 
+
+Neural radiance fields. NeRF learns a continuous scene representation function f by a multilayer perceptron that maps a pair of spatial location xi ∈ R3 and unit viewing direction d ∈ R3 to its corresponding view-independent volume density ρi > 0 and directional emitted radiance 
+
+ci ∈ [0 , 1] 3 in RGB color. For notational simplicity, con-sider a scalar color channel ci ∈ [0 , 1] . NeRF predicts 
+
+ci, ρ i = f (xi, d), (1) where ρi is produced by a density network depending solely on xi. The pixel color of a ray r(t) = o + td defined by a camera center o and a viewing direction d is derived by first sampling N voxels {r(ti)}Ni=1 along the ray and then computing the weighted sum of voxel colors via the dis-cretized volume rendering equation c = PNi=1 wici, where 
+
+wi = exp 
+
+
+
+− Pi−1 
+
+> j=1
+
+ρj δj
+
+
+
+(1 − exp( −ρiδi)) is the weight of the i-th voxel and δi = ti+1 − ti denotes the distance between two adjacent voxels. 
+
+Normal distribution for radiance modeling. Previous works [22, 28] propose to model each voxel color ci by a normal distribution 
+
+ci | μi, σ 2 
+
+> i
+
+∼ N (μi, σ 2 
+
+> i
+
+), (2) with mean μi ∈ [0 , 1] and variance σ2 
+
+> i
+
+> 0 predicted by 
+
+μi, (ρi, σ 2 
+
+> i
+
+) = f (xi, d), (3) where ρi and σ2 
+
+> i
+
+are put into one parenthesis to denote they are outputs of the view-independent network. As the pixel color c is the weighted sum of voxel colors ci’s, c also fol-lows a normal distribution assuming voxel independence: 
+
+c | μ, σ 2 ∼ N (μ, σ 2), (4) where μ := PNi=1 wiμi is the mean (prediction) and σ2 := 
+
+PNi=1 w2 
+
+> i
+
+σ2 
+
+> i
+
+is the variance (uncertainty) of pixel color. While adjacent voxels in practice exhibit statistical depen-dence in radiance, the independence assumption is a com-mon and effective simplification to enable tractable aggre-gation of voxel uncertainties into the pixel level. Though efficient, this method only captures aleatoric uncertainty. 
+
+## 4. Method 
+
+Based on Equations (2) and (4), we establish an evidential probabilistic framework for radiance modeling by taking a step further to assume random conditional mean and vari-ance. Different from conventional EDL approaches which train the model to predict evidential parameters, we instead let the model predict aleatoric and epistemic uncertainties directly (Section 4.1), and then propagate the uncertainties from voxels to pixels compatible to the volumetric render-ing paradigm of NeRFs (Section 4.2). Then the evidential distribution can be reformulated from the rendered color and uncertainties (Section 4.3) and learned at the pixel level where supervision is available (Section 4.4). 
+
+4.1. Voxel-level Probabilistic Radiance Modeling 
+
+Supposing Equation (2) continues to hold, we further treat the conditional mean and variance of voxel radiance as ran-dom variables instead of point estimates, i.e., (μi, σ 2 
+
+> i
+
+) ∼ πi
+
+where πi is some unknown probability distribution without being restricted to any parametric family. This assumption is crucial, as committing to a specific closed-form distribu-tion would make it nontrivial to construct the desired pixel-level evidential distribution in Equation (14). Under this formulation, the predictive mean, total, aleatoric, and epis-temic uncertainty of the voxel color ci are defined as 
+
+¯ci := E[ci] = E[E[ci|μi, σ 2 
+
+> i
+
+]] = E[μi], (5) 
+
+Ui := Var[ ci] = U alea  
+
+> i
+
++ U epis  
+
+> i
+
+, (6) 
+
+U alea  
+
+> i
+
+:= E[Var[ ci|μi, σ 2 
+
+> i
+
+]] = E[σ2 
+
+> i
+
+], (7) 
+
+U epis  
+
+> i
+
+:= Var[ E[ci|μi, σ 2 
+
+> i
+
+]] = Var[ μi]. (8) 
+
+Note: The classical assumption that μi and σ2 
+
+> i
+
+are point es-timates corresponds to the special case where πi is a degen-erate distribution with a Dirac delta density function con-centrated at fixed values of ˆμi and ˆσ2 
+
+> i
+
+and the uncertain-ties above are thereby reduced to U alea  
+
+> i
+
+= E[σ2 
+
+> i
+
+] = ˆ σ2 
+
+> i
+
+and 
+
+U epis  
+
+> i
+
+= Var[ μi] = 0 , in which case only aleatoric uncer-tainty can be captured. An Evidential NeRF model predicts 
+
+¯ci, (ρi, U alea  
+
+> i
+
+, U epis  
+
+> i
+
+, ˜αi) = f (xi, d), (9) where ¯ci ∈ [0 , 1] is the voxel’s mean color, ρi > 0 is the volume density, U alea  
+
+> i
+
+> 0 and U epis  
+
+> i
+
+> 0 are aleatoric and epistemic uncertainties, and ˜αi > 0 is a positive shape score which will later be used to derive a pixel-level shape param-eter α in Section 4.3. We apply sigmoid activation to predict 
+
+¯ci as in original NeRF and softplus activation for all other parameters to enforce range restrictions. All uncertainty-related parameters are predicted by the view-independent density network following [22, 28]. The model architecture remains unchanged, except the three additional output neu-rons of the density network to predict (U alea  
+
+> i
+
+, U epis  
+
+> i
+
+, ˜αi).
+
+4.2. Propagation from Voxels to Pixels 
+
+Let the set of conditional means and variances of all voxel colors along a ray be θ := {(μi, σ 2 
+
+> i
+
+)}Ni=1 , which fully spec-ifies the conditional distribution of the ray color c. Un-der this setting, the pixel’s predictive mean color, total, aleatoric, and epistemic uncertainties are defined as 
+
+¯c := E[c], U := Var[ c], (10) 
+
+U alea := E[Var[ c|θ]] , U epis := Var[ E[c|θ]] . (11) With the voxel-level predictions from the Evidential NeRF model in Equation (9) and the assumptions that the voxel colors are independent and conditionally independent ത𝒄 𝑖  𝜌 𝑖  𝑈 𝑖                
+
+> 𝑎 𝑈 𝑖
+> 𝑒 ෤𝛼 𝑖 ത𝒄 𝑈 𝑎 𝑈 𝑒 𝛼 ത𝒄 𝑁 𝜌 𝑁 𝑈 𝑁
+> 𝑎 𝑈 𝑁
+> 𝑒 ෤𝛼 𝑁 ത𝒄 1𝜌 1𝑈 1
+> 𝑎 𝑈 1
+> 𝑒 ෤𝛼 1
+
+Σ         
+
+> 𝝁 𝑖 𝜌 𝑖 𝜎 𝑖 2𝝁 𝜎 2
+> 𝝁 𝑁 𝜌 𝑁 𝜎 𝑁
+> 2
+> 𝝁 1𝜌 1𝜎 1
+> 2
+
+Σ     
+
+> 𝒄 𝑖 𝜌 𝑖 𝒄 𝒄 𝑁 𝜌 𝑁 𝒄 1𝜌 1
+
+Σ    
+
+> 𝒙 𝑖 𝒅 𝒙 𝑁 𝒅 𝒙 1𝒅
+
+Neural Radiance Field (Eq. 1) 
+
+Normal Neural Radiance Field (Eq. 3) 
+
+Evidential Neural Radiance Field (Eq. 9) 
+
+Volumetric 
+
+Rendering 
+
+Probabilistic 
+
+Formulation 
+
+Camera 
+
+Ray 
+
+# Voxel Space  Pixel Space 
+
+Eqs. 12 -13  Eqs. 19 -20 
+
+Point Estimate 𝒄 
+
+𝒄 ∼ N(𝝁 , 𝜎 2)
+
+𝒄 | 𝝁 , 𝜎 2 ∼ N(𝝁 , 𝜎 2)
+
+𝝁 , 𝜎 2 ∼ NIG (𝜸 , 𝜈 , 𝛼 , 𝛽 )Figure 1. Evolution of NeRF pipeline across three levels of probabilistic formulations. N voxels sampled along the camera ray give N
+
+pairs of spatial location and view direction, which are passed to the NeRF model for prediction. Level 1: Vanilla NeRF predicts only voxel density and color, resulting in a point estimate of pixel color without any uncertainty estimate. Level 2: Normal NeRF assumes the voxel and pixel colors follow normal distributions, quantifying aleatoric uncertainty of rendered color. Level 3: Evidential NeRF assumes the pixel color has random mean and variance following an evidential distribution, quantifying both aleatoric and epistemic uncertainties. 
+
+given θ, the pixel color and uncertainties can be derived as 
+
+¯c =
+
+> N
+
+X
+
+> i=1
+
+wi ¯ci, U =
+
+> N
+
+X
+
+> i=1
+
+w2 
+
+> i
+
+Ui, (12) 
+
+U alea =
+
+> N
+
+X
+
+> i=1
+
+w2 
+
+> i
+
+U alea  
+
+> i
+
+, U epis =
+
+> N
+
+X
+
+> i=1
+
+w2 
+
+> i
+
+U epis  
+
+> i
+
+. (13) In other words, pixel-level aleatoric and epistemic uncer-tainties can be obtained as weighted sums of their voxel-level counterparts, where the weights are equal to the squared weights for color volumetric rendering. Detailed proofs are provided in the supplementary Section 7. 
+
+4.3. Pixel-level Probabilistic Radiance Modeling 
+
+Now we introduce the probabilistic model for pixel colors. Recall that μ = PNi=1 wiμi and σ2 = PNi=1 w2 
+
+> i
+
+σ2 
+
+> i
+
+repre-sent the conditional mean and variance of the pixel color c
+
+in Equation (4). To quantify aleatoric and epistemic uncer-tainties of a pixel color in closed form, we model (μ, σ 2) by a normal-inverse-gamma (NIG) distribution 
+
+μ, σ 2 ∼ NIG (γ, ν, α, β ), (14) or equivalently, μ | σ2 ∼ N (γ, σ 2/ν ) and σ2 ∼ Γ−1(α, β ),where γ ∈ R, ν > 0, and Γ−1(α, β ) denotes an inverse-gamma distribution with shape α > 1 and scale β > 0.Consider each pixel color c as being generated through a hi-erarchical sampling process: Given the higher-order eviden-tial distribution NIG (γ, ν, α, β ), drawing a sample (μ, σ 2)
+
+from it yields an instance of lower-order normal distribution 
+
+N (μ, σ 2), from which the pixel color c is sampled. With this formulation, the pixel color’s predictive mean, total, aleatoric, and epistemic uncertainties can be directly expressed in terms of the NIG parameters: 
+
+¯c = E[c] = E[E[c|μ, σ 2]] = E[μ] = γ, (15) 
+
+U = Var[ c] = U alea + U epis , (16) 
+
+U alea = E[Var[ c|μ, σ 2]] = E[σ2] = βα − 1 , (17) 
+
+U epis = Var[ E[c|μ, σ 2]] = Var[ μ] = β
+
+(α − 1) ν . (18) Since the Evidential NeRF model directly predicts un-certainties and shape scores instead of NIG parameters, the NIG parameters can be reformulated as 
+
+γ = ¯ c, ν = U alea 
+
+U epis , (19) 
+
+α = 1 + 
+
+> N
+
+X
+
+> i=1
+
+˜w ˜αi, β = U alea (α − 1) , (20) where ¯c, U alea , and U epis are obtained from the voxel-to-pixel propagation process in Equations (12) and (13), ˜αi is the voxel’s shape score, and ˜wi := wi/ PNj=1 wj is the nor-malized weight that determines how much a voxel’s shape score contributes to the NIG shape parameter α of the pixel. 
+
+4.4. Learning 
+
+Based on Equations (4) and (14), a pixel color c marginally follows a Student’s t distribution 
+
+c ∼ t
+
+
+
+γ, β(ν + 1) 
+
+αν , 2α
+
+
+
+, (21) Dataset Method PSNR ↑ SSIM ↑ LPIPS ↓ NLL ↓ AUSE RMSE ↓
+
+AUSE MAE ↓ AUCE ↓
+
+> LF [46]
+
+Dropout [7] 28.0894 0.9065 0.0561 5.6139 0.0127 0.0049 0.2052 Normal [17] 28.1477 0.9141 0.0514 -1.9191 0.0102 0.0048 0.1508 MoL [35] 28.0407 0.9046 0.0769 -1.3919 0.0182 0.0061 0.3114 BayesRays [10] 28.4782 0.9173 0.0482 0.6212 0.0369 0.0178 0.4759 Ensembles [21] 29.3283 0.9307 0.0405 0.4942 0.0062 0.0024 0.1871 DANE [40] 29.3283 0.9307 0.0405 -0.1474 0.0098 0.0039 0.1198 Evidential 29.9318 0.9346 0.0354 -2.4828 0.0069 0.0026 0.1056 LLFF [23] Dropout [7] 17.1558 0.4436 0.4465 92.1885 0.0741 0.0424 0.3951 Normal [17] 16.5284 0.4106 0.4013 10.9719 0.0709 0.0445 0.2884 MoL [35] 16.3826 0.4388 0.4536 3.6559 0.0842 0.0408 0.3075 BayesRays [10] 17.5240 0.4719 0.4124 3.8344 0.0973 0.0620 0.4879 Ensembles [21] 17.9220 0.5104 0.3942 10.5361 0.0508 0.0251 0.2880 DANE [40] 17.9220 0.5104 0.3942 9.4168 0.0515 0.0258 0.2767 Evidential 17.8754 0.5052 0.3776 2.2586 0.0595 0.0306 0.3710 RobustNeRF [32]  Dropout [7] 24.8334 0.8124 0.1728 22.5366 0.0281 0.0160 0.3055 Normal [17] 25.4664 0.8465 0.1387 10.1970 0.0409 0.0272 0.2026 MoL [35] 23.5230 0.7819 0.2155 -1.2758 0.0354 0.0204 0.1386 BayesRays [10] 25.4561 0.8300 0.1559 0.2485 0.0411 0.0235 0.4423 Ensembles [21] 26.2294 0.8580 0.1401 4.8797 0.0163 0.0098 0.2526 DANE [40] 26.2294 0.8580 0.1401 4.1391 0.0277 0.0152 0.1917 Evidential 25.8585 0.8585 0.1195 -1.3215 0.0265 0.0163 0.2024 
+
+> Table 1. Quantitative results of scene reconstruction and uncertainty quantification on three datasets, averaged over three independent runs. Colored cells denote the first , second , and third best results. See per-scene statistics with standard deviations in supplementary Section 9.
+
+where t(μt, σ 2 
+
+> t
+
+, ν t) denotes a Student’s t distribution with location μt, scale σt, and degrees of freedom νt. The model is trained via maximum likelihood estimation by minimiz-ing the negative log-likelihood (NLL) of the ground truth 
+
+Lnll = − log p(cgt |γ, ν, α, β ) (22) 
+
+= 12 log πν − α log Ω + log Γ( α)Γ  α + 12
+
+
+
++
+
+
+
+α + 12
+
+
+
+log(( cgt − γ)2ν + Ω) , (23) where cgt ∈ [0 , 1] is the ground truth pixel color, Ω = 2β(ν + 1) , and Γ represents the Gamma function. See derivations in Section 8. Different values of ν and β may result in the same scale of the t distribution so long as the ratio is β(ν+1) /ν is fixed. To resolve this ambiguity and also to suppress excessive ev-idence assigned to inaccurate predictions, a regularizer [1] is introduced to the loss function as 
+
+Lreg = |cgt − γ|(2 ν + α), (24) where |cgt −γ| is the absolute error of prediction and 2ν +α
+
+is the count of virtual observations representing the evi-dence [1]. Therefore, the total loss is written as 
+
+L = Lnll + λreg Lreg , (25) where λreg > 0 is the regularization coefficient. Lastly, we generalize our color channel assumption from a single channel to three for RGB color modeling. We as-sume that the three color channels have different means but the same uncertainty, due to the high correlation of vari-ance in different color channels of the same pixel [22, 28]. Practically, the output dimension of color prediction head in Equation (9) is set to three, predicting the voxel’s mean RGB color as ¯ci ∈ [0 , 1] 3, and the uncertainty-related pa-rameters are broadcast to all color channels during training. 
+
+## 5. Experiments 
+
+5.1. Settings 
+
+Datasets. We test the UQ methods on three 3D scene recon-struction datasets: Light Field (LF) [46], Local Light Field Fusion (LLFF) [23], and RobustNeRF [32]. For LF, we test on the four scenes following the setup in [10] with the same train–test split. For LLFF, we employ its eight scenes and adopt the train–test split of [27], training with only three input views to assess UQ performance under sparse-view conditions. For RobustNeRF, we evaluate on its four scenes following their protocol of training on cluttered images only and testing on clean ones. 
+
+Metrics. We evaluate the method performance based on the accuracy of both the rendered images and the uncer-tainty estimates. For images, we report PSNR, SSIM, and Prediction  Error  Uncertainty   
+
+> BayesRays DANE Ours
+> Ground Truth
+> DANE MoL Ours
+> Ground Truth
+> Prediction Error Uncertainty
+
+Figure 2. Qualitative comparison against previous methods on two example scenes, with image reconstructions, error maps, and uncertainty maps. Histogram equalization is conducted on the error maps to highlight the error regions. Our method’s uncertainty is total uncertainty. In general, our total uncertainty maps demonstrate superior alignment with predictive errors, confirming that the joint modeling of aleatoric and epistemic uncertainties yields the most faithful uncertainty estimates. More qualitative figures are provided in Section 10. 5 10 15 20 25 30 35 40 45 50  
+
+> Training Sample Size
+> 10 1
+> 10 1
+> Uncertainty  Aleatoric
+> Epistemic
+
+Figure 3. Test AU and EU vs. training sample size. AU remains stable while EU significantly declines with more data observed. 
+
+LPIPS to reflect the image reconstruction quality. For un-certainties, we use negative log-likelihood (NLL), area un-der sparsification error (AUSE) with respect to both RMSE and MAE, and area under calibration error (AUCE), mea-suring the quality of uncertainty estimates in terms of dis-tributional fit, error ranking, and calibration accuracy. 
+
+Baselines. We select two methods from each of the three categories discussed in Section 2. For closed-form likeli-hood models, we use the normal distribution approach [17] adopted in [22] and [28] and mixture of Laplace distribu-tions (MoL) employed in [35] and [34]. For Bayesian meth-ods, we include the classical Monte Carlo dropout [7] and a more recent NeRF UQ method BayesRays [10]. For ensem-ble methods, we consider naive deep ensembles [21] and density-aware NeRF ensembles (DANE) [40]. 
+
+Implementation. Prior benchmarks on NeRF uncertainty quantification suffer from varying choices of data splits, model architectures, and training schemes. To isolate UQ method effects from engineering confounds, we establish a new standardized benchmark to focus comparison on the underlying UQ approaches themselves. First, for data split, we follow the aforementioned scheme for all models. Sec-ond, for architecture, we use nerfacto model in [41] to im-plement all methods for efficiency. For likelihood models, the only difference is the output layer size and the loss func-tion. For Bayesian methods, Monte Carlo dropout is im-plemented with a dropout probability 0.2, trained once and sampled five times at inference, while BayesRays follows their official implementation. For ensembles, both naive en-Mode Baseline Dropout Normal MoL Ens. DANE Ours Train/min. ↓ 11.84 88.54 12.22 12.71 59.22 59.22 13.57 Infer/FPS ↑ 4.88 0.09 4.71 4.42 0.96 0.96 4.67 
+
+Table 2. Average training time per 30 k steps and inference FPS of baseline nerfacto and different UQ methods on an A6000 GPU. 
+
+sembles and DANE are implemented by training five mod-els independently. Third, in training, we adopt the default batch size, optimizer, and learning rate scheduler of ner-facto for all methods and train for 5k iterations for LLFF and 30 k iterations for LF and RobustNeRF, chosen based on the convergence speed on each dataset. For stability, we run each method independently for three times and report the averaged metrics. The benchmark codebase will be re-leased upon paper acceptance to ensure that all results can be faithfully reproduced by the community. 
+
+5.2. Results 
+
+Quantitative results. The quantitative performance of the uncertainty quantification methods is detailed in Table 1 with per-scene statistics provided in Section 9. For prediction accuracy , as BayesRays estimates uncer-tainty in a post-hoc manner, it does not alter the image re-construction metrics, which can be regarded as the baseline nerfacto accuracy. Compared to this baseline, likelihood and Bayesian methods (Dropout, Normal, MoL) generally struggle to preserve the image reconstruction accuracy, in-dicating that their predictive performance is compromised in exchange for uncertainty estimation. Ensemble-based methods provide faithful reconstructions, but they are ex-tremely inefficient due to their substantial computational cost in both training and inference. In contrast, Evidential NeRF, while being efficient, consistently outperforms base-line in image reconstruction, demonstrating that our uncer-tainties need not come at the expense of rendering fidelity. Remarkably, with only a single network trained and a single forward pass required at inference, the evidential approach achieves prediction accuracy comparable to, and in 6 out of 
+
+9 image reconstruction metrics even surpassing, the compu-Varying Illumination  
+
+> Edges
+> Transient Objects
+> Occlusions
+> Training Views Test View
+> Epistemic Uncertainty
+> Aleatoric Uncertainty
+> RGB Prediction
+
+Figure 4. Aleatoric and epistemic uncertainties of a scene in the wild. AU arises from intrinsic data variability captured in the training set, including radiance variation (e.g., sky regions due to changing illumination), high-frequency regions (e.g., scene edges), and the presence of transient objects (e.g., pedestrians). EU indicates the model’s lack of knowledge, prominently appear-ing in occluded regions where training supervision is insufficient (e.g., the trees behind and thus occluded by the gate). 
+
+tationally expensive ensemble methods. For uncertainty quantification , our method achieves the lowest NLL across all three datasets, demonstrating the best distributional fit. Compared to a normal distri-bution with fixed mean and variance, a normal distribu-tion with random mean and variance increases test data likelihood by factors of 1.8, 6083 .3, and 100559 .0 on the three datasets, respectively. This tremendous improvement is because the fixed mean and variance assumption used by classical normal-based UQ only captures the aleatoric variations within the training data while overlooking epis-temic uncertainty. The likelihood gain is less pronounced on LF because its test images are adjacent to the train-ing views, thus the distribution shift is relatively insignif-icant. As for AUSE and AUCE, ensemble-based methods achieve the strongest results in general, which is expected given their ability to represent variability through multi-ple models. Nevertheless, our evidential approach remains highly competitive, often ranking second only to ensembles, demonstrating that jointly modeling aleatoric and epistemic factors yields uncertainty estimates with stronger correla-tion with errors and improved calibration. 
+
+Qualitative results. We qualitatively evaluate our Eviden-tial NeRF against other uncertainty quantification methods in Figure 2 and Section 10. A primary goal of UQ is to Epistemic Uncertainty   
+
+> Aleatoric Uncertainty
+> Test RGB Prediction
+> Training Views Specular Reflections High AU
+
+Figure 5. A case where AU dominates EU. The highly reflective surface of the display case in the foreground incurs specular re-flections. AU arises due to the presence of data noise caused by the inconsistency of light across different training views. Test Views  RGB Prediction  Aleatoric Uncertainty  Epistemic Uncertainty 
+
+> Left  Front Right Back
+
+Figure 6. A case where EU dominates AU. The model is trained only by 5 images from the front and asked to render the scene from all the viewing angles. EU arises due to the lack of knowledge during training on the views out of training distribution. 
+
+produce uncertainty maps that accurately identify potential model failures. Previous methods, by neglecting either the aleatoric or epistemic component of predictive uncertainty, often fall short of accurately delimiting regions of predic-tive inaccuracy. In contrast, by considering both compo-nents, our method demonstrates superior alignment with the reconstruction error maps. This suggests that jointly mod-eling data noise and the model knowledge gap is essential for generating the most reliable uncertainty estimates. 
+
+Uncertainty scaling with data. We investigate the effect of training sample size on the magnitude of aleatoric and epistemic uncertainties in Figure 3. Focusing on this ex-ample LLFF scene, we reserve 10% of its views for testing and incrementally select 5 to 50 images from the remain-ing data for training. As the training sample size increases, the test AU remains relatively stable, while the EU exhibits a considerable decline. The result verifies the fundamental difference between the two types of uncertainty: AU is ir-reducible as intrinsic data noise, while EU is reducible by increasing the model’s exposure to more data. 
+
+Aleatoric and epistemic factors in 3D scenes. Several sce-narios where aleatoric and epistemic uncertainties emerge are respectively presented in Figures 4 to 6. Figure 4 il-lustrates an in-the-wild scene with several aleatoric factors (varying illumination, high-frequency edge regions, tran-Prediction  Transient Object Removal by AU Thresholding Figure 7. Scene cleaning based on aleatoric uncertainty as a post-processing step for floater removal. Voxels with AU above a cer-tain threshold have their density reduced to become more transpar-ent. By reducing the threshold, more artifacts can be eliminated. 
+
+sient objects) and an epistemic factor (partial occlusions). Figure 5 showcases a scenario with a reflective object, where aleatoric light variation is the dominant source of potential rendering error. Figure 6 demonstrates an out-of-distribution example where the model is asked to render the scene from angles that never appeared during training, showing that the lack of model knowledge about these un-seen views is the primary cause of predictive failure. 
+
+Computational efficiency. We report the total training time and inference frames per second (FPS) of baseline nerfacto and different UQ methods in Table 2. Compared to other UQ methods, in training, our evidential approach is only slightly slower than other two likelihood models while be-ing significantly faster than the ensemble methods. As for inference, since our approach directly predicts uncertainty fields, it is more efficient than the methods which require computing uncertainty from the predicted parameters, such as MoL. Note: As BayesRays learns a spatial uncertainty field through a dedicated post-hoc procedure after NeRF convergence rather than the typical volumetric rendering pipeline, it is excluded from this comparison. Since ner-facto runs on Tiny CUDA Neural Networks [25], which does not support dropout, dropout is implemented without acceleration, making it naturally slower than other methods. 
+
+5.3. Applications 
+
+We demonstrate two example applications using aleatoric and epistemic uncertainties respectively in Figures 7 and 8. 
+
+Scene cleaning. Training NeRFs on unconstrained images often leads to inaccurate predictions due to radiance in-consistencies from uncontrolled lighting changes or tran-sient objects, which are irreducible data noise explained by aleatoric uncertainty. As a robust indicator of geometric ar-tifacts, AU-based scene cleaning can be applied as a post-processing procedure to eliminate noise in the renderings. Figure 7 presents an example where the erroneous floaters of the rendering can be progressively removed by gradually changing the AU threshold to suppress voxel densities. 
+
+Active learning. As a proxy of lack of model knowledge, epistemic uncertainty is an ideal metric for active learning. Figure 8 illustrates a next-best-view planning experiment on an LLFF scene. Starting from an initial training set of 5 im-0 10000 20000 30000 40000    
+
+> Training Iteration
+> 16
+> 18
+> 20
+> 22
+> 24
+> PSNR
+> Epistemic
+> Random
+> Figure 8. Mean and standard derivation of test PSNR of three runs on Horns scene, with two active sampling strategies: EU-based selection and random selection. The samples identified via epistemic uncertainty are more informative for model learning.
+
+ages, an Evidential NeRF is trained iteratively by 5 rounds. In each round, the model is trained by 5 epochs with all the current training images and then tested on a holdout test set, before choosing 5 additional images from the remain-ing data to add to the training pool. Two sampling strategies for data selection are compared: choosing the images with the most EU and choosing images randomly. The average and standard deviation of three independent runs of each se-lection scheme are reported. Active selection based on EU gives noticeably higher PSNR than random selection, in-dicating the samples with higher epistemic uncertainty are more informative for model learning. 
+
+## 6. Conclusion 
+
+Despite the remarkable efficacy of neural radiance fields in photorealistic 3D scene reconstruction, the absence of ro-bust predictive uncertainty quantification significantly hin-ders their deployment in safety-critical domains. While some uncertainty quantification methods have been pro-posed for NeRFs, none of them provides a mechanism for quantifying both aleatoric and epistemic components of the scene rendering uncertainty. Considering that 3D scene modeling is inherently subject to both data volatility and model ignorance, limiting uncertainty quantification to a single component is suboptimal. In this paper, we introduce Evidential Neural Radiance Fields, a principled probabilistic framework that resolves this critical gap, representing a significant step toward ex-plainable and reliable implicit 3D modeling. Our approach seamlessly adapts evidential deep learning to the hierar-chical nature of NeRFs through a voxel-to-pixel aleatoric and epistemic uncertainty propagation paradigm. Through extensive experiments on three standardized benchmarks, Evidential NeRF demonstrates its superiority in both im-age reconstruction fidelity and uncertainty estimation qual-ity compared to other methods, in the meantime, identifying the aleatoric and epistemic factors that contribute to predic-tive uncertainty within a variety of 3D scenes. References 
+
+[1] Alexander Amini, Wilko Schwarting, Ava Soleimany, and Daniela Rus. Deep evidential regression. Advances in neural information processing systems , 33:14927–14937, 2020. 1, 2, 5 [2] Jonathan T Barron, Ben Mildenhall, Matthew Tancik, Peter Hedman, Ricardo Martin-Brualla, and Pratul P Srinivasan. Mip-nerf: A multiscale representation for anti-aliasing neu-ral radiance fields. In Proceedings of the IEEE/CVF inter-national conference on computer vision , pages 5855–5864, 2021. 2 [3] Jonathan T Barron, Ben Mildenhall, Dor Verbin, Pratul P Srinivasan, and Peter Hedman. Mip-nerf 360: Unbounded anti-aliased neural radiance fields. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 5470–5479, 2022. [4] Jonathan T Barron, Ben Mildenhall, Dor Verbin, Pratul P Srinivasan, and Peter Hedman. Zip-nerf: Anti-aliased grid-based neural radiance fields. In Proceedings of the IEEE/CVF International Conference on Computer Vision ,pages 19697–19705, 2023. [5] Anpei Chen, Zexiang Xu, Andreas Geiger, Jingyi Yu, and Hao Su. Tensorf: Tensorial radiance fields. In European con-ference on computer vision , pages 333–350. Springer, 2022. [6] Zhiqin Chen, Thomas Funkhouser, Peter Hedman, and An-drea Tagliasacchi. Mobilenerf: Exploiting the polygon ras-terization pipeline for efficient neural field rendering on mo-bile architectures. In Proceedings of the IEEE/CVF Con-ference on Computer Vision and Pattern Recognition , pages 16569–16578, 2023. 2 [7] Yarin Gal and Zoubin Ghahramani. Dropout as a bayesian approximation: Representing model uncertainty in deep learning. In international conference on machine learning ,pages 1050–1059. PMLR, 2016. 1, 2, 5, 6 [8] Stephan J Garbin, Marek Kowalski, Matthew Johnson, Jamie Shotton, and Julien Valentin. Fastnerf: High-fidelity neu-ral rendering at 200fps. In Proceedings of the IEEE/CVF international conference on computer vision , pages 14346– 14355, 2021. 2 [9] Jakob Gawlikowski, Cedrique Rovile Njieutcheu Tassi, Mohsin Ali, Jongseok Lee, Matthias Humt, Jianxiang Feng, Anna Kruspe, Rudolph Triebel, Peter Jung, Ribana Roscher, et al. A survey of uncertainty in deep neural networks. Arti-ficial Intelligence Review , 56(Suppl 1):1513–1589, 2023. 1 [10] Lily Goli, Cody Reading, Silvia Sell´ an, Alec Jacobson, and Andrea Tagliasacchi. Bayes’ rays: Uncertainty quan-tification for neural radiance fields. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 20061–20070, 2024. 2, 5, 6 [11] Lei He, Leheng Li, Wenchao Sun, Zeyu Han, Yichen Liu, Sifa Zheng, Jianqiang Wang, and Keqiang Li. Neural radi-ance field in autonomous driving: A survey. arXiv preprint arXiv:2404.13816 , 2024. 1 [12] Wenchong He, Zhe Jiang, Tingsong Xiao, Zelin Xu, and Yukun Li. A survey on uncertainty quantification methods for deep learning, 2024. 1 [13] Tao Hu, Shu Liu, Yilun Chen, Tiancheng Shen, and Jiaya Jia. Efficientnerf efficient neural radiance fields. In Proceed-ings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 12902–12911, 2022. 2 [14] Eyke H¨ ullermeier and Willem Waegeman. Aleatoric and epistemic uncertainty in machine learning: An introduction to concepts and methods. Machine learning , 110(3):457– 506, 2021. 1 [15] Ajay Jain, Matthew Tancik, and Pieter Abbeel. Putting nerf on a diet: Semantically consistent few-shot view synthesis. In Proceedings of the IEEE/CVF International Conference on Computer Vision , pages 5885–5894, 2021. 2 [16] Audun Jsang. Subjective Logic: A formalism for reasoning under uncertainty . Springer Publishing Company, Incorpo-rated, 2018. 2 [17] Alex Kendall and Yarin Gal. What uncertainties do we need in bayesian deep learning for computer vision? Advances in neural information processing systems , 30, 2017. 1, 2, 5, 6 [18] Bernhard Kerbl, Georgios Kopanas, Thomas Leimk¨ uhler, and George Drettakis. 3d gaussian splatting for real-time radiance field rendering. ACM Trans. Graph. , 42(4):139–1, 2023. 1 [19] Diederik P Kingma. Auto-encoding variational bayes. arXiv preprint arXiv:1312.6114 , 2013. 2 [20] Jonas Kulhanek, Songyou Peng, Zuzana Kukelova, Marc Pollefeys, and Torsten Sattler. Wildgaussians: 3d gaussian splatting in the wild. arXiv preprint arXiv:2407.08447 , 2024. 1[21] Balaji Lakshminarayanan, Alexander Pritzel, and Charles Blundell. Simple and scalable predictive uncertainty estima-tion using deep ensembles. Advances in neural information processing systems , 30, 2017. 1, 2, 5, 6 [22] Ricardo Martin-Brualla, Noha Radwan, Mehdi SM Sajjadi, Jonathan T Barron, Alexey Dosovitskiy, and Daniel Duck-worth. Nerf in the wild: Neural radiance fields for uncon-strained photo collections. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition ,pages 7210–7219, 2021. 1, 2, 3, 5, 6 [23] Ben Mildenhall, Pratul P Srinivasan, Rodrigo Ortiz-Cayon, Nima Khademi Kalantari, Ravi Ramamoorthi, Ren Ng, and Abhishek Kar. Local light field fusion: Practical view syn-thesis with prescriptive sampling guidelines. ACM Transac-tions on Graphics (ToG) , 38(4):1–14, 2019. 5 [24] Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ramamoorthi, and Ren Ng. Nerf: Representing scenes as neural radiance fields for view syn-thesis. In ECCV , 2020. 1, 2 [25] Thomas M¨ uller. tiny-cuda-nn, 2021. 8 [26] Thomas M¨ uller, Alex Evans, Christoph Schied, and Alexan-der Keller. Instant neural graphics primitives with a mul-tiresolution hash encoding. ACM transactions on graphics (TOG) , 41(4):1–15, 2022. 2 [27] Michael Niemeyer, Jonathan T Barron, Ben Mildenhall, Mehdi SM Sajjadi, Andreas Geiger, and Noha Radwan. Reg-nerf: Regularizing neural radiance fields for view synthesis from sparse inputs. In Proceedings of the IEEE/CVF Con-ference on Computer Vision and Pattern Recognition , pages 5480–5490, 2022. 2, 5 [28] Xuran Pan, Zihang Lai, Shiji Song, and Gao Huang. Ac-tivenerf: Learning where to see with uncertainty estimation. In European Conference on Computer Vision , pages 230– 246. Springer, 2022. 1, 2, 3, 5, 6 [29] Weining Ren, Zihan Zhu, Boyang Sun, Jiaqi Chen, Marc Pollefeys, and Songyou Peng. Nerf on-the-go: Exploiting uncertainty for distractor-free nerfs in the wild. In Proceed-ings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 8931–8940, 2024. 1 [30] Danilo Rezende and Shakir Mohamed. Variational inference with normalizing flows. In International conference on ma-chine learning , pages 1530–1538. PMLR, 2015. 2 [31] Hippolyt Ritter, Aleksandar Botev, and David Barber. A scal-able laplace approximation for neural networks. In 6th inter-national conference on learning representations, ICLR 2018-conference track proceedings . International Conference on Representation Learning, 2018. 2 [32] Sara Sabour, Suhani Vora, Daniel Duckworth, Ivan Krasin, David J Fleet, and Andrea Tagliasacchi. Robustnerf: Ig-noring distractors with robust losses. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 20626–20636, 2023. 5 [33] Murat Sensoy, Lance Kaplan, and Melih Kandemir. Eviden-tial deep learning to quantify classification uncertainty. Ad-vances in neural information processing systems , 31, 2018. 1, 2 [34] Seunghyeon Seo, Yeonjin Chang, and Nojun Kwak. Flipn-erf: Flipped reflection rays for few-shot novel view synthe-sis. In Proceedings of the IEEE/CVF International Confer-ence on Computer Vision , pages 22883–22893, 2023. 1, 2, 6[35] Seunghyeon Seo, Donghoon Han, Yeonjin Chang, and Nojun Kwak. Mixnerf: Modeling a ray with mixture density for novel view synthesis from sparse inputs. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 20659–20668, 2023. 1, 2, 5, 6 [36] Jianxiong Shen, Adria Ruiz, Antonio Agudo, and Francesc Moreno-Noguer. Stochastic neural radiance fields: Quanti-fying uncertainty in implicit 3d representations. In 2021 In-ternational Conference on 3D Vision (3DV) , pages 972–981. IEEE, 2021. 1, 2 [37] Jianxiong Shen, Antonio Agudo, Francesc Moreno-Noguer, and Adria Ruiz. Conditional-flow nerf: Accurate 3d mod-elling with reliable uncertainty quantification. In European Conference on Computer Vision , pages 540–557. Springer, 2022. 1, 2 [38] Jianxiong Shen, Ruijie Ren, Adria Ruiz, and Francesc Moreno-Noguer. Estimating 3d uncertainty field: Quantify-ing uncertainty for neural radiance fields. In 2024 IEEE In-ternational Conference on Robotics and Automation (ICRA) ,pages 2375–2381. IEEE, 2024. 1 [39] Cheng Sun, Min Sun, and Hwann-Tzong Chen. Direct voxel grid optimization: Super-fast convergence for radiance fields reconstruction. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 5459– 5469, 2022. 1 [40] Niko S¨ underhauf, Jad Abou-Chakra, and Dimity Miller. Density-aware nerf ensembles: Quantifying predictive un-certainty in neural radiance fields. In 2023 IEEE Inter-national Conference on Robotics and Automation (ICRA) ,pages 9370–9376. IEEE, 2023. 1, 2, 5, 6 [41] Matthew Tancik, Ethan Weber, Evonne Ng, Ruilong Li, Brent Yi, Justin Kerr, Terrance Wang, Alexander Kristof-fersen, Jake Austin, Kamyar Salahi, Abhik Ahuja, David McAllister, and Angjoo Kanazawa. Nerfstudio: A modular framework for neural radiance field development. In ACM SIGGRAPH 2023 Conference Proceedings , 2023. 6 [42] Dor Verbin, Peter Hedman, Ben Mildenhall, Todd Zickler, Jonathan T Barron, and Pratul P Srinivasan. Ref-nerf: Struc-tured view-dependent appearance for neural radiance fields. In 2022 IEEE/CVF Conference on Computer Vision and Pat-tern Recognition (CVPR) , pages 5481–5490. IEEE, 2022. 2 [43] Guangming Wang, Lei Pan, Songyou Peng, Shaohui Liu, Chenfeng Xu, Yanzi Miao, Wei Zhan, Masayoshi Tomizuka, Marc Pollefeys, and Hesheng Wang. Nerf in robotics: A survey. arXiv preprint arXiv:2405.01333 , 2024. 1 [44] Xin Wang, Shu Hu, Heng Fan, Hongtu Zhu, and Xin Li. Neu-ral radiance fields in medical imaging: Challenges and next steps. arXiv preprint arXiv:2402.17797 , 2024. 1 [45] Qiangeng Xu, Zexiang Xu, Julien Philip, Sai Bi, Zhixin Shu, Kalyan Sunkavalli, and Ulrich Neumann. Point-nerf: Point-based neural radiance fields. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 5438–5448, 2022. 2 [46] Kaan Y¨ ucer, Alexander Sorkine-Hornung, Oliver Wang, and Olga Sorkine-Hornung. Efficient 3d object segmentation from densely sampled light fields with applications to 3d re-construction. ACM Transactions on Graphics (TOG) , 35(3): 1–15, 2016. 5 Evidential Neural Radiance Fields 
+
+# Supplementary Material 
+
+## 7. Derivations: Voxel-to-Pixel Propagation of Radiance and Uncertainty 
+
+This section derives the propagation formulae of radiance and uncertainties specified in Equations (12) and (13). The mean color aggregation formula follows directly from the linearity of expectation, which does not require any inde-pendence assumption. 
+
+¯c = E[c] = E
+
+" NX
+
+> i=1
+
+wici
+
+#
+
+=
+
+> N
+
+X
+
+> i=1
+
+wiE[ci] = 
+
+> N
+
+X
+
+> i=1
+
+wi ¯ci. (26) Deriving the three uncertainty propagation formulae each requires its own independence assumption. However, only two, and any two, of these three assumptions are necessary to derive all the three formulae. 
+
+Assumption 1. The voxel colors are independent, i.e., ci ⊥⊥ cj , ∀i̸ = j.
+
+Assumption 2. The voxel colors are conditionally independent given the conditional means and variances, i.e., ci ⊥⊥ cj |
+
+θ, ∀i̸ = j.
+
+Assumption 3. The voxel colors’ conditional means are independent, i.e., μi ⊥⊥ μj , ∀i̸ = j.
+
+With these assumptions, it can be shown that 
+
+U = Var[ c] = Var 
+
+" NX
+
+> i=1
+
+wici
+
+#
+
+> A.1
+
+=
+
+> N
+
+X
+
+> i=1
+
+w2 
+
+> i
+
+Var[ ci] = 
+
+> N
+
+X
+
+> i=1
+
+w2 
+
+> i
+
+Ui, (27) 
+
+U alea = E[Var[ c | θ]] = E
+
+"
+
+Var 
+
+" NX
+
+> i=1
+
+wici θ
+
+## 
+
+> A.2
+
+= E
+
+" NX
+
+> i=1
+
+w2 
+
+> i
+
+Var[ ci | θ]
+
+#
+
+=
+
+> N
+
+X
+
+> i=1
+
+w2 
+
+> i
+
+E [Var[ ci | θ]] = 
+
+> N
+
+X
+
+> i=1
+
+w2 
+
+> i
+
+E Var[ ci | μi, σ 2 
+
+> i
+
+] =
+
+> N
+
+X
+
+> i=1
+
+w2 
+
+> i
+
+U alea  
+
+> i
+
+, (28) 
+
+U epis = Var[ E[c | θ]] = Var 
+
+"
+
+E
+
+" NX
+
+> i=1
+
+wici θ
+
+## 
+
+= Var 
+
+" NX
+
+> i=1
+
+wiE[ci | θ]
+
+#
+
+> A.3
+
+=
+
+> N
+
+X
+
+> i=1
+
+w2 
+
+> i
+
+Var [ E[ci | θ]] = 
+
+> N
+
+X
+
+> i=1
+
+w2 
+
+> i
+
+Var[ E[ci | μi, σ 2 
+
+> i
+
+]] = 
+
+> N
+
+X
+
+> i=1
+
+w2 
+
+> i
+
+U epis  
+
+> i
+
+, (29) where A. n
+
+= denotes the step where Assumption n is used. These three equations are connected by the law of total variance, as 
+
+Var[ c]
+
+| {z } 
+
+> U
+
+= E[Var[ c | θ]] 
+
+| {z } 
+
+> Ualea
+
++ Var[ E[c | θ]] 
+
+| {z } 
+
+> Uepis
+
+, (30) 
+
+Var[ ci]
+
+| {z } 
+
+> Ui
+
+= E[Var[ ci | μi, σ 2 
+
+> i
+
+]] 
+
+| {z } 
+
+> Ualea
+> i
+
++ Var[ E[ci | μi, σ 2 
+
+> i
+
+]] 
+
+| {z } 
+
+> Uepis
+> i
+
+. (31) Therefore, any two of Equations (27) to (29) imply the third, and thus only two of Assumptions 1 to 3 are necessary to derive all the three equations. 8. Derivations: Pixel Radiance Marginal Distribution and Loss Function 
+
+This section derives the marginal distribution of pixel radiance and the negative log-likelihood loss in Equations (21) and (23). Evidential NeRF defines each pixel radiance c by a hierarchical probabilistic model 
+
+c | μ, σ 2 ∼ N (μ, σ 2), μ | σ2 ∼ N (γ, σ 2/ν ), σ2 ∼ Γ−1(α, β ), (32) where N (·, ·) and Γ−1(·, ·) respectively denote normal distribution and inverse-gamma distribution and γ ∈ R, ν > 0, α > 1,and β > 0 are the evidential NIG parameters. Based on these prerequisites, we derive the marginal distribution and negative log-likelihood of the pixel color c.The probability density functions of the distributions in Equation (32) are respectively given by 
+
+p(c | μ, σ 2) = 1
+
+√2πσ 2 exp 
+
+
+
+− (c − μ)2
+
+2σ2
+
+
+
+, (33) 
+
+p(μ | σ2) = 
+
+√ν
+
+√2πσ 2 exp 
+
+
+
+− (μ − γ)2ν
+
+2σ2
+
+
+
+, (34) 
+
+p(σ2) = βα
+
+Γ( α) (σ2)−α−1 exp 
+
+
+
+− βσ2
+
+
+
+. (35) It can therefore be shown that 
+
+p(c | σ2) (36) 
+
+=
+
+Z ∞−∞ 
+
+p(c | μ, σ 2)p(μ | σ2)dμ (37) 
+
+=
+
+Z ∞−∞ 
+
+1
+
+√2πσ 2 exp 
+
+
+
+− (c − μ)2
+
+2σ2
+
+ √ν
+
+√2πσ 2 exp 
+
+
+
+− (μ − γ)2ν
+
+2σ2
+
+
+
+dμ (38) 
+
+=
+
+Z ∞−∞ 
+
+√ν
+
+2πσ 2 exp 
+
+
+
+− (c − μ)2 + ( μ − γ)2ν
+
+2σ2
+
+
+
+dμ (39) 
+
+=
+
+Z ∞−∞ 
+
+√ν
+
+2πσ 2 exp 
+
+
+
+− (ν + 1) μ2 − 2( c + γν )μ + ( c2 + γ2ν)2σ2
+
+
+
+dμ (40) 
+
+=
+
+√ν
+
+2πσ 2 exp 
+
+
+
+− c2 + γ2ν
+
+2σ2
+
+ Z ∞−∞ 
+
+exp 
+
+
+
+− (ν + 1) μ2 − 2( c + γν )μ
+
+2σ2
+
+
+
+dμ (41) 
+
+=
+
+√ν
+
+2πσ 2 exp 
+
+
+
+− c2 + γ2ν
+
+2σ2
+
+ Z ∞−∞ 
+
+exp − (μ − c+γν ν+1 )2 − ( c+γν ν+1 )22σ2
+
+> ν+1
+
+!
+
+dμ (42) 
+
+=
+
+√ν
+
+2πσ 2 exp 
+
+
+
+− c2 + γ2ν
+
+2σ2
+
+
+
+exp 
+
+ (c + γν )2
+
+2σ2(ν + 1) 
+
+ Z ∞−∞ 
+
+exp − (μ − c+γν ν+1 )22σ2
+
+> ν+1
+
+!
+
+dμ (43) 
+
+=
+
+√ν
+
+2πσ 2 exp 
+
+
+
+− c2 + γ2ν
+
+2σ2 + (c + γν )2
+
+2σ2(ν + 1) 
+
+ Z ∞−∞ 
+
+r
+
+2π σ2
+
+ν + 1 N
+
+
+
+μ; c + γν ν + 1 , σ2
+
+ν + 1 
+
+
+
+dμ (44) 
+
+=
+
+√ν
+
+2πσ 2
+
+r
+
+2π σ2
+
+ν + 1 exp 
+
+
+
+− (c2 + γ2ν)( ν + 1) − (c + γν )2
+
+2σ2(ν + 1) 
+
+ Z ∞−∞ 
+
+N
+
+
+
+μ; c + γν ν + 1 , σ2
+
+ν + 1 
+
+
+
+dμ (45) 
+
+=
+
+√ν
+
+2πσ 2
+
+r
+
+2π σ2
+
+ν + 1 exp 
+
+
+
+− (c2 + γ2ν)( ν + 1) − (c + γν )2
+
+2σ2(ν + 1) 
+
+
+
+(46) 
+
+=
+
+r ν
+
+2πσ 2(ν + 1) exp 
+
+
+
+− (c − γ)2ν
+
+2σ2(ν + 1) 
+
+
+
+, (47) i.e., 
+
+c | σ2 ∼ N 
+
+
+
+γ, σ2(ν + 1) 
+
+ν
+
+
+
+, (48) and thus, 
+
+p(c) (49) 
+
+=
+
+Z ∞
+
+> 0
+
+p(c | σ2)p(σ2)dσ 2 (50) 
+
+=
+
+Z ∞
+
+> 0
+
+r ν
+
+2πσ 2(ν + 1) exp 
+
+
+
+− (c − γ)2ν
+
+2σ2(ν + 1) 
+
+ βα
+
+Γ( α) (σ2)−α−1 exp 
+
+
+
+− βσ2
+
+
+
+dσ 2 (51) 
+
+=
+
+r ν
+
+2π(ν + 1) 
+
+βα
+
+Γ( α)
+
+Z ∞
+
+> 0
+
+exp 
+
+
+
+− (c − γ)2ν
+
+2σ2(ν + 1) − βσ2
+
+
+
+(σ2)−α− 32 dσ 2 (52) 
+
+=
+
+r ν
+
+2π(ν + 1) 
+
+βα
+
+Γ( α)
+
+Z ∞
+
+> 0
+
+exp 
+
+− 
+
+> (c−γ)2ν
+> 2( ν+1)
+
++ βσ2
+
+ (σ2)−α− 32 dσ 2 (53) 
+
+=
+
+r ν
+
+2π(ν + 1) 
+
+βα
+
+Γ( α)
+
+Z ∞
+
+> 0
+
+Γ  α + 12
+
+ (c−γ)2ν 
+
+> 2( ν+1)
+
++ β
+
+α+ 12
+
+Γ−1
+
+
+
+σ2; α + 12 , (c − γ)2ν
+
+2( ν + 1) + β
+
+
+
+dσ 2 (54) 
+
+=
+
+r ν
+
+2π(ν + 1) 
+
+βα
+
+Γ( α)Γ  α + 12
+
+ (c−γ)2ν 
+
+> 2( ν+1)
+
++ β
+
+α+ 12
+
+Z ∞
+
+> 0
+
+Γ−1
+
+
+
+σ2; α + 12 , (c − γ)2ν
+
+2( ν + 1) + β
+
+
+
+dσ 2 (55) 
+
+=
+
+r ν
+
+2π(ν + 1) 
+
+βα
+
+Γ( α)Γ  α + 12
+
+ (c−γ)2ν 
+
+> 2( ν+1)
+
++ β
+
+α+ 12
+
+(56) 
+
+= Γ  α + 12
+
+
+
+Γ( α)
+
+q
+
+2π β(ν+1) 
+
+> ν
+
+(c − γ)2
+
+2 β(ν+1) 
+
+> ν
+
++ 1 
+
+!−(α+ 12 )
+
+(57) 
+
+= Γ( νt+1 2 )Γ( νt 
+
+> 2
+
+)pπν tσ2
+
+> t
+
+ (c − μt)2
+
+νtσ2
+
+> t
+
++ 1 
+
+− νt+1 2
+
+, (58) i.e., 
+
+c ∼ t
+
+
+
+μt = γ, σ 2 
+
+> t
+
+= β(ν + 1) 
+
+αν , ν t = 2 α
+
+
+
+, (59) where t(μt, σ 2 
+
+> t
+
+, ν t) denotes a Student’s t distribution with location μt, scale σt, and degrees of freedom νt, and N (x; ·, ·) and 
+
+Γ−1(x; ·, ·) represent their probability distribution densities at x. This yields Equation (21). The negative log-likelihood of c can thereby be derived as 
+
+− log p(c) (60) 
+
+= − log 
+
+ Γ  α + 12
+
+
+
+Γ( α)
+
+q
+
+2π β(ν+1) 
+
+> ν
+
+(c − γ)2
+
+2 β(ν+1) 
+
+> ν
+
++ 1 
+
+!−(α+ 12 ) (61) 
+
+= 12 log 
+
+
+
+2π β(ν + 1) 
+
+ν
+
+
+
++ log Γ( α)Γ  α + 12
+
+ +
+
+
+
+α + 12
+
+
+
+log (c − γ)2
+
+2 β(ν+1) 
+
+> ν
+
++ 1 
+
+!
+
+(62) 
+
+= 12 log πν + 12 log (2 β(ν + 1)) + log Γ( α)Γ  α + 12
+
+ +
+
+
+
+α + 12
+
+
+
+log 
+
+ (c − γ)2ν
+
+2β(ν + 1) + 1 
+
+
+
+(63) 
+
+= 12 log πν − α log (2 β(ν + 1)) + log Γ( α)Γ  α + 12
+
+ +
+
+
+
+α + 12
+
+
+
+log  (c − γ)2ν + 2 β(ν + 1)  (64) 
+
+= 12 log πν − α log Ω + log Γ( α)Γ  α + 12
+
+ +
+
+
+
+α + 12
+
+
+
+log  (c − γ)2ν + Ω  , (65) where Ω = 2 β(1 + ν). This yields Equation (23). 9. Further Quantitative Results 
+
+In the main paper, quantitative results averaged across all scenes within each dataset are reported. Here, we provide the per-scene metrics in Tables 4 to 7, including the mean and standard deviation over three independent runs. 
+
+## 10. Further Qualitative Results 
+
+We present the qualitative comparison of the uncertainty methods on LF, LLFF, and RobustNeRF datasets in Figures 11 to 13, respectively. In addition, we also show the aleatoric and epistemic uncertainty maps of more scenes in the wild from Phototoursim dataset in Figure 14. 
+
+## 11. Further Discussions 
+
+Hyperparameter selection. The only hyperparameter of Evidential NeRF is the regularization coefficient in the loss func-tion, which we select based on the quantitative metrics. Figure 9 illustrates how different regularization coefficients affect image reconstruction and uncertainty estimation. In general, both excessively small or large regularization coefficients lead to suboptimal performance, and the best hyperparameter value is inherently scene-dependent. The specific regularization coefficients utilized to produce the reported results are detailed in Table 3.                                   
+
+> Figure 9. Sensitivity study of regularization coefficient’s effect on all the quantitative metrics of Android scene.
+> Scene Africa Basket Statue Torch Fern Flower Fortress Horns Leaves Orchids Room T-Rex Android Crab Statue Yoda
+> λreg 1e-1 1e-1 1e-3 1e-5 1e1 1e1 1e0 1e0 1e-4 1e0 1e0 1e-1 1e-1 5e-1 1e0 1e0
+> Table 3. The regularization coefficients used in each scene of LF, LLFF, and RobustNeRF datasets.
+
+Mutual causes of aleatoric and epistemic uncertainties. Various complex elements in a 3D scene can lead to elevated levels of either aleatoric or epistemic uncertainty. However, attributing each specific factor exclusively to one type of uncertainty is often inappropriate, as many factors affect both uncertainties in different ways and to varying degrees. For example, transient objects increase AU due to color variations introduced by motion, while simultaneously raising EU through partial occlusions. Similarly, edges or high-frequency non-smooth regions tend to exhibit higher AU since their radiance is highly sensitive to input rays, as small inaccuracies in sensing, digitization, or poses can yield large radiance variations, resulting in nearly irreducible data uncertainty; meanwhile, the irregular geometry of such regions obstructs ray coverage and limits supervision signals from those surfaces, thereby increasing EU as well. 
+
+Uncertainties of transients. Transient objects in the scene can lead to both higher aleatoric and epistemic uncertainties. In practice, the uncertainties on the transient regions depend on the densities assigned to them by the model. Figure 10 showcases ten images from two RobustNeRF scenes where the model is trained by images with cluttered objects. It can be observed that the aleatoric and epistemic uncertainties on transients depend on their densities: • If the model cannot disambiguate the transients and the floaters appear in the test renderings, both AU and EU are higher on them. This provides evidence that the model simultaneously receives inconsistent radiance signals (high AU) and lacks sufficient knowledge to determine the presence or geometry of transient objects (high EU). • If the model resolves the transient objects (by minimizing their densities and removing them from volumetric rendering), the floaters disappear in the test image reconstructions and only AU remains high. This verifies that the model no longer lacks the knowledge to determine the presence of the transients but still records the color inconsistency from the training signals as high AU. 
+
+Limitation. NeRF models have two distinct outputs: density and radiance. The proposed Evidential NeRF framework, similar to other closed-form likelihood models, quantifies uncertainty in the predicted radiance ci but treats the volumetric density ρi as deterministic, thus the randomness of density is not captured. This is a deliberate design choice which is funda-mental to our method’s primary advantage of tractable and single-pass uncertainty propagation. This assumption enables the pixel-level aleatoric and epistemic uncertainties to be computed as a simple, closed-form weighted sum of their voxel-level Figure 10. Aleatoric and epistemic uncertainties of scenes with transient objects. The red bounding boxes delineate the erroneous artifacts in test renderings caused by transients in the training views. If the model fails to suppress the floaters, both AU and EU are elevated on the transients; If the model resolves the transience, only AU is higher on the regions where the training transients were once present. 
+
+counterparts as specified in Equations (27) to (29). Conversely, if the density ρi were modeled as some random variable, not only would the variance of voxel weight wi = exp 
+
+
+
+− Pi−1 
+
+> j=1
+
+ρj δj
+
+
+
+(1 − exp( −ρiδi)) be nontrivial to derive, but also the aleatoric and epistemic uncertainty aggregation formulae would be invalidated. This limitation leads to a failure mode on modeling transient objects. Although the current framework captures the color variation incurred by the transients, the corresponding density uncertainty is not effectively modeled, which is an important direction for future investigation. 
+
+Future directions. Future research directions include the following three aspects. • Modeling density uncertainties. As previously discussed, incorporating density uncertainty into the evidential framework is nontrivial yet crucial for fully exploiting the potential of uncertainty modeling in dynamic 3D scenes. • Generalizing to other radiance field frameworks. Although the current evidential framework is proposed for canonical NeRF, its direct compatibility with the volumetric rendering paradigm makes its extension to other 3D scene representa-tions, such as Plenoxels and 3D Gaussian Splatting, highly feasible. • Exploring downstream applications. While this paper focuses on the theoretical foundation, a crucial next step involves applying the evidential framework to practical real-world tasks, such as safety-critical robotics and autonomous driving. Scene Method PSNR ↑ SSIM ↑ LPIPS ↓ NLL ↓ AUSE RMSE ↓
+
+AUSE MAE ↓ AUCE ↓
+
+Dropout 27.2231  
+
+> ±0.1780
+
+0.9040  
+
+> ±0.0007
+
+0.0537  
+
+> ±0.0009
+
+6.9593  
+
+> ±0.4326
+
+0.0140  
+
+> ±0.0002
+
+0.0062  
+
+> ±0.0001
+
+0.2474  
+
+> ±0.0032
+
+Normal 27.0908  
+
+> ±0.0423
+
+0.9036  
+
+> ±0.0007
+
+0.0532  
+
+> ±0.0003
+
+-1.6826  
+
+> ±0.0160
+
+0.0120  
+
+> ±0.0001
+
+0.0062  
+
+> ±0.0000
+
+0.1017  
+
+> ±0.0017
+
+MoL 26.9621  
+
+> ±0.0733
+
+0.8806  
+
+> ±0.0014
+
+0.0975  
+
+> ±0.0038
+
+-1.3710  
+
+> ±0.0009
+
+0.0220  
+
+> ±0.0013
+
+0.0084  
+
+> ±0.0004
+
+0.3258  
+
+> ±0.0151
+
+Africa BayesRays 26.8235  
+
+> ±0.1644
+
+0.9048  
+
+> ±0.0012
+
+0.0541  
+
+> ±0.0008
+
+0.6234  
+
+> ±0.0053
+
+0.0442  
+
+> ±0.0024
+
+0.0188  
+
+> ±0.0010
+
+0.4736  
+
+> ±0.0002
+
+Ensembles 27.5923  
+
+> ±0.0757
+
+0.9206  
+
+> ±0.0003
+
+0.0420  
+
+> ±0.0003
+
+0.5977  
+
+> ±0.2590
+
+0.0071  
+
+> ±0.0003
+
+0.0032  
+
+> ±0.0000
+
+0.2051  
+
+> ±0.0013
+
+DANE 27.5923  
+
+> ±0.0757
+
+0.9206  
+
+> ±0.0003
+
+0.0420  
+
+> ±0.0003
+
+-0.2229  
+
+> ±0.2434
+
+0.0137  
+
+> ±0.0011
+
+0.0057  
+
+> ±0.0003
+
+0.0869  
+
+> ±0.0012
+
+Evidential 29.5031  
+
+> ±0.0846
+
+0.9312  
+
+> ±0.0010
+
+0.0384  
+
+> ±0.0038
+
+-2.4190  
+
+> ±0.0281
+
+0.0056  
+
+> ±0.0002
+
+0.0028  
+
+> ±0.0001
+
+0.1104  
+
+> ±0.0028
+
+Dropout 26.8884  
+
+> ±0.3224
+
+0.8848  
+
+> ±0.0068
+
+0.0690  
+
+> ±0.0042
+
+10.2877  
+
+> ±0.5116
+
+0.0168  
+
+> ±0.0003
+
+0.0056  
+
+> ±0.0001
+
+0.1986  
+
+> ±0.0022
+
+Normal 28.5171  
+
+> ±0.1327
+
+0.9079  
+
+> ±0.0017
+
+0.0511  
+
+> ±0.0007
+
+-1.7838  
+
+> ±0.0283
+
+0.0145  
+
+> ±0.0002
+
+0.0066  
+
+> ±0.0000
+
+0.1415  
+
+> ±0.0017
+
+MoL 27.1461  
+
+> ±0.4038
+
+0.8956  
+
+> ±0.0065
+
+0.0951  
+
+> ±0.0081
+
+-1.3766  
+
+> ±0.0103
+
+0.0279  
+
+> ±0.0013
+
+0.0096  
+
+> ±0.0004
+
+0.3230  
+
+> ±0.0517
+
+Basket BayesRays 27.7572  
+
+> ±0.0634
+
+0.9078  
+
+> ±0.0024
+
+0.0578  
+
+> ±0.0011
+
+0.6019  
+
+> ±0.0016
+
+0.0405  
+
+> ±0.0004
+
+0.0202  
+
+> ±0.0002
+
+0.4739  
+
+> ±0.0003
+
+Ensembles 28.7024  
+
+> ±0.0470
+
+0.9228  
+
+> ±0.0004
+
+0.0473  
+
+> ±0.0005
+
+-0.2969  
+
+> ±0.0643
+
+0.0055  
+
+> ±0.0002
+
+0.0021  
+
+> ±0.0000
+
+0.1748  
+
+> ±0.0039
+
+DANE 28.7024  
+
+> ±0.0470
+
+0.9228  
+
+> ±0.0004
+
+0.0473  
+
+> ±0.0005
+
+-0.4703  
+
+> ±0.0595
+
+0.0070  
+
+> ±0.0006
+
+0.0027  
+
+> ±0.0002
+
+0.1297  
+
+> ±0.0131
+
+Evidential 28.9140  
+
+> ±0.1662
+
+0.9247  
+
+> ±0.0012
+
+0.0347  
+
+> ±0.0010
+
+-1.8512  
+
+> ±0.0109
+
+0.0119  
+
+> ±0.0010
+
+0.0038  
+
+> ±0.0002
+
+0.1580  
+
+> ±0.0072
+
+Dropout 31.6380  
+
+> ±0.1491
+
+0.9539  
+
+> ±0.0014
+
+0.0319  
+
+> ±0.0009
+
+-0.4944  
+
+> ±0.1539
+
+0.0060  
+
+> ±0.0003
+
+0.0031  
+
+> ±0.0001
+
+0.1727  
+
+> ±0.0093
+
+Normal 29.3663  
+
+> ±0.0265
+
+0.9420  
+
+> ±0.0003
+
+0.0401  
+
+> ±0.0001
+
+-2.1591  
+
+> ±0.0100
+
+0.0059  
+
+> ±0.0001
+
+0.0026  
+
+> ±0.0000
+
+0.2010  
+
+> ±0.0007
+
+MoL 31.4981  
+
+> ±0.3223
+
+0.9525  
+
+> ±0.0011
+
+0.0474  
+
+> ±0.0006
+
+-1.4769  
+
+> ±0.0010
+
+0.0101  
+
+> ±0.0006
+
+0.0029  
+
+> ±0.0001
+
+0.4042  
+
+> ±0.0006
+
+Statue BayesRays 32.3533  
+
+> ±0.0694
+
+0.9640  
+
+> ±0.0003
+
+0.0207  
+
+> ±0.0001
+
+0.6233  
+
+> ±0.0020
+
+0.0198  
+
+> ±0.0002
+
+0.0097  
+
+> ±0.0000
+
+0.4839  
+
+> ±0.0000
+
+Ensembles 33.2549  
+
+> ±0.1359
+
+0.9707  
+
+> ±0.0005
+
+0.0188  
+
+> ±0.0007
+
+-1.0787  
+
+> ±0.0854
+
+0.0027  
+
+> ±0.0001
+
+0.0016  
+
+> ±0.0000
+
+0.2136  
+
+> ±0.0041
+
+DANE 33.2549  
+
+> ±0.1359
+
+0.9707  
+
+> ±0.0005
+
+0.0188  
+
+> ±0.0007
+
+-1.4183  
+
+> ±0.1692
+
+0.0032  
+
+> ±0.0002
+
+0.0018  
+
+> ±0.0001
+
+0.1713  
+
+> ±0.0188
+
+Evidential 33.1178  
+
+> ±0.1144
+
+0.9670  
+
+> ±0.0001
+
+0.0204  
+
+> ±0.0006
+
+-2.9394  
+
+> ±0.0036
+
+0.0032  
+
+> ±0.0001
+
+0.0015  
+
+> ±0.0000
+
+0.0941  
+
+> ±0.0035
+
+Dropout 26.6079  
+
+> ±0.0730
+
+0.8834  
+
+> ±0.0012
+
+0.0697  
+
+> ±0.0000
+
+5.7030  
+
+> ±0.5944
+
+0.0138  
+
+> ±0.0001
+
+0.0046  
+
+> ±0.0002
+
+0.2023  
+
+> ±0.0106
+
+Normal 27.6167  
+
+> ±0.0346
+
+0.9028  
+
+> ±0.0009
+
+0.0611  
+
+> ±0.0006
+
+-2.0509  
+
+> ±0.0061
+
+0.0085  
+
+> ±0.0000
+
+0.0038  
+
+> ±0.0001
+
+0.1589  
+
+> ±0.0024
+
+MoL 26.5564  
+
+> ±0.0791
+
+0.8899  
+
+> ±0.0010
+
+0.0675  
+
+> ±0.0022
+
+-1.3432  
+
+> ±0.0043
+
+0.0128  
+
+> ±0.0001
+
+0.0034  
+
+> ±0.0002
+
+0.1925  
+
+> ±0.0034
+
+Torch BayesRays 26.9788  
+
+> ±0.1539
+
+0.8924  
+
+> ±0.0017
+
+0.0602  
+
+> ±0.0016
+
+0.6364  
+
+> ±0.0359
+
+0.0432  
+
+> ±0.0026
+
+0.0224  
+
+> ±0.0028
+
+0.4724  
+
+> ±0.0003
+
+Ensembles 27.7638  
+
+> ±0.0580
+
+0.9086  
+
+> ±0.0005
+
+0.0537  
+
+> ±0.0005
+
+2.7548  
+
+> ±1.3789
+
+0.0095  
+
+> ±0.0019
+
+0.0025  
+
+> ±0.0002
+
+0.1548  
+
+> ±0.0045
+
+DANE 27.7638  
+
+> ±0.0580
+
+0.9086  
+
+> ±0.0005
+
+0.0537  
+
+> ±0.0005
+
+1.5218  
+
+> ±1.6701
+
+0.0153  
+
+> ±0.0011
+
+0.0054  
+
+> ±0.0010
+
+0.0912  
+
+> ±0.0011
+
+Evidential 28.1922  
+
+> ±0.0515
+
+0.9153  
+
+> ±0.0001
+
+0.0481  
+
+> ±0.0007
+
+-2.7217  
+
+> ±0.0336
+
+0.0070  
+
+> ±0.0008
+
+0.0022  
+
+> ±0.0003
+
+0.0597  
+
+> ±0.0056
+
+Table 4. Mean and standard deviation of quantitative metrics over three runs on LF. Scene Method PSNR ↑ SSIM ↑ LPIPS ↓ NLL ↓ AUSE RMSE ↓
+
+AUSE MAE ↓ AUCE ↓
+
+Dropout 19.4680  
+
+> ±0.1659
+
+0.5252  
+
+> ±0.0139
+
+0.4323  
+
+> ±0.0221
+
+43.9286  
+
+> ±2.9481
+
+0.0495  
+
+> ±0.0023
+
+0.0279  
+
+> ±0.0019
+
+0.3719  
+
+> ±0.0053
+
+Normal 19.2266  
+
+> ±0.0624
+
+0.5578  
+
+> ±0.0029
+
+0.3384  
+
+> ±0.0021
+
+5.4036  
+
+> ±0.0769
+
+0.0477  
+
+> ±0.0005
+
+0.0301  
+
+> ±0.0004
+
+0.2586  
+
+> ±0.0016
+
+MoL 18.0732  
+
+> ±0.5043
+
+0.5042  
+
+> ±0.0251
+
+0.4400  
+
+> ±0.0327
+
+1.7750  
+
+> ±0.6440
+
+0.0687  
+
+> ±0.0084
+
+0.0336  
+
+> ±0.0059
+
+0.2871  
+
+> ±0.0177
+
+Fern BayesRays 19.9116  
+
+> ±0.1128
+
+0.5609  
+
+> ±0.0044
+
+0.3692  
+
+> ±0.0028
+
+3.6380  
+
+> ±0.0501
+
+0.0818  
+
+> ±0.0007
+
+0.0555  
+
+> ±0.0007
+
+0.4882  
+
+> ±0.0001
+
+Ensembles 20.6844  
+
+> ±0.1179
+
+0.6131  
+
+> ±0.0041
+
+0.3464  
+
+> ±0.0029
+
+3.3542  
+
+> ±0.4057
+
+0.0296  
+
+> ±0.0005
+
+0.0148  
+
+> ±0.0003
+
+0.2416  
+
+> ±0.0062
+
+DANE 20.6844  
+
+> ±0.1179
+
+0.6131  
+
+> ±0.0041
+
+0.3464  
+
+> ±0.0029
+
+2.7735  
+
+> ±0.3140
+
+0.0333  
+
+> ±0.0003
+
+0.0173  
+
+> ±0.0002
+
+0.2078  
+
+> ±0.0059
+
+Evidential 20.8445  
+
+> ±0.1190
+
+0.6252  
+
+> ±0.0046
+
+0.3001  
+
+> ±0.0044
+
+0.2397  
+
+> ±0.0206
+
+0.0315  
+
+> ±0.0016
+
+0.0174  
+
+> ±0.0011
+
+0.3791  
+
+> ±0.0034
+
+Dropout 18.5000  
+
+> ±0.2353
+
+0.4916  
+
+> ±0.0143
+
+0.3823  
+
+> ±0.0049
+
+54.1671  
+
+> ±1.3113
+
+0.0559  
+
+> ±0.0016
+
+0.0344  
+
+> ±0.0014
+
+0.3887  
+
+> ±0.0019
+
+Normal 16.4914  
+
+> ±0.0117
+
+0.4044  
+
+> ±0.0008
+
+0.3968  
+
+> ±0.0031
+
+14.0687  
+
+> ±0.3208
+
+0.0803  
+
+> ±0.0015
+
+0.0500  
+
+> ±0.0010
+
+0.2822  
+
+> ±0.0017
+
+MoL 17.9422  
+
+> ±0.0752
+
+0.4857  
+
+> ±0.0077
+
+0.4012  
+
+> ±0.0135
+
+1.8365  
+
+> ±0.3830
+
+0.0656  
+
+> ±0.0005
+
+0.0340  
+
+> ±0.0005
+
+0.2911  
+
+> ±0.0045
+
+Flower BayesRays 18.3437  
+
+> ±0.0780
+
+0.4752  
+
+> ±0.0055
+
+0.4291  
+
+> ±0.0113
+
+4.1272  
+
+> ±0.0314
+
+0.0732  
+
+> ±0.0010
+
+0.0455  
+
+> ±0.0007
+
+0.4891  
+
+> ±0.0000
+
+Ensembles 18.7427  
+
+> ±0.0123
+
+0.5176  
+
+> ±0.0017
+
+0.4020  
+
+> ±0.0025
+
+7.7557  
+
+> ±0.2685
+
+0.0370  
+
+> ±0.0004
+
+0.0173  
+
+> ±0.0001
+
+0.2899  
+
+> ±0.0011
+
+DANE 18.7427  
+
+> ±0.0123
+
+0.5176  
+
+> ±0.0017
+
+0.4020  
+
+> ±0.0025
+
+7.7053  
+
+> ±0.2739
+
+0.0372  
+
+> ±0.0003
+
+0.0174  
+
+> ±0.0001
+
+0.2888  
+
+> ±0.0012
+
+Evidential 18.8858  
+
+> ±0.0187
+
+0.5003  
+
+> ±0.0012
+
+0.4348  
+
+> ±0.0053
+
+0.3045  
+
+> ±0.0569
+
+0.0476  
+
+> ±0.0010
+
+0.0300  
+
+> ±0.0006
+
+0.3281  
+
+> ±0.0069
+
+Dropout 18.3454  
+
+> ±0.5422
+
+0.4099  
+
+> ±0.0036
+
+0.5199  
+
+> ±0.0093
+
+50.2036  
+
+> ±4.6159
+
+0.0520  
+
+> ±0.0072
+
+0.0279  
+
+> ±0.0022
+
+0.3840  
+
+> ±0.0088
+
+Normal 19.7801  
+
+> ±0.1042
+
+0.3856  
+
+> ±0.0025
+
+0.3586  
+
+> ±0.0072
+
+4.1759  
+
+> ±0.3027
+
+0.0353  
+
+> ±0.0007
+
+0.0227  
+
+> ±0.0002
+
+0.2428  
+
+> ±0.0006
+
+MoL 17.1176  
+
+> ±0.2163
+
+0.3996  
+
+> ±0.0125
+
+0.5810  
+
+> ±0.0280
+
+8.1086  
+
+> ±8.1378
+
+0.0763  
+
+> ±0.0014
+
+0.0307  
+
+> ±0.0005
+
+0.3201  
+
+> ±0.0055
+
+Fortress BayesRays 18.5904  
+
+> ±0.1161
+
+0.3938  
+
+> ±0.0017
+
+0.5093  
+
+> ±0.0051
+
+3.8386  
+
+> ±0.0145
+
+0.0803  
+
+> ±0.0003
+
+0.0447  
+
+> ±0.0002
+
+0.4885  
+
+> ±0.0001
+
+Ensembles 18.9232  
+
+> ±0.0149
+
+0.4426  
+
+> ±0.0005
+
+0.4543  
+
+> ±0.0034
+
+6.9867  
+
+> ±0.1418
+
+0.0360  
+
+> ±0.0003
+
+0.0184  
+
+> ±0.0001
+
+0.2848  
+
+> ±0.0016
+
+DANE 18.9232  
+
+> ±0.0149
+
+0.4426  
+
+> ±0.0005
+
+0.4543  
+
+> ±0.0034
+
+6.5659  
+
+> ±0.0916
+
+0.0368  
+
+> ±0.0004
+
+0.0192  
+
+> ±0.0002
+
+0.2717  
+
+> ±0.0013
+
+Evidential 19.1675  
+
+> ±0.2207
+
+0.4374  
+
+> ±0.0043
+
+0.4574  
+
+> ±0.0101
+
+1.5399  
+
+> ±0.8732
+
+0.0423  
+
+> ±0.0068
+
+0.0210  
+
+> ±0.0025
+
+0.3638  
+
+> ±0.0073
+
+Dropout 15.3957  
+
+> ±0.2979
+
+0.4298  
+
+> ±0.0147
+
+0.4700  
+
+> ±0.0114
+
+164.8900  
+
+> ±22.7577
+
+0.0945  
+
+> ±0.0066
+
+0.0492  
+
+> ±0.0029
+
+0.4021  
+
+> ±0.0027
+
+Normal 15.0760  
+
+> ±0.0487
+
+0.3839  
+
+> ±0.0030
+
+0.4511  
+
+> ±0.0026
+
+14.5310  
+
+> ±0.3270
+
+0.0868  
+
+> ±0.0004
+
+0.0505  
+
+> ±0.0001
+
+0.3001  
+
+> ±0.0020
+
+MoL 14.3498  
+
+> ±0.0829
+
+0.3663  
+
+> ±0.0295
+
+0.5444  
+
+> ±0.0612
+
+3.7191  
+
+> ±0.6307
+
+0.1115  
+
+> ±0.0015
+
+0.0542  
+
+> ±0.0019
+
+0.3135  
+
+> ±0.0063
+
+Horns BayesRays 15.5735  
+
+> ±0.1586
+
+0.4430  
+
+> ±0.0059
+
+0.4544  
+
+> ±0.0045
+
+3.8591  
+
+> ±0.0117
+
+0.0995  
+
+> ±0.0011
+
+0.0590  
+
+> ±0.0007
+
+0.4884  
+
+> ±0.0001
+
+Ensembles 16.0517  
+
+> ±0.0578
+
+0.5028  
+
+> ±0.0026
+
+0.4242  
+
+> ±0.0022
+
+17.4362  
+
+> ±2.9944
+
+0.0708  
+
+> ±0.0014
+
+0.0313  
+
+> ±0.0004
+
+0.2810  
+
+> ±0.0017
+
+DANE 16.0517  
+
+> ±0.0578
+
+0.5028  
+
+> ±0.0026
+
+0.4242  
+
+> ±0.0022
+
+13.0404  
+
+> ±0.7143
+
+0.0699  
+
+> ±0.0010
+
+0.0315  
+
+> ±0.0003
+
+0.2746  
+
+> ±0.0015
+
+Evidential 15.7414  
+
+> ±0.0358
+
+0.5170  
+
+> ±0.0129
+
+0.3770  
+
+> ±0.0177
+
+3.1718  
+
+> ±0.2286
+
+0.1036  
+
+> ±0.0023
+
+0.0447  
+
+> ±0.0016
+
+0.3833  
+
+> ±0.0098
+
+Table 5. Mean and standard deviation of quantitative metrics over three runs on LLFF. Scene Method PSNR ↑ SSIM ↑ LPIPS ↓ NLL ↓ AUSE RMSE ↓
+
+AUSE MAE ↓ AUCE ↓
+
+Dropout 13.9939  
+
+> ±0.0600
+
+0.2365  
+
+> ±0.0080
+
+0.4269  
+
+> ±0.0038
+
+145.2463  
+
+> ±9.5521
+
+0.1065  
+
+> ±0.0009
+
+0.0619  
+
+> ±0.0007
+
+0.4191  
+
+> ±0.0003
+
+Normal 13.3483  
+
+> ±0.0185
+
+0.2104  
+
+> ±0.0040
+
+0.4216  
+
+> ±0.0021
+
+14.8303  
+
+> ±0.1343
+
+0.0801  
+
+> ±0.0007
+
+0.0477  
+
+> ±0.0004
+
+0.3408  
+
+> ±0.0006
+
+MoL 13.0330  
+
+> ±0.0760
+
+0.2416  
+
+> ±0.0055
+
+0.4147  
+
+> ±0.0062
+
+3.3634  
+
+> ±0.3578
+
+0.1159  
+
+> ±0.0019
+
+0.0612  
+
+> ±0.0012
+
+0.3058  
+
+> ±0.0034
+
+Leaves BayesRays 13.9149  
+
+> ±0.0858
+
+0.2797  
+
+> ±0.0108
+
+0.4040  
+
+> ±0.0090
+
+3.5416  
+
+> ±0.0209
+
+0.1640  
+
+> ±0.0007
+
+0.1147  
+
+> ±0.0009
+
+0.4851  
+
+> ±0.0002
+
+Ensembles 14.2332  
+
+> ±0.0762
+
+0.2952  
+
+> ±0.0085
+
+0.4339  
+
+> ±0.0048
+
+12.3597  
+
+> ±0.8442
+
+0.0916  
+
+> ±0.0014
+
+0.0472  
+
+> ±0.0012
+
+0.2780  
+
+> ±0.0011
+
+DANE 14.2332  
+
+> ±0.0762
+
+0.2952  
+
+> ±0.0085
+
+0.4339  
+
+> ±0.0048
+
+11.7830  
+
+> ±0.6081
+
+0.0928  
+
+> ±0.0015
+
+0.0483  
+
+> ±0.0013
+
+0.2752  
+
+> ±0.0011
+
+Evidential 13.9939  
+
+> ±0.0569
+
+0.3006  
+
+> ±0.0023
+
+0.3957  
+
+> ±0.0044
+
+4.4300  
+
+> ±0.0229
+
+0.0874  
+
+> ±0.0009
+
+0.0455  
+
+> ±0.0006
+
+0.3744  
+
+> ±0.0008
+
+Dropout 13.2901  
+
+> ±0.3709
+
+0.2139  
+
+> ±0.0185
+
+0.4735  
+
+> ±0.0080
+
+121.2939  
+
+> ±14.0288
+
+0.1183  
+
+> ±0.0087
+
+0.0755  
+
+> ±0.0057
+
+0.4187  
+
+> ±0.0047
+
+Normal 12.8381  
+
+> ±0.0767
+
+0.2006  
+
+> ±0.0035
+
+0.4286  
+
+> ±0.0010
+
+21.9843  
+
+> ±0.8903
+
+0.1399  
+
+> ±0.0021
+
+0.0986  
+
+> ±0.0019
+
+0.3667  
+
+> ±0.0024
+
+MoL 13.7039  
+
+> ±0.1631
+
+0.3076  
+
+> ±0.0090
+
+0.3672  
+
+> ±0.0050
+
+3.0378  
+
+> ±0.2212
+
+0.1091  
+
+> ±0.0037
+
+0.0544  
+
+> ±0.0022
+
+0.3092  
+
+> ±0.0059
+
+Orchids BayesRays 14.4719  
+
+> ±0.0889
+
+0.3014  
+
+> ±0.0068
+
+0.3896  
+
+> ±0.0052
+
+3.3730  
+
+> ±0.0149
+
+0.1053  
+
+> ±0.0001
+
+0.0664  
+
+> ±0.0003
+
+0.4859  
+
+> ±0.0001
+
+Ensembles 14.8121  
+
+> ±0.0152
+
+0.3249  
+
+> ±0.0003
+
+0.3941  
+
+> ±0.0009
+
+10.4428  
+
+> ±0.3138
+
+0.0774  
+
+> ±0.0009
+
+0.0413  
+
+> ±0.0004
+
+0.2995  
+
+> ±0.0008
+
+DANE 14.8121  
+
+> ±0.0152
+
+0.3249  
+
+> ±0.0003
+
+0.3941  
+
+> ±0.0009
+
+9.9662  
+
+> ±0.2237
+
+0.0764  
+
+> ±0.0007
+
+0.0410  
+
+> ±0.0003
+
+0.2987  
+
+> ±0.0008
+
+Evidential 14.4337  
+
+> ±0.1113
+
+0.3150  
+
+> ±0.0020
+
+0.3675  
+
+> ±0.0020
+
+3.1018  
+
+> ±0.1056
+
+0.0885  
+
+> ±0.0007
+
+0.0476  
+
+> ±0.0006
+
+0.4050  
+
+> ±0.0025
+
+Dropout 19.2386  
+
+> ±0.1170
+
+0.6715  
+
+> ±0.0048
+
+0.4505  
+
+> ±0.0042
+
+87.3169  
+
+> ±10.4561
+
+0.0634  
+
+> ±0.0012
+
+0.0333  
+
+> ±0.0006
+
+0.3801  
+
+> ±0.0056
+
+Normal 18.3417  
+
+> ±0.0252
+
+0.6361  
+
+> ±0.0078
+
+0.4096  
+
+> ±0.0148
+
+5.3266  
+
+> ±0.0167
+
+0.0396  
+
+> ±0.0004
+
+0.0235  
+
+> ±0.0002
+
+0.2443  
+
+> ±0.0021
+
+MoL 17.9607  
+
+> ±0.2566
+
+0.5943  
+
+> ±0.0592
+
+0.5251  
+
+> ±0.0705
+
+4.7781  
+
+> ±0.7674
+
+0.0728  
+
+> ±0.0028
+
+0.0353  
+
+> ±0.0027
+
+0.3393  
+
+> ±0.0081
+
+Room BayesRays 19.6837  
+
+> ±0.0981
+
+0.7164  
+
+> ±0.0059
+
+0.3950  
+
+> ±0.0081
+
+4.3263  
+
+> ±0.0129
+
+0.0892  
+
+> ±0.0003
+
+0.0541  
+
+> ±0.0004
+
+0.4891  
+
+> ±0.0001
+
+Ensembles 19.9058  
+
+> ±0.0320
+
+0.7492  
+
+> ±0.0024
+
+0.3680  
+
+> ±0.0052
+
+14.0229  
+
+> ±1.4143
+
+0.0342  
+
+> ±0.0011
+
+0.0159  
+
+> ±0.0006
+
+0.3058  
+
+> ±0.0059
+
+DANE 19.9058  
+
+> ±0.0320
+
+0.7492  
+
+> ±0.0024
+
+0.3680  
+
+> ±0.0052
+
+11.9512  
+
+> ±1.0730
+
+0.0362  
+
+> ±0.0010
+
+0.0172  
+
+> ±0.0006
+
+0.2761  
+
+> ±0.0057
+
+Evidential 20.1343  
+
+> ±0.0919
+
+0.7136  
+
+> ±0.0154
+
+0.3736  
+
+> ±0.0253
+
+0.5449  
+
+> ±0.1642
+
+0.0404  
+
+> ±0.0037
+
+0.0215  
+
+> ±0.0026
+
+0.3435  
+
+> ±0.0288
+
+Dropout 19.0147  
+
+> ±0.1727
+
+0.5702  
+
+> ±0.0083
+
+0.4165  
+
+> ±0.0035
+
+70.4616  
+
+> ±6.0129
+
+0.0531  
+
+> ±0.0000
+
+0.0288  
+
+> ±0.0005
+
+0.3962  
+
+> ±0.0046
+
+Normal 17.1251  
+
+> ±0.1068
+
+0.5057  
+
+> ±0.0036
+
+0.4056  
+
+> ±0.0061
+
+7.4545  
+
+> ±0.0449
+
+0.0579  
+
+> ±0.0008
+
+0.0327  
+
+> ±0.0003
+
+0.2717  
+
+> ±0.0004
+
+MoL 18.8802  
+
+> ±0.0643
+
+0.6110  
+
+> ±0.0047
+
+0.3549  
+
+> ±0.0070
+
+2.6290  
+
+> ±0.8028
+
+0.0541  
+
+> ±0.0024
+
+0.0230  
+
+> ±0.0011
+
+0.2941  
+
+> ±0.0131
+
+T-Rex BayesRays 19.7022  
+
+> ±0.0476
+
+0.6049  
+
+> ±0.0055
+
+0.3484  
+
+> ±0.0080
+
+3.9710  
+
+> ±0.0210
+
+0.0848  
+
+> ±0.0007
+
+0.0563  
+
+> ±0.0006
+
+0.4891  
+
+> ±0.0001
+
+Ensembles 20.0225  
+
+> ±0.0199
+
+0.6377  
+
+> ±0.0012
+
+0.3309  
+
+> ±0.0019
+
+11.9309  
+
+> ±0.5062
+
+0.0296  
+
+> ±0.0006
+
+0.0146  
+
+> ±0.0003
+
+0.3239  
+
+> ±0.0010
+
+DANE 20.0225  
+
+> ±0.0199
+
+0.6377  
+
+> ±0.0012
+
+0.3309  
+
+> ±0.0019
+
+11.5491  
+
+> ±0.4599
+
+0.0298  
+
+> ±0.0006
+
+0.0147  
+
+> ±0.0003
+
+0.3206  
+
+> ±0.0008
+
+Evidential 19.8021  
+
+> ±0.0634
+
+0.6323  
+
+> ±0.0062
+
+0.3147  
+
+> ±0.0035
+
+4.7364  
+
+> ±0.3272
+
+0.0344  
+
+> ±0.0003
+
+0.0170  
+
+> ±0.0002
+
+0.3907  
+
+> ±0.0063
+
+Table 6. Mean and standard deviation of quantitative metrics over three runs on LLFF. Scene Method PSNR ↑ SSIM ↑ LPIPS ↓ NLL ↓ AUSE RMSE ↓
+
+AUSE MAE ↓ AUCE ↓
+
+Dropout 22.5915  
+
+> ±0.1057
+
+0.7525  
+
+> ±0.0009
+
+0.1718  
+
+> ±0.0010
+
+18.8141  
+
+> ±0.9535
+
+0.0313  
+
+> ±0.0001
+
+0.0191  
+
+> ±0.0002
+
+0.3494  
+
+> ±0.0028
+
+Normal 23.0505  
+
+> ±0.0738
+
+0.7866  
+
+> ±0.0030
+
+0.1466  
+
+> ±0.0034
+
+0.0427  
+
+> ±0.8648
+
+0.0821  
+
+> ±0.0568
+
+0.0660  
+
+> ±0.0471
+
+0.2483  
+
+> ±0.0079
+
+MoL 21.8660  
+
+> ±0.0377
+
+0.7268  
+
+> ±0.0027
+
+0.2015  
+
+> ±0.0018
+
+-0.7413  
+
+> ±0.0306
+
+0.0295  
+
+> ±0.0008
+
+0.0187  
+
+> ±0.0006
+
+0.1800  
+
+> ±0.0016
+
+Android BayesRays 22.8201  
+
+> ±0.0860
+
+0.7683  
+
+> ±0.0006
+
+0.1558  
+
+> ±0.0006
+
+0.4657  
+
+> ±0.0041
+
+0.0500  
+
+> ±0.0018
+
+0.0312  
+
+> ±0.0008
+
+0.4370  
+
+> ±0.0006
+
+Ensembles 23.3925  
+
+> ±0.0309
+
+0.8004  
+
+> ±0.0007
+
+0.1394  
+
+> ±0.0006
+
+7.8360  
+
+> ±0.4412
+
+0.0263  
+
+> ±0.0001
+
+0.0158  
+
+> ±0.0001
+
+0.2947  
+
+> ±0.0022
+
+DANE 23.3925  
+
+> ±0.0309
+
+0.8004  
+
+> ±0.0007
+
+0.1394  
+
+> ±0.0006
+
+7.1260  
+
+> ±0.4184
+
+0.0271  
+
+> ±0.0001
+
+0.0163  
+
+> ±0.0001
+
+0.2572  
+
+> ±0.0024
+
+Evidential 23.6178  
+
+> ±0.0500
+
+0.8062  
+
+> ±0.0008
+
+0.1149  
+
+> ±0.0021
+
+-0.2862  
+
+> ±0.0266
+
+0.0345  
+
+> ±0.0001
+
+0.0220  
+
+> ±0.0001
+
+0.2175  
+
+> ±0.0062
+
+Dropout 27.8252  
+
+> ±0.4488
+
+0.8882  
+
+> ±0.0044
+
+0.1141  
+
+> ±0.0049
+
+22.2539  
+
+> ±6.6734
+
+0.0198  
+
+> ±0.0025
+
+0.0069  
+
+> ±0.0006
+
+0.2312  
+
+> ±0.0021
+
+Normal 29.2132  
+
+> ±0.1981
+
+0.9096  
+
+> ±0.0021
+
+0.0914  
+
+> ±0.0005
+
+7.4096  
+
+> ±1.8880
+
+0.0193  
+
+> ±0.0033
+
+0.0069  
+
+> ±0.0013
+
+0.1045  
+
+> ±0.0076
+
+MoL 25.8615  
+
+> ±0.4790
+
+0.8466  
+
+> ±0.0140
+
+0.1786  
+
+> ±0.0200
+
+-2.0644  
+
+> ±0.2296
+
+0.0321  
+
+> ±0.0056
+
+0.0151  
+
+> ±0.0043
+
+0.0861  
+
+> ±0.0125
+
+Crab BayesRays 28.4892  
+
+> ±0.2354
+
+0.8994  
+
+> ±0.0035
+
+0.1139  
+
+> ±0.0054
+
+0.0470  
+
+> ±0.0157
+
+0.0224  
+
+> ±0.0012
+
+0.0081  
+
+> ±0.0004
+
+0.4628  
+
+> ±0.0010
+
+Ensembles 29.9028  
+
+> ±0.0546
+
+0.9213  
+
+> ±0.0003
+
+0.1055  
+
+> ±0.0006
+
+0.5184  
+
+> ±0.2531
+
+0.0047  
+
+> ±0.0001
+
+0.0021  
+
+> ±0.0000
+
+0.1929  
+
+> ±0.0067
+
+DANE 29.9028  
+
+> ±0.0546
+
+0.9213  
+
+> ±0.0003
+
+0.1055  
+
+> ±0.0006
+
+0.1598  
+
+> ±0.0376
+
+0.0241  
+
+> ±0.0005
+
+0.0104  
+
+> ±0.0001
+
+0.1418  
+
+> ±0.0008
+
+Evidential 29.7575  
+
+> ±0.4037
+
+0.9151  
+
+> ±0.0036
+
+0.0839  
+
+> ±0.0045
+
+-2.3681  
+
+> ±0.1088
+
+0.0127  
+
+> ±0.0031
+
+0.0053  
+
+> ±0.0013
+
+0.1122  
+
+> ±0.0099
+
+Dropout 20.0992  
+
+> ±0.0570
+
+0.7225  
+
+> ±0.0043
+
+0.2730  
+
+> ±0.0065
+
+33.5356  
+
+> ±1.1860
+
+0.0458  
+
+> ±0.0005
+
+0.0303  
+
+> ±0.0006
+
+0.3808  
+
+> ±0.0009
+
+Normal 20.3593  
+
+> ±0.0347
+
+0.7753  
+
+> ±0.0017
+
+0.2218  
+
+> ±0.0026
+
+20.4344  
+
+> ±6.6918
+
+0.0409  
+
+> ±0.0004
+
+0.0269  
+
+> ±0.0004
+
+0.3011  
+
+> ±0.0048
+
+MoL 19.4220  
+
+> ±0.0626
+
+0.6913  
+
+> ±0.0033
+
+0.3112  
+
+> ±0.0013
+
+-0.1722  
+
+> ±0.0800
+
+0.0567  
+
+> ±0.0033
+
+0.0371  
+
+> ±0.0022
+
+0.1918  
+
+> ±0.0041
+
+Statue BayesRays 20.1634  
+
+> ±0.0965
+
+0.7450  
+
+> ±0.0026
+
+0.2418  
+
+> ±0.0053
+
+0.4821  
+
+> ±0.0024
+
+0.0709  
+
+> ±0.0008
+
+0.0463  
+
+> ±0.0009
+
+0.4061  
+
+> ±0.0029
+
+Ensembles 20.6510  
+
+> ±0.0240
+
+0.7873  
+
+> ±0.0008
+
+0.2111  
+
+> ±0.0021
+
+10.3638  
+
+> ±0.1372
+
+0.0298  
+
+> ±0.0002
+
+0.0193  
+
+> ±0.0002
+
+0.3172  
+
+> ±0.0024
+
+DANE 20.6510  
+
+> ±0.0240
+
+0.7873  
+
+> ±0.0008
+
+0.2111  
+
+> ±0.0021
+
+8.8396  
+
+> ±0.1485
+
+0.0367  
+
+> ±0.0002
+
+0.0236  
+
+> ±0.0002
+
+0.2297  
+
+> ±0.0028
+
+Evidential 20.4093  
+
+> ±0.0235
+
+0.7819  
+
+> ±0.0023
+
+0.2070  
+
+> ±0.0042
+
+-0.2045  
+
+> ±0.0129
+
+0.0405  
+
+> ±0.0014
+
+0.0273  
+
+> ±0.0007
+
+0.2957  
+
+> ±0.0045
+
+Dropout 28.8179  
+
+> ±0.3366
+
+0.8861  
+
+> ±0.0034
+
+0.1325  
+
+> ±0.0075
+
+15.5430  
+
+> ±4.9756
+
+0.0155  
+
+> ±0.0024
+
+0.0078  
+
+> ±0.0009
+
+0.2608  
+
+> ±0.0141
+
+Normal 29.2424  
+
+> ±0.4484
+
+0.9145  
+
+> ±0.0022
+
+0.0950  
+
+> ±0.0055
+
+12.9013  
+
+> ±6.4719
+
+0.0213  
+
+> ±0.0045
+
+0.0089  
+
+> ±0.0017
+
+0.1567  
+
+> ±0.0020
+
+MoL 26.9425  
+
+> ±0.1651
+
+0.8630  
+
+> ±0.0041
+
+0.1707  
+
+> ±0.0076
+
+-2.1254  
+
+> ±0.0517
+
+0.0232  
+
+> ±0.0023
+
+0.0108  
+
+> ±0.0011
+
+0.0963  
+
+> ±0.0021
+
+Yoda BayesRays 30.3519  
+
+> ±0.1949
+
+0.9073  
+
+> ±0.0073
+
+0.1120  
+
+> ±0.0086
+
+-0.0009  
+
+> ±0.0105
+
+0.0212  
+
+> ±0.0014
+
+0.0082  
+
+> ±0.0006
+
+0.4632  
+
+> ±0.0021
+
+Ensembles 30.9714  
+
+> ±0.2856
+
+0.9230  
+
+> ±0.0012
+
+0.1047  
+
+> ±0.0018
+
+0.8007  
+
+> ±0.4480
+
+0.0042  
+
+> ±0.0001
+
+0.0019  
+
+> ±0.0000
+
+0.2057  
+
+> ±0.0045
+
+DANE 30.9714  
+
+> ±0.2856
+
+0.9230  
+
+> ±0.0012
+
+0.1047  
+
+> ±0.0018
+
+0.4312  
+
+> ±0.1199
+
+0.0227  
+
+> ±0.0011
+
+0.0104  
+
+> ±0.0005
+
+0.1380  
+
+> ±0.0007
+
+Evidential 29.6492  
+
+> ±0.0817
+
+0.9306  
+
+> ±0.0035
+
+0.0724  
+
+> ±0.0046
+
+-2.4270  
+
+> ±0.0133
+
+0.0185  
+
+> ±0.0033
+
+0.0105  
+
+> ±0.0011
+
+0.1842  
+
+> ±0.0080
+
+Table 7. Mean and standard deviation of quantitative metrics over three runs on RobustNeRF. Figure 11. Qualitative comparison on LF. Figure 12. Qualitative comparison on LLFF. Figure 13. Qualitative comparison on RobustNeRF. Figure 14. Aleatoric and epistemic uncertainty maps for three in-the-wild scenes from Phototourism. Aleatoric uncertainty peaks in regions with high radiance variance (e.g., sky higher above, building facades, moving figures), whereas epistemic uncertainty is concentrated in areas frequently occluded (e.g., sky directly behind the buildings or objects obscured by pedestrians).

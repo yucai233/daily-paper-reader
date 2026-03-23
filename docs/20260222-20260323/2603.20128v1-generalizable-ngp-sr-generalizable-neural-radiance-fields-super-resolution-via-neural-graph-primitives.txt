@@ -1,0 +1,291 @@
+Title: Generalizable NGP-SR: Generalizable Neural Radiance Fields Super-Resolution via Neural Graph Primitives
+
+URL Source: https://arxiv.org/pdf/2603.20128v1
+
+Published Time: Mon, 23 Mar 2026 01:14:39 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+# Generalizable NGP-SR: Generalizable Neural Radiance Fields Super-Resolution via Neural Graph Primitives 
+
+## Wanqi Yuan Clemson University 
+
+> wanqiy@clemson.edu
+
+## Omkar Sharad Mayekar Clemson University 
+
+> omayeka@clemson.edu
+
+## Connor Pennington Clemson University 
+
+> cjpenni@clemson.edu
+
+## Nianyi Li Clemson University 
+
+> nianyil@clemson.edu
+
+## Abstract 
+
+Neural Radiance Fields (NeRF) achieve photorealis-tic novel view synthesis but become costly when high-resolution (HR) rendering is required, as HR outputs de-mand dense sampling and higher-capacity models. More-over, naively super-resolving per-view renderings in 2D of-ten breaks multi-view consistency. We propose General-izable NGP-SR, a 3D-aware super-resolution framework that reconstructs an HR radiance field directly from low-resolution (LR) posed images. Built on Neural Graph-ics Primitives (NGP), NGP-SR conditions radiance pre-diction on 3D coordinates and learned local texture to-kens, enabling recovery of high-frequency details within the radiance field and producing view-consistent HR novel views without external HR references or post-hoc 2D up-sampling. Importantly, our model is generalizable: once trained, it can be applied to unseen scenes and ren-dered from novel viewpoints without per-scene optimiza-tion. Experiments on multiple datasets show that NGP-SR consistently improves both reconstruction quality and runtime efficiency over prior NeRF-based super-resolution methods, offering a practical solution for scalable high-resolution novel view synthesis. Our project page and code are available at https://wanqiyuan.github.io/ Generalizable-NGP-SR/ .
+
+## 1. Introduction 
+
+Neural Radiance Fields (NeRF) [25] have significantly ad-vanced 3D scene reconstruction and novel view synthe-sis, enabling photorealistic rendering from sparse 2D im-ages. Follow-up works extended NeRF to support anti-aliased multiscale representations [2, 39, 41], dynamic scene [18, 31, 37], real-time rendering [7, 9, 38], and inverse rendering[36]. Despite these advances, NeRF’s rendering quality is highly dependent on high-resolution (HR) inputs, and producing HR images is computationally expensive due to dense sampling and large network capacity. A natural solution is super-resolution (SR), which reconstructs high-frequency details from low-resolution (LR) inputs. How-ever, naive 2D SR applied to NeRF renderings often breaks multi-view consistency, leading to artifacts in novel views. Existing NeRF-based SR methods attempt to mitigate this but face significant limitations. Optimization-based methods [10, 14, 33] often rely on HR reference images, limiting generalization, or struggle to maintain fine-detail consistency. While recent diffusion-based approaches [5, 17] improve perceptual fidelity, they introduce stochas-tic geometric hallucinations and incur high computational costs, rendering them impractical for real-time applications. Similarly, adaptations of 3D Gaussian Splatting (3DGS) for SR [30, 32] suffer from the overhead of discrete primitives and scalability issues at large magnification factors. Furthermore, while generalizable NeRF frameworks [8, 21, 22] have emerged to enable fast reconstruction across diverse scenes, they typically prioritize geometry over tex-ture fidelity, resulting in blurred outputs when scaling to high resolutions. This highlights a critical gap: the need for a framework that combines generalization with 3D-consistent super-resolution without the massive overhead of generative foundation models. In this work, we propose NGP-SR , a novel framework that reconstructs high-resolution radiance fields directly from LR inputs and camera poses using Neural Graphics Primitives (NGP). Unlike prior methods that rely on 2D refinement or expensive generative priors, NGP-SR learns high-frequency details directly in 3D space. We achieve this by conditioning the radiance field on texture tokens ex-tracted from multi-resolution local feature patches. These tokens provide patch-level context and effectively induce 
+
+> arXiv:2603.20128v1 [cs.CV] 20 Mar 2026
+
+implicit spatial offsets during radiance evaluation, resem-bling a multi-sampling behavior that helps recover fine structures while maintaining multi-view coherence. By in-tegrating these token-augmented features within NGP’s ef-ficient hash encoding, our method synthesizes high-fidelity HR renderings with strong generalization to unseen scenes. Our key contributions are: • We propose NGP-SR , a 3D-aware super-resolution framework built on feature-enhanced Neural Graphics Primitives , which conditions radiance prediction jointly on spatial coordinates and multi-resolution local patch texture tokens .• We demonstrate that token-conditioned radiance learn-ing can recover high-frequency details while promoting 
+
+multi-view consistency from only LR inputs and camera poses, without requiring HR reference images. • We show strong generalization to unseen scenes , en-abling direct HR synthesis for novel viewpoints from LR observations, with improved quality and efficiency over prior NeRF-based SR methods. 
+
+## 2. Related Work 
+
+Neural Radiance Fields (NeRF). Since the introduction of NeRF [25], significant efforts have focused on improv-ing its efficiency and applicability. Works such as Mip-NeRF [2], Zip-NeRF [3], and others [12, 13, 20, 27, 39, 41] tackled anti-aliasing and scale issues. Others extended NeRF to dynamic scenes [23, 28, 31, 37] and real-time rendering [7, 9, 11, 29, 38]. Instant-NGP [26] introduced multi-resolution hash encoding for near-instant reconstruc-tion, while 3D Gaussian Splatting (3DGS) [16] utilized ex-plicit primitives for real-time speeds. To avoid per-scene optimization, generalizable frameworks emerged. MVS-Gaussian [21] and GeFU [22] leverage multi-view stereo and geometry-aware fusion, respectively, while GDB-NeRF [8] utilizes depth-guided bundle sampling. How-ever, these generalizable methods often compromise high-frequency detail for robustness, a limitation our method ad-dresses. 
+
+NeRF Super-Resolution. NeRF-based SR must recover high-frequency detail while maintaining cross-view consis-tency, unlike conventional 2D SR [6, 34, 35]. Prior ap-proaches use HR references [14, 33], per-scene latent op-timization [10], or diffusion-based refinement [17], often incurring additional supervision, optimization cost, or in-ference overhead. FastSR-NeRF [19] improves efficiency with lightweight SR modules but is less effective at large magnification. Recent 3DGS SR methods adapt video/2D SR priors [5, 30, 32], but discrete primitives and pretrained priors can introduce overhead and reduce robustness across scenes/resolutions. 
+
+Generalizable NeRFs. Recent works on generalizable NeRFs aim to reconstruct novel scenes without per-scene optimization. MVSGaussian [21] integrates Gaussian splat-ting with multi-view stereo for fast reconstruction, but its explicit structure struggles to capture fine-grained HR de-tails. GeFU [22] improves quality via geometry-aware fu-sion and refined rendering, yet still requires scene-specific refinements for consistent HR outputs. GDB-NeRF [8] in-troduces depth-guided bundle sampling for efficient gen-eralization but does not address super-resolution, leaving high-frequency detail underrepresented. Overall, these methods achieve efficiency and generalization but fall short in producing high-resolution, view-consistent outputs di-rectly from LR inputs—a gap our method addresses. In contrast, we propose Generalizable NGP-SR, which leverages Neural Graphics Primitives (NGP) to reconstruct high-resolution radiance fields directly from LR inputs and camera poses. By learning high-frequency details in the 3D domain, our framework ensures multi-view consistency, generalizes to unseen scenes, and significantly improves both quality and efficiency compared to existing super-resolution and generalizable NeRF approaches. 
+
+## 3. Generalizable NGP-SR Method 
+
+Given a set of low-resolution (LR) images {ILR  
+
+> n
+
+}Nn=1 with corresponding camera poses {Cn}Nn=1 , our goal is to re-construct a super-resolved radiance field. Once trained, the model can directly synthesize HR outputs for novel view-points with camera poses {C′
+
+> m
+
+} not seen during training, given only their LR renderings. As illustrated in Fig. 1, our framework consists of three key components: 1) Hier-archical View-Texture Encoding: Multi-scale LR image patches and their corresponding camera poses are encoded into fixed-length tokens. 2) Camera-Aware Feature Inte-gration: Camera poses are embedded into the feature gen-eration process, allowing viewpoint-dependent representa-tions that generalize across novel scenes and viewpoints. 3) Global Feature Fusion: We integrate global LR image fea-tures to guide the decoding of HR signals, ensuring multi-view consistency and fine-grained detail. Our design is inspired by VR-INR [1], which employs hierarchical encoding for video SR. Unlike VR-INR, which operates in purely spatial-temporal domains, our method explicitly incorporates 3D geometry through camera-aware integration and feature fusion, enabling generalizable high-resolution novel view synthesis. 
+
+3.1. Hierarchical View-Texture Encoding 
+
+Given LR input images ILR  
+
+> n
+
+and their associated camera poses Cn, our goal is to construct compact, view-aware query tokens that serve as the foundation for 3D-consistent super-resolution. Figure 1. NGP-SR takes low-resolution (LR) images with camera poses and encodes them into hierarchical view-texture tokens that capture local spatial and pose-aware texture cues. These tokens are interpolated through a unified hash table with adaptive, camera-conditioned weights to produce robust multi-resolution feature vectors. Finally, a global feature fusion module integrates holistic LR image context, and a camera-aware decoder synthesizes high-resolution, view-consistent outputs. 
+
+At each resolution level l, we extract local patches con-taining the HR query coordinates: Pli = ILR (rli), where Pli
+
+denotes the sampled patch around location rli. These multi-scale patches capture progressively finer spatial context for high-resolution reconstruction, as shown in Fig. 1. To incorporate viewpoint information, we embed each camera pose Cn into a latent code via a lightweight MLP: 
+
+aCn = MLP a(Cn), (1) which produces a compact representation of the viewing di-rection. This latent code is injected into the patch encoder 
+
+Gl 
+
+> T
+
+to produce pose-aware texture tokens: 
+
+[ξl
+
+> 1
+
+, ξl
+
+> 2
+
+, . . . , ξlF ] = Gl
+
+> T
+
+(Pli, aCn ). (2) Finally, hierarchical view-texture query tokens are con-structed by concatenating spatial coordinates with the cor-responding texture tokens: 
+
+Qli,n = [ x, y, ξl
+
+> 1
+
+, . . . , ξlF ] = [ ql
+
+> 1
+
+, . . . , qlS ]. (3) 
+
+3.2. Camera-Aware Feature Integration 
+
+Given the hierarchical view-texture query tokens Qli,n , our goal is to generate point-wise, view-dependent feature vec-tors that incorporate both multi-scale spatial context and camera information. This is achieved through a unified hashing and implicit interpolation process. 
+
+Figure 2. 2D illustration of Cross-Level Hash Mapping mecha-nism. For each query token, hyper-vertices are identified at mul-tiple resolution levels of the grid. Texture tokens introduce patch-dependent offsets, such that weight of the selected hyper-vertices may differ across resolutions for the same spatial coordinate. To reduce memory consumption, hyper-vertices from coarser levels are mapped to vertices at the finest resolution level. 
+
+Hyper-Vertex Retrieval. For each query token Qli,n at resolution level l, we locate its enclosing hyper-vertices 
+
+Vli,n = {Vli,n,k }Kk=1 on the discretized multi-resolution grid, where K = 2 d and d is the dimension of Qli, n . Each hyper-vertex Vli,n,k is then mapped to a latent feature vector via a unified hash table: 
+
+ˆvli,n,k = HashTable (Vli,n,k ). (4) Unlike level-specific hash mappings, our unified design uses a single shared hash table across all L levels, signifi-cantly reducing memory usage while preserving multi-scale representation. Fig. 2 illustrates such cross-level hash map-ping in 2D condition. 
+
+Camera-Conditioned Weight Prediction. To interpolate the hashed features, we predict adaptive weights condi-tioned not only on the geometric relation of Qli,n to its sur-rounding vertices but also on the camera embedding aCn .Specifically, a lightweight two-layer MLP takes as input the relative offset of Qli,n within its voxel together with aCn ,and outputs interpolation weights: 
+
+[wli,n, 1, . . . , wli,n,K ] = MLP w
+
+ Qli,n , aCn . (5) 
+
+Feature Aggregation. The final feature vector correspond-ing to Qli,n is then computed as the weighted sum of its hyper-vertex features: 
+
+vli,n =
+
+> K
+
+X
+
+> k=1
+
+wli,n,k · ˆvli,n,k . (6) 
+
+Multi-Scale Feature Representation. Repeating this pro-cess across all L resolution levels yields a set of view-dependent feature vectors. Concatenating them forms the final point-wise, multi-scale representation for viewpoint 
+
+Cn:
+
+vi,n = [ v1
+
+> i,n
+
+, v2
+
+> i,n
+
+, . . . , vLi,n ]. (7) 
+
+3.3. Global Feature Fusion 
+
+To ensure that high-resolution outputs are both detail-rich and consistent across views, we integrate global low-resolution (LR) image features into the view-dependent feature representations vi,n . This is achieved through a two-stage fusion mechanism that combines viewpoint-conditioned features with scene-level global context. 
+
+Stage 1: Camera-Aware Feature Enhancement. From the previous step, each query point Qi,n is represented by its multi-resolution, view-dependent feature vector vi,n =[v1
+
+> i,n
+
+, . . . , vLi,n ]. To explicitly encode viewpoint informa-tion, we fuse these features with the camera embedding 
+
+aCn . Specifically, the features and embedding are concate-nated and passed through a mapping network Gcam: 
+
+f inter  
+
+> i,n
+
+= Gcam (vi,n , aCn ), (8) yielding an intermediate representation that encodes both local multi-scale textures and viewpoint cues. 
+
+Stage 2: Global LR Feature Integration. While f inter 
+
+> i,n
+
+captures local and view-dependent details, it lacks holistic scene context. To address this, we extract global image fea-tures from the LR input ILR using a CNN-based encoder 
+
+GCNN :
+
+fLR = GCNN (ILR ). (9) These global features provide structural and semantic guid-ance, ensuring that reconstructed HR outputs remain coher-ent across views. 
+
+Final Fusion. We then combine the intermediate features 
+
+f inter  
+
+> i,n
+
+with the global LR features fLR through a fusion net-work Gfuse :
+
+¯vi,n = Gfuse (f inter  
+
+> i,n
+
+, fLR ), (10) producing global-context aware feature vectors ¯vi,n that guide HR reconstruction with both local and global con-sistency. 
+
+Decoding. Finally, the fused feature vectors are decoded into HR color values through a two-layer MLP: 
+
+ˆCHR  
+
+> i,n
+
+= MLP c(¯ vi,n ). (11) Training is performed by minimizing the pixel-wise Mean Squared Error (MSE) between predictions and ground-truth HR colors: 
+
+L = ∥ ˆCHR  
+
+> i,n
+
+− CHR 
+
+> i,n
+
+∥22. (12) This global fusion strategy ensures that fine details from local patches are preserved, while structural context from the LR image enforces multi-view coherence across syn-thesized HR outputs. 
+
+## 4. Experiment 
+
+4.1. Implementation Details 
+
+Our framework is implemented in PyTorch, implementation requirement depends on the output resolution. We trained on NVIDIA A100 GPUs with a batch size of 8. We adopt the Adam optimizer with an initial learning rate of 0.00125. The model is trained for ≥200 epochs/iterations depending on the dataset sizes. Training requires approximately 0.7 hours per scene, while inference achieves 0.7 seconds per image. Detailed implementation requirement will be pro-vided in the supplementary materials. 
+
+Camera Pose Embedding ( aCn , Eqn. 1). We encode each camera pose Cn into a compact representation using a three-layer MLP. The first two layers have 64 neurons with ReLU activations, followed by a final 16-dimensional out-put layer with Tanh activation to ensure bounded values in 
+
+[−1, 1] .
+
+Texture Encoder Network ( Gl
+
+> T
+
+, Eqn. 2). For each reso-lution level l, the texture encoder is a two-layer MLP that processes vectorized LR image patches. Each hidden layer contains 128 neurons with ReLU activation, and the output is a compact texture code of dimension F = 3 .
+
+Camera-Aware Mapping Network ( Gcam , Eqn. 8). To in-tegrate viewpoint information, we concatenate the multi-resolution feature vector vi,n with the camera embedding 
+
+aCn , and feed the result into a four-layer MLP. Each layer has 64 neurons with Tanh activation. The hidden layers in-ternally allocate 32 dimensions to camera embedding fea-tures, ensuring effective fusion between spatial and view-point cues. Table 1. Comparison of SOTAs on Blender datasets with varying resolutions and scaling factors. The best results are highlighted in bold, and the second-best results are underlined.                                                                                                                                                                                   
+
+> Methods Blender ×2 (100 ×100) Blender ×4 (100 ×100) Blender ×2 (200 ×200) Blender ×4 (200 ×200) PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓
+> TensoRF [4] 25.41 0.882 0.161 24.06 0.843 0.188 27.27 0.909 0.199 26.18 0.882 0.146 Instant-NGP [26] 26.34 0.916 0.157 24.83 0.872 0.229 28.29 0.934 0.109 27.07 0.904 0.159 3DGS [16] 27.57 0.935 0.124 25.59 0.887 0.213 29.49 0.949 0.087 27.86 0.916 0.147 LR+Bicubic 28.20 0.946 0.099 25.99 0.896 0.192 30.53 0.962 0.066 28.60 0.927 0.128 NeRF-SR [33] 28.74 0.924 0.066 28.07 0.921 0.071 30.82 0.953 0.055 28.46 0.921 0.076 FastSR-NeRF [19] 27.27 0.902 0.142 22.32 0.453 0.475 31.42 0.952 0.047 30.47 0.944 0.075 SuperGaussian [30] 26.39 0.915 0.090 –––29.91 0.947 0.035 28.44 0.923 0.067 S2Gaussian [32] ––-––––––24.19 0.879 0.089 TensoRF+Ours 26.61 0.908 0.093 23.52 0.863 0.119 28.28 0.921 0.068 26.10 0.891 0.103 Instant-NGP+Ours 29.25 0.945 0.062 25.13 0.888 0.098 31.02 0.952 0.041 27.17 0.892 0.085 3DGS+Ours 29.43 0.946 0.051 25.80 0.893 0.085 32.17 0.940 0.041 27.14 0.892 0.076 LR+Ours 29.34 0.938 0.049 28.77 0.921 0.069 33.68 0.971 0.027 29.31 0.923 0.055
+
+Table 2. Comparison of SOTAs on LLFF datasets with varying resolutions and scaling factors. The best results are highlighted in bold, and the second-best results are underlined.                                                                                                                                                                                    
+
+> Methods LLFF ×2 (100 ×100) LLFF ×4 (100 ×100) LLFF ×2 (200 ×200) LLFF ×4 (200 ×200) PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓
+> TensoRF [4] 24.07 0.754 0.314 22.16 0.591 0.596 24.69 0.750 0.309 23.49 0.648 0.503 Instant-NGP [26] 22.17 0.667 0.335 20.90 0.543 0.479 21.47 0.616 0.332 20.81 0.571 0.428 3DGS [16] 23.20 0.735 0.307 21.52 0.581 0.580 23.76 0.748 0.294 22.73 0.654 0.478 LR+Bicubic 24.56 0.765 0.299 22.62 0.608 0.579 25.92 0.793 0.260 24.43 0.687 0.468 NeRF-SR [33] 26.24 0.838 0.123 24.07 0.713 0.252 27.15 0.837 0.122 25.44 0.745 0.208 FastSR-NeRF [19] 24.33 0.765 0.297 21.20 0.584 0.473 26.21 0.822 0.241 21.30 0.384 0.475 3DSR [5] 26.38 0.886 0.181 24.18 0.760 0.342 24.90 0.838 0.235 25.88 0.809 0.261 S2Gaussian [32] ––-––––––20.45 0.654 0.139 TensoRF+Ours 26.46 0.805 0.181 25.34 0.751 0.190 27.07 0.809 0.170 24.49 0.718 0.213 Instant-NGP+Ours 23.31 0.719 0.171 22.30 0.689 0.206 21.74 0.646 0.155 20.92 0.588 0.264 3DGS+Ours 26.11 0.805 0.168 25.07 0.754 0.183 26.87 0.828 0.149 25.42 0.749 0.176 LR+Ours 30.32 0.892 0.072 29.29 0.847 0.112 32.90 0.934 0.040 29.61 0.874 0.074
+
+Global Feature Extractor ( GCNN , Eqn. 9). Global con-text is captured using a lightweight CNN with three convo-lutional layers ([64, 64, 32] channels), 3 × 3 kernels, and ReLU activations. An adaptive average pooling layer pro-duces a 32-dimensional global feature vector. 
+
+Two-Stage Fusion Network ( Gfuse , Eqn. 10). The fusion module first combines hierarchical features and camera em-beddings via a four-layer MLP (64 neurons, Tanh activa-tions). The intermediate fused representation is then merged with global LR features in a second four-layer MLP of the same configuration. Both stages use intermediate embed-dings of size 32 for efficient integration of local and global information. For clarity and completeness, additional im-plementation details are provided in the supplementary ma-terials. 
+
+4.2. Comparison Experiments 
+
+Benchmarks and Protocol. We evaluate our approach on three widely used datasets for novel view synthesis (NVS) and super-resolution. Blender [25]: 8 synthetic scenes with diverse shapes and materials. We train on the training sets and evaluate on the held-out, unseen test sets of all eight scenes. Input images are downsampled to 100 ×100 and 
+
+200 ×200 , and results are reported for SR scales of ×2 and 
+
+×4. LLFF [24]: eight forward-facing real-world scenes. Following NeRF-SR [33], we train on the entire dataset due to the limited number of images per scene. Evaluation is conducted on SR novel views synthesized by different NeRF backbones. DTU [15]: a multi-view stereo bench-mark with 124 indoor scenes captured under seven light-ing conditions. We use 88 training scenes with 128 ×128 
+
+LR inputs and ×4 SR, and evaluate on 8 held-out DTU test set. Metrics. We employ standard metrics, includ-ing Peak Signal-to-Noise Ratio (PSNR), Structural Similar-ity Index Measure (SSIM), and Learned Perceptual Image Patch Similarity (LPIPS) [40], to comprehensively assess pixel accuracy, structural fidelity, and perceptual quality of SR results. For methods without SR, their outputs are bicu-bically upsampled to match target resolution. We also re-port LR+Ours (downsampled HR ground-truth as LR input, super-resolved with ours) to indicate the attainable upper bound of our framework. Figure 3. The qualitative comparison of our method on the Blender datasets, with input images at 200 ×200 resolution and ×4 super-resolution. The leftmost images show the low-resolution inputs, while the images highlighted in red correspond to our results. Compared with other methods that fail to recover fine structures, our approach successfully reconstructs sharp and detailed results. Notably, our method consistently enhances regions where other approaches produce blurred or low-frequency reconstructions. 
+
+Figure 4. The qualitative comparison of our method on the LLFF datasets, with input images at 200 ×200 resolution and ×4 super-resolution.The leftmost images show the low-resolution inputs, while the images highlighted in red correspond to our results. Our method successfully reconstructs fine details in leaves and architectural structures, and consistently improves reconstruction quality in regions where other methods exhibit degraded results. 
+
+Compared Methods. We group baselines into three cat-egories: 1) Backbone-only NVS without SR : TensoRF [4], Instant-NGP [26], and 3D Gaussian Splatting (3DGS) [16]. Since these methods do not perform SR, we upsample their LR outputs using bicubic interpolation ( ×2, ×4). 2) NeRF-based SR : NeRF-SR [33] and FastSR-NeRF [19]. Both re-quire HR reference supervision, which limits their appli-cability in low-resolution only settings. As FastSR-NeRF is not open-sourced, we directly report the numbers from their paper; hence, no visual comparison is available. 3) 3DGS + video SR : SuperGaussian [30], which adapts pretrained video SR models to upsample continuous 3DGS renderings. Since results on the LLFF dataset are not provided, we only compare against SuperGaussian on Blender (Tab. 1). For S2Gaussian [32], since the authors do not provide publicly available code, we directly report the results as presented in the original paper. And 3DSR [5] on LLFF dataset. 4) 
+
+Generalizable NeRFs : MVSGaussian [21], GeFU [22], and GDB-NeRF [8], evaluated on DTU with input images re-sized to 512 ×512 .
+
+Quantitative and Qualitative Analysis. Tables 1, 2, and 3 summarize quantitative results, and Figures 6,3 and 4, and provide visual comparisons. Backbone-only NVS methods degrade severely at extreme low-resolution inputs (100 ×100 and 200 ×200 ), in many cases performing worse than bicubic upsampling. This is due to the reduced number of rays and the strong ambiguity of LR observations, which prevent accurate high-frequency reconstruction. In con-trast, when combined with our NGP-SR, NeRF and 3DGS backbones achieve significant improvements across all met-rics, demonstrating the effectiveness of our framework as a modular SR component. On Blender, our method outper-forms both NeRF-SR and FastSR-NeRF at extremely low resolutions ( 100 ×100 , despite their reliance on HR refer-ences, while also surpassing SuperGaussian and in most cases. On LLFF, NGP-SR achieves especially strong per-formance, which can be attributed to training on all images per scene—similar to NeRF-SR, and the tendency of our NGP-based interpolation to overfit more effectively to ob-served views. This property allows NGP-SR to reconstruct high-fidelity details when test views share similar content with the training set. On DTU, NGP-SR generalizes well to unseen test scenes, producing sharper details and more con-sistent reconstructions from LR inputs and camera poses. 
+
+> Figure 5. Quantitative ablation on the Lego scene.
+
+## 5. Ablation Study 
+
+We conduct comprehensive ablation studies to analyze the contributions of key components in our framework. To sys-tematically assess the effectiveness of these modules, we create subnetworks by individually removing each compo-nent and report both qualitative and quantitative outcomes on the Lego scene from the Blender dataset, using a resolu-tion scale factor of ×2 and input resolution of 100 × 100 .                                               
+
+> Table 3. Comparison of SOTAs on DTU datasets with 512 ×512
+> resolution. Methods DTU PSNR ↑SSIM ↑LPIPS ↓
+> MVSGaussian 21.95 0.863 0.112 GeFU 23.15 0.880 0.100
+> GDB-NeRF 22.42 0.867 0.111 Ours ( ×4) 31.38 0.884 0.122
+> Figure 6. Qualitative evaluation of novel-scene generalization on the DTU dataset. Each panel shows the reconstructed image (left) and two zoomed-in crops (right). Baselines use 512 ×512 inputs, while our method operates on 128 ×128 inputs with ×4super-resolution and still reconstructs sharp details with accurate light-ing. Table 4. Ablation studies of our method on the Lego dataset using PSNR, SSIM, and LPIPS metrics. Methods Lego ×2 (100 ×100) PSNR ↑SSIM ↑LPIPS ↓
+> Ours w/o Gcam 26.69 0.892 0.082 Ours w/o GCNN 13.38 0.538 0.471 Ours w/o Gfuse 13.69 0.585 0.436 Ours 30.60 0.952 0.075
+
+Results are summarized in Table 4 and qualitatively illus-trated in Figure 5. 
+
+Camera-Aware Mapping Network ( Gcam ) This module in-tegrates view-dependent feature vectors with camera pose embeddings via an MLP, enabling robust viewpoint adap-tation. For ablation, we replace Gcam with a simpler two-layer MLP without camera pose conditioning. The resulting model suffers a notable performance drop (PSNR: -3.27 dB, SSIM: -0.053, LPIPS: +0.02), confirming the critical role of explicit camera pose embedding. 
+
+Global Feature Extractor ( GCNN ) This component cap-tures structural and textural context from low-resolution in-puts. Ablating this module significantly degrades recon-struction quality (PSNR: -16.58 dB, SSIM: -0.407, LPIPS: +0.409), demonstrating its importance in providing global context. Qualitative results in Figure 5 highlight clear fail-ures in texture and pose reconstruction when GCNN is omit-ted. 
+
+Two-Stage Fusion Network ( Gfuse ) This network fuses lo-cal view-dependent features with global contextual infor-mation in a two-stage MLP process. Removing this fu-sion step and directly feeding hierarchical features into the decoder dramatically worsens performance (PSNR: -16.27 dB, SSIM: -0.360, LPIPS: +0.374), indicating its crucial role in integrating detailed local and global context. Visual outputs without this fusion module exhibit severe deficien-cies in both structure and texture (Figure 5). 
+
+## 6. Conclusion 
+
+We presented NGP-SR, a generalizable super-resolution framework for Neural Radiance Fields that reconstructs high-resolution views directly from low-resolution multi-view inputs. By combining hierarchical spatial-texture en-coding, camera-aware feature integration, and global fea-ture fusion, NGP-SR produces detail-preserving and view-consistent reconstructions. Experiments on Blender, LLFF, and DTU show that NGP-SR outperforms state-of-the-art methods, especially in challenging low-resolution settings where standard NeRF and 3DGS backbones struggle. Our framework generalizes well to unseen scenes without per-scene retraining, and ablation studies confirm the impor-tance of each component. Our approach reconstructs high-frequency details from LR inputs, without any generative models or high-frequency cues, high-frequency signals may be challengable despite visually sharp reconstructions. Fu-ture work will extend NGP-SR to high-frequency signals, dynamic scenes and explore lighter encodings for real-time deployment. 
+
+## References 
+
+[1] Mary Aiyetigbo, Wanqi Yuan, Feng Luo, and Nianyi Li. Implicit neural representation for video restoration. arXiv preprint arXiv:2506.05488 , 2025. 2 [2] Jonathan T Barron, Ben Mildenhall, Matthew Tancik, Peter Hedman, Ricardo Martin-Brualla, and Pratul P Srinivasan. Mip-nerf: A multiscale representation for anti-aliasing neu-ral radiance fields. In Proceedings of the IEEE/CVF inter-national conference on computer vision , pages 5855–5864, 2021. 1, 2 [3] Jonathan T Barron, Ben Mildenhall, Dor Verbin, Pratul P Srinivasan, and Peter Hedman. Zip-nerf: Anti-aliased grid-based neural radiance fields. In Proceedings of the IEEE/CVF International Conference on Computer Vision ,pages 19697–19705, 2023. 2 [4] Anpei Chen, Zexiang Xu, Andreas Geiger, Jingyi Yu, and Hao Su. Tensorf: Tensorial radiance fields. In European Conference on Computer Vision (ECCV) , 2022. 5, 6 [5] Yi-Ting Chen, Ting-Hsuan Liao, Pengsheng Guo, Alexander Schwing, and Jia-Bin Huang. Bridging diffusion models and 3d representations: A 3d consistent super-resolution frame-work. In Proceedings of the IEEE/CVF International Con-ference on Computer Vision , pages 13481–13490, 2025. 1, 2, 5, 7 [6] Chao Dong, Chen C. Loy, Kaiming He, and Xiaoou Tang. Image super-resolution using deep convolutional networks. 
+
+IEEE Transactions on Pattern Analysis and Machine Intelli-gence , 38:295–307, 2016. 2 [7] Daniel Duckworth, Peter Hedman, Christian Reiser, Pe-ter Zhizhin, Jean-Franc ¸ois Thibert, Mario Luˆ ci´ c, Richard Szeliski, and Jonathan T. Barron. Smerf: Streamable mem-ory efficient radiance fields for real-time large-scene ex-ploration. ACM Transactions on Graphics , 43:63:1–63:13, 2024. 1, 2 [8] Li Fang, Hao Zhu, Longlong Chen, Fei Hu, Long Ye, and Zhan Ma. Depth-guided bundle sampling for efficient gener-alizable neural radiance field reconstruction. In CVPR , 2025. 1, 2, 7 [9] Jiaming Gu, Minchao Jiang, Xiaoyuan Lu, Guangming Zhu, Syed A.A. Shah, Liang Zhang, and Mohammed Bennamoun. Ue4-nerf:neural radiance field for real-time rendering of large-scale scene. In NIPS ’23: Proceedings of the 37th International Conference on Neural Information Processing Systems , 2023. 1, 2 [10] Yuqi Han, Tao Yu, Xiaohang Yu, Di Xu, Binge Zheng, Zonghong Dai, Changpeng Yang, Yuwang Wang, and Qionghai Dai. Super-nerf: View-consistent detail generation for nerf super-resolution. IEEE Transactions on Visualiza-tion and Computer Graphics , 31(9):6053–6066, 2024. 1, 2 [11] Peter Hedman, Pratul P. Srinivasan, Ben Mildenhall, Jonathan T. Barron, and Paul Debevec. Baking neural ra-diance fields for real-time view synthesis. In IEEE/CVF In-ternational Conference on Computer Vision (ICCV) , 2021. 2[12] Dongting Hu, Zhenkai Zhang, Tingbo Hou, Tongliang Liu, Huan Fu, and Mingming Gong. Multiscale representation for real-time anti-aliasing neural rendering. In IEEE/CVF International Conference on Computer Vision (ICCV) , 2023. 2[13] Wenbo Hu, Yuling Wang, Lin Ma, Bangbang Yang, Lin Gao, and Xiao Liu. Tri-miprf: Tri-mip representation for efficient anti-aliasing neural radiance fields. In IEEE/CVF Interna-tional Conference on Computer Vision (ICCV) , 2023. 2 [14] Xudong Huang, Wei Li, Jie Hu, Hanting Chen, and Yunhe Wang. Refsr-nerf: Towards high fidelity and super resolution view synthesis. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 8244– 8253, 2023. 1, 2 [15] Rasmus Jensen, Anders Dahl, George Vogiatzis, Engil Tola, and Henrik Aanæs. Large scale multi-view stereopsis eval-uation. In 2014 IEEE Conference on Computer Vision and Pattern Recognition , pages 406–413. IEEE, 2014. 5 [16] Bernhard Kerbl, Georgios Kopanas, Thomas Leimk¨ uhler, and George Drettakis. 3d gaussian splatting for real-time ra-diance field rendering. ACM Transactions on Graphics (Pro-ceedings of ACM SIGGRAPH) , 42(4):1–13, 2023. 2, 5, 6 [17] Jie Long Lee, Chen Li, and Gim Hee Lee. Disr-nerf: Diffusion-guided view-consistent super-resolution nerf. In Proceedings of the IEEE/CVF Conference on Computer Vi-sion and Pattern Recognition , pages 20561–20570, 2024. 1, 2[18] Zhengqi Li, Simon Niklaus, Noah Snavely, and Oliver Wang. Neural scene flow fields for space-time view synthesis of dy-namic scenes. In IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2021. 1 [19] Chien-Yu Lin, Qichen Fu, Thomas Merth, Karren Yang, and Anurag Ranjan. Fastsr-nerf: improving nerf efficiency on consumer devices with a simple super-resolution pipeline. In 
+
+Proceedings of the IEEE/CVF Winter Conference on Appli-cations of Computer Vision , pages 6036–6045, 2024. 2, 5, 6[20] Junchen Liu, Wenbo Hu, Zhuo Yang, Jianteng Chen, Guo-liang Wang, Xiaoxue Chen, Yantong Cai, Huan-ang Gao, and Hao Zhao. Rip-nerf: Anti-aliasing radiance fields with ripmap-encoded platonic solids. In ACM Special Interest Group on Computer Graphics and Interactive Techniques (SIGGRAPH) , 2024. 2 [21] Tianqi Liu, Guangcong Wang, Shoukang Hu, Liao Shen, Xinyi Ye, Yuhang Zang, Zhiguo Cao, Wei Li, and Ziwei Liu. Mvsgaussian: Fast generalizable gaussian splatting re-construction from multi-view stereo, 2024. 1, 2, 7 [22] Tianqi Liu, Xinyi Ye, Min Shi, Zihao Huang, Zhiyu Pan, Zhan Peng, and Zhiguo Cao. Geometry-aware reconstruc-tion and fusion-refined rendering for generalizable neural ra-diance fields. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 7654–7663, 2024. 1, 2, 7 [23] Xianrui Luo, Huiqiang Sun, and Zhiguo Cao. Dynamic neu-ral radiance field from defocused monocular video. In Euro-pean Conference on Computer Vision (ECCV) , 2024. 2 [24] Ben Mildenhall, Pratul P. Srinivasan, Rodrigo Ortiz-Cayon, Nima Khademi Kalantari, Ravi Ramamoorthi, Ren Ng, and Abhishek Kar. Local light field fusion: Practical view syn-thesis with prescriptive sampling guidelines. ACM Transac-tions on Graphics (TOG) , 38(4):1–14, 2019. 5 [25] Ben Mildenhall, Pratul P Srinivasan, Matthew Tancik, Jonathan T Barron, Ravi Ramamoorthi, and Ren Ng. Nerf: Representing scenes as neural radiance fields for view synthesis. In European Conference on Computer Vision (ECCV) , pages 405–421, 2020. 1, 2, 5 [26] Thomas M¨ uller, Alex Evans, Christoph Schied, and Alexan-der Keller. Instant neural graphics primitives with a multires-olution hash encoding. ACM Transactions on Graphics , 41 (4):102:1–102:15, 2022. 2, 5, 6 [27] Seungtae Nam, Daniel Rho, Jong H. Ko, and Eunbyung Park. Mip-grid: Anti-aliased grid representations for neural radi-ance fields. In NIPS ’23: Proceedings of the 37th Inter-national Conference on Neural Information Processing Sys-tems , 2023. 2 [28] Albert Pumarola, Enric Corona, Gerard Pons-Moll, and Francesc Moreno-Noguer. D-nerf: Neural radiance fields for dynamic scenes. In IEEE/CVF Conference on Computer Vi-sion and Pattern Recognition (CVPR) , 2021. 2 [29] Sara Rojas, Jesus Zarzar, Juan C. P´ erez, Artsiom Sanakoyeu, Ali Thabet, and Albert Pumarola. Re-rend: Real-time ren-dering of nerfs across devices. In IEEE/CVF International Conference on Computer Vision (ICCV) , 2023. 2 [30] Yuan Shen, Duygu Ceylan, Paul Guerrero, Zexiang Xu, Niloy J Mitra, Shenlong Wang, and Anna Fr¨ uhst¨ uck. Su-pergaussian: Repurposing video models for 3d super reso-lution. In European Conference on Computer Vision , pages 215–233. Springer, 2024. 1, 2, 5, 6 [31] Huiqiang Sun, Xingyi Li, Liao Shen, Xinyi Ye, Ke Xian, and Zhiguo Cao. Dyblurf: Dynamic neural radiance fields from blurry monocular video. In IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2024. 1, 2[32] Yecong Wan, Mingwen Shao, Yuanshuo Cheng, and Wang-meng Zuo. S2gaussian: Sparse-view super-resolution 3d gaussian splatting, 2025. 1, 2, 5, 7 [33] Chen Wang, Xian Wu, Yuan-Chen Guo, Song-Hai Zhang, Yu-Wing Tai, and Shi-Min Hu. Nerf-sr: High quality neural radiance fields using supersampling. In Proceedings of the 30th ACM International Conference on Multimedia , pages 6445–6454, 2022. 1, 2, 5, 6 [34] Xintao Wang, Ke Yu, Shixiang Wu, Jinjin Gu, Yihao Liu, Chao Dong, Yu Qiao, and Chen C. Loy. Esrgan: Enhanced super-resolution generative adversarial networks. In Euro-pean Conference on Computer Vision (ECCV) , 2018. 2 [35] Xintao Wang, Liangbin Xie, Chao Dong, and Ying Shan. Real-esrgan: Training real-world blind super-resolution with pure synthetic data. In IEEE/CVF International Conference on Computer Vision (ICCV) , 2021. 2 [36] Sean Wu, Shamik Basu, Tim Broedermann, Luc Van Gool, and Christos Sakaridis. Pbr-nerf: Inverse rendering with physics-based neural fields, 2025. 1 [37] Zhiwen Yan, Chen Li, and Gim H. Lee. Nerf-ds: Neural ra-diance fields for dynamic specular objects. In IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2023. 1, 2 [38] Alex Yu, Ruilong Li, Matthew Tancik, Hao Li, Ren Ng, and Angjoo Kanazawa. Plenoctrees for real-time rendering of neural radiance fields. In IEEE/CVF International Confer-ence on Computer Vision (ICCV) , 2021. 1, 2 [39] Zehao Yu, Anpei Chen, Binbin Huang, Torsten Sattler, and Andreas Geiger. Mip-splatting: Alias-free 3d gaussian splat-ting. In Proceedings of the IEEE/CVF conference on com-puter vision and pattern recognition , pages 19447–19456, 2024. 1, 2 [40] Richard Zhang, Phillip Isola, Alexei A Efros, Eli Shecht-man, and Oliver Wang. The unreasonable effectiveness of deep features as a perceptual metric. In Proceedings of the IEEE conference on computer vision and pattern recogni-tion , pages 586–595, 2018. 5 [41] Xiaoyu Zhang, Weihong Pan, Chong Bao, Xiyu Zhang, Xi-aojun Xiang, Hanqing Jiang, and Hujun Bao. Lookcloser: Frequency-aware radiance field for tiny-detail scene, 2025. 1, 2

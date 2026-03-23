@@ -1,0 +1,464 @@
+Title: Node-RF: Learning Generalized Continuous Space-Time Scene Dynamics with Neural ODE-based NeRFs
+
+URL Source: https://arxiv.org/pdf/2603.12078v2
+
+Published Time: Mon, 16 Mar 2026 01:21:02 GMT
+
+Number of Pages: 13
+
+Markdown Content:
+# Node-RF: Learning Generalized Continuous Space-Time Scene Dynamics with Neural ODE-based NeRFs 
+
+## Hiran Sarkar 1 Liming Kuang 1,2 Yordanka Velikova 1,2 Benjamin Busam 1,21Technical University of Munich 2Munich Center for Machine Learning 
+
+hiransarkar2001@gmail.com, {liming.kuang, dani.velikova, b.busam }@tum.de 
+
+Figure 1. Node-RF Overview. Multiple observations of the red ball being dropped onto the dual ramp end in damped oscillations towards the two valleys. Node-RF learns to encodes generalized dynamics of deterministic motions from sequences such as A (pink), C (yellow) into an implicit space-time latent representation using NeRF and nODE. Embedded sequence states depicted as scene latent points zt on the embedding space are propagated through time t using an implicit neural ODE. Intermediate and future states (centre to right encodings) can be extrapolated and rendered (top, bottom) given initial frame conditions (on the left). Latent divergence ∇zt (colour coded) characterizes behaviour of the learnt system. Various initial states of dropping the ball at locations around the centre (green) propagate through time (lines) towards the steady state sinks with ∇zt < 0 (right). 
+
+## Abstract 
+
+Predicting scene dynamics from visual observations is chal-lenging. Existing methods capture dynamics only within observed boundaries failing to extrapolate far beyond the training sequence. Node-RF (Neural ODE-based NeRF) overcomes this limitation by integrating Neural Ordinary Differential Equations (NODEs) with dynamic Neural Ra-diance Fields (NeRFs), enabling a continuous-time, spa-tiotemporal representation that generalizes beyond ob-served trajectories at constant memory cost. From visual input, Node-RF learns an implicit scene state that evolves over time via an ODE solver, propagating feature embed-dings via differential calculus. A NeRF-based renderer interprets calculated embeddings to synthesize arbitrary views for long-range extrapolation. Training on multiple motion sequences with shared dynamics allows for general-ization to unseen conditions. Our experiments demonstrate that Node-RF can characterize abstract system behavior without explicit model to identify critical points for future 
+
+> arXiv:2603.12078v2 [cs.CV] 13 Mar 2026
+
+predictions. Our code will be made publicly available. 
+
+## 1. Introduction 
+
+Modeling the dynamics of real-world scenes from vi-sual observations is a central problem in computer vision, with applications spanning dynamic view synthesis, robotic planning, scene forecasting, and 4D reconstruction. As cameras capture only sparse and discrete snapshots of an evolving environment, a key challenge is to infer a continu-ous and physically plausible representation of how the scene changes over time. Achieving this requires capturing both the underlying 3D structure and its temporal evolution in a way that generalizes across sequences even with unseen initial conditions. Traditional approaches often rely on explicit motion models or discretized predictive architectures. Optical flow and deformation-based methods, while effective for short-term predictions, struggle with large motions, occlusions, and long-range extrapolation. Recent video prediction and generative models [3] synthesize intermediate frames at fixed time-steps. These models struggle with irregular tem-poral sampling and reasoning about continuous motion over long time horizons. 
+
+Dynamic radiance fields extend the success of Neural Radiance Fields (NeRF) [18] to 4D spatio-temporal scenes. They learn volumetric representations that jointly encode geometry, appearance, and motion, enabling photorealistic rendering from novel viewpoints. However, most dynamic NeRF variants [15, 21, 24] parameterize time as a discrete set of frames or rely on learned deformation fields specific to each training trajectory. This design leads to: (1) Limited extrapolation: Motion is learned only at observed frames, supporting interpolation near training timestamps without principled mechanism for long-range temporal extrapola-tion. (2) Lack of generalization: Deformation fields are sequence-specific, preventing the model to generalize to dy-namic patterns that are not seen during training. To address these challenges, we explore a complemen-tary direction: learning continuous-time latent dynamics that explain the evolution of a 3D scene. Neural Ordi-nary Differential Equations (Neural ODEs) [2] provide a framework for such a representation. They capture tempo-ral evolution via differential operators rather than discrete transitions, enabling smooth, consistent trajectories even with irregular timestamps. While Neural ODEs have been successfully applied in dynamical systems and trajectory prediction, their integration with radiance fields for spatio-temporal reasoning remains relatively underexplored. We introduce Node-RF (Neural ODE meets NeRF) , a unified framework that tightly couples Neural ODEs with a radiance field to model continuous scene dynamics directly from images. The central idea is to represent the state of a dynamic scene using a latent vector that evolves accord-ing to a learned ODE. At any queried timestamp, this latent state is decoded by a NeRF-based renderer to produce ge-ometry and appearance that reflect the scene configuration at that moment. This design provides several advantages: 
+
+Continuous-time extrapolation: By modeling the scene dynamics as a continuous ODE, the system can predict ar-bitrary timepoints while maintaining smooth, coherent evo-lution. This formulation reduces temporal drift and artifacts common in frame-based dynamic NeRFs and enables phys-ically plausible long-range extrapolation .
+
+Trajectory generalization: By learning a continuous dy-namic model shared across multiple trajectories governed by the same underlying physics, the system can general-ize to novel trajectories arising from unseen initial states 
+
+while maintaining consistent continuous-time behavior. During training, Node-RF learns from single- or multi-view image sequences using a photometric loss, without optical flow, depth, or 3D ground truth. The Neural ODE governs the temporal evolution of a canonical latent code, while the radiance field decodes the latent state for view-consistent renderings. This learning process encourages la-tent dynamics to reflect meaningful scene behavior, such as object motion, viewpoint variation, or non-rigid deforma-tion. Our main contributions are: 1. Designing a novel implicit spatio-temporal represen-tation by tightly integrating Neural ODEs and NeRFs ,enabling a continuous representation for long-term ex-trapolation , and photorealistic novel view synthesis within individual sequences. 2. Demonstrating trajectory generalization in dynamic scenes: by learning a continuous latent model across multiple sequences, the system can predict novel trajec-tories from unseen initial conditions .3. Showing how learnt latent embeddings can be lever-aged for generic analysis of dynamical systems and characterization of dynamic behavior. 
+
+## 2. Related Work 
+
+Static Scene Representation : Reconstructing static 3D scenes from 2D images is a key challenge in computer vi-sion. Traditional methods struggle with memory efficiency and scalability. Neural implicit representations, such as NeRF [18], have gained popularity by encoding scenes as continuous functions that map 3D coordinates to color and density, enabling high-quality novel view synthesis. Exten-sions of NeRF improve efficiency [5, 19, 31] and robust-ness under sparse observations [11]. Alternatively, Gaus-sian Splatting [13] uses 3D Gaussians for real-time render-ing, offering better scalability and efficiency than NeRF’s volumetric ray marching. However, these methods are lim-ited in dynamic environments, prompting the need for tech-niques that capture both spatial and temporal changes. 
+
+Dynamic Scene Representation : Existing methods can be categorized into four types: warping-based, flow based, di-rect inference from space-time inputs, and implicit propa-gation methods. 
+
+Warping-based methods model dynamic scenes by learn-ing a time-dependent deformation field that warps a canon-ical space to different time instances [21, 24]. D-NeRF [24] and Nerfies [21] introduced this approach, while HyperN-eRF [22] extended it to higher-dimensional embeddings to handle topological scene changes. To improve efficiency and scalability, TiNeuVox [4] and HexPlanes [1] factorize spatiotemporal features into compact voxel or plane-based structures, and K-Planes [6] further generalizes this via low-rank feature decompositions. Nerfies additionally employs elastic regularization to encourage smooth, physically plau-sible deformations and reduce overfitting to transient mo-tion artifacts. 
+
+Flow-based methods explicitly estimate scene motion to guide radiance modeling. NSFF [14] learns dense scene flow across frames, enabling motion-aware novel view syn-thesis and temporally consistent reconstruction. 
+
+Direct inference methods bypass deformation or flow estimation and directly infer scene appearance from spa-tiotemporal inputs. DyNeRF [14] trains a NeRF condi-tioned on 3D positions and per-frame latent codes to rep-resent time-varying radiance fields, a setup we also build upon by predicting these latent trajectories through a neu-ral dynamical model. Explicit representations such as Mo-tionGS [32], MAGS [8], and 4D Gaussian Splatting [29] extend 3D Gaussian Splatting [13] to the temporal do-main, efficiently capturing space–time variations with ex-plicit point-based primitives. 
+
+Implicit propagation methods model temporal evolu-tion via implicit continuous dynamics parameterization. DONE [28] leverages neural ODE to perform dynamic re-construction from posed multi-view images but relies on a two-stage, mesh-based pipeline that first reconstructs a static canonical mesh scaffold and then learns surface de-formations. In contrast, our method directly integrates a neural ODE within a NeRF-based inverse rendering frame-work, learning a continuous-time implicit volumetric 3D representation directly from posed multi-view images, with-out mesh scaffolds or intermediate static reconstructions. MonoNeRF [27] generalizes to multiple scenes of monoc-ular videos requiring optical flows, depth maps and binary masks as additional supervisions. Most existing approaches learn scene-specific motions and struggle to generalize beyond the training sequence. In particular, they are not equipped to generalize to multiple sequences or learn extrapolation far beyond the training do-main. To overcome this, we augment dynamic NeRFs with the ability to learn beyond the input frames and seen dynam-ics by leveraging the expressive power of Neural ODEs [2]. Our framework captures continuous-time scene dynamics, allowing for accurate temporal extrapolation and improved generalization to unseen motion patterns. 
+
+Neural ODEs: Neural ODEs [2] reinterpret neural net-work forward passes as continuous-time dynamics by mod-eling hidden state evolution through ordinary differential equations. Latent ODEs [25] extend this framework with an ODE-RNN to handle irregularly sampled time-series, enabling flexible continuous-time representations. Vid-ODE [23] further applies Neural ODEs to video modeling, parameterizing motion trajectories as ODE solutions for temporal interpolation and extrapolation. However, these methods remain limited to 2D temporal modeling and do not generalize to 3D dynamic scene representations. Our work extends Neural ODEs to dynamic NeRFs, enabling spatial and temporal generalization across 3D scenes. 
+
+## 3. Preliminaries: Neural RF and ODE 
+
+Dynamic-NeRF. Given a 3D position x ∈ R3 and a 2D viewing direction d ∈ R2, NeRF [18] aims to estimate vol-ume density σ ∈ R and emitted RGB color c ∈ R3 using neural networks. Following DyNeRF [14], we formulate the dynamic NeRF FΘ by learning latent representation zt
+
+coresponding to each timestep such that 
+
+FΘ (x, d, z t) = ( c, σ ). (1) 
+
+FΘ is implemented as fully connected neural networks. From the camera with origin o and ray direction d, the color of camera ray r(s) = o + sd at time frame t is 
+
+Ct(r) = 
+
+Z sf
+
+> sn
+
+T (s)σ(r(s), z t)c(r(s), d, z t) ds.  (2) where sn and sf denote the bounds of the volume depth range, and the accumulated opacity is given by 
+
+T (s) = exp 
+
+
+
+−
+
+Z ssn
+
+σ(r(p), z t) dp 
+
+
+
+. (3) We apply a hierarchical sampling strategy as in [18], with stratified sampling at the coarse level followed by impor-tance sampling at the fine level. 
+
+Loss Function. The network parameters Θ and the latent codes zt are simultaneously trained by minimizing the ℓ2-loss between the rendered colors ˆC(r) and the ground truth colors C(r), summed over all rays r that correspond to the image pixels from all training camera views R, coarse-to-fine levels J, and throughout all time frames t ∈ T of the recording: 
+
+LN eRF = X 
+
+> t∈T, j ∈J, r∈R
+
+ˆCjt (r) − Ct(r) 22
+
+. (4) Figure 2. Overview of Node-RF . zcan , zt0 , zt1 are learned during warmup iterations. The Multiple Sequence Training along with NeRF         
+
+> (Common Loop) illustrates the Generalized Multi-Sequence Learning task. The Single Sequence Training along with NeRF (Common Loop) illustrates the Continuous Single-Sequence Dynamics task.
+
+Neural-ODE. Neural ODEs [2] – nODEs for short – are a class of continuous-time models where the evolution of a hidden state  h(t) is governed by an ordinary differential equation (ODE): 
+
+dh (t)
+
+dt = fθ (h(t), t ), with h(t0) = h0 (5) Here,  fθ is a neural network parameterized by  θ, which defines the dynamics of the hidden state over time. Unlike discrete models, nODEs allow the state  h(t) to be contin-uously evaluated at arbitrary time steps using a numerical ODE solver: 
+
+h0, . . . , h N = ODESolve (fθ , h 0, (t0, . . . , t N )) . (6) 
+
+## 4. Methodology of Node-RF 
+
+We present Node-RF , a novel framework that integrates NeRF with ODEs to model dynamic scenes. The ODE  fθ
+
+captures temporal evolution in the latent space, generating a view-agnostic latent representation  zt for each timestep. This latent is then passed to the dynamic NeRF  FΘ, which learns the spatial characteristics of the scene. Our entire framework is trained end-to-end, enabling temporal and spatial learning from visual with: 
+
+zt0 , . . . , z tN = ODESolve (fθ , z t0 , (t0, . . . , t N )) , (7) 
+
+FΘ (x, d, z ti ) = ( c, σ ). (8) Augmenting NeRF with ODE helps our implicit representa-tion to learn the underlying process rather than memorizing specific states. To demonstrate the effectiveness of our ap-proach, we conduct two subtasks: 1. We learn single-sequence dynamics from a video and validate our approach through smooth fine-grained in-terpolations and long-term extrapolations. 2. We generalize scene dynamics by learning from multiple sequences governed by the same underlying motion. 
+
+4.1. Continuous Single-Sequence Dynamics 
+
+In this task, we follow a similar data setup to D-NeRF [24] and DyNeRF [14], where a dynamic scene is captured from multiple viewpoints. We leverage latent-ode [25] to model the temporal evolution of the scene, which uses an ODE-RNN variational autoencoder to learn the initial hidden state 
+
+zdyn  
+
+> t0
+
+. We first learn the latent representations corresponding to the first two frames ( zt0 , zt1 ) in a warm-up phase. The latents codes are fed to the NeRF model FΘ which learns from the first two corresponding ground-truth frames, while the nODE is kept frozen. After this, we jointly train the nODE with the NeRF. The two learned latents are fed into the ODE-RNN autoencoder, which learns a normal distribu-tion over the latent space. Sampling from this distribution yields zt0 which is passed to the ODE solver. It generates the dynamic latent representation zdyn  
+
+> ti
+
+for the timestep i,which is fed to the decoder D to get the NeRF latent zti for rendering. The nODE integrates a differential function over time enforcing smooth and consistent transitions between states. This setup enables us to effectively capture the dy-namics of the scene, facilitating not only fine-grained inter-polation but also long-term extrapolation. Joint training is done solely from visual observation via the reconstruction loss LN eRF .
+
+4.2. Generalized Multi-Sequence Learning 
+
+To learn generalized continuous space-time dynamics from multiple scenes that follow the same motion pattern, we adopt our implicit scene representation to accommodate dif-ferent initial conditions of a dynamic object. Training one model on sequences of varying initial conditions enables the generation of unseen scene states. We exemplify initial con-ditions with object position and velocity. We initially learn a static latent zstatic to captures the static background during warmup when latent is trained with NeRF while the nODE is kept frozen. After warmup, the nODE learns dynamics by optimizing a canonical latent zcan as scene reference. It takes positional encodings for the initial conditions of pose 
+
+pc
+
+> 0
+
+, velocity vc 
+
+> 0
+
+at t0. The nODE propagates the canonical scene latent zcan through time to predict scene representa-tions at different times depending on the initial states. We pass pc 
+
+> 0
+
+through an MLP E and concatenate with initial ve-locity vc 
+
+> 0
+
+and canonical latent zcan . The result is fed to the nODE to predict corresponding dynamics and estimate la-tents zdyn  
+
+> ti,c
+
+at time ti. This propagated latent is then passed through three distinct decoders. One to predict the scene dynamics and two for auxiliary supervision: • A NeRF Decoder Dn outputs a dynamic latent capturing motion dependant features which are added to the static latent zstatic . The resulting latent zti,c is subsequently used from a NeRF model to render images. • A Pose Decoder predicts object poses ˆpcti .• A Velocity Decoder estimates the object velocity ˆvcti .We use L1 losses to supervise pose and velocity with ground-truth data with 
+
+Lp = 1
+
+T
+
+> T
+
+X
+
+> i=0
+
+ˆpcti − pcti , Lv = 1
+
+T − 1 
+
+> T−1
+
+X
+
+> i=0
+
+ˆvcti − vcti (9) where pcti and vcti are the ground-truth positional encoded pose and velocity, of sequence c at time ti, and T is the sequence length. The rendered images are supervised with the NeRF reconstruction loss LN eRF .
+
+4.3. Training Objective 
+
+Our overall training loss L is the weighted sum 
+
+L = λ1LNeRF + λ2Lp + λ3Lv + λ4Llipschitz , (10) where LNeRF is the reconstruction loss from eq. (4), the losses Lp and Lv are the auxiliary training signals for object pose and velocity from eq. (9), and Llipschitz is a regularizer described hereafter. 
+
+Lipschitz Regularization. We employ a regularization technique that penalizes the upper bound of the network’s Lipschitz constant to promote smoother latent representa-tions [16]. This results in a more structured latent space, enhancing the generalization of dynamics across multiple sequences. We apply this regularization on the NeRF linear layers, where we augment each layer y = σ(Wix + bi) with a Lipschitz weight normalization layer. Utilizing a trainable Lipschitz bound ci in layer i, we inject 
+
+Wi ← normalization (Wi, softplus (ci)) , (11) 
+
+Table 1. Long-term (4 ×) Extrapolation comparison on Bounc-ing Balls [24]. * indicates retraining. SIM1: X-CLIP Similar-ity , SIM2: LLaVA-Video Similarity . MS: Motion Smoothness , SC: 
+
+Subject Consistency .Method Prompt-based Evaluation VBench Metrics Sim1 ↑ Sim2 ↑ MS ↑ SC ↑                        
+
+> D-NeRF* 0.1691 0.7807 0.99473 0.97352 4D-GS* 0.1484 0.7230 0.99538 0.92589 HexPlane* 0.1732 0.6673 0.99617 0.77407 TiNeuVox* 0.1773 0.7883 0.99468 0.96428 Motion-GS* 0.1760 0.7693 0.99465 0.97562 Ours* 0.1775 0.7937 0.99648 0.97775
+
+Table 2. Comparison on Pendulum [9]. Evaluated only on the fore-ground dynamic part. Interpolation and extrapolation are reported. A ✓ under TC i.e. Temporal Continuity indicates that the method models continuous temporal dynamics. Pendulum TC Interpolation Extrapolation Method SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑                            
+
+> SimVP ✗---0.617 0.0194 15.804 D-NeRF ✓0.437 0.0333 13.906 0.426 0.0374 13.295 4D-GS ✓0.455 0.0300 13.391 0.463 0.0310 12.940 Ours ✓0.531 0.0234 17.057 0.469 0.0257 15.920
+
+where the trainable Lipschitz bounds ci in layer i bounds are optimized using 
+
+Llipschitz = Q 
+
+> i
+
+softplus (ci). (12) 
+
+## 5. Experimental Evaluation 
+
+Implementation Details. We implement our approach in PyTorch, using 512-dimensional latent codes. Latents are initialized as  N (0 , √0.01 D) with  D = 512 . Optimiza-tion employs Adam ( β1 = 0 .9, β2 = 0 .999 , learning rate 
+
+5e − 4). We use the dopri5 solver for the Bouncing Balls 
+
+dataset and the Euler solver for the others. For Bouncing Balls , dopri5 provides greater stability in long-term ex-trapolation compared to Euler , whereas for the remaining datasets, Euler suffices, with no significant improvements observed from dopri5 . We use the following tolerance values for nODE, atol=1e-3 and rtol=1e-4 for all our exper-iments, with step-size=0.05 for Euler solver. The pose encoder has 8 linear layers with 256 hidden units, while the NeRF, pose, and velocity decoders have 3 layers with 256 units. We set  λ1 = 1 , λ2 = λ3 = 10 −2, and  λ4 = 10 −22 .Training runs for 300k iterations (for Bouncing Balls and 
+
+Pendulum datasets) and 500k iterations (for Sear Steak , Os-cillating Ball and Bifurcating Hill datasets) with warm-up phases at 5k and every 4k iterations for 200 steps. 
+
+Datasets. We use different sets of datasets for single sequence and multi-sequence generalization experiments. 
+
+Single Sequence. We evaluate on the following datasets: (1) Bouncing Balls [24], a deterministic scene with three Table 3. Comparison on Oscillating Ball (3D) and Bifurcating Hill (2D) on IoU between GT and prediction flows. A ✓ under 3D 
+
+> indicates that the method can handle 3D scenes.
+
+Method 3D Oscillating Ball Bifurcating Hill Vid-ODE ✗ - 0.000 SimVP ✗ - 0.295 D-NeRF(c) ✓ 0.0008 0.003 Ours ✓ 0.3327 0.485 
+
+bouncing balls (150 frames). (2) Pendulum [9], a determin-istic 100-frame damped pendulum sequence from a fixed viewpoint. Training is performed on alternate frames, with the last five frames reserved for extrapolation. A static background latent  zstatic  is learned separately. (3) DyN-eRF [14], a real-world non-deterministic multi-view dataset captured with 21 synchronized GoPro cameras. We train on 18 cams and provide the qualitative results on the 19th cam. 
+
+Multiple sequences. We develop two deterministic syn-thetic datasets with static background: (1) Oscillating Ball :A multi-view dataset where a ball oscillates in a bowl, cap-tured by 9 static cameras capturing 17 sequence of varied initial ball position and zero velocity. We train on 16 se-quences, reserving an unseen one for evaluation. (2) Bifur-cating Hill : A single-view dataset where a ball rolls down a hill and settles in one of two troughs. We train on 8 se-quences and evaluate on the remaining one. Ground-truth 2D poses are obtained via CNOS [20]. Further details on training/testing splits and dataset con-figurations are provided in the supplementary material. 
+
+Baselines and Evaluation Metrics. For the single-sequence reconstruction and extrapolation tasks, we com-pare our approach against: D-NeRF [24] (NeRF-based scene reconstruction), 4D-GS [29] (Gaussian Splatting-based reconstruction), MotionGS [32] (flow-based recon-struction), HexPlane [1] (feature plane-based reconstruc-tion), TiNeuVox [4] (voxel-based reconstruction), and SimVP [7] (future frame prediction). In the generalization setup, we introduce three adapta-tions: (1) D-NeRF(c) : A modified D-NeRF conditioned on initial states. We evaluate this model on Oscillating Ball (multi-view) and Bifurcating Hill (single-view). (2) 
+
+SimVP [7]: A CNN-based video prediction model lim-ited to single-view setups, evaluated on Bifurcating Hill .(3) Vid-ODE [23]: A neural ODE-based video generation model limited to single-view setups, also evaluated on Bi-furcating Hill .We provide further details about the baselines in the sup-plementary material. 
+
+Evaluation Metrics. Following novel view synthesis lit-erature [13, 18], we evaluate PSNR, SSIM, LPIPS scores. We also compute similarity scores between textual prompts and visual outputs using the X-CLIP [17] and LLaVA-  
+
+> Figure 3. Extrapolation results on the Pendulum dataset [9].
+
+Video [30] models, along with motion smoothness and sub-ject consistency metrics from the VBench benchmark [10]. Additionally, we evaluate dynamic prediction quality us-ing the IoU score from flow masks in the multi-sequence generalization task. Following [26], we obtain flow masks on predicted videos by binarizing the flow magnitude with a threshold α, resulting in Mask GT (α) and Mask Pred (α), and report the resulting IoU (α) between these masks. We set 
+
+α = 0 .3 for Oscillating Ball and α = 0 .5 for Bifurcating Hill , adapting to dataset dynamics. 
+
+5.1. Analysis of Results 
+
+For all tables, the best performing results are noted in bold ,and the second best are underlined. 
+
+Long-term Extrapolation: The major advantage of nODEs is their ability to learn stable dynamics for long-term extrapolation. We analyze this property through both quantitative and qualitative experiments on the Bouncing Balls deterministic scene. Table 1 compares long-term ex-trapolation on two types of benchmarks: (1) prompt based evaluation (2) VBench metrics. For the prompt-based eval-uation, we compute the similarity between the extrapo-lated videos and the following prompt: “Does this video show physically accurate motion where the bounce ampli-tude gradually decreases with no sudden jumps, and the white ground plane remains completely rigid and motion-less without any shaking, wobbling, or deformation?” Our method achieves the highest similarity across both X-CLIP and LLaVA-Video models, indicating that the generated motion adheres more closely to physically plausible dynam-ics. On VBench, our approach again attains the best scores in both motion smoothness and subject consistency . High 
+
+motion smoothness indicates that the predicted trajectories evolve gradually over time, without abrupt jumps or jitter, reflecting physically plausible motion. Similarly, high sub-ject consistency ensures that individual objects retain their identity, appearance, and spatial coherence throughout the video, demonstrating that the model preserves scene in-tegrity and perceptual coherence. Together, these results confirm that our method produces temporally stable and realistic dynamics, even over extended extrapolation hori-zons. Qualitative results in Fig. 4 further support these find-ings. While HexPlane causes objects to disappear, TiNeu-Vox, MotionGS, and D-NeRF exhibit jitter and unstable dy-namics, and 4DGS results in complete disintegration of the Figure 4. Long-term extrapolations, Bouncing Balls [24] scene. 
+
+balls, our model produces stable, physically plausible ex-trapolations with the balls naturally coming to rest. 
+
+Pendulum: We compare our results on the Pendulum 
+
+dataset against D-NeRF, 4DGS, and SimVP. We report quantitative results in Table 2 on the relevant masked dy-namic foreground. Both D-NeRF and 4DGS fail to capture the moving pendulum, learning only the static background. SimVP, being a frame-based future prediction model, learns a discrete representation of motion and can only extrapolate at fixed time intervals ∆t, without supporting interpolation. Our method outperforms D-NeRF and 4DGS in both inter-polation and short-term extrapolation, and achieves higher PSNR than SimVP during extrapolation. Qualitative results in Fig. 3 further show that SimVP fails to accurately capture the pendulum’s dynamics. 
+
+Generalization: Our framework enables NeRF to general-ize across multiple sequences governed by shared dynamic principles. Table 3 reports the quantitative results using the IoU metric, which measures the overlap between the pre-dicted and ground-truth flow fields, reflecting the accuracy of dynamic modeling. For the Oscillating Ball scene, D-NeRF(c) fails to gener-alize across sequences and primarily reconstructs the static background rather than the motion, resulting in signifi-cantly lower IoU scores. As shown in Fig. 6, our method produces flow predictions closely aligned with the ground truth, whereas D-NeRF(c) yields noisy and inconsistent flow estimates. Similarly, for the Bifurcating Hill scene, both D-NeRF(c) and Vid-ODE fail to capture the underly-ing dynamics, focusing instead on static regions. SimVP can predict future frames given the first two, but since it operates on fixed intervals ∆t, it cannot model continuous-time dynamics. As illustrated in Fig. 7, our method achieves the highest IoU across all settings, demonstrating its supe-rior ability to model and generalize dynamic behavior from unseen initial conditions. We also provide the error plot of our predicted pose of the dynamic object (ball) of the bifurcating hill scene, in      
+
+> Figure 5. Pose error for a novel trajectory in Bifurcating Hill .
+> Figure 6. Dynamic Flow Masks for the predictions of a novel se-quence in the Oscillating Ball scene
+> Figure 7. Dynamic Flow Masks for the predictions of a novel se-quence in the Bifurcating Hill scene
+
+Fig. 5. We utilize YOLO-v5 [12] to localize the ball both from the predicted and the ground-truth frames, and calcu-late the pixel error between corresponding locations. The plot shows that, for the novel trajectory, our predictions closely follow the ground-truth motion, highlighting strong generalization and temporal consistency. 
+
+5.2. Ablation 
+
+Effects of the Loss terms. We present the ablation results on the effect of all the loss terms in  L in Table 4. When using only the NeRF reconstruction loss  LNeRF , our frame-work can generalize to novel initial conditions and learn meaningful dynamics. This relieves the need for the avail-ability of ground-truth poses of the entire sequences, ex-cept for the initial conditions. However, incorporating  Lp
+
+and  Lv further enhances the learning of dynamics. On the other hand,  Llipschitz  has a negligible effect on the quanti-tative results but contributes to learning a more structured latent space, as illustrated in Fig. 8. Without Lipschitz reg-ularization, the latent codes fail to converge to a latent struc-ture representative of the system dynamics. With the regu-larizer, a divergence analysis identifies steady states as low-Figure 8. Latent Space Comparison of models w/o and w/ Lips-chitz regularization. The green and red dots represent the starting and ending points of the trajectories respectively 
+
+divergence sinks as discussed in Sec. 5.3. 
+
+Effects of the Latent Size Table 5 presents an ablation study on the effect of latent dimensionality, evaluated on the reconstruction split of the Bouncing Balls dataset. We observe that a latent size of 512 yields the best reconstruc-tion performance. For a fair comparison, all configurations are trained for 300k iterations under identical settings.                                           
+
+> Table 4. Ablation study on loss term in Oscillating Ball .Losses Added SSIM LPIPS PSNR IoU
+> LNeRF 0.630 0.4920 28.661 0.2730
+> LNeRF +Lp+Lv0.661 0.4396 29.080 0.3253
+> LNeRF +Lp+Lv+Llipschitz 0.662 0.4364 29.091 0.3327 Table 5. Ablation studies of the latent size on Reconstruction set of Bouncing Balls
+> # Latent Size SSIM LPIPS PSNR 256 0.976 0.0318 32.29 512 0.978 0.0310 33.70 1024 0.975 0.0397 32.74
+
+5.3. Analysis of the latent space 
+
+In Fig. 8, we visualize the latent space of the Bifurcat-ing Hill dataset. The latent representation clearly captures the dynamics of the scene, with a distinct bifurcation point (green dots) corresponding to the top of the hill. From this point, the trajectories diverge into two sinks (red dots) with low divergence, representing the ball rolling down and com-ing to rest in the sinks. This demonstrates that our frame-work effectively learns the underlying structure of the dy-namical system. It allows making structural predictions on system behaviour by latent space analysis. On top of that, representative elements and trajectories can be further visu-alized. For instance, a latent sampling around states close to the center hill top identify sensitivity to this initial condi-tion by following divergent extrapolation paths of the ODE, which ultimately land in one of the sinks. This allows us to make predictions about future states and can pave the way to uncertainty estimates for ambiguous visual extrapolations.   
+
+> Figure 9. Extrapolation results on Sear Steak [2].
+
+5.4. Additional results 
+
+Non-deterministic dynamics: Although our method is fundamentally designed for deterministic scene dynamics and performs best in this regime, we additionally report qualitative results on a non-deterministic scene. In this set-ting, HexPlane and MotionGS break down during extrapo-lation, while D-NeRF, 4DGS, and our approach still extrap-olate reasonably, albeit with slight artifacts (Fig. 9). Even though the stochastic nature of the scene violates our mod-eling assumptions, our model maintains a stable temporal evolution and achieves performance on par with D-NeRF and 4DGS, indicating that it degrades gracefully under non-deterministic dynamics. 
+
+## 6. Conclusion & Limitations 
+
+We introduced Node-RF, a novel framework that integrates Neural ODEs with NeRFs to learn continuous space-time representations of dynamic scenes. By modeling scene dy-namics as an implicit function that evolves over time, our approach enables a continuous representation targeted for long-range extrapolation, and novel view synthesis. Unlike existing methods that rely on discretized time steps, Node-RF introduces a continuous-time framework that learns scene dynamics directly from visual observations, enabling long-horizon extrapolation without explicit physics priors. Our experiments demonstrate Node-RF’s ability to cap-ture complex motion patterns and generalize across scenar-ios, showing its potential for scientific reasoning and dy-namic system analysis. However, our current results are still conceptual, serving as an early validation of the idea. We believe that our design can inspire future work, focusing on scaling to real-world datasets, improving efficiency, and ex-tending the framework to more challenging environments. The conceptual idea of coupling an implicit dynamic rea-soning model with a data-driven 3D scene representation to generate grounded 4D dynamics for behavioral system anal-ysis goes far beyond the use of NeRFs and nODEs and may spark orthogonal ideas in the community. We believe Node-RF offers a promising step towards learning generalizable space-time representations where generation is dynamics grounded. References 
+
+[1] Ang Cao and Justin Johnson. Hexplane: A fast representa-tion for dynamic scenes. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,pages 130–141, 2023. 3, 6 [2] Ricky TQ Chen, Yulia Rubanova, Jesse Bettencourt, and David K Duvenaud. Neural ordinary differential equa-tions. Advances in neural information processing systems ,31, 2018. 2, 3, 4, 8 [3] Jiong Dong, Kaoru Ota, and Mianxiong Dong. Video frame interpolation: A comprehensive survey. ACM Transactions on Multimedia Computing, Communications and Applica-tions , 19(2s):1–31, 2023. 2 [4] Jiemin Fang, Taoran Yi, Xinggang Wang, Lingxi Xie, Xi-aopeng Zhang, Wenyu Liu, Matthias Nießner, and Qi Tian. Fast dynamic radiance fields with time-aware neural vox-els. In SIGGRAPH Asia 2022 Conference Papers , pages 1–9, 2022. 3, 6 [5] Sara Fridovich-Keil, Alex Yu, Matthew Tancik, Qinhong Chen, Benjamin Recht, and Angjoo Kanazawa. Plenoxels: Radiance fields without neural networks. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 5501–5510, 2022. 2 [6] Sara Fridovich-Keil, Giacomo Meanti, Frederik Rahbæk Warburg, Benjamin Recht, and Angjoo Kanazawa. K-planes: Explicit radiance fields in space, time, and appearance. In 
+
+Proceedings of the IEEE/CVF Conference on Computer Vi-sion and Pattern Recognition , pages 12479–12488, 2023. 3 [7] Zhangyang Gao, Cheng Tan, Lirong Wu, and Stan Z Li. Simvp: Simpler yet better video prediction. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 3170–3180, 2022. 6, 1 [8] Zhiyang Guo, Wengang Zhou, Li Li, Min Wang, and Houqiang Li. Motion-aware 3d gaussian splatting for effi-cient dynamic scene reconstruction. IEEE Transactions on Circuits and Systems for Video Technology , 2024. 3 [9] Florian Hofherr, Lukas Koestler, Florian Bernard, and Daniel Cremers. Neural implicit representations for physical param-eter inference from a single video. In Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision , pages 2093–2103, 2023. 5, 6, 1 [10] Ziqi Huang, Yinan He, Jiashuo Yu, Fan Zhang, Chenyang Si, Yuming Jiang, Yuanhan Zhang, Tianxing Wu, Qingyang Jin, Nattapol Chanpaisit, et al. Vbench: Comprehensive bench-mark suite for video generative models. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 21807–21818, 2024. 6 [11] Ajay Jain, Matthew Tancik, and Pieter Abbeel. Putting nerf on a diet: Semantically consistent few-shot view synthesis. In Proceedings of the IEEE/CVF International Conference on Computer Vision , pages 5885–5894, 2021. 2 [12] Glenn Jocher. YOLOv5 by Ultralytics, 2020. 7 [13] Bernhard Kerbl, Georgios Kopanas, Thomas Leimk¨ uhler, and George Drettakis. 3d gaussian splatting for real-time radiance field rendering. ACM Trans. Graph. , 42(4):139–1, 2023. 2, 3, 6 [14] Tianye Li, Mira Slavcheva, Michael Zollhoefer, Simon Green, Christoph Lassner, Changil Kim, Tanner Schmidt, Steven Lovegrove, Michael Goesele, Richard Newcombe, et al. Neural 3d video synthesis from multi-view video. In 
+
+Proceedings of the IEEE/CVF conference on computer vi-sion and pattern recognition , pages 5521–5531, 2022. 3, 4, 6[15] Jinwei Lin. Dynamic nerf: A review. arXiv preprint arXiv:2405.08609 , 2024. 2 [16] Hsueh-Ti Derek Liu, Francis Williams, Alec Jacobson, Sanja Fidler, and Or Litany. Learning smooth neural functions via lipschitz regularization. In ACM SIGGRAPH 2022 Confer-ence Proceedings , pages 1–13, 2022. 5 [17] Yiwei Ma, Guohai Xu, Xiaoshuai Sun, Ming Yan, Ji Zhang, and Rongrong Ji. X-clip: End-to-end multi-grained con-trastive learning for video-text retrieval. In Proceedings of the 30th ACM international conference on multimedia , pages 638–647, 2022. 6 [18] Ben Mildenhall, Pratul P Srinivasan, Matthew Tancik, Jonathan T Barron, Ravi Ramamoorthi, and Ren Ng. Nerf: Representing scenes as neural radiance fields for view syn-thesis. Communications of the ACM , 65(1):99–106, 2021. 2, 3, 6 [19] Thomas M¨ uller, Alex Evans, Christoph Schied, and Alexan-der Keller. Instant neural graphics primitives with a mul-tiresolution hash encoding. ACM transactions on graphics (TOG) , 41(4):1–15, 2022. 2 [20] Van Nguyen Nguyen, Thibault Groueix, Georgy Ponimatkin, Vincent Lepetit, and Tomas Hodan. Cnos: A strong base-line for cad-based novel object segmentation. In Proceedings of the IEEE/CVF International Conference on Computer Vi-sion , pages 2134–2140, 2023. 6, 1 [21] Keunhong Park, Utkarsh Sinha, Jonathan T Barron, Sofien Bouaziz, Dan B Goldman, Steven M Seitz, and Ricardo Martin-Brualla. Nerfies: Deformable neural radiance fields. In Proceedings of the IEEE/CVF international conference on computer vision , pages 5865–5874, 2021. 2, 3 [22] Keunhong Park, Utkarsh Sinha, Peter Hedman, Jonathan T Barron, Sofien Bouaziz, Dan B Goldman, Ricardo Martin-Brualla, and Steven M Seitz. Hypernerf: A higher-dimensional representation for topologically varying neural radiance fields. arXiv preprint arXiv:2106.13228 , 2021. 3 [23] Sunghyun Park, Kangyeol Kim, Junsoo Lee, Jaegul Choo, Joonseok Lee, Sookyung Kim, and Edward Choi. Vid-ode: Continuous-time video generation with neural ordinary dif-ferential equation. In Proceedings of the AAAI Conference on Artificial Intelligence , pages 2412–2422, 2021. 3, 6, 1 [24] Albert Pumarola, Enric Corona, Gerard Pons-Moll, and Francesc Moreno-Noguer. D-nerf: Neural radiance fields for dynamic scenes. In Proceedings of the IEEE/CVF con-ference on computer vision and pattern recognition , pages 10318–10327, 2021. 2, 3, 4, 5, 6, 7 [25] Yulia Rubanova, Ricky TQ Chen, and David K Duve-naud. Latent ordinary differential equations for irregularly-sampled time series. Advances in neural information pro-cessing systems , 32, 2019. 3, 4 [26] Zachary Teed and Jia Deng. Raft: Recurrent all-pairs field transforms for optical flow. In Computer Vision–ECCV 2020: 16th European Conference, Glasgow, UK, August 23– 28, 2020, Proceedings, Part II 16 , pages 402–419. Springer, 2020. 6 [27] Fengrui Tian, Shaoyi Du, and Yueqi Duan. Monon-erf: Learning a generalizable dynamic radiance field from monocular videos. In Proceedings of the IEEE/CVF Interna-tional Conference on Computer Vision , pages 17903–17913, 2023. 3 [28] Jiaxu Wang, Bo Xu, Hao Cheng, and Renjing Xu. Done: dynamic neural representation via hyperplane neural ode. In ICASSP 2024-2024 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP) , pages 4355–4359. IEEE, 2024. 3 [29] Guanjun Wu, Taoran Yi, Jiemin Fang, Lingxi Xie, Xiaopeng Zhang, Wei Wei, Wenyu Liu, Qi Tian, and Xinggang Wang. 4d gaussian splatting for real-time dynamic scene rendering. In Proceedings of the IEEE/CVF conference on computer vi-sion and pattern recognition , pages 20310–20320, 2024. 3, 6[30] Yuanhan Zhang, Jinming Wu, Wei Li, Bo Li, Zejun Ma, Zi-wei Liu, and Chunyuan Li. Video instruction tuning with synthetic data. arXiv preprint arXiv:2410.02713 , 2024. 6 [31] Yang Katie Zhao, Shang Wu, Jingqun Zhang, Sixu Li, Chaojian Li, and Yingyan Celine Lin. Instant-nerf: In-stant on-device neural radiance field training via algorithm-accelerator co-designed near-memory processing. In 2023 60th ACM/IEEE Design Automation Conference (DAC) ,pages 1–6. IEEE, 2023. 2 [32] Ruijie Zhu, Yanzhe Liang, Hanzhi Chang, Jiacheng Deng, Jiahao Lu, Wenfei Yang, Tianzhu Zhang, and Yongdong Zhang. Motiongs: Exploring explicit motion guidance for deformable 3d gaussian splatting. Advances in Neural In-formation Processing Systems , 37:101790–101817, 2024. 3, 6Node-RF: Learning Generalized Continuous Space-Time Scene Dynamics with Neural ODE-based NeRFs 
+
+# Supplementary Material 
+
+## 7. Datasets 
+
+7.1. Single Sequence 
+
+1. Pendulum: This synthetic dataset from Hofherr et al. [9] consists of 100 frames depicting a damped pendulum motion from a fixed viewpoint. Following the previous setup, we use alternate frames (0, 2, 4, ... 94) for train-ing and the remaining frames (1, 3, 5, ... 93) for inter-polation evaluation, while the last five frames (95–99) are used to assess extrapolation performance. For scene reconstruction-based methods, we select a fixed camera pose from those provided in the D-NeRF dataset. Since SimVP [7] assumes a fixed ∆t, it cannot perform inter-polation; thus, we train it on all frames up to 94 (0–94) and evaluate on the remaining five frames (95–99) for extrapolation. Our framework leverages the static back-ground provided by the dataset by learning a separate latent code  zstatic  during the warmup stage, which is added to the decoder output to obtain the NeRF latents 
+
+zti
+
+7.2. Multi Sequence Generalization 
+
+1. Oscillating Ball: This is a multi-view synthetic dataset featuring a ball dropped into a bowl, oscillating back and forth twice. The scene is captured using nine static cam-eras arranged in a 3 × 3 grid. Each camera records two sequences with different initial positions of the ball, re-sulting in distinct trajectories. In total, the dataset con-tains 17 sequences, each corresponding to a unique ini-tial position. All sequences start with zero initial veloc-ity and consist of 90 frames. In addition to the multi-view images and camera poses, the dataset provides the 3D position of the ball at every timestep and an image of the static background. For our experiments, we subsample 25 sub-sequences from each original sequence, using the first 25 frames as the starting state. This enables the generation of se-quences with varying initial velocities, computed as the difference between consecutive positions ( vt = pt+1 −
+
+pt). We train on 16 of the original sequences, resulting in 25 × 16 sub-sequences with diverse initial conditions of pose and velocity. The 17 th sequence is reserved for evaluation. 2. Bifurcating Hill: This is a single-view synthetic dataset depicting a ball placed at the crest of a hill that even-tually settles into a trough on either side. The dataset contains nine sequences, each consisting of 90 states. Similar to the previous setup, we subsample 25 subse-quences from each original sequence, resulting in trajec-tories with varying initial poses and velocities. We use eight of the original sequences for training and reserve the remaining one for evaluation. For this dataset, we obtain the ground-truth 2D poses using CNOS [20]. The dataset also includes an image of the static background. 
+
+## 8. Baselines 
+
+8.1. Multi-Sequence Generalization 
+
+We provide more information on the choice and implemen-tation of the baselines used for the multi-sequence general-ization experiments. 1. D-NeRF(c): This is a modified version of D-NeRF that we adapt to incorporate conditioning on the initial con-ditions. Specifically, we condition the time-deformation network on the initial state, enabling it to deform rays from the frame space to a canonical space that corre-sponds not only to the timestep but also to the initial conditions. This allows the model to represent multiple sequences within a single implicit representation. For-mally, 
+
+M : (Ψ t,c : ( x, t, c ), d ) → (c, σ ), (13) where Ψt,c denotes the deformation network that warps the 3D point x from the frame space to the canonical space given time t and initial condition c. This base-line is evaluated on both the multi-view Oscillating Ball 
+
+dataset and the single-view Bifurcating Hill dataset. 2. SimVP [7]: This is a video prediction model built en-tirely on a simplified CNN architecture. We include this baseline to compare our approach against a future frame prediction model in the generalization task, as it aligns with our objective. However, SimVP is restricted to videos captured from a fixed camera viewpoint and is therefore not applicable to 3D or multi-view datasets. Consequently, we evaluate this model only on the Bifur-cating Hill dataset. For a fair comparison, we provide the first two frames as input and allow the model to pre-dict the subsequent frames. These initial frames supply information about the starting position and velocity, en-suring consistency with our framework. 3. Vid-ODE [23]: This is a video generation model based on neural ODEs, designed to learn continuous-time dy-namics. Since it is not equipped to handle camera poses, we evaluate it only on the 2D Bifurcating Hill dataset. The model takes two input frames and predicts the sub-sequent two frames, ensuring a fair comparison with our method. During inference, it autoregressively generates future frames starting from the two input frames. 
+
+## 9. Algorithms 
+
+Single Sequence Algorithm 1 provides the training steps of the single sequence experiments. 
+
+Algorithm 1 Single Sequence Training 
+
+Require: Images It, t ∈ T , NeRF model FΘ, latents z ∈{zt0 , z t1 }, ODE-RNN, nODE model fθ , decoder D.Initialize latent codes zt0 , z t1 for the first two frames 
+
+while warm-up iterations not completed do 
+
+ˆI = FΘ(z)
+
+L ← L NeRF ( ˆIk , I k ), k ∈ { 0, 1}
+
+Θ, z ← Update () 
+
+end while while joint training iterations not completed do 
+
+(μ, σ ) ← ODE-RNN (zt0 , z t1 )
+
+zdyn  
+
+> t0
+
+∼ N (μ, σ )
+
+zdyn  
+
+> ti
+
+= ODESolve (fθ , z dyn  
+
+> t0
+
+, t i)
+
+zti = D(zdyn  
+
+> ti
+
+)ˆIi = FΘ(zti )
+
+L ← L NeRF ( ˆIi, I i)Θ, ODE-RNN , f θ , D ← Update () 
+
+end while 
+
+Multi Sequence Generalization Algorithm 2 provides the training steps of the multi sequence generalization experi-ments 
+
+Algorithm 2 Generalized Multi-Sequence Training 
+
+Require: Images Ict , t ∈ T of sequence c ∈ { 0, . . . , N }, static background Istatic , initial poses pc
+
+> 0
+
+, velocities vc
+
+> 0
+
+. Poses pcti , ve-locities vcti to predict, NeRF model FΘ, latents zstatic , z can , en-coder E, nODE model fθ , decoders for velocity, pose, scene: 
+
+Dv , Dp, Dn.Initialize zstatic for the static background 
+
+while warm-up iterations not completed do 
+
+ˆI = FΘ(zstatic )
+
+L ← L NeRF ( ˆIstatic , I static )Θ, z static ← Update () 
+
+end while while joint training iterations not completed do 
+
+zdyn  
+
+> t0,c
+
+= concat (zcan , E (pc
+
+> 0
+
+) , v c
+
+> 0
+
+);
+
+zdyn  
+
+> ti,c
+
+= ODESolve (fθ , z dyn 
+
+> t0,c
+
+, t i)
+
+zti,c = Dn(zdyn 
+
+> ti,c
+
+) + zstatic 
+
+ˆpcti , ˆvcti , ˆIcti ← D p(zdyn 
+
+> ti,c
+
+), Dv (zdyn 
+
+> ti,c
+
+), F Θ(zti,c )
+
+L ← L NeRF ( ˆIcti , I cti )+Lp(ˆ pcti , p cti ) + Lv(ˆ vcti , v cti ) + Llipschitz 
+
+Θ, f θ , Dn, Dp, Dv , z can ← Update () 
+
+end while 
+
+## 10. Analysis 
+
+10.1. Effects of the number of nODE layers 
+
+Table 6 presents the ablation study on the Oscillating Ball 
+
+dataset, analyzing the effect of the number of layers in the nODE MLP fθ . Each experiment runs for 400k iterations. We observe a performance drop in the 5-layer fθ , where the model struggles to generate sequences with novel initial conditions. Although the 7-layer fθ shows an improvement in performance compared to the 5-layer variant, it still un-derperforms relative to the 3-layer model. We also observe from the visual results that, on the Bifurcating Hill dataset, the 7-layered  fθ completely underfits the scene and fails to learn the dynamics, whereas the 5-layered  fθ captures the dynamics but underperforms compared to the 3-layered  fθ .
+
+Table 6. Ablation study of nODE layers on different evaluation metrics in Oscillating Ball dataset. # nODE Layers SSIM LPIPS PSNR IoU 3 0.662 0.4364 29.091 0.3327 5 0.605 0.5171 27.580 0.1864 7 0.645 0.4721 28.858 0.3060 
+
+10.2. Effects of the number of wamrup latents 
+
+Table 7 presents an ablation study on the number of latents trained during the warmup stage in the single-sequence setup. The evaluation is conducted on the reconstruction 
+
+split of the Bouncing Balls dataset. Quantitatively, the re-sults remain largely comparable across different configura-tions. However, qualitative observations indicate that us-ing a higher number of warmup latents leads to more stable long-term extrapolations. We select two warmup latents as it represents the minimum number required to capture the initial dynamics of the scene. 
+
+Table 7. Ablation studies of warmup latent count on Reconstruc-tion set of Bouncing Balls 
+
+# Count SSIM LPIPS PSNR 2 0.978 0.0310 33.70 5 0.978 0.0289 32.90 10 0.979 0.0307 33.54 
+
+10.3. Training Time 
+
+Table 8 reports the training time for each scene. The gen-eralization experiments involving multiple sequences take significantly longer than the single-sequence experiments, requiring roughly three days to complete. Moreover, the training time grows proportionally with the length of the input sequences, highlighting a current limitation of our method. Dataset Solver Training Time 
+
+Bouncing Balls dopri5 18 hours Pendulum euler 24 hours Sear Steak euler 36 hours Oscillating Ball euler 72 hours Bifurcating Hill euler 72 hours

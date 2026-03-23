@@ -1,0 +1,1213 @@
+Title: Speeding Up the Learning of 3D Gaussians with Much Shorter Gaussian Lists
+
+URL Source: https://arxiv.org/pdf/2603.09277v1
+
+Published Time: Wed, 11 Mar 2026 00:43:29 GMT
+
+Number of Pages: 23
+
+Markdown Content:
+## Speeding Up the Learning of 3D Gaussians with Much Shorter Gaussian Lists 
+
+Jiaqi Liu Zhizhong Han Machine Perception Lab, Wayne State University, Detroit, USA 
+
+{ig1017, h312h }@wayne.edu 3DGS Taming-3DGS LiteGS Ours Ground Truth 
+
+> 0 1600 800
+
+Figure 1. Heatmaps of per-tile Gaussian list lengths measured during testing. Colors encode counts from low to high, with purple indicating fewer Gaussians and yellow indicating more. All methods use identical tile sizes for fair comparison. Our method consistently achieves the shortest lists across all scenes. Training times (in seconds): 3DGS (919.51), Taming-3DGS (402.54), LiteGS (191.17), Ours (99.58). Additional results are provided in Fig. 21. 
+
+Abstract 
+
+3D Gaussian splatting (3DGS) has become a vital tool for learning a radiance field from multiple posed images. Although 3DGS shows great advantages over NeRF in terms of rendering quality and efficiency, it remains a research challenge to further improve the efficiency of learning 3D Gaussians. To overcome this challenge, we propose novel training strategies and losses to shorten each Gaussian list used to render a pixel, which speeds up the splatting by involving fewer Gaussians along a ray. Specifically, we shrink the size of each Gaussian by resetting their scales regularly, encouraging smaller Gaussians to cover fewer nearby pixels, which shortens the Gaussian lists of pixels. Additionally, we introduce an entropy constraint on the alpha blending procedure to sharpen the weight distribution of Gaussians along each ray, which drives dominant weights larger while making minor weights smaller. As a result, each Gaussian becomes more focused on the pixels where it is dominant, which reduces its impact on nearby pixels, leading to even shorter Gaussian lists. Eventually, we integrate our method into a rendering resolution scheduler which further improves efficiency through progressive resolution increase. We evaluate our method by comparing it with state-of-the-art methods on widely used benchmarks. Our results show significant advantages over others in efficiency without sacrificing rendering quality. Code is available at: https://github.com/MachinePerceptionLab/ShorterSplatting. 
+
+1. Introduction 
+
+Novel view synthesis is an important task in computer vi-sion, AR, VR, and robotics [16, 40]. The widely used strat-egy is to first infer a radiance field from image observations, then render the radiance field into images from specific per-spectives. Neural radiance field (NeRF) [29] represents a radiance field using a neural network that can be queried at any point for color and opacity in volume rendering. Al-though NeRFs can model the geometry, appearance, and lighting of scenes well, both root finding with sampling and querying implicit neural networks are expensive. 1        
+
+> arXiv:2603.09277v1 [cs.CV] 10 Mar 2026 200 400 600 800
+> Training Time (s)
+> 26
+> 27
+> 28
+> 29
+> PSNR  (dB)
+> PSNR vs Training Time
+> 3DGS
+> AdR - Gaussian
+> Taming-3DGS
+> EDGS
+> Mini-Splatting2-Dense
+> DashGaussian
+> LiteGS
+> Ours
+
+Figure 2. Our method achieves the fastest training time while maintaining comparable reconstruction quality. 
+
+Recently, 3D Gaussian splatting (3DGS) [18] has shown advantages over NeRF in terms of rendering efficiency and quality. 3DGS employs discrete 3D Gaussians with at-tributes like color, opacity, and shape to explicitly represent a radiance field which can be rendered into an image by a splatting operation. Although splatting runs faster, learning 3D Gaussians from image observations still requires a large number of splatting operations, which limits 3DGS in time-sensitive applications. Thus, more recent methods have adopted different strategies to speed up the learning of 3D Gaussians, such as more concise implementations [26, 39], more reasonable Gaussian density control [3, 7, 20, 28], and more advanced training strategies [13, 23, 31]. However, there is still room for improvement in training efficiency. To achieve this goal, we propose to speed up the learn-ing of 3D Gaussians by encouraging shorter Gaussian lists when rendering a color at each pixel, as shown by the Gaus-sian length heatmap in Fig. 1. The efficiency averaged over all scenes in Mip-NeRF 360 highlights our improve-ment with comparable rendering quality in Fig. 2. Un-like the strategy of reducing the total number of 3D Gaus-sians [7, 11], our method mainly shortens the Gaussian lists by adjusting the Gaussian distributions at each pixel for more efficient modeling of radiance fields. Specifically, we propose scale reset which regularly decreases Gaussian scales by a ratio, encouraging smaller Gaussians covering fewer pixels, leading to shorter Gaussian lists at most pix-els. Additionally, we introduce an entropy constraint on the alpha blending procedure to sharpen the weight distribution of Gaussians along each ray, which drives dominant weights larger while making minor weights smaller. This constraint increases the modeling efficiency by adjusting the weight distribution. It makes each Gaussian focus more on pix-els where it is dominant, which weakens the Gaussian’s impact on nearby pixels, leading to even shorter Gaussian lists. Eventually, we integrate our scale reset and entropy constraint into a rendering resolution scheduler, which fur-ther improves efficiency by rendering images at progres-sively increasing resolutions during training. We evaluate our method by comparing it with state-of-the-art methods on widely used benchmarks. Our results show significant advantages over others in efficiency with comparable ren-dering quality. Our main contributions are listed below. • We present a method for speeding up the learning of 3D Gaussians by rendering pixels with shorter Gaussian lists. • We introduce scale reset to encourage smaller 3D Gaus-sians and an entropy constraint on the alpha blending pro-cedure to adjust the weight distribution along a ray. • We achieve state-of-the-art training efficiency without de-grading rendering quality. 
+
+2. Related Work 
+
+3DGS has been broadly explored in novel view synthe-sis [10, 42, 43], surface reconstruction [25, 30, 37, 41], and SLAM [14, 15, 17]. As our work focuses on efficiency, we mainly review prior studies on training acceleration. 
+
+2.1. Reducing Training Load 
+
+Recent work has substantially reduced the training itera-tions required by the original 3DGS pipeline from 30K [18]. Fang and Wang [7] achieve competitive quality within 8K iterations via aggressive densification, while Kotovenko et al . [22] attain a 6 times reduction by directly triangulating dense 2D keypoints as initialization. Fan et al . [6] leverage geometric foundation models MASt3R [24] for sparse-view reconstruction in just 1K iterations. Liu et al . [27] propose MVSGaussian to eliminate per-scene training through gen-eralization, allowing rapid scene-specific fine-tuning. 
+
+2.2. Optimizer and CUDA Implementations 
+
+Another line of work focuses on replacing Adam with second-order optimizers for faster convergence. H¨ ollein 
+
+et al . [13] apply Levenberg–Marquardt optimization within 3DGS-LM, while Lan et al . [23] propose 3DGS 2, decom-posing the optimization at the kernel-attribute level to con-struct small Newton systems requiring 10 times fewer iter-ations. Pehlivan et al . [31] combine Levenberg–Marquardt and Conjugate Gradient methods tailored for splatting. Complementary efforts target low-level CUDA imple-mentations for better GPU utilization. Durvasula et al . [5] address atomic-operation bottlenecks via warp-level reduc-tion, while Ye et al . [39] release gsplat with optimized kernels. Mallick et al . [28] restructure backpropagation from per-pixel to per-splat parallelization. Liao et al . [26] present LiteGS with warp-based rasterization and a Clus-ter–Cull–Compact pipeline for significant acceleration. Other works improve GPU efficiency through better par-allelization strategies. Wang et al . [35] propose group-training to organize Gaussians into manageable cohorts, while Wang et al . [36] introduce AdR-Gaussian with load-balancing to mitigate uneven per-pixel rendering work-loads. Gui et al . [9] present Balanced 3DGS with Gaussian-wise parallelization for uniform thread workload. Comple-mentary rendering works address popping artifacts via hier-2archical sorting [32] and achieve 4 times speedup through stochastic rasterization [19]. 
+
+2.3. Training Strategies 
+
+Armagan et al . [1] selectively freeze converged Gaussians via gradient thresholding. Hanson et al . [11] achieve 90% model reduction through dual pruning, Ren et al . [33] ac-celerate training to 100 seconds via multi-view-consistent densification and pruning that adaptively regulates Gaussian counts, together with a compact bounding box for faster ras-terization. Kim et al . [20] achieve 9 times compression via color-cued densification that combines spherical har-monics with positional gradients. Progressive optimization strategies include coarse-to-fine resolution scheduling with quantization [8], leading to 10-20 times memory reduction, progressive frequency-component fitting [3], and locality-aware near-real-time optimization during capture [38]. While not targeting training acceleration, Sun et al . [34] and Zoomers et al . [44] improve rendering speed through sparse voxel rasterization and neural occlusion culling. Unlike these approaches, we accelerate 3D Gaussian learning by shortening Gaussian lists at all pixels. Our method does not rely on data-driven priors, Gaussian reduc-tion, or higher-order optimizers, while still achieving signif-icantly improved learning efficiency. 
+
+3. Background 
+
+In 3DGS, each 3D Gaussian primitive Gi is parameterized by a mean μi ∈ R3, scale si ∈ R3, rotation ri ∈ R4, opacity 
+
+σi ∈ R, and color ci ∈ R16 ×3 represented in spherical harmonics. The 3D Gaussian density function is defined as 
+
+Gi(x) = exp 
+
+
+
+− 12 (x − μi)T Σ−1 
+
+> i
+
+(x − μi)
+
+
+
+, (1) where the covariance matrix is Σi = RiSiSTi RTi .For rendering from a given camera viewpoint, all 3D Gaussians are projected onto the 2D image plane using the EWA splatting approach [45]. In 2D image space, the pro-jected Gaussian density becomes 
+
+gi(x) = exp 
+
+
+
+− 12 (x − μ′
+
+> i
+
+)T (Σ ′
+
+> i
+
+)−1(x − μ′
+
+> i
+
+)
+
+
+
+, (2) where μ′ 
+
+> i
+
+and Σ′ 
+
+> i
+
+denote the projected mean and covariance. The splatting process produces a Gaussian list at each pixel, containing all Gaussians that contribute to the volume rendering along the corresponding ray. At pixel p ∈ R2, the alpha value of the i-th Gaussian is computed as 
+
+αi(p) = σigi(p), (3) and the transmittance is recursively defined as 
+
+Ti(p) = Ti−1(p) · (1 − αi−1(p)) = 
+
+> i−1
+
+Y
+
+> j=1
+
+(1 − αj (p)) , (4) where T1(p) = 1 . For a Gaussian list containing N Gaus-sians, sorted by depth, the final blended color is 
+
+C(p) = 
+
+> N
+
+X
+
+> i=1
+
+Ti(p)αi(p)ci(p) = 
+
+> N
+
+X
+
+> i=1
+
+wi(p)ci(p), (5) where we assume a black background. The training loss combines an L1 MAE term and a D-SSIM term with λ denoting the weighting factor: 
+
+Lbase = (1 − λ)L1 + λLD-SSIM . (6) 
+
+4. Method 
+
+4.1. Overview 
+
+To render a pixel, rasterization-based volume rendering constructs a Gaussian list containing all 3D Gaussians that can contribute in alpha blending along the ray, as shown in Fig. 3 (a). Longer lists contain more Gaussians, which directly increases both memory access and computational costs during forward rendering and backward gradient com-putation. Our method accelerates Gaussian learning by pro-ducing significantly shorter Gaussian lists, as evidenced by the comparison of list length distributions in Fig. 3 (b). All statistics reported below are computed as averages over all scenes in Mip-NeRF 360. Prior work accelerates the learning of 3D Gaussians by reducing the total number of Gaussians [7, 11] or by es-timating the pixel coverage of each Gaussian more pre-cisely [11, 26, 36], both of which result in shorter per-pixel Gaussian lists. However, reducing the total Gaussian count is impractical for complex or large-scale scenes with rich geometric details, while more precise coverage estimation only provides marginal speedups (e.g., 10% in [11]). In contrast, our method operates effectively even with a large number of Gaussians, making it suitable for large-scale scenes. Our key idea is to encourage each Gaussian to concentrate its influence on a localized image region rather than dispersing its contribution across many pixels, thereby producing shorter Gaussian lists. This principle of spatial concentration motivates the following two approaches. As shown in Fig. 3, we regularly reset the scale of each Gaussian by a ratio, encouraging smaller Gaussians to re-duce the impact of each Gaussian on neighboring pixels, as shown by the illustration in Fig. 3 (c) and the comparison of scale distributions in Fig. 3 (d). The scale reset also encour-ages larger opacity, as shown by the opacity distribution in Fig. 3 (e). Moreover, we impose the entropy constraint on weights in the alpha blending procedure, which drives dom-inant weights larger while making minor weights smaller, reducing the impact of Gaussians with minor weights on neighboring pixels, as shown by the illustration in Fig. 3 (f) and the comparison of opacity distributions in Fig. 3 (h). The entropy constraint also encourages smaller scales, as shown by the scale distribution in Fig. 3 (g). 33DGS 
+
+Gaussian list: g1, g2, g3, g4 
+
+3DGS+Scale Reset 
+
+Gaussian list: g1, g2 (g3, g4) 
+
+3DGS+Entropy Reg. 
+
+Gaussian list: g1, g2 (g3, g4) (a) (c) (f ) (b) (d) (e) (g) (h) Figure 3. Overview of our method and effects. (a) The Gaussian list of 3DGS. (b) Distribution of Gaussian list length showing our method produces significantly shorter lists. (c) Gaussian list reduction after applying scale reset. (d, e) Scale and opacity distributions comparing 3DGS and 3DGS with scale reset, showing scale reset produces smaller Gaussians with higher opacities. (f) Gaussian list reduction after applying entropy regularization. (g, h) Scale and opacity distributions comparing 3DGS and 3DGS with entropy regularization, demonstrating entropy constraint produces smaller Gaussians and more polarized opacities. “3DGS” results are produced with LiteGS. 
+
+4.2. Scale Reset 
+
+Since larger Gaussians cover more pixels and lengthen 0 200 400 600 800 1000      
+
+> Gaussian list length Counts
+> Length Distribution
+> 3DGS+Scale Reset
+> 3DGS+V olume Reg.
+
+Figure 4. Scale reset achieves shorter Gaussian lists (limited x-range for clarity). 
+
+Gaussian lists, encour-aging smaller scales is a natural strategy. A straightforward ap-proach is to add avolume penalty to the loss, but tuning its weight or threshold is difficult, as Gaussians can otherwise become too large or too small. Our scale reset adopts a simpler strategy while yielding superior quality and speed. Specifically, we periodically re-set the scale of all Gaussians with a shrinking factor ζ < 1,
+
+si ← ζ · si, ∀i. (7) The comparison of list length distributions in Fig. 4 shows that scale reset produces shorter Gaussian lists un-der similar quality control. One reason for its effectiveness is that scale reset takes effect much faster than volume regu-larization, providing immediate acceleration by instantly re-ducing scales and achieving shorter per-pixel Gaussian lists in all subsequent iterations. Moreover, scale reset provides sufficient iterations before the next reset for adjusting other attributes to approximate the radiance field well, thereby en-suring rendering quality. See Sec. 5.4 for the ablation stud-ies and its superiority over volume regularization. 
+
+4.3. Entropy Constraint 
+
+Entropy measures the disorder of a distribution. By min-imizing entropy, we sharpen the distribution of Gaussian contributions in the alpha blending when rendering each pixel. With our entropy constraint, Gaussians with signifi-cant contribution become even more dominant while those with minor contribution become even weaker. This con-straint encourages each Gaussian to concentrate on its des-ignated region, while shrinking nondominant Gaussians, thereby shortening per-pixel Gaussian lists. Fig. 5 demon-strates the effect of entropy loss on the weights along a ray. Our entropy regularization can be applied to various Gaussian attributes, such as opacity. We impose the reg-ularization on the Gaussian weights along each ray, 
+
+wi = Tiαi. (8) For a Gaussian list of length N , these weights form a valid probability distribution, as the sum over all N Gaussians plus the background contribution equals unity,  
+
+> N+1
+
+X
+
+> i=1
+
+wi = 1 , (9) where wN +1 = TN +1 denotes the residual transmittance representing the background contribution after all Gaus-sians have been processed. A formal proof is provided in Sec. 8 of the supplementary material. This normalization property eliminates the need for an explicit normalization pass during entropy computation and is the primary reason we apply entropy to weights. With-out this property, normalization would require maintaining 40 1 2 3 4       
+
+> Index
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> Weight
+> Initial Weights
+> 01234
+> Index
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> Weight
+> After Entr opy Opt.
+
+Figure 5. A toy example demonstrating how entropy regularization polarizes Gaussian weights along a ray. 
+
+global statistics across all Gaussians and accessing them during backpropagation, thereby breaking the streaming computation model and incurring additional memory band-width costs that degrade cache performance. The entropy of the Gaussian list at pixel j is defined as 
+
+Hj = − 
+
+> N+1
+
+X
+
+> i=1
+
+wi,j log wi,j , (10) and the entropy loss is the average across all M pixels, 
+
+LE = 1
+
+M
+
+> M
+
+X
+
+> j=1
+
+Hj . (11) The overall loss combines losses in Eq. (6) and LE ,
+
+L = Lbase + γLE, (12) where γ is a weighting coefficient. Our proposed techniques, i.e., scale reset and entropy constraint, can be used together in a highly effective and complementary manner. Scale reset provides immediate ge-ometric regularization by directly reducing Gaussian sizes, while entropy constraint continuously refines the contri-bution distribution during optimization, encouraging each Gaussian to focus on its designated region. Together, they achieve substantial speedup with much shorter Gaussian lists while maintaining rendering quality. 
+
+4.4. Gradient Calculation 
+
+Let xi denote any attribute (i.e., opacity, position, scale, ro-tation) of the i-th Gaussian. The gradient of total loss is 
+
+∂L
+
+∂x i
+
+= ∂Lbase 
+
+∂x i
+
++ γM
+
+> M
+
+X
+
+> j=1
+
+∂H j
+
+∂α i,j 
+
+∂α i,j 
+
+∂x i
+
+. (13) Note that ∂Lbase /∂x i and ∂α i,j /∂x i are standard in existing 3DGS frameworks. Introducing the intermediate variable, 
+
+Ri,j = 
+
+> N+1
+
+X
+
+> k=i
+
+(log wk,j + 1) wk,j , (14) we obtain the gradient of entropy with respect to αi,j ,
+
+∂H j
+
+∂α i,j 
+
+= ( − log wi,j − 1) Ti,j + Ri+1 ,j 
+
+1 − αi,j 
+
+. (15) The complete derivation is provided in Sec. 9 of the supple-mentary material. Algorithm 1 presents an efficient O(N )
+
+algorithm for computing these gradients. 
+
+Algorithm 1 Compute ∂H j /∂α i for all i given pixel j
+
+1: Rj ← (log wN +1 ,j + 1) · wN +1 ,j ▷ Initialize Rj
+
+2: for i = N down to 1 do 
+
+3: ∂H j 
+
+> ∂α i,j
+
+← (− log wi,j − 1) Ti,j + Rj
+
+> 1−αi,j
+
+4: Rj ← (log wi,j + 1) · wi,j + Rj ▷ Update Rj
+
+5: end for 
+
+5. Experiments and Analysis 
+
+5.1. Datasets 
+
+We follow standard protocols and evaluate our method on real-world scenes from Mip-NeRF 360 [2] (nine scenes: four indoor, five outdoor), Tanks & Temples [21] (train, truck), and Deep Blending [12] (drjohnson, playroom). 
+
+5.2. Implementation Details 
+
+Baseline. We implement our method based on LiteGS [26] 
+
+stable branch. Unlike the original 3DGS codebase that samples images randomly for a fixed 30K iterations, LiteGS organizes training into epochs where each epoch processes the entire dataset once. To ensure consistent training dy-namics across scenes with varying numbers of input views, we standardize each epoch to process exactly 200 images through random sampling with replacement. For scenes with fewer than 200 images, some images are sampled mul-tiple times per epoch; for scenes with more, we sample a subset each time. We train all scenes for 150 epochs (30K total iterations), following the original 3DGS. 
+
+Resolution Scheduler. We adopt the resolution scheduler from DashGaussian [3] to further improve efficiency. The scheduler accelerates training through coarse-to-fine ren-dering with downsampling factor r ≥ 1, progressively training from low resolution (large r) to full resolution (r = 1 ). However, excessively large r can paradoxically increase training time in tile-based rasterization. At very low resolutions, each tile covers a large scene portion, cre-ating excessive Gaussian overlaps and long per-tile lists that limit GPU parallelism. We empirically observe that effi-ciency degrades when per-tile Gaussian counts exceed ap-proximately 150. Therefore, we adaptively determine rmax 
+
+to maintain counts below this threshold, capping rmax at 4. 5Table 1. Quantitative comparison across three datasets. We follow Taming-3DGS’s target Gaussian count setup (3.3M, 2.8M, 1.8M for the three datasets respectively) for fair comparison. For methods whose Gaussian number cannot be controlled, we report their default counts.                                                                                                                                 
+
+> Method Iters Mip-NeRF 360 Deep Blending Tanks and Temples
+> NGPSNR ↑SSIM ↑LPIPS ↓Time(s) ↓NGPSNR ↑SSIM ↑LPIPS ↓Time(s) ↓NGPSNR ↑SSIM ↑LPIPS ↓Time(s) ↓
+> AdR-Gaussian 30K 1.3M 26.92 0.792 0.257 504.86 1.4M 29.72 0.905 0.250 515.78 0.9M 23.49 0.835 0.202 321.08 EDGS 5K 3.5M 26.46 0.817 0.205 318.06 2.3M 29.08 0.898 0.260 214.76 2.2M 22.23 0.831 0.184 219.06 Mini-Splatting2-Dense 18K 3.6M 27.56 0.827 0.184 220.22 4.2M 29.78 0.908 0.222 162.38 2.6M 23.43 0.852 0.152 162.24 3DGS 30K 3.3M 27.55 0.819 0.209 919.51 2.8M 29.74 0.907 0.237 963.66 1.8M 23.77 0.854 0.166 560.52 Taming-3DGS 27.85 0.823 0.208 402.54 30.07 0.910 0.234 322.06 24.14 0.855 0.169 243.25 DashGaussian 27.84 0.824 0.203 218.85 29.84 0.907 0.241 144.81 23.97 0.855 0.167 173.41 LiteGS 27.75 0.822 0.208 191.17 29.64 0.906 0.247 153.14 23.93 0.848 0.178 157.56
+> Ours 30K 3.3M 27.28 0.810 0.224 99.58 2.8M 29.41 0.897 0.249 80.68 1.8M 23.34 0.843 0.172 106.06
+
+Table 2. Quantitative comparison with 18K iterations and fewer Gaussians, following Mini-Splatting2’s setup. The performance gap compared to Tab. 1 stems from LiteGS backbone limitations under constrained settings, not our acceleration strategy.                                                                              
+
+> Method Iters Mip-NeRF 360 Deep Blending Tanks and Temples
+> NGPSNR ↑SSIM ↑LPIPS ↓Time(s) ↓NGPSNR ↑SSIM ↑LPIPS ↓Time(s) ↓NGPSNR ↑SSIM ↑LPIPS ↓Time(s) ↓
+> Mini-Splatting2 18K 0.6M
+> 27.38 0.821 0.215 92.68 0.6M
+> 30.11 0.912 0.239 78.87 0.4M 23.11 0.841 0.186 72.45 DashGaussian 26.89 0.777 0.284 65.01 29.93 0.901 0.270 48.11 23.42 0.823 0.229 57.94 LiteGS 26.75 0.765 0.299 66.33 29.75 0.903 0.275 49.16 23.07 0.816 0.234 49.74
+> Ours 18K 0.6M 26.49 0.762 0.303 43.87 0.6M 29.43 0.898 0.278 37.76 0.4M 22.96 0.819 0.226 44.81 3DGS DashGaussian LiteGS Ours
+> 0
+> 5
+> 10
+> 15
+> Time (ms)
+> 5.2
+> 2.5 2.4 1.4
+> 17.0
+> 3.4 2.9 1.5
+> 8.1
+> 0.9 0.9 0.5
+
+Training Time Breakdown 
+
+> Forward
+> Backward
+> Optimizer
+
+Figure 6. Per-iteration training time breakdown. 
+
+Scale Reset and Entropy Constraint. We apply scale re-set every 20 epochs with shrinking factor ζ = 0 .2, and ap-ply entropy constraint every other epoch during each scale-reset period with weight γ = 0 .015 . When integrating with the resolution scheduler, we adopt a stage-adaptive strategy which applies weaker regularization during early coarse-resolution stages to preserve scene structures, then increases both ζ and γ in later full-resolution epochs. 
+
+5.3. Results 
+
+We present quantitative results in Tab. 1. Following the evaluation protocol established by Taming-3DGS [28] and LiteGS [26], we fix the Gaussian count for each dataset to ensure fair comparison. We report the visual comparisons in Fig. 7 and Fig. 8. All experiments were conducted on a single NVIDIA GeForce RTX 5090 D GPU. Our method substantially accelerates training across all datasets, achieving speedups of 9.2 times on Mip-NeRF 360 (99.58s vs. 919.51s), 11.9 times on Deep Blending (80.68s vs. 963.66s), and 5.3 times on Tanks and Temples (106.06s vs. 560.52s) compared to 3DGS. Relative to the recent LiteGS baseline, our method delivers nearly 50% speedup. The speedup comes with modest quality trade-offs. On Mip-NeRF 360, our PSNR of 27.28 dB is comparable to 3DGS (27.55 dB) and LiteGS (27.75 dB). Similar patterns 
+
+Table 3. Quantitative comparison with FastGS on Mip-NeRF 360 under FastGS’s default setting (0.4M Gaussians).                   
+
+> Method Iters NGPSNR ↑SSIM ↑LPIPS ↓Time(s) ↓
+> FastGS 30K 0.4M 27.43 0.797 0.261 88.55
+> Ours 30K 0.4M 26.50 0.754 0.314 66.32
+
+hold for Deep Blending and Tanks and Temples, where per-ceptual metrics show minimal degradation. The more mod-est acceleration on Tanks and Temples is expected, as this dataset features smaller images and fewer Gaussians. We show efficiency gains from shorter Gaussian lists through timing breakdowns in Fig. 6. Training efficiency across iterations in Fig. 9 shows our method converges fastest among all compared approaches. For PSNR progres-sion in Fig. 10, both DashGaussian and ours use resolution scheduling, resulting in higher PSNR at lower resolutions than other methods. We visualize list lengths in individual views in Fig. 1, demonstrating our shorter Gaussian lists. We additionally evaluate our method in a resource-constrained regime following the setup of Mini-Splatting2 [7] (18K iterations, much fewer Gaussians) in Tab. 2. Our method achieves up to 2.1 times speedup over Mini-Splatting2. While quality is lower than our 30K results in Tab. 1, this gap reflects LiteGS backbone limitations under constraints rather than our acceleration strategy, demonstrating robustness across regimes. We further compare with FastGS [33] under its default setting (0.4M Gaussians) in Tab. 3, where our method achieves 1.4 times faster training. 
+
+5.4. Ablation Study and Analysis 
+
+All ablation studies are conducted on Mip-NeRF 360 with 
+
+NG = 3 .3M. All results are averaged across the nine scenes in the dataset. We use the following notations: L: LiteGS, 6(a) 3DGS (30.91dB / 821s) (b) Taming (31.10dB / 298s) (c) DashGaussian(30.69dB/158s) (d) LiteGS (30.72dB / 179s) (e) Ours (30.38dB / 86s) 
+
+(f) 3DGS (21.16dB / 1182s) (g) Taming (21.64dB / 598s) (h) DashGaussian(21.16dB/293s) (i) LiteGS (21.27dB / 238s) (j) Ours (21.29dB / 115s) 
+
+Figure 7. Qualitative comparison of rendered results. Each row shows results from 3DGS, Taming 3DGS, DashGaussian, LiteGS, and ours with PSNR and training time. More comparisons are detailed in Fig. 16, Fig. 17, Fig. 18 and Fig. 19 of the supplementary material. Ours 90s 
+
+> 27.66/0.927
+> 25.26/0.751
+
+70s 
+
+> 26.81/0.902 25.40/0.770
+
+50s 25.98/0.852 23.61/0.727 
+
+30s 24.43/0.785 22.54/0.680 
+
+> 23.29/0.768 21.90/0.666
+
+15s DashGaussian 
+
+Figure 8. Qualitative comparison of rendering results, comparing our method with DashGaussian. Each row shows results at certain training times with PSNR and SSIM metrics displayed. More comparisons are detailed in Fig. 20 of the supplementary material. Table 4. Ablation study analyzing effects of individual modules.                                     
+
+> Method Mip-NeRF 360
+> PSNR ↑SSIM ↑LPIPS ↓Time(s) ↓
+> L27.75 0.822 0.208 191.17 L+R 27.33 0.815 0.212 147.33 L+E 27.35 0.815 0.218 162.53 L+R+E 27.14 0.812 0.215 141.28 L+D 27.85 0.822 0.213 134.99 L+D+R 27.52 0.815 0.219 108.62 L+D+E 27.38 0.813 0.223 112.13
+> L+D+R+E 27.28 0.810 0.224 99.58
+
+D: DashGaussian, R( ζ): scale reset, E( γ): entropy con-straint, V( η): volume regularization, and O( ξ): opacity reg-ularization. Our default parameters are ζ = 0 .2, γ = 0 .015 .
+
+Effect of Modules. We report results with either one or both modules in Tab. 4. Both the scale reset and entropy constraint accelerate 3D Gaussian learning, with or with-out DashGaussian’s resolution scheduler. Each module pro-vides incremental improvements when combined. Detailed curves are shown in Fig. 15 of the supplementary material, confirming the effectiveness of both modules in each scene. 
+
+Effect of Parameters. Both techniques exhibit a speed-
+
+Table 5. Ablation study on parameter selection.                         
+
+> Method Mip-NeRF 360
+> PSNR ↑SSIM ↑LPIPS ↓Time(s) ↓
+> L+D+R(0.2)+E(0.01) 27.35 0.811 0.222 102.86 L+D+R(0.2)+E(0.02) 27.14 0.808 0.226 99.10 L+D+R(0.3)+E(0.015) 27.31 0.811 0.223 104.39 L+D+R(0.1)+E(0.015) 27.14 0.807 0.227 98.34
+> L+D+R(0.2)+E(0.015) 27.28 0.810 0.224 99.58
+
+quality trade-off. More aggressive regularization (lower ζ
+
+or higher γ) accelerates training by reducing Gaussian over-lap and per-pixel list lengths, but can degrade quality if over-applied. As shown in Tab. 5, ζ = 0 .2 and γ = 0 .015 
+
+achieve favorable balances, providing substantial speedup while maintaining quality. DashGaussian provides further acceleration and combines effectively with both techniques. 
+
+Superiority over Alternatives. We compare scale reset with volume regularization in Tab. 6. Scale reset achieves both better rendering quality and substantially faster train-ing. This validates our design choice, as periodic scale reset provides immediate geometric regularization that acceler-ates training while improving visual quality through direct 7Table 6. Comparison of volume regularization versus scale reset. 
+
+Method Mip-NeRF 360 
+
+PSNR ↑ SSIM ↑ LPIPS ↓ Time(s) ↓
+
+L+D+V(1.0)+E(0.015) 27.17 0.808 0.230 107.91 
+
+L+D+R(0.2)+E(0.015) 27.28 0.810 0.224 99.58 
+
+Table 7. Comparison of opacity versus entropy constraint. 
+
+Method Mip-NeRF 360 
+
+PSNR ↑ SSIM ↑ LPIPS ↓ Time(s) ↓
+
+L+D+R(0.2)+O(3.0) 27.29 0.807 0.231 106.16 
+
+L+D+R(0.2)+E(0.015) 27.28 0.810 0.224 99.58 
+
+Table 8. Ablation study of tile size impact on time and quality. 
+
+Method Mip-NeRF 360 
+
+PSNR ↑ SSIM ↑ LPIPS ↓ Time(s) ↓
+
+3DGS (16 ×16) 27.55 0.819 0.209 919.51 3DGS (8 ×8) 27.56 0.819 0.208 1004.30 0 5000 10000 15000 20000 25000 30000    
+
+> Iterations
+> 0
+> 200
+> 400
+> 600
+> 800
+> Training  Time  (s)
+> Training Time vs Iterations
+> 3DGS
+> AdR - Gaussian
+> Taming-3DGS
+> Mini-Splatting2-Dense
+> DashGaussian
+> LiteGS
+> Ours
+
+Figure 9. Training time versus iterations. Plot for compact models are shown in Supplementary Fig. 13. 0 5000 10000 15000 20000 25000 30000   
+
+> Iterations
+> 22
+> 24
+> 26
+> 28
+> PSNR  (dB)
+> PSNR vs Iterations
+> 3DGS
+> AdR - Gaussian
+> Taming-3DGS
+> Mini-Splatting2-Dense
+> DashGaussian
+> LiteGS
+> Ours
+
+Figure 10. PSNR convergence across iterations. Plot for compact models is shown in Supplementary Fig. 14. 
+
+manipulation rather than gradient-based constraints. Dai and Xu et al . [4] proposed an opacity loss that en-courages Gaussian opacity toward extreme values (0 or 1), 
+
+LO = exp  −(σ − 0.5) 2/0.05 . As shown in Tab. 7, our entropy constraint achieves greater acceleration while main-taining better quality. This is because entropy operates on blending weights that depend on multiple Gaussian at-tributes (opacity, scale, position, and rotation). In contrast, constraining only opacity with extreme values is overly re-strictive, resulting in inferior speedup. 
+
+Figure 11. Comparison of Gaussian list length distributions across individual and combined modules. 
+
+3DGS 3DGS+Reset 3DGS+Entropy 3DGS+R+E 
+
+Figure 12. Gaussian count heatmap comparison across modules. Colors represent per-tile Gaussian counts. See color bar in Fig. 1. 
+
+Effect of tile sizes. Since 3DGS uses 16 × 16 tiles while LiteGS and our method use 8×8, we tested 3DGS with 8×8
+
+tiles for fair comparison. As shown in Tab. 8, the quality and training time remain similar. This is because smaller tiles produce shorter per-tile Gaussian lists but more tiles overall, yielding similar training times. 
+
+Length of Gaussian Lists. We report Gaussian list lengths in Fig. 11, measured as the average from the last 200 train-ing iterations. In this figure, results labeled as “3DGS” are obtained using LiteGS. Both scale reset and entropy constraint significantly reduce list lengths, individually and jointly. Spatial visualizations are shown in Fig. 12. Ad-ditional results in Fig. 22 and per-scene distributions in Fig. 24 are provided in the supplementary material, con-firming consistent improvements across all scenes. 
+
+6. Conclusion 
+
+We present a method to speed up the learning of 3D Gaus-sians with much shorter Gaussian lists. Without a need of reducing total Gaussian count, both our scale reset and en-tropy constraint successfully shorten the Gaussian lists used for rendering each pixel by resetting the size of Gaussians regularly and sharpening the weight distribution in alpha blending. Our evaluations and ablation studies on widely used benchmarks validate our approach and demonstrate significant advantages over other methods in efficiency with comparable rendering quality. 
+
+7. Acknowledgment 
+
+This project was partially supported by an NVIDIA aca-demic award and a Richard Barber research award. 8References 
+
+[1] Anil Armagan, Albert Sa` a-Garriga, Bruno Manganelli, Kyu-won Kim, and M. Kerim Yucel. Gsta: Efficient training scheme with siestaed gaussians for monocular 3d scene re-construction, 2025. 3 [2] Jonathan T. Barron, Ben Mildenhall, Dor Verbin, Pratul P. Srinivasan, and Peter Hedman. Mip-nerf 360: Unbounded anti-aliased neural radiance fields. CVPR , 2022. 5 [3] Youyu Chen, Junjun Jiang, Kui Jiang, Xiao Tang, Zhihao Li, Xianming Liu, and Yinyu Nie. Dashgaussian: Optimizing 3d gaussian splatting in 200 seconds. In CVPR , 2025. 2, 3, 5 [4] Pinxuan Dai, Jiamin Xu, Wenxiang Xie, Xinguo Liu, Huamin Wang, and Weiwei Xu. High-quality surface recon-struction using gaussian surfels. In ACM SIGGRAPH 2024 Conference Papers . Association for Computing Machinery, 2024. 8 [5] Sankeerth Durvasula, Adrian Zhao, Fan Chen, Ruofan Liang, Pawan Kumar Sanjaya, and Nandita Vijaykumar. Distwar: Fast differentiable rendering on raster-based ren-dering pipelines. arXiv preprint arXiv:2401.05345 , 2023. 2 [6] Zhiwen Fan, Kairun Wen, Wenyan Cong, Kevin Wang, Jian Zhang, Xinghao Ding, Danfei Xu, Boris Ivanovic, Marco Pavone, Georgios Pavlakos, Zhangyang Wang, and Yue Wang. Instantsplat: Sparse-view gaussian splatting in sec-onds, 2024. 2 [7] Guangchi Fang and Bing Wang. Mini-splatting2: Building 360 scenes within minutes via aggressive gaussian densifica-tion. arXiv preprint arXiv:2411.12788 , 2024. 2, 3, 6 [8] Sharath Girish, Kamal Gupta, and Abhinav Shrivastava. Ea-gles: Efficient accelerated 3d gaussians with lightweight en-codings. In European Conference on Computer Vision , pages 54–71. Springer, 2024. 3 [9] Hao Gui, Lin Hu, Rui Chen, Mingxiao Huang, Yuxin Yin, Jin Yang, Yong Wu, Chen Liu, Zhongxu Sun, Xueyang Zhang, and Kun Zhan. Balanced 3dgs: Gaussian-wise parallelism rendering with fine-grained tiling, 2025. 2 [10] Liang Han, Junsheng Zhou, Yu-Shen Liu, and Zhizhong Han. Binocular-guided 3d gaussian splatting with view con-sistency for sparse view synthesis. In Advances in Neural Information Processing Systems , 2024. 2 [11] Alex Hanson, Allen Tu, Geng Lin, Vasu Singla, Matthias Zwicker, and Tom Goldstein. Speedy-splat: Fast 3d gaus-sian splatting with sparse pixels and sparse primitives. In 
+
+Proceedings of the Computer Vision and Pattern Recognition Conference (CVPR) , pages 21537–21546, 2025. 2, 3 [12] Peter Hedman, Julien Philip, True Price, Jan-Michael Frahm, George Drettakis, and Gabriel Brostow. Deep blending for free-viewpoint image-based rendering. ACM Transactions on Graphics (SIGGRAPH Asia Conference Proceedings) , 37 (6), 2018. 5 [13] Lukas H¨ ollein, Aljaˇ z Boˇ ziˇ c, Michael Zollh¨ ofer, and Matthias Nießner. 3dgs-lm: Faster gaussian-splatting optimization with levenberg-marquardt. In Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) , 2025. 2[14] Pengchong Hu and Zhizhong Han. Vtgaussian-slam: Rgbd slam for large scale scenes with splatting view-tied 3d gaus-sians. In International Conference on Machine Learning ,2025. 2 [15] Pengchong Hu and Zhizhong Han. Sgad-slam: Splatting gaussians at adjusted depth for better radiance fields in rgb-d slam. In Proceedings of the IEEE/CVF Conference on Com-puter Vision and Pattern Recognition , 2026. 2 [16] Muhammad Zubair Irshad, Mauro Comi, Yen-Chen Lin, Nick Heppert, Abhinav Valada, Rares Ambrus, Zsolt Kira, and Jonathan Tremblay. Neural fields in robotics: A survey. 
+
+arXiv preprint arXiv:2410.20220 , 2024. 1 [17] Sijia Jiang, Jing Hua, and Zhizhong Han. Query quantized neural slam. In Proceedings of the AAAI Conference on Ar-tificial Intelligence , 2025. 2 [18] Bernhard Kerbl, Georgios Kopanas, Thomas Leimk¨ uhler, and George Drettakis. 3d gaussian splatting for real-time radiance field rendering. ACM Transactions on Graphics , 42 (4), 2023. 2 [19] Shakiba Kheradmand, Delio Vicini, George Kopanas, Dmitry Lagun, Kwang Moo Yi, Mark Matthews, and An-drea Tagliasacchi. Stochasticsplats: Stochastic rasterization for sorting-free 3d gaussian splatting, 2025. 3 [20] Sieun Kim, Kyungjin Lee, and Youngki Lee. Color-cued ef-ficient densification method for 3d gaussian splatting. In Pro-ceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops , pages 775– 783, 2024. 2, 3 [21] Arno Knapitsch, Jaesik Park, Qian-Yi Zhou, and Vladlen Koltun. Tanks and temples: Benchmarking large-scale scene reconstruction. ACM Transactions on Graphics , 36(4), 2017. 5[22] Dmytro Kotovenko, Olga Grebenkova, and Bj¨ orn Ommer. Edgs: Eliminating densification for efficient convergence of 3dgs, 2025. 2 [23] Lei Lan, Tianjia Shao, Zixuan Lu, Yu Zhang, Chenfanfu Jiang, and Yin Yang. 3dgs2: Near second-order converging 3d gaussian splatting. In Proceedings of the Special Inter-est Group on Computer Graphics and Interactive Techniques Conference Conference Papers , pages 1–10, 2025. 2 [24] Vincent Leroy, Yohann Cabon, and Jerome Revaud. Ground-ing image matching in 3d with mast3r, 2024. 2 [25] Shujuan Li, Yu-Shen Liu, and Zhizhong Han. Gaussianudf: Inferring unsigned distance functions through 3d gaussian splatting. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2025. 2 [26] Kaimin Liao, Hua Wang, Zhi Chen, Luchao Wang, and Yaohua Tang. Litegs: A high-performance framework to train 3dgs in subminutes via system and algorithm codesign, 2025. 2, 3, 5, 6 [27] Tianqi Liu, Guangcong Wang, Shoukang Hu, Liao Shen, Xinyi Ye, Yuhang Zang, Zhiguo Cao, Wei Li, and Ziwei Liu. Mvsgaussian: Fast generalizable gaussian splatting recon-struction from multi-view stereo. In European Conference on Computer Vision , pages 37–53. Springer, 2025. 2 [28] Saswat Subhajyoti Mallick, Rahul Goel, Bernhard Kerbl, Markus Steinberger, Francisco Vicente Carrasco, and Fer-nando De La Torre. Taming 3dgs: High-quality radiance 
+
+9fields with limited resources. In SIGGRAPH Asia 2024 Con-ference Papers , New York, NY, USA, 2024. Association for Computing Machinery. 2, 6 [29] Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ramamoorthi, and Ren Ng. Nerf: Representing scenes as neural radiance fields for view syn-thesis. In ECCV , 2020. 1 [30] Takeshi Noda, Yu-Shen Liu, and Zhizhong Han. 3d gaussian splatting with self-constrained priors for high fidelity surface reconstruction. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2026. 2 [31] Hamza Pehlivan, Andrea Boscolo Camiletto, Lin Geng Foo, Marc Habermann, and Christian Theobalt. Second-order optimization of gaussian splats with importance sampling. 
+
+arXiv preprint arXiv:2504.12905 , 2025. 2 [32] Lukas Radl, Michael Steiner, Mathias Parger, Alexan-der Weinrauch, Bernhard Kerbl, and Markus Steinberger. StopThePop: Sorted Gaussian Splatting for View-Consistent Real-time Rendering. ACM Transactions on Graphics , 43 (4), 2024. 3 [33] Shiwei Ren, Tianci Wen, Yongchun Fang, and Biao Lu. Fastgs: Training 3d gaussian splatting in 100 seconds. arXiv preprint arXiv:2511.04283 , 2025. 3, 6 [34] Cheng Sun, Jaesung Choe, Charles Loop, Wei-Chiu Ma, and Yu-Chiang Frank Wang. Sparse voxels rasterization: Real-time high-fidelity radiance field rendering. In CVPR , 2025. 3[35] Chengbo Wang, Guozheng Ma, Yifei Xue, and Yizhen Lao. Faster and better 3d splatting via group training. arXiv preprint arXiv:2412.07608 , 2024. 2 [36] Xinzhe Wang, Ran Yi, and Lizhuang Ma. Adr-gaussian: Ac-celerating gaussian splatting with adaptive radius. In ACM SIGGRAPH Asia 2024 Conference Proceedings , pages 1–10, 2024. 2, 3 [37] Peng Xiang, Liang Han, Hui Zhang, Yu-Shen Liu, and Zhizhong Han. Vggs: Vggt-guided gaussian splatting for efficient and faithful sparse-view surface reconstruction. In 
+
+Proceedings of the AAAI Conference on Artificial Intelli-gence , 2026. 2 [38] Yiwei Xu, Yifei Yu, Wentian Gan, Tengfei Wang, Zongqian Zhan, Hao Cheng, and Xin Wang. Gaussian on-the-fly splat-ting: A progressive framework for robust near real-time 3dgs optimization, 2025. 3 [39] Vickie Ye, Ruilong Li, Justin Kerr, Matias Turkulainen, Brent Yi, Zhuoyang Pan, Otto Seiskari, Jianbo Ye, Jeffrey Hu, Matthew Tancik, et al. gsplat: An open-source library for gaussian splatting. Journal of Machine Learning Research ,26(34):1–17, 2025. 2 [40] Jiahui Zhang, Yuelei Li, Anpei Chen, Muyu Xu, Kunhao Liu, Jianyuan Wang, Xiao-Xiao Long, Hanxue Liang, Zex-iang Xu, Hao Su, et al. Advances in feed-forward 3d re-construction and view synthesis: A survey. arXiv preprint arXiv:2507.14501 , 2025. 1 [41] Wenyuan Zhang, Yu-Shen Liu, and Zhizhong Han. Neu-ral signed distance function inference through splatting 3d gaussians pulled on zero-level set. In Advances in Neural Information Processing Systems , 2024. 2 [42] Wenyuan Zhang, Jimin Tang, Weiqi Zhang, Yi Fang, Yu-Shen Liu, and Zhizhong Han. Materialrefgs: Reflective gaussian splatting with multi-view consistent material infer-ence. In Advances in Neural Information Processing Sys-tems , 2025. 2 [43] Wenyuan Zhang, Yixiao Yang, Han Huang, Liang Han, Kanle Shi, Yu-Shen Liu, and Zhizhong Han. Monoinstance: Enhancing monocular priors via multi-view instance align-ment for neural rendering and reconstruction. In Proceed-ings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2025. 2 [44] Brent Zoomers, Florian Hahlbohm, Joni Vanherck, Lode Jorissen, Marcus Magnor, and Nick Michiels. Nvgs: Neu-ral visibility for occlusion culling in 3d gaussian splatting. 
+
+arXiv preprint arXiv:2511.19202 , 2025. 3 [45] Matthias Zwicker, Hanspeter Pfister, Jeroen Van Baar, and Markus Gross. Ewa volume splatting. In Proceedings Visu-alization, 2001. VIS’01. , pages 29–538. IEEE, 2001. 3 
+
+10 Speeding Up the Learning of 3D Gaussians with Much Shorter Gaussian Lists 
+
+## Supplementary Material 
+
+8. Sum of Weights Equals Unity 
+
+We proof the unity of the sum of weights along each ray. This ensures that we can calculate the entropy using weights as a distribution. In volumetric rendering with N Gaussians and a background, the transmittance satisfies, 
+
+Ti =
+
+> i−1
+
+Y
+
+> j=1
+
+(1 − αj ), T1 = 1 , (16) and the blending weight is wi = Tiαi for i ∈ [1 , N ].The background weight is wN +1 = TN +1 . We prove that 
+
+PN +1  
+
+> i=1
+
+wi = 1 .
+
+Proof. Equivalently, we show that TN +1 = 1 − PNi=1 wi
+
+by mathematical induction. Base case ( N = 1 ): 
+
+> 1
+
+X
+
+> i=1
+
+wi + T2 = T1α1 + T1(1 − α1) = T1 = 1 . (17) Inductive step: Assume Pki=1 wi = 1 − Tk+1 .For N = k + 1 :
+
+> k+1
+
+X
+
+> i=1
+
+wi =
+
+> k
+
+X
+
+> i=1
+
+wi + wk+1 = (1 − Tk+1 ) + Tk+1 αk+1 
+
+(18) 
+
+= 1 − Tk+1 (1 − αk+1 ) = 1 − Tk+2 . (19) Therefore, PN +1  
+
+> i=1
+
+wi = 1 .
+
+9. Gradient of Entropy with respect to Alpha 
+
+Setup. For a pixel with N Gaussians, recall that the trans-mittance and blending weights for the i-th Gaussian are: 
+
+Ti =
+
+> i−1
+
+Y
+
+> j=1
+
+(1 − αj ), T1 = 1 , (20) 
+
+wi = Tiαi, i ∈ [1 , N ]. (21) Including the background weight wN +1 = TN +1 , we have 
+
+PN +1  
+
+> i=1
+
+wi = 1 (see Sec. 8). 
+
+Entropy loss. The entropy for one pixel is 
+
+H = − 
+
+> N+1
+
+X
+
+> i=1
+
+wi log wi, (22) with gradient 
+
+∂H ∂w i
+
+= − log wi − 1. (23) 
+
+Chain rule. For each Gaussian, the learnable attributes (position, scale, rotation, opacity) are encapsulated in αi.We compute the gradient with respect to αi using the chain rule: 
+
+∂H ∂α i
+
+= 
+
+> N+1
+
+X
+
+> k=i
+
+∂H ∂w k
+
+∂w k
+
+∂α i
+
+. (24) 
+
+Key components. We derive ∂w k 
+
+> ∂α i
+
+for three cases. 
+
+Case 1: k = i.
+
+∂w i
+
+∂α i
+
+= ∂(Tiαi)
+
+∂α i
+
+= Ti. (25) 
+
+Case 2: k > i . Since wk = Tkαk = Qk−1 
+
+> j=1
+
+(1 − αj ) · αk,we have 
+
+∂w k
+
+∂α i
+
+= αk · ∂∂α i
+
+
+
+> k−1
+
+Y
+
+> j=1
+
+(1 − αj )
+
+ (26) 
+
+= αk ·
+
+> k−1
+
+Y 
+
+> j=1 ,j ̸=i
+
+(1 − αj ) · (−1) (27) 
+
+= −
+
+Qk−1 
+
+> j=1
+
+(1 − αj ) · αk
+
+1 − αi
+
+(28) 
+
+= − wk
+
+1 − αi
+
+. (29) 
+
+Case 3: k = N + 1 .
+
+∂w N +1 
+
+∂α i
+
+= ∂T N +1 
+
+∂α i
+
+= − TN +1 
+
+1 − αi
+
+= − wN +1 
+
+1 − αi
+
+. (30) 
+
+General formula. Substituting the three cases into the chain rule, we obtain: 
+
+∂H ∂α i
+
+= ∂H ∂w i
+
+∂w i
+
+∂α i
+
++ 
+
+> N+1
+
+X
+
+> k=i+1
+
+∂H ∂w k
+
+∂w k
+
+∂α i
+
+(31) 
+
+= ( − log wi − 1) Ti + 
+
+> N+1
+
+X
+
+> k=i+1
+
+(− log wk − 1) 
+
+
+
+− wk
+
+1 − αi
+
+
+
+(32) 
+
+= ( − log wi − 1) Ti + 11 − αiN +1 X
+
+> k=i+1
+
+(log wk + 1) wk.
+
+(33) 1Define the intermediate variable: 
+
+Ri = 
+
+> N+1
+
+X
+
+> k=i
+
+(log wk + 1) wk. (34) Then the gradient simplifies to: 
+
+∂H ∂α i
+
+= ( − log wi − 1) Ti + Ri+1 
+
+1 − αi
+
+. (35) 
+
+Efficient computation. The intermediate values Ri can be computed efficiently in reverse order: 
+
+RN +1 = (log wN +1 + 1) wN +1 , (36) 
+
+Ri = (log wi + 1) wi + Ri+1 , i = N, . . . , 1. (37) This backward accumulation requires only O(N ) opera-tions and can be parallelized across pixels in CUDA. 
+
+10. Gradients with respect to Attributes 
+
+Having derived ∂H ∂α i , we now compute gradients with re-spect to the learnable Gaussian attributes using the chain rule. 
+
+Opacity. Recall that αi = σi · gi, where σi ∈ [0 , 1] is the opacity and gi is the 2D Gaussian density. The gradient with respect to opacity is: 
+
+∂H ∂σ i
+
+= ∂H ∂α i
+
+∂α i
+
+∂σ i
+
+= ∂H ∂α i
+
+· gi. (38) 
+
+Gaussian density. The 2D Gaussian density is given by: 
+
+gi = exp( di), (39) where di is the exponent term (quadratic form): 
+
+di = − 12 (x − μ′
+
+> i
+
+)T (Σ ′
+
+> i
+
+)−1(x − μ′
+
+> i
+
+). (40) Here μ′ 
+
+> i
+
+and Σ′ 
+
+> i
+
+denote the projected 2D mean and covari-ance of the i-th Gaussian. The gradient with respect to di is: 
+
+∂H ∂d i
+
+= ∂H ∂α i
+
+∂α i
+
+∂g i
+
+∂g i
+
+∂d i
+
+(41) 
+
+= ∂H ∂α i
+
+· σi · gi (42) 
+
+= σigi · ∂H ∂α i
+
+. (43) 
+
+Inverse covariance matrix. The gradient with respect to the inverse covariance matrix is: 
+
+∂H ∂(Σ ′
+
+> i
+
+)−1 = ∂H ∂d i
+
+∂d i
+
+∂(Σ ′
+
+> i
+
+)−1 (44) 
+
+= ∂H ∂d i
+
+·
+
+
+
+− 12 (x − μ′
+
+> i
+
+)( x − μ′
+
+> i
+
+)T
+
+
+
+. (45) 
+
+Mean. The gradient with respect to the 2D mean is: 
+
+∂H ∂μ ′
+
+> i
+
+= ∂H ∂d i
+
+∂d i
+
+∂μ ′
+
+> i
+
+(46) 
+
+= ∂H ∂d i
+
+· (Σ ′
+
+> i
+
+)−1(x − μ′
+
+> i
+
+). (47) 
+
+11. Additional Results 
+
+The training efficiency across iterations, as illustrated in Fig. 13, demonstrates that our method achieves the fastest convergence among all compared approaches. Fig. 14 presents the PSNR progression throughout the training. Both DashGaussian and our method employ resolution scheduling, which results in higher PSNR values at lower resolutions compared to other methods. Fig. 15 confirms the effectiveness of both proposed modules (scale reset and entropy regularization) across all evaluated scenes. The no-tation convention is detailed in Sec. 5.4.      
+
+> Table 9. Average testing FPS on the Mip-NeRF 360 dataset.
+> Method FPS ↑
+> 3DGS 140.91 Taming 219.60 LiteGS 233.76
+> Ours 343.92
+
+We also report the average testing FPS on Mip-NeRF 360 in Tab. 9, measured at the same rendering resolution for all methods, where our method achieves the highest rendering throughput among all compared approaches. Qualitative comparisons of the rendered results are pre-sented in Fig. 16, Fig. 17, Fig. 18, and Fig. 19. Addi-tional qualitative comparisons of rendering with our method and DashGaussian at specific training times are provided in Fig. 20 of the supplementary material. Heatmaps measuring the per-tile Gaussian list lengths in color are presented in Fig. 21. Please also see our video for additional visualizations of Gaussian list lengths from mul-tiple testing perspectives and how they evolve during train-ing. The ablation study examining the effect of individual modules is detailed in Fig. 22. Per-pixel entropy heatmap comparison between LiteGS and our method across scenes in the Mip-NeRF 360 dataset is shown in Fig. 23. Per-scene distributions of Gaussian length, scale, and opacity are pre-sented in Fig. 24, demonstrating consistent improvements across all scenes. Gaussians are visualized in Fig. 25, show-ing our method produces smaller Gaussians than the origi-nal 3DGS. 
+
+12. Code 
+
+We provide a piece of demonstration code for reference. We will release our code upon the acceptance. 
+
+13. Video 
+
+We provide a video to show more visualizations and details. 20 5000 10000 15000 20000 25000 30000 
+
+Iterations 
+
+0
+
+200 
+
+400 
+
+600 
+
+800 
+
+> Training  Time  (s)
+
+Training Time vs Iterations 
+
+3DGS 
+
+AdR - Gaussian 
+
+Taming-3DGS 
+
+Mini-Splatting2-Dense 
+
+DashGaussian 
+
+LiteGS 
+
+Ours 0 3000 6000 9000 12000 15000 18000 
+
+Iterations 
+
+0
+
+20 
+
+40 
+
+60 
+
+80 
+
+> Training  Time  (s)
+
+Mini-Splatting2 
+
+DashGaussian 
+
+LiteGS 
+
+Ours Figure 13. Training time versus iterations for full and compact models, corresponding to Fig. 9. 0 5000 10000 15000 20000 25000 30000 
+
+Iterations 
+
+22 
+
+24 
+
+26 
+
+28 
+
+> PSNR  (dB)
+
+PSNR vs Iterations 
+
+3DGS 
+
+AdR - Gaussian 
+
+Taming-3DGS 
+
+Mini-Splatting2-Dense 
+
+DashGaussian 
+
+LiteGS 
+
+Ours 0 3000 6000 9000 12000 15000 18000 
+
+Iterations 
+
+22 
+
+24 
+
+26 
+
+28 
+
+> PSNR  (dB)
+
+Mini-Splatting2 
+
+DashGaussian 
+
+LiteGS 
+
+Ours 
+
+Figure 14. PSNR convergence across iterations for full and com-pact models, corresponding to Fig. 10. 0 5000 10000 15000 20000 25000 30000 
+
+Iterations 
+
+24 
+
+26 
+
+28 
+
+> PSNR  (dB)
+
+PSNR vs Iterations 
+
+L+D+R 
+
+L+D+E 
+
+L+D+R+E 0 5000 10000 15000 20000 25000 30000 
+
+Iterations 
+
+0
+
+25 
+
+50 
+
+75 
+
+100 
+
+> Training  Time  (s)
+
+Training Time vs Iterations 
+
+L+D+R 
+
+L+D+E 
+
+L+D+R+E 
+
+Figure 15. PSNR and time curves across iterations showing effects of individual modules. See Sec. 5.4 for more details. 
+
+3(a) 3DGS, PSNR: 26.82, Time: 936.62s (b) AdR-Gaussian, PSNR: 25.93, Time: 478.89s (c) Taming 3DGS, PSNR: 26.88, Time: 436.33s 
+
+(d) MiniSplatting2-D, PSNR: 27.03, Time: 169.71s (e) DashGaussian, PSNR: 27.37, Time: 185.38s (f) EDGS, PSNR: 25.66, Time: 196.35s 
+
+(g) LiteGS, PSNR: 27.53, Time: 176.10s (h) Ours, PSNR: 27.33, Time: 87.62s (i) Ground Truth 
+
+Figure 16. Qualitative comparison of rendered results on scene Stump. Our method achieves comparable rendering quality (PSNR: 27.33) while being the fastest, with training time of only 87.62 seconds. 
+
+4(a) 3DGS, PSNR: 30.91, Time: 821.65s (b) AdR-Gaussian, PSNR: 30.31, Time: 505.97s (c) Taming 3DGS, PSNR: 31.10, Time: 298.62s 
+
+(d) MiniSplatting2-D, PSNR: 30.89, Time: 261.92s (e) DashGaussian, PSNR: 30.69, Time: 158.53s (f) EDGS, PSNR: 29.38, Time: 404.50s 
+
+(g) LiteGS, PSNR: 30.72, Time: 179.39s (h) Ours, PSNR: 30.38, Time: 86.66s (i) Ground Truth 
+
+Figure 17. Qualitative comparison of rendered results on scene Counter. Our method achieves comparable rendering quality (PSNR: 30.38) while being the fastest, with training time of only 86.66 seconds. 
+
+5(a) 3DGS, PSNR: 21.16, Time: 1182.72s (b) AdR-Gaussian, PSNR: 20.75, Time: 539.21s (c) Taming 3DGS, PSNR: 21.64, Time: 598.34s 
+
+(d) MiniSplatting2-D, PSNR: 21.18, Time: 193.93s (e) DashGaussian, PSNR: 21.16, Time: 293.70s (f) EDGS, PSNR: 20.87, Time: 298.30s 
+
+(g) LiteGS, PSNR: 21.27, Time: 238.38s (h) Ours, PSNR: 21.29, Time: 115.37s (i) Ground Truth 
+
+Figure 18. Qualitative comparison of rendered results on scene Bicycle. Our method achieves comparable rendering quality (PSNR: 21.29) while being the fastest, with training time of only 115.37 seconds. 
+
+6(a) 3DGS, PSNR: 34.31, Time: 884.63s (b) AdR-Gaussian, PSNR: 33.68, Time: 529.03s (c) Taming 3DGS, PSNR: 34.83, Time: 307.47s 
+
+(d) MiniSplatting2-D, PSNR: 33.56, Time: 213.22s (e) DashGaussian, PSNR: 34.59, Time: 162.80s (f) EDGS, PSNR: 32.85, Time: 362.45s 
+
+(g) LiteGS, PSNR: 34.79, Time: 174.86s (h) Ours, PSNR: 34.23, Time: 79.42s (i) Ground Truth 
+
+Figure 19. Qualitative comparison of rendered results on scene Room. Our method achieves comparable rendering quality (PSNR: 34.23) while being the fastest, with training time of only 79.42 seconds. 
+
+7Kitchen Bicycle Ours  Dash  Ours 
+
+90s 
+
+> 27.66/0.927 25.50/0.775 22.34/0.628 25.26/0.751
+
+70s 
+
+> 26.81/0.902 24.24/0.720 22.03/0.594 25.40/0.770
+
+50s 
+
+> 25.98/0.852 23.95/0.692 22.05/0.587 23.61/0.727
+
+30s 
+
+> 24.43/0.785 22.48/0.603 21.70/0.540 22.54/0.680
+> 23.29/0.768 21.01/0.492 20.65/0.474 21.90/0.666
+
+15s Dash Figure 20. Qualitative comparison of rendering quality across two scenes from Mip-NeRF 360, comparing our method with DashGaussian. Each row shows results at training times of 15s, 30s, 50s, 70s, and 90s. PSNR and SSIM metrics are displayed in each image. 
+
+83DGS Taming-3DGS LiteGS Ours Ground Truth 
+
+Figure 21. Gaussian count heatmap comparison across scenes in Mip-NeRF 360 dataset, corresponding to Fig. 1. Each row shows ground truth and heatmaps for 3DGS, Taming-3DGS, LiteGS, and our method. Colors represent per-tile Gaussian counts, where purple indicates low counts and yellow indicates high counts. Our method consistently achieves the lowest Gaussian counts (darker colors). 
+
+93DGS 3DGS+Scale Reset 3DGS+Entropy Constraint 3DGS+Reset+Entropy Ground Truth 
+
+Figure 22. Gaussian count heatmap comparison across scenes in Mip-NeRF 360 dataset for ablation study, corresponding to Fig. 12. Each row shows ground truth and heatmaps for 3DGS, 3DGS+Scale Reset, 3DGS+Entropy Constraint, and 3DGS+Reset+Entropy. Colors represent per-tile Gaussian counts, where purple indicates low counts and yellow indicates high counts. 
+
+10 bicycle     
+
+> mean entropy: 2.744 mean entropy: 1.739
+> garden
+> mean entropy: 2.758 mean entropy: 1.704
+> treehill
+> mean entropy: 2.643 mean entropy: 1.825
+> counter
+> mean entropy: 2.728 mean entropy: 1.784
+> bonsai
+> mean entropy: 2.696
+
+LiteGS 
+
+> mean entropy: 1.758
+
+Ours Ground Truth Figure 23. Per-pixel entropy heatmap comparison between LiteGS and our method across scenes in the Mip-NeRF 360 dataset. Darker colors correspond to lower entropy. 
+
+11 Scene Length Scale Opacity 
+
+Room 
+
+Bonsai 
+
+Counter 
+
+Kitchen 
+
+Treehill 
+
+Bicycle 
+
+Garden 
+
+Flowers 
+
+Stump 
+
+Figure 24. Distribution comparison per scene across all methods on length, scale, and opacity. Results labeled as “3DGS” are obtained using LiteGS. See Sec. 5.4 for more details. 
+
+12 3DGS Ours 
+
+> Bonsai Counter Garden Treehill
+
+Figure 25. Visualization of Gaussians on selected scenes from the Mip-NeRF 360 dataset. Compared to 3DGS, our method produces smaller and more compact Gaussians. 
+
+13
