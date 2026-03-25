@@ -6,55 +6,47 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-03-24
-- 运行时间：2026-03-24 19:48:10 UTC
+- 最新运行日期：2026-03-25
+- 运行时间：2026-03-25 20:19:17 UTC
 - 运行状态：成功
-- 本次总论文数：11
-- 精读区：3
+- 本次总论文数：8
+- 精读区：0
 - 速读区：8
 
 ### 今日简报（AI）
-今日聚焦 3D Gaussian Splatting 的前沿演进，深度解析了从切片体积重建到语义补全的 11 篇最新成果。
-重点关注 GaussianPile 实现的高效切片重建，以及 GaussianSSC 利用定向高斯场在 3D 语义补全领域取得的突破。
-建议关注 3DGS 与语义理解、稀疏视角重建的深度融合，这是提升三维场景实用性的核心趋势。
-- 详情：[/202603/24/README](/202603/24/README)
+今日速览 8 篇前沿论文，重点攻克 3D 重建精度与医学影像一致性难题。
+推荐关注 Gaussian Splatting 的光度不确定性预测，以及利用神经微分流优化的胎盘 MRI 图谱学习。
+建议对 3D 视觉和神经隐式表示感兴趣的读者，重点研读提升重建保真度的相关算法。
+- 详情：[/202603/25/README](/202603/25/README)
 
 ### 精读区论文标签
-1. [GaussianPile: A Unified Sparse Gaussian Splatting Framework for Slice-based Volumetric Reconstruction](/202603/24/2603.20611v1-gaussianpile-a-unified-sparse-gaussian-splatting-framework-for-slice-based-volumetric-reconstruction)  
-   标签：评分：8.0/10、query:q1
-   evidence：用于切片体积重建和渲染的高斯泼溅技术
-2. [GaussianSSC: Triplane-Guided Directional Gaussian Fields for 3D Semantic Completion](/202603/24/2603.21487v1-gaussianssc-triplane-guided-directional-gaussian-fields-for-3d-semantic-completion)  
-   标签：评分：8.0/10、query:q1
-   evidence：用于场景补全的学习型逐体素高斯场
-3. [GTSR: Subsurface Scattering Awared 3D Gaussians for Translucent Surface Reconstruction](/202603/24/2603.22036v1-gtsr-subsurface-scattering-awared-3d-gaussians-for-translucent-surface-reconstruction)  
-   标签：评分：8.0/10、query:q4
-   evidence：为半透明物体建模次表面散射和内部高斯
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [UniSem: Generalizable Semantic 3D Reconstruction from Sparse Unposed Images](/202603/24/2603.17519v1-unisem-generalizable-semantic-3d-reconstruction-from-sparse-unposed-images)  
+1. [Predictive Photometric Uncertainty in Gaussian Splatting for Novel View Synthesis](/202603/25/2603.22786v1-predictive-photometric-uncertainty-in-gaussian-splatting-for-novel-view-synthesis)  
    标签：评分：7.0/10、query:q1
-   evidence：用于语义 3D 重建的 3D 高斯泼溅
-2. [Fast and Robust Deformable 3D Gaussian Splatting](/202603/24/2603.20857v1-fast-and-robust-deformable-3d-gaussian-splatting)  
-   标签：评分：7.0/10、query:q8
-   evidence：用于动态场景的高效鲁棒可变形3D高斯泼溅
-3. [F4Splat: Feed-Forward Predictive Densification for Feed-Forward 3D Gaussian Splatting](/202603/24/2603.21304v1-f4splat-feed-forward-predictive-densification-for-feed-forward-3d-gaussian-splatting)  
-   标签：评分：7.0/10、query:q1
-   evidence：用于实时渲染的前馈3D高斯泼溅技术
-4. [RefracGS: Novel View Synthesis Through Refractive Water Surfaces with 3D Gaussian Ray Tracing](/202603/24/2603.21695v1-refracgs-novel-view-synthesis-through-refractive-water-surfaces-with-3d-gaussian-ray-tracing)  
-   标签：评分：7.0/10、query:q6
-   evidence：用于折射表面和参与介质效应的神经高度场
-5. [Learning Data-driven Surrogate and Correction Models for Satellite Observations in Numerical Weather Prediction](/202603/24/2603.22037v1-learning-data-driven-surrogate-and-correction-models-for-satellite-observations-in-numerical-weather-prediction)  
-   标签：评分：7.0/10、query:q5
-   evidence：卫星观测中辐射传输模拟的机器学习代理模型
-6. [ProgressiveAvatars: Progressive Animatable 3D Gaussian Avatars](/202603/24/2603.16447v1-progressiveavatars-progressive-animatable-3d-gaussian-avatars)  
+   evidence：高斯泼溅新视角合成中的不确定性估计
+2. [Volumetrically Consistent Implicit Atlas Learning via Neural Diffeomorphic Flow for Placenta MRI](/202603/25/2603.16078v1-volumetrically-consistent-implicit-atlas-learning-via-neural-diffeomorphic-flow-for-placenta-mri)  
    标签：评分：6.0/10、query:q1
-   evidence：使用高斯分布的渐进式3D表示与渲染
-7. [pADAM: A Plug-and-Play All-in-One Diffusion Architecture for Multi-Physics Learning](/202603/24/2603.16757v1-padam-a-plug-and-play-all-in-one-diffusion-architecture-for-multi-physics-learning)  
-   标签：评分：6.0/10、query:q5
-   evidence：用于多物理场学习（包括纳维-斯托克斯方程）的扩散架构
-8. [A Latent Representation Learning Framework for Hyperspectral Image Emulation in Remote Sensing](/202603/24/2603.21911v1-a-latent-representation-learning-framework-for-hyperspectral-image-emulation-in-remote-sensing)  
-   标签：评分：6.0/10、query:q5
-   evidence：用于高光谱仿真和辐射传输模拟的潜变量表示
+   evidence：用于3D重建的体积一致性隐式模型
+3. [High-fidelity Multi-view Normal Integration with Scale-encoded Neural Surface Representation](/202603/25/2603.20337v1-high-fidelity-multi-view-normal-integration-with-scale-encoded-neural-surface-representation)  
+   标签：评分：6.0/10、query:q1
+   evidence：用于多视图集成的尺度编码神经表面表示
+4. [RayMap3R: Inference-Time RayMap for Dynamic 3D Reconstruction](/202603/25/2603.20588v1-raymap3r-inference-time-raymap-for-dynamic-3d-reconstruction)  
+   标签：评分：6.0/10、query:q1
+   evidence：基于RayMap的动态3D重建与推理
+5. [Training-Free Instance-Aware 3D Scene Reconstruction and Diffusion-Based View Synthesis from Sparse Images](/202603/25/2603.21166v1-training-free-instance-aware-3d-scene-reconstruction-and-diffusion-based-view-synthesis-from-sparse-images)  
+   标签：评分：6.0/10、query:q1
+   evidence：从稀疏图像渲染3D场景
+6. [UniQueR: Unified Query-based Feedforward 3D Reconstruction](/202603/25/2603.22851v1-uniquer-unified-query-based-feedforward-3d-reconstruction)  
+   标签：评分：6.0/10、query:q1
+   evidence：使用3D高斯和几何查询的前馈3D重建
+7. [SLARM: Streaming and Language-Aligned Reconstruction Model for Dynamic Scenes](/202603/25/2603.22893v1-slarm-streaming-and-language-aligned-reconstruction-model-for-dynamic-scenes)  
+   标签：评分：6.0/10、query:q1
+   evidence：用于动态场景重建的可微渲染
+8. [FHAvatar: Fast and High-Fidelity Reconstruction of Face-and-Hair Composable 3D Head Avatar from Few Casual Captures](/202603/25/2603.23345v1-fhavatar-fast-and-high-fidelity-reconstruction-of-face-and-hair-composable-3d-head-avatar-from-few-casual-captures)  
+   标签：评分：6.0/10、query:q1
+   evidence：使用神经架构重建3D高斯化身
 
 
 <div class="dpr-home-promo-card">

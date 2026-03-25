@@ -1,0 +1,434 @@
+Title: Volumetrically Consistent Implicit Atlas Learning via Neural Diffeomorphic Flow for Placenta MRI
+
+URL Source: https://arxiv.org/pdf/2603.16078v1
+
+Published Time: Wed, 18 Mar 2026 00:39:27 GMT
+
+Number of Pages: 13
+
+Markdown Content:
+# Volumetrically Consistent Implicit Atlas Learning via Neural Diffeomorphic Flow for Placenta MRI 
+
+# Athena Taymourtash 1 S. Mazdak Abulnaga 1,2 Esra Abaci Turk 3 P. Ellen Grant 3
+
+# Polina Golland 11MIT Computer Science and Artificial Intelligence Laboratory 
+
+> 2
+
+Massachusetts General Hospital, Harvard Medical School 
+
+> 3
+
+Boston Children’s Hospital, Harvard Medical School 
+
+> taymourtash@csail.mit.edu
+
+# Abstract 
+
+Establishing dense volumetric correspondences across anatomical shapes is essential for group-level analysis but remains challenging for implicit neural representations. Most existing implicit registration methods rely on super-vision near the zero-level set and thus capture only sur-face correspondences, leaving interior deformations under-constrained. We introduce a volumetrically consistent im-plicit model that couples reconstruction of signed distance functions (SDFs) with neural diffeomorphic flow to learn a shared canonical template of the placenta. Volumetric regu-larization, including Jacobian-determinant and biharmonic penalties, suppresses local folding and promotes globally coherent deformations. In the motivating application to placenta MRI, our formulation jointly reconstructs indi-vidual placentas, aligns them to a population-derived im-plicit template, and enables voxel-wise intensity mapping in a unified canonical space. Experiments on in-vivo pla-centa MRI scans demonstrate improved geometric fidelity and volumetric alignment over surface-based implicit base-line methods, yielding anatomically interpretable and topo-logically consistent flattening suitable for group analysis. 
+
+# 1. Introduction 
+
+Representing and comparing 3D anatomical shapes across individuals is fundamental in many medical imaging tasks, including segmentation [20, 36, 41, 43, 44], reconstruc-tion [22, 43], surgical navigation [23, 34], and diagnos-tic pathology [14, 43]. The placenta, a vital lifeline organ whose normal functioning is essential for fetal growth [2], presents particular challenges: its in-vivo shape conforms to the curved uterine wall at arbitrary locations and orien-tation, varies widely across subjects, and changes dynami-cally due to fetal motion, maternal breathing, and contrac-tions during imaging [2]. Unlike other organs with estab-lished atlases, the placenta lacks a standardized geomet-ric representation. To enable population-level comparisons, one must model placental shapes with anatomical fidelity while also learning transformations that map one highly de-formed placenta to another. Existing methods for anatomical normalization of the placenta have focused on explicit geometric flattening into a canonical plane. Early work flattened the 2D layers in-dependently, leading to distortion and misalignment across depth [27]. A recent solution employed a volumetric param-eterization based on tetrahedral meshes to achieve locally injective flattening [1, 2]. While this formulation improves geometric fidelity, it must be solved separately for each sub-ject, depends on careful initialization, and does not provide dense correspondences or a common template across a pop-ulation. Moreover, its reliance on explicit meshes and itera-tive optimization limits scalability and generalization. Recent advances in deep implicit functions (DIF) have demonstrated remarkable capability in representing com-plex shapes and fine geometric details [10, 12, 15, 26, 29, 31, 35, 40]. Compared to explicit representations based on voxel grids, point clouds, and meshes, DIFs are compact, resolution-agnostic, and differentiable, which makes them suitable for end-to-end training. Despite these advantages, conventional DIFs do not establish correspondences across instances; each shape is represented independently by its own scalar field. This limitation precludes population-level shape analysis and downstream applications such as la-bel transfer, which depend on consistent coordinate map-pings between instances. To address this, subsequent exten-sions have introduced template-based implicit representa-tions that embed all shapes into a shared latent or canonical space through learned deformation fields [12, 35, 42, 45]. These models jointly learn to reconstruct each shape’s im-1
+
+> arXiv:2603.16078v1 [cs.CV] 17 Mar 2026
+
+plicit field and align it to a shared canonical template that emerges during training in a single end-to-end process. While these approaches enable dense surface corre-spondences, their supervision remains effectively surface-biased. Although losses are computed across the domain, the SDF loss gradient magnitude decays rapidly with dis-tance from the zero-level set, leaving the deformation field under-constrained inside the volume. As a result, interior trajectories may fold or drift, compromising diffeomorphic continuity and volumetric coherence. Such behavior is par-ticularly problematic in medical applications like placenta analysis, where analysis relies on consistent mapping of volumetric MRI intensities rather than solely surface geom-etry. In this work, we propose a volumetrically consistent im-plicit model that extends surface-based implicit registration to the full organ volume. Our method learns diffeomor-phic mappings that jointly reconstruct individual placen-tas, align them to a shared implicit template, and flatten them into a canonical configuration within a single end-to-end process. To achieve spatially consistent volumet-ric warps, we enforce regularization that discourages lo-cal folding and promotes globally smooth, low-distortion deformations throughout the tissue volume. The resulting model produces high-fidelity reconstructions and a biologi-cally interpretable flattened template that emerges naturally during training. This volumetric formulation bridges im-plicit shape modeling and diffeomorphic registration, pro-viding a unified framework for anatomically faithful atlas construction and population-level analysis. 
+
+# 2. Related Work 
+
+Deep Implicit Functions. Implicit functions have become an efficient tool for continuous and differentiable shape modeling. Instead of discretizing 3D geometries as meshes or voxels, these methods learn functions fθ (x) to map spa-tial coordinates to a continuous scalar field such as signed distance [29] or occupancy probability [10, 26]. The shape surface is then implicitly expressed as the isocontour of fθ ,and reconstructed with, for example, Marching Cubes [25] at arbitrary resolution. Regularizers on Eikonal or sur-face normals improve geometric fidelity near the zero-level set [15]. However, these models are instance-wise : each object’s field is learned independently, yielding no cross-instance correspondence. To address this, template-based methods decouple geometry and deformation, learning a canonical field and a conditional warp that maps subject co-ordinates into the template space [12, 35, 42, 45]. Since the training signals remain concentrated near the zero set due to SDF/occupancy losses, the volumetric behavior of the resulting reconstruction is largely uncontrolled. In prac-tice this produces surface-accurate but interior-ambiguous warps (e.g., drifting trajectories, local folding), limiting in-tensity transfer and population analyses that require coher-ent mappings throughout the organ volume. 
+
+Diffeomorphic Transformation. Diffeomorphic mapping provides a mathematically grounded way to model smooth, invertibe, and topology-preserving deformations between shapes [4, 5, 8, 39]. Integrating stationary or time-varying velocity fields (SVF/TVF) with geodesic constraints and log-domain parameterizations provides numerically stable and well-behaved flows. Recent learning-based variants, in-cluding VoxelMorph [7], DDF-Net [11], and neural velocity field based methods [17, 28], have adapted these principles to deep architectures for dense medical registration. More recently, Neural ODE [9] has enabled continu-ous and invertible warps parameterized by neural velocity fields, offering memory efficient integration and analyti-cal control of the deformation Jacobian. Such neural dif-feomorphic flows have been successfully applied to shape correspondence [16, 18, 35], 3D reconstruction, articulated body pose estimation, dynamic scene modeling, and yet they are typically defined over voxel grids or surface point sets. Our approach adopts this continuous-time formal-ism but operates directly on the implicit function space, producing volumetric, topology-preserving transformations that guarantee smoothness and invertibility within the organ interior. 
+
+Atlases and Dense Correspondences. Anatomical at-lases aim to establish a common coordinate system that represents population variability while preserving subject-specific anatomy. Classical methods such as ANTs [6] and SPM [30] build brain atlases through iterative registration and intensity averaging, often relying on diffeomorphic ve-locity fields [8]. Recent deep learning approaches have ac-celerated this process by learning parametric mappings to a shared template space [7, 11], or by framing atlas con-struction as a test-time adaptation or groupwise registra-tion task [3, 19]. These methods enable efficient atlas es-timation without repeated optimization, but typically op-erate on voxel intensities and therefore implicitly assume limited shape variability across subjects. For anatomies with substantial geometric variability, such as the placenta, intensity-only registration often fails to establish stable cor-respondences [2, 37], motivating approaches that model shape geometry. In shape analysis, implicit template models such as DIT [45] and deformation-aware autoencoders [21, 35] have begun to unify correspondence learning and template discovery in a single differentiable framework, aiming to establish continuous, invertible population representations beyond voxel-based formulations. Nevertheless, scalability and geometric fidelity remain open challenges. 2Figure 1. Method overview. The warping function transforms point samples of shape i to their canonical positions, which are then mapped to SDF values by the implicit template. 
+
+# 3. Methods 
+
+Our approach follows the formulation of Deep Implicit Templates (DIT) [45], which decomposes each encoded shape into a shared template SDF and a conditional spa-tial deformation. Building on this idea, we model the deformation as a conditional diffeomorphic flow [16] de-fined over volumetric tetrahedral embeddings, ensuring smooth, topology-preserving mappings that remain consis-tent throughout the interior of the placenta. 
+
+3.1. Review of Deep Implicit Template 
+
+Deep Implicit Templates (DIT) [45] represent a collection of shapes {Xi}Ni=1 through a conditional signed distance function: 
+
+F : R3 × G → R, F(x; ci) = s, (1) where x is a spatial coordinate, ci ∈ G is the latent shape code, and s is the predicted signed distance to the clos-est surface point. Unlike DeepSDF [29], where the latent code jointly encodes geometry and pose, DIT explicitly separates these factors by introducing a template function 
+
+Tθ : R3 7 → R that defines a single shared implicit surface across the population, and a conditional warp Wψ (.; ci) : 
+
+R3 × G → R3 that maps coordinates from an instance’s space to a canonical template space: 
+
+F(x; ci) = Tθ (Wψ (x; ci)) (2) This decomposition enables implicit correspondence be-tween shapes via the shared template but does not enforce 
+
+Wψ to be smooth or invertible, often resulting in local dis-tortions or topological inconsistencies. During inference, a new shape is represented by optimiz-ing its latent code: 
+
+ˆci = arg min 
+
+> ci
+
+X  
+
+> (xj,s j)∈Xi
+
+ℓ (Tθ (Wψ (x; ci) , s j ))+ 1
+
+σ2 ∥ci∥22
+
+(3) where ℓ(., . ) denotes an L1 reconstruction loss between pre-dicted and ground-truth SDF values, while the template and deformation networks (Tθ , Wψ ) remain fixed. 
+
+3.2. Neural Diffeomorphic Flow 
+
+Let Φ( x, t ; ci) denote the continuous flow trajectory of a 3D coordinate x for instance i governed by a latent-conditioned velocity field v(., t ; ci). For clarity of notation, we write 
+
+Φi(x, t ) as shorthand for Φ( x, t ; ci):
+
+∂Φi(x, t )
+
+∂t = v (Φ i(x, t ), t ; ci) , Φi(x, 0) = x (4) where v (·, t ; ci) : R3 × [0 , 1] → R3 denotes a neural ve-locity field conditioned on the latent code ci and time t. In-tegrating Eq.(4) from t = 0 to t = 1 yields the forward deformation: 
+
+Φi (x, 1) = x +
+
+Z 10
+
+v (Φ i (x, t ) , t ; ci) dt, (5) which defines the mapping from the instance’s coordinate space to the canonical template domain. The predicted signed distance for coordinate x of instance i is then ob-tained by evaluating the canonical template field at the mapped coordinate as si(x) = Tθ (Φ i (x, 1)) . If v is Lipschitz-continuous, the solution of Eq.(4) is unique and defines a diffeomorphic mapping [16]. The inverse deformation Ψ( x, t, c i) is defined by inte-grating the backward flow: 
+
+∂Ψ( x, t ; ci)
+
+∂t = −v (Ψ( x, t ; ci), t ; ci) , Ψ( x, 0; ci) = x,
+
+(6) 
+
+Φ−1 
+
+> i
+
+(x, 0) = Ψ( x, 1, c i), (7) which guarantees invertibility and allows consistent corre-spondences in both surface and volumetric domains. Following [35], we approximate the time-dependent ve-locity field as a composition of K stationary sub-fields: 
+
+v (Φ i(x, t ), t ; ci) = 
+
+> K
+
+X
+
+> k=1
+
+χ[ k−1   
+
+> K,kK
+
+)(t)v(k) (Φ i(x, t ); ci) ,
+
+(8) 3where χA is the indicator function. This discretized repre-sentation corresponds to a sequence of piecewise-stationary velocity updates, each modeled by a neural-ODE (NODE) block [16] conditioned on the latent code ci.Although Φi(., t ) is defined over the full R3 domain, the supervision signal from the SDF reconstruction loss is pre-dominantly concentrated near the zero-level set. To impose volumetric regularity, we introduce a tetrahedral embedding 
+
+Mi = ( Vi, K i) for each instance, where Vi are tetrahedral vertices and Ki is the connectivity set, and explicitly eval-uate the flow on Vi during training. These tetrahedra are not used as a geometric representation; they merely provide interior sample points at which the deformation field Φi is queried. These volumetric evaluations serve as geometric constraints, enforcing smooth, topology-preserving trajec-tories inside the placenta volume. 
+
+3.3. Network Training 
+
+All parameters of the deformation function Wψ , the tem-plate SDF Tθ , and latent codes {ci} are optimized jointly over all subjects using the total loss: 
+
+L = Lrec + λdLd + λJac LJac + λbiH LbiH +
+
+> N
+
+X
+
+> i=1
+
+∥ci∥22 (9) 
+
+Reconstruction loss. At each iteration, the signed-distance reconstruction loss is evaluated at multiple time steps t ∈{0.25 , 0.5, 0.75 , 1} along the deformation trajectory: 
+
+Lrec = X
+
+> t∈TN
+
+X
+
+> i=1
+> M
+
+X
+
+> j=1
+
+Lϵt,λ t (Tθ (Φ i (xj , t )) , s i,j ) , (10) where xj is a spatial sample, Φi(xj , t ) its deformation at time t, and si,j the ground-truth SDF value. Lϵt,λ t de-notes a soft L1 loss with tolerance ϵt and weighting factor 
+
+λt controlling the emphasis on hard examples [13, 45]. A temporal curriculum is realized by varing these parameters across time: early deformations use larger ϵt and smaller λt
+
+for coarse alignment, while later steps adopt smaller ϵt and larger λt for finer geometric accuracy. 
+
+Deformation Regularization. As all shapes are normal-ized to the unit cube and approximately aligned, we regular-ize the displacement magnitude to prevent excessive warps: 
+
+Ld = X
+
+> t∈TN
+
+X
+
+> i=1
+> M
+
+X
+
+> j=1
+
+h  ∥Φ ( xj , t ; ci) − xj ∥2
+
+ , (11) where h(·) is the Huber loss with δ = 0 .25 .
+
+Volumetric Regularization. While the SDF loss provides strong supervision near the surface, gradients decay rapidly away from the zero-level set, leaving the interior defor-mation under-constrained. To promote volumetric regular-ity, we evaluate Φi(x) on the interior tetrahedral samples 
+
+x ∈ Ωi drawn from the embedding Mi = ( Vi, K i). Two penalties are applied: 
+
+LJac = X
+
+> t∈T
+
+Ex∈Ωi [max (0 , − det ∇Φi(x, t ))] 2 , (12) 
+
+LbiH = X
+
+> t∈T
+
+Ex∈Ωi
+
+h
+
+∆2Φi(x, t ) 22
+
+i
+
+, (13) where LJac penalizes local folding (det ∇Φi < 0) , and 
+
+LbiH applies the biharmonic operator ∆2 to the deformation field to enforce globally smooth, low-distortion volumetric trajectories. 
+
+3.4. Intensity Mapping 
+
+Prior to training, each placenta surface is rigidly normal-ized to the unit cube and reoriented such that its first prin-cipal component aligns with the canonical z-axis, defining a composed transform Ai : R3 → R3 from scnner space to normalized coordinate. Given the learned diffeomorphic flow Φi, voxel-wise MRI intensities are transferred from each instance image 
+
+Ii(x) to the canonical template space by pullback through the inverse mapping: 
+
+IT (xT ) = Ii(A−1 
+
+> i
+
+Φ−1 
+
+> i
+
+(xT )) , (14) where xT denotes a voxel center in the template domain. The inverse flow Φ−1 
+
+> i
+
+is obtained by integrating the velocity field backward in time, and intensities are sampled from Ii
+
+using trilinear interpolation at non-grid coordinates. For voxels inside the placenta, the deformation is eval-uated on the tetrahedral embedding Mi = ( Vi, K i). Each template-space point xT lies in a tetrahedron k ∈ Ki with vertex coordinates Xk = [ X(1)  
+
+> k
+
+, ..., X (4)  
+
+> k
+
+] ∈ R3×4 and cor-responding instance-space vertices Zk = Φ −1 
+
+> i
+
+(Xk). Let 
+
+B = [ X(2)  
+
+> k
+
+− X(1)  
+
+> k
+
+, X (3)  
+
+> k
+
+− X(2)  
+
+> k
+
+, X (4)  
+
+> k
+
+− X(1)  
+
+> k
+
+] denote the edge matrix. The barycentric coefficients α of xT satisfy: 
+
+[α2, α 3, α 4]⊤ = ( XkB)−⊤ (xT − X(1)  
+
+> k
+
+), (15) 
+
+α1 = 1 −
+
+> 4
+
+X
+
+> j=2
+
+αj (16) and the mapped coordinate in the subject space is obtained as: 
+
+z = Zkα, IT (xT ) = Ii (z) , (17) This piecewise-affine barycentric formulation ensures an injective, locally continuous mapping of voxel intensities across the placenta volume. 4Table 1. Surface accuracy metrics on the placenta dataset. CD: Chamfer Distance (multiplied by 10 3), EMD: Earth Mover’s Distance, and NC: Normal Consistency. Precision, Recall, and F1 are evaluated at distance thresholds of 0.01, 0.03, and 0.05. Chamfer-L2 (↓) EMD (↓) NC (↑) Precision (↑) Recall (↑) F1 (↑)                                                                     
+
+> Model @0.01 @0.03 @0.05 @0.01 @0.03 @0.05 @0.01 @0.03 @0.05 DeepSDF [29] 0.27 0.05 0.97 0.24 0.98 0.99 0.24 0.99 1.00 0.24 0.99 0.99 DIT [45] 0.17 0.05 0.97 0.37 0.98 0.99 0.37 0.99 1.00 0.38 0.99 0.99 DIF-Net [12] 0.12 0.04 0.98 0.43 0.99 1.00 0.43 0.99 1.00 0.43 0.99 1.00
+> NDF [35] 0.22 0.05 0.97 0.28 0.99 1.00 0.28 0.99 1.00 0.28 0.99 1.00 Ours 0.12 0.04 0.98 0.43 0.99 1.00 0.43 0.99 1.00 0.43 0.99 1.00
+
+# 4. Experiments 
+
+Dataset. We trained and evaluated our method, as well as all baseline approaches, on 111 MRI scans acquired from 78 pregnancies (26 – 38 weeks of gestation), includ-ing 60 singleton and 18 twin cases. For 33 singleton sub-jects, scans were acquired in both supine and left lateral maternal positions, yielding 66 distinct placenta shapes that were treated as independent training instances. Each man-ually segmented placenta volume was converted to a sur-face mesh using the Marching Cubes algorithm, normalized to the unit cube, and reoriented such that the first princi-pal axis aligned with the z-axis, defining the normalization transform Ai. Following DeepSDF [29], we sampled nor-malized signed distance function (SDF) points to supervise implicit reconstruction. 
+
+Experimental Setup. We compare our method against rep-resentative implicit deformation and template-learning ap-proaches, including DeepSDF [29], DIF-Net [12], DIT [45], and NDF [35]. All baseline methods were trained using identical SDF samples and normalization transforms Ai to ensure fair comparisons. For evaluation, we reconstruct each instances’s surface and volumetric mesh from the pre-dicted SDF field and compute geometric, diffeomorphic, and distortion metrics to assess both surface and internal regularity during deformation, and detect folding or distor-tion within the organ. Our network follows the DIT [45] architecture with an unconditional decoder and a four-step Neural ODE warper conditioned on 256-D latent codes. We use the Adam op-timizer with an initial learning rate of 10 −3, decayed by a factor of 0.5 every 500 epochs, and a batch size of 8. Train-ing was performed on NVIDIA RTX A6000 GPUs for 2000 iterations. Additional details on the architecture and train-ing are provided in the supplementary material. 
+
+4.1. Surface Accuracy 
+
+Table 1 reports surface reconstruction accuracy for all meth-ods. All methods achieve sub-voxel Chamfer and EMD er-rors with high normal consistency, indicating that the over-                 
+
+> Table 2. Diffeomorphism metrics computed on tetrahedral em-beddings. FlipRate measures the percentage of tetrahedra with negative signed volume, logDet– L1captures the average deviation of local volume change from unity, and CycleError quantifies the inverse-consistency of the forward and backward flows. All values are averaged across subjects; lower is better.
+> FlipRate (↓)logDet-L1(↓)CycleError (↓)
+> DIF-Net [12] 15.34 0.81 0.24 DIT [45] 11.88 0.67 0.29 NDF [35] 8.78 0.90 0.26 Ours 4.04 0.69 0.20
+
+all placental geometry is well constrained by the SDF super-vision. Precision measures the fraction of predicted surface points that are correct (low false positives), recall measures the fraction of the ground-truth surface that is recovered (low false negatives), and the F1 score is their harmonic mean, providing a balanced measure of surface localization accuracy. At the fine threshold ( τ = 0 .01 ), our model attains the highest precision, recall, and F1 scores, reflecting more ac-curate localization of the zero-level set and reduced bias in    
+
+> Figure 2. Distribution of discrete Laplacian energy ∥Lu ∥22of ver-tex displacements across subjects. Lower values correspond to smoother deformation fields.
+
+5Figure 3. Dense pointwise correspondences via the learned implicit template. (a) Two subject instances mapped to the canonical template through the diffeomorphic flow. (b) ACVD-remeshed surfaces (5 k vertices) with vertex colors propagated from the template. Consistent colors across subjects visually demonstrate stable, smooth correspondences. 
+
+the reconstructed surface. Performance differences dimin-ish for τ ≥ 0.03 , where all methods approach saturation near F1 = 100% , consistently with the shared SDF sam-pling and reconstruction regime. 
+
+4.2. Diffeomorphism and Distortion Analysis 
+
+Table 2 summarizes diffeomorphism related metrics com-puted on tetrahedral embeddings. Our model attains the lowest flip rate (4.0%) and smallest ∥log | det ∇Φ|∥ 1, which quantifies the deviation of local volume changes from unity, indicating more consistent volume preservation com-pared to baselines. The reduced cycle-consistency error 
+
+∥Φ−1(Φ( x)) − x∥2 further confirms improved invertibility of the learned deformation flow. These gains, though mod-erate in magnitude, are systematic across all measures and highlight the stabilizing effect of volumetric regularization and Jacobian control during integration. See supplementary material for full metric distributions. Table 3 evaluates geometric distortion using volumetric, areal, and edge stretch ratios, as well as symmetric Dirich-let [32, 33] and conformal distortion energies [24]. All these measures are dimensionless and equal to 1 for per-fect volume-, area-, or length-preserving mappings, except SymDir, which achieves the isometric minimum of 6. Our method consistently yields lower mean and maximum dis-tortion, with the symmetric Dirichlet energy reduced from 13.75 to 8.02 and the conformal distortion from 10.96 to 9.74 relative to the strongest baseline model. The improve-ments correspond to more isotropic and well-conditioned deformations throughout the placenta volume, ensuring uni-form local scaling rather than collapse or elongation along                         
+
+> Table 3. Maximum distortion per instance, averaged across sub-jects. Smaller values correspond to more isotropic, low-distortion mappings. SymDir and Conformal report symmetric Dirichlet and condition-number–based distortions.
+> Vol (↓)Areal (↓)Edge (↓)SymDir (↓)Conformal (↓)
+> DIF-Net [12] 4.36 2.8 2.43 12.91 11.47 DIT [45] 2.02 0.99 1.13 8.48 10.89 NDF [35] 4.17 2.26 2.32 13.75 10.96 Ours 1.94 1.17 1.19 8.02 9.74
+
+preferred directions. Fig. 2 reports the discrete Laplacian energy of vertex dis-placements |Lu |22, which measures the spatial curvature of the deformation field. Our model exhibits markedly lower energy and variance, confirming that the biharmonic regu-larization effectively suppresses high-frequency oscillations while maintaining global smoothness of the deformation field. Together, these results demonstrate that incorporat-ing volumetric samples and interior regularization improves diffeomorphic stability and reduces internal distortion be-yond what surface-based constraints alone achieve. 
+
+4.3. Dense Correspondences 
+
+Fig. 3 visualizes dense pointwise correspondences estab-lished through the learned implicit template space. Each template vertex is assigned a unique color and mapped to individual placenta instances via the inverse flow Φ−1 
+
+> i
+
+.For consistency across subjects, surfaces are isotropically remeshed to 5 k vertices using ACVD algorithm [38]. The 6Figure 4. Pose-invariant flattening and intensity mapping across two maternal positions of the same subject. The placenta in each position is mapped diffeomorphically to the canonical template via      
+
+> Φ( ·;ci)and Φ( ·;cj), producing consistent, topology-preserving flattened intensity maps.
+
+resulting color distributions remain highly consistent across subjects, qualitatively indicating smooth and bijective map-pings. This observation aligns with the quantitative dif-feomorphism results in Table 2, where our model achieves the lowest flip rate and cycle-consistency error, confirm-ing fold-free, near-invertible deformations. Such dense cor-respondences enable cross-subject comparison and direct transfer of labels or intensity via a unified template space. 
+
+4.4. Intensity Mapping and Flattening 
+
+The learned diffeomorphic flows enable direct transfer of voxelwise MRI intensities to the canonical template space without additional registration or optimization. Once trained, each placenta volume is mapped to the template do-main by the inverse flow Φ−1 
+
+> i
+
+(Eq. 14). Fig. 4 illustrates this process on two scans of the same subject acquired in differ-ent maternal positions. Despite large changes in global pose and organ orientation, each placenta is mapped smoothly and bijectively to the common template, and flattened in-tensity images are generated in a single step without any it-erative optimization or inter-volume registration. This con-trasts with classical mesh-based methods [2, 27], which re-quire solving a volumetric PDE for each instance. Fig. 5 shows the deformation of the tetrahedral embed-ding used for intensity sampling under each model. Our method produces a coherent volumetric compression in which tetrahedra maintain shape quality and follow a con-sistent diffeomorphic trajectory toward the template. In contrast, DIT and NDF lack interior supervision; their flows are driven almost entirely by surface-level SDF gradients, causing the tetrahedra inside the placenta to collapse to-ward a mid-thickness layer and form stratified bands be-tween the maternal and fetal surfaces. This radial interior compression leads to anisotropic stretching and loss of vol-umetric separation between tissue layers. As a result, when intensities are pulled back through these distorted embed-dings, voxels near the mid-surface inevitably interpolate across collapsed layers, producing the streaking, blurring, and spoke-like artifacts seen in Fig. 6. In Fig. 6, all flattened images are generated at the same voxel resolution as the original in-utero MRI, and the same slice is compared across methods. By preserving full vol-umetric coherence, our method produces flattened intensity images with clear structural detail. The cotyledons, charac-terized by their honeycomb pattern of small hyperintense lobules, remain delineated, and the vascular architecture is preserved without radial smearing. Such spatial clarity is essential for downstream evaluation of placental health, 
+
+> Figure 5. Volumetric flattening. Given the same tetrahedral pla-centa mesh (upper left panel), our method produces a coherent, uniformly compressed volumetric flattening. DIT and NDF main-tain surface alignment but distort the interior, exhibiting radial compression and anisotropic stretching of tetrahedra toward a mid-surface layer.
+
+7Table 4. Ablation of loss terms on the Placenta dataset.                               
+
+> Model CD-L2 ↓FlipRate ↓logDet–L1 ↓SymDir ↓LapE ↓Lrec 0.13 13.75 0.69 10.99 26.34 w/ Ld0.22 10.92 0.61 9.08 22.88 w/ LJac 0.12 14.76 0.80 12.07 33.05 w/ LbiH (ours) 0.12 4.04 0.69 8.02 8.72
+
+oxygenation dynamics, and perfusion heterogeneity, and is obtained here in a single forward pass with no instance-specific optimization. 
+
+4.5. Ablation Study 
+
+We evaluate the contribution of each regularization term in Eq. 9 using a cumulative ablation. Table 4 reports key geo-metric and volumetric metrics. Adding the displacement term Ld reduces large global warps and leads to improved surface reconstruction com-pared to Lrec alone, reflected in lower Chamfer distance and reduced distortion. Introducing the Jacobian constraint 
+
+LJac increases local injectivity but, in isolation, may over-constrain the flow, resulting in higher flip rate and ele-vated volumetric distortion; this confirms that a sign con-straint alone is insufficient without accompanying smooth-ness control. Finally, incorporating the bi-harmonic reg-ularizer LbiH yields the best overall performance, sharply reducing flip rate and Laplacian energy while maintaining surface accuracy. 
+
+# 5. Applications and Limitations 
+
+The proposed model provides a unified representation for both anatomical shape analysis and volumetric inten-sity mapping of the placenta. Once trained, the learned diffeomorphic flow enables rapid population-level align-ment, groupwise flattening, and cross-subject correspon-dence without additional registration or optimization. This facilitates downstream applications such as statistical at-las construction, quantitative comparison of functional MRI signals, and regional analysis of oxygenation or perfusion across gestational age. The volumetric regularization fur-ther allows faithful interpolation within the organ interior, supporting intensity-based analyses that were previously limited to mesh surfaces. While our model achieves high geometric fidelity and volumetric consistency, several limitations remain. Similar to other implicit methods, inference currently requires la-tent optimization which may limit throughput compared to fully feed-forward architectures. The current formulation assumes a single canonical template; extending to multi-template or hierarchical atlases could better capture anatom-ical subtypes and twin-specific variations. Future work will address these extensions and investigate integration with 
+
+> Figure 6. Flattened intensity maps obtained via volumetric pull-back. Our method preserves interior geometry, yielding coherent anatomical texture in the flattened domain, cotyledons and vas-cular structure are immediately apparent in our flattened images, whereas NDF and DIT cause intensities to be interpolated across collapsed surface to mid-surface layers.
+
+dynamic MRI sequences for spatiotemporal analysis of pla-cental function. 
+
+# 6. Conclusions 
+
+We introduced a volumetrically consistent implicit model that jointly learns a shared placenta template and diffeomor-phic flows mapping individual instances into a common co-ordinate space. By enforcing volumetric regularization and pathwise Jacobian constraints, the method achieves smooth, fold-free, and topology-preserving deformations through-out the organ interior. The resulting model provides ac-curate surface reconstruction, dense correspondences, and faithful intensity mapping in a single end-to-end frame-work, unifying geometric and functional placenta analysis. Beyond this application, the formulation offers a general strategy for learning diffeomorphic implicit representations of deformable volumetric anatomy, with potential exten-sions to other organs and spatiotemporal imaging modali-ties. 
+
+Acknowledgment 
+
+This work was supported in part by the MIT Postdoctoral Fellowship Program for Engineering Excellence; the National Institutes of Health (NIH), including NICHD grants R01HD114338 and R21HD106553, and NIH grants R01EB017337, R01AG064027, and UM1MH130981; the MIT Health and Life Sciences Collaborative (HEALS); and the Chou Family Transformative Research Fund. 8References 
+
+[1] S. Mazdak Abulnaga, Esra Abaci Turk, Mikhail Bessmelt-sev, P. Ellen Grant, Justin Solomon, and Polina Golland. Pla-cental flattening via volumetric parameterization. In Medi-cal Image Computing and Computer Assisted Intervention – MICCAI 2019 , pages 39–47, 2019. 1 [2] S Mazdak Abulnaga, Esra Abaci Turk, Mikhail Bessmeltsev, P Ellen Grant, Justin Solomon, and Polina Golland. Volu-metric parameterization of the placenta to a flattened tem-plate. IEEE transactions on medical imaging , 41(4):925– 936, 2021. 1, 2, 7 [3] S Mazdak Abulnaga, Andrew Hoopes, Neel Dey, Malte Hoffmann, Bruce Fischl, John Guttag, and Adrian Dalca. Multimorph: On-demand atlas construction. In Proceedings of the Computer Vision and Pattern Recognition Conference ,pages 30906–30917, 2025. 2 [4] John Ashburner. A fast diffeomorphic image registration al-gorithm. Neuroimage , 38(1):95–113, 2007. 2 [5] Brian B Avants, Charles L Epstein, Murray Grossman, and James C Gee. Symmetric diffeomorphic image registration with cross-correlation: evaluating automated labeling of el-derly and neurodegenerative brain. Medical image analysis ,12(1):26–41, 2008. 2 [6] Brian B Avants, Nick Tustison, Gang Song, et al. Advanced normalization tools (ants). Insight j , 2(365):1–35, 2009. 2 [7] Guha Balakrishnan, Amy Zhao, Mert R Sabuncu, John Gut-tag, and Adrian V Dalca. Voxelmorph: a learning framework for deformable medical image registration. IEEE transac-tions on medical imaging , 38(8):1788–1800, 2019. 2 [8] M Faisal Beg, Michael I Miller, Alain Trouv´ e, and Laurent Younes. Computing large deformation metric mappings via geodesic flows of diffeomorphisms. International journal of computer vision , 61(2):139–157, 2005. 2 [9] Ricky TQ Chen, Yulia Rubanova, Jesse Bettencourt, and David K Duvenaud. Neural ordinary differential equa-tions. Advances in neural information processing systems ,31, 2018. 2 [10] Zhiqin Chen and Hao Zhang. Learning implicit fields for generative shape modeling. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition ,pages 5939–5948, 2019. 1, 2 [11] Adrian V Dalca, Guha Balakrishnan, John Guttag, and Mert R Sabuncu. Unsupervised learning of probabilistic dif-feomorphic registration for images and surfaces. Medical image analysis , 57:226–236, 2019. 2 [12] Yu Deng, Jiaolong Yang, and Xin Tong. Deformed implicit field: Modeling 3d shapes with learned dense correspon-dence. In Proceedings of the IEEE/CVF Conference on Com-puter Vision and Pattern Recognition , pages 10286–10296, 2021. 1, 2, 5, 6 [13] Yueqi Duan, Haidong Zhu, He Wang, Li Yi, Ram Nevatia, and Leonidas J Guibas. Curriculum deepsdf. In European Conference on Computer Vision , pages 51–67. Springer, 2020. 4 [14] Asser Abou Elkassem, Brian C Allen, Seth T Lirette, Kelly L Cox, Erick M Remer, Perry J Pickhardt, Meghan G Lubner, Claude B Sirlin, Timothy Dondlinger, Michael Schmainda, et al. Multiinstitutional evaluation of the liver surface nodu-larity score on ct for staging liver fibrosis and predicting liver-related events in patients with hepatitis c. American Journal of Roentgenology , 218(5):833–845, 2022. 1 [15] Amos Gropp, Lior Yariv, Niv Haim, Matan Atzmon, and Yaron Lipman. Implicit geometric regularization for learning shapes. arXiv preprint arXiv:2002.10099 , 2020. 1, 2 [16] Kunal Gupta. Neural mesh flow: 3d manifold mesh gener-ation via diffeomorphic flows . University of California, San Diego, 2020. 2, 3, 4, 1 [17] Kun Han, Shanlin Sun, Xiangyi Yan, Chenyu You, Hao Tang, Junayed Naushad, Haoyu Ma, Deying Kong, and Xi-aohui Xie. Diffeomorphic image registration with neural ve-locity field. In Proceedings of the IEEE/CVF Winter Confer-ence on Applications of Computer Vision , pages 1869–1879, 2023. 2 [18] Kun Han, Shanlin Sun, Thanh-Tung Le, Xiangyi Yan, Haoyu Ma, Chenyu You, and Xiaohui Xie. Hybrid neural diffeo-morphic flow for shape representation and generation via triplane. In Proceedings of the IEEE/CVF Winter Confer-ence on Applications of Computer Vision , pages 7707–7717, 2024. 2 [19] Ziyi He, Tony CW Mok, and Albert CS Chung. Groupwise image registration with atlas of multiple resolutions refined at test phase. In International Conference on Medical Image Computing and Computer-Assisted Intervention , pages 286– 298. Springer, 2023. 2 [20] Muhammad Osama Khan and Yi Fang. Implicit neural representations for medical imaging segmentation. In In-ternational Conference on Medical Image Computing and Computer-Assisted Intervention , pages 433–443. Springer, 2022. 1 [21] Qiqin Le, Yitong Deng, Jiamu Bu, Bo Zhu, and Tao Du. Second-order finite elements for deformable surfaces. In 
+
+SIGGRAPH Asia 2023 Conference Papers , pages 1–10, 2023. 2 [22] Leo Lebrat, Rodrigo Santa Cruz, Frederic De Gournay, Dar-ren Fu, Pierrick Bourgeat, Jurgen Fripp, Clinton Fookes, and Olivier Salvado. Corticalflow: A diffeomorphic mesh trans-former network for cortical surface reconstruction. Advances in Neural Information Processing Systems , 34:29491–29505, 2021. 1 [23] Helko Lehmann, Reinhard Kneser, Mirja Neizel, Jochen Pe-ters, Olivier Ecabert, Harald K¨ uhl, Malte Kelm, and J¨ urgen Weese. Integrating viability information into a cardiac model for interventional guidance. In International Conference on Functional Imaging and Modeling of the Heart , pages 312– 320. Springer, 2009. 1 [24] Bruno L´ evy, Sylvain Petitjean, Nicolas Ray, and J´ erome Maillot. Least squares conformal maps for automatic tex-ture atlas generation. In Seminal Graphics Papers: Pushing the Boundaries, Volume 2 , pages 193–202. 2023. 6, 2 [25] William E Lorensen and Harvey E Cline. Marching cubes: A high resolution 3d surface construction algorithm. In Sem-inal graphics: pioneering efforts that shaped the field , pages 347–353. 1998. 2, 1 [26] Lars Mescheder, Michael Oechsle, Michael Niemeyer, Se-bastian Nowozin, and Andreas Geiger. Occupancy networks: 
+
+9Learning 3d reconstruction in function space. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 4460–4470, 2019. 1, 2 [27] Haichao Miao, Gabriel Mistelbauer, Alexey Karimov, Amir Alansary, Alice Davidson, David FA Lloyd, Mellisa Damodaram, Lisa Story, Jana Hutter, Joseph V Hajnal, et al. Placenta maps: in utero placental health assessment of the human fetus. IEEE Transactions on Visualization and Com-puter Graphics , 23(6):1612–1623, 2017. 1, 7 [28] Tony CW Mok and Albert Chung. Fast symmetric diffeo-morphic image registration with convolutional neural net-works. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 4644–4653, 2020. 2 [29] Jeong Joon Park, Peter Florence, Julian Straub, Richard Newcombe, and Steven Lovegrove. Deepsdf: Learning con-tinuous signed distance functions for shape representation. In Proceedings of the IEEE/CVF conference on computer vi-sion and pattern recognition , pages 165–174, 2019. 1, 2, 3, 5[30] William D Penny, Karl J Friston, John T Ashburner, Stefan J Kiebel, and Thomas E Nichols. Statistical parametric map-ping: the analysis of functional brain images . Elsevier, 2011. 2[31] Shunsuke Saito, Zeng Huang, Ryota Natsume, Shigeo Mor-ishima, Angjoo Kanazawa, and Hao Li. Pifu: Pixel-aligned implicit function for high-resolution clothed human digitiza-tion. In Proceedings of the IEEE/CVF international confer-ence on computer vision , pages 2304–2314, 2019. 1 [32] John Schreiner, Arul Asirvatham, Emil Praun, and Hugues Hoppe. Inter-surface mapping. In ACM SIGGRAPH 2004 Papers , pages 870–877. 2004. 6, 2 [33] Jason Smith and Scott Schaefer. Bijective parameteriza-tion with free boundaries. ACM Transactions on Graphics (TOG) , 34(4):1–9, 2015. 6, 2 [34] Avan Suinesiaputra, Pierre Ablin, Xenia Alba, Martino Alessandrini, Jack Allen, Wenjia Bai, Serkan Cimen, Peter Claes, Brett R Cowan, Jan D’hooge, et al. Statistical shape modeling of the left ventricle: myocardial infarct classifica-tion challenge. IEEE journal of biomedical and health infor-matics , 22(2):503–515, 2017. 1 [35] Shanlin Sun, Kun Han, Deying Kong, Hao Tang, Xiangyi Yan, and Xiaohui Xie. Topology-preserving shape recon-struction and registration via neural diffeomorphic flow. In 
+
+Proceedings of the IEEE/CVF Conference on Computer Vi-sion and Pattern Recognition (CVPR) , pages 20845–20855, 2022. 1, 2, 3, 5, 6 [36] Hao Tang, Xingwei Liu, Shanlin Sun, Xiangyi Yan, and Xi-aohui Xie. Recurrent mask refinement for few-shot medical image segmentation. In Proceedings of the IEEE/CVF inter-national conference on computer vision , pages 3918–3928, 2021. 1 [37] Esra Abaci Turk, S Mazdak Abulnaga, Jie Luo, Jef-frey N Stout, Henry A Feldman, Ata Turk, Borjan Gagoski, Lawrence L Wald, Elfar Adalsteinsson, Drucilla J Roberts, et al. Placental mri: effect of maternal position and uterine contractions on placental bold mri measurements. Placenta ,95:69–77, 2020. 2 [38] S´ ebastien Valette and Jean-Marc Chassery. Approximated centroidal voronoi diagrams for uniform polygonal mesh coarsening. In Computer Graphics Forum , pages 381–389. Wiley Online Library, 2004. 6 [39] Tom Vercauteren, Xavier Pennec, Aymeric Perchant, and Nicholas Ayache. Diffeomorphic demons: Efficient non-parametric image registration. NeuroImage , 45(1):S61–S72, 2009. 2 [40] Qiangeng Xu, Weiyue Wang, Duygu Ceylan, Radomir Mech, and Ulrich Neumann. Disn: Deep implicit surface network for high-quality single-view 3d reconstruction. Ad-vances in neural information processing systems , 32, 2019. 1[41] Xiangyi Yan, Hao Tang, Shanlin Sun, Haoyu Ma, Deying Kong, and Xiaohui Xie. After-unet: Axial fusion transformer unet for medical image segmentation. In Proceedings of the IEEE/CVF winter conference on applications of computer vision , pages 3971–3981, 2022. 1 [42] Jiancheng Yang, Udaranga Wickramasinghe, Bingbing Ni, and Pascal Fua. Implicitatlas: learning deformable shape templates in medical imaging. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 15861–15871, 2022. 1, 2 [43] Chenyu You, Junlin Yang, Julius Chapiro, and James S Duncan. Unsupervised wasserstein distance guided do-main adaptation for 3d multi-domain liver segmentation. In 
+
+International Workshop on Interpretability of Machine In-telligence in Medical Image Computing , pages 155–163. Springer, 2020. 1 [44] Chenyu You, Yuan Zhou, Ruihan Zhao, Lawrence Staib, and James S Duncan. Simcvd: Simple contrastive voxel-wise representation distillation for semi-supervised medical im-age segmentation. IEEE Transactions on Medical Imaging ,41(9):2228–2237, 2022. 1 [45] Zerong Zheng, Tao Yu, Qionghai Dai, and Yebin Liu. Deep implicit templates for 3d shape representation. In Proceed-ings of the IEEE/CVF conference on computer vision and pattern recognition , pages 1429–1439, 2021. 1, 2, 3, 4, 5, 6 
+
+10 Volumetrically Consistent Implicit Atlas Learning via Neural Diffeomorphic Flow for Placenta MRI 
+
+# Supplementary Material 
+
+# A. Overview 
+
+This supplementary document provides additional technical details, experiments, and visualizations supporting our main paper. In Sec. B, we describe the MRI dataset and outline the preprocessing steps used to extract surfaces, generate signed-distance samples, and construct tetrahedral embed-dings. We then provide implementation specifics, including network architectures, training procedures, and evaluation settings. 
+
+# B. Experimental Details 
+
+B.1. Datasets and Preprocessing 
+
+Our primary dataset consists of 111 EPI BOLD MRI scans acquired from 78 pregnant subjects on a 3T Siemens Skyra scanner (single-shot GRE–EPI, 3 mm isotropic voxels, in-terleaved slice acquisition, TR = 5.8–8 s, TE = 32–36 ms, FA = 90 ◦). The cohort includes 60 singleton and 18 mono-chorionic twin pregnancies. Among singleton cases, 33 subjects were scanned in two maternal positions (supine and left lateral), providing 66 distinct placenta shapes, while the remaining 27 subjects were scanned in a single position. Gestational ages range from 27 to 38 weeks, covering mid-to-late pregnancy (Fig. 7). We used 91 placentas for training and 21 placentas for testing, ensuring that no subjects over-lap between sets when multiple scans were available for the same pregnancy. All placentas were manually segmented by an expert; small holes were filled, and only the largest connected component was retained before meshing. The resulting volumetric meshes contain 6708 ±1813 tetrahedra and 2801 ±731 surface triangles. 
+
+Preprocessing. For each segmentation volume, a surface mesh was first extracted using the Marching Cubes algo-rithm [25]. Meshes were normalized to the unit cube and reoriented such that the first principal axis aligned with the z-axis to ensure a consistent anatomical “upright” pose. Signed-distance samples were generated using depth-based nearest-surface queries. For each case, we sampled points near the surface, producing a mixture of positive (outside), negative (inside), and surface-normal samples (Fig. 8). In addition, a voxelized SDF grid at resolution was computed to provide spatially dense supervision. Tetrahedral embed-dings were constructed from the cleaned volumetric meshes and used exclusively for volumetric regularization and geo-metric evaluation, not for supervision of reconstruction loss. 
+
+B.2. Architecture Details 
+
+Implicit Template Decoder. The implicit template Tθ
+
+is parameterized as a MLP similar to DeepSDF/DIT [29, 45]. The network takes a 3D point coordinate as input and passes it through five 256-width layers with ReLU activations, weight normalization, and a dropout prob-ability of 0.05. A skip connection is inserted at the 4th layer as in DeepSDF. The final layer uses a hyper-bolic tangent activation to produce a bounded SDF value: 3→256 →256 →256 →256 →256 →1. This continuous im-plicit representation allows surfaces to be reconstructed at arbitrary resolution, independent of the resolution of the voxel grid segmentation mesh. 
+
+Deformation module. We adopt a Neural ODE–based warping module following Neural Mesh Flow [16, 35]. Given a point p0 
+
+> j
+
+sampled from the instance’s SDF, the deformation Φi is defined as a composition of four con-catenated NODE blocks, each integrating a learned veloc-ity field over t ∈ [0 , 1] . Each velocity field is estimated by a fully-connected residual network with hidden width 512: (3+256) →512 →512 →512 →3, with ReLU activations in intermediate layers and tanh at the output to keep dis-placements within the normalized domain of [−1, 1] . The latent code ci is concatenated to the input of every NODE block (Fig. 9). 
+
+Volumetric Embedding and Regularization. To enforce topological correctness and smooth volumetric deforma-tion, we construct a tetrahedral embedding Mi = ( Vi, K i)
+
+for each instance from the cleaned segmentation mesh. Dur-ing training, we sample 2,000 tetrahedra per instance and penalize negative Jacobian determinants of Φi using a hinge loss with ϵraito = 0 .03 and weight λJac = 0 .5. To promote smooth interior deformations, a biharmonic penalty is ap-plied to 1,500 interior vertices using the symmetric normal-
+
+> Figure 7. Distribution of gestational ages for our dataset of EPI BOLD placenta scans.
+
+1Figure 8. Preprocessing and model outputs for a representa-tive instance with gestational age of 34w+4d (a) Initial surface extracted from the manual segmentation using Marching Cubes (b) Dense signed-distance samples generated using depth-based nearest-surface queries (red: outside; blue: inside)(c) Overlay of the SDF samples with the initial mesh; a random subset of 5k points is used for training (d) Reconstructed implicit surface pro-duced by our template-conditioned SDF decoder; since the rep-resentation is continuous, the surface can be extracted at arbitrar-ily high resolution independently of the input mesh resolution (e) Overlay of the reconstructed surface with the input SDF samples, illustrating geometric consistency (f) Dense pointwise correspon-dences obtained from the learned diffeomorphic flow, mapping the subject into the template space. 
+
+ization scheme and weight λbiH = 0 .2. These volumetric terms complement the SDF loss but do not supervise surface geometry. 
+
+B.3. Training and Inference Details 
+
+We jointly optimize network parameters and latent codes using Adam for 2000 epochs. The learning rate for the de-formation and template networks is initialized at 5 × 10 −4
+
+and reduced by a factor of 0.5 every 500 epochs, while latent codes use a separate optimizer with learning rate 1 × 10 −3.Each batch contains four instances, and for every instance we randomly sample 5,000 SDF points. SDF values are clamped at a truncation band of 0.1. Latent codes are reg-ularized by λ ∥ci∥22 with λ = 10 −4 and constrained to lie within a unit ℓ2-ball. During inference, the latent codes are optimized for 2400 iterations using an Adam optimizer with a learning rate of 5 × 10 −2.
+
+# C. More Experiments 
+
+Diffeomorphism Analysis. We report the full distribu-tion of diffeomorphic metrics including flip rate, absolute log-determinant, cycle-consistency error, and Laplacian en-ergy sorted by increasing gestational age (GA). For each GA bin, values are averaged over all placentas within that interval, with shaded regions indicating variability across instances. Across all gestational ages, our method consis-tently achieves lower flip rates, smaller |LogDet |, reduced cycle error, and lower Laplacian energy compared to base-line methods, demonstrating more stable and smoother vol-umetric deformations throughout late pregnancy (Fig. 10). 
+
+Distortion Analysis. We evaluate geometric distortion us-ing volumetric, areal, and edge stretch ratios, together with symmetric Dirichlet energy [32, 33] and conformal distor-tion [24]. All distortion measures are dimensionless and attain a value of 1 for perfect volume-, area-, or length-preserving mappings (the symmetric Dirichlet energy at-tains its isometric minimum at 6). Across all metrics, our method exhibits lower distortion than baseline meth-ods (Fig. 10). These improvements result in deformations       
+
+> Figure 9. Neural ODE–based deformation module. Top: a velocity field is predicted by a residual MLP from the current point position and latent code ci, and integrated with an ODE solver to produce the updated position. Middle: The full deformation Φiis obtained by concatenating four NODE blocks, where the output of block k
+> serves as the input to block k+ 1 . Bottom: Visualization of the progressive deformation steps, illustrating the smooth, monotonic trajectory that warps each placenta instance into the learned tem-plate space.
+
+2Figure 10. Distribution of diffeomorphism and distortion metrics across gestational age. 
+
+that are better-conditioned and more regularized, reducing directional distortion throughout the volume and yielding smoother, more volume-preserving behavior. 3

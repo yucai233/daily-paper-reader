@@ -1,0 +1,330 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-03-25T20:18:38.935864+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 8,
+    "quick_skim_target": 11,
+    "quick_selected": 8
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2603.22786v1",
+      "title": "Predictive Photometric Uncertainty in Gaussian Splatting for Novel View Synthesis",
+      "abstract": "Recent advances in 3D Gaussian Splatting have enabled impressive photorealistic novel view synthesis. However, to transition from a pure rendering engine to a reliable spatial map for autonomous agents and safety-critical applications, knowing where the representation is uncertain is as important as the rendering fidelity itself. We bridge this critical gap by introducing a lightweight, plug-and-play framework for pixel-wise, view-dependent predictive uncertainty estimation. Our post-hoc method formulates uncertainty as a Bayesian-regularized linear least-squares optimization over reconstruction residuals. This architecture-agnostic approach extracts a per-primitive uncertainty channel without modifying the underlying scene representation or degrading baseline visual fidelity. Crucially, we demonstrate that providing this actionable reliability signal successfully translates 3D Gaussian splatting into a trustworthy spatial map, further improving state-of-the-art performance across three critical downstream perception tasks: active view selection, pose-agnostic scene change detection, and pose-agnostic anomaly detection.",
+      "authors": [
+        "Chamuditha Jayanga Galappaththige",
+        "Thomas Gottwald",
+        "Peter Stehr",
+        "Edgar Heinert",
+        "Niko Suenderhauf",
+        "Dimity Miller",
+        "Matthias Rottmann"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-24T04:21:42+00:00",
+      "link": "https://arxiv.org/pdf/2603.22786v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uncertainty estimation in Gaussian Splatting for novel view synthesis",
+      "llm_evidence_cn": "高斯泼溅新视角合成中的不确定性估计",
+      "llm_evidence": "高斯泼溅新视角合成中的不确定性估计",
+      "canonical_evidence": "高斯泼溅新视角合成中的不确定性估计",
+      "llm_tldr_en": "Introduces a framework for predictive photometric uncertainty in 3D Gaussian Splatting to improve reliability.",
+      "llm_tldr_cn": "为3D高斯泼溅引入预测光度不确定性框架，以提高渲染可靠性。",
+      "llm_tldr": "为3D高斯泼溅引入预测光度不确定性框架，以提高渲染可靠性。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.16078v1",
+      "title": "Volumetrically Consistent Implicit Atlas Learning via Neural Diffeomorphic Flow for Placenta MRI",
+      "abstract": "Establishing dense volumetric correspondences across anatomical shapes is essential for group-level analysis but remains challenging for implicit neural representations. Most existing implicit registration methods rely on supervision near the zero-level set and thus capture only surface correspondences, leaving interior deformations under-constrained. We introduce a volumetrically consistent implicit model that couples reconstruction of signed distance functions (SDFs) with neural diffeomorphic flow to learn a shared canonical template of the placenta. Volumetric regularization, including Jacobian-determinant and biharmonic penalties, suppresses local folding and promotes globally coherent deformations. In the motivating application to placenta MRI, our formulation jointly reconstructs individual placentas, aligns them to a population-derived implicit template, and enables voxel-wise intensity mapping in a unified canonical space. Experiments on in-vivo placenta MRI scans demonstrate improved geometric fidelity and volumetric alignment over surface-based implicit baseline methods, yielding anatomically interpretable and topologically consistent flattening suitable for group analysis.",
+      "authors": [
+        "Athena Taymourtash",
+        "S. Mazdak Abulnaga",
+        "Esra Abaci Turk",
+        "P. Ellen Grant",
+        "Polina Golland"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-03-17T02:55:02+00:00",
+      "link": "https://arxiv.org/pdf/2603.16078v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Volumetrically consistent implicit model for 3D reconstruction",
+      "llm_evidence_cn": "用于3D重建的体积一致性隐式模型",
+      "llm_evidence": "用于3D重建的体积一致性隐式模型",
+      "canonical_evidence": "用于3D重建的体积一致性隐式模型",
+      "llm_tldr_en": "Introduces a volumetrically consistent implicit model using neural diffeomorphic flow for MRI analysis.",
+      "llm_tldr_cn": "引入了一种利用神经微分流进行 MRI 分析的体积一致性隐式模型。",
+      "llm_tldr": "引入了一种利用神经微分流进行 MRI 分析的体积一致性隐式模型。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.20337v1",
+      "title": "High-fidelity Multi-view Normal Integration with Scale-encoded Neural Surface Representation",
+      "abstract": "Previous multi-view normal integration methods typically sample a single ray per pixel, without considering the spatial area covered by each pixel, which varies with camera intrinsics and the camera-to-object distance. Consequently, when the target object is captured at different distances, the normals at corresponding pixels may differ across views. This multi-view surface normal inconsistency results in the blurring of high-frequency details in the reconstructed surface. To address this issue, we propose a scale-encoded neural surface representation that incorporates the pixel coverage area into the neural representation. By associating each 3D point with a spatial scale and calculating its normal from a hybrid grid-based encoding, our method effectively represents multi-scale surface normals captured at varying distances. Furthermore, to enable scale-aware surface reconstruction, we introduce a mesh extraction module that assigns an optimal local scale to each vertex based on the training observations. Experimental results demonstrate that our approach consistently yields high-fidelity surface reconstruction from normals observed at varying distances, outperforming existing multi-view normal integration methods.",
+      "authors": [
+        "Tongyu Yang",
+        "Heng Guo",
+        "Yasuyuki Matsushita",
+        "Fumio Okura",
+        "Yu Luo",
+        "Xin Fan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-20T08:58:10+00:00",
+      "link": "https://arxiv.org/pdf/2603.20337v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "scale-encoded neural surface representation for multi-view integration",
+      "llm_evidence_cn": "用于多视图集成的尺度编码神经表面表示",
+      "llm_evidence": "用于多视图集成的尺度编码神经表面表示",
+      "canonical_evidence": "用于多视图集成的尺度编码神经表面表示",
+      "llm_tldr_en": "Proposes a scale-encoded neural representation to improve high-frequency detail in multi-view surface reconstruction.",
+      "llm_tldr_cn": "提出一种尺度编码神经表示，以改进多视图表面重建中的高频细节。",
+      "llm_tldr": "提出一种尺度编码神经表示，以改进多视图表面重建中的高频细节。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.20588v1",
+      "title": "RayMap3R: Inference-Time RayMap for Dynamic 3D Reconstruction",
+      "abstract": "Streaming feed-forward 3D reconstruction enables real-time joint estimation of scene geometry and camera poses from RGB images. However, without explicit dynamic reasoning, streaming models can be affected by moving objects, causing artifacts and drift. In this work, we propose RayMap3R, a training-free streaming framework for dynamic scene reconstruction. We observe that RayMap-based predictions exhibit a static-scene bias, providing an internal cue for dynamic identification. Based on this observation, we construct a dual-branch inference scheme that identifies dynamic regions by contrasting RayMap and image predictions, suppressing their interference during memory updates. We further introduce reset metric alignment and state-aware smoothing to preserve metric consistency and stabilize predicted trajectories. Our method achieves state-of-the-art performance among streaming approaches on dynamic scene reconstruction across multiple benchmarks.",
+      "authors": [
+        "Feiran Wang",
+        "Zezhou Shang",
+        "Gaowen Liu",
+        "Yan Yan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-21T01:04:31+00:00",
+      "link": "https://arxiv.org/pdf/2603.20588v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "RayMap-based dynamic 3D reconstruction and inference",
+      "llm_evidence_cn": "基于RayMap的动态3D重建与推理",
+      "llm_evidence": "基于RayMap的动态3D重建与推理",
+      "canonical_evidence": "基于RayMap的动态3D重建与推理",
+      "llm_tldr_en": "A training-free framework for dynamic scene reconstruction using RayMap-based predictions.",
+      "llm_tldr_cn": "一种利用RayMap预测进行动态场景重建的免训练框架。",
+      "llm_tldr": "一种利用RayMap预测进行动态场景重建的免训练框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.21166v1",
+      "title": "Training-Free Instance-Aware 3D Scene Reconstruction and Diffusion-Based View Synthesis from Sparse Images",
+      "abstract": "We introduce a novel, training-free system for reconstructing, understanding, and rendering 3D indoor scenes from a sparse set of unposed RGB images. Unlike traditional radiance field approaches that require dense views and per-scene optimization, our pipeline achieves high-fidelity results without any training or pose preprocessing. The system integrates three key innovations: (1) A robust point cloud reconstruction module that filters unreliable geometry using a warping-based anomaly removal strategy; (2) A warping-guided 2D-to-3D instance lifting mechanism that propagates 2D segmentation masks into a consistent, instance-aware 3D representation; and (3) A novel rendering approach that projects the point cloud into new views and refines the renderings with a 3D-aware diffusion model. Our method leverages the generative power of diffusion to compensate for missing geometry and enhances realism, especially under sparse input conditions. We further demonstrate that object-level scene editing such as instance removal can be naturally supported in our pipeline by modifying only the point cloud, enabling the synthesis of consistent, edited views without retraining. Our results establish a new direction for efficient, editable 3D content generation without relying on scene-specific optimization. Project page: https://jiatongxia.github.io/TID3R/",
+      "authors": [
+        "Jiatong Xia",
+        "Lingqiao Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-22T10:56:15+00:00",
+      "link": "https://arxiv.org/pdf/2603.21166v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "rendering 3D scenes from sparse images",
+      "llm_evidence_cn": "从稀疏图像渲染3D场景",
+      "llm_evidence": "从稀疏图像渲染3D场景",
+      "canonical_evidence": "从稀疏图像渲染3D场景",
+      "llm_tldr_en": "A training-free system for 3D scene reconstruction and view synthesis from sparse unposed images.",
+      "llm_tldr_cn": "一种无需训练的系统，用于从稀疏且无位姿的图像中进行3D场景重建和视图合成。",
+      "llm_tldr": "一种无需训练的系统，用于从稀疏且无位姿的图像中进行3D场景重建和视图合成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.22851v1",
+      "title": "UniQueR: Unified Query-based Feedforward 3D Reconstruction",
+      "abstract": "We present UniQueR, a unified query-based feedforward framework for efficient and accurate 3D reconstruction from unposed images. Existing feedforward models such as DUSt3R, VGGT, and AnySplat typically predict per-pixel point maps or pixel-aligned Gaussians, which remain fundamentally 2.5D and limited to visible surfaces. In contrast, UniQueR formulates reconstruction as a sparse 3D query inference problem. Our model learns a compact set of 3D anchor points that act as explicit geometric queries, enabling the network to infer scene structure, including geometry in occluded regions--in a single forward pass. Each query encodes spatial and appearance priors directly in global 3D space (instead of per-frame camera space) and spawns a set of 3D Gaussians for differentiable rendering. By leveraging unified query interactions across multi-view features and a decoupled cross-attention design, UniQueR achieves strong geometric expressiveness while substantially reducing memory and computational cost. Experiments on Mip-NeRF 360 and VR-NeRF demonstrate that UniQueR surpasses state-of-the-art feedforward methods in both rendering quality and geometric accuracy, using an order of magnitude fewer primitives than dense alternatives.",
+      "authors": [
+        "Chensheng Peng",
+        "Quentin Herau",
+        "Jiezhi Yang",
+        "Yichen Xie",
+        "Yihan Hu",
+        "Wenzhao Zheng",
+        "Matthew Strong",
+        "Masayoshi Tomizuka",
+        "Wei Zhan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-03-24T06:42:02+00:00",
+      "link": "https://arxiv.org/pdf/2603.22851v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "feedforward 3D reconstruction using 3D Gaussians and geometric queries",
+      "llm_evidence_cn": "使用3D高斯和几何查询的前馈3D重建",
+      "llm_evidence": "使用3D高斯和几何查询的前馈3D重建",
+      "canonical_evidence": "使用3D高斯和几何查询的前馈3D重建",
+      "llm_tldr_en": "A query-based framework for efficient 3D reconstruction using 3D Gaussians to handle occlusions.",
+      "llm_tldr_cn": "一种基于查询的高效3D重建框架，使用3D高斯处理遮挡区域。",
+      "llm_tldr": "一种基于查询的高效3D重建框架，使用3D高斯处理遮挡区域。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.22893v1",
+      "title": "SLARM: Streaming and Language-Aligned Reconstruction Model for Dynamic Scenes",
+      "abstract": "We propose SLARM, a feed-forward model that unifies dynamic scene reconstruction, semantic understanding, and real-time streaming inference. SLARM captures complex, non-uniform motion through higher-order motion modeling, trained solely on differentiable renderings without any flow supervision. Besides, SLARM distills semantic features from LSeg to obtain language-aligned representations. This design enables semantic querying via natural language, and the tight coupling between semantics and geometry further enhances the accuracy and robustness of dynamic reconstruction. Moreover, SLARM processes image sequences using window-based causal attention, achieving stable, low-latency streaming inference without accumulating memory cost. Within this unified framework, SLARM achieves state-of-the-art results in dynamic estimation, rendering quality, and scene parsing, improving motion accuracy by 21%, reconstruction PSNR by 1.6 dB, and segmentation mIoU by 20% over existing methods.",
+      "authors": [
+        "Zhicheng Qiu",
+        "Jiarui Meng",
+        "Tong-an Luo",
+        "Yican Huang",
+        "Xuan Feng",
+        "Xuanfu Li",
+        "ZHan Xu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-24T07:42:05+00:00",
+      "link": "https://arxiv.org/pdf/2603.22893v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "differentiable rendering for dynamic scene reconstruction",
+      "llm_evidence_cn": "用于动态场景重建的可微渲染",
+      "llm_evidence": "用于动态场景重建的可微渲染",
+      "canonical_evidence": "用于动态场景重建的可微渲染",
+      "llm_tldr_en": "A feed-forward model for dynamic scene reconstruction and semantic understanding using differentiable rendering.",
+      "llm_tldr_cn": "一种利用可微渲染进行动态场景重建和语义理解的前馈模型。",
+      "llm_tldr": "一种利用可微渲染进行动态场景重建和语义理解的前馈模型。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.23345v1",
+      "title": "FHAvatar: Fast and High-Fidelity Reconstruction of Face-and-Hair Composable 3D Head Avatar from Few Casual Captures",
+      "abstract": "We present FHAvatar, a novel framework for reconstructing 3D Gaussian avatars with composable face and hair components from an arbitrary number of views. Unlike previous approaches that couple facial and hair representations within a unified modeling process, we explicitly decouple two components in texture space by representing the face with planar Gaussians and the hair with strand-based Gaussians. To overcome the limitations of existing methods that rely on dense multi-view captures or costly per-identity optimization, we propose an aggregated transformer backbone to learn geometry-aware cross-view priors and head-hair structural coherence from multi-view datasets, enabling effective and efficient feature extraction and fusion from few casual captures. Extensive quantitative and qualitative experiments demonstrate that FHAvatar achieves state-of-the-art reconstruction quality from only a few observations of new identities within minutes, while supporting real-time animation, convenient hairstyle transfer, and stylized editing, broadening the accessibility and applicability of digital avatar creation.",
+      "authors": [
+        "Yujie Sun",
+        "Zhuoqiang Cai",
+        "Chaoyue Niu",
+        "Jianchuan Chen",
+        "Zhiwen Chen",
+        "Chengfei Lv",
+        "Fan Wu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-24T15:43:54+00:00",
+      "link": "https://arxiv.org/pdf/2603.23345v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "reconstructing 3D Gaussian avatars using neural architectures",
+      "llm_evidence_cn": "使用神经架构重建3D高斯化身",
+      "llm_evidence": "使用神经架构重建3D高斯化身",
+      "canonical_evidence": "使用神经架构重建3D高斯化身",
+      "llm_tldr_en": "Reconstructs high-fidelity 3D head avatars using decoupled Gaussian representations and transformer backbones.",
+      "llm_tldr_cn": "利用解耦的高斯表示和Transformer骨干网络，从少量捕获中快速重建高保真3D头像。",
+      "llm_tldr": "利用解耦的高斯表示和Transformer骨干网络，从少量捕获中快速重建高保真3D头像。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
