@@ -6,47 +6,43 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-03-25
-- 运行时间：2026-03-25 20:19:17 UTC
+- 最新运行日期：2026-03-26
+- 运行时间：2026-03-26 19:51:32 UTC
 - 运行状态：成功
-- 本次总论文数：8
-- 精读区：0
-- 速读区：8
+- 本次总论文数：7
+- 精读区：1
+- 速读区：6
 
 ### 今日简报（AI）
-今日速览 8 篇前沿论文，重点攻克 3D 重建精度与医学影像一致性难题。
-推荐关注 Gaussian Splatting 的光度不确定性预测，以及利用神经微分流优化的胎盘 MRI 图谱学习。
-建议对 3D 视觉和神经隐式表示感兴趣的读者，重点研读提升重建保真度的相关算法。
-- 详情：[/202603/25/README](/202603/25/README)
+今日聚焦 3D Gaussian Splatting 的性能飞跃，涵盖大规模场景渲染、动态换脸及随机光线追踪等前沿突破。
+重点推荐 FilterGS 提出的无遍历并行滤波技术，其通过自适应收缩显著提升了大规模 LoD 场景的渲染效率。
+建议关注 3DGS 在实时重建与人体编辑领域的融合趋势，探索高效率与高保真度并存的视觉方案。
+- 详情：[/202603/26/README](/202603/26/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [FilterGS: Traversal-Free Parallel Filtering and Adaptive Shrinking for Large-Scale LoD 3D Gaussian Splatting](/202603/26/2603.23891v1-filtergs-traversal-free-parallel-filtering-and-adaptive-shrinking-for-large-scale-lod-3d-gaussian-splatting)  
+   标签：评分：8.0/10、query:q8
+   evidence：通过并行过滤加速3D高斯喷溅
 
 ### 速读区论文标签
-1. [Predictive Photometric Uncertainty in Gaussian Splatting for Novel View Synthesis](/202603/25/2603.22786v1-predictive-photometric-uncertainty-in-gaussian-splatting-for-novel-view-synthesis)  
+1. [F4Splat: Feed-Forward Predictive Densification for Feed-Forward 3D Gaussian Splatting](/202603/26/2603.21304v2-f4splat-feed-forward-predictive-densification-for-feed-forward-3d-gaussian-splatting)  
+   标签：评分：7.0/10、query:q8
+   evidence：用于实时渲染的前馈预测加密
+2. [GSwap: Realistic Head Swapping with Dynamic Neural Gaussian Field](/202603/26/2603.23168v1-gswap-realistic-head-swapping-with-dynamic-neural-gaussian-field)  
    标签：评分：7.0/10、query:q1
-   evidence：高斯泼溅新视角合成中的不确定性估计
-2. [Volumetrically Consistent Implicit Atlas Learning via Neural Diffeomorphic Flow for Placenta MRI](/202603/25/2603.16078v1-volumetrically-consistent-implicit-atlas-learning-via-neural-diffeomorphic-flow-for-placenta-mri)  
+   evidence：用于视频合成的动态神经高斯场
+3. [Stochastic Ray Tracing for the Reconstruction of 3D Gaussian Splatting](/202603/26/2603.23637v1-stochastic-ray-tracing-for-the-reconstruction-of-3d-gaussian-splatting)  
+   标签：评分：7.0/10、query:q8
+   evidence：用于3D高斯泼溅的随机光线追踪
+4. [ReLi3D: Relightable Multi-view 3D Reconstruction with Disentangled Illumination](/202603/26/2603.19753v1-reli3d-relightable-multi-view-3d-reconstruction-with-disentangled-illumination)  
    标签：评分：6.0/10、query:q1
-   evidence：用于3D重建的体积一致性隐式模型
-3. [High-fidelity Multi-view Normal Integration with Scale-encoded Neural Surface Representation](/202603/25/2603.20337v1-high-fidelity-multi-view-normal-integration-with-scale-encoded-neural-surface-representation)  
+   evidence：3D几何与光照的统一端到端流水线
+5. [SLARM: Streaming and Language-Aligned Reconstruction Model for Dynamic Scenes](/202603/26/2603.22893v2-slarm-streaming-and-language-aligned-reconstruction-model-for-dynamic-scenes)  
    标签：评分：6.0/10、query:q1
-   evidence：用于多视图集成的尺度编码神经表面表示
-4. [RayMap3R: Inference-Time RayMap for Dynamic 3D Reconstruction](/202603/25/2603.20588v1-raymap3r-inference-time-raymap-for-dynamic-3d-reconstruction)  
+   evidence：基于动态场景的可微渲染训练
+6. [GO-Renderer: Generative Object Rendering with 3D-aware Controllable Video Diffusion Models](/202603/26/2603.23246v1-go-renderer-generative-object-rendering-with-3d-aware-controllable-video-diffusion-models)  
    标签：评分：6.0/10、query:q1
-   evidence：基于RayMap的动态3D重建与推理
-5. [Training-Free Instance-Aware 3D Scene Reconstruction and Diffusion-Based View Synthesis from Sparse Images](/202603/25/2603.21166v1-training-free-instance-aware-3d-scene-reconstruction-and-diffusion-based-view-synthesis-from-sparse-images)  
-   标签：评分：6.0/10、query:q1
-   evidence：从稀疏图像渲染3D场景
-6. [UniQueR: Unified Query-based Feedforward 3D Reconstruction](/202603/25/2603.22851v1-uniquer-unified-query-based-feedforward-3d-reconstruction)  
-   标签：评分：6.0/10、query:q1
-   evidence：使用3D高斯和几何查询的前馈3D重建
-7. [SLARM: Streaming and Language-Aligned Reconstruction Model for Dynamic Scenes](/202603/25/2603.22893v1-slarm-streaming-and-language-aligned-reconstruction-model-for-dynamic-scenes)  
-   标签：评分：6.0/10、query:q1
-   evidence：用于动态场景重建的可微渲染
-8. [FHAvatar: Fast and High-Fidelity Reconstruction of Face-and-Hair Composable 3D Head Avatar from Few Casual Captures](/202603/25/2603.23345v1-fhavatar-fast-and-high-fidelity-reconstruction-of-face-and-hair-composable-3d-head-avatar-from-few-casual-captures)  
-   标签：评分：6.0/10、query:q1
-   evidence：使用神经架构重建3D高斯化身
+   evidence：具有3D感知可控扩散的生成式对象渲染
 
 
 <div class="dpr-home-promo-card">

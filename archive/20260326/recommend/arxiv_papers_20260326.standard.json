@@ -1,0 +1,295 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-03-26T19:50:24.606103+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [
+    {
+      "id": "2603.23891v1",
+      "title": "FilterGS: Traversal-Free Parallel Filtering and Adaptive Shrinking for Large-Scale LoD 3D Gaussian Splatting",
+      "abstract": "3D Gaussian Splatting has revolutionized neural rendering with real-time performance. However, scaling this approach to large scenes using Level-of-Detail methods faces critical challenges: inefficient serial traversal consuming over 60\\% of rendering time, and redundant Gaussian-tile pairs that incur unnecessary processing overhead. To address these limitations, we introduce FilterGS, featuring a parallel filtering mechanism with two complementary filters that select Gaussian elements efficiently without tree traversal. Additionally, we propose a novel GTC metric that quantifies the redundancy of Gaussian-tile key-value pairs. Based on this metric, we introduce a scene-adaptive Gaussian shrinking strategy that effectively reduces redundant pairs. Extensive experiments demonstrate that FilterGS achieves state-of-the-art rendering speeds while maintaining competitive visual quality across multiple large-scale datasets. Project page: https://github.com/xenon-w/FilterGS",
+      "authors": [
+        "Yixian Wang",
+        "Haolin Yu",
+        "Jiadong Tang",
+        "Yu Gao",
+        "Xihan Wang",
+        "Yufeng Yue",
+        "Yi Yang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-25T03:29:01+00:00",
+      "link": "https://arxiv.org/pdf/2603.23891v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "accelerating 3D Gaussian Splatting with parallel filtering",
+      "llm_evidence_cn": "通过并行过滤加速3D高斯喷溅",
+      "llm_evidence": "通过并行过滤加速3D高斯喷溅",
+      "canonical_evidence": "通过并行过滤加速3D高斯喷溅",
+      "llm_tldr_en": "Accelerates large-scale neural rendering using traversal-free parallel filtering for Gaussian Splatting.",
+      "llm_tldr_cn": "通过无遍历并行过滤技术加速大规模3D高斯喷溅神经渲染。",
+      "llm_tldr": "通过无遍历并行过滤技术加速大规模3D高斯喷溅神经渲染。",
+      "llm_tags": [
+        "query:q8"
+      ],
+      "matched_query_tag": "query:q8",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2603.21304v2",
+      "title": "F4Splat: Feed-Forward Predictive Densification for Feed-Forward 3D Gaussian Splatting",
+      "abstract": "Feed-forward 3D Gaussian Splatting methods enable single-pass reconstruction and real-time rendering. However, they typically adopt rigid pixel-to-Gaussian or voxel-to-Gaussian pipelines that uniformly allocate Gaussians, leading to redundant Gaussians across views. Moreover, they lack an effective mechanism to control the total number of Gaussians while maintaining reconstruction fidelity. To address these limitations, we present F4Splat, which performs Feed-Forward predictive densification for Feed-Forward 3D Gaussian Splatting, introducing a densification-score-guided allocation strategy that adaptively distributes Gaussians according to spatial complexity and multi-view overlap. Our model predicts per-region densification scores to estimate the required Gaussian density and allows explicit control over the final Gaussian budget without retraining. This spatially adaptive allocation reduces redundancy in simple regions and minimizes duplicate Gaussians across overlapping views, producing compact yet high-quality 3D representations. Extensive experiments demonstrate that our model achieves superior novel-view synthesis performance compared to prior uncalibrated feed-forward methods, while using significantly fewer Gaussians.",
+      "authors": [
+        "Injae Kim",
+        "Chaehyeon Kim",
+        "Minseong Bae",
+        "Minseok Joo",
+        "Hyunwoo J. Kim"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-22T16:03:56+00:00",
+      "link": "https://arxiv.org/pdf/2603.21304v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "feed-forward predictive densification for real-time rendering",
+      "llm_evidence_cn": "用于实时渲染的前馈预测加密",
+      "llm_evidence": "用于实时渲染的前馈预测加密",
+      "canonical_evidence": "用于实时渲染的前馈预测加密",
+      "llm_tldr_en": "Optimizes 3D Gaussian Splatting with a predictive densification strategy for efficient reconstruction and rendering.",
+      "llm_tldr_cn": "通过预测性加密策略优化3D高斯泼溅，实现高效的重建与渲染。",
+      "llm_tldr": "通过预测性加密策略优化3D高斯泼溅，实现高效的重建与渲染。",
+      "llm_tags": [
+        "query:q8"
+      ],
+      "matched_query_tag": "query:q8",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.19753v1",
+      "title": "ReLi3D: Relightable Multi-view 3D Reconstruction with Disentangled Illumination",
+      "abstract": "Reconstructing 3D assets from images has long required separate pipelines for geometry reconstruction, material estimation, and illumination recovery, each with distinct limitations and computational overhead. We present ReLi3D, the first unified end-to-end pipeline that simultaneously reconstructs complete 3D geometry, spatially-varying physically-based materials, and environment illumination from sparse multi-view images in under one second. Our key insight is that multi-view constraints can dramatically improve material and illumination disentanglement, a problem that remains fundamentally ill-posed for single-image methods. Key to our approach is the fusion of the multi-view input via a transformer cross-conditioning architecture, followed by a novel unified two-path prediction strategy. The first path predicts the object's structure and appearance, while the second path predicts the environment illumination from image background or object reflections. This, combined with a differentiable Monte Carlo multiple importance sampling renderer, creates an optimal illumination disentanglement training pipeline. In addition, with our mixed domain training protocol, which combines synthetic PBR datasets with real-world RGB captures, we establish generalizable results in geometry, material accuracy, and illumination quality. By unifying previously separate reconstruction tasks into a single feed-forward pass, we enable near-instantaneous generation of complete, relightable 3D assets. Project Page: https://reli3d.jdihlmann.com/",
+      "authors": [
+        "Jan-Niklas Dihlmann",
+        "Mark Boss",
+        "Simon Donne",
+        "Andreas Engelhardt",
+        "Hendrik P. A. Lensch",
+        "Varun Jampani"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-03-20T08:37:39+00:00",
+      "link": "https://arxiv.org/pdf/2603.19753v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "unified end-to-end pipeline for 3D geometry and illumination",
+      "llm_evidence_cn": "3D几何与光照的统一端到端流水线",
+      "llm_evidence": "3D几何与光照的统一端到端流水线",
+      "canonical_evidence": "3D几何与光照的统一端到端流水线",
+      "llm_tldr_en": "Reconstructs 3D geometry, materials, and illumination from sparse multi-view images in under one second.",
+      "llm_tldr_cn": "在不到一秒的时间内从稀疏多视图图像中重建3D几何、材质和环境光照。",
+      "llm_tldr": "在不到一秒的时间内从稀疏多视图图像中重建3D几何、材质和环境光照。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.23168v1",
+      "title": "GSwap: Realistic Head Swapping with Dynamic Neural Gaussian Field",
+      "abstract": "We present GSwap, a novel consistent and realistic video head-swapping system empowered by dynamic neural Gaussian portrait priors, which significantly advances the state of the art in face and head replacement. Unlike previous methods that rely primarily on 2D generative models or 3D Morphable Face Models (3DMM), our approach overcomes their inherent limitations, including poor 3D consistency, unnatural facial expressions, and restricted synthesis quality. Moreover, existing techniques struggle with full head-swapping tasks due to insufficient holistic head modeling and ineffective background blending, often resulting in visible artifacts and misalignments. To address these challenges, GSwap introduces an intrinsic 3D Gaussian feature field embedded within a full-body SMPL-X surface, effectively elevating 2D portrait videos into a dynamic neural Gaussian field. This innovation ensures high-fidelity, 3D-consistent portrait rendering while preserving natural head-torso relationships and seamless motion dynamics. To facilitate training, we adapt a pretrained 2D portrait generative model to the source head domain using only a few reference images, enabling efficient domain adaptation. Furthermore, we propose a neural re-rendering strategy that harmoniously integrates the synthesized foreground with the original background, eliminating blending artifacts and enhancing realism. Extensive experiments demonstrate that GSwap surpasses existing methods in multiple aspects, including visual quality, temporal coherence, identity preservation, and 3D consistency.",
+      "authors": [
+        "Jingtao Zhou",
+        "Xuan Gao",
+        "Dongyu Liu",
+        "Junhui Hou",
+        "Yudong Guo",
+        "Juyong Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-24T13:11:25+00:00",
+      "link": "https://arxiv.org/pdf/2603.23168v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "dynamic neural Gaussian field for video synthesis",
+      "llm_evidence_cn": "用于视频合成的动态神经高斯场",
+      "llm_evidence": "用于视频合成的动态神经高斯场",
+      "canonical_evidence": "用于视频合成的动态神经高斯场",
+      "llm_tldr_en": "A head-swapping system using dynamic neural Gaussian fields for consistent 3D portrait synthesis.",
+      "llm_tldr_cn": "一种利用动态神经高斯场进行一致性3D人像合成的面部替换系统。",
+      "llm_tldr": "一种利用动态神经高斯场进行一致性3D人像合成的面部替换系统。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.22893v2",
+      "title": "SLARM: Streaming and Language-Aligned Reconstruction Model for Dynamic Scenes",
+      "abstract": "We propose SLARM, a feed-forward model that unifies dynamic scene reconstruction, semantic understanding, and real-time streaming inference. SLARM captures complex, non-uniform motion through higher-order motion modeling, trained solely on differentiable renderings without any flow supervision. Besides, SLARM distills semantic features from LSeg to obtain language-aligned representations. This design enables semantic querying via natural language, and the tight coupling between semantics and geometry further enhances the accuracy and robustness of dynamic reconstruction. Moreover, SLARM processes image sequences using window-based causal attention, achieving stable, low-latency streaming inference without accumulating memory cost. Within this unified framework, SLARM achieves state-of-the-art results in dynamic estimation, rendering quality, and scene parsing, improving motion accuracy by 21%, reconstruction PSNR by 1.6 dB, and segmentation mIoU by 20% over existing methods.",
+      "authors": [
+        "Zhicheng Qiu",
+        "Jiarui Meng",
+        "Tong-an Luo",
+        "Yican Huang",
+        "Xuan Feng",
+        "Xuanfu Li",
+        "ZHan Xu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-24T07:42:05+00:00",
+      "link": "https://arxiv.org/pdf/2603.22893v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "trained on differentiable renderings for dynamic scenes",
+      "llm_evidence_cn": "基于动态场景的可微渲染训练",
+      "llm_evidence": "基于动态场景的可微渲染训练",
+      "canonical_evidence": "基于动态场景的可微渲染训练",
+      "llm_tldr_en": "A feed-forward model for dynamic scene reconstruction and semantic understanding using differentiable rendering.",
+      "llm_tldr_cn": "一种利用可微渲染进行动态场景重建和语义理解的前馈模型。",
+      "llm_tldr": "一种利用可微渲染进行动态场景重建和语义理解的前馈模型。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.23637v1",
+      "title": "Stochastic Ray Tracing for the Reconstruction of 3D Gaussian Splatting",
+      "abstract": "Ray-tracing-based 3D Gaussian splatting (3DGS) methods overcome the limitations of rasterization -- rigid pinhole camera assumptions, inaccurate shadows, and lack of native reflection or refraction -- but remain slower due to the cost of sorting all intersecting Gaussians along every ray. Moreover, existing ray-tracing methods still rely on rasterization-style approximations such as shadow mapping for relightable scenes, undermining the generality that ray tracing promises.   We present a differentiable, sorting-free stochastic formulation for ray-traced 3DGS -- the first framework that uses stochastic ray tracing to both reconstruct and render standard and relightable 3DGS scenes. At its core is an unbiased Monte Carlo estimator for pixel-color gradients that evaluates only a small sampled subset of Gaussians per ray, bypassing the need for sorting. For standard 3DGS, our method matches the reconstruction quality and speed of rasterization-based 3DGS while substantially outperforming sorting-based ray tracing. For relightable 3DGS, the same stochastic estimator drives per-Gaussian shading with fully ray-traced shadow rays, delivering notably higher reconstruction fidelity than prior work.",
+      "authors": [
+        "Peiyu Xu",
+        "Xin Sun",
+        "Krishna Mullia",
+        "Raymond Fei",
+        "Iliyan Georgiev",
+        "Shuang Zhao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-24T18:23:12+00:00",
+      "link": "https://arxiv.org/pdf/2603.23637v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "stochastic ray tracing for 3D Gaussian Splatting",
+      "llm_evidence_cn": "用于3D高斯泼溅的随机光线追踪",
+      "llm_evidence": "用于3D高斯泼溅的随机光线追踪",
+      "canonical_evidence": "用于3D高斯泼溅的随机光线追踪",
+      "llm_tldr_en": "A sorting-free stochastic ray tracing framework for reconstructing and rendering relightable 3D Gaussian Splatting.",
+      "llm_tldr_cn": "一种无需排序的随机光线追踪框架，用于重建和渲染可重新照明的3D高斯泼溅场景。",
+      "llm_tldr": "一种无需排序的随机光线追踪框架，用于重建和渲染可重新照明的3D高斯泼溅场景。",
+      "llm_tags": [
+        "query:q8"
+      ],
+      "matched_query_tag": "query:q8",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.23246v1",
+      "title": "GO-Renderer: Generative Object Rendering with 3D-aware Controllable Video Diffusion Models",
+      "abstract": "Reconstructing a renderable 3D model from images is a useful but challenging task. Recent feedforward 3D reconstruction methods have demonstrated remarkable success in efficiently recovering geometry, but still cannot accurately model the complex appearances of these 3D reconstructed models. Recent diffusion-based generative models can synthesize realistic images or videos of an object using reference images without explicitly modeling its appearance, which provides a promising direction for object rendering, but lacks accurate control over the viewpoints. In this paper, we propose GO-Renderer, a unified framework integrating the reconstructed 3D proxies to guide the video generative models to achieve high-quality object rendering on arbitrary viewpoints under arbitrary lighting conditions. Our method not only enjoys the accurate viewpoint control using the reconstructed 3D proxy but also enables high-quality rendering in different lighting environments using diffusion generative models without explicitly modeling complex materials and lighting. Extensive experiments demonstrate that GO-Renderer achieves state-of-the-art performance across the object rendering tasks, including synthesizing images on new viewpoints, rendering the objects in a novel lighting environment, and inserting an object into an existing video.",
+      "authors": [
+        "Zekai Gu",
+        "Shuoxuan Feng",
+        "Yansong Wang",
+        "Hanzhuo Huang",
+        "Zhongshuo Du",
+        "Chengfeng Zhao",
+        "Chengwei Ren",
+        "Peng Wang",
+        "Yuan Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-24T14:14:21+00:00",
+      "link": "https://arxiv.org/pdf/2603.23246v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "generative object rendering with 3D-aware controllable diffusion",
+      "llm_evidence_cn": "具有3D感知可控扩散的生成式对象渲染",
+      "llm_evidence": "具有3D感知可控扩散的生成式对象渲染",
+      "canonical_evidence": "具有3D感知可控扩散的生成式对象渲染",
+      "llm_tldr_en": "Integrates 3D proxies with video diffusion models for high-quality, viewpoint-controllable object rendering.",
+      "llm_tldr_cn": "将3D代理与视频扩散模型结合，实现高质量、视角可控的对象渲染。",
+      "llm_tldr": "将3D代理与视频扩散模型结合，实现高质量、视角可控的对象渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
