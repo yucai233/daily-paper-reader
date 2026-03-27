@@ -1,0 +1,467 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-03-27T19:55:01.774884+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 10,
+    "quick_skim_target": 11,
+    "quick_selected": 10
+  },
+  "deep_dive": [
+    {
+      "id": "2603.25623v1",
+      "title": "Accurate Surface and Reflectance Modelling from 3D Radar Data with Neural Radiance Fields",
+      "abstract": "Robust scene representation is essential for autonomous systems to safely operate in challenging low-visibility environments. Radar has a clear advantage over cameras and lidars in these conditions due to its resilience to environmental factors such as fog, smoke, or dust. However, radar data is inherently sparse and noisy, making reliable 3D surface reconstruction challenging. To address these challenges, we propose a neural implicit approach for 3D mapping from radar point clouds, which jointly models scene geometry and view-dependent radar intensities. Our method leverages a memory-efficient hybrid feature encoding to learn a continuous Signed Distance Field (SDF) for surface reconstruction, while also capturing radar-specific reflective properties. We show that our approach produces smoother, more accurate 3D surface reconstructions compared to existing lidar-based reconstruction methods applied to radar data, and can reconstruct view-dependent radar intensities. We also show that in general, as input point clouds get sparser, neural implicit representations render more faithful surfaces, compared to traditional explicit SDFs and meshing techniques.",
+      "authors": [
+        "Judith Treffler",
+        "Vladimír Kubelka",
+        "Henrik Andreasson",
+        "Martin Magnusson"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-03-26T16:37:08+00:00",
+      "link": "https://arxiv.org/pdf/2603.25623v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "neural radiance fields for low-visibility environments like fog and smoke",
+      "llm_evidence_cn": "针对雾、烟等低能见度环境的神经辐射场",
+      "llm_evidence": "针对雾、烟等低能见度环境的神经辐射场",
+      "canonical_evidence": "针对雾、烟等低能见度环境的神经辐射场",
+      "llm_tldr_en": "Uses NeRF to model scene geometry and reflectance from radar data in challenging atmospheric conditions.",
+      "llm_tldr_cn": "利用NeRF在挑战性大气条件下根据雷达数据建模场景几何和反射率。",
+      "llm_tldr": "利用NeRF在挑战性大气条件下根据雷达数据建模场景几何和反射率。",
+      "llm_tags": [
+        "query:q6"
+      ],
+      "matched_query_tag": "query:q6",
+      "matched_query_text": "neural radiance fields for participating media and atmospheric effects",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.25008v1",
+      "title": "Few TensoRF: Enhance the Few-shot on Tensorial Radiance Fields",
+      "abstract": "This paper presents Few TensoRF, a 3D reconstruction framework that combines TensorRF's efficient tensor based representation with FreeNeRF's frequency driven few shot regularization. Using TensorRF to significantly accelerate rendering speed and introducing frequency and occlusion masks, the method improves stability and reconstruction quality under sparse input views. Experiments on the Synthesis NeRF benchmark show that Few TensoRF method improves the average PSNR from 21.45 dB (TensorRF) to 23.70 dB, with the fine tuned version reaching 24.52 dB, while maintaining TensorRF's fast \\(\\approx10-15\\) minute training time. Experiments on the THuman 2.0 dataset further demonstrate competitive performance in human body reconstruction, achieving 27.37 - 34.00 dB with only eight input images. These results highlight Few TensoRF as an efficient and data effective solution for real-time 3D reconstruction across diverse scenes.",
+      "authors": [
+        "Thanh-Hai Le",
+        "Hoang-Hau Tran",
+        "Trong-Nghia Vu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-03-26T04:10:20+00:00",
+      "link": "https://arxiv.org/pdf/2603.25008v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "accelerate rendering speed using tensorial radiance fields",
+      "llm_evidence_cn": "使用张量辐射场加速渲染速度",
+      "llm_evidence": "使用张量辐射场加速渲染速度",
+      "canonical_evidence": "使用张量辐射场加速渲染速度",
+      "llm_tldr_en": "Enhances TensoRF with frequency-driven regularization for efficient few-shot 3D reconstruction and fast rendering.",
+      "llm_tldr_cn": "通过频率驱动正则化增强TensoRF，实现高效的少样本3D重建和快速渲染。",
+      "llm_tldr": "通过频率驱动正则化增强TensoRF，实现高效的少样本3D重建和快速渲染。",
+      "llm_tags": [
+        "query:q8"
+      ],
+      "matched_query_tag": "query:q8",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2603.19682v2",
+      "title": "3D Gaussian Splatting with Self-Constrained Priors for High Fidelity Surface Reconstruction",
+      "abstract": "Rendering 3D surfaces has been revolutionized within the modeling of radiance fields through either 3DGS or NeRF. Although 3DGS has shown advantages over NeRF in terms of rendering quality or speed, there is still room for improvement in recovering high fidelity surfaces through 3DGS. To resolve this issue, we propose a self-constrained prior to constrain the learning of 3D Gaussians, aiming for more accurate depth rendering. Our self-constrained prior is derived from a TSDF grid that is obtained by fusing the depth maps rendered with current 3D Gaussians. The prior measures a distance field around the estimated surface, offering a band centered at the surface for imposing more specific constraints on 3D Gaussians, such as removing Gaussians outside the band, moving Gaussians closer to the surface, and encouraging larger or smaller opacity in a geometry-aware manner. More importantly, our prior can be regularly updated by the most recent depth images which are usually more accurate and complete. In addition, the prior can also progressively narrow the band to tighten the imposed constraints. We justify our idea and report our superiority over the state-of-the-art methods in evaluations on widely used benchmarks.",
+      "authors": [
+        "Takeshi Noda",
+        "Yu-Shen Liu",
+        "Zhizhong Han"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-20T06:31:03+00:00",
+      "link": "https://arxiv.org/pdf/2603.19682v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural rendering using 3D Gaussian Splatting and radiance fields",
+      "llm_evidence_cn": "使用3D高斯泼溅和辐射场的神经渲染",
+      "llm_evidence": "使用3D高斯泼溅和辐射场的神经渲染",
+      "canonical_evidence": "使用3D高斯泼溅和辐射场的神经渲染",
+      "llm_tldr_en": "Improves surface reconstruction fidelity in radiance fields using self-constrained priors.",
+      "llm_tldr_cn": "利用自约束先验提高辐射场中3D表面重建的保真度。",
+      "llm_tldr": "利用自约束先验提高辐射场中3D表面重建的保真度。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.22509v1",
+      "title": "Sketch2CT: Multimodal Diffusion for Structure-Aware 3D Medical Volume Generation",
+      "abstract": "Diffusion probabilistic models have demonstrated significant potential in generating high-quality, realistic medical images, providing a promising solution to the persistent challenge of data scarcity in the medical field. Nevertheless, producing 3D medical volumes with anatomically consistent structures under multimodal conditions remains a complex and unresolved problem. We introduce Sketch2CT, a multimodal diffusion framework for structure-aware 3D medical volume generation, jointly guided by a user-provided 2D sketch and a textual description that captures 3D geometric semantics. The framework initially generates 3D segmentation masks of the target organ from random noise, conditioned on both modalities. To effectively align and fuse these inputs, we propose two key modules that refine sketch features with localized textual cues and integrate global sketch-text representations. Built upon a capsule-attention backbone, these modules leverage the complementary strengths of sketches and text to produce anatomically accurate organ shapes. The synthesized segmentation masks subsequently guide a latent diffusion model for 3D CT volume synthesis, enabling realistic reconstruction of organ appearances that are consistent with user-defined sketches and descriptions. Extensive experiments on public CT datasets demonstrate that Sketch2CT achieves superior performance in generating multimodal medical volumes. Its controllable, low-cost generation pipeline enables principled, efficient augmentation of medical datasets. Code is available at https://github.com/adlsn/Sketch2CT.",
+      "authors": [
+        "Delin An",
+        "Chaoli Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-23T19:14:44+00:00",
+      "link": "https://arxiv.org/pdf/2603.22509v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multimodal diffusion for 3D medical volume generation",
+      "llm_evidence_cn": "用于3D医学体数据生成的体模态扩散",
+      "llm_evidence": "用于3D医学体数据生成的体模态扩散",
+      "canonical_evidence": "用于3D医学体数据生成的体模态扩散",
+      "llm_tldr_en": "A multimodal diffusion framework for generating structure-aware 3D medical volumes from sketches and text.",
+      "llm_tldr_cn": "一种多模态扩散框架，用于根据草图和文本生成结构感知的3D医学体数据。",
+      "llm_tldr": "一种多模态扩散框架，用于根据草图和文本生成结构感知的3D医学体数据。",
+      "llm_tags": [
+        "query:q5"
+      ],
+      "matched_query_tag": "query:q5",
+      "matched_query_text": "deep learning methods for volumetric cloud rendering and simulation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.25042v1",
+      "title": "MoRGS: Efficient Per-Gaussian Motion Reasoning for Streamable Dynamic 3D Scenes",
+      "abstract": "Online reconstruction of dynamic scenes aims to learn from streaming multi-view inputs under low-latency constraints. The fast training and real-time rendering capabilities of 3D Gaussian Splatting have made on-the-fly reconstruction practically feasible, enabling online 4D reconstruction. However, existing online approaches, despite their efficiency and visual quality, fail to learn per-Gaussian motion that reflects true scene dynamics. Without explicit motion cues, appearance and motion are optimized solely under photometric loss, causing per-Gaussian motion to chase pixel residuals rather than true 3D motion. To address this, we propose MoRGS, an efficient online per-Gaussian motion reasoning framework that explicitly models per-Gaussian motion to improve 4D reconstruction quality. Specifically, we leverage optical flow on a sparse set of key views as lightweight motion cues that regularize per-Gaussian motion beyond photometric supervision. To compensate for the sparsity of flow supervision, we learn a per-Gaussian motion offset field that reconciles discrepancies between projected 3D motion and observed flow across views and time. In addition, we introduce a per-Gaussian motion confidence that separates dynamic from static Gaussians and weights Gaussian attribute residual updates, thereby suppressing redundant motion in static regions for better temporal consistency and accelerating the modeling of large motions. Extensive experiments demonstrate that MoRGS achieves state-of-the-art reconstruction quality and motion fidelity among online methods, while maintaining streamable performance.",
+      "authors": [
+        "Wonjoon Lee",
+        "Sungmin Woo",
+        "Donghyeong Kim",
+        "Jungho Lee",
+        "Sangheon Park",
+        "Sangyoun Lee"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-26T05:25:11+00:00",
+      "link": "https://arxiv.org/pdf/2603.25042v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Real-time rendering and reconstruction with 3D Gaussian Splatting",
+      "llm_evidence_cn": "基于 3D 高斯泼溅的实时渲染与重建",
+      "llm_evidence": "基于 3D 高斯泼溅的实时渲染与重建",
+      "canonical_evidence": "基于 3D 高斯泼溅的实时渲染与重建",
+      "llm_tldr_en": "MoRGS enables efficient online per-Gaussian motion reasoning for dynamic 3D scene reconstruction.",
+      "llm_tldr_cn": "MoRGS 为动态 3D 场景重建提供了高效的在线逐高斯运动推理框架。",
+      "llm_tldr": "MoRGS 为动态 3D 场景重建提供了高效的在线逐高斯运动推理框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.22852v1",
+      "title": "Gau-Occ: Geometry-Completed Gaussians for Multi-Modal 3D Occupancy Prediction",
+      "abstract": "3D semantic occupancy prediction is crucial for autonomous driving. While multi-modal fusion improves accuracy over vision-only methods, it typically relies on computationally expensive dense voxel or BEV tensors. We present Gau-Occ, a multi-modal framework that bypasses dense volumetric processing by modeling the scene as a compact collection of semantic 3D Gaussians. To ensure geometric completeness, we propose a LiDAR Completion Diffuser (LCD) that recovers missing structures from sparse LiDAR to initialize robust Gaussian anchors. Furthermore, we introduce Gaussian Anchor Fusion (GAF), which efficiently integrates multi-view image semantics via geometry-aligned 2D sampling and cross-modal alignment. By refining these compact Gaussian descriptors, Gau-Occ captures both spatial consistency and semantic discriminability. Extensive experiments across challenging benchmarks demonstrate that Gau-Occ achieves state-of-the-art performance with significant computational efficiency.",
+      "authors": [
+        "Chengxin Lv",
+        "Yihui Li",
+        "Hongyu Yang",
+        "YunHong Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-24T06:44:46+00:00",
+      "link": "https://arxiv.org/pdf/2603.22852v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Bypassing dense volumetric processing with 3D Gaussians",
+      "llm_evidence_cn": "通过 3D 高斯绕过密集的体积处理",
+      "llm_evidence": "通过 3D 高斯绕过密集的体积处理",
+      "canonical_evidence": "通过 3D 高斯绕过密集的体积处理",
+      "llm_tldr_en": "Gau-Occ uses semantic 3D Gaussians for occupancy prediction, avoiding expensive dense voxel tensors.",
+      "llm_tldr_cn": "Gau-Occ 使用语义 3D 高斯进行占用预测，避免了昂贵的密集体素张量计算。",
+      "llm_tldr": "Gau-Occ 使用语义 3D 高斯进行占用预测，避免了昂贵的密集体素张量计算。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; neural radiance fields for participating media and atmospheric effects; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.25053v1",
+      "title": "GaussFusion: Improving 3D Reconstruction in the Wild with A Geometry-Informed Video Generator",
+      "abstract": "We present GaussFusion, a novel approach for improving 3D Gaussian splatting (3DGS) reconstructions in the wild through geometry-informed video generation. GaussFusion mitigates common 3DGS artifacts, including floaters, flickering, and blur caused by camera pose errors, incomplete coverage, and noisy geometry initialization. Unlike prior RGB-based approaches limited to a single reconstruction pipeline, our method introduces a geometry-informed video-to-video generator that refines 3DGS renderings across both optimization-based and feed-forward methods. Given an existing reconstruction, we render a Gaussian primitive video buffer encoding depth, normals, opacity, and covariance, which the generator refines to produce temporally coherent, artifact-free frames. We further introduce an artifact synthesis pipeline that simulates diverse degradation patterns, ensuring robustness and generalization. GaussFusion achieves state-of-the-art performance on novel-view synthesis benchmarks, and an efficient variant runs in real time at 21 FPS while maintaining similar performance, enabling interactive 3D applications.",
+      "authors": [
+        "Liyuan Zhu",
+        "Manjunath Narayana",
+        "Michal Stary",
+        "Will Hutchcroft",
+        "Gordon Wetzstein",
+        "Iro Armeni"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-26T05:42:12+00:00",
+      "link": "https://arxiv.org/pdf/2603.25053v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "refining 3DGS renderings with geometry-informed video generation",
+      "llm_evidence_cn": "通过几何感知的视频生成优化3DGS渲染",
+      "llm_evidence": "通过几何感知的视频生成优化3DGS渲染",
+      "canonical_evidence": "通过几何感知的视频生成优化3DGS渲染",
+      "llm_tldr_en": "GaussFusion improves 3DGS reconstruction quality and temporal consistency using a video generator.",
+      "llm_tldr_cn": "GaussFusion利用视频生成器提高了3DGS重建质量和时间一致性。",
+      "llm_tldr": "GaussFusion利用视频生成器提高了3DGS重建质量和时间一致性。",
+      "llm_tags": [
+        "query:q8"
+      ],
+      "matched_query_tag": "query:q8",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.22893v3",
+      "title": "SLARM: Streaming and Language-Aligned Reconstruction Model for Dynamic Scenes",
+      "abstract": "We propose SLARM, a feed-forward model that unifies dynamic scene reconstruction, semantic understanding, and real-time streaming inference. SLARM captures complex, non-uniform motion through higher-order motion modeling, trained solely on differentiable renderings without any flow supervision. Besides, SLARM distills semantic features from LSeg to obtain language-aligned representations. This design enables semantic querying via natural language, and the tight coupling between semantics and geometry further enhances the accuracy and robustness of dynamic reconstruction. Moreover, SLARM processes image sequences using window-based causal attention, achieving stable, low-latency streaming inference without accumulating memory cost. Within this unified framework, SLARM achieves state-of-the-art results in dynamic estimation, rendering quality, and scene parsing, improving motion accuracy by 21%, reconstruction PSNR by 1.6 dB, and segmentation mIoU by 20% over existing methods.",
+      "authors": [
+        "Zhicheng Qiu",
+        "Jiarui Meng",
+        "Tong-an Luo",
+        "Yican Huang",
+        "Xuan Feng",
+        "Xuanfu Li",
+        "ZHan Xu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-24T07:42:05+00:00",
+      "link": "https://arxiv.org/pdf/2603.22893v3",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "dynamic scene reconstruction trained on differentiable renderings",
+      "llm_evidence_cn": "基于可微分渲染训练的动态场景重建",
+      "llm_evidence": "基于可微分渲染训练的动态场景重建",
+      "canonical_evidence": "基于可微分渲染训练的动态场景重建",
+      "llm_tldr_en": "SLARM unifies dynamic reconstruction and semantic understanding with real-time streaming.",
+      "llm_tldr_cn": "SLARM 将动态重建与语义理解统一，实现了实时流式推理。",
+      "llm_tldr": "SLARM 将动态重建与语义理解统一，实现了实时流式推理。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.25265v1",
+      "title": "ViewSplat: View-Adaptive Dynamic Gaussian Splatting for Feed-Forward Synthesis",
+      "abstract": "We present ViewSplat, a view-adaptive 3D Gaussian splatting network for novel view synthesis from unposed images. While recent feed-forward 3D Gaussian splatting has significantly accelerated 3D scene reconstruction by bypassing per-scene optimization, a fundamental fidelity gap remains. We attribute this bottleneck to the limited capacity of single-step feed-forward networks to regress static Gaussian primitives that satisfy all viewpoints. To address this limitation, we shift the paradigm from static primitive regression to view-adaptive dynamic splatting. Instead of a rigid Gaussian representation, our pipeline learns a view-adaptable latent representation. Specifically, ViewSplat initially predicts base Gaussian primitives alongside the weights of dynamic MLPs. During rendering, these MLPs take target view coordinates as input and predict view-dependent residual updates for each Gaussian attribute (i.e., 3D position, scale, rotation, opacity, and color). This mechanism, which we term view-adaptive dynamic splatting, allows each primitive to rectify initial estimation errors, effectively capturing high-fidelity appearances. Extensive experiments demonstrate that ViewSplat achieves state-of-the-art fidelity while maintaining fast inference (17 FPS) and real-time rendering (154 FPS).",
+      "authors": [
+        "Moonyeon Jeong",
+        "Seunggi Min",
+        "Suhyeon Lee",
+        "Hongje Seong"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-26T10:03:44+00:00",
+      "link": "https://arxiv.org/pdf/2603.25265v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "View-adaptive dynamic Gaussian splatting for feed-forward synthesis",
+      "llm_evidence_cn": "用于前馈合成的视角自适应动态高斯泼溅",
+      "llm_evidence": "用于前馈合成的视角自适应动态高斯泼溅",
+      "canonical_evidence": "用于前馈合成的视角自适应动态高斯泼溅",
+      "llm_tldr_en": "ViewSplat uses view-adaptive dynamic Gaussian splatting to improve feed-forward novel view synthesis fidelity.",
+      "llm_tldr_cn": "ViewSplat采用视角自适应动态高斯泼溅技术，提升了前馈新视角合成的保真度。",
+      "llm_tldr": "ViewSplat采用视角自适应动态高斯泼溅技术，提升了前馈新视角合成的保真度。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.24146v1",
+      "title": "LightSplat: Fast and Memory-Efficient Open-Vocabulary 3D Scene Understanding in Five Seconds",
+      "abstract": "Open-vocabulary 3D scene understanding enables users to segment novel objects in complex 3D environments through natural language. However, existing approaches remain slow, memory-intensive, and overly complex due to iterative optimization and dense per-Gaussian feature assignments. To address this, we propose LightSplat, a fast and memory-efficient training-free framework that injects compact 2-byte semantic indices into 3D representations from multi-view images. By assigning semantic indices only to salient regions and managing them with a lightweight index-feature mapping, LightSplat eliminates costly feature optimization and storage overhead. We further ensure semantic consistency and efficient inference via single-step clustering that links geometrically and semantically related masks in 3D. We evaluate our method on LERF-OVS, ScanNet, and DL3DV-OVS across complex indoor-outdoor scenes. As a result, LightSplat achieves state-of-the-art performance with up to 50-400x speedup and 64x lower memory, enabling scalable language-driven 3D understanding. For more details, visit our project page https://vision3d-lab.github.io/lightsplat/.",
+      "authors": [
+        "Jaehun Bang",
+        "Jinhyeok Kim",
+        "Minji Kim",
+        "Seungheon Jeong",
+        "Kyungdon Joo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-25T10:12:22+00:00",
+      "link": "https://arxiv.org/pdf/2603.24146v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "3D representations from multi-view images using Gaussian Splatting",
+      "llm_evidence_cn": "使用高斯泼溅从多视图图像中提取3D表示",
+      "llm_evidence": "使用高斯泼溅从多视图图像中提取3D表示",
+      "canonical_evidence": "使用高斯泼溅从多视图图像中提取3D表示",
+      "llm_tldr_en": "LightSplat offers fast, memory-efficient open-vocabulary 3D scene understanding via compact semantic indices.",
+      "llm_tldr_cn": "LightSplat通过紧凑的语义索引实现快速且内存高效的开放词汇3D场景理解。",
+      "llm_tldr": "LightSplat通过紧凑的语义索引实现快速且内存高效的开放词汇3D场景理解。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.25129v1",
+      "title": "AirSplat: Alignment and Rating for Robust Feed-Forward 3D Gaussian Splatting",
+      "abstract": "While 3D Vision Foundation Models (3DVFMs) have demonstrated remarkable zero-shot capabilities in visual geometry estimation, their direct application to generalizable novel view synthesis (NVS) remains challenging.   In this paper, we propose AirSplat, a novel training framework that effectively adapts the robust geometric priors of 3DVFMs into high-fidelity, pose-free NVS. Our approach introduces two key technical contributions:   (1) Self-Consistent Pose Alignment (SCPA), a training-time feedback loop that ensures pixel-aligned supervision to resolve pose-geometry discrepancy; and   (2) Rating-based Opacity Matching (ROM), which leverages the local 3D geometry consistency knowledge from a sparse-view NVS teacher model to filter out degraded primitives.   Experimental results on large-scale benchmarks demonstrate that our method significantly outperforms state-of-the-art pose-free NVS approaches in reconstruction quality.   Our AirSplat highlights the potential of adapting 3DVFMs to enable simultaneous visual geometry estimation and high-quality view synthesis.",
+      "authors": [
+        "Minh-Quan Viet Bui",
+        "Jaeho Moon",
+        "Munchurl Kim"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-26T07:52:33+00:00",
+      "link": "https://arxiv.org/pdf/2603.25129v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "adapting geometric priors for novel view synthesis",
+      "llm_evidence_cn": "将几何先验应用于新视角合成",
+      "llm_evidence": "将几何先验应用于新视角合成",
+      "canonical_evidence": "将几何先验应用于新视角合成",
+      "llm_tldr_en": "AirSplat adapts 3D vision foundation models for high-fidelity, pose-free novel view synthesis.",
+      "llm_tldr_cn": "AirSplat将3D视觉基础模型应用于高保真、无位姿的新视角合成。",
+      "llm_tldr": "AirSplat将3D视觉基础模型应用于高保真、无位姿的新视角合成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.25181v1",
+      "title": "VolDiT: Controllable Volumetric Medical Image Synthesis with Diffusion Transformers",
+      "abstract": "Diffusion models have become a leading approach for high-fidelity medical image synthesis. However, most existing methods for 3D medical image generation rely on convolutional U-Net backbones within latent diffusion frameworks. While effective, these architectures impose strong locality biases and limited receptive fields, which may constrain scalability, global context integration, and flexible conditioning. In this work, we introduce VolDiT, the first purely transformer-based 3D Diffusion Transformer for volumetric medical image synthesis. Our approach extends diffusion transformers to native 3D data through volumetric patch embeddings and global self-attention operating directly over 3D tokens. To enable structured control, we propose a timestep-gated control adapter that maps segmentation masks into learnable control tokens that modulate transformer layers during denoising. This token-level conditioning mechanism allows precise spatial guidance while preserving the modeling advantages of transformer architectures. We evaluate our model on high-resolution 3D medical image synthesis tasks and compare it to state-of-the-art 3D latent diffusion models based on U-Nets. Results demonstrate improved global coherence, superior generative fidelity, and enhanced controllability. Our findings suggest that fully transformerbased diffusion models provide a flexible foundation for volumetric medical image synthesis. The code and models trained on public data are available at https://github.com/Cardio-AI/voldit.",
+      "authors": [
+        "Marvin Seyfarth",
+        "Salman Ul Hassan Dar",
+        "Yannik Frisch",
+        "Philipp Wild",
+        "Norbert Frey",
+        "Florian André",
+        "Sandy Engelhardt"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-26T08:51:46+00:00",
+      "link": "https://arxiv.org/pdf/2603.25181v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "3D Diffusion Transformer for volumetric medical image synthesis",
+      "llm_evidence_cn": "用于体积医学图像合成的3D扩散Transformer",
+      "llm_evidence": "用于体积医学图像合成的3D扩散Transformer",
+      "canonical_evidence": "用于体积医学图像合成的3D扩散Transformer",
+      "llm_tldr_en": "VolDiT uses a transformer-based diffusion model for controllable 3D volumetric image generation.",
+      "llm_tldr_cn": "VolDiT使用基于Transformer的扩散模型进行可控的3D体积图像生成。",
+      "llm_tldr": "VolDiT使用基于Transformer的扩散模型进行可控的3D体积图像生成。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; neural radiance fields for participating media and atmospheric effects; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
