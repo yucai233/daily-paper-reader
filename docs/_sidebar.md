@@ -1,6 +1,11 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-03-28 <!--dpr-date:20260328-->
+    * 精读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202603/28/2603.23637v2-stochastic-ray-tracing-for-the-reconstruction-of-3d-gaussian-splatting" data-sidebar-item="{&quot;title&quot;: &quot;Stochastic Ray Tracing for the Reconstruction of 3D Gaussian Splatting&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2603.23637v2-stochastic-ray-tracing-for-the-reconstruction-of-3d-gaussian-splatting&quot;, &quot;score&quot;: &quot;9.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;q3&quot;}], &quot;evidence&quot;: &quot;用于3D高斯泼溅重建与渲染的随机光线追踪&quot;}">Stochastic Ray Tracing for the Reconstruction of 3D Gaussian Splatting</a>
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202603/28/2603.22275v1-repurposing-geometric-foundation-models-for-multi-view-diffusion" data-sidebar-item="{&quot;title&quot;: &quot;Repurposing Geometric Foundation Models for Multi-view Diffusion&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2603.22275v1-repurposing-geometric-foundation-models-for-multi-view-diffusion&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;q1&quot;}], &quot;evidence&quot;: &quot;用于多视图新视角合成的几何基础模型&quot;}">Repurposing Geometric Foundation Models for Multi-view Diffusion</a>
   * 2026-03-27 <!--dpr-date:20260327-->
     * 精读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202603/27/2603.25008v1-few-tensorf-enhance-the-few-shot-on-tensorial-radiance-fields" data-sidebar-item="{&quot;title&quot;: &quot;Few TensoRF: Enhance the Few-shot on Tensorial Radiance Fields&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2603.25008v1-few-tensorf-enhance-the-few-shot-on-tensorial-radiance-fields&quot;, &quot;score&quot;: &quot;8.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;q8&quot;}], &quot;evidence&quot;: &quot;使用张量辐射场加速渲染速度&quot;}">Few TensoRF: Enhance the Few-shot on Tensorial Radiance Fields</a>

@@ -1,0 +1,97 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-03-28T19:26:54.989238+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2603.23637v2",
+      "title": "Stochastic Ray Tracing for the Reconstruction of 3D Gaussian Splatting",
+      "abstract": "Ray-tracing-based 3D Gaussian splatting (3DGS) methods overcome the limitations of rasterization -- rigid pinhole camera assumptions, inaccurate shadows, and lack of native reflection or refraction -- but remain slower due to the cost of sorting all intersecting Gaussians along every ray. Moreover, existing ray-tracing methods still rely on rasterization-style approximations such as shadow mapping for relightable scenes, undermining the generality that ray tracing promises.   We present a differentiable, sorting-free stochastic formulation for ray-traced 3DGS -- the first framework that uses stochastic ray tracing to both reconstruct and render standard and relightable 3DGS scenes. At its core is an unbiased Monte Carlo estimator for pixel-color gradients that evaluates only a small sampled subset of Gaussians per ray, bypassing the need for sorting. For standard 3DGS, our method matches the reconstruction quality and speed of rasterization-based 3DGS while substantially outperforming sorting-based ray tracing. For relightable 3DGS, the same stochastic estimator drives per-Gaussian shading with fully ray-traced shadow rays, delivering notably higher reconstruction fidelity than prior work.",
+      "authors": [
+        "Peiyu Xu",
+        "Xin Sun",
+        "Krishna Mullia",
+        "Raymond Fei",
+        "Iliyan Georgiev",
+        "Shuang Zhao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-24T18:23:12+00:00",
+      "link": "https://arxiv.org/pdf/2603.23637v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "stochastic ray tracing for 3D Gaussian Splatting reconstruction and rendering",
+      "llm_evidence_cn": "用于3D高斯泼溅重建与渲染的随机光线追踪",
+      "llm_evidence": "用于3D高斯泼溅重建与渲染的随机光线追踪",
+      "canonical_evidence": "用于3D高斯泼溅重建与渲染的随机光线追踪",
+      "llm_tldr_en": "Introduces a sorting-free stochastic ray tracing framework for differentiable 3DGS rendering.",
+      "llm_tldr_cn": "引入了一种无序随机光线追踪框架，用于可微3DGS渲染和重建。",
+      "llm_tldr": "引入了一种无序随机光线追踪框架，用于可微3DGS渲染和重建。",
+      "llm_tags": [
+        "query:q3"
+      ],
+      "matched_query_tag": "query:q3",
+      "matched_query_text": "neural acceleration of volume ray marching",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2603.22275v1",
+      "title": "Repurposing Geometric Foundation Models for Multi-view Diffusion",
+      "abstract": "While recent advances in generative latent spaces have driven substantial progress in single-image generation, the optimal latent space for novel view synthesis (NVS) remains largely unexplored. In particular, NVS requires geometrically consistent generation across viewpoints, but existing approaches typically operate in a view-independent VAE latent space. In this paper, we propose Geometric Latent Diffusion (GLD), a framework that repurposes the geometrically consistent feature space of geometric foundation models as the latent space for multi-view diffusion. We show that these features not only support high-fidelity RGB reconstruction but also encode strong cross-view geometric correspondences, providing a well-suited latent space for NVS. Our experiments demonstrate that GLD outperforms both VAE and RAE on 2D image quality and 3D consistency metrics, while accelerating training by more than 4.4x compared to the VAE latent space. Notably, GLD remains competitive with state-of-the-art methods that leverage large-scale text-to-image pretraining, despite training its diffusion model from scratch without such generative pretraining.",
+      "authors": [
+        "Wooseok Jang",
+        "Seonghu Jeon",
+        "Jisang Han",
+        "Jinhyeok Choi",
+        "Minkyung Kwon",
+        "Seungryong Kim",
+        "Saining Xie",
+        "Sainan Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-23T17:57:05+00:00",
+      "link": "https://arxiv.org/pdf/2603.22275v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "geometric foundation models for multi-view novel view synthesis",
+      "llm_evidence_cn": "用于多视图新视角合成的几何基础模型",
+      "llm_evidence": "用于多视图新视角合成的几何基础模型",
+      "canonical_evidence": "用于多视图新视角合成的几何基础模型",
+      "llm_tldr_en": "Repurposes geometric foundation models as a latent space for consistent multi-view novel view synthesis.",
+      "llm_tldr_cn": "将几何基础模型重新利用为潜空间，以实现几何一致的多视图新视角合成。",
+      "llm_tldr": "将几何基础模型重新利用为潜空间，以实现几何一致的多视图新视角合成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
