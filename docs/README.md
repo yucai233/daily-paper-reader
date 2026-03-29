@@ -6,28 +6,33 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-03-28
-- 运行时间：2026-03-28 19:28:07 UTC
+- 最新运行日期：2026-03-29
+- 运行时间：2026-03-29 20:07:41 UTC
 - 运行状态：成功
-- 本次总论文数：2
+- 本次总论文数：4
 - 精读区：1
-- 速读区：1
+- 速读区：3
 
 ### 今日简报（AI）
-今日聚焦 3D 高斯泼溅（3DGS）与几何大模型的算法突破，探索三维重建的精度极限。
-重点推荐将随机光线追踪引入 3DGS 的高分方案，并关注几何基础模型在多视图扩散任务中的跨界应用。
-建议优先研读 3DGS 结合光线追踪的提效路径，掌握提升复杂场景重建质量的最新技术。
-- 详情：[/202603/28/README](/202603/28/README)
+今日聚焦 3D Gaussian Splatting 的前沿突破，涵盖几何外观解耦、情感化数字人及 LiDAR 增强重建。
+核心结论
+- 详情：[/202603/29/README](/202603/29/README)
 
 ### 精读区论文标签
-1. [Stochastic Ray Tracing for the Reconstruction of 3D Gaussian Splatting](/202603/28/2603.23637v2-stochastic-ray-tracing-for-the-reconstruction-of-3d-gaussian-splatting)  
-   标签：评分：9.0/10、query:q3
-   evidence：用于3D高斯泼溅重建与渲染的随机光线追踪
+1. [Two Experts Are Better Than One Generalist: Decoupling Geometry and Appearance for Feed-Forward 3D Gaussian Splatting](/202603/29/2603.21064v1-two-experts-are-better-than-one-generalist-decoupling-geometry-and-appearance-for-feed-forward-3d-gaussian-splatting)  
+   标签：评分：8.0/10、query:q1
+   evidence：前馈3D高斯泼溅架构
 
 ### 速读区论文标签
-1. [Repurposing Geometric Foundation Models for Multi-view Diffusion](/202603/28/2603.22275v1-repurposing-geometric-foundation-models-for-multi-view-diffusion)  
+1. [EmoTaG: Emotion-Aware Talking Head Synthesis on Gaussian Splatting with Few-Shot Personalization](/202603/29/2603.21332v1-emotag-emotion-aware-talking-head-synthesis-on-gaussian-splatting-with-few-shot-personalization)  
    标签：评分：7.0/10、query:q1
-   evidence：用于多视图新视角合成的几何基础模型
+   evidence：使用神经辐射场 (NeRF) 和 3D 高斯泼溅进行 3D 合成
+2. [FluidGaussian: Propagating Simulation-Based Uncertainty Toward Functionally-Intelligent 3D Reconstruction](/202603/29/2603.21356v1-fluidgaussian-propagating-simulation-based-uncertainty-toward-functionally-intelligent-3d-reconstruction)  
+   标签：评分：6.0/10、query:profile-1
+   evidence：结合物理模拟约束的高斯泼溅3D重建
+3. [GTLR-GS: Geometry-Texture Aware LiDAR-Regularized 3D Gaussian Splatting for Realistic Scene Reconstruction](/202603/29/2603.23192v1-gtlr-gs-geometry-texture-aware-lidar-regularized-3d-gaussian-splatting-for-realistic-scene-reconstruction)  
+   标签：评分：6.0/10、query:q1
+   evidence：用于场景重建的LiDAR正则化3D高斯泼溅
 
 
 <div class="dpr-home-promo-card">

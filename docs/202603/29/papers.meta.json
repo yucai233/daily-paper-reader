@@ -1,0 +1,65 @@
+{
+  "label": "2026-03-29",
+  "date": "2026-03-29",
+  "generated_at": "2026-03-29T20:08:08",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202603/29/2603.21064v1-two-experts-are-better-than-one-generalist-decoupling-geometry-and-appearance-for-feed-forward-3d-gaussian-splatting",
+      "section": "deep",
+      "title_en": "Two Experts Are Better Than One Generalist: Decoupling Geometry and Appearance for Feed-Forward 3D Gaussian Splatting",
+      "authors": "Hwasik Jeong, Seungryong Lee, Gyeongjin Kang, Seungkwon Yang, Xiangyu Sun, Seungtae Nam, Eunbyung Park",
+      "date": "2026-03-22",
+      "pdf": "https://arxiv.org/pdf/2603.21064v1",
+      "score": "8.0",
+      "evidence": "前馈3D高斯泼溅架构",
+      "tldr": "本研究针对无位姿前向 3D 高斯泼溅（3DGS）中几何与外观建模耦合导致的性能瓶颈，提出了 2Xplat 框架。该框架摒弃了主流的统一单体架构，采用“双专家”设计：几何专家专门负责预测相机位姿，外观专家则基于位姿合成高质量 3D 高斯表示。实验表明，这种解耦设计在极短的训练时间内便能显著超越现有无位姿方法，并达到与有位姿 SOTA 方法相当的水平，证明了模块化设计在复杂 3D 建模任务中的优越性。",
+      "tags": "query:q1",
+      "abstract_en": "Pose-free feed-forward 3D Gaussian Splatting (3DGS) has opened a new frontier for rapid 3D modeling, enabling high-quality Gaussian representations to be generated from uncalibrated multi-view images in a single forward pass. The dominant approach in this space adopts unified monolithic architectures, often built on geometry-centric 3D foundation models, to jointly estimate camera poses and synthesize 3DGS representations within a single network. While architecturally streamlined, such \"all-in-one\" designs may be suboptimal for high-fidelity 3DGS generation, as they entangle geometric reasoning and appearance modeling within a shared representation. In this work, we introduce 2Xplat, a pose-free feed-forward 3DGS framework based on a two-expert design that explicitly separates geometry estimation from Gaussian generation. A dedicated geometry expert first predicts camera poses, which are then explicitly passed to a powerful appearance expert that synthesizes 3D Gaussians. Despite its conceptual simplicity, being largely underexplored in prior works, the proposed approach proves highly effective. In fewer than 5K training iterations, the proposed two-experts pipeline substantially outperforms prior pose-free feed-forward 3DGS approaches and achieves performance on par with state-of-the-art posed methods. These results challenge the prevailing unified paradigm and suggest the potential advantages of modular design principles for complex 3D geometric estimation and appearance synthesis tasks.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202603/29/2603.21332v1-emotag-emotion-aware-talking-head-synthesis-on-gaussian-splatting-with-few-shot-personalization",
+      "section": "quick",
+      "title_en": "EmoTaG: Emotion-Aware Talking Head Synthesis on Gaussian Splatting with Few-Shot Personalization",
+      "authors": "Haolan Xu, Keli Cheng, Lei Wang, Ning Bi, Xiaoming Liu",
+      "date": "2026-03-22",
+      "pdf": "https://arxiv.org/pdf/2603.21332v1",
+      "score": "7.0",
+      "evidence": "使用神经辐射场 (NeRF) 和 3D 高斯泼溅进行 3D 合成",
+      "tldr": "本研究针对少样本 3D 说话人头合成中存在的几何不稳定和情感不匹配问题，提出了 EmoTaG 框架。该方法基于 3D 高斯泼溅（3DGS），通过将运动预测重构为结构化的 FLAME 参数空间而非直接变形高斯点，引入了显式的几何先验。同时，利用门控残差运动网络（GRMN）从音频中提取情感韵律并补充头部姿态，实现了高表现力且稳定的运动生成，在极短视频样本下即可完成个性化适配。",
+      "tags": "query:q1",
+      "abstract_en": "Audio-driven 3D talking head synthesis has advanced rapidly with Neural Radiance Fields (NeRF) and 3D Gaussian Splatting (3DGS). By leveraging rich pre-trained priors, few-shot methods enable instant personalization from just a few seconds of video. However, under expressive facial motion, existing few-shot approaches often suffer from geometric instability and audio-emotion mismatch, highlighting the need for more effective emotion-aware motion modeling. In this work, we present EmoTaG, a few-shot emotion-aware 3D talking head synthesis framework built on the Pretrain-and-Adapt paradigm. Our key insight is to reformulate motion prediction in a structured FLAME parameter space rather than directly deforming 3D Gaussians, thereby introducing explicit geometric priors that improve motion stability. Building upon this, we propose a Gated Residual Motion Network (GRMN), which captures emotional prosody from audio while supplementing head pose and upper-face cues absent from audio, enabling expressive and coherent motion generation. Extensive experiments demonstrate that EmoTaG achieves state-of-the-art performance in emotional expressiveness, lip synchronization, visual realism, and motion stability.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202603/29/2603.21356v1-fluidgaussian-propagating-simulation-based-uncertainty-toward-functionally-intelligent-3d-reconstruction",
+      "section": "quick",
+      "title_en": "FluidGaussian: Propagating Simulation-Based Uncertainty Toward Functionally-Intelligent 3D Reconstruction",
+      "authors": "Yuqiu Liu, Jialin Song, Marissa Ramirez de Chanlatte, Rochishnu Chowdhury, Rushil Paresh Desai, Wuyang Chen, Daniel Martin, Michael Mahoney",
+      "date": "2026-03-22",
+      "pdf": "https://arxiv.org/pdf/2603.21356v1",
+      "score": "6.0",
+      "evidence": "结合物理模拟约束的高斯泼溅3D重建",
+      "tldr": "针对当前3D重建方法过度关注视觉保真度而忽视物理规律的问题，本文提出FluidGaussian。该方法将几何重建与流体-结构相互作用紧密结合，通过引入基于流体模拟的不确定性度量和主动学习机制，引导模型优先优化影响物理功能的关键区域。实验表明，该方法在提升视觉质量的同时，显著增强了重建结果的物理真实性，实现了视觉与功能的协同优化。",
+      "tags": "query:profile-1",
+      "abstract_en": "Real objects that inhabit the physical world follow physical laws and thus behave plausibly during interaction with other physical objects. However, current methods that perform 3D reconstructions of real-world scenes from multi-view 2D images optimize primarily for visual fidelity, i.e., they train with photometric losses and reason about uncertainty in the image or representation space. This appearance-centric view overlooks body contacts and couplings, conflates function-critical regions (e.g., aerodynamic or hydrodynamic surfaces) with ornamentation, and reconstructs structures suboptimally, even when physical regularizers are added. All these can lead to unphysical and implausible interactions. To address this, we consider the question: How can 3D reconstruction become aware of real-world interactions and underlying object functionality, beyond visual cues? To answer this question, we propose FluidGaussian, a plug-and-play method that tightly couples geometry reconstruction with ubiquitous fluid-structure interactions to assess surface quality at high granularity. We define a simulation-based uncertainty metric induced by fluid simulations and integrate it with active learning to prioritize views that improve both visual and physical fidelity. In an empirical evaluation on NeRF Synthetic (Blender), Mip-NeRF 360, and DrivAerNet++, our FluidGaussian method yields up to +8.6% visual PSNR (Peak Signal-to-Noise Ratio) and -62.3% velocity divergence during fluid simulations. Our code is available at https://github.com/delta-lab-ai/FluidGaussian.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202603/29/2603.23192v1-gtlr-gs-geometry-texture-aware-lidar-regularized-3d-gaussian-splatting-for-realistic-scene-reconstruction",
+      "section": "quick",
+      "title_en": "GTLR-GS: Geometry-Texture Aware LiDAR-Regularized 3D Gaussian Splatting for Realistic Scene Reconstruction",
+      "authors": "Yan Fang, Jianfei Ge, Jiangjian Xiao",
+      "date": "2026-03-24",
+      "pdf": "https://arxiv.org/pdf/2603.23192v1",
+      "score": "6.0",
+      "evidence": "用于场景重建的LiDAR正则化3D高斯泼溅",
+      "tldr": "针对传统3DGS依赖SfM点云导致的尺度模糊和几何一致性差等问题，本文提出GTLR-GS框架。该框架将LiDAR提供的度量几何先验深度融入优化过程，通过几何-纹理感知分配、曲率自适应细化及置信度感知深度正则化，在固定表示预算下实现了具有绝对尺度和高几何保真度的实时逼真场景重建。",
+      "tags": "query:q1",
+      "abstract_en": "Recent advances in 3D Gaussian Splatting (3DGS) have enabled real-time, photorealistic scene reconstruction. However, conventional 3DGS frameworks typically rely on sparse point clouds derived from Structure-from-Motion (SfM), which inherently suffer from scale ambiguity, limited geometric consistency, and strong view dependency due to the lack of geometric priors. In this work, a LiDAR-centric 3D Gaussian Splatting framework is proposed that explicitly incorporates metric geometric priors into the entire Gaussian optimization process. Instead of treating LiDAR data as a passive initialization source, 3DGS optimization is reformulated as a geometry-conditioned allocation and refinement problem under a fixed representational budget. Specifically, this work introduces (i) a geometry-texture-aware allocation strategy that selectively assigns Gaussian primitives to regions with high structural or appearance complexity, (ii) a curvature-adaptive refinement mechanism that dynamically guides Gaussian splitting toward geometrically complex areas during training, and (iii) a confidence-aware metric depth regularization that anchors the reconstructed geometry to absolute scale using LiDAR measurements while maintaining optimization stability. Extensive experiments on the ScanNet++ dataset and a custom real-world dataset validate the proposed approach. The results demonstrate state-of-the-art performance in metric-scale reconstruction with high geometric fidelity.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
