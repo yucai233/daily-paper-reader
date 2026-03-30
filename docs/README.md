@@ -6,33 +6,41 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-03-29
-- 运行时间：2026-03-29 20:07:41 UTC
+- 最新运行日期：2026-03-30
+- 运行时间：2026-03-30 20:14:30 UTC
 - 运行状态：成功
-- 本次总论文数：4
-- 精读区：1
-- 速读区：3
+- 本次总论文数：6
+- 精读区：0
+- 速读区：6
 
 ### 今日简报（AI）
-今日聚焦 3D Gaussian Splatting 的前沿突破，涵盖几何外观解耦、情感化数字人及 LiDAR 增强重建。
-核心结论
-- 详情：[/202603/29/README](/202603/29/README)
+今日聚焦 3D 场景表征前沿，涵盖少样本学习、几何解码及大规模透明度建模三大突破。
+重点关注 Fus3D 如何利用 Transformer 潜空间高效还原几何，以及 GLINT 通过高斯辐射传输解决复杂透明场景的渲染难题。
+建议深入探索 3D 重建与生成式架构的融合趋势，关注高保真渲染在复杂材质下的最新应用。
+- 详情：[/202603/30/README](/202603/30/README)
 
 ### 精读区论文标签
-1. [Two Experts Are Better Than One Generalist: Decoupling Geometry and Appearance for Feed-Forward 3D Gaussian Splatting](/202603/29/2603.21064v1-two-experts-are-better-than-one-generalist-decoupling-geometry-and-appearance-for-feed-forward-3d-gaussian-splatting)  
-   标签：评分：8.0/10、query:q1
-   evidence：前馈3D高斯泼溅架构
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [EmoTaG: Emotion-Aware Talking Head Synthesis on Gaussian Splatting with Few-Shot Personalization](/202603/29/2603.21332v1-emotag-emotion-aware-talking-head-synthesis-on-gaussian-splatting-with-few-shot-personalization)  
+1. [Few TensoRF: Enhance the Few-shot on Tensorial Radiance Fields](/202603/30/2603.25008v2-few-tensorf-enhance-the-few-shot-on-tensorial-radiance-fields)  
    标签：评分：7.0/10、query:q1
-   evidence：使用神经辐射场 (NeRF) 和 3D 高斯泼溅进行 3D 合成
-2. [FluidGaussian: Propagating Simulation-Based Uncertainty Toward Functionally-Intelligent 3D Reconstruction](/202603/29/2603.21356v1-fluidgaussian-propagating-simulation-based-uncertainty-toward-functionally-intelligent-3d-reconstruction)  
-   标签：评分：6.0/10、query:profile-1
-   evidence：结合物理模拟约束的高斯泼溅3D重建
-3. [GTLR-GS: Geometry-Texture Aware LiDAR-Regularized 3D Gaussian Splatting for Realistic Scene Reconstruction](/202603/29/2603.23192v1-gtlr-gs-geometry-texture-aware-lidar-regularized-3d-gaussian-splatting-for-realistic-scene-reconstruction)  
+   evidence：用于高效3D重建和渲染的张量辐射场
+2. [Fus3D: Decoding Consolidated 3D Geometry from Feed-forward Geometry Transformer Latents](/202603/30/2603.25827v1-fus3d-decoding-consolidated-3d-geometry-from-feed-forward-geometry-transformer-latents)  
+   标签：评分：7.0/10、query:q1
+   evidence：用于3D几何的学习型体积提取
+3. [GLINT: Modeling Scene-Scale Transparency via Gaussian Radiance Transport](/202603/30/2603.26181v1-glint-modeling-scene-scale-transparency-via-gaussian-radiance-transport)  
+   标签：评分：7.0/10、query:q6
+   evidence：通过高斯表示建模场景级透明度和辐射传输
+4. [GaussianGPT: Towards Autoregressive 3D Gaussian Scene Generation](/202603/30/2603.26661v1-gaussiangpt-towards-autoregressive-3d-gaussian-scene-generation)  
+   标签：评分：7.0/10、query:q1
+   evidence：3D 高斯场景生成与外观建模
+5. [SparseCam4D: Spatio-Temporally Consistent 4D Reconstruction from Sparse Cameras](/202603/30/2603.26481v1-sparsecam4d-spatio-temporally-consistent-4d-reconstruction-from-sparse-cameras)  
    标签：评分：6.0/10、query:q1
-   evidence：用于场景重建的LiDAR正则化3D高斯泼溅
+   evidence：用于逼真和沉浸式渲染的4D重建框架
+6. [AutoWeather4D: Autonomous Driving Video Weather Conversion via G-Buffer Dual-Pass Editing](/202603/30/2603.26546v1-autoweather4d-autonomous-driving-video-weather-conversion-via-g-buffer-dual-pass-editing)  
+   标签：评分：6.0/10、query:q6
+   evidence：3D感知的天气编辑与不利大气效果合成
 
 
 <div class="dpr-home-promo-card">

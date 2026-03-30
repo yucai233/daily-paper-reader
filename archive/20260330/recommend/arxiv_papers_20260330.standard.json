@@ -1,0 +1,248 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-03-30T20:13:44.649972+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2603.25008v2",
+      "title": "Few TensoRF: Enhance the Few-shot on Tensorial Radiance Fields",
+      "abstract": "This paper presents Few TensoRF, a 3D reconstruction framework that combines TensorRF's efficient tensor based representation with FreeNeRF's frequency driven few shot regularization. Using TensorRF to significantly accelerate rendering speed and introducing frequency and occlusion masks, the method improves stability and reconstruction quality under sparse input views. Experiments on the Synthesis NeRF benchmark show that Few TensoRF method improves the average PSNR from 21.45 dB (TensorRF) to 23.70 dB, with the fine tuned version reaching 24.52 dB, while maintaining TensorRF's fast \\(\\approx10-15\\) minute training time. Experiments on the THuman 2.0 dataset further demonstrate competitive performance in human body reconstruction, achieving 27.37 - 34.00 dB with only eight input images. These results highlight Few TensoRF as an efficient and data effective solution for real-time 3D reconstruction across diverse scenes.",
+      "authors": [
+        "Thanh-Hai Le",
+        "Hoang-Hau Tran",
+        "Trong-Nghia Vu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-03-26T04:10:20+00:00",
+      "link": "https://arxiv.org/pdf/2603.25008v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "tensorial radiance fields for efficient 3D reconstruction and rendering",
+      "llm_evidence_cn": "用于高效3D重建和渲染的张量辐射场",
+      "llm_evidence": "用于高效3D重建和渲染的张量辐射场",
+      "canonical_evidence": "用于高效3D重建和渲染的张量辐射场",
+      "llm_tldr_en": "Enhances TensoRF with frequency-driven regularization for stable few-shot 3D reconstruction and fast rendering.",
+      "llm_tldr_cn": "通过频率驱动正则化增强TensoRF，实现稳定的少样本3D重建和快速渲染。",
+      "llm_tldr": "通过频率驱动正则化增强TensoRF，实现稳定的少样本3D重建和快速渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.26481v1",
+      "title": "SparseCam4D: Spatio-Temporally Consistent 4D Reconstruction from Sparse Cameras",
+      "abstract": "High-quality 4D reconstruction enables photorealistic and immersive rendering of the dynamic real world. However, unlike static scenes that can be fully captured with a single camera, high-quality dynamic scenes typically require dense arrays of tens or even hundreds of synchronized cameras. Dependence on such costly lab setups severely limits practical scalability. The reliance on such costly lab setups severely limits practical scalability. To this end, we propose a sparse-camera dynamic reconstruction framework that exploits abundant yet inconsistent generative observations. Our key innovation is the Spatio-Temporal Distortion Field, which provides a unified mechanism for modeling inconsistencies in generative observations across both spatial and temporal dimensions. Building on this, we develop a complete pipeline that enables 4D reconstruction from sparse and uncalibrated camera inputs. We evaluate our method on multi-camera dynamic scene benchmarks, achieving spatio-temporally consistent high-fidelity renderings and significantly outperforming existing approaches.",
+      "authors": [
+        "Weihong Pan",
+        "Xiaoyu Zhang",
+        "Zhuang Zhang",
+        "Zhichao Ye",
+        "Nan Wang",
+        "Haomin Liu",
+        "Guofeng Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-27T14:44:52+00:00",
+      "link": "https://arxiv.org/pdf/2603.26481v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "4D reconstruction framework for photorealistic and immersive rendering",
+      "llm_evidence_cn": "用于逼真和沉浸式渲染的4D重建框架",
+      "llm_evidence": "用于逼真和沉浸式渲染的4D重建框架",
+      "canonical_evidence": "用于逼真和沉浸式渲染的4D重建框架",
+      "llm_tldr_en": "SparseCam4D enables spatio-temporally consistent 4D reconstruction and rendering from sparse camera views.",
+      "llm_tldr_cn": "SparseCam4D实现了从稀疏相机视角进行时空一致的4D重建和渲染。",
+      "llm_tldr": "SparseCam4D实现了从稀疏相机视角进行时空一致的4D重建和渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.25827v1",
+      "title": "Fus3D: Decoding Consolidated 3D Geometry from Feed-forward Geometry Transformer Latents",
+      "abstract": "We propose a feed-forward method for dense Signed Distance Field (SDF) regression from unstructured image collections in less than three seconds, without camera calibration or post-hoc fusion. Our key insight is that the intermediate feature space of pretrained multi-view feed-forward geometry transformers already encodes a powerful joint world representation; yet, existing pipelines discard it, routing features through per-view prediction heads before assembling 3D geometry post-hoc, which discards valuable completeness information and accumulates inaccuracies.   We instead perform 3D extraction directly from geometry transformer features via learned volumetric extraction: voxelized canonical embeddings that progressively absorb multi-view geometry information through interleaved cross- and self-attention into a structured volumetric latent grid. A simple convolutional decoder then maps this grid to a dense SDF. We additionally propose a scalable, validity-aware supervision scheme directly using SDFs derived from depth maps or 3D assets, tackling practical issues like non-watertight meshes. Our approach yields complete and well-defined distance values across sparse- and dense-view settings and demonstrates geometrically plausible completions. Code and further material can be found at https://lorafib.github.io/fus3d.",
+      "authors": [
+        "Laura Fink",
+        "Linus Franke",
+        "George Kopanas",
+        "Marc Stamminger",
+        "Peter Hedman"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-26T18:45:04+00:00",
+      "link": "https://arxiv.org/pdf/2603.25827v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "learned volumetric extraction for 3D geometry",
+      "llm_evidence_cn": "用于3D几何的学习型体积提取",
+      "llm_evidence": "用于3D几何的学习型体积提取",
+      "canonical_evidence": "用于3D几何的学习型体积提取",
+      "llm_tldr_en": "Extracts 3D geometry directly from transformer features using learned volumetric voxelized embeddings.",
+      "llm_tldr_cn": "利用学习到的体积体素化嵌入，直接从 Transformer 特征中提取 3D 几何。",
+      "llm_tldr": "利用学习到的体积体素化嵌入，直接从 Transformer 特征中提取 3D 几何。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.26546v1",
+      "title": "AutoWeather4D: Autonomous Driving Video Weather Conversion via G-Buffer Dual-Pass Editing",
+      "abstract": "Generative video models have significantly advanced the photorealistic synthesis of adverse weather for autonomous driving; however, they consistently demand massive datasets to learn rare weather scenarios. While 3D-aware editing methods alleviate these data constraints by augmenting existing video footage, they are fundamentally bottlenecked by costly per-scene optimization and suffer from inherent geometric and illumination entanglement. In this work, we introduce AutoWeather4D, a feed-forward 3D-aware weather editing framework designed to explicitly decouple geometry and illumination. At the core of our approach is a G-buffer Dual-pass Editing mechanism. The Geometry Pass leverages explicit structural foundations to enable surface-anchored physical interactions, while the Light Pass analytically resolves light transport, accumulating the contributions of local illuminants into the global illumination to enable dynamic 3D local relighting. Extensive experiments demonstrate that AutoWeather4D achieves comparable photorealism and structural consistency to generative baselines while enabling fine-grained parametric physical control, serving as a practical data engine for autonomous driving.",
+      "authors": [
+        "Tianyu Liu",
+        "Weitao Xiong",
+        "Kunming Luo",
+        "Manyuan Zhang",
+        "Peng Liu",
+        "Yuan Liu",
+        "Ping Tan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-27T15:56:47+00:00",
+      "link": "https://arxiv.org/pdf/2603.26546v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "3D-aware weather editing and synthesis of adverse atmospheric effects",
+      "llm_evidence_cn": "3D感知的天气编辑与不利大气效果合成",
+      "llm_evidence": "3D感知的天气编辑与不利大气效果合成",
+      "canonical_evidence": "3D感知的天气编辑与不利大气效果合成",
+      "llm_tldr_en": "A feed-forward framework for 3D-aware weather conversion in autonomous driving videos.",
+      "llm_tldr_cn": "一种用于自动驾驶视频中3D感知天气转换的前馈框架。",
+      "llm_tldr": "一种用于自动驾驶视频中3D感知天气转换的前馈框架。",
+      "llm_tags": [
+        "query:q6"
+      ],
+      "matched_query_tag": "query:q6",
+      "matched_query_text": "neural radiance fields for participating media and atmospheric effects",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.26181v1",
+      "title": "GLINT: Modeling Scene-Scale Transparency via Gaussian Radiance Transport",
+      "abstract": "While 3D Gaussian splatting has emerged as a powerful paradigm, it fundamentally fails to model transparency such as glass panels. The core challenge lies in decoupling the intertwined radiance contributions from transparent interfaces and the transmitted geometry observed through the glass. We present GLINT, a framework that models scene-scale transparency through explicit decomposed Gaussian representation. GLINT reconstructs the primary interface and models reflected and transmitted radiance separately, enabling consistent radiance transport. During optimization, GLINT bootstraps transparency localization from geometry-separation cues induced by the decomposition, together with geometry and material priors from a pre-trained video relighting model. Extensive experiments demonstrate consistent improvements over prior methods for reconstructing complex transparent scenes.",
+      "authors": [
+        "Youngju Na",
+        "Jaeseong Yun",
+        "Soohyun Ryu",
+        "Hyunsu Kim",
+        "Sung-Eui Yoon",
+        "Suyong Yeon"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-27T08:52:12+00:00",
+      "link": "https://arxiv.org/pdf/2603.26181v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "models scene-scale transparency and radiance transport via Gaussian representation",
+      "llm_evidence_cn": "通过高斯表示建模场景级透明度和辐射传输",
+      "llm_evidence": "通过高斯表示建模场景级透明度和辐射传输",
+      "canonical_evidence": "通过高斯表示建模场景级透明度和辐射传输",
+      "llm_tldr_en": "Models scene-scale transparency by decoupling reflected and transmitted radiance in Gaussian Splatting.",
+      "llm_tldr_cn": "通过解耦高斯泼溅中的反射和透射辐射来建模场景级透明度。",
+      "llm_tldr": "通过解耦高斯泼溅中的反射和透射辐射来建模场景级透明度。",
+      "llm_tags": [
+        "query:q6"
+      ],
+      "matched_query_tag": "query:q6",
+      "matched_query_text": "neural radiance fields for participating media and atmospheric effects",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.26661v1",
+      "title": "GaussianGPT: Towards Autoregressive 3D Gaussian Scene Generation",
+      "abstract": "Most recent advances in 3D generative modeling rely on diffusion or flow-matching formulations. We instead explore a fully autoregressive alternative and introduce GaussianGPT, a transformer-based model that directly generates 3D Gaussians via next-token prediction, thus facilitating full 3D scene generation. We first compress Gaussian primitives into a discrete latent grid using a sparse 3D convolutional autoencoder with vector quantization. The resulting tokens are serialized and modeled using a causal transformer with 3D rotary positional embedding, enabling sequential generation of spatial structure and appearance. Unlike diffusion-based methods that refine scenes holistically, our formulation constructs scenes step-by-step, naturally supporting completion, outpainting, controllable sampling via temperature, and flexible generation horizons. This formulation leverages the compositional inductive biases and scalability of autoregressive modeling while operating on explicit representations compatible with modern neural rendering pipelines, positioning autoregressive transformers as a complementary paradigm for controllable and context-aware 3D generation.",
+      "authors": [
+        "Nicolas von Lützow",
+        "Barbara Rössle",
+        "Katharina Schmid",
+        "Matthias Nießner"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-27T17:58:05+00:00",
+      "link": "https://arxiv.org/pdf/2603.26661v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian scene generation and appearance modeling",
+      "llm_evidence_cn": "3D 高斯场景生成与外观建模",
+      "llm_evidence": "3D 高斯场景生成与外观建模",
+      "canonical_evidence": "3D 高斯场景生成与外观建模",
+      "llm_tldr_en": "Introduces GaussianGPT, an autoregressive transformer for step-by-step 3D Gaussian scene generation.",
+      "llm_tldr_cn": "引入 GaussianGPT，一种用于逐步生成 3D 高斯场景的自回归 Transformer 模型。",
+      "llm_tldr": "引入 GaussianGPT，一种用于逐步生成 3D 高斯场景的自回归 Transformer 模型。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
