@@ -6,55 +6,43 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-03-31
-- 运行时间：2026-03-31 19:46:16 UTC
+- 最新运行日期：2026-04-01
+- 运行时间：2026-04-01 19:51:27 UTC
 - 运行状态：成功
-- 本次总论文数：11
-- 精读区：3
-- 速读区：8
+- 本次总论文数：7
+- 精读区：1
+- 速读区：6
 
 ### 今日简报（AI）
-今日深度解析 11 篇 3D 重建前沿论文，重点攻克复杂天气建模与少样本辐射场优化难题。
-推荐关注 NimbusGS 在混合天气下的统一重建方案，以及 Few TensoRF 对张量辐射场性能的显著提升。
-建议读者从 NimbusGS 入手探索环境鲁棒性，并留意视频生成技术在野外 3D 重
-- 详情：[/202603/31/README](/202603/31/README)
+今日精选 7 篇前沿论文，重点聚焦量子-经典混合模型在 3D 云场时空预测中的突破性应用。
+值得关注量子计算对复杂气象建模的赋能，以及 3D Gaussian Splatting 在室内反演与光影和谐插入方面的最新进展。
+建议优先研读量子预测算法，并关注 3DGS 技术在机器人视觉增强与 AR 场景构建中的落地潜力。
+- 详情：[/202604/01/README](/202604/01/README)
 
 ### 精读区论文标签
-1. [NimbusGS: Unified 3D Scene Reconstruction under Hybrid Weather](/202603/31/2603.27228v1-nimbusgs-unified-3d-scene-reconstruction-under-hybrid-weather)  
-   标签：评分：9.0/10、query:q6
-   evidence：建模大气效应与全局透射场
-2. [Few TensoRF: Enhance the Few-shot on Tensorial Radiance Fields](/202603/31/2603.25008v3-few-tensorf-enhance-the-few-shot-on-tensorial-radiance-fields)  
-   标签：评分：8.0/10、query:q1
-   evidence：结合张量辐射场与频率驱动正则化以实现快速渲染
-3. [To View Transform or Not to View Transform: NeRF-based Pre-training Perspective](/202603/31/2603.28090v1-to-view-transform-or-not-to-view-transform-nerf-based-pre-training-perspective)  
-   标签：评分：8.0/10、query:q1
-   evidence：基于NeRF的体积特征预训练与3D场景理解
+1. [Hybrid Quantum-Classical Spatiotemporal Forecasting for 3D Cloud Fields](/202604/01/2603.29407v1-hybrid-quantum-classical-spatiotemporal-forecasting-for-3d-cloud-fields)  
+   标签：评分：9.0/10、query:q5
+   evidence：三维云场时空预测与体积预测任务
 
 ### 速读区论文标签
-1. [GaussFusion: Improving 3D Reconstruction in the Wild with A Geometry-Informed Video Generator](/202603/31/2603.25053v2-gaussfusion-improving-3d-reconstruction-in-the-wild-with-a-geometry-informed-video-generator)  
-   标签：评分：7.0/10、query:q8
-   evidence：优化基于优化和前馈方法的3DGS渲染
-2. [DiffSoup: Direct Differentiable Rasterization of Triangle Soup for Extreme Radiance Field Simplification](/202603/31/2603.27151v1-diffsoup-direct-differentiable-rasterization-of-triangle-soup-for-extreme-radiance-field-simplification)  
+1. [SGS-Intrinsic: Semantic-Invariant Gaussian Splatting for Sparse-View Indoor Inverse Rendering](/202604/01/2603.27516v2-sgs-intrinsic-semantic-invariant-gaussian-splatting-for-sparse-view-indoor-inverse-rendering)  
    标签：评分：7.0/10、query:q1
-   evidence：用于极端简化的可微分辐射场表示
-3. [RehearsalNeRF: Decoupling Intrinsic Neural Fields of Dynamic Illuminations for Scene Editing](/202603/31/2603.27948v1-rehearsalnerf-decoupling-intrinsic-neural-fields-of-dynamic-illuminations-for-scene-editing)  
-   标签：评分：7.0/10、query:q6
-   evidence：用于动态光照和场景编辑的神经辐射场
-4. [Physically Inspired Gaussian Splatting for HDR Novel View Synthesis](/202603/31/2603.28020v1-physically-inspired-gaussian-splatting-for-hdr-novel-view-synthesis)  
-   标签：评分：7.0/10、query:profile-1
-   evidence：受物理启发的3D高斯泼溅，用于光照相关的外观建模
-5. [Photon: Speedup Volume Understanding with Efficient Multimodal Large Language Models](/202603/31/2603.25155v1-photon-speedup-volume-understanding-with-efficient-multimodal-large-language-models)  
-   标签：评分：6.0/10、query:q8
-   evidence：通过令牌调度和代理梯度加速 3D 体积理解
-6. [From None to All: Self-Supervised 3D Reconstruction via Novel View Synthesis](/202603/31/2603.27455v1-from-none-to-all-self-supervised-3d-reconstruction-via-novel-view-synthesis)  
+   evidence：用于场景重建的高斯语义场和逆渲染技术
+2. [Efficient Camera Pose Augmentation for View Generalization in Robotic Policy Learning](/202604/01/2603.29192v1-efficient-camera-pose-augmentation-for-view-generalization-in-robotic-policy-learning)  
+   标签：评分：7.0/10、query:q1
+   evidence：用于新视角渲染的 3D 高斯泼溅
+3. [LightHarmony3D: Harmonizing Illumination and Shadows for Object Insertion in 3D Gaussian Splatting](/202604/01/2603.29209v1-lightharmony3d-harmonizing-illumination-and-shadows-for-object-insertion-in-3d-gaussian-splatting)  
+   标签：评分：7.0/10、query:q1
+   evidence：用于场景几何和多视图一致渲染的3D高斯泼溅
+4. [ObjectMorpher: 3D-Aware Image Editing via Deformable 3DGS Models](/202604/01/2603.28152v1-objectmorpher-3d-aware-image-editing-via-deformable-3dgs-models)  
    标签：评分：6.0/10、query:q1
-   evidence：通过3D高斯进行神经渲染
-7. [SGS-Intrinsic: Semantic-Invariant Gaussian Splatting for Sparse-View Indoor Inverse Rendering](/202603/31/2603.27516v1-sgs-intrinsic-semantic-invariant-gaussian-splatting-for-sparse-view-indoor-inverse-rendering)  
-   标签：评分：6.0/10、query:profile-1
-   evidence：用于逆渲染和光照解耦的高斯语义场
-8. [GeoHCC: Local Geometry-Aware Hierarchical Context Compression for 3D Gaussian Splatting](/202603/31/2603.28431v1-geohcc-local-geometry-aware-hierarchical-context-compression-for-3d-gaussian-splatting)  
-   标签：评分：6.0/10、query:q8
-   evidence：通过几何感知压缩加速3D高斯泼溅渲染
+   evidence：用于图像编辑的3D高斯泼溅
+5. [Seen2Scene: Completing Realistic 3D Scenes with Visibility-Guided Flow](/202604/01/2603.28548v1-seen2scene-completing-realistic-3d-scenes-with-visibility-guided-flow)  
+   标签：评分：6.0/10、query:q1
+   evidence：使用稀疏网格编码的TSDF体积进行3D场景补全
+6. [GRVS: a Generalizable and Recurrent Approach to Monocular Dynamic View Synthesis](/202604/01/2603.29734v1-grvs-a-generalizable-and-recurrent-approach-to-monocular-dynamic-view-synthesis)  
+   标签：评分：6.0/10、query:q1
+   evidence：使用循环4D表示的单目动态视角合成通用方法
 
 
 <div class="dpr-home-promo-card">

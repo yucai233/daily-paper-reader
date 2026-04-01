@@ -1,0 +1,299 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-01T19:50:11.061537+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [
+    {
+      "id": "2603.29407v1",
+      "title": "Hybrid Quantum-Classical Spatiotemporal Forecasting for 3D Cloud Fields",
+      "abstract": "Accurate forecasting of three-dimensional (3D) cloud fields is important for atmospheric analysis and short-range numerical weather prediction, yet it remains challenging because cloud evolution involves cross-layer interactions, nonlocal dependencies, and multiscale spatiotemporal dynamics. Existing spatiotemporal prediction models based on convolutions, recurrence, or attention often rely on locality-biased representations and therefore struggle to preserve fine cloud structures in volumetric forecasting tasks. To address this issue, we propose QENO, a hybrid quantum-inspired spatiotemporal forecasting framework for 3D cloud fields. The proposed architecture consists of four components: a classical spatiotemporal encoder for compact latent representation, a topology-aware quantum enhancement block for modeling nonlocal couplings in latent space, a dynamic fusion temporal unit for integrating measurement-derived quantum features with recurrent memory, and a decoder for reconstructing future cloud volumes. Experiments on CMA-MESO 3D cloud fields show that QENO consistently outperforms representative baselines, including ConvLSTM, PredRNN++, Earthformer, TAU, and SimVP variants, in terms of MSE, MAE, RMSE, SSIM, and threshold-based detection metrics. In particular, QENO achieves an MSE of 0.2038, an RMSE of 0.4514, and an SSIM of 0.6291, while also maintaining a compact parameter budget. These results indicate that topology-aware hybrid quantum-classical feature modeling is a promising direction for 3D cloud structure forecasting and atmospheric Earth observation data analysis.",
+      "authors": [
+        "Fu Wang",
+        "Qifeng Lu",
+        "Xinyu Long",
+        "Meng Zhang",
+        "Xiaofei Yang",
+        "Weijia Cao",
+        "Xiaowen Chu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-03-31T08:12:13+00:00",
+      "link": "https://arxiv.org/pdf/2603.29407v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "spatiotemporal forecasting for 3D cloud fields and volumetric forecasting tasks",
+      "llm_evidence_cn": "三维云场时空预测与体积预测任务",
+      "llm_evidence": "三维云场时空预测与体积预测任务",
+      "canonical_evidence": "三维云场时空预测与体积预测任务",
+      "llm_tldr_en": "Proposes a hybrid quantum-classical framework for forecasting 3D cloud fields and preserving fine structures.",
+      "llm_tldr_cn": "提出一种混合量子-经典框架，用于预测三维云场并保留精细的体积结构。",
+      "llm_tldr": "提出一种混合量子-经典框架，用于预测三维云场并保留精细的体积结构。",
+      "llm_tags": [
+        "query:q5"
+      ],
+      "matched_query_tag": "query:q5",
+      "matched_query_text": "deep learning methods for volumetric cloud rendering and simulation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2603.27516v2",
+      "title": "SGS-Intrinsic: Semantic-Invariant Gaussian Splatting for Sparse-View Indoor Inverse Rendering",
+      "abstract": "We present SGS-Intrinsic, an indoor inverse rendering framework that works well for sparse-view images. Unlike existing 3D Gaussian Splatting (3DGS) based methods that focus on object-centric reconstruction and fail to work under sparse view settings, our method allows to achieve high-quality geometry reconstruction and accurate disentanglement of material and illumination. The core idea is to construct a dense and geometry-consistent Gaussian semantic field guided by semantic and geometric priors, providing a reliable foundation for subsequent inverse rendering. Building upon this, we perform material-illumination disentanglement by combining a hybrid illumination model and material prior to effectively capture illumination-material interactions. To mitigate the impact of cast shadows and enhance the robustness of material recovery, we introduce illumination-invariant material constraint together with a deshadowing model. Extensive experiments on benchmark datasets show that our method consistently improves both reconstruction fidelity and inverse rendering quality over existing 3DGS-based inverse rendering approaches. Our code is available at https://github.com/GrumpySloths/SGS_Intrinsic.github.io.",
+      "authors": [
+        "Jiahao Niu",
+        "Rongjia Zheng",
+        "Wenju Xu",
+        "Wei-Shi Zheng",
+        "Qing Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-29T04:45:31+00:00",
+      "link": "https://arxiv.org/pdf/2603.27516v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Gaussian semantic field and inverse rendering for scene reconstruction",
+      "llm_evidence_cn": "用于场景重建的高斯语义场和逆渲染技术",
+      "llm_evidence": "用于场景重建的高斯语义场和逆渲染技术",
+      "canonical_evidence": "用于场景重建的高斯语义场和逆渲染技术",
+      "llm_tldr_en": "Enhances indoor inverse rendering using semantic-invariant Gaussian Splatting for sparse-view reconstruction.",
+      "llm_tldr_cn": "利用语义不变的高斯泼溅技术改进了稀疏视角下的室内逆渲染和场景重建。",
+      "llm_tldr": "利用语义不变的高斯泼溅技术改进了稀疏视角下的室内逆渲染和场景重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.28152v1",
+      "title": "ObjectMorpher: 3D-Aware Image Editing via Deformable 3DGS Models",
+      "abstract": "Achieving precise, object-level control in image editing remains challenging: 2D methods lack 3D awareness and often yield ambiguous or implausible results, while existing 3D-aware approaches rely on heavy optimization or incomplete monocular reconstructions. We present ObjectMorpher, a unified, interactive framework that converts ambiguous 2D edits into geometry-grounded operations. ObjectMorpher lifts target instances with an image-to-3D generator into editable 3D Gaussian Splatting (3DGS), enabling fast, identity-preserving manipulation. Users drag control points; a graph-based non-rigid deformation with as-rigid-as-possible (ARAP) constraints ensures physically sensible shape and pose changes. A composite diffusion module harmonizes lighting, color, and boundaries for seamless reintegration. Across diverse categories, ObjectMorpher delivers fine-grained, photorealistic edits with superior controllability and efficiency, outperforming 2D drag and 3D-aware baselines on KID, LPIPS, SIFID, and user preference.",
+      "authors": [
+        "Yuhuan Xie",
+        "Aoxuan Pan",
+        "Yi-Hua Huang",
+        "Chirui Chang",
+        "Peng Dai",
+        "Xin Yu",
+        "Xiaojuan Qi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-30T08:15:29+00:00",
+      "link": "https://arxiv.org/pdf/2603.28152v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "3D Gaussian Splatting for image editing",
+      "llm_evidence_cn": "用于图像编辑的3D高斯泼溅",
+      "llm_evidence": "用于图像编辑的3D高斯泼溅",
+      "canonical_evidence": "用于图像编辑的3D高斯泼溅",
+      "llm_tldr_en": "Enables interactive 3D-aware image editing by lifting instances into editable Gaussian Splatting.",
+      "llm_tldr_cn": "通过将实例提升为可编辑的高斯泼溅，实现交互式三维感知图像编辑。",
+      "llm_tldr": "通过将实例提升为可编辑的高斯泼溅，实现交互式三维感知图像编辑。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.29192v1",
+      "title": "Efficient Camera Pose Augmentation for View Generalization in Robotic Policy Learning",
+      "abstract": "Prevailing 2D-centric visuomotor policies exhibit a pronounced deficiency in novel view generalization, as their reliance on static observations hinders consistent action mapping across unseen views. In response, we introduce GenSplat, a feed-forward 3D Gaussian Splatting framework that facilitates view-generalized policy learning through novel view rendering. GenSplat employs a permutation-equivariant architecture to reconstruct high-fidelity 3D scenes from sparse, uncalibrated inputs in a single forward pass. To ensure structural integrity, we design a 3D-prior distillation strategy that regularizes the 3DGS optimization, preventing the geometric collapse typical of purely photometric supervision. By rendering diverse synthetic views from these stable 3D representations, we systematically augment the observational manifold during training. This augmentation forces the policy to ground its decisions in underlying 3D structures, thereby ensuring robust execution under severe spatial perturbations where baselines severely degrade.",
+      "authors": [
+        "Sen Wang",
+        "Huaiyi Dong",
+        "Jingyi Tian",
+        "Jiayi Li",
+        "Zhuo Yang",
+        "Tongtong Cao",
+        "Anlin Chen",
+        "Shuang Wu",
+        "Le Wang",
+        "Sanping Zhou"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-03-31T02:56:10+00:00",
+      "link": "https://arxiv.org/pdf/2603.29192v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting for novel view rendering",
+      "llm_evidence_cn": "用于新视角渲染的 3D 高斯泼溅",
+      "llm_evidence": "用于新视角渲染的 3D 高斯泼溅",
+      "canonical_evidence": "用于新视角渲染的 3D 高斯泼溅",
+      "llm_tldr_en": "Uses 3D Gaussian Splatting for high-fidelity novel view rendering in robotic policy learning.",
+      "llm_tldr_cn": "在机器人策略学习中利用 3D 高斯泼溅进行高保真新视角渲染。",
+      "llm_tldr": "在机器人策略学习中利用 3D 高斯泼溅进行高保真新视角渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.28548v1",
+      "title": "Seen2Scene: Completing Realistic 3D Scenes with Visibility-Guided Flow",
+      "abstract": "We present Seen2Scene, the first flow matching-based approach that trains directly on incomplete, real-world 3D scans for scene completion and generation. Unlike prior methods that rely on complete and hence synthetic 3D data, our approach introduces visibility-guided flow matching, which explicitly masks out unknown regions in real scans, enabling effective learning from real-world, partial observations. We represent 3D scenes using truncated signed distance field (TSDF) volumes encoded in sparse grids and employ a sparse transformer to efficiently model complex scene structures while masking unknown regions. We employ 3D layout boxes as an input conditioning signal, and our approach is flexibly adapted to various other inputs such as text or partial scans. By learning directly from real-world, incomplete 3D scans, Seen2Scene enables realistic 3D scene completion for complex, cluttered real environments. Experiments demonstrate that our model produces coherent, complete, and realistic 3D scenes, outperforming baselines in completion accuracy and generation quality.",
+      "authors": [
+        "Quan Meng",
+        "Yujin Chen",
+        "Lei Li",
+        "Matthias Nießner",
+        "Angela Dai"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-30T15:08:38+00:00",
+      "link": "https://arxiv.org/pdf/2603.28548v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "TSDF volumes encoded in sparse grids for 3D scene completion",
+      "llm_evidence_cn": "使用稀疏网格编码的TSDF体积进行3D场景补全",
+      "llm_evidence": "使用稀疏网格编码的TSDF体积进行3D场景补全",
+      "canonical_evidence": "使用稀疏网格编码的TSDF体积进行3D场景补全",
+      "llm_tldr_en": "Uses sparse grid TSDF volumes and transformers for 3D scene completion from partial real-world scans.",
+      "llm_tldr_cn": "利用稀疏网格TSDF体积和Transformer从部分现实扫描中完成3D场景补全。",
+      "llm_tldr": "利用稀疏网格TSDF体积和Transformer从部分现实扫描中完成3D场景补全。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.29209v1",
+      "title": "LightHarmony3D: Harmonizing Illumination and Shadows for Object Insertion in 3D Gaussian Splatting",
+      "abstract": "3D Gaussian Splatting (3DGS) enables high-fidelity reconstruction of scene geometry and appearance. Building on this capability, inserting external mesh objects into reconstructed 3DGS scenes enables interactive editing and content augmentation for immersive applications such as AR/VR, virtual staging, and digital content creation. However, achieving physically consistent lighting and shadows for mesh insertion remains challenging, as it requires accurate scene illumination estimation and multi-view consistent rendering. To address this challenge, we present LightHarmony3D, a novel framework for illumination-consistent mesh insertion in 3DGS scenes. Central to our approach is our proposed generative module that predicts a full 360° HDR environment map at the insertion location via a single forward pass. By leveraging generative priors instead of iterative optimization, our method efficiently captures dominant scene illumination and enables physically grounded shading and shadows for inserted meshes while maintaining multi-view coherence. Furthermore, we introduce the first dedicated benchmark for mesh insertion in 3DGS, providing a standardized evaluation framework for assessing lighting consistency and photorealism. Extensive experiments across multiple real-world reconstruction datasets demonstrate that LightHarmony3D achieves state-of-the-art realism and multi-view consistency.",
+      "authors": [
+        "Tianyu Huang",
+        "Zhenyang Ren",
+        "Zhenchen Wan",
+        "Jiyang Zheng",
+        "Wenjie Wang",
+        "Runnan Chen",
+        "Mingming Gong",
+        "Tongliang Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-31T03:26:30+00:00",
+      "link": "https://arxiv.org/pdf/2603.29209v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting for scene geometry and multi-view consistent rendering",
+      "llm_evidence_cn": "用于场景几何和多视图一致渲染的3D高斯泼溅",
+      "llm_evidence": "用于场景几何和多视图一致渲染的3D高斯泼溅",
+      "canonical_evidence": "用于场景几何和多视图一致渲染的3D高斯泼溅",
+      "llm_tldr_en": "A framework for illumination-consistent object insertion in 3D Gaussian Splatting scenes.",
+      "llm_tldr_cn": "一个在3D高斯泼溅场景中进行光照一致性物体插入的框架。",
+      "llm_tldr": "一个在3D高斯泼溅场景中进行光照一致性物体插入的框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.29734v1",
+      "title": "GRVS: a Generalizable and Recurrent Approach to Monocular Dynamic View Synthesis",
+      "abstract": "Synthesizing novel views from monocular videos of dynamic scenes remains a challenging problem. Scene-specific methods that optimize 4D representations with explicit motion priors often break down in highly dynamic regions where multi-view information is hard to exploit. Diffusion-based approaches that integrate camera control into large pre-trained models can produce visually plausible videos but frequently suffer from geometric inconsistencies across both static and dynamic areas. Both families of methods also require substantial computational resources. Building on the success of generalizable models for static novel view synthesis, we adapt the framework to dynamic inputs and propose a new model with two key components: (1) a recurrent loop that enables unbounded and asynchronous mapping between input and target videos and (2) an efficient use of plane sweeps over dynamic inputs to disentangle camera and scene motion, and achieve fine-grained, six-degrees-of-freedom camera controls. We train and evaluate our model on the UCSD dataset and on Kubric-4D-dyn, a new monocular dynamic dataset featuring longer, higher resolution sequences with more complex scene dynamics than existing alternatives. Our model outperforms four Gaussian Splatting-based scene-specific approaches, as well as two diffusion-based approaches in reconstructing fine-grained geometric details across both static and dynamic regions.",
+      "authors": [
+        "Thomas Tanay",
+        "Mohammed Brahimi",
+        "Michal Nazarczuk",
+        "Qingwen Zhang",
+        "Sibi Catley-Chandar",
+        "Arthur Moreau",
+        "Zhensong Zhang",
+        "Eduardo Pérez-Pellitero"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-31T13:35:14+00:00",
+      "link": "https://arxiv.org/pdf/2603.29734v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "generalizable approach to monocular dynamic view synthesis using recurrent 4D representations",
+      "llm_evidence_cn": "使用循环4D表示的单目动态视角合成通用方法",
+      "llm_evidence": "使用循环4D表示的单目动态视角合成通用方法",
+      "canonical_evidence": "使用循环4D表示的单目动态视角合成通用方法",
+      "llm_tldr_en": "GRVS is a recurrent model for dynamic novel view synthesis that improves geometric consistency in monocular videos.",
+      "llm_tldr_cn": "GRVS是一种用于动态新视角合成的循环模型，提高了单目视频中的几何一致性。",
+      "llm_tldr": "GRVS是一种用于动态新视角合成的循环模型，提高了单目视频中的几何一致性。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
