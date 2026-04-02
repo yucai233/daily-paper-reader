@@ -1,0 +1,297 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-02T20:10:30.318113+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2603.26546v2",
+      "title": "AutoWeather4D: Autonomous Driving Video Weather Conversion via G-Buffer Dual-Pass Editing",
+      "abstract": "Generative video models have significantly advanced the photorealistic synthesis of adverse weather for autonomous driving; however, they consistently demand massive datasets to learn rare weather scenarios. While 3D-aware editing methods alleviate these data constraints by augmenting existing video footage, they are fundamentally bottlenecked by costly per-scene optimization and suffer from inherent geometric and illumination entanglement. In this work, we introduce AutoWeather4D, a feed-forward 3D-aware weather editing framework designed to explicitly decouple geometry and illumination. At the core of our approach is a G-buffer Dual-pass Editing mechanism. The Geometry Pass leverages explicit structural foundations to enable surface-anchored physical interactions, while the Light Pass analytically resolves light transport, accumulating the contributions of local illuminants into the global illumination to enable dynamic 3D local relighting. Extensive experiments demonstrate that AutoWeather4D achieves comparable photorealism and structural consistency to generative baselines while enabling fine-grained parametric physical control, serving as a practical data engine for autonomous driving.",
+      "authors": [
+        "Tianyu Liu",
+        "Weitao Xiong",
+        "Kunming Luo",
+        "Manyuan Zhang",
+        "Peng Li",
+        "Yuan Liu",
+        "Ping Tan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-27T15:56:47+00:00",
+      "link": "https://arxiv.org/pdf/2603.26546v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D-aware weather editing and illumination decoupling for atmospheric effects",
+      "llm_evidence_cn": "针对大气效果的3D感知天气编辑与光照解耦",
+      "llm_evidence": "针对大气效果的3D感知天气编辑与光照解耦",
+      "canonical_evidence": "针对大气效果的3D感知天气编辑与光照解耦",
+      "llm_tldr_en": "A framework for 3D-aware weather editing that decouples geometry and illumination for autonomous driving videos.",
+      "llm_tldr_cn": "一种用于自动驾驶视频的3D感知天气编辑框架，实现了几何与光照的显式解耦。",
+      "llm_tldr": "一种用于自动驾驶视频的3D感知天气编辑框架，实现了几何与光照的显式解耦。",
+      "llm_tags": [
+        "query:q6"
+      ],
+      "matched_query_tag": "query:q6",
+      "matched_query_text": "neural radiance fields for participating media and atmospheric effects",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.27222v1",
+      "title": "HD-VGGT: High-Resolution Visual Geometry Transformer",
+      "abstract": "High-resolution imagery is essential for accurate 3D reconstruction, as many geometric details only emerge at fine spatial scales. Recent feed-forward approaches, such as the Visual Geometry Grounded Transformer (VGGT), have demonstrated the ability to infer scene geometry from large collections of images in a single forward pass. However, scaling these models to high-resolution inputs remains challenging: the number of tokens in transformer architectures grows rapidly with both image resolution and the number of views, leading to prohibitive computational and memory costs. Moreover, we observe that visually ambiguous regions, such as repetitive patterns, weak textures, or specular surfaces, often produce unstable feature tokens that degrade geometric inference, especially at higher resolutions. We introduce HD-VGGT, a dual-branch architecture for efficient and robust high-resolution 3D reconstruction. A low-resolution branch predicts a coarse, globally consistent geometry, while a high-resolution branch refines details via a learned feature upsampling module. To handle unstable tokens, we propose Feature Modulation, which suppresses unreliable features early in the transformer. HD-VGGT leverages high-resolution images and supervision without full-resolution transformer costs, achieving state-of-the-art reconstruction quality.",
+      "authors": [
+        "Tianrun Chen",
+        "Yuanqi Hu",
+        "Yidong Han",
+        "Hanjie Xu",
+        "Deyi Ji",
+        "Qi Zhu",
+        "Chunan Yu",
+        "Xin Zhang",
+        "Cheng Chen",
+        "Chaotao Ding",
+        "Ying Zang",
+        "Xuanfu Li",
+        "Jin Ma",
+        "Lanyun Zhu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-28T10:29:07+00:00",
+      "link": "https://arxiv.org/pdf/2603.27222v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "infer scene geometry from images using Visual Geometry Transformer",
+      "llm_evidence_cn": "使用视觉几何Transformer从图像推断场景几何",
+      "llm_evidence": "使用视觉几何Transformer从图像推断场景几何",
+      "canonical_evidence": "使用视觉几何Transformer从图像推断场景几何",
+      "llm_tldr_en": "Scales Visual Geometry Transformers to high-resolution inputs for more accurate 3D reconstruction.",
+      "llm_tldr_cn": "将视觉几何Transformer扩展到高分辨率输入，以实现更精确的3D重建。",
+      "llm_tldr": "将视觉几何Transformer扩展到高分辨率输入，以实现更精确的3D重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.28431v3",
+      "title": "LG-HCC: Local Geometry-Aware Hierarchical Context Compression for 3D Gaussian Splatting",
+      "abstract": "Although 3D Gaussian Splatting (3DGS) enables high-fidelity real-time rendering, its prohibitive storage overhead severely hinders practical deployment. Recent anchor-based 3DGS compression schemes reduce gaussian redundancy through some advanced context models. However, they overlook explicit geometric dependencies, leading to structural degradation and suboptimal ratedistortion performance. In this paper, we propose a Local Geometry-aware Hierarchical Context Compression framework for 3DGS(LG-HCC) that incorporates inter-anchor geometric correlations into anchor pruning and entropy coding for compact representation. Specifically, we introduce an Neighborhood-Aware Anchor Pruning (NAAP) strategy, which evaluates anchor importance via weighted neighborhood feature aggregation and then merges low-contribution anchors into salient neighbors, yielding a compact yet geometry-consistent anchor set. Moreover, we further develop a hierarchical entropy coding scheme, in which coarse-to-fine priors are exploited through a lightweight Geometry-Guided Convolution(GG-Conv) operator to enable spatially adaptive context modeling and rate-distortion optimization. Extensive experiments show that LG-HCC effectively alleviates structural preservation issues,achieving superior geometric integrity and rendering fidelity while reducing storage by up to 30.85x compared to the Scaffold-GS baseline on the Mip-NeRF360 dataset",
+      "authors": [
+        "Xuan Deng",
+        "Xiandong Meng",
+        "Hengyu Man",
+        "Qiang Zhu",
+        "Tiange Zhang",
+        "Debin Zhao",
+        "Xiaopeng Fan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-03-30T13:39:35+00:00",
+      "link": "https://arxiv.org/pdf/2603.28431v3",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "compression for 3D Gaussian Splatting rendering",
+      "llm_evidence_cn": "3D高斯泼溅渲染的压缩技术",
+      "llm_evidence": "3D高斯泼溅渲染的压缩技术",
+      "canonical_evidence": "3D高斯泼溅渲染的压缩技术",
+      "llm_tldr_en": "Proposes a geometry-aware compression framework for 3D Gaussian Splatting to reduce storage for real-time rendering.",
+      "llm_tldr_cn": "提出一种用于3D高斯泼溅的几何感知压缩框架，以减少实时渲染的存储开销。",
+      "llm_tldr": "提出一种用于3D高斯泼溅的几何感知压缩框架，以减少实时渲染的存储开销。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.00132v1",
+      "title": "Predicting Wave Reflection and Transmission in Heterogeneous Media via Fourier Operator-Based Transformer Modeling",
+      "abstract": "We develop a machine learning (ML) surrogate model to approximate solutions to Maxwell's equations in one dimension, focusing on scenarios involving a material interface that reflects and transmits electro-magnetic waves. Derived from high-fidelity Finite Volume (FV) simulations, our training data includes variations of the initial conditions, as well as variations in one material's speed of light, allowing for the model to learn a range of wave-material interaction behaviors. The ML model autoregressively learns both the physical and frequency embeddings in a vision transformer-based framework. By incorporating Fourier transforms in the latent space, the wave number spectra of the solutions aligns closely with the simulation data. Prediction errors exhibit an approximately linear growth over time with a sharp increase at the material interface. Test results show that the ML solution has adequate relative errors below $10\\%$ in over $75$ time step rollouts, despite the presence of the discontinuity and unknown material properties.",
+      "authors": [
+        "Zhe Bai",
+        "Hans Johansen"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-03-31T18:37:56+00:00",
+      "link": "https://arxiv.org/pdf/2604.00132v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "ML surrogate for wave reflection and transmission in heterogeneous media",
+      "llm_evidence_cn": "异质介质中波反射与透射的机器学习代理模型",
+      "llm_evidence": "异质介质中波反射与透射的机器学习代理模型",
+      "canonical_evidence": "异质介质中波反射与透射的机器学习代理模型",
+      "llm_tldr_en": "Uses Fourier-based Transformers to predict wave interactions in heterogeneous media, relevant to scattering physics.",
+      "llm_tldr_cn": "使用基于傅里叶的Transformer预测异质介质中的波相互作用，与散射物理相关。",
+      "llm_tldr": "使用基于傅里叶的Transformer预测异质介质中的波相互作用，与散射物理相关。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "deep learning for multiple scattering in volumes",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.00928v1",
+      "title": "Autoregressive Appearance Prediction for 3D Gaussian Avatars",
+      "abstract": "A photorealistic and immersive human avatar experience demands capturing fine, person-specific details such as cloth and hair dynamics, subtle facial expressions, and characteristic motion patterns. Achieving this requires large, high-quality datasets, which often introduce ambiguities and spurious correlations when very similar poses correspond to different appearances. Models that fit these details during training can overfit and produce unstable, abrupt appearance changes for novel poses. We propose a 3D Gaussian Splatting avatar model with a spatial MLP backbone that is conditioned on both pose and an appearance latent. The latent is learned during training by an encoder, yielding a compact representation that improves reconstruction quality and helps disambiguate pose-driven renderings. At driving time, our predictor autoregressively infers the latent, producing temporally smooth appearance evolution and improved stability. Overall, our method delivers a robust and practical path to high-fidelity, stable avatar driving.",
+      "authors": [
+        "Michael Steiner",
+        "Zhang Chen",
+        "Alexander Richard",
+        "Vasu Agrawal",
+        "Markus Steinberger",
+        "Michael Zollhöfer"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-04-01T14:07:14+00:00",
+      "link": "https://arxiv.org/pdf/2604.00928v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting avatar model with spatial MLP backbone",
+      "llm_evidence_cn": "带有空间MLP主干的3D高斯泼溅化身模型",
+      "llm_evidence": "带有空间MLP主干的3D高斯泼溅化身模型",
+      "canonical_evidence": "带有空间MLP主干的3D高斯泼溅化身模型",
+      "llm_tldr_en": "Proposes a 3D Gaussian Splatting avatar model using a spatial MLP to improve reconstruction and stability.",
+      "llm_tldr_cn": "提出一种使用空间MLP的3D高斯泼溅化身模型，以提高重建质量和稳定性。",
+      "llm_tldr": "提出一种使用空间MLP的3D高斯泼溅化身模型，以提高重建质量和稳定性。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.00285v1",
+      "title": "Geometry-informed neural atlas for boundary value problems of complex 3D geometries",
+      "abstract": "When three-dimensional bodies contain thin features, non-trivial topology, or scan-derived surfaces, volumetric meshing can become the dominant bottleneck in simulation workflows. We replace this step with a learned geometric representation: overlapping volumetric coordinate charts, each equipped with a neural decoder and Jacobian, trained from point-cloud or level-set data to form a differentiable atlas. Governing equations are pulled back to chart-local reference coordinates via the Piola identity, and local solutions are coupled through multiplicative Schwarz iterations on the overlap graph. Because the atlas is constructed independently of the downstream discretization, one frozen geometric substrate can support fundamentally different solvers (for example, a meshfree physics-informed neural network and a conventional finite-element method) without re-meshing or re-parametrization. Benchmark and verification studies show that the learned atlas preserves expected finite-element convergence behavior and enables both forward and inverse analyses on geometries that would otherwise require solver-specific volumetric meshing.",
+      "authors": [
+        "WaiChing Sun"
+      ],
+      "primary_category": "physics.comp-ph",
+      "categories": [
+        "physics.comp-ph",
+        "math.DG"
+      ],
+      "published": "2026-03-31T22:20:50+00:00",
+      "link": "https://arxiv.org/pdf/2604.00285v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "learned geometric representation with overlapping volumetric coordinate charts",
+      "llm_evidence_cn": "具有重叠体积坐标图的学习几何表示",
+      "llm_evidence": "具有重叠体积坐标图的学习几何表示",
+      "canonical_evidence": "具有重叠体积坐标图的学习几何表示",
+      "llm_tldr_en": "Replaces volumetric meshing with a learned neural atlas for complex 3D geometry simulations.",
+      "llm_tldr_cn": "使用学习到的神经图谱取代复杂3D几何模拟中的体积网格划分。",
+      "llm_tldr": "使用学习到的神经图谱取代复杂3D几何模拟中的体积网格划分。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.01204v1",
+      "title": "Neural Harmonic Textures for High-Quality Primitive Based Neural Reconstruction",
+      "abstract": "Primitive-based methods such as 3D Gaussian Splatting have recently become the state-of-the-art for novel-view synthesis and related reconstruction tasks. Compared to neural fields, these representations are more flexible, adaptive, and scale better to large scenes. However, the limited expressivity of individual primitives makes modeling high-frequency detail challenging. We introduce Neural Harmonic Textures, a neural representation approach that anchors latent feature vectors on a virtual scaffold surrounding each primitive. These features are interpolated within the primitive at ray intersection points. Inspired by Fourier analysis, we apply periodic activations to the interpolated features, turning alpha blending into a weighted sum of harmonic components. The resulting signal is then decoded in a single deferred pass using a small neural network, significantly reducing computational cost. Neural Harmonic Textures yield state-of-the-art results in real-time novel view synthesis while bridging the gap between primitive- and neural-field-based reconstruction. Our method integrates seamlessly into existing primitive-based pipelines such as 3DGUT, Triangle Splatting, and 2DGS. We further demonstrate its generality with applications to 2D image fitting and semantic reconstruction.",
+      "authors": [
+        "Jorge Condor",
+        "Nicolas Moenne-Loccoz",
+        "Merlin Nimier-David",
+        "Piotr Didyk",
+        "Zan Gojcic",
+        "Qi Wu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.GR",
+        "cs.LG"
+      ],
+      "published": "2026-04-01T17:48:22+00:00",
+      "link": "https://arxiv.org/pdf/2604.01204v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural representation for ray intersection and alpha blending",
+      "llm_evidence_cn": "用于射线相交和Alpha混合的神经表示",
+      "llm_evidence": "用于射线相交和Alpha混合的神经表示",
+      "canonical_evidence": "用于射线相交和Alpha混合的神经表示",
+      "llm_tldr_en": "Introduces Neural Harmonic Textures to improve high-frequency detail in primitive-based neural reconstruction.",
+      "llm_tldr_cn": "引入神经调和纹理，以改进基于基元的神经重建中的高频细节。",
+      "llm_tldr": "引入神经调和纹理，以改进基于基元的神经重建中的高频细节。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

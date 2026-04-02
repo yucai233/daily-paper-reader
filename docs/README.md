@@ -6,43 +6,44 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-01
-- 运行时间：2026-04-01 19:51:27 UTC
+- 最新运行日期：2026-04-02
+- 运行时间：2026-04-02 20:11:25 UTC
 - 运行状态：成功
 - 本次总论文数：7
-- 精读区：1
-- 速读区：6
+- 精读区：0
+- 速读区：7
 
 ### 今日简报（AI）
-今日精选 7 篇前沿论文，重点聚焦量子-经典混合模型在 3D 云场时空预测中的突破性应用。
-值得关注量子计算对复杂气象建模的赋能，以及 3D Gaussian Splatting 在室内反演与光影和谐插入方面的最新进展。
-建议优先研读量子预测算法，并关注 3DGS 技术在机器人视觉增强与 AR 场景构建中的落地潜力。
-- 详情：[/202604/01/README](/202604/01/README)
+今日聚焦 3D 高斯泼溅（3DGS）的高效压缩与自动驾驶场景下的全天候视频转换技术。
+重点推荐基于 G-Buffer 的双路径天气编辑框架，以及提升 3D 数字人表现力的自回归外观预测模型。
+建议关注 3DGS 在复杂场景建模与高效存储方面的最新突破。
+- 详情：[/202604/02/README](/202604/02/README)
 
 ### 精读区论文标签
-1. [Hybrid Quantum-Classical Spatiotemporal Forecasting for 3D Cloud Fields](/202604/01/2603.29407v1-hybrid-quantum-classical-spatiotemporal-forecasting-for-3d-cloud-fields)  
-   标签：评分：9.0/10、query:q5
-   evidence：三维云场时空预测与体积预测任务
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [SGS-Intrinsic: Semantic-Invariant Gaussian Splatting for Sparse-View Indoor Inverse Rendering](/202604/01/2603.27516v2-sgs-intrinsic-semantic-invariant-gaussian-splatting-for-sparse-view-indoor-inverse-rendering)  
+1. [AutoWeather4D: Autonomous Driving Video Weather Conversion via G-Buffer Dual-Pass Editing](/202604/02/2603.26546v2-autoweather4d-autonomous-driving-video-weather-conversion-via-g-buffer-dual-pass-editing)  
+   标签：评分：7.0/10、query:q6
+   evidence：针对大气效果的3D感知天气编辑与光照解耦
+2. [LG-HCC: Local Geometry-Aware Hierarchical Context Compression for 3D Gaussian Splatting](/202604/02/2603.28431v3-lg-hcc-local-geometry-aware-hierarchical-context-compression-for-3d-gaussian-splatting)  
    标签：评分：7.0/10、query:q1
-   evidence：用于场景重建的高斯语义场和逆渲染技术
-2. [Efficient Camera Pose Augmentation for View Generalization in Robotic Policy Learning](/202604/01/2603.29192v1-efficient-camera-pose-augmentation-for-view-generalization-in-robotic-policy-learning)  
+   evidence：3D高斯泼溅渲染的压缩技术
+3. [Autoregressive Appearance Prediction for 3D Gaussian Avatars](/202604/02/2604.00928v1-autoregressive-appearance-prediction-for-3d-gaussian-avatars)  
    标签：评分：7.0/10、query:q1
-   evidence：用于新视角渲染的 3D 高斯泼溅
-3. [LightHarmony3D: Harmonizing Illumination and Shadows for Object Insertion in 3D Gaussian Splatting](/202604/01/2603.29209v1-lightharmony3d-harmonizing-illumination-and-shadows-for-object-insertion-in-3d-gaussian-splatting)  
+   evidence：带有空间MLP主干的3D高斯泼溅化身模型
+4. [Neural Harmonic Textures for High-Quality Primitive Based Neural Reconstruction](/202604/02/2604.01204v1-neural-harmonic-textures-for-high-quality-primitive-based-neural-reconstruction)  
    标签：评分：7.0/10、query:q1
-   evidence：用于场景几何和多视图一致渲染的3D高斯泼溅
-4. [ObjectMorpher: 3D-Aware Image Editing via Deformable 3DGS Models](/202604/01/2603.28152v1-objectmorpher-3d-aware-image-editing-via-deformable-3dgs-models)  
+   evidence：用于射线相交和Alpha混合的神经表示
+5. [HD-VGGT: High-Resolution Visual Geometry Transformer](/202604/02/2603.27222v1-hd-vggt-high-resolution-visual-geometry-transformer)  
    标签：评分：6.0/10、query:q1
-   evidence：用于图像编辑的3D高斯泼溅
-5. [Seen2Scene: Completing Realistic 3D Scenes with Visibility-Guided Flow](/202604/01/2603.28548v1-seen2scene-completing-realistic-3d-scenes-with-visibility-guided-flow)  
+   evidence：使用视觉几何Transformer从图像推断场景几何
+6. [Predicting Wave Reflection and Transmission in Heterogeneous Media via Fourier Operator-Based Transformer Modeling](/202604/02/2604.00132v1-predicting-wave-reflection-and-transmission-in-heterogeneous-media-via-fourier-operator-based-transformer-modeling)  
+   标签：评分：6.0/10、query:q4
+   evidence：异质介质中波反射与透射的机器学习代理模型
+7. [Geometry-informed neural atlas for boundary value problems of complex 3D geometries](/202604/02/2604.00285v1-geometry-informed-neural-atlas-for-boundary-value-problems-of-complex-3d-geometries)  
    标签：评分：6.0/10、query:q1
-   evidence：使用稀疏网格编码的TSDF体积进行3D场景补全
-6. [GRVS: a Generalizable and Recurrent Approach to Monocular Dynamic View Synthesis](/202604/01/2603.29734v1-grvs-a-generalizable-and-recurrent-approach-to-monocular-dynamic-view-synthesis)  
-   标签：评分：6.0/10、query:q1
-   evidence：使用循环4D表示的单目动态视角合成通用方法
+   evidence：具有重叠体积坐标图的学习几何表示
 
 
 <div class="dpr-home-promo-card">
