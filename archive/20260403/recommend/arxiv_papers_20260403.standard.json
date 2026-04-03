@@ -1,0 +1,411 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-03T19:52:41.253824+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 9,
+    "quick_skim_target": 11,
+    "quick_selected": 9
+  },
+  "deep_dive": [
+    {
+      "id": "2604.02120v1",
+      "title": "GEMM-GS: Accelerating 3D Gaussian Splatting on Tensor Cores with GEMM-Compatible Blending",
+      "abstract": "Neural Radiance Fields (NeRF) enables 3D scene reconstruction from several 2D images but incurs high rendering latency via its point-sampling design. 3D Gaussian Splatting (3DGS) improves on NeRF with explicit scene representation and an optimized pipeline yet still fails to meet practical real-time demands. Existing acceleration works overlook the evolving Tensor Cores of modern GPUs because 3DGS pipeline lacks General Matrix Multiplication (GEMM) operations. This paper proposes GEMM-GS, an acceleration approach utilizing tensor cores on GPUs via GEMM-friendly blending transformation. It equivalently reformulates the 3DGS blending process into a GEMM-compatible form to utilize Tensor Cores. A high-performance CUDA kernel is designed, integrating a three-stage double-buffered pipeline that overlaps computation and memory access. Extensive experiments show that GEMM-GS achieves $1.42\\times$ speedup over vanilla 3DGS and provides an additional $1.47\\times$ speedup on average when combining with existing acceleration approaches. Code is released at https://github.com/shieldforever/GEMM-GS.",
+      "authors": [
+        "Haomin Li",
+        "Bowen Zhu",
+        "Fangxin Liu",
+        "Zongwu Wang",
+        "Xinran Liang",
+        "Li Jiang",
+        "Haibing Guan"
+      ],
+      "primary_category": "cs.AR",
+      "categories": [
+        "cs.AR",
+        "cs.GR"
+      ],
+      "published": "2026-04-02T14:56:06+00:00",
+      "link": "https://arxiv.org/pdf/2604.02120v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Accelerating 3D Gaussian Splatting on Tensor Cores",
+      "llm_evidence_cn": "在张量核心上加速3D高斯泼溅",
+      "llm_evidence": "在张量核心上加速3D高斯泼溅",
+      "canonical_evidence": "在张量核心上加速3D高斯泼溅",
+      "llm_tldr_en": "Accelerates 3D Gaussian Splatting by reformulating blending into GEMM-compatible operations for Tensor Cores.",
+      "llm_tldr_cn": "通过将混合过程重构为适用于张量核心的GEMM兼容操作来加速3D高斯泼溅渲染。",
+      "llm_tldr": "通过将混合过程重构为适用于张量核心的GEMM兼容操作来加速3D高斯泼溅渲染。",
+      "llm_tags": [
+        "query:q8"
+      ],
+      "matched_query_tag": "query:q8",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2603.27948v2",
+      "title": "RehearsalNeRF: Decoupling Intrinsic Neural Fields of Dynamic Illuminations for Scene Editing",
+      "abstract": "Although there has been significant progress in neural radiance fields, an issue on dynamic illumination changes still remains unsolved. Different from relevant works that parameterize time-variant/-invariant components in scenes, subjects' radiance is highly entangled with their own emitted radiance and lighting colors in spatio-temporal domain. In this paper, we present a new effective method to learn disentangled neural fields under the severe illumination changes, named RehearsalNeRF. Our key idea is to leverage scenes captured under stable lighting like rehearsal stages, easily taken before dynamic illumination occurs, to enforce geometric consistency between the different lighting conditions. In particular, RehearsalNeRF employs a learnable vector for lighting effects which represents illumination colors in a temporal dimension and is used to disentangle projected light colors from scene radiance. Furthermore, our RehearsalNeRF is also able to reconstruct the neural fields of dynamic objects by simply adopting off-the-shelf interactive masks. To decouple the dynamic objects, we propose a new regularization leveraging optical flow, which provides coarse supervision for the color disentanglement. We demonstrate the effectiveness of RehearsalNeRF by showing robust performances on novel view synthesis and scene editing under dynamic illumination conditions. Our source code and video datasets will be publicly available.",
+      "authors": [
+        "Changyeon Won",
+        "Hyunjun Jung",
+        "Jungu Cho",
+        "Seonmi Park",
+        "Chi-Hoon Lee",
+        "Hae-Gon Jeon"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-30T01:49:36+00:00",
+      "link": "https://arxiv.org/pdf/2603.27948v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "disentangled neural fields for dynamic illumination and scene editing",
+      "llm_evidence_cn": "用于动态照明和场景编辑的解耦神经场",
+      "llm_evidence": "用于动态照明和场景编辑的解耦神经场",
+      "canonical_evidence": "用于动态照明和场景编辑的解耦神经场",
+      "llm_tldr_en": "Decouples intrinsic neural fields to handle dynamic illumination changes in neural radiance fields.",
+      "llm_tldr_cn": "解耦内在神经场，以处理神经辐射场中的动态照明变化。",
+      "llm_tldr": "解耦内在神经场，以处理神经辐射场中的动态照明变化。",
+      "llm_tags": [
+        "query:q6"
+      ],
+      "matched_query_tag": "query:q6",
+      "matched_query_text": "neural radiance fields for participating media and atmospheric effects",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.26546v3",
+      "title": "AutoWeather4D: Autonomous Driving Video Weather Conversion via G-Buffer Dual-Pass Editing",
+      "abstract": "Generative video models have significantly advanced the photorealistic synthesis of adverse weather for autonomous driving; however, they consistently demand massive datasets to learn rare weather scenarios. While 3D-aware editing methods alleviate these data constraints by augmenting existing video footage, they are fundamentally bottlenecked by costly per-scene optimization and suffer from inherent geometric and illumination entanglement. In this work, we introduce AutoWeather4D, a feed-forward 3D-aware weather editing framework designed to explicitly decouple geometry and illumination. At the core of our approach is a G-buffer Dual-pass Editing mechanism. The Geometry Pass leverages explicit structural foundations to enable surface-anchored physical interactions, while the Light Pass analytically resolves light transport, accumulating the contributions of local illuminants into the global illumination to enable dynamic 3D local relighting. Extensive experiments demonstrate that AutoWeather4D achieves comparable photorealism and structural consistency to generative baselines while enabling fine-grained parametric physical control, serving as a practical data engine for autonomous driving.",
+      "authors": [
+        "Tianyu Liu",
+        "Weitao Xiong",
+        "Kunming Luo",
+        "Manyuan Zhang",
+        "Peng Li",
+        "Yuan Liu",
+        "Ping Tan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-27T15:56:47+00:00",
+      "link": "https://arxiv.org/pdf/2603.26546v3",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "3D-aware weather editing and decoupling geometry from illumination for atmospheric effects",
+      "llm_evidence_cn": "3D感知天气编辑以及几何与光照解耦以实现大气效果",
+      "llm_evidence": "3D感知天气编辑以及几何与光照解耦以实现大气效果",
+      "canonical_evidence": "3D感知天气编辑以及几何与光照解耦以实现大气效果",
+      "llm_tldr_en": "A feed-forward framework for 3D-aware weather conversion in autonomous driving videos.",
+      "llm_tldr_cn": "一种用于自动驾驶视频中3D感知天气转换的前馈框架。",
+      "llm_tldr": "一种用于自动驾驶视频中3D感知天气转换的前馈框架。",
+      "llm_tags": [
+        "query:q6"
+      ],
+      "matched_query_tag": "query:q6",
+      "matched_query_text": "neural radiance fields for participating media and atmospheric effects",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.28431v2",
+      "title": "LG-HCC: Local Geometry-Aware Hierarchical Context Compression for 3D Gaussian Splatting",
+      "abstract": "Although 3D Gaussian Splatting (3DGS) enables high-fidelity real-time rendering, its prohibitive storage overhead severely hinders practical deployment. Recent anchor-based 3DGS compression schemes reduce gaussina redundancy through ome advanced context models. However, overlook explicit geometric dependencies, leading to structural degradation and suboptimal rate-distortion performance. In this paper, we propose LG-HCC, a geometry-aware 3DGS compression framework that incorporates inter-anchor geometric correlations into anchor pruning and entropy coding for compact representation. Specifically, we introduce an Neighborhood-Aware Anchor Pruning (NAAP) strategy, which evaluates anchor importance via weighted neighborhood feature aggregation and merges redundant anchors into salient neighbors, yielding a compact yet geometry-consistent anchor set. Building upon this optimized structure, we further develop a hierarchical entropy coding scheme, in which coarse-to-fine priors are exploited through a lightweight Geometry-Guided Convolution (GG-Conv) operator to enable spatially adaptive context modeling and rate-distortion optimization. Extensive experiments demonstrate that LG-HCC effectively resolves the structure preservation bottleneck, maintaining superior geometric integrity and rendering fidelity over state-of-the-art anchor-based compression approaches.",
+      "authors": [
+        "Xuan Deng",
+        "Xiandong Meng",
+        "Hengyu Man",
+        "Qiang Zhu",
+        "Tiange Zhang",
+        "Debin Zhao",
+        "Xiaopeng Fan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-03-30T13:39:35+00:00",
+      "link": "https://arxiv.org/pdf/2603.28431v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "accelerating and compressing 3D Gaussian Splatting for efficient rendering",
+      "llm_evidence_cn": "加速并压缩3D高斯泼溅以实现高效渲染",
+      "llm_evidence": "加速并压缩3D高斯泼溅以实现高效渲染",
+      "canonical_evidence": "加速并压缩3D高斯泼溅以实现高效渲染",
+      "llm_tldr_en": "Proposes a geometry-aware compression framework to reduce storage and speed up 3DGS deployment.",
+      "llm_tldr_cn": "提出几何感知压缩框架，显著降低3D高斯泼溅的存储开销并加速部署。",
+      "llm_tldr": "提出几何感知压缩框架，显著降低3D高斯泼溅的存储开销并加速部署。",
+      "llm_tags": [
+        "query:q8"
+      ],
+      "matched_query_tag": "query:q8",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.00494v1",
+      "title": "ARGS: Auto-Regressive Gaussian Splatting via Parallel Progressive Next-Scale Prediction",
+      "abstract": "Auto-regressive frameworks for next-scale prediction of 2D images have demonstrated strong potential for producing diverse and sophisticated content by progressively refining a coarse input. However, extending this paradigm to 3D object generation remains largely unexplored. In this paper, we introduce auto-regressive Gaussian splatting (ARGS), a framework for making next-scale predictions in parallel for generation according to levels of detail. We propose a Gaussian simplification strategy and reverse the simplification to guide next-scale generation. Benefiting from the use of hierarchical trees, the generation process requires only \\(\\mathcal{O}(\\log n)\\) steps, where \\(n\\) is the number of points. Furthermore, we propose a tree-based transformer to predict the tree structure auto-regressively, allowing leaf nodes to attend to their internal ancestors to enhance structural consistency. Extensive experiments demonstrate that our approach effectively generates multi-scale Gaussian representations with controllable levels of detail, visual fidelity, and a manageable time consumption budget.",
+      "authors": [
+        "Quanyuan Ruan",
+        "Kewei Shi",
+        "Jiabao Lei",
+        "Xifeng Gao",
+        "Xiaoguang Han"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-01T05:21:59+00:00",
+      "link": "https://arxiv.org/pdf/2604.00494v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Auto-regressive Gaussian Splatting for 3D object generation",
+      "llm_evidence_cn": "用于3D物体生成的自回归高斯泼溅技术",
+      "llm_evidence": "用于3D物体生成的自回归高斯泼溅技术",
+      "canonical_evidence": "用于3D物体生成的自回归高斯泼溅技术",
+      "llm_tldr_en": "Introduces ARGS, an auto-regressive framework for progressive 3D object generation using Gaussian Splatting.",
+      "llm_tldr_cn": "引入ARGS框架，利用高斯泼溅技术进行渐进式3D物体生成。",
+      "llm_tldr": "引入ARGS框架，利用高斯泼溅技术进行渐进式3D物体生成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.01678v1",
+      "title": "Director: Instance-aware Gaussian Splatting for Dynamic Scene Modeling and Understanding",
+      "abstract": "Volumetric video seeks to model dynamic scenes as temporally coherent 4D representations. While recent Gaussian-based approaches achieve impressive rendering fidelity, they primarily emphasize appearance but are largely agnostic to instance-level structure, limiting stable tracking and semantic reasoning in highly dynamic scenarios. In this paper, we present Director, a unified spatio-temporal Gaussian representation that jointly models human performance, high-fidelity rendering, and instance-level semantics. Our key insight is that embedding instance-consistent semantics naturally complements 4D modeling, enabling more accurate scene decomposition while supporting robust dynamic scene understanding. To this end, we leverage temporally aligned instance masks and sentence embeddings derived from Multimodal Large Language Models to supervise the learnable semantic features of each Gaussian via two MLP decoders, enabling language-aligned 4D representations and enforcing identity consistency over time. To enhance temporal stability, we bridge 2D optical flow with 4D Gaussians and finetune their motions, yielding reliable initialization and reducing drift. For the training, we further introduce a geometry-aware SDF constraints, along with regularization terms that enforces surface continuity, enhancing temporal coherence in dynamic foreground modeling. Experiments demonstrate that Director achieves temporally coherent 4D reconstructions while simultaneously enabling instance segmentation and open-vocabulary querying.",
+      "authors": [
+        "Yuheng Jiang",
+        "Yiwen Cai",
+        "Zihao Wang",
+        "Yize Wu",
+        "Sicheng Li",
+        "Zhuo Su",
+        "Shaohui Jiao",
+        "Lan Xu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-02T06:29:53+00:00",
+      "link": "https://arxiv.org/pdf/2604.01678v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Volumetric video and instance-aware Gaussian Splatting",
+      "llm_evidence_cn": "体积视频与实例感知的高斯泼溅技术",
+      "llm_evidence": "体积视频与实例感知的高斯泼溅技术",
+      "canonical_evidence": "体积视频与实例感知的高斯泼溅技术",
+      "llm_tldr_en": "Presents Director, a unified spatio-temporal Gaussian representation for high-fidelity volumetric video rendering.",
+      "llm_tldr_cn": "提出Director，一种用于高保真体积视频渲染的统一时空高斯表示法。",
+      "llm_tldr": "提出Director，一种用于高保真体积视频渲染的统一时空高斯表示法。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.01388v1",
+      "title": "LESV: Language Embedded Sparse Voxel Fusion for Open-Vocabulary 3D Scene Understanding",
+      "abstract": "Recent advancements in open-vocabulary 3D scene understanding heavily rely on 3D Gaussian Splatting (3DGS) to register vision-language features into 3D space. However, we identify two critical limitations in these approaches: the spatial ambiguity arising from unstructured, overlapping Gaussians which necessitates probabilistic feature registration, and the multi-level semantic ambiguity caused by pooling features over object-level masks, which dilutes fine-grained details. To address these challenges, we present a novel framework that leverages Sparse Voxel Rasterization (SVRaster) as a structured, disjoint geometry representation. By regularizing SVRaster with monocular depth and normal priors, we establish a stable geometric foundation. This enables a deterministic, confidence-aware feature registration process and suppresses the semantic bleeding artifact common in 3DGS. Furthermore, we resolve multi-level ambiguity by exploiting the emerging dense alignment properties of foundation model AM-RADIO, avoiding the computational overhead of hierarchical training methods. Our approach achieves state-of-the-art performance on Open Vocabulary 3D Object Retrieval and Point Cloud Understanding benchmarks, particularly excelling on fine-grained queries where registration methods typically fail.",
+      "authors": [
+        "Fusang Wang",
+        "Nathan Piasco",
+        "Moussab Bennehar",
+        "Luis Roldão",
+        "Dzmitry Tsishkou",
+        "Fabien Moutarde"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-01T20:48:06+00:00",
+      "link": "https://arxiv.org/pdf/2604.01388v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "sparse voxel rasterization for 3D scene representation",
+      "llm_evidence_cn": "用于3D场景表示的稀疏体素光栅化",
+      "llm_evidence": "用于3D场景表示的稀疏体素光栅化",
+      "canonical_evidence": "用于3D场景表示的稀疏体素光栅化",
+      "llm_tldr_en": "Uses sparse voxel fusion to improve spatial and semantic clarity in open-vocabulary 3D scene understanding.",
+      "llm_tldr_cn": "采用稀疏体素融合技术提升开放词汇3D场景理解中的空间与语义清晰度。",
+      "llm_tldr": "采用稀疏体素融合技术提升开放词汇3D场景理解中的空间与语义清晰度。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.01884v1",
+      "title": "GS^2: Graph-based Spatial Distribution Optimization for Compact 3D Gaussian Splatting",
+      "abstract": "3D Gaussian Splatting (3DGS) has demonstrated breakthrough performance in novel view synthesis and real-time rendering. Nevertheless, its practicality is constrained by the high memory cost due to a huge number of Gaussian points. Many pruning-based 3DGS variants have been proposed for memory saving, but often compromise spatial consistency and may lead to rendering artifacts. To address this issue, we propose graph-based spatial distribution optimization for compact 3D Gaussian Splatting (GS\\textasciicircum2), which enhances reconstruction quality by optimizing the spatial distribution of Gaussian points. Specifically, we introduce an evidence lower bound (ELBO)-based adaptive densification strategy that automatically controls the densification process. In addition, an opacity-aware progressive pruning strategy is proposed to further reduce memory consumption by dynamically removing low-opacity Gaussian points. Furthermore, we propose a graph-based feature encoding module to adjust the spatial distribution via feature-guided point shifting. Extensive experiments validate that GS\\textasciicircum2 achieves a compact Gaussian representation while delivering superior rendering quality. Compared with 3DGS, it achieves higher PSNR with only about 12.5\\% Gaussian points. Furthermore, it outperforms all compared baselines in both rendering quality and memory efficiency.",
+      "authors": [
+        "Xianben Yang",
+        "Tao Wang",
+        "Yuxuan Li",
+        "Yi Jin",
+        "Haibin Ling"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-02T10:41:51+00:00",
+      "link": "https://arxiv.org/pdf/2604.01884v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "optimizes spatial distribution of Gaussian points for compact and efficient rendering",
+      "llm_evidence_cn": "优化高斯点的空间分布以实现紧凑且高效的渲染",
+      "llm_evidence": "优化高斯点的空间分布以实现紧凑且高效的渲染",
+      "canonical_evidence": "优化高斯点的空间分布以实现紧凑且高效的渲染",
+      "llm_tldr_en": "GS^2 optimizes Gaussian point distribution to achieve compact 3DGS with high rendering quality.",
+      "llm_tldr_cn": "GS^2通过优化高斯点分布，在保持高渲染质量的同时实现了紧凑的3DGS表示。",
+      "llm_tldr": "GS^2通过优化高斯点分布，在保持高渲染质量的同时实现了紧凑的3DGS表示。",
+      "llm_tags": [
+        "query:q8"
+      ],
+      "matched_query_tag": "query:q8",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.01720v1",
+      "title": "Hi-LOAM: Hierarchical Implicit Neural Fields for LiDAR Odometry and Mapping",
+      "abstract": "LiDAR Odometry and Mapping (LOAM) is a pivotal technique for embodied-AI applications such as autonomous driving and robot navigation. Most existing LOAM frameworks are either contingent on the supervision signal, or lack of the reconstruction fidelity, which are deficient in depicting details of large-scale complex scenes. To overcome these limitations, we propose a multi-scale implicit neural localization and mapping framework using LiDAR sensor, called Hi-LOAM. Hi-LOAM receives LiDAR point cloud as the input data modality, learns and stores hierarchical latent features in multiple levels of hash tables based on an octree structure, then these multi-scale latent features are decoded into signed distance value through shallow Multilayer Perceptrons (MLPs) in the mapping procedure. For pose estimation procedure, we rely on a correspondence-free, scan-to-implicit matching paradigm to estimate optimal pose and register current scan into the submap. The entire training process is conducted in a self-supervised manner, which waives the model pre-training and manifests its generalizability when applied to diverse environments. Extensive experiments on multiple real-world and synthetic datasets demonstrate the superior performance, in terms of the effectiveness and generalization capabilities, of our Hi-LOAM compared to existing state-of-the-art methods.",
+      "authors": [
+        "Zhiliu Yang",
+        "Jianyuan Zhang",
+        "Lianhui Zhao",
+        "Jinyu Dai",
+        "Zhu Yang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-04-02T07:36:27+00:00",
+      "link": "https://arxiv.org/pdf/2604.01720v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "hierarchical implicit neural fields for large-scale scene reconstruction",
+      "llm_evidence_cn": "用于大规模场景重建的分层隐式神经场",
+      "llm_evidence": "用于大规模场景重建的分层隐式神经场",
+      "canonical_evidence": "用于大规模场景重建的分层隐式神经场",
+      "llm_tldr_en": "Uses hierarchical implicit neural fields and hash tables for high-fidelity LiDAR mapping.",
+      "llm_tldr_cn": "采用分层隐式神经场和哈希表实现高保真雷达建图与定位。",
+      "llm_tldr": "采用分层隐式神经场和哈希表实现高保真雷达建图与定位。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.01994v1",
+      "title": "Resonance4D: Frequency-Domain Motion Supervision for Preset-Free Physical Parameter Learning in 4D Dynamic Physical Scene Simulation",
+      "abstract": "Physics-driven 4D dynamic simulation from static 3D scenes remains constrained by an overlooked contradiction: reliable motion supervision often relies on online video diffusion or optical-flow pipelines whose computational cost exceeds that of the simulator itself. Existing methods further simplify inverse physical modeling by optimizing only partial material parameters, limiting realism in scenes with complex materials and dynamics. We present Resonance4D, a physics-driven 4D dynamic simulation framework that couples 3D Gaussian Splatting with the Material Point Method through lightweight yet physically expressive supervision. Our key insight is that dynamic consistency can be enforced without dense temporal generation by jointly constraining motion in complementary domains. To this end, we introduce Dual-domain Motion Supervision (DMS), which combines spatial structural consistency for local deformation with frequency-domain spectral consistency for oscillatory and global dynamic patterns, substantially reducing training cost and memory overhead while preserving physically meaningful motion cues. To enable stable full-parameter physical recovery, we further combine zero-shot text-prompted segmentation with simulation-guided initialization to automatically decompose Gaussians into object-part-level regions and support joint optimization of full material parameters. Experiments on both synthetic and real scenes show that Resonance4D achieves strong physical fidelity and motion consistency while reducing peak GPU memory from over 35\\,GB to around 20\\,GB, enabling high-fidelity physics-driven 4D simulation on a single consumer-grade GPU.",
+      "authors": [
+        "Changshe Zhang",
+        "Jie Feng",
+        "Siyu Chen",
+        "Guanbin Li",
+        "Ronghua Shang",
+        "Junpeng Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-02T13:00:22+00:00",
+      "link": "https://arxiv.org/pdf/2604.01994v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "physics-driven 4D dynamic simulation coupling 3D Gaussian Splatting with Material Point Method",
+      "llm_evidence_cn": "物理驱动的4D动态模拟，将3D高斯泼溅与物质点法结合",
+      "llm_evidence": "物理驱动的4D动态模拟，将3D高斯泼溅与物质点法结合",
+      "canonical_evidence": "物理驱动的4D动态模拟，将3D高斯泼溅与物质点法结合",
+      "llm_tldr_en": "Couples 3D Gaussian Splatting with physics simulation for realistic 4D dynamic scene reconstruction.",
+      "llm_tldr_cn": "将3D高斯泼溅与物理模拟结合，实现逼真的4D动态场景重建。",
+      "llm_tldr": "将3D高斯泼溅与物理模拟结合，实现逼真的4D动态场景重建。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; neural radiance fields for participating media and atmospheric effects; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
