@@ -1,0 +1,364 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-06T20:31:22.409298+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [
+    {
+      "id": "2604.02851v1",
+      "title": "Streaming Real-Time Rendered Scenes as 3D Gaussians",
+      "abstract": "Cloud rendering is widely used in gaming and XR to overcome limited client-side GPU resources and to support heterogeneous devices. Existing systems typically deliver the rendered scene as a 2D video stream, which tightly couples the transmitted content to the server-rendered viewpoint and limits latency compensation to image-space reprojection or warping. In this paper, we investigate an alternative approach based on streaming a live 3D Gaussian Splatting (3DGS) scene representation instead of only rendered video. We present a Unity-based prototype in which a server constructs and continuously optimizes a 3DGS model from real-time rendered reference views, while streaming the evolving representation to remote clients using full model snapshots and incremental updates supporting relighting and rigid object dynamics. The clients reconstruct the streamed Gaussian model locally and render their current viewpoint from the received representation. This approach aims to improve viewpoint flexibility for latency compensation and to better amortize server-side scene modeling across multiple users than per-user rendering and video streaming. We describe the system design, evaluate it, and compare it with conventional image warping.",
+      "authors": [
+        "Matti Siekkinen",
+        "Teemu Kämäräinen"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.GR",
+        "cs.MM"
+      ],
+      "published": "2026-04-03T08:11:27+00:00",
+      "link": "https://arxiv.org/pdf/2604.02851v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "cloud rendering using 3D Gaussian Splatting for real-time scene streaming",
+      "llm_evidence_cn": "利用3D高斯泼溅进行实时场景流式传输的云渲染",
+      "llm_evidence": "利用3D高斯泼溅进行实时场景流式传输的云渲染",
+      "canonical_evidence": "利用3D高斯泼溅进行实时场景流式传输的云渲染",
+      "llm_tldr_en": "Explores streaming 3D Gaussian Splatting representations for cloud rendering to improve latency compensation.",
+      "llm_tldr_cn": "探索流式传输3D高斯泼溅表示以优化云渲染中的延迟补偿。",
+      "llm_tldr": "探索流式传输3D高斯泼溅表示以优化云渲染中的延迟补偿。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; neural radiance fields for participating media and atmospheric effects; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.02836v1",
+      "title": "Factorized Multi-Resolution HashGrid for Efficient Neural Radiance Fields: Execution on Edge-Devices",
+      "abstract": "We introduce Fact-Hash, a novel parameter-encoding method for training on-device neural radiance fields. Neural Radiance Fields (NeRF) have proven pivotal in 3D representations, but their applications are limited due to large computational resources. On-device training can open large application fields, providing strength in communication limitations, privacy concerns, and fast adaptation to a frequently changing scene. However, challenges such as limited resources (GPU memory, storage, and power) impede their deployment. To handle this, we introduce Fact-Hash, a novel parameter-encoding merging Tensor Factorization and Hash-encoding techniques. This integration offers two benefits: the use of rich high-resolution features and the few-shot robustness. In Fact-Hash, we project 3D coordinates into multiple lower-dimensional forms (2D or 1D) before applying the hash function and then aggregate them into a single feature. Comparative evaluations against state-of-the-art methods demonstrate Fact-Hash's superior memory efficiency, preserving quality and rendering speed. Fact-Hash saves memory usage by over one-third while maintaining the PSNR values compared to previous encoding methods. The on-device experiment validates the superiority of Fact-Hash compared to alternative positional encoding methods in computational efficiency and energy consumption. These findings highlight Fact-Hash as a promising solution to improve feature grid representation, address memory constraints, and improve quality in various applications. Project page: https://facthash.github.io/",
+      "authors": [
+        "Kim Jun-Seong",
+        "Mingyu Kim",
+        "GeonU Kim",
+        "Tae-Hyun Oh",
+        "Jin-Hwa Kim"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-03T07:56:31+00:00",
+      "link": "https://arxiv.org/pdf/2604.02836v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "efficient neural radiance fields and parameter-encoding for 3D representations",
+      "llm_evidence_cn": "高效神经辐射场与3D表示的参数编码",
+      "llm_evidence": "高效神经辐射场与3D表示的参数编码",
+      "canonical_evidence": "高效神经辐射场与3D表示的参数编码",
+      "llm_tldr_en": "Introduces Fact-Hash to enable efficient NeRF training and execution on resource-constrained edge devices.",
+      "llm_tldr_cn": "引入Fact-Hash技术，实现在资源受限的边缘设备上高效训练和运行神经辐射场。",
+      "llm_tldr": "引入Fact-Hash技术，实现在资源受限的边缘设备上高效训练和运行神经辐射场。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2604.02846v1",
+      "title": "Adaptive Local Frequency Filtering for Fourier-Encoded Implicit Neural Representations",
+      "abstract": "Fourier-encoded implicit neural representations (INRs) have shown strong capability in modeling continuous signals from discrete samples. However, conventional Fourier feature mappings use a fixed set of frequencies over the entire spatial domain, making them poorly suited to signals with spatially varying local spectra and often leading to slow convergence of high-frequency details. To address this issue, we propose an adaptive local frequency filtering method for Fourier-encoded INRs. The proposed method introduces a spatially varying parameter $α(\\mathbf{x})$ to modulate encoded Fourier components, enabling a smooth transition among low-pass, band-pass, and high-pass behaviors at different spatial locations. We further analyze the effect of the proposed filter from the neural tangent kernel (NTK) perspective and provide an NTK-inspired interpretation of how it reshapes the effective kernel spectrum. Experiments on 2D image fitting, 3D shape representation, and sparse data reconstruction demonstrate that the proposed method consistently improves reconstruction quality and leads to faster optimization compared with fixed-frequency baselines. In addition, the learned $α(\\mathbf{x})$ provides an intuitive visualization of spatially varying frequency preferences, which helps explain the behavior of the model on non-stationary signals. These results indicate that adaptive local frequency modulation is a practical enhancement for Fourier-encoded INRs.",
+      "authors": [
+        "Ligen Shi",
+        "Jun Qiu",
+        "Yuhang Zheng",
+        "Chang Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "eess.IV"
+      ],
+      "published": "2026-04-03T08:04:30+00:00",
+      "link": "https://arxiv.org/pdf/2604.02846v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Adaptive local frequency filtering for implicit neural representations",
+      "llm_evidence_cn": "隐式神经表示的自适应局部频率滤波",
+      "llm_evidence": "隐式神经表示的自适应局部频率滤波",
+      "canonical_evidence": "隐式神经表示的自适应局部频率滤波",
+      "llm_tldr_en": "Proposes adaptive frequency filtering for INRs to better capture spatially varying details in continuous signals.",
+      "llm_tldr_cn": "为隐式神经表示提出自适应频率滤波，以更好地捕捉连续信号中随空间变化的细节。",
+      "llm_tldr": "为隐式神经表示提出自适应频率滤波，以更好地捕捉连续信号中随空间变化的细节。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.28997v1",
+      "title": "GenFusion: Feed-forward Human Performance Capture via Progressive Canonical Space Updates",
+      "abstract": "We present a feed-forward human performance capture method that renders novel views of a performer from a monocular RGB stream. A key challenge in this setting is the lack of sufficient observations, especially for unseen regions. Assuming the subject moves continuously over time, we take advantage of the fact that more body parts become observable by maintaining a canonical space that is progressively updated with each incoming frame. This canonical space accumulates appearance information over time and serves as a context bank when direct observations are missing in the current live frame. To effectively utilize this context while respecting the deformation of the live state, we formulate the rendering process as probabilistic regression. This resolves conflicts between past and current observations, producing sharper reconstructions than deterministic regression approaches. Furthermore, it enables plausible synthesis even in regions with no prior observations. Experiments on in-domain (4D-Dress) and out-of-distribution (MVHumanNet) datasets demonstrate the effectiveness of our approach.",
+      "authors": [
+        "Youngjoong Kwon",
+        "Yao He",
+        "Heejung Choi",
+        "Chen Geng",
+        "Zhengmao Liu",
+        "Jiajun Wu",
+        "Ehsan Adeli"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-30T20:55:00+00:00",
+      "link": "https://arxiv.org/pdf/2603.28997v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "rendering novel views from monocular RGB using canonical space updates",
+      "llm_evidence_cn": "利用规范空间更新从单目RGB渲染新视角",
+      "llm_evidence": "利用规范空间更新从单目RGB渲染新视角",
+      "canonical_evidence": "利用规范空间更新从单目RGB渲染新视角",
+      "llm_tldr_en": "A feed-forward method for human performance capture and novel view rendering from monocular video.",
+      "llm_tldr_cn": "一种用于从单目视频中进行人体性能捕捉和新视角渲染的前馈方法。",
+      "llm_tldr": "一种用于从单目视频中进行人体性能捕捉和新视角渲染的前馈方法。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.03069v1",
+      "title": "SparseSplat: Towards Applicable Feed-Forward 3D Gaussian Splatting with Pixel-Unaligned Prediction",
+      "abstract": "Recent progress in feed-forward 3D Gaussian Splatting (3DGS) has notably improved rendering quality. However, the spatially uniform and highly redundant 3DGS map generated by previous feed-forward 3DGS methods limits their integration into downstream reconstruction tasks. We propose SparseSplat, the first feed-forward 3DGS model that adaptively adjusts Gaussian density according to scene structure and information richness of local regions, yielding highly compact 3DGS maps. To achieve this, we propose entropy-based probabilistic sampling, generating large, sparse Gaussians in textureless areas and assigning small, dense Gaussians to regions with rich information. Additionally, we designed a specialized point cloud network that efficiently encodes local context and decodes it into 3DGS attributes, addressing the receptive field mismatch between the general 3DGS optimization pipeline and feed-forward models. Extensive experimental results demonstrate that SparseSplat can achieve state-of-the-art rendering quality with only 22% of the Gaussians and maintain reasonable rendering quality with only 1.5% of the Gaussians. Project page: https://victkk.github.io/SparseSplat-page/.",
+      "authors": [
+        "Zicheng Zhang",
+        "Xiangting Meng",
+        "Ke Wu",
+        "Wenchao Ding"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-03T14:48:33+00:00",
+      "link": "https://arxiv.org/pdf/2604.03069v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Feed-forward 3D Gaussian Splatting with adaptive density for efficient scene representation",
+      "llm_evidence_cn": "具有自适应密度的前馈 3D 高斯泼溅，用于高效场景表示",
+      "llm_evidence": "具有自适应密度的前馈 3D 高斯泼溅，用于高效场景表示",
+      "canonical_evidence": "具有自适应密度的前馈 3D 高斯泼溅，用于高效场景表示",
+      "llm_tldr_en": "Proposes a feed-forward 3DGS model that adaptively adjusts Gaussian density for compact scene maps.",
+      "llm_tldr_cn": "提出一种前馈 3DGS 模型，通过自适应调整高斯密度生成紧凑的场景地图。",
+      "llm_tldr": "提出一种前馈 3DGS 模型，通过自适应调整高斯密度生成紧凑的场景地图。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.00648v1",
+      "title": "DirectFisheye-GS: Enabling Native Fisheye Input in Gaussian Splatting with Cross-View Joint Optimization",
+      "abstract": "3D Gaussian Splatting (3DGS) has enabled efficient 3D scene reconstruction from everyday images with real-time, high-fidelity rendering, greatly advancing VR/AR applications. Fisheye cameras, with their wider field of view (FOV), promise high-quality reconstructions from fewer inputs and have recently attracted much attention. However, since 3DGS relies on rasterization, most subsequent works involving fisheye camera inputs first undistort images before training, which introduces two problems: 1) Black borders at image edges cause information loss and negate the fisheye's large FOV advantage; 2) Undistortion's stretch-and-interpolate resampling spreads each pixel's value over a larger area, diluting detail density -- causes 3DGS overfitting these low-frequency zones, producing blur and floating artifacts. In this work, we integrate fisheye camera model into the original 3DGS framework, enabling native fisheye image input for training without preprocessing. Despite correct modeling, we observed that the reconstructed scenes still exhibit floaters at image edges: Distortion increases toward the periphery, and 3DGS's original per-iteration random-selecting-view optimization ignores the cross-view correlations of a Gaussian, leading to extreme shapes (e.g., oversized or elongated) that degrade reconstruction quality. To address this, we introduce a feature-overlap-driven cross-view joint optimization strategy that establishes consistent geometric and photometric constraints across views-a technique equally applicable to existing pinhole-camera-based pipelines. Our DirectFisheye-GS matches or surpasses state-of-the-art performance on public datasets.",
+      "authors": [
+        "Zhengxian Yang",
+        "Fei Xie",
+        "Xutao Xue",
+        "Rui Zhang",
+        "Taicheng Huang",
+        "Yang Liu",
+        "Mengqi Ji",
+        "Tao Yu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-01T09:00:04+00:00",
+      "link": "https://arxiv.org/pdf/2604.00648v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "native fisheye input for 3D Gaussian Splatting rendering",
+      "llm_evidence_cn": "3D高斯泼溅渲染的原生鱼眼输入",
+      "llm_evidence": "3D高斯泼溅渲染的原生鱼眼输入",
+      "canonical_evidence": "3D高斯泼溅渲染的原生鱼眼输入",
+      "llm_tldr_en": "Enables direct fisheye image input for 3D Gaussian Splatting to improve reconstruction quality.",
+      "llm_tldr_cn": "支持3D高斯泼溅的直接鱼眼图像输入，以提高重建质量。",
+      "llm_tldr": "支持3D高斯泼溅的直接鱼眼图像输入，以提高重建质量。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.02828v1",
+      "title": "NavCrafter: Exploring 3D Scenes from a Single Image",
+      "abstract": "Creating flexible 3D scenes from a single image is vital when direct 3D data acquisition is costly or impractical. We introduce NavCrafter, a novel framework that explores 3D scenes from a single image by synthesizing novel-view video sequences with camera controllability and temporal-spatial consistency. NavCrafter leverages video diffusion models to capture rich 3D priors and adopts a geometry-aware expansion strategy to progressively extend scene coverage. To enable controllable multi-view synthesis, we introduce a multi-stage camera control mechanism that conditions diffusion models with diverse trajectories via dual-branch camera injection and attention modulation. We further propose a collision-aware camera trajectory planner and an enhanced 3D Gaussian Splatting (3DGS) pipeline with depth-aligned supervision, structural regularization and refinement. Extensive experiments demonstrate that NavCrafter achieves state-of-the-art novel-view synthesis under large viewpoint shifts and substantially improves 3D reconstruction fidelity.",
+      "authors": [
+        "Hongbo Duan",
+        "Peiyu Zhuang",
+        "Yi Liu",
+        "Zhengyang Zhang",
+        "Yuxin Zhang",
+        "Pengting Luo",
+        "Fangming Liu",
+        "Xueqian Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-04-03T07:50:39+00:00",
+      "link": "https://arxiv.org/pdf/2604.02828v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Enhanced 3D Gaussian Splatting for 3D scene exploration",
+      "llm_evidence_cn": "用于3D场景探索的增强型3D高斯泼溅",
+      "llm_evidence": "用于3D场景探索的增强型3D高斯泼溅",
+      "canonical_evidence": "用于3D场景探索的增强型3D高斯泼溅",
+      "llm_tldr_en": "Uses video diffusion and 3D Gaussian Splatting to synthesize and explore 3D scenes from a single image.",
+      "llm_tldr_cn": "利用视频扩散模型和3D高斯泼溅技术，从单张图像合成并探索3D场景。",
+      "llm_tldr": "利用视频扩散模型和3D高斯泼溅技术，从单张图像合成并探索3D场景。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; neural radiance fields for participating media and atmospheric effects; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.02915v1",
+      "title": "GP-4DGS: Probabilistic 4D Gaussian Splatting from Monocular Video via Variational Gaussian Processes",
+      "abstract": "We present GP-4DGS, a novel framework that integrates Gaussian Processes (GPs) into 4D Gaussian Splatting (4DGS) for principled probabilistic modeling of dynamic scenes. While existing 4DGS methods focus on deterministic reconstruction, they are inherently limited in capturing motion ambiguity and lack mechanisms to assess prediction reliability. By leveraging the kernel-based probabilistic nature of GPs, our approach introduces three key capabilities: (i) uncertainty quantification for motion predictions, (ii) motion estimation for unobserved or sparsely sampled regions, and (iii) temporal extrapolation beyond observed training frames. To scale GPs to the large number of Gaussian primitives in 4DGS, we design spatio-temporal kernels that capture the correlation structure of deformation fields and adopt variational Gaussian Processes with inducing points for tractable inference. Our experiments show that GP-4DGS enhances reconstruction quality while providing reliable uncertainty estimates that effectively identify regions of high motion ambiguity. By addressing these challenges, our work takes a meaningful step toward bridging probabilistic modeling and neural graphics.",
+      "authors": [
+        "Mijeong Kim",
+        "Jungtaek Kim",
+        "Bohyung Han"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-03T09:33:43+00:00",
+      "link": "https://arxiv.org/pdf/2604.02915v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Probabilistic modeling and reconstruction of dynamic scenes using 4D Gaussian Splatting",
+      "llm_evidence_cn": "使用 4D 高斯泼溅对动态场景进行概率建模与重建",
+      "llm_evidence": "使用 4D 高斯泼溅对动态场景进行概率建模与重建",
+      "canonical_evidence": "使用 4D 高斯泼溅对动态场景进行概率建模与重建",
+      "llm_tldr_en": "Integrates Gaussian Processes into 4DGS for uncertainty quantification and motion estimation in dynamic scenes.",
+      "llm_tldr_cn": "将高斯过程集成到 4DGS 中，实现了动态场景重建中的不确定性量化和运动估计。",
+      "llm_tldr": "将高斯过程集成到 4DGS 中，实现了动态场景重建中的不确定性量化和运动估计。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.02996v1",
+      "title": "Rendering Multi-Human and Multi-Object with 3D Gaussian Splatting",
+      "abstract": "Reconstructing dynamic scenes with multiple interacting humans and objects from sparse-view inputs is a critical yet challenging task, essential for creating high-fidelity digital twins for robotics and VR/AR. This problem, which we term Multi-Human Multi-Object (MHMO) rendering, presents two significant obstacles: achieving view-consistent representations for individual instances under severe mutual occlusion, and explicitly modeling the complex and combinatorial dependencies that arise from their interactions. To overcome these challenges, we propose MM-GS, a novel hierarchical framework built upon 3D Gaussian Splatting. Our method first employs a Per-Instance Multi-View Fusion module to establish a robust and consistent representation for each instance by aggregating visual information across all available views. Subsequently, a Scene-Level Instance Interaction module operates on a global scene graph to reason about relationships between all participants, refining their attributes to capture subtle interaction effects. Extensive experiments on challenging datasets demonstrate that our method significantly outperforms strong baselines, producing state-of-the-art results with high-fidelity details and plausible inter-instance contacts.",
+      "authors": [
+        "Weiquan Wang",
+        "Jun Xiao",
+        "Feifei Shao",
+        "Yi Yang",
+        "Yueting Zhuang",
+        "Long Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-03T12:20:36+00:00",
+      "link": "https://arxiv.org/pdf/2604.02996v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "hierarchical framework for 3D Gaussian Splatting in dynamic scenes",
+      "llm_evidence_cn": "动态场景中3D高斯泼溅的分层框架",
+      "llm_evidence": "动态场景中3D高斯泼溅的分层框架",
+      "canonical_evidence": "动态场景中3D高斯泼溅的分层框架",
+      "llm_tldr_en": "A hierarchical 3D Gaussian Splatting framework for rendering complex multi-human and multi-object scenes.",
+      "llm_tldr_cn": "一种分层3D高斯泼溅框架，用于渲染复杂的多人多物场景。",
+      "llm_tldr": "一种分层3D高斯泼溅框架，用于渲染复杂的多人多物场景。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

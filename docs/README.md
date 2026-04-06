@@ -6,43 +6,49 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-05
-- 运行时间：2026-04-05 19:40:14 UTC
+- 最新运行日期：2026-04-06
+- 运行时间：2026-04-06 20:33:15 UTC
 - 运行状态：成功
-- 本次总论文数：7
-- 精读区：1
-- 速读区：6
+- 本次总论文数：9
+- 精读区：2
+- 速读区：7
 
 ### 今日简报（AI）
-今日精选 7 篇论文，深度解析具备环境动力学的交互式 4D 世界生成与大规模动态场景重建技术。
-核心突破在于《LivingWorld》实现的物理规律交互生成，以及 4D 高斯泼溅在空地协同重建中的性能提升。
-建议优先关注 4D 动态建模与物理引导神经网络的结合，探索更具沉浸感的数字化空间构建方案。
-- 详情：[/202604/05/README](/202604/05/README)
+今日聚焦 3D 高斯流式传输与边缘端 NeRF 优化，深度探索实时渲染与高效重建的新范式。
+核心突破在于实现 3D 高斯场景的实时流式渲染，并利用分解哈希网格让 NeRF 成功适配边缘设备。
+建议优先研读 3DGS 的轻量化与传输方案，这是实现低延迟、大规模三维交互应用的关键。
+- 详情：[/202604/06/README](/202604/06/README)
 
 ### 精读区论文标签
-1. [LivingWorld: Interactive 4D World Generation with Environmental Dynamics](/202604/05/2604.01641v1-livingworld-interactive-4d-world-generation-with-environmental-dynamics)  
-   标签：评分：9.0/10、query:q5
-   evidence：生成包含云、烟雾等环境动力学的4D世界
+1. [Streaming Real-Time Rendered Scenes as 3D Gaussians](/202604/06/2604.02851v1-streaming-real-time-rendered-scenes-as-3d-gaussians)  
+   标签：评分：9.0/10、query:profile-1
+   evidence：利用3D高斯泼溅进行实时场景流式传输的云渲染
+2. [Factorized Multi-Resolution HashGrid for Efficient Neural Radiance Fields: Execution on Edge-Devices](/202604/06/2604.02836v1-factorized-multi-resolution-hashgrid-for-efficient-neural-radiance-fields-execution-on-edge-devices)  
+   标签：评分：8.0/10、query:q1
+   evidence：高效神经辐射场与3D表示的参数编码
 
 ### 速读区论文标签
-1. [Physics-Guided Transformer (PGT): Physics-Aware Attention Mechanism for PINNs](/202604/05/2603.27929v1-physics-guided-transformer-pgt-physics-aware-attention-mechanism-for-pinns)  
-   标签：评分：7.0/10、query:profile-1
-   evidence：使用物理感知神经架构重建连续物理场
-2. [MotionScale: Reconstructing Appearance, Geometry, and Motion of Dynamic Scenes with Scalable 4D Gaussian Splatting](/202604/05/2603.29296v1-motionscale-reconstructing-appearance-geometry-and-motion-of-dynamic-scenes-with-scalable-4d-gaussian-splatting)  
+1. [Adaptive Local Frequency Filtering for Fourier-Encoded Implicit Neural Representations](/202604/06/2604.02846v1-adaptive-local-frequency-filtering-for-fourier-encoded-implicit-neural-representations)  
    标签：评分：7.0/10、query:q1
-   evidence：使用4D高斯泼溅进行动态场景的神经渲染
-3. [ProDiG: Progressive Diffusion-Guided Gaussian Splatting for Aerial to Ground Reconstruction](/202604/05/2604.02003v1-prodig-progressive-diffusion-guided-gaussian-splatting-for-aerial-to-ground-reconstruction)  
+   evidence：隐式神经表示的自适应局部频率滤波
+2. [SparseSplat: Towards Applicable Feed-Forward 3D Gaussian Splatting with Pixel-Unaligned Prediction](/202604/06/2604.03069v1-sparsesplat-towards-applicable-feed-forward-3d-gaussian-splatting-with-pixel-unaligned-prediction)  
    标签：评分：7.0/10、query:q1
-   evidence：扩散引导的高斯泼溅用于3D重建与渲染
-4. [Generative World Renderer](/202604/05/2604.02329v1-generative-world-renderer)  
-   标签：评分：7.0/10、query:profile-1
-   evidence：具有视觉效果和恶劣天气环境的生成式世界渲染器
-5. [TRACE: High-Fidelity 3D Scene Editing via Tangible Reconstruction and Geometry-Aligned Contextual Video Masking](/202604/05/2604.01207v1-trace-high-fidelity-3d-scene-editing-via-tangible-reconstruction-and-geometry-aligned-contextual-video-masking)  
+   evidence：具有自适应密度的前馈 3D 高斯泼溅，用于高效场景表示
+3. [GenFusion: Feed-forward Human Performance Capture via Progressive Canonical Space Updates](/202604/06/2603.28997v1-genfusion-feed-forward-human-performance-capture-via-progressive-canonical-space-updates)  
    标签：评分：6.0/10、query:q1
-   evidence：3DGS 编辑与场景变换
-6. [Deep learning accelerated solutions of incompressible Navier-Stokes equations on non-uniform Cartesian grids](/202604/05/2604.01800v1-deep-learning-accelerated-solutions-of-incompressible-navier-stokes-equations-on-non-uniform-cartesian-grids)  
-   标签：评分：6.0/10、query:q5
-   evidence：深度学习加速复杂动力学的流体模拟
+   evidence：利用规范空间更新从单目RGB渲染新视角
+4. [DirectFisheye-GS: Enabling Native Fisheye Input in Gaussian Splatting with Cross-View Joint Optimization](/202604/06/2604.00648v1-directfisheye-gs-enabling-native-fisheye-input-in-gaussian-splatting-with-cross-view-joint-optimization)  
+   标签：评分：6.0/10、query:q1
+   evidence：3D高斯泼溅渲染的原生鱼眼输入
+5. [NavCrafter: Exploring 3D Scenes from a Single Image](/202604/06/2604.02828v1-navcrafter-exploring-3d-scenes-from-a-single-image)  
+   标签：评分：6.0/10、query:profile-1
+   evidence：用于3D场景探索的增强型3D高斯泼溅
+6. [GP-4DGS: Probabilistic 4D Gaussian Splatting from Monocular Video via Variational Gaussian Processes](/202604/06/2604.02915v1-gp-4dgs-probabilistic-4d-gaussian-splatting-from-monocular-video-via-variational-gaussian-processes)  
+   标签：评分：6.0/10、query:q1
+   evidence：使用 4D 高斯泼溅对动态场景进行概率建模与重建
+7. [Rendering Multi-Human and Multi-Object with 3D Gaussian Splatting](/202604/06/2604.02996v1-rendering-multi-human-and-multi-object-with-3d-gaussian-splatting)  
+   标签：评分：6.0/10、query:q1
+   evidence：动态场景中3D高斯泼溅的分层框架
 
 
 <div class="dpr-home-promo-card">
