@@ -1,0 +1,51 @@
+{
+  "label": "2026-04-07",
+  "date": "2026-04-07",
+  "generated_at": "2026-04-07T19:45:34",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202604/07/2604.00548v1-reliev3r-relieving-feed-forward-reconstruction-from-multi-view-geometric-annotations",
+      "section": "quick",
+      "title_en": "Reliev3R: Relieving Feed-forward Reconstruction from Multi-View Geometric Annotations",
+      "authors": "Youyu Chen, Junjun Jiang, Yueru Luo, Kui Jiang, Xianming Liu, Xu Yan, Dave Zhenyu Chen",
+      "date": "2026-04-01",
+      "pdf": "https://arxiv.org/pdf/2604.00548v1",
+      "score": "6.0",
+      "evidence": "用于3D场景的前馈重建模型",
+      "tldr": "Reliev3R 针对前馈重建模型（FFRM）过度依赖多视图几何标注（如3D点图和相机位姿）导致难以扩展的问题，提出了一种弱监督训练范式。该方法无需昂贵的几何标注或复杂的SfM预处理，而是利用预训练模型的单目相对深度和稀疏对应关系进行训练。通过引入歧义感知相对深度损失和三角重投影损失，Reliev3R 在减少数据依赖的同时，达到了与全监督模型相当的重建性能，推动了低成本、可扩展的3D重建。",
+      "tags": "query:q1",
+      "abstract_en": "With recent advances, Feed-forward Reconstruction Models (FFRMs) have demonstrated great potential in reconstruction quality and adaptiveness to multiple downstream tasks. However, the excessive reliance on multi-view geometric annotations, e.g. 3D point maps and camera poses, makes the fully-supervised training scheme of FFRMs difficult to scale up. In this paper, we propose Reliev3R, a weakly-supervised paradigm for training FFRMs from scratch without cost-prohibitive multi-view geometric annotations. Relieving the reliance on geometric sensory data and compute-exhaustive structure-from-motion preprocessing, our method draws 3D knowledge directly from monocular relative depths and image sparse correspondences given by zero-shot predictions of pretrained models. At the core of Reliev3R, we design an ambiguity-aware relative depth loss and a trigonometry-based reprojection loss to facilitate supervision for multi-view geometric consistency. Training from scratch with the less data, Reliev3R catches up with its fully-supervised sibling models, taking a step towards low-cost 3D reconstruction supervisions and scalable FFRMs.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/07/2604.03741v1-shower-aware-dual-stream-voxel-networks-for-structural-defect-detection-in-cosmic-ray-muon-tomography",
+      "section": "quick",
+      "title_en": "Shower-Aware Dual-Stream Voxel Networks for Structural Defect Detection in Cosmic-Ray Muon Tomography",
+      "authors": "Parthiv Dasgupta, Sambhav Agarwal, Palash Dutta, Raja Karmakar, Sudeshna Goswami",
+      "date": "2026-04-04",
+      "pdf": "https://arxiv.org/pdf/2604.03741v1",
+      "score": "6.0",
+      "evidence": "用于处理3D体积中散射运动学的体素网络",
+      "tldr": "本文提出SA-DSVN，一种用于钢筋混凝土结构缺陷检测的双流3D卷积网络。该模型首次结合了宇宙射线缪子的散射动力学与次级电磁簇射多重性特征，通过交叉注意力机制实现体素级分割。实验证明，次级簇射特征显著增强了对蜂窝、裂缝等缺陷的识别能力，在保持极高推理速度的同时大幅提升了检测精度。",
+      "tags": "query:q4",
+      "abstract_en": "We present SA-DSVN, a 3D convolutional architecture for voxel-level segmentation of structural defects in reinforced concrete using cosmic-ray muon tomography. Unlike conventional reconstruction methods (POCA, MLSD) that rely solely on muon scattering angles, our approach jointly processes scattering kinematics (9 channels) and secondary electromagnetic shower multiplicities (40 channels) through independent encoder streams fused via cross-attention. Training data were generated using Vega, a cloud-native Geant4 simulation framework, producing 4.5 million muon events across 900 volumes containing four defect types - honeycombing, shear fracture, corrosion voids, and delamination - embedded within a dense 7x7 rebar cage. A five-variant ablation study demonstrates that the shower multiplicity stream alone accounts for the majority of discriminative power, raising defect-mean Dice from 0.535 (scattering only) to 0.685 (shower only). On 60 independently simulated validation volumes, the model achieves 96.3% voxel accuracy, per-defect Dice scores of 0.59-0.81, and 100% volume-level detection sensitivity at 10 ms inference per volume. These results establish secondary shower multiplicity as a previously unexploited but highly effective feature for learned muon tomographic reconstruction.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/07/2604.04474v1-maven-a-mesh-aware-volumetric-encoding-network-for-simulating-3d-flexible-deformation",
+      "section": "quick",
+      "title_en": "MAVEN: A Mesh-Aware Volumetric Encoding Network for Simulating 3D Flexible Deformation",
+      "authors": "Zhe Feng, Shilong Tao, Haonan Sun, Shaohan Chen, Zhanxing Zhu, Yunhuai Liu",
+      "date": "2026-04-06",
+      "pdf": "https://arxiv.org/pdf/2604.04474v1",
+      "score": "6.0",
+      "evidence": "用于捕获体积特性的体积编码网络",
+      "tldr": "针对现有图神经网络在模拟3D柔性变形时仅关注顶点和边、忽略高维空间特征（如面和体单元）的问题，本文提出了MAVEN。该网络通过显式建模3D单元、2D面和顶点之间的可学习映射，并引入显式几何特征，显著提升了对边界表示和体积特性的捕捉能力。实验证明，MAVEN在多个数据集及大变形接触任务中均达到了SOTA水平。",
+      "tags": "query:profile-1",
+      "abstract_en": "Deep learning-based approaches, particularly graph neural networks (GNNs), have gained prominence in simulating flexible deformations and contacts of solids, due to their ability to handle unstructured physical fields and nonlinear regression on graph structures. However, existing GNNs commonly represent meshes with graphs built solely from vertices and edges. These approaches tend to overlook higher-dimensional spatial features, e.g., 2D facets and 3D cells, from the original geometry. As a result, it is challenging to accurately capture boundary representations and volumetric characteristics, though this information is critically important for modeling contact interactions and internal physical quantity propagation, particularly under sparse mesh discretization. In this paper, we introduce MAVEN, a mesh-aware volumetric encoding network for simulating 3D flexible deformation, which explicitly models geometric mesh elements of higher dimension to achieve a more accurate and natural physical simulation. MAVEN establishes learnable mappings among 3D cells, 2D facets, and vertices, enabling flexible mutual transformations. Explicit geometric features are incorporated into the model to alleviate the burden of implicitly learning geometric patterns. Experimental results show that MAVEN consistently achieves state-of-the-art performance across established datasets and a novel metal stretch-bending task featuring large deformations and prolonged contacts.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

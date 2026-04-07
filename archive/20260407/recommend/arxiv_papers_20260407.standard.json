@@ -1,0 +1,135 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-07T19:45:06.482009+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.00548v1",
+      "title": "Reliev3R: Relieving Feed-forward Reconstruction from Multi-View Geometric Annotations",
+      "abstract": "With recent advances, Feed-forward Reconstruction Models (FFRMs) have demonstrated great potential in reconstruction quality and adaptiveness to multiple downstream tasks. However, the excessive reliance on multi-view geometric annotations, e.g. 3D point maps and camera poses, makes the fully-supervised training scheme of FFRMs difficult to scale up. In this paper, we propose Reliev3R, a weakly-supervised paradigm for training FFRMs from scratch without cost-prohibitive multi-view geometric annotations. Relieving the reliance on geometric sensory data and compute-exhaustive structure-from-motion preprocessing, our method draws 3D knowledge directly from monocular relative depths and image sparse correspondences given by zero-shot predictions of pretrained models. At the core of Reliev3R, we design an ambiguity-aware relative depth loss and a trigonometry-based reprojection loss to facilitate supervision for multi-view geometric consistency. Training from scratch with the less data, Reliev3R catches up with its fully-supervised sibling models, taking a step towards low-cost 3D reconstruction supervisions and scalable FFRMs.",
+      "authors": [
+        "Youyu Chen",
+        "Junjun Jiang",
+        "Yueru Luo",
+        "Kui Jiang",
+        "Xianming Liu",
+        "Xu Yan",
+        "Dave Zhenyu Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-01T06:46:54+00:00",
+      "link": "https://arxiv.org/pdf/2604.00548v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Feed-forward reconstruction model for 3D scenes",
+      "llm_evidence_cn": "用于3D场景的前馈重建模型",
+      "llm_evidence": "用于3D场景的前馈重建模型",
+      "canonical_evidence": "用于3D场景的前馈重建模型",
+      "llm_tldr_en": "Proposes a weakly-supervised feed-forward reconstruction model for 3D scenes without geometric annotations.",
+      "llm_tldr_cn": "提出了一种无需几何标注的弱监督前馈3D场景重建模型。",
+      "llm_tldr": "提出了一种无需几何标注的弱监督前馈3D场景重建模型。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.03741v1",
+      "title": "Shower-Aware Dual-Stream Voxel Networks for Structural Defect Detection in Cosmic-Ray Muon Tomography",
+      "abstract": "We present SA-DSVN, a 3D convolutional architecture for voxel-level segmentation of structural defects in reinforced concrete using cosmic-ray muon tomography. Unlike conventional reconstruction methods (POCA, MLSD) that rely solely on muon scattering angles, our approach jointly processes scattering kinematics (9 channels) and secondary electromagnetic shower multiplicities (40 channels) through independent encoder streams fused via cross-attention. Training data were generated using Vega, a cloud-native Geant4 simulation framework, producing 4.5 million muon events across 900 volumes containing four defect types - honeycombing, shear fracture, corrosion voids, and delamination - embedded within a dense 7x7 rebar cage. A five-variant ablation study demonstrates that the shower multiplicity stream alone accounts for the majority of discriminative power, raising defect-mean Dice from 0.535 (scattering only) to 0.685 (shower only). On 60 independently simulated validation volumes, the model achieves 96.3% voxel accuracy, per-defect Dice scores of 0.59-0.81, and 100% volume-level detection sensitivity at 10 ms inference per volume. These results establish secondary shower multiplicity as a previously unexploited but highly effective feature for learned muon tomographic reconstruction.",
+      "authors": [
+        "Parthiv Dasgupta",
+        "Sambhav Agarwal",
+        "Palash Dutta",
+        "Raja Karmakar",
+        "Sudeshna Goswami"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "physics.comp-ph"
+      ],
+      "published": "2026-04-04T14:04:39+00:00",
+      "link": "https://arxiv.org/pdf/2604.03741v1",
+      "tags": [
+        "keyword:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Voxel networks for processing scattering kinematics in 3D volumes",
+      "llm_evidence_cn": "用于处理3D体积中散射运动学的体素网络",
+      "llm_evidence": "用于处理3D体积中散射运动学的体素网络",
+      "canonical_evidence": "用于处理3D体积中散射运动学的体素网络",
+      "llm_tldr_en": "Uses dual-stream voxel networks to process scattering and shower data for 3D structural defect detection.",
+      "llm_tldr_cn": "使用双流体素网络处理散射和簇射数据，用于3D结构缺陷检测。",
+      "llm_tldr": "使用双流体素网络处理散射和簇射数据，用于3D结构缺陷检测。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "deep learning for multiple scattering in volumes",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.04474v1",
+      "title": "MAVEN: A Mesh-Aware Volumetric Encoding Network for Simulating 3D Flexible Deformation",
+      "abstract": "Deep learning-based approaches, particularly graph neural networks (GNNs), have gained prominence in simulating flexible deformations and contacts of solids, due to their ability to handle unstructured physical fields and nonlinear regression on graph structures. However, existing GNNs commonly represent meshes with graphs built solely from vertices and edges. These approaches tend to overlook higher-dimensional spatial features, e.g., 2D facets and 3D cells, from the original geometry. As a result, it is challenging to accurately capture boundary representations and volumetric characteristics, though this information is critically important for modeling contact interactions and internal physical quantity propagation, particularly under sparse mesh discretization. In this paper, we introduce MAVEN, a mesh-aware volumetric encoding network for simulating 3D flexible deformation, which explicitly models geometric mesh elements of higher dimension to achieve a more accurate and natural physical simulation. MAVEN establishes learnable mappings among 3D cells, 2D facets, and vertices, enabling flexible mutual transformations. Explicit geometric features are incorporated into the model to alleviate the burden of implicitly learning geometric patterns. Experimental results show that MAVEN consistently achieves state-of-the-art performance across established datasets and a novel metal stretch-bending task featuring large deformations and prolonged contacts.",
+      "authors": [
+        "Zhe Feng",
+        "Shilong Tao",
+        "Haonan Sun",
+        "Shaohan Chen",
+        "Zhanxing Zhu",
+        "Yunhuai Liu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-04-06T06:53:30+00:00",
+      "link": "https://arxiv.org/pdf/2604.04474v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Volumetric encoding network for capturing volumetric characteristics",
+      "llm_evidence_cn": "用于捕获体积特性的体积编码网络",
+      "llm_evidence": "用于捕获体积特性的体积编码网络",
+      "canonical_evidence": "用于捕获体积特性的体积编码网络",
+      "llm_tldr_en": "Develops a mesh-aware volumetric encoding network to simulate 3D flexible deformations and physical fields.",
+      "llm_tldr_cn": "开发了一种感知网格的体积编码网络，用于模拟3D柔性变形和物理场。",
+      "llm_tldr": "开发了一种感知网格的体积编码网络，用于模拟3D柔性变形和物理场。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
