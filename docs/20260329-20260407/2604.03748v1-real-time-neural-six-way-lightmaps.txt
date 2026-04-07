@@ -1,0 +1,421 @@
+Title: Real-time Neural Six-way Lightmaps
+
+URL Source: https://arxiv.org/pdf/2604.03748v1
+
+Published Time: Tue, 07 Apr 2026 00:42:23 GMT
+
+Number of Pages: 11
+
+Markdown Content:
+# Real-time Neural Six-way Lightmaps 
+
+# WEI LI ∗, Shanghai Jiao Tong University, China 
+
+# HANXIAO SUN ∗, LIGHTSPEED, China 
+
+# TAO HUANG, LIGHTSPEED, China 
+
+# HAOXIANG WANG, Tsinghua University, China 
+
+# TONGTONG WANG, LIGHTSPEED, Australia 
+
+# ZHERONG PAN, LIGHTSPEED, USA 
+
+# KUI WU, LIGHTSPEED, USA 
+
+> Frame 0 Frame 200
+
+Ours W/o lightmaps Traditional six-way lightmaps Niagara system in Unreal Engine 
+
+Fig. 1. Two frames of a chimney smoke example rendered with rotating camera direction in Unreal Engine (UE) [Epic Games 2021]. Our neural lightmaps support dynamic lighting, camera direction, and realistic multiple-scattering effects, whereas traditional six-way lightmaps [Muller 2023] with asymmetrically shaped smoke only work for one camera direction, leading to severe offset artifacts and a lack of interaction. Compared with UE built-in Niagara system using sprite-based particle effects, our method produces substantially more realistic smoke appearance. 
+
+Participating media are a pervasive and intriguing visual effect in virtual environments. Unfortunately, rendering such phenomena in real-time is notoriously difficult due to the computational expense of estimating the volume rendering equation. While the six-way lightmaps technique has been widely used in video games to render smoke with a camera-oriented billboard and approximate lighting effects using six precomputed lightmaps, achieving a balance between realism and efficiency, it is limited to pre-simulated animation sequences and is ignorant of camera movement. In this work, we propose a neural six-way lightmaps method to strike a long-sought balance between dynamics and visual realism. Our approach first generates a guiding map from the camera view using ray marching with a large sampling 
+
+> ∗
+
+Both authors contributed equally to this research. Authors’ Contact Information: Wei Li, 1104720604wei@gmail.com, Shanghai Jiao Tong University, Shanghai, China; Hanxiao Sun, hx.sun@mail.nankai.edu.cn, LIGHTSPEED, Shenzhen, China; Tao Huang, cstgcaiji@gmail.com, LIGHTSPEED, Shenzhen, Guang-Dong, China; Haoxiang Wang, whx22@mails.tsinghua.edu.cn, Tsinghua University, Beijing, China; Tongtong Wang, wangtong923@gmail.com, LIGHTSPEED, Sydney, Australia; Zherong Pan, zherong.pan.usa@gmail.edu, LIGHTSPEED, Seattle, WA, USA; Kui Wu, walker.kui.wu@gmail.com, LIGHTSPEED, Los Angeles, CA, USA. 
+
+distance to approximate smoke scattering and silhouette. Then, given a guiding map, we train a neural network to predict the corresponding six-way lightmaps. The resulting lightmaps can be seamlessly used in existing game engine pipelines. This approach supports visually appealing rendering effects while enabling real-time user interactivity, including smoke-obstacle interaction, camera movement, and light change. By conducting a series of comprehensive benchmarks, we demonstrate that our method is well-suited for real-time applications, such as games and VR/AR. CCS Concepts: • Computing methodologies → Neural rendering, Neu-ral networks .Additional Key Words and Phrases: Neural Rendering; six-way lightmaps 
+
+1 Introduction 
+
+The world around us is filled with participating media, such as fog, smoke, clouds, and fire, which attenuate and scatter light in complex ways. Efficiently rendering volumetric media is a critical challenge   
+
+> arXiv:2604.03748v1 [cs.GR] 4 Apr 2026 2•Wei Li, Hanxiao Sun, Tao Huang, Haoxiang Wang, Tongtong Wang, Zherong Pan, and Kui Wu
+
+for real-time applications, particularly in film and visual effects pro-duction, video games, and VR/AR. Conventional techniques, such as ray marching [Raab et al . 2008] and delta tracking [Novák et al .2014], are commonly used to simulate volumetric effects, relying on Monte Carlo (MC) path sampling to evaluate transmittance between two points in the scene for shadowing and fractional visibility. Al-though these techniques produce highly realistic results, they are computationally expensive because of complex lighting interactions within media, such as scattering and absorption, which require large numbers of samples for accurate evaluation in 3D. Recently, ReSTIR [Lin et al . 2021] was introduced to reuse paths to accelerate convergence, but it still relies on a denoiser to achieve real-time framerate with low samples per pixel. For real-time applications, smoke rendering is often achieved us-ing textured sprites due to stringent computational constraints [Epic Games 2021]. Recently, the six-way lightmaps technique [Muller 2023] has emerged as a widely adopted method for approximating lighting effects on smoke, offering a favorable trade-off between realism and efficiency. This approach precomputes smoke trans-parency from a fixed view direction, along with light interactions from six orthogonal directions, using a sequence of pre-simulated 3D volumetric density fields. The results are stored in texture maps, which can then be efficiently sampled at runtime. During rendering, smoke is rendered as a camera-facing billboard and illuminated by interpolating between precomputed lightmaps for arbitrary light directions, enabling realistic visual effects such as internal shadow-ing and rim lighting. However, because both smoke dynamics and lighting are precomputed, this technique is inherently limited to static, pre-simulated sequences and fixed view directions (see Fig. 1), restricting its applicability to interactive or dynamic environments. To address the inherent limitations of the six-way lightmaps tech-nique, we introduce a neural lightmaps method that learns light scattering from a 2D screen-space guiding map, in contrast to prior approaches that predict radiance directly in 3D space [Hu et al .2023]. Given a 3D smoke density field generated by a physics-based simulator, our pipeline begins by ray-marching along the given view direction with a large sampling distance to generate a guiding map that approximates the smoke structure and silhouette. A U-Net with specialized channel adapters then uses this guiding map to predict the six-way lightmaps and the transparency map. These outputs can be seamlessly integrated into existing game engine rendering pipelines for final rendering. In addition, to approximate the shadow cast from objects onto the smoke, we construct a screen-space smoke depth map and compare it with the object shadow map during shading to determine whether each fragment lies within shadow. Our framework offers several advantages. First, the entire rendering pipeline completes in less than 4 ms, achieving an order-of-magnitude speedup over traditional Monte Carlo or learning-based 3D volume rendering methods for dynamic smokes. Second, our approach supports object–smoke interactions and dynamic camera movement, allowing real-time interactivity. We evaluate our pipeline across a diverse set of scenes, including jet flows, explosions, and smoke interacting with rigid objects. We further demonstrate prac-tical application scenarios by integrating our method into Unreal Engine for real-time rendering. 
+
+2 Related work 
+
+Traditional Methods. One common method for rendering partic-ipating media involves distributing light photons, rays, or beams within the media to estimate volumetric density [Jarosz et al . 2011a,b; Jensen and Christensen 1998]. This density is then combined with Monte Carlo path tracing to produce a unified solution [Křivánek et al . 2014]. Recent advancements [Bitterli and Jarosz 2017; Deng et al . 2019; Qin et al . 2015] have improved convergence and achieved unbiased results. However, these methods require an additional light pass and extra storage to capture the light distribution. Virtual Point Lights (VPLs) [Keller 1997] were extended for participating media by Arbree et al . [2008], enabling the approximation of subsurface scattering while significantly reducing the number of photons re-quired. Building on this, Virtual Ray Lights (VRLs) [Novák et al . 2012], clustered representations [Huo et al . 2016], and hierarchical lighting grids [Yuksel and Yuksel 2017] were introduced, further optimizing the computational and storage efficiency for volumetric rendering. Path tracing and Monte Carlo sampling offer a general framework for integrating the volume rendering equation, accommodating a wide variety of participating media scenarios. Numerous methods have been introduced for sampling free paths, including closed-form tracking [Brown and Martin 2003], regular tracking [Brown and Martin 1999; Hubert-Tremblay et al . 2006], ray marching [Muñoz 2014; Perlin and Hoffert 1989; Raab et al . 2008], and null-collision techniques [Butcher and Messel 1958; Georgiev et al . 2013; Kutz et al .2017]. For a comprehensive overview of these techniques, we direct readers to surveys by Wu et al . [2022] and Novák et al . [2018]. Re-cently, Lin et al . [2021] proposed a low-noise, interactive volumetric path-tracing method by reusing scattering paths, significantly im-proving the efficiency of evaluating the volume rendering equation. However, despite such advancements, traditional volume render-ing methods remain several orders of magnitude slower than the computational budgets typically allocated for real-time applications. 
+
+Learning-based Methods. Several works have employed learning-based approaches to accelerate rendering tasks, such as predicting the radiance function [Kallweit et al . 2017], the position of the exit point [Vicini et al . 2019], and the contributions of all possible paths [Leonard et al . 2021]. Neural Radiance Fields (NeRF) [Milden-hall et al . 2021] represent scenes as neural radiance fields and render with ray marching, accelerated by Müller et al . [2021]. Recently, Hu et al . [2023] presented a lightweight feature-fusion neural network capable of rendering high-order scattered radiance from participat-ing media in real time. However, these methods primarily focus on accelerating Monte Carlo rendering in 3D world space, where the computational complexity of 3D operations inherently constrains the acceleration ratio. More importantly, it relies on heavy precom-putation, which prevents it from being used in dynamic scenes. Instead, our method brings neural rendering one step closer to real-time by learning lightmaps based on screen-space input. 
+
+Relighting. Another line of work related to our method involves using lightweight neural networks combined with physically based priors for relighting. These approaches typically take monocular images as input and generate relighted outputs. Previous methods in this area derive priors from various domains such as outdoor Real-time Neural Six-way Lightmaps • 3
+
+scenes [Liu et al . 2020; Wu and Saito 2017], portraits [Pandey et al .2021; Ranjan et al . 2023], and human bodies [Ji et al . 2022; Kanamori and Endo 2018]. With advancements in generative models, more sophisticated techniques, such as diffusion-based networks, e.g., Dilightnet [Zeng et al . 2024], Neural Gaffer [Jin et al . 2024], and sought-after IC-light [Zhang et al . 2025], have made significant progress in producing relightable images. However, these methods focus on diffuse or specular materials and surface rendering, with limited exploration of volumetric rendering. 
+
+3 Traditional Six-way Lightmaps 
+
+In this section, we provide a brief review of the volume rendering equation that governs smoke appearance, as well as the six-way lightmaps technique for real-time smoke rendering. The volume rendering equation represents incident radiance 
+
+𝐿 (x, 𝝎 ) at the point x from the outgoing direction 𝝎 , which is derived by integrating the outgoing radiance through volumetric media and accounting for the surface or light 𝐿 𝑜 behind it multiplied by the transmittance 𝑇 (x ↔ z) along the ray, formalized as: 
+
+𝐿 (x, 𝝎 ) =
+
+∫ 𝑧 
+
+> 0
+
+𝑇 (x ↔ y) 𝜎 𝑎 (y)𝐿 𝑒 (y, 𝝎 ) + 𝜎 𝑠 (y)𝐿 𝑠 (y, 𝝎 )𝑑𝑦 (1) 
+
++ 𝑇 (x ↔ z)𝐿 𝑜 (z, 𝝎 ) ,
+
+where y = x − 𝑦 𝝎 is a point along the direction 𝝎 towards x, and 
+
+𝜎 𝑎 (x) and 𝜎 𝑠 (x) denote the absorption and scattering coefficients, respectively. The emitted radiance is represented by 𝐿 𝑒 , while the in-scattered radiance term: 
+
+𝐿 𝑠 (y, 𝝎 ) =
+
+∫
+
+> 𝑆
+
+𝜌 (y, 𝝎 , 𝝎 ′)𝐿 (y, 𝝎 ′)𝑑 𝝎 ′ (2) integrates incident light over the sphere 𝑆 of all directions, modu-lated by 𝜌 (y, 𝝎 , 𝝎 ′), the media phase function. And 𝐿 (y, 𝝎 ′) denotes the incoming radiance at the point y from the direction 𝝎 ′, compris-ing both unscattered (direct) light and light that has experienced an arbitrary number of scattering events prior to reaching y. If only one single directional light source is considered, the in-scattered radiance term can be further simplified to a function of the light direction 𝝎 𝑙 as 𝐿 𝑠 (y, 𝝎 , 𝝎 𝑙 ). The transmittance function 
+
+𝑇 (x ↔ y) = 𝑒 − ∫ 𝑦   
+
+> 0𝜎 𝑡 (x−𝑠
+
+𝝎 )𝑑𝑠 (3) represents visibility between points x and y, where the extinction co-efficient 𝜎 𝑡 (x) = 𝜎 𝑎 (x) + 𝜎 𝑠 (x), and 𝐿 𝑜 (z, 𝝎 ) denotes the background radiance along 𝝎 . The nested integrals in Eq. 1 are computationally expensive to approximate, making Monte Carlo sampling–based methods impractical for real-time rendering. 
+
+Six-way lightmaps technique [Ao 2023; Muller 2023] provides an efficient and visually compelling approach for rendering volumetric effects such as smoke in real time, particularly in AAA game produc-tion. In particular, this technique assumes that the smoke is always observed from a fixed view direction 𝝎 , enabling it to be rendered as a camera-facing billboard and for transparency and scattering to be precomputed. Under this assumption, the volumetric rendering                 
+
+> Red Green Blue Alpha RGBA +++=+++=
+> Right Top Back Transparency Lightmap 1 Left Bottom Front Emissive (Optional) Lightmap 2
+
+Fig. 2. An example set of lightmaps packed in two RGBA textures. Of the 8 available channels, 6 channels store the six-way scattering lightmaps along axis-aligned directions. Additionally, the alpha chan-nel for the first texture contains the transparency 𝑇 (x ↔ z), while the alpha channel of the second texture is an optional emissive component. 
+
+equation (Eq. 1) can be rewritten in following form: 
+
+𝐿 (x) =
+
+∫ 𝑧 
+
+> 0
+
+𝑇 (x ↔ y)𝜎 𝑎 (y)𝐿 𝑒 (y)𝑑𝑦 
+
+| {z }
+
+> emissive
+
+(4) 
+
++
+
+∫ 𝑧 
+
+> 0
+
+𝑇 (x ↔ y)𝜎 𝑠 (y)𝐿 𝑠 (y, 𝝎 𝑙 )𝑑𝑦 
+
+| {z }
+
+> scattering
+
++𝑇 (x ↔ z)
+
+| {z }
+
+> transparency
+
+𝐿 𝑜 (z) ,
+
+where transparency and emissive terms can be precomputed and stored as texture channels, since they are independent of the light di-rection 𝝎 𝑙 . In contrast, the scattering term, defined in Eq. 2, depends on the light direction 𝝎 𝑙 and is approximated by interpolating be-tween six pre-rendered scattering lightmaps from the directions ±𝑋 ,
+
+±𝑌 , ±𝑍 , denoted as L = {𝐿 + 
+
+> 𝑥
+
+, 𝐿 − 
+
+> 𝑥
+
+, 𝐿 + 
+
+> 𝑦
+
+, 𝐿 − 
+
+> 𝑦
+
+, 𝐿 + 
+
+> 𝑧
+
+, 𝐿 − 
+
+> 𝑧
+
+}. These lightmaps, together with transparency and emissive color, are packed into the RGBA channels of a texture, as illustrated in Fig. 2. During rendering, for an arbitrary light direction 𝝎 𝑙 , the total scattered radiance at position x is approximated by a directionally weighted interpolation: 
+
+𝐿 scattering (x, 𝝎 𝑙 ) =
+
+∫ 𝑧 
+
+> 0
+
+𝑇 (x ↔ y)𝜎 𝑠 (y)𝐿 𝑠 (y, 𝝎 𝑙 )𝑑𝑦 (5) 
+
+≈∑︁   
+
+> 𝑝 ∈ { 𝑥,𝑦,𝑧 }
+
+|𝝎 𝑙,𝑝 |𝐿 sign (𝝎 𝑙,𝑝 ) 
+
+> 𝑝
+
+(x) ,
+
+where 𝝎 𝑙,𝑝 denotes the component of 𝝎 𝑙 along axis 𝑝 . This technique naturally supports an arbitrary number of directional lights. The total scattered radiance is obtained by summing the contributions from all light 𝐿 scattering (x, 𝝎 𝑙 ), each weighted by its light intensity. It is also easy to support multiple light sources by simply summing all light contributions. Six-way lightmaps typically require two 512 √𝐾 × 512 √𝐾 RGB(A) textures to store 𝐾 frames of pre-simulated smoke dynamics, with each frame rendered at 512 × 512 resolution. At runtime, the shad-ing point’s relative light direction is calculated and used to blend between these lightmaps dynamically. Although the results differ from ground truth 3D volume rendering due to interpolations on lightmaps, its real-time performance makes it ideal for background 4 • Wei Li, Hanxiao Sun, Tao Huang, Haoxiang Wang, Tongtong Wang, Zherong Pan, and Kui Wu 
+
+effects like dust storms, tornadoes, and volumetric clouds with dy-namic lighting. However, since the smoke sequence and lighting are baked into textures, smoke dynamics, camera settings, and light-ing are pre-simulated and pre-rendered from a fixed view direction, limiting the interactivity of this technique, as summarized in Table 1. 
+
+Table 1. Comparison between traditional and our neural six-way lightmaps. Dyn. denotes dynamic. (No ★: Traditional method renders a billboard under any view, which introduces large artifact as shown in Fig. 1)                
+
+> Method Dyn. light Dyn. smoke Dyn. view Obstacle Speed
+> Traditional Yes No No ★No Very fast Ours neural Yes Yes Yes Yes Fast
+
+4 Neural Six-way Lightmaps Prediction 
+
+In this section, we introduce our neural six-way lightmaps tech-nique, which enables real-time performance while allowing dynamic camera direction and arbitrary user interactivity. 
+
+4.1 Overview 
+
+Unlike prior learning-based volumetric rendering approaches that di-rectly accelerate the evaluation of Radiative Transfer Equation in 3D, our method draws inspiration from traditional six-way lightmaps and leverages screen-space information to predict integrated light scattering from six orthogonal directions. This design dramatically reduces network complexity, simplifies training, and yields orders-of-magnitude performance improvements. As illustrated in Fig. 3, our system begins with a real-time 3D GPU fluid solver that supports dynamic smoke–obstacle interactions. To approximate volumetric scattering efficiently, we generate a screen-space guiding map and a depth map by ray-marching the density field along the camera direction with a large step size under a surrogate lighting setup. The resulting 2D guiding map is fed into a compact neural network that predicts the six directional lightmaps. These lightmaps, combined with the obstacle’s shadow map, enable high-quality smoke illumi-nation in a few milliseconds, supporting dynamic smoke, arbitrary camera motion, and changing light conditions. 
+
+4.2 Guiding Map via Ray-marching 
+
+Estimating the rendering equation Eq. 1 within the limited time budget of real-time applications is computationally challenging. Modern high-quality, physically based volumetric renderer relies on stochastic procedures to determine the distance and direction to the next sample while simultaneously estimating the transmittance along the ray. Although accurate, this approach requires significant computational overhead, making it challenging to achieve real-time performance. Our goal is to efficiently generate a coarse approximation of the smoke’s structure and silhouette, which serves as a guide for our network to predict the corresponding lightmaps. To this end, we illuminate the smoke using three carefully selected light directions. The first light is aligned with the reversed viewing direction 𝝎 , as the smoke’s appearance from the viewing direction is most critical for its on-screen representation. To further emphasize the silhouette and enhance structural perception, we introduce two additional side lights from directions 𝝎 × z and −𝝎 × z, where z denotes the z-axis 
+
+Algorithm 1: Ray-marching for Guiding Map ˜𝐿 scattering 
+
+Input: Time step size ℎ, number of steps 𝑁 
+
+Output: ˜𝐿 scattering , 𝐷 , and 𝑇 𝑁  
+
+> 1
+
+for each view ray from x along direction 𝝎 do  
+
+> 2
+
+˜𝐿 scattering ← 0, 𝑐 0 ← 1, 𝐷 ← 0 
+
+> 3
+
+x0 ← x0 + 𝛿 // 𝛿 : random jitter  
+
+> 4
+
+for 𝑛 ← 1 to 𝑁 do  
+
+> 5
+
+x𝑛 ← x0 − 𝑛ℎ 𝝎 , 𝜎 𝑛 ← 𝜎 𝑠 (x𝑛 ) 
+
+> 6
+
+if 𝐷 = 0 and 𝜎 𝑛 > 𝜏 then  
+
+> 7
+
+𝐷 ← 𝑛ℎ  
+
+> 8
+
+end  
+
+> 9
+
+𝑇 𝑛 ← 𝑇 𝑛 −1𝑒 −𝜎 𝑛 ℎ , 𝐴 𝑛 ← 𝑇 𝑛 −1𝜎 𝑠     
+
+> // 𝐴 •𝐿 •𝑃 •computed via ray-marching along direction •
+> // with large step size
+> 10
+
+𝐿 𝑛 ← 𝑇 front 𝐿 front 𝑃 (𝝎 , front ) + 𝑇 top 𝐿 top 𝑃 (𝝎 , top ) + 
+
+𝑇 bottom 𝐿 bottom 𝑃 (𝝎 , bottom ) 
+
+> 11
+
+˜𝐿 scattering ← ˜𝐿 scattering + 𝐴 𝑛 𝐿 𝑛  
+
+> 12
+
+end  
+
+> 13
+
+end 
+
+in world-space. Hence, we adopt an aggressive approximation of the in-scattered radiance ˜𝐿 scattering (x, 𝝎 ) as : 
+
+˜𝐿 scattering (x, 𝝎 ) =
+
+∫ 𝑧 
+
+> 0
+
+𝑇 (x ↔ y)𝜎 𝑠 (x)𝐿 𝑠 (y)𝑑𝑦 , (6) where 𝐿 𝑠 (y) = Í𝝎 ′ ∈ { front , top , bottm } 𝑇 (y ↔ z𝝎 ′ )𝐿 𝝎 ′ and front, top, and bottom denotes 𝝎 , 𝝎 × z, and −𝝎 × z, respectively. In practice, to further accelerate the computation, we use ray-marching with a large step size to obtain a rough approximation of Eq. 6, as described in algorithm 1. We adopt algorithm 1 as a guiding map generator, using a ray marching with a large step size of ℎ = 10 Δ𝑥 in smoke data 𝜎 𝑠 in a 3D texture, and Δ𝑥 is the voxel width. Our output guiding maps 
+
+G involve three channels, including the approximated in-scattered radiance ˜𝐿 scattering , transparency 𝑇 , and depth 𝐷 of the smoke surface to the camera. The rendering result, as illustrated in Fig. 3, shows that while the guiding map lacks fine-scattering details and exhibits blocky artifacts due to its coarse step size, it effectively captures the essential smoke structure and silhouette. This approximation is sufficient to guide a neural network in generating six-way lightmaps. We add a small jitter distance 𝛿 to each marching step to avoid the pattern artifacts that appear when using large ray marching steps. 
+
+4.3 Channel-aware Neural Lightmaps Generator 
+
+We denote by G𝑡 ∈ R𝐻 ×𝑊 ×3 the guiding map generated via ray marching in the 𝑡 -th frame. Our objective is to design a neural net-work that translates the guiding map G𝑡 into the final rendering results that closely approximate those produced by ground-truth Monte Carlo integration. A straightforward approach is to feed both the guiding map and the light direction into the network and directly predict the final radiance. However, this design suffers from two major drawbacks. First, it requires sampling over light directions during training, significantly increasing both data generation cost and training complexity. Second, in scenes that are illuminated by Real-time Neural Six-way Lightmaps • 5          
+
+> Fluid simulator Obstacle Shadow map Final result Density grid ˜𝐿 scattering 𝑇 𝐷
+> Encoder Decoder F & B L & R U & D A & E Channel adapters Six-way lightmaps Emissive (optional) (a) (b) (c) (d) (e) (f)
+
+Fig. 3. Our pipeline: the physically based fluid simulator takes the obstacle as input (a) to produce the density field (b). (c) A ray marching with a large sample step extracts the guiding map with three channels, in-scattered radiance ˜𝐿 scattering , transparency 𝑇 , and depth 𝐷 . (d) Our neural lightmaps generator contains a modified UNet that first extracts channel-shared features from the input, which are then processed by four dedicated channel adapters with outputs for front and back, left and right, up and down, and transparency and emissive, respectively. The shadow map of obstacle (e) is generated from the light and combined with predicted lightmaps to generate the final rendering result (f). 
+
+multiple light sources, a common scenario in modern game environ-ments, the inference time scales linearly with the number of light sources, making real-time performance impractical. Hence, we adopt the technique inspired by current game render-ing pipelines and predict six-way lightmaps L𝑡 ∈ R𝐻 ×𝑊 ×6, where each channel corresponds to one of the six canonical directions and 
+
+𝑡 denotes the current frame. These lightmaps enable smoke shading to be computed efficiently via directional interpolation. The network must satisfy several key requirements: (1) perform inference in real time to meet the stringent performance demands of video games, (2) produce temporally coherent outputs across consecutive frames, and (3) generalize effectively to unseen smoke density distributions 
+
+𝜎 𝑠 generated by the real-time smoke simulator. While prior work, such as [Chu et al . 2020], has explored GAN-based approaches with spatial–temporal discriminators trained on 3D density data, their inference costs remain prohibitively high for real-time applications. To achieve efficiency, we instead rely solely on the 2D screen-space guiding map G𝑡 as network input. As illustrated in Fig. 3, we parameterize our lightmap gener-ator using a modified UNet [Ronneberger et al . 2015] architec-ture with channel adapters, which serve as the generator trans-lating G𝑡 to L𝑡 . The UNet encoder extracts a bottleneck feature 
+
+𝑓 𝑡 ≜ Enc (G 𝑡 ), which the decoder subsequently transforms into the output lightmaps, L𝑡 ≜ Dec (𝑓 𝑡 ). Observing that the output channels exhibit substantial directional variation yet share partial structural similarities, we group them into four categories: front-back lightmaps, left–right lightmaps, up–down lightmaps, and a group comprising transmittance and emissive color. To better capture group-specific characteristics, we augment the UNet decoder with four dedicated channel adapters: the first three are directional groups, and the last is for alpha-emissive, as shown in Fig. 3. These adapters, implemented as NAFBlocks [Chen et al .2022], disentangle inter-channel dependencies, enabling the net-work to capture group-specific illumination properties and thereby improving both reconstruction fidelity and robustness. 
+
+4.4 Training Procedure 
+
+To train our network as a generalizable image translator, we con-struct a dataset of scattering coefficient trajectories 𝜎 𝑡 𝑠 generated using an in-house fluid simulator. For each frame, we employ both ray marching and Monte Carlo (MC) integration to produce the ground-truth tuple ⟨𝜎 𝑡 𝑠 , G𝑡 , L𝑡 ⟩. During training, we optimize a composite objective designed to promote generalization, temporal coherence, and visual similarity between the predicted and reference six-way lightmaps, ˆL𝑡 and L𝑡 , respectively. Our objective consists of three loss components. The first is a pixel-wise reconstruction loss, formulated as the mean squared error (MSE) between the predicted and ground-truth lightmaps in sRGB space to better capture details in dark regions: 
+
+𝑙 MSE = | ˆL𝑡 − L 𝑡 |22 . (7) The second component is a perceptual loss [Johnson et al . 2016], which leverages a pretrained VGG network 𝜙 (·) to extract hierar-chical feature representations. We compute the ℓ1 distance between the feature maps of the prediction and the ground truth to enforce perceptual similarity: 
+
+𝑙 perc = |𝜙 ( ˆL𝑡 ) − 𝜙 (L 𝑡 )| 1 . (8) The third term enforces temporal consistency in the flow space using a pretrained FlowNet model O(·) . Given paired frames ⟨L 𝑡 −1, L𝑡 ⟩
+
+and ⟨ ˆL𝑡 −1, ˆL𝑡 ⟩, we compute their corresponding optical flow fields 
+
+𝑣 𝑡 = O(L 𝑡 −1, L𝑡 ) and ˆ𝑣 𝑡 = O( ˆL𝑡 −1, ˆL𝑡 ). The flow loss is then defined as the ℓ1 difference between the predicted and reference 6 • Wei Li, Hanxiao Sun, Tao Huang, Haoxiang Wang, Tongtong Wang, Zherong Pan, and Kui Wu 
+
+flow fields: 
+
+𝑙 flow = | ˆ𝑣 𝑡 − 𝑣 𝑡 |1 . (9) The overall training objective combines the three losses as a weighted sum: 
+
+𝑙 = 𝜆 MSE 𝑙 MSE + 𝜆 perc 𝑙 perc + 𝜆 flow 𝑙 flow , (10) where 𝜆 MSE , 𝜆 perc , and 𝜆 flow are scalar weights that balance the contributions of the individual loss terms. 
+
+4.5 Obstacle Shadowing 
+
+Unlike traditional six-way lightmaps, our method supports shad-ows cast by scene geometry onto participating media. Computing such shadows accurately typically requires tracing secondary rays through both the medium and surrounding obstacles, which is pro-hibitively expensive. Alternatively, encoding explicit geometry as part of the network input would increase training cost and data complexity, as meshes must be embedded into latent representa-tions while preserving generalization. To balance efficiency and fidelity, we employ a depth-based screen-space shadow approxi-mation. In particular, during the generation of the guiding map, we already obtain the depth of the smoke in screen space, which forms a smoke outer shell. During rendering, each pixel’s smoke “surface” depth is transformed into the light view–projection space and compared against a shadow map rendered from the light. By comparing the smoke shell depth with the obstacle shadow depth, we efficiently estimate per-pixel visibility without performing a second ray-marching pass for shadow evaluation. 
+
+5 Experiments 
+
+We conducted all experiments on a workstation equipped with an AMD Ryzen Threadripper 3970X 32-core CPU, 256 GB of memory, and a GPU with 16,384 cores and 24 GB of memory. Following com-mon game-engine practice, all evaluations use a 512 × 512 lightmap resolution to balance texture memory and performance. All pre-sented results are generated from the same network. 
+
+Smoke Simulator. To support interactive smoke dynamics with efficient rigid coupling, we employ a 3D physically based fluid solver based on the lattice Boltzmann method (LBM) [Li et al . 2023]. The LBM-generated velocity field advects the density field, which is streamed directly into the guiding map generation. This formula-tion inherently supports collisions with arbitrary scene geometry, making it well-suited to dynamic and interactive scenarios. 
+
+Data Generation. We generate our smoke dataset by simulating 14 dynamic smoke sequences with an LBM solver, placing cylindri-cal obstacles at different locations to produce smoke with varying shapes. For each sequence, we render only the smoke while masking out the obstacles. High-fidelity offline volume rendering is used to generate six-way light maps and an alpha channel for 200 frames per sequence, which takes approximately 2 hours. Each sequence is rendered from 9 viewpoints by rotating the camera 90 ◦ in 10 ◦ incre-ments, yielding a total of 126 smoke sequences and 25,200 images. We generate the reference images using the Houdini Karma renderer with volume path tracing. We configure the renderer with a single bounce, image resolution of 512 × 512 pixels, Henyey-Greenstein phase function with 𝑔 = 0, and 512 samples per pixel. The rendering time is approximately 20 seconds per image. 
+
+Training. We train our network using Adam optimizer with a learning rate of 0.001 . The batch size is set to 12 , and the training is conducted for 200 epochs. The training is performed on a single GPU for about 60 hours. 
+
+Performance. The complete simulation-inference pipeline is im-plemented in CUDA and TensorRT, and the final smoke rendering with neural-predicted lightmaps is integrated into an OpenGL ras-terization pass. We use a weakly compressible velocity solver and grid-based smoke advection, employing a 100 3 velocity grid and a 
+
+400 3 density grid to balance efficiency and fidelity. The computation of velocity and the advection of density take 4.0 ms and 11.5 ms, re-spectively. Guiding map generation and neural lightmaps prediction are performed at 512 2 resolution, requiring 2 ms for guiding-map construction and fixed 1.2 ms for inference. The final rendering stage costs less than 0.3 ms. Our depth-based shadowing adds only 0.8 ms of overhead for rigid-body shadows cast onto the smoke. 
+
+Comparison with Volumetric ReSTIR [Lin et al . 2021]. We compare our method with state-of-the-art fast volumetric rendering tech-niques, volumetric ReSTIR [Lin et al . 2021], as shown in Fig. 13. With only 1 sample per pixel (SPP), volumetric ReSTIR exhibits significant noise. Also, since it evaluates full light paths via standard tracking, its rendering time exceeds 10 ms even at this low sampling rate. While OptiX temporal denoising can substantially improve vi-sual quality, it adds additional 2 ms overhead. Beyond performance, our results preserve more structural detail and achieve higher Peak Signal-to-Noise Ratio (PSNR) and lower Mean Squared Error (MSE). 
+
+Comparison with MRPNN [Hu et al . 2023]. Compared to the learned real-time method, our approach eliminates costly precomputation. MRPNN requires constructing a multi-level 3D mipmap hierarchy for each simulation frame, which takes over 170 ms for a 400 3 density grid in our profiling. When the light direction or position changes, MRPNN must also recompute per-voxel transmittance fields, adding another 4 ms. Its inference and final rendering take an additional 4 ms and 0.5 ms, respectively. In contrast, our method requires only 3 ms for inference and 0.5 ms for rendering, thanks to a smaller network and predicting 2D lightmaps rather than full 3D light-scattering fields. More importantly, MRPNN’s shadow prediction is less accurate, resulting in overly bright images and, correspondingly, lower PSNR and higher MSE. 
+
+Ablation Study on Guiding Light Directions. We use three illumina-tion directions, front, top, and bottom, when generating the guiding map for smoke illumination. We validate this choice by comparing it with alternative configurations, including a front-only configura-tion and a front–left–right combination. As shown in Fig. 6, while including left and right lighting yields reasonably accurate inference results, the front–top–bottom configuration consistently achieves the best overall results. 
+
+Ablation Study on Density Variation. We evaluate our method under varying density scales, as shown in Fig. 5. Although the network is trained only on inlet densities of 0.1, we test on den-sity fields scaled by 0.5× and 2.0×. While performance decreases Real-time Neural Six-way Lightmaps • 7
+
+Fig. 4. Our approach can handle dynamic smoke under a moving camera and be integrated seamlessly into Unreal Engine [Epic Games 2021]. 
+
+slightly, dropping a few PSNR points due to the distribution shift, the results remain stable, with overall PSNR values above 30. Even at 2.0× density, our method continues to outperform both denoised ReSTIR and MRPNN, demonstrating stronger robustness to density variation, as illustrated in Fig. 14. 
+
+Ablation Studies on Losses. We further perform an ablation study of all loss terms and network design choices on an unseen anima-tion sequence simulated by our LBM solver, as shown in Fig. 15, reporting average, minimum, and maximum peak PSNR and MSE. Each component proves essential for achieving high-quality results. In particular, the channel adapters significantly improve accuracy by leveraging partial structural similarities among lightmaps from different orientations. Using sRGB space helps preserve fine details, especially in darker regions, where numerical precision is limited. The flow loss enforces temporal coherence across frames, while the perceptual loss maintains high-level structural features that are difficult to capture with pixel-wise losses alone. 
+
+Jet Flow. ‘ Fig. 7 presents a jet-flow example simulated with an LBM solver. The proposed neural lightmap method faithfully illu-minates the dense, fast-moving smoke while preserving fine-scale vortex structures. By rotating both the camera and the light direction, we demonstrate strong spatial and temporal coherence; additional results are provided in the supplemental video. Our framework also supports smoke–obstacle interactions. As shown in Fig. 16, a rigid bunny is immersed in the jet flow, and our depth-based screen-space shadow approximation produces visually coherent shadows cast from the object onto the smoke with negligible performance cost. Fi-nally, Fig. 8 shows an additional example in which a moving sphere interacts with the jet flow. Leveraging our real-time fluid simula-tion and lightweight neural lightmaps, the entire simulation-and-rendering pipeline runs at 10 ms per frame, with 7 ms for simulation and 3 ms for rendering, respectively. 
+
+Explosion and Generalization to Out-of-distribution Data. The emission term is crucial for explosion rendering because of the self-luminous nature of the phenomenon. To generate training data for the emissive channel, we use Houdini six-way lightmap toolkit [SideFX 2025]. Specifically, the Houdini Pyro Bake Volume geometry node converts the simulated smoke density into a special-ized scatter volume, which serves as a one-dimensional emissive texture. During rendering, the values of this 1D emissive texture are remapped to RGB colors using Houdini default fire intensity mapping function, producing the final explosion appearance. As shown in Fig. 9, we evaluate our method on a sequence of pre-simulated unseen volumetric datasets obtained from a third-party source. By applying our network directly to these density fields, we demonstrate that it can accurately predict the emissive channel of six-way lightmaps, enabling real-time approximation of com-plex volumetric lighting effects that include both scattering and emission. Fig. 10 demonstrates our method applied to a sequence of pre-simulated volumetric explosion data directly downloaded from a third-party website to demonstrate our method is capable of applying to out-of-distribution data. 
+
+Demos in Unreal Engine [Epic Games 2021]. We first demonstrate our method using a smoke plume example in a subway station scene, shown in Fig. 4. By illuminating the plume with a red point light, this example highlights the effectiveness of our approach in han-dling dynamic smoke under a moving camera. The entire pipeline integrates seamlessly with an industrial game engine, underscoring its practicality for real-time applications. We further demonstrate interactive adjustment of light color and position in Fig. 11, the whole sequence can be found in the supplemental video. Finally, we present a chimney smoke example in Fig. 1. Compared with the UE-built-in Niagara system using sprite-based particle effects, our method produces substantially more realistic smoke appear-ance through lightmap lighting. Moreover, while standard six-way lightmaps enable camera-oriented billboards, they often introduce noticeable artifacts for asymmetric smoke shapes. 
+
+Discussion. Our method relies on a screen-space guiding map to predict lightmaps, enabling high efficiency but also limiting our ability to capture fully accurate shadowing. To address this, we use a simple yet effective technique to approximate the shadows cast by objects onto the smoke. Since accurate shadow requires ray marching from scene geometry toward the light source, we omit this in our framework because such effects are commonly omitted in real-time applications for performance reasons. 
+
+6 Conclusion 
+
+We have introduced a neural lightmaps framework for real-time smoke rendering that learns light scattering from a 2D guiding map, providing a practical alternative for real-time volume rendering methods. By leveraging a UNet with specialized channel adapters, our method predicts six-way lightmaps and transparency maps from screen-space cues, enabling seamless integration into existing game 8 • Wei Li, Hanxiao Sun, Tao Huang, Haoxiang Wang, Tongtong Wang, Zherong Pan, and Kui Wu 
+
+engine pipelines. Our approach achieves high visual fidelity while maintaining interactive performance, supporting dynamic view di-rections, object–smoke interactions, and real-time interactivity. 
+
+Limitations. As shown in Fig. 12, our method achieves higher PSNR and MSE than prior work [Hu et al . 2023; Lin et al . 2021], but it still struggles to predict shadowing for data that deviates significantly from the training distribution, revealing a limitation in generalization that remains an avenue for future work. Another limitation is that shadowing cast by external objects is handled with an ad-hoc approximation targeting visual plausibility rather than physical accuracy for real-time applications. A more principled ap-proach, such as computing object-cast shadow volumes throughout the medium rather than relying solely on surface projection, offers a promising direction for improving fidelity. 
+
+References 
+
+Mai Ao. 2023. You Asked Me to Make the Flipbook Exporter Better. Let’s Do It. SideFX. https://www.sidefx.com/houdini-hive/gdc-2023/#Labs1 Adam Arbree, Bruce Walter, and Kavita Bala. 2008. Single-pass Scalable Subsurface Rendering with Lightcuts. Computer Graphics Forum 27, 2 (2008), 507–516. Benedikt Bitterli and Wojciech Jarosz. 2017. Beyond points and beams: higher-dimensional photon samples for volumetric light transport. ACM Trans. Graph. 36, 4, Article 112 (July 2017), 12 pages. Forrest B Brown and William R Martin. 1999. The Physical Models and Statistical Procedures Used in the RACER Monte Carlo Code. In reportg , Vol. 2. University of North Texas Libraries, UNT Digital Library, Texas, USA, 39 pages. Forrest B Brown and William R Martin. 2003. Direct sampling of Monte Carlo flight paths in media with continuously varying cross-sections. In Proc. ANS Mathematics & Computation Topical Meeting , Vol. 2. American Nuclear Society, IL, USA, 11 pages. J. C. Butcher and H. Messel. 1958. Electron Number Distribution in Electron-Photon Showers. Phys. Rev. 112 (Dec 1958), 2096–2106. Issue 6. Liangyu Chen, Xiaojie Chu, Xiangyu Zhang, and Jian Sun. 2022. Simple Baselines for Image Restoration. In Computer Vision – ECCV 2022: 17th European Conference, Tel Aviv, Israel, October 23–27, 2022, Proceedings, Part VII (Tel Aviv, Israel). Springer-Verlag, Berlin, Heidelberg, 17–33. Mengyu Chu, You Xie, Jonas Mayer, Laura Leal-Taixé, and Nils Thuerey. 2020. Learning temporal coherence via self-supervision for GAN-based video generation. ACM Trans. Graph. 39, 4, Article 75 (Aug. 2020), 13 pages. Xi Deng, Shaojie Jiao, Benedikt Bitterli, and Wojciech Jarosz. 2019. Photon surfaces for robust, unbiased volumetric density estimation. ACM Trans. Graph. 38, 4, Article 46 (July 2019), 12 pages. Epic Games. 2021. Unreal Engine. https://www.unrealengine.com Iliyan Georgiev, Jaroslav Křivánek, Toshiya Hachisuka, Derek Nowrouzezahrai, and Wojciech Jarosz. 2013. Joint importance sampling of low-order volumetric scattering. 
+
+ACM Trans. Graph. 32, 6, Article 164 (Nov. 2013), 14 pages. Jinkai Hu, Chengzhong Yu, Hongli Liu, Lingqi Yan, Yiqian Wu, and Xiaogang Jin. 2023. Deep Real-time Volumetric Rendering Using Multi-feature Fusion. In ACM SIGGRAPH 2023 Conference Proceedings (Los Angeles, CA, USA) (SIGGRAPH ’23) .Association for Computing Machinery, New York, NY, USA, Article 61, 10 pages. Vincent Hubert-Tremblay, Louis Archambault, Dragan Tubic, René Roy, and Luc Beaulieu. 2006. Octree indexing of DICOM images for voxel number reduction and improvement of Monte Carlo simulation computing efficiency. Medical Physics 33, 8 (2006), 2819–2831. Yuchi Huo, Rui Wang, Tianlei Hu, Wei Hua, and Hujun Bao. 2016. Adaptive matrix column sampling and completion for rendering participating media. ACM Trans. Graph. 35, 6, Article 167 (Dec. 2016), 11 pages. Wojciech Jarosz, Derek Nowrouzezahrai, Iman Sadeghi, and Henrik Wann Jensen. 2011a. A comprehensive theory of volumetric radiance estimation using photon points and beams. ACM Trans. Graph. 30, 1, Article 5 (Feb. 2011), 19 pages. Wojciech Jarosz, Derek Nowrouzezahrai, Robert Thomas, Peter-Pike Sloan, and Matthias Zwicker. 2011b. Progressive photon beams. ACM Trans. Graph. 30, 6 (Dec. 2011), 1–12. Henrik Wann Jensen and Per H. Christensen. 1998. Efficient simulation of light transport in scenes with participating media using photon maps. In Proceedings of the 25th Annual Conference on Computer Graphics and Interactive Techniques (SIGGRAPH ’98) . Association for Computing Machinery, New York, NY, USA, 311–320. Chaonan Ji, Tao Yu, Kaiwen Guo, Jingxin Liu, and Yebin Liu. 2022. Geometry-Aware Single-Image Full-Body Human Relighting. In Computer Vision – ECCV 2022 , Shai Avidan, Gabriel Brostow, Moustapha Cissé, Giovanni Maria Farinella, and Tal Hass-ner (Eds.). Springer Nature Switzerland, Cham, 388–405. Haian Jin, Yuan Li, Fujun Luan, Yuanbo Xiangli, Sai Bi, Kai Zhang, Zexiang Xu, Jin Sun, and Noah Snavely. 2024. Neural Gaffer: Relighting Any Object via Diffusion. In Advances in Neural Information Processing Systems . NeurIPS Foundation, 1269 Law St, San Diego, CA 92109, 18 pages. Justin Johnson, Alexandre Alahi, and Li Fei-Fei. 2016. Perceptual Losses for Real-Time Style Transfer and Super-Resolution. In Computer Vision – ECCV 2016 . Springer International Publishing, Cham, 694–711. Simon Kallweit, Thomas Müller, Brian Mcwilliams, Markus Gross, and Jan Novák. 2017. Deep scattering: rendering atmospheric clouds with radiance-predicting neural networks. ACM Trans. Graph. 36, 6, Article 231 (Nov. 2017), 11 pages. Yoshihiro Kanamori and Yuki Endo. 2018. Relighting humans: occlusion-aware inverse rendering for full-body human images. ACM Trans. Graph. 37, 6, Article 270 (Dec. 2018), 11 pages. Alexander Keller. 1997. Instant radiosity. In Proceedings of the 24th Annual Conference on Computer Graphics and Interactive Techniques (SIGGRAPH ’97) . ACM Press/Addison-Wesley Publishing Co., USA, 49–56. Peter Kutz, Ralf Habel, Yining Karl Li, and Jan Novák. 2017. Spectral and decomposition tracking for rendering heterogeneous volumes. ACM Trans. Graph. 36, 4, Article 111 (July 2017), 16 pages. Jaroslav Křivánek, Iliyan Georgiev, Toshiya Hachisuka, Petr Vévoda, Martin Šik, Derek Nowrouzezahrai, and Wojciech Jarosz. 2014. Unifying points, beams, and paths in volumetric light transport simulation. ACM Trans. Graph. 33, 4, Article 103 (July 2014), 13 pages. L. Leonard, K. Höhlein, and R. Westermann. 2021. Learning Multiple-Scattering So-lutions for Sphere-Tracing of Volumetric Subsurface Effects. Computer Graphics Forum 40, 2 (2021), 165–178. Wei Li, Tongtong Wang, Zherong Pan, Xifeng Gao, Kui Wu, and Mathieu Desbrun. 2023. High-Order Moment-Encoded Kinetic Simulation of Turbulent Flows. ACM Trans. Graph. 42, 6, Article 190 (Dec. 2023), 13 pages. Daqi Lin, Chris Wyman, and Cem Yuksel. 2021. Fast volume rendering with spatiotem-poral reservoir resampling. ACM Trans. Graph. 40, 6 (Dec. 2021), 18 pages. Andrew Liu, Shiry Ginosar, Tinghui Zhou, Alexei A. Efros, and Noah Snavely. 2020. Learning to Factorize and Relight a City. In Computer Vision – ECCV 2020 (Glasgow, United Kingdom). Springer-Verlag, Berlin, Heidelberg, 544–561. Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ra-mamoorthi, and Ren Ng. 2021. NeRF: representing scenes as neural radiance fields for view synthesis. Commun. ACM 65, 1 (Dec. 2021), 99–106. Mathieu Muller. 2023. Realistic smoke lighting with 6-way lighting in VFX Graph .Unity. https://unity.com/blog/engine-platform/realistic-smoke-with-6-way-lighting-in-vfx-graph Thomas Müller, Fabrice Rousselle, Jan Novák, and Alexander Keller. 2021. Real-time neural radiance caching for path tracing. ACM Trans. Graph. 40, 4, Article 36 (July 2021), 16 pages. Adolfo Muñoz. 2014. Higher Order Ray Marching. Computer Graphics Forum 33, 8 (2014), 167–176. Jan Novák, Derek Nowrouzezahrai, Carsten Dachsbacher, and Wojciech Jarosz. 2012. Virtual ray lights for rendering scenes with participating media. ACM Trans. Graph. 
+
+31, 4, Article 60 (July 2012), 11 pages. Jan Novák, Andrew Selle, and Wojciech Jarosz. 2014. Residual ratio tracking for estimating attenuation in participating media. ACM Trans. Graph. 33, 6, Article 179 (Nov. 2014), 11 pages. Jan Novák, Iliyan Georgiev, Johannes Hanika, and Wojciech Jarosz. 2018. Monte Carlo Methods for Volumetric Light Transport Simulation. Computer Graphics Forum 37, 2 (2018), 551–576. Rohit Pandey, Sergio Orts-Escolano, Chloe Legendre, Christian Haene, Sofien Bouaziz, Christoph Rhemann, Paul E Debevec, and Sean Ryan Fanello. 2021. Total relighting: learning to relight portraits for background replacement. ACM Trans. Graph. 40, 4 (2021), 43–1. K. Perlin and E. M. Hoffert. 1989. Hypertexture. In Proceedings of the 16th Annual Confer-ence on Computer Graphics and Interactive Techniques (SIGGRAPH ’89) . Association for Computing Machinery, New York, NY, USA, 253–262. Hao Qin, Xin Sun, Qiming Hou, Baining Guo, and Kun Zhou. 2015. Unbiased photon gathering for light transport simulation. ACM Transactions on Graphics (TOG) 34, 6 (2015), 1–14. Matthias Raab, Daniel Seibert, and Alexander Keller. 2008. Unbiased Global Illumination with Participating Media. In Monte Carlo and Quasi-Monte Carlo Methods 2006 ,Alexander Keller, Stefan Heinrich, and Harald Niederreiter (Eds.). Springer Berlin Heidelberg, Berlin, Heidelberg, 591–605. Anurag Ranjan, Kwang Moo Yi, Jen-Hao Rick Chang, and Oncel Tuzel. 2023. FaceLit: Neural 3D Relightable Faces . In 2023 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) . IEEE Computer Society, Los Alamitos, CA, USA, 8619–8628. Olaf Ronneberger, Philipp Fischer, and Thomas Brox. 2015. U-Net: Convolutional Networks for Biomedical Image Segmentation. In Medical Image Computing and Computer-Assisted Intervention – MICCAI 2015 , Nassir Navab, Joachim Hornegger, William M. Wells, and Alejandro F. Frangi (Eds.). Springer International Publishing, Real-time Neural Six-way Lightmaps • 9
+
+Cham, 234–241. SideFX. 2025. Houdini . SideFX. https://www.sidefx.com/ Delio Vicini, Vladlen Koltun, and Wenzel Jakob. 2019. A learned shape-adaptive subsur-face scattering model. ACM Trans. Graph. 38, 4, Article 127 (July 2019), 15 pages. Jung-Hsuan Wu and Suguru Saito. 2017. Interactive Relighting in Single Low-Dynamic Range Images. ACM Trans. Graph. 36, 4, Article 143a (July 2017), 18 pages. Wenshi Wu, Beibei Wang, and Ling-Qi Yan. 2022. A survey on rendering homogeneous participating media. Computational Visual Media 8, 2 (01 Jun 2022), 177–198. Can Yuksel and Cem Yuksel. 2017. Lighting grid hierarchy for self-illuminating explo-sions. ACM Trans. Graph. 36, 4, Article 110 (July 2017), 10 pages. Chong Zeng, Yue Dong, Pieter Peers, Youkang Kong, Hongzhi Wu, and Xin Tong. 2024. DiLightNet: Fine-grained Lighting Control for Diffusion-based Image Generation. In ACM SIGGRAPH 2024 Conference Papers (Denver, CO, USA) (SIGGRAPH ’24) .Association for Computing Machinery, New York, NY, USA, Article 73, 12 pages. Lvmin Zhang, Anyi Rao, and Maneesh Agrawala. 2025. Scaling In-the-Wild Training for Diffusion-based Illumination Harmonization and Editing by Imposing Consistent Light Transport. In The Thirteenth International Conference on Learning Representa-tions . OpenReview.net, Appleton, WI, USA, 18 pages. 10 • Wei Li, Hanxiao Sun, Tao Huang, Haoxiang Wang, Tongtong Wang, Zherong Pan, and Kui Wu 
+
+Reference Ours ReSTIR ∗ MRPNN 
+
+PSNR ↑ / MSE ↓ 35.89 /0.00025 31.55/0.00072 35.23/0.00030 
+
+Fig. 5. Comparison on a denser smoke field shows that our method continues to outperform prior techniques, maintaining higher visual fidelity even under significantly increased density. 
+
+Reference Front Front+LR Front+TB 
+
+PSNR ↑ 32.61/37.83/28.96 34.99/39.05/33.08 40.85/48.78/37.93 
+
+MSE ↓ 0.00065/0.00127/0.00017 0.00033/0.00049/0.00012 0.00009/0.00016/0.00001 
+
+Fig. 6. Comparison on different illumination configurations for guid-ing map generation with Avg./max/min PSNR and MSE. LR and TB denote left + right and top + bottom, respectively. 
+
+Fig. 7. A rotating jet flow, where our method can illuminate smoke wit details under the shadow. 
+
+Fig. 8. Jet flow over a moving sphere, demonstrating the rich smoke details illuminated by our method. 
+
+Fig. 9. Explosions from the third-party simulation result, and the emissive term is inferred from our method to illuminate the high-temperature area. 
+
+Fig. 10. Our method can illuminate pre-simulated explosion data from the third-party website directly. 
+
+Fig. 11. Our method supports dynamically adjusting light color, position, and orientation. 
+
+Reference Ours ReSTIR ∗ MRPNN 
+
+PSNR ↑ / MSE ↓ 33.44/0.00045 37.88 /0.00016 32.86/0.00051 
+
+Fig. 12. Rendering a volumetric bunny with ours, ReSTIR [Lin et al .2021], and MRPNN [Hu et al . 2023]. While our result is closer to the reference, it still misses the strong shadowing underneath. Real-time Neural Six-way Lightmaps • 11 
+
+Reference Ours ReSTIR ReSTIR ∗ MRPNN 
+
+PSNR ↑ / MSE ↓, Time ↓ 40.71 /0.00008 , 3.9 ms 26.26/0.00109, 10.4 ms 34.84/0.00236, 12.6 ms 36.13/0.00032, 4.0 + 180 ms 
+
+PSNR ↑ / MSE ↓, Time ↓ 32.91 /0.00043 , 4.5 ms 26.43/0.00218, 12.6 ms 31.24/0.00073, 15.7 ms 31.54/0.00066, 5.2 + 206 ms 
+
+Fig. 13. Comparison between reference, ours, ReSTIR [Lin et al . 2021] with 1 spp, ReSTIR with 1 spp and denoising, and MRPNN [Hu et al . 2023]. 
+
+Reference Ours Reference Ours Reference Ours 
+
+Density ×0.5 32.39/0.00057 Density ×1.0 40.71/0.00008 Density ×2.0 35.89/0.00025 
+
+Fig. 14. Ablation study on different densities. While PSNR decreases slightly due to the distribution shift, the results remain stable. 
+
+Reference No channel adapter No SRGB space W/o flow loss W/o perceptual loss Our total 
+
+Avg./max/min PSNR ↑ 38.75/44.90/36.03 38.93/46.10/36.09 39.11/47.31/36.15 38.93/46.10/36.09 40.85/48.78/37.93 
+
+Avg./max/min MSE ↓ 0.00019/0.00029/0.00002 0.00017/0.00027/0.00002 0.00016/0.00024/0.00001 0.00017/0.00027/0.00003 0.00009/0.00016/0.00001 
+
+Fig. 15. Ablation study on different losses. Each component proves essential for achieving high-quality results. 
+
+Fig. 16. Jet flow over a rigid bunny with a rotating light. The middle image demonstrates the bunny casting a shadow on the smoke from the backlit.

@@ -6,49 +6,44 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-06
-- 运行时间：2026-04-06 20:33:15 UTC
+- 最新运行日期：2026-03-29 ~ 2026-04-07
+- 运行时间：2026-04-07 09:28:31 UTC
 - 运行状态：成功
-- 本次总论文数：9
+- 本次总论文数：8
 - 精读区：2
-- 速读区：7
+- 速读区：6
 
 ### 今日简报（AI）
-今日聚焦 3D 高斯流式传输与边缘端 NeRF 优化，深度探索实时渲染与高效重建的新范式。
-核心突破在于实现 3D 高斯场景的实时流式渲染，并利用分解哈希网格让 NeRF 成功适配边缘设备。
-建议优先研读 3DGS 的轻量化与传输方案，这是实现低延迟、大规模三维交互应用的关键。
-- 详情：[/202604/06/README](/202604/06/README)
+本期聚焦实时渲染与 3DGS 性能飞跃，深度解析了满分神作神经网络六向光照贴图及
+- 详情：[/20260329-20260407/README](/20260329-20260407/README)
 
 ### 精读区论文标签
-1. [Streaming Real-Time Rendered Scenes as 3D Gaussians](/202604/06/2604.02851v1-streaming-real-time-rendered-scenes-as-3d-gaussians)  
-   标签：评分：9.0/10、query:profile-1
-   evidence：利用3D高斯泼溅进行实时场景流式传输的云渲染
-2. [Factorized Multi-Resolution HashGrid for Efficient Neural Radiance Fields: Execution on Edge-Devices](/202604/06/2604.02836v1-factorized-multi-resolution-hashgrid-for-efficient-neural-radiance-fields-execution-on-edge-devices)  
-   标签：评分：8.0/10、query:q1
-   evidence：高效神经辐射场与3D表示的参数编码
+1. [Real-time Neural Six-way Lightmaps](/20260329-20260407/2604.03748v1-real-time-neural-six-way-lightmaps)  
+   标签：评分：10.0/10、query:q4
+   evidence：使用光线步进对参与介质和烟雾进行神经渲染
+2. [GEMM-GS: Accelerating 3D Gaussian Splatting on Tensor Cores with GEMM-Compatible Blending](/20260329-20260407/2604.02120v2-gemm-gs-accelerating-3d-gaussian-splatting-on-tensor-cores-with-gemm-compatible-blending)  
+   标签：评分：9.0/10、query:q7
+   evidence：在Tensor Core上使用GEMM兼容混合加速3D高斯泼溅
 
 ### 速读区论文标签
-1. [Adaptive Local Frequency Filtering for Fourier-Encoded Implicit Neural Representations](/202604/06/2604.02846v1-adaptive-local-frequency-filtering-for-fourier-encoded-implicit-neural-representations)  
+1. [SpectralSplat: Appearance-Disentangled Feed-Forward Gaussian Splatting for Driving Scenes](/20260329-20260407/2604.03462v1-spectralsplat-appearance-disentangled-feed-forward-gaussian-splatting-for-driving-scenes)  
    标签：评分：7.0/10、query:q1
-   evidence：隐式神经表示的自适应局部频率滤波
-2. [SparseSplat: Towards Applicable Feed-Forward 3D Gaussian Splatting with Pixel-Unaligned Prediction](/202604/06/2604.03069v1-sparsesplat-towards-applicable-feed-forward-3d-gaussian-splatting-with-pixel-unaligned-prediction)  
+   evidence：前馈高斯泼溅技术用于跨环境条件的一致性渲染
+2. [4C4D: 4 Camera 4D Gaussian Splatting](/20260329-20260407/2604.04063v1-4c4d-4-camera-4d-gaussian-splatting)  
    标签：评分：7.0/10、query:q1
-   evidence：具有自适应密度的前馈 3D 高斯泼溅，用于高效场景表示
-3. [GenFusion: Feed-forward Human Performance Capture via Progressive Canonical Space Updates](/202604/06/2603.28997v1-genfusion-feed-forward-human-performance-capture-via-progressive-canonical-space-updates)  
+   evidence：用于时间一致性新视角渲染的4D高斯泼溅
+3. [Free-Range Gaussians: Non-Grid-Aligned Generative 3D Gaussian Reconstruction](/20260329-20260407/2604.04874v1-free-range-gaussians-non-grid-aligned-generative-3d-gaussian-reconstruction)  
+   标签：评分：7.0/10、query:q1
+   evidence：用于多视角渲染的生成式3D高斯重建
+4. [SonoWorld: From One Image to a 3D Audio-Visual Scene](/20260329-20260407/2603.28757v1-sonoworld-from-one-image-to-a-3d-audio-visual-scene)  
    标签：评分：6.0/10、query:q1
-   evidence：利用规范空间更新从单目RGB渲染新视角
-4. [DirectFisheye-GS: Enabling Native Fisheye Input in Gaussian Splatting with Cross-View Joint Optimization](/202604/06/2604.00648v1-directfisheye-gs-enabling-native-fisheye-input-in-gaussian-splatting-with-cross-view-joint-optimization)  
+   evidence：将图像提升为可导航的3D场景以进行自由视角渲染
+5. [TreeGaussian: Tree-Guided Cascaded Contrastive Learning for Hierarchical Consistent 3D Gaussian Scene Segmentation and Understanding](/20260329-20260407/2604.03309v1-treegaussian-tree-guided-cascaded-contrastive-learning-for-hierarchical-consistent-3d-gaussian-scene-segmentation-and-understanding)  
    标签：评分：6.0/10、query:q1
-   evidence：3D高斯泼溅渲染的原生鱼眼输入
-5. [NavCrafter: Exploring 3D Scenes from a Single Image](/202604/06/2604.02828v1-navcrafter-exploring-3d-scenes-from-a-single-image)  
-   标签：评分：6.0/10、query:profile-1
-   evidence：用于3D场景探索的增强型3D高斯泼溅
-6. [GP-4DGS: Probabilistic 4D Gaussian Splatting from Monocular Video via Variational Gaussian Processes](/202604/06/2604.02915v1-gp-4dgs-probabilistic-4d-gaussian-splatting-from-monocular-video-via-variational-gaussian-processes)  
+   evidence：分层3D高斯场景分割与理解
+6. [CGHair: Compact Gaussian Hair Reconstruction with Card Clustering](/20260329-20260407/2604.03716v1-cghair-compact-gaussian-hair-reconstruction-with-card-clustering)  
    标签：评分：6.0/10、query:q1
-   evidence：使用 4D 高斯泼溅对动态场景进行概率建模与重建
-7. [Rendering Multi-Human and Multi-Object with 3D Gaussian Splatting](/202604/06/2604.02996v1-rendering-multi-human-and-multi-object-with-3d-gaussian-splatting)  
-   标签：评分：6.0/10、query:q1
-   evidence：动态场景中3D高斯泼溅的分层框架
+   evidence：用于高保真3D重建的高斯泼溅渲染
 
 
 <div class="dpr-home-promo-card">

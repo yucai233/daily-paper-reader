@@ -1,0 +1,350 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-07T09:25:13.942380+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [
+    {
+      "id": "2604.03748v1",
+      "title": "Real-time Neural Six-way Lightmaps",
+      "abstract": "Participating media are a pervasive and intriguing visual effect in virtual environments. Unfortunately, rendering such phenomena in real-time is notoriously difficult due to the computational expense of estimating the volume rendering equation. While the six-way lightmaps technique has been widely used in video games to render smoke with a camera-oriented billboard and approximate lighting effects using six precomputed lightmaps, achieving a balance between realism and efficiency, it is limited to pre-simulated animation sequences and is ignorant of camera movement. In this work, we propose a neural six-way lightmaps method to strike a long-sought balance between dynamics and visual realism. Our approach first generates a guiding map from the camera view using ray marching with a large sampling distance to approximate smoke scattering and silhouette. Then, given a guiding map, we train a neural network to predict the corresponding six-way lightmaps. The resulting lightmaps can be seamlessly used in existing game engine pipelines. This approach supports visually appealing rendering effects while enabling real-time user interactivity, including smoke-obstacle interaction, camera movement, and light change. By conducting a series of comprehensive benchmarks, we demonstrate that our method is well-suited for real-time applications, such as games and VR/AR.",
+      "authors": [
+        "Wei Li",
+        "Hanxiao Sun",
+        "Tao Huang",
+        "Haoxiang Wang",
+        "Tongtong Wang",
+        "Zherong Pan",
+        "Kui Wu"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.CV"
+      ],
+      "published": "2026-04-04T14:44:08+00:00",
+      "link": "https://arxiv.org/pdf/2604.03748v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "neural rendering of participating media and smoke using ray marching",
+      "llm_evidence_cn": "使用光线步进对参与介质和烟雾进行神经渲染",
+      "llm_evidence": "使用光线步进对参与介质和烟雾进行神经渲染",
+      "canonical_evidence": "使用光线步进对参与介质和烟雾进行神经渲染",
+      "llm_tldr_en": "Proposes neural six-way lightmaps for real-time rendering of participating media like smoke.",
+      "llm_tldr_cn": "提出神经六向光照贴图，用于烟雾等参与介质的实时渲染。",
+      "llm_tldr": "提出神经六向光照贴图，用于烟雾等参与介质的实时渲染。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "deep learning for multiple scattering in volumes",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.02120v2",
+      "title": "GEMM-GS: Accelerating 3D Gaussian Splatting on Tensor Cores with GEMM-Compatible Blending",
+      "abstract": "Neural Radiance Fields (NeRF) enables 3D scene reconstruction from several 2D images but incurs high rendering latency via its point-sampling design. 3D Gaussian Splatting (3DGS) improves on NeRF with explicit scene representation and an optimized pipeline yet still fails to meet practical real-time demands. Existing acceleration works overlook the evolving Tensor Cores of modern GPUs because 3DGS pipeline lacks General Matrix Multiplication (GEMM) operations. This paper proposes GEMM-GS, an acceleration approach utilizing tensor cores on GPUs via GEMM-friendly blending transformation. It equivalently reformulates the 3DGS blending process into a GEMM-compatible form to utilize Tensor Cores. A high-performance CUDA kernel is designed, integrating a three-stage double-buffered pipeline that overlaps computation and memory access. Extensive experiments show that GEMM-GS achieves $1.42\\times$ speedup over vanilla 3DGS and provides an additional $1.47\\times$ speedup on average when combining with existing acceleration approaches. Code is released at https://github.com/shieldforever/GEMM-GS.",
+      "authors": [
+        "Haomin Li",
+        "Bowen Zhu",
+        "Fangxin Liu",
+        "Zongwu Wang",
+        "Xinran Liang",
+        "Li Jiang",
+        "Haibing Guan"
+      ],
+      "primary_category": "cs.AR",
+      "categories": [
+        "cs.AR",
+        "cs.GR"
+      ],
+      "published": "2026-04-02T14:56:06+00:00",
+      "link": "https://arxiv.org/pdf/2604.02120v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Accelerating 3D Gaussian Splatting using GEMM-compatible blending on Tensor Cores",
+      "llm_evidence_cn": "在Tensor Core上使用GEMM兼容混合加速3D高斯泼溅",
+      "llm_evidence": "在Tensor Core上使用GEMM兼容混合加速3D高斯泼溅",
+      "canonical_evidence": "在Tensor Core上使用GEMM兼容混合加速3D高斯泼溅",
+      "llm_tldr_en": "Accelerates 3DGS by reformulating the blending process into GEMM operations to utilize GPU Tensor Cores.",
+      "llm_tldr_cn": "通过将混合过程重构为GEMM操作，利用GPU Tensor Core加速3D高斯泼溅渲染。",
+      "llm_tldr": "通过将混合过程重构为GEMM操作，利用GPU Tensor Core加速3D高斯泼溅渲染。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2604.03462v1",
+      "title": "SpectralSplat: Appearance-Disentangled Feed-Forward Gaussian Splatting for Driving Scenes",
+      "abstract": "Feed-forward 3D Gaussian Splatting methods have achieved impressive reconstruction quality for autonomous driving scenes, yet they entangle scene geometry with transient appearance properties such as lighting, weather, and time of day. This coupling prevents relighting, appearance transfer, and consistent rendering across multi-traversal data captured under varying environmental conditions. We present SpectralSplat, a method that disentangles appearance from geometry within a feed-forward Gaussian Splatting framework. Our key insight is to factor color prediction into an appearance-agnostic base stream and and appearance-conditioned adapted stream, both produced by a shared MLP conditioned on a global appearance embedding derived from DINOv2 features. To enforce disentanglement, we train with paired observations generated by a hybrid relighting pipeline that combines physics-based intrinsic decomposition with diffusion based generative refinement, and supervise with complementary consistency, reconstruction, cross-appearance, and base color losses. We further introduce an appearance-adaptable temporal history that stores appearance-agnostic features, enabling accumulated Gaussians to be re-rendered under arbitrary target appearances. Experiments demonstrate that SpectralSplat preserves the reconstruction quality of the underlying backbone while enabling controllable appearance transfer and temporally consistent relighting across driving sequences.",
+      "authors": [
+        "Quentin Herau",
+        "Tianshuo Xu",
+        "Depu Meng",
+        "Jiezhi Yang",
+        "Chensheng Peng",
+        "Spencer Sherk",
+        "Yihan Hu",
+        "Wei Zhan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR",
+        "cs.RO"
+      ],
+      "published": "2026-04-03T21:12:25+00:00",
+      "link": "https://arxiv.org/pdf/2604.03462v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Feed-forward Gaussian Splatting for consistent rendering across environmental conditions",
+      "llm_evidence_cn": "前馈高斯泼溅技术用于跨环境条件的一致性渲染",
+      "llm_evidence": "前馈高斯泼溅技术用于跨环境条件的一致性渲染",
+      "canonical_evidence": "前馈高斯泼溅技术用于跨环境条件的一致性渲染",
+      "llm_tldr_en": "Disentangles appearance from geometry in Gaussian Splatting to enable consistent rendering under varying lighting.",
+      "llm_tldr_cn": "在高斯泼溅中解耦外观与几何，实现不同光照条件下的连贯渲染。",
+      "llm_tldr": "在高斯泼溅中解耦外观与几何，实现不同光照条件下的连贯渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.28757v1",
+      "title": "SonoWorld: From One Image to a 3D Audio-Visual Scene",
+      "abstract": "Tremendous progress in visual scene generation now turns a single image into an explorable 3D world, yet immersion remains incomplete without sound. We introduce Image2AVScene, the task of generating a 3D audio-visual scene from a single image, and present SonoWorld, the first framework to tackle this challenge. From one image, our pipeline outpaints a 360° panorama, lifts it into a navigable 3D scene, places language-guided sound anchors, and renders ambisonics for point, areal, and ambient sources, yielding spatial audio aligned with scene geometry and semantics. Quantitative evaluations on a newly curated real-world dataset and a controlled user study confirm the effectiveness of our approach. Beyond free-viewpoint audio-visual rendering, we also demonstrate applications to one-shot acoustic learning and audio-visual spatial source separation. Project website: https://humathe.github.io/sonoworld/",
+      "authors": [
+        "Derong Jin",
+        "Xiyi Chen",
+        "Ming C. Lin",
+        "Ruohan Gao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.MM",
+        "cs.SD"
+      ],
+      "published": "2026-03-30T17:57:47+00:00",
+      "link": "https://arxiv.org/pdf/2603.28757v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Lifting images into navigable 3D scenes for free-viewpoint rendering",
+      "llm_evidence_cn": "将图像提升为可导航的3D场景以进行自由视角渲染",
+      "llm_evidence": "将图像提升为可导航的3D场景以进行自由视角渲染",
+      "canonical_evidence": "将图像提升为可导航的3D场景以进行自由视角渲染",
+      "llm_tldr_en": "Generates 3D audio-visual scenes from single images, enabling free-viewpoint visual and spatial audio rendering.",
+      "llm_tldr_cn": "从单张图像生成3D视听场景，实现自由视角的视觉和空间音频渲染。",
+      "llm_tldr": "从单张图像生成3D视听场景，实现自由视角的视觉和空间音频渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.04063v1",
+      "title": "4C4D: 4 Camera 4D Gaussian Splatting",
+      "abstract": "This paper tackles the challenge of recovering 4D dynamic scenes from videos captured by as few as four portable cameras. Learning to model scene dynamics for temporally consistent novel-view rendering is a foundational task in computer graphics, where previous works often require dense multi-view captures using camera arrays of dozens or even hundreds of views. We propose \\textbf{4C4D}, a novel framework that enables high-fidelity 4D Gaussian Splatting from video captures of extremely sparse cameras. Our key insight lies that the geometric learning under sparse settings is substantially more difficult than modeling appearance. Driven by this observation, we introduce a Neural Decaying Function on Gaussian opacities for enhancing the geometric modeling capability of 4D Gaussians. This design mitigates the inherent imbalance between geometry and appearance modeling in 4DGS by encouraging the 4DGS gradients to focus more on geometric learning. Extensive experiments across sparse-view datasets with varying camera overlaps show that 4C4D achieves superior performance over prior art. Project page at: https://junshengzhou.github.io/4C4D.",
+      "authors": [
+        "Junsheng Zhou",
+        "Zhifan Yang",
+        "Liang Han",
+        "Wenyuan Zhang",
+        "Kanle Shi",
+        "Shenkun Xu",
+        "Yu-Shen Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-05T11:09:23+00:00",
+      "link": "https://arxiv.org/pdf/2604.04063v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "4D Gaussian Splatting for temporally consistent novel-view rendering",
+      "llm_evidence_cn": "用于时间一致性新视角渲染的4D高斯泼溅",
+      "llm_evidence": "用于时间一致性新视角渲染的4D高斯泼溅",
+      "canonical_evidence": "用于时间一致性新视角渲染的4D高斯泼溅",
+      "llm_tldr_en": "Proposes 4C4D for high-fidelity 4D Gaussian Splatting from extremely sparse video captures.",
+      "llm_tldr_cn": "提出4C4D框架，通过极稀疏视频捕捉实现高保真4D高斯泼溅。",
+      "llm_tldr": "提出4C4D框架，通过极稀疏视频捕捉实现高保真4D高斯泼溅。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.03309v1",
+      "title": "TreeGaussian: Tree-Guided Cascaded Contrastive Learning for Hierarchical Consistent 3D Gaussian Scene Segmentation and Understanding",
+      "abstract": "3D Gaussian Splatting (3DGS) has emerged as a real-time, differentiable representation for neural scene understanding. However, existing 3DGS-based methods struggle to represent hierarchical 3D semantic structures and capture whole-part relationships in complex scenes. Moreover, dense pairwise comparisons and inconsistent hierarchical labels from 2D priors hinder feature learning, resulting in suboptimal segmentation. To address these limitations, we introduce TreeGaussian, a tree-guided cascaded contrastive learning framework that explicitly models hierarchical semantic relationships and reduces redundancy in contrastive supervision. By constructing a multi-level object tree, TreeGaussian enables structured learning across object-part hierarchies. In addition, we propose a two-stage cascaded contrastive learning strategy that progressively refines feature representations from global to local, mitigating saturation and stabilizing training. A Consistent Segmentation Detection (CSD) mechanism and a graph-based denoising module are further introduced to align segmentation modes across views while suppressing unstable Gaussian points, enhancing segmentation consistency and quality. Extensive experiments, including open-vocabulary 3D object selection, 3D point cloud understanding, and ablation studies, demonstrate the effectiveness and robustness of our approach.",
+      "authors": [
+        "Jingbin You",
+        "Zehao Li",
+        "Hao Jiang",
+        "Xinzhu Ma",
+        "Shuqin Gao",
+        "Honglong Zhao",
+        "Congcong Zheng",
+        "Tianlu Mao",
+        "Feng Dai",
+        "Yucheng Zhang",
+        "Zhaoqi Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-03-31T10:22:28+00:00",
+      "link": "https://arxiv.org/pdf/2604.03309v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Hierarchical 3D Gaussian scene segmentation and understanding",
+      "llm_evidence_cn": "分层3D高斯场景分割与理解",
+      "llm_evidence": "分层3D高斯场景分割与理解",
+      "canonical_evidence": "分层3D高斯场景分割与理解",
+      "llm_tldr_en": "Introduces TreeGaussian for hierarchical 3D scene segmentation using tree-guided contrastive learning.",
+      "llm_tldr_cn": "提出TreeGaussian框架，通过树引导的对比学习实现分层3D场景分割与理解。",
+      "llm_tldr": "提出TreeGaussian框架，通过树引导的对比学习实现分层3D场景分割与理解。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.04874v1",
+      "title": "Free-Range Gaussians: Non-Grid-Aligned Generative 3D Gaussian Reconstruction",
+      "abstract": "We present Free-Range Gaussians, a multi-view reconstruction method that predicts non-pixel, non-voxel-aligned 3D Gaussians from as few as four images. This is done through flow matching over Gaussian parameters. Our generative formulation of reconstruction allows the model to be supervised with non-grid-aligned 3D data, and enables it to synthesize plausible content in unobserved regions. Thus, it improves on prior methods that produce highly redundant grid-aligned Gaussians, and suffer from holes or blurry conditional means in unobserved regions. To handle the number of Gaussians needed for high-quality results, we introduce a hierarchical patching scheme to group spatially related Gaussians into joint transformer tokens, halving the sequence length while preserving structure. We further propose a timestep-weighted rendering loss during training, and photometric gradient guidance and classifier-free guidance at inference to improve fidelity. Experiments on Objaverse and Google Scanned Objects show consistent improvements over pixel and voxel-aligned methods while using significantly fewer Gaussians, with large gains when input views leave parts of the object unobserved.",
+      "authors": [
+        "Ahan Shabanov",
+        "Peter Hedman",
+        "Ethan Weber",
+        "Zhengqin Li",
+        "Denis Rozumny",
+        "Gael Le Lan",
+        "Naina Dhingra",
+        "Lei Luo",
+        "Andrea Vedaldi",
+        "Christian Richardt",
+        "Andrea Tagliasacchi",
+        "Bo Zhu",
+        "Numair Khan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-06T17:24:18+00:00",
+      "link": "https://arxiv.org/pdf/2604.04874v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "generative 3D Gaussian reconstruction for multi-view rendering",
+      "llm_evidence_cn": "用于多视角渲染的生成式3D高斯重建",
+      "llm_evidence": "用于多视角渲染的生成式3D高斯重建",
+      "canonical_evidence": "用于多视角渲染的生成式3D高斯重建",
+      "llm_tldr_en": "Presents a multi-view reconstruction method using flow matching over non-grid-aligned 3D Gaussians.",
+      "llm_tldr_cn": "提出一种利用非网格对齐3D高斯流匹配的多视角重建方法。",
+      "llm_tldr": "提出一种利用非网格对齐3D高斯流匹配的多视角重建方法。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.03716v1",
+      "title": "CGHair: Compact Gaussian Hair Reconstruction with Card Clustering",
+      "abstract": "We present a compact pipeline for high-fidelity hair reconstruction from multi-view images. While recent 3D Gaussian Splatting (3DGS) methods achieve realistic results, they often require millions of primitives, leading to high storage and rendering costs. Observing that hair exhibits structural and visual similarities across a hairstyle, we cluster strands into representative hair cards and group these into shared texture codebooks. Our approach integrates this structure with 3DGS rendering, significantly reducing reconstruction time and storage while maintaining comparable visual quality. In addition, we propose a generative prior accelerated method to reconstruct the initial strand geometry from a set of images. Our experiments demonstrate a 4-fold reduction in strand reconstruction time and achieve comparable rendering performance with over 200x lower memory footprint.",
+      "authors": [
+        "Haimin Luo",
+        "Srinjay Sarkar",
+        "Albert Mosella-Montoro",
+        "Francisco Vicente Carrasco",
+        "Fernando De la Torre"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-04-04T12:44:08+00:00",
+      "link": "https://arxiv.org/pdf/2604.03716v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Gaussian Splatting rendering for high-fidelity 3D reconstruction",
+      "llm_evidence_cn": "用于高保真3D重建的高斯泼溅渲染",
+      "llm_evidence": "用于高保真3D重建的高斯泼溅渲染",
+      "canonical_evidence": "用于高保真3D重建的高斯泼溅渲染",
+      "llm_tldr_en": "Proposes a compact Gaussian Splatting pipeline for hair reconstruction to reduce storage and rendering costs.",
+      "llm_tldr_cn": "提出了一种紧凑的高斯泼溅头发重建流水线，以降低存储和渲染成本。",
+      "llm_tldr": "提出了一种紧凑的高斯泼溅头发重建流水线，以降低存储和渲染成本。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
