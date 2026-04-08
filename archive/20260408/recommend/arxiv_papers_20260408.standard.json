@@ -1,0 +1,178 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-08T20:15:11.041962+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2604.05687v1",
+      "title": "3D Smoke Scene Reconstruction Guided by Vision Priors from Multimodal Large Language Models",
+      "abstract": "Reconstructing 3D scenes from smoke-degraded multi-view images is particularly difficult because smoke introduces strong scattering effects, view-dependent appearance changes, and severe degradation of cross-view consistency. To address these issues, we propose a framework that integrates visual priors with efficient 3D scene modeling. We employ Nano-Banana-Pro to enhance smoke-degraded images and provide clearer visual observations for reconstruction and develop Smoke-GS, a medium-aware 3D Gaussian Splatting framework for smoke scene reconstruction and restoration-oriented novel view synthesis. Smoke-GS models the scene using explicit 3D Gaussians and introduces a lightweight view-dependent medium branch to capture direction-dependent appearance variations caused by smoke. Our method preserves the rendering efficiency of 3D Gaussian Splatting while improving robustness to smoke-induced degradation. Results demonstrate the effectiveness of our method for generating consistent and visually clear novel views in challenging smoke environments.",
+      "authors": [
+        "Xinye Zheng",
+        "Fei Wang",
+        "Yiqi Nie",
+        "Kun Li",
+        "Junjie Chen",
+        "Jiaqi Zhao",
+        "Yanyan Wei",
+        "Zhiliang Wu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-07T10:37:30+00:00",
+      "link": "https://arxiv.org/pdf/2604.05687v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "medium-aware 3D Gaussian Splatting for smoke scenes with scattering effects",
+      "llm_evidence_cn": "针对具有散射效应的烟雾场景的介质感知3D高斯泼溅",
+      "llm_evidence": "针对具有散射效应的烟雾场景的介质感知3D高斯泼溅",
+      "canonical_evidence": "针对具有散射效应的烟雾场景的介质感知3D高斯泼溅",
+      "llm_tldr_en": "Models smoke scenes using a medium-aware branch to handle scattering and view-dependent appearance.",
+      "llm_tldr_cn": "使用介质感知分支对烟雾场景建模，处理散射和视点相关的外观。",
+      "llm_tldr": "使用介质感知分支对烟雾场景建模，处理散射和视点相关的外观。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "deep learning for multiple scattering in volumes",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.05715v1",
+      "title": "In Depth We Trust: Reliable Monocular Depth Supervision for Gaussian Splatting",
+      "abstract": "Using accurate depth priors in 3D Gaussian Splatting helps mitigate artifacts caused by sparse training data and textureless surfaces. However, acquiring accurate depth maps requires specialized acquisition systems. Foundation monocular depth estimation models offer a cost-effective alternative, but they suffer from scale ambiguity, multi-view inconsistency, and local geometric inaccuracies, which can degrade rendering performance when applied naively. This paper addresses the challenge of reliably leveraging monocular depth priors for Gaussian Splatting (GS) rendering enhancement. To this end, we introduce a training framework integrating scale-ambiguous and noisy depth priors into geometric supervision. We highlight the importance of learning from weakly aligned depth variations. We introduce a method to isolate ill-posed geometry for selective monocular depth regularization, restricting the propagation of depth inaccuracies into well-reconstructed 3D structures. Extensive experiments across diverse datasets show consistent improvements in geometric accuracy, leading to more faithful depth estimation and higher rendering quality across different GS variants and monocular depth backbones tested.",
+      "authors": [
+        "Wenhui Xiao",
+        "Ethan Goan",
+        "Rodrigo Santa Cruz",
+        "David Ahmedt-Aristizabal",
+        "Olivier Salvado",
+        "Clinton Fookes",
+        "Leo Lebrat"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-07T11:15:15+00:00",
+      "link": "https://arxiv.org/pdf/2604.05715v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "leveraging depth priors to enhance Gaussian Splatting rendering performance",
+      "llm_evidence_cn": "利用深度先验增强高斯泼溅的渲染性能",
+      "llm_evidence": "利用深度先验增强高斯泼溅的渲染性能",
+      "canonical_evidence": "利用深度先验增强高斯泼溅的渲染性能",
+      "llm_tldr_en": "Integrates monocular depth priors into Gaussian Splatting to improve rendering quality in sparse data scenarios.",
+      "llm_tldr_cn": "将单目深度先验集成到高斯泼溅训练中，以减少伪影并提升在稀疏数据下的渲染表现。",
+      "llm_tldr": "将单目深度先验集成到高斯泼溅训练中，以减少伪影并提升在稀疏数据下的渲染表现。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2604.05721v1",
+      "title": "GaussianGrow: Geometry-aware Gaussian Growing from 3D Point Clouds with Text Guidance",
+      "abstract": "3D Gaussian Splatting has demonstrated superior performance in rendering efficiency and quality, yet the generation of 3D Gaussians still remains a challenge without proper geometric priors. Existing methods have explored predicting point maps as geometric references for inferring Gaussian primitives, while the unreliable estimated geometries may lead to poor generations. In this work, we introduce GaussianGrow, a novel approach that generates 3D Gaussians by learning to grow them from easily accessible 3D point clouds, naturally enforcing geometric accuracy in Gaussian generation. Specifically, we design a text-guided Gaussian growing scheme that leverages a multi-view diffusion model to synthesize consistent appearances from input point clouds for supervision. To mitigate artifacts caused by fusing neighboring views, we constrain novel views generated at non-preset camera poses identified in overlapping regions across different views. For completing the hard-to-observe regions, we propose to iteratively detect the camera pose by observing the largest un-grown regions in point clouds and inpainting them by inpainting the rendered view with a pretrained 2D diffusion model. The process continues until complete Gaussians are generated. We extensively evaluate GaussianGrow on text-guided Gaussian generation from synthetic and even real-scanned point clouds. Project Page: https://weiqi-zhang.github.io/GaussianGrow",
+      "authors": [
+        "Weiqi Zhang",
+        "Junsheng Zhou",
+        "Haotian Geng",
+        "Kanle Shi",
+        "Shenkun Xu",
+        "Yi Fang",
+        "Yu-Shen Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-07T11:23:23+00:00",
+      "link": "https://arxiv.org/pdf/2604.05721v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting rendering and generation",
+      "llm_evidence_cn": "3D高斯泼溅渲染与生成",
+      "llm_evidence": "3D高斯泼溅渲染与生成",
+      "canonical_evidence": "3D高斯泼溅渲染与生成",
+      "llm_tldr_en": "Generates 3D Gaussians from point clouds with text guidance for accurate geometry and appearance.",
+      "llm_tldr_cn": "利用文本引导从点云生成3D高斯，确保几何准确性与外观一致性。",
+      "llm_tldr": "利用文本引导从点云生成3D高斯，确保几何准确性与外观一致性。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.06113v1",
+      "title": "SEM-ROVER: Semantic Voxel-Guided Diffusion for Large-Scale Driving Scene Generation",
+      "abstract": "Scalable generation of outdoor driving scenes requires 3D representations that remain consistent across multiple viewpoints and scale to large areas. Existing solutions either rely on image or video generative models distilled to 3D space, harming the geometric coherence and restricting the rendering to training views, or are limited to small-scale 3D scene or object-centric generation. In this work, we propose a 3D generative framework based on $Σ$-Voxfield grid, a discrete representation where each occupied voxel stores a fixed number of colorized surface samples. To generate this representation, we train a semantic-conditioned diffusion model that operates on local voxel neighborhoods and uses 3D positional encodings to capture spatial structure. We scale to large scenes via progressive spatial outpainting over overlapping regions. Finally, we render the generated $Σ$-Voxfield grid with a deferred rendering module to obtain photorealistic images, enabling large-scale multiview-consistent 3D scene generation without per-scene optimization. Extensive experiments show that our approach can generate diverse large-scale urban outdoor scenes, renderable into photorealistic images with various sensor configurations and camera trajectories while maintaining moderate computation cost compared to existing approaches.",
+      "authors": [
+        "Hiba Dahmani",
+        "Nathan Piasco",
+        "Moussab Bennehar",
+        "Luis Roldão",
+        "Dzmitry Tsishkou",
+        "Laurent Caraffa",
+        "Jean-Philippe Tarel",
+        "Roland Brémond"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-07T17:24:29+00:00",
+      "link": "https://arxiv.org/pdf/2604.06113v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D generative framework based on voxel grid for large-scale scene rendering",
+      "llm_evidence_cn": "基于体素网格的大规模场景渲染 3D 生成框架",
+      "llm_evidence": "基于体素网格的大规模场景渲染 3D 生成框架",
+      "canonical_evidence": "基于体素网格的大规模场景渲染 3D 生成框架",
+      "llm_tldr_en": "Proposes a voxel-guided diffusion model for consistent large-scale 3D driving scene generation.",
+      "llm_tldr_cn": "提出一种基于语义体素引导的扩散模型，用于生成具有几何一致性的大规模自动驾驶场景。",
+      "llm_tldr": "提出一种基于语义体素引导的扩散模型，用于生成具有几何一致性的大规模自动驾驶场景。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

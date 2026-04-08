@@ -6,32 +6,32 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-07
-- 运行时间：2026-04-07 19:45:25 UTC
+- 最新运行日期：2026-04-08
+- 运行时间：2026-04-08 20:15:59 UTC
 - 运行状态：成功
-- 本次总论文数：3
-- 精读区：0
-- 速读区：3
+- 本次总论文数：4
+- 精读区：2
+- 速读区：2
 
 ### 今日简报（AI）
-今日聚焦 3D 重建与感知前沿，涵盖几何标注优化、宇宙射线成像及柔性形变模拟三大领域。
-重点关注 Reliev3R 如何简化多视图重建流程，以及 MAVEN 在 3D 柔性物体仿真中的网格感知编码新突破。
-建议关注 3D 视觉技术在工业无损检测与物理仿真中的跨界应用潜力。
-- 详情：[/202604/07/README](/202604/07/README)
+今日聚焦 3D 场景重建前沿，深度解析多模态大模型引导的烟雾模拟与高斯泼溅（GS）
+- 详情：[/202604/08/README](/202604/08/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [3D Smoke Scene Reconstruction Guided by Vision Priors from Multimodal Large Language Models](/202604/08/2604.05687v1-3d-smoke-scene-reconstruction-guided-by-vision-priors-from-multimodal-large-language-models)  
+   标签：评分：9.0/10、query:q4
+   evidence：针对具有散射效应的烟雾场景的介质感知3D高斯泼溅
+2. [In Depth We Trust: Reliable Monocular Depth Supervision for Gaussian Splatting](/202604/08/2604.05715v1-in-depth-we-trust-reliable-monocular-depth-supervision-for-gaussian-splatting)  
+   标签：评分：8.0/10、query:q7
+   evidence：利用深度先验增强高斯泼溅的渲染性能
 
 ### 速读区论文标签
-1. [Reliev3R: Relieving Feed-forward Reconstruction from Multi-View Geometric Annotations](/202604/07/2604.00548v1-reliev3r-relieving-feed-forward-reconstruction-from-multi-view-geometric-annotations)  
-   标签：评分：6.0/10、query:q1
-   evidence：用于3D场景的前馈重建模型
-2. [Shower-Aware Dual-Stream Voxel Networks for Structural Defect Detection in Cosmic-Ray Muon Tomography](/202604/07/2604.03741v1-shower-aware-dual-stream-voxel-networks-for-structural-defect-detection-in-cosmic-ray-muon-tomography)  
-   标签：评分：6.0/10、query:q4
-   evidence：用于处理3D体积中散射运动学的体素网络
-3. [MAVEN: A Mesh-Aware Volumetric Encoding Network for Simulating 3D Flexible Deformation](/202604/07/2604.04474v1-maven-a-mesh-aware-volumetric-encoding-network-for-simulating-3d-flexible-deformation)  
-   标签：评分：6.0/10、query:profile-1
-   evidence：用于捕获体积特性的体积编码网络
+1. [GaussianGrow: Geometry-aware Gaussian Growing from 3D Point Clouds with Text Guidance](/202604/08/2604.05721v1-gaussiangrow-geometry-aware-gaussian-growing-from-3d-point-clouds-with-text-guidance)  
+   标签：评分：7.0/10、query:q1
+   evidence：3D高斯泼溅渲染与生成
+2. [SEM-ROVER: Semantic Voxel-Guided Diffusion for Large-Scale Driving Scene Generation](/202604/08/2604.06113v1-sem-rover-semantic-voxel-guided-diffusion-for-large-scale-driving-scene-generation)  
+   标签：评分：7.0/10、query:q1
+   evidence：基于体素网格的大规模场景渲染 3D 生成框架
 
 
 <div class="dpr-home-promo-card">

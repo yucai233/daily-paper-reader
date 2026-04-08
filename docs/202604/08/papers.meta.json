@@ -1,0 +1,65 @@
+{
+  "label": "2026-04-08",
+  "date": "2026-04-08",
+  "generated_at": "2026-04-08T20:16:17",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202604/08/2604.05687v1-3d-smoke-scene-reconstruction-guided-by-vision-priors-from-multimodal-large-language-models",
+      "section": "deep",
+      "title_en": "3D Smoke Scene Reconstruction Guided by Vision Priors from Multimodal Large Language Models",
+      "authors": "Xinye Zheng, Fei Wang, Yiqi Nie, Kun Li, Junjie Chen, Jiaqi Zhao, Yanyan Wei, Zhiliang Wu",
+      "date": "2026-04-07",
+      "pdf": "https://arxiv.org/pdf/2604.05687v1",
+      "score": "9.0",
+      "evidence": "针对具有散射效应的烟雾场景的介质感知3D高斯泼溅",
+      "tldr": "针对烟雾环境下多视图图像重建 3D 场景面临的散射和一致性差等挑战，本文提出一种结合视觉先验与高效建模的框架。利用多模态大模型 Nano-Banana-Pro 增强退化图像，并开发了 Smoke-GS 框架，通过 3D 高斯泼溅技术及视图相关的介质分支，实现了高质量的烟雾场景重建与新视角合成，显著提升了渲染效率和鲁棒性。",
+      "tags": "query:q4",
+      "abstract_en": "Reconstructing 3D scenes from smoke-degraded multi-view images is particularly difficult because smoke introduces strong scattering effects, view-dependent appearance changes, and severe degradation of cross-view consistency. To address these issues, we propose a framework that integrates visual priors with efficient 3D scene modeling. We employ Nano-Banana-Pro to enhance smoke-degraded images and provide clearer visual observations for reconstruction and develop Smoke-GS, a medium-aware 3D Gaussian Splatting framework for smoke scene reconstruction and restoration-oriented novel view synthesis. Smoke-GS models the scene using explicit 3D Gaussians and introduces a lightweight view-dependent medium branch to capture direction-dependent appearance variations caused by smoke. Our method preserves the rendering efficiency of 3D Gaussian Splatting while improving robustness to smoke-induced degradation. Results demonstrate the effectiveness of our method for generating consistent and visually clear novel views in challenging smoke environments.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/08/2604.05715v1-in-depth-we-trust-reliable-monocular-depth-supervision-for-gaussian-splatting",
+      "section": "deep",
+      "title_en": "In Depth We Trust: Reliable Monocular Depth Supervision for Gaussian Splatting",
+      "authors": "Wenhui Xiao, Ethan Goan, Rodrigo Santa Cruz, David Ahmedt-Aristizabal, Olivier Salvado, Clinton Fookes, Leo Lebrat",
+      "date": "2026-04-07",
+      "pdf": "https://arxiv.org/pdf/2604.05715v1",
+      "score": "8.0",
+      "evidence": "利用深度先验增强高斯泼溅的渲染性能",
+      "tldr": "针对3D高斯泼溅（GS）在稀疏数据或无纹理表面易产生伪影的问题，本文提出了一种可靠利用单目深度先验的训练框架。该方法通过整合具有尺度模糊和噪声的深度信息，引入弱对齐深度变化学习，并采用选择性正则化机制隔离不良几何结构，有效解决了单目深度不一致性对重建的影响。实验证明，该框架显著提升了多种GS变体的几何精度和渲染质量。",
+      "tags": "query:q7",
+      "abstract_en": "Using accurate depth priors in 3D Gaussian Splatting helps mitigate artifacts caused by sparse training data and textureless surfaces. However, acquiring accurate depth maps requires specialized acquisition systems. Foundation monocular depth estimation models offer a cost-effective alternative, but they suffer from scale ambiguity, multi-view inconsistency, and local geometric inaccuracies, which can degrade rendering performance when applied naively. This paper addresses the challenge of reliably leveraging monocular depth priors for Gaussian Splatting (GS) rendering enhancement. To this end, we introduce a training framework integrating scale-ambiguous and noisy depth priors into geometric supervision. We highlight the importance of learning from weakly aligned depth variations. We introduce a method to isolate ill-posed geometry for selective monocular depth regularization, restricting the propagation of depth inaccuracies into well-reconstructed 3D structures. Extensive experiments across diverse datasets show consistent improvements in geometric accuracy, leading to more faithful depth estimation and higher rendering quality across different GS variants and monocular depth backbones tested.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/08/2604.05721v1-gaussiangrow-geometry-aware-gaussian-growing-from-3d-point-clouds-with-text-guidance",
+      "section": "quick",
+      "title_en": "GaussianGrow: Geometry-aware Gaussian Growing from 3D Point Clouds with Text Guidance",
+      "authors": "Weiqi Zhang, Junsheng Zhou, Haotian Geng, Kanle Shi, Shenkun Xu, Yi Fang, Yu-Shen Liu",
+      "date": "2026-04-07",
+      "pdf": "https://arxiv.org/pdf/2604.05721v1",
+      "score": "7.0",
+      "evidence": "3D高斯泼溅渲染与生成",
+      "tldr": "本文提出GaussianGrow，一种从3D点云出发并结合文本引导的3D高斯生成方法。针对现有方法因几何先验不可靠导致生成质量差的问题，该方法通过从点云中“生长”高斯来确保几何准确性。利用多视图扩散模型提供外观监督，并引入迭代相机位姿检测与2D修复技术来处理遮挡区域，从而实现高质量、几何一致的3D内容生成。",
+      "tags": "query:q1",
+      "abstract_en": "3D Gaussian Splatting has demonstrated superior performance in rendering efficiency and quality, yet the generation of 3D Gaussians still remains a challenge without proper geometric priors. Existing methods have explored predicting point maps as geometric references for inferring Gaussian primitives, while the unreliable estimated geometries may lead to poor generations. In this work, we introduce GaussianGrow, a novel approach that generates 3D Gaussians by learning to grow them from easily accessible 3D point clouds, naturally enforcing geometric accuracy in Gaussian generation. Specifically, we design a text-guided Gaussian growing scheme that leverages a multi-view diffusion model to synthesize consistent appearances from input point clouds for supervision. To mitigate artifacts caused by fusing neighboring views, we constrain novel views generated at non-preset camera poses identified in overlapping regions across different views. For completing the hard-to-observe regions, we propose to iteratively detect the camera pose by observing the largest un-grown regions in point clouds and inpainting them by inpainting the rendered view with a pretrained 2D diffusion model. The process continues until complete Gaussians are generated. We extensively evaluate GaussianGrow on text-guided Gaussian generation from synthetic and even real-scanned point clouds. Project Page: https://weiqi-zhang.github.io/GaussianGrow",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/08/2604.06113v1-sem-rover-semantic-voxel-guided-diffusion-for-large-scale-driving-scene-generation",
+      "section": "quick",
+      "title_en": "SEM-ROVER: Semantic Voxel-Guided Diffusion for Large-Scale Driving Scene Generation",
+      "authors": "Hiba Dahmani, Nathan Piasco, Moussab Bennehar, Luis Roldão, Dzmitry Tsishkou, Laurent Caraffa, Jean-Philippe Tarel, Roland Brémond",
+      "date": "2026-04-07",
+      "pdf": "https://arxiv.org/pdf/2604.06113v1",
+      "score": "7.0",
+      "evidence": "基于体素网格的大规模场景渲染 3D 生成框架",
+      "tldr": "针对大规模驾驶场景生成中3D一致性和可扩展性的挑战，本文提出了SEM-ROVER框架。该框架基于Σ-Voxfield网格，利用语义引导的扩散模型和空间外扩技术生成大规模3D场景。结合延迟渲染，它能以低成本生成多视角一致的高质量城市场景，无需逐场景优化。",
+      "tags": "query:q1",
+      "abstract_en": "Scalable generation of outdoor driving scenes requires 3D representations that remain consistent across multiple viewpoints and scale to large areas. Existing solutions either rely on image or video generative models distilled to 3D space, harming the geometric coherence and restricting the rendering to training views, or are limited to small-scale 3D scene or object-centric generation. In this work, we propose a 3D generative framework based on $Σ$-Voxfield grid, a discrete representation where each occupied voxel stores a fixed number of colorized surface samples. To generate this representation, we train a semantic-conditioned diffusion model that operates on local voxel neighborhoods and uses 3D positional encodings to capture spatial structure. We scale to large scenes via progressive spatial outpainting over overlapping regions. Finally, we render the generated $Σ$-Voxfield grid with a deferred rendering module to obtain photorealistic images, enabling large-scale multiview-consistent 3D scene generation without per-scene optimization. Extensive experiments show that our approach can generate diverse large-scale urban outdoor scenes, renderable into photorealistic images with various sensor configurations and camera trajectories while maintaining moderate computation cost compared to existing approaches.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
