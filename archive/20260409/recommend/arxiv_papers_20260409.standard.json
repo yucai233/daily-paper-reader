@@ -1,0 +1,140 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-09T19:52:12.171414+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2604.01204v2",
+      "title": "Neural Harmonic Textures for High-Quality Primitive Based Neural Reconstruction",
+      "abstract": "Primitive-based methods such as 3D Gaussian Splatting have recently become the state-of-the-art for novel-view synthesis and related reconstruction tasks. Compared to neural fields, these representations are more flexible, adaptive, and scale better to large scenes. However, the limited expressivity of individual primitives makes modeling high-frequency detail challenging. We introduce Neural Harmonic Textures, a neural representation approach that anchors latent feature vectors on a virtual scaffold surrounding each primitive. These features are interpolated within the primitive at ray intersection points. Inspired by Fourier analysis, we apply periodic activations to the interpolated features, turning alpha blending into a weighted sum of harmonic components. The resulting signal is then decoded in a single deferred pass using a small neural network, significantly reducing computational cost. Neural Harmonic Textures yield state-of-the-art results in real-time novel view synthesis while bridging the gap between primitive- and neural-field-based reconstruction. Our method integrates seamlessly into existing primitive-based pipelines such as 3DGUT, Triangle Splatting, and 2DGS. We further demonstrate its generality with applications to 2D image fitting and semantic reconstruction.",
+      "authors": [
+        "Jorge Condor",
+        "Nicolas Moenne-Loccoz",
+        "Merlin Nimier-David",
+        "Piotr Didyk",
+        "Zan Gojcic",
+        "Qi Wu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.GR",
+        "cs.LG"
+      ],
+      "published": "2026-04-01T17:48:22+00:00",
+      "link": "https://arxiv.org/pdf/2604.01204v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Neural representation anchoring latent features for primitive-based reconstruction",
+      "llm_evidence_cn": "为基于原语的重建锚定潜特征的神经表示",
+      "llm_evidence": "为基于原语的重建锚定潜特征的神经表示",
+      "canonical_evidence": "为基于原语的重建锚定潜特征的神经表示",
+      "llm_tldr_en": "Introduces Neural Harmonic Textures to enhance high-frequency details in primitive-based neural rendering.",
+      "llm_tldr_cn": "引入神经调和纹理，增强基于原语的神经渲染中的高频细节。",
+      "llm_tldr": "引入神经调和纹理，增强基于原语的神经渲染中的高频细节。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2604.07053v1",
+      "title": "AnchorSplat: Feed-Forward 3D Gaussian SplattingWith 3D Geometric Priors",
+      "abstract": "Recent feed-forward Gaussian reconstruction models adopt a pixel-aligned formulation that maps each 2D pixel to a 3D Gaussian, entangling Gaussian representations tightly with the input images. In this paper, we propose AnchorSplat, a novel feed-forward 3DGS framework for scene-level reconstruction that represents the scene directly in 3D space. AnchorSplat introduces an anchor-aligned Gaussian representation guided by 3D geometric priors (e.g., sparse point clouds, voxels, or RGB-D point clouds), enabling a more geometry-aware renderable 3D Gaussians that is independent of image resolution and number of views. This design substantially reduces the number of required Gaussians, improving computational efficiency while enhancing reconstruction fidelity. Beyond the anchor-aligned design, we utilize a Gaussian Refiner to adjust the intermediate Gaussiansy via merely a few forward passes. Experiments on the ScanNet++ v2 NVS benchmark demonstrate the SOTA performance, outperforming previous methods with more view-consistent and substantially fewer Gaussian primitives.",
+      "authors": [
+        "Xiaoxue Zhang",
+        "Xiaoxu Zheng",
+        "Yixuan Yin",
+        "Tiao Zhao",
+        "Kaihua Tang",
+        "Michael Bi Mi",
+        "Zhan Xu",
+        "Dave Zhenyu Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-08T13:04:54+00:00",
+      "link": "https://arxiv.org/pdf/2604.07053v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "feed-forward 3D Gaussian Splatting framework",
+      "llm_evidence_cn": "前馈3D高斯泼溅框架",
+      "llm_evidence": "前馈3D高斯泼溅框架",
+      "canonical_evidence": "前馈3D高斯泼溅框架",
+      "llm_tldr_en": "Introduces AnchorSplat, a geometry-aware feed-forward Gaussian reconstruction model for efficient scene rendering.",
+      "llm_tldr_cn": "引入AnchorSplat，一种具有几何感知能力的前馈高斯重建模型，用于高效场景渲染。",
+      "llm_tldr": "引入AnchorSplat，一种具有几何感知能力的前馈高斯重建模型，用于高效场景渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.07086v1",
+      "title": "Radio-Frequency Inverse Rendering for Wireless Environment Modeling",
+      "abstract": "Neural rendering paradigms have recently emerged as powerful tools for radio frequency (RF). However, by entangling RF sources with scene geometry and material properties, existing approaches limit downstream manipulation of scene geometry, wireless system configuration, and RF reasoning. To address this, we propose a physically grounded RF inverse rendering (RFIR) framework that explicitly decouples RF emission, geometry, and material electromagnetic properties. Our key insight is an RF-aware bidirectional scattering distribution function, embedded into the Gaussian splatting paradigm as an RF rendering equation. Each Gaussian primitive is endowed with intrinsic physical attributes, including surface normals, material electromagnetic parameters, and roughness, and leveraged by a customized ray-tracing scheme to represent RF signal synthesis. The proposed RFIR generalizes three typical RF tasks: radar cross-section synthesis, received signal strength indicator prediction, and wireless scene editability. Experiments demonstrate significant performance advantages, underscoring the potential for wireless world modeling.",
+      "authors": [
+        "Fuhai Wang",
+        "Zihan Jin",
+        "Lehang Wang",
+        "Xuehui Dong",
+        "Tiebin Mi",
+        "Robert Caiming Qiu",
+        "Zenan ling"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP"
+      ],
+      "published": "2026-04-08T13:40:29+00:00",
+      "link": "https://arxiv.org/pdf/2604.07086v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "neural rendering paradigm for RF using Gaussian splatting",
+      "llm_evidence_cn": "使用高斯泼溅的射频神经渲染范式",
+      "llm_evidence": "使用高斯泼溅的射频神经渲染范式",
+      "canonical_evidence": "使用高斯泼溅的射频神经渲染范式",
+      "llm_tldr_en": "Adapts neural rendering and Gaussian splatting to model radio-frequency environments and scattering.",
+      "llm_tldr_cn": "将神经渲染和高斯泼溅应用于射频环境建模和散射模拟。",
+      "llm_tldr": "将神经渲染和高斯泼溅应用于射频环境建模和散射模拟。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
