@@ -6,31 +6,32 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-09
-- 运行时间：2026-04-09 19:53:03 UTC
+- 最新运行日期：2026-04-10
+- 运行时间：2026-04-10 19:54:47 UTC
 - 运行状态：成功
 - 本次总论文数：3
-- 精读区：1
-- 速读区：2
+- 精读区：0
+- 速读区：3
 
 ### 今日简报（AI）
-今日聚焦 3D 神经重建前沿，探索从高质量调和纹理到几何先验驱动的高斯渲染。
-核心突破在于利用神经调和纹理提升基元重建精度，并实现更高效的前馈式 3DGS 建模。
-推荐深入了解几何先验如何优化神经渲染，以平衡重建质量与推理速度。
-- 详情：[/202604/09/README](/202604/09/README)
+今日聚焦 3D 高斯泼溅（3DGS）前沿，探索从稀疏视角到高精度物体建模的几何重建新范式。
+重点关注 AnchorSplat 与 SurfelSplat，通过引入几何先验与高斯面片显著提升了稀疏视角下的重建效率与泛化能力。
+建议关注 3DGS 与几何先验结合
+- 详情：[/202604/10/README](/202604/10/README)
 
 ### 精读区论文标签
-1. [Neural Harmonic Textures for High-Quality Primitive Based Neural Reconstruction](/202604/09/2604.01204v2-neural-harmonic-textures-for-high-quality-primitive-based-neural-reconstruction)  
-   标签：评分：8.0/10、query:q1
-   evidence：为基于原语的重建锚定潜特征的神经表示
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [AnchorSplat: Feed-Forward 3D Gaussian SplattingWith 3D Geometric Priors](/202604/09/2604.07053v1-anchorsplat-feed-forward-3d-gaussian-splattingwith-3d-geometric-priors)  
+1. [AnchorSplat: Feed-Forward 3D Gaussian Splatting with 3D Geometric Priors](/202604/10/2604.07053v2-anchorsplat-feed-forward-3d-gaussian-splatting-with-3d-geometric-priors)  
    标签：评分：7.0/10、query:q1
-   evidence：前馈3D高斯泼溅框架
-2. [Radio-Frequency Inverse Rendering for Wireless Environment Modeling](/202604/09/2604.07086v1-radio-frequency-inverse-rendering-for-wireless-environment-modeling)  
+   evidence：体素引导的前馈3D高斯泼溅
+2. [SurfelSplat: Learning Efficient and Generalizable Gaussian Surfel Representations for Sparse-View Surface Reconstruction](/202604/10/2604.08370v1-surfelsplat-learning-efficient-and-generalizable-gaussian-surfel-representations-for-sparse-view-surface-reconstruction)  
+   标签：评分：7.0/10、query:q1
+   evidence：用于表面重建的高斯面元表示
+3. [LSRM: High-Fidelity Object-Centric Reconstruction via Scaled Context Windows](/202604/10/2604.05182v1-lsrm-high-fidelity-object-centric-reconstruction-via-scaled-context-windows)  
    标签：评分：6.0/10、query:q1
-   evidence：使用高斯泼溅的射频神经渲染范式
+   evidence：使用 Transformer 进行前馈 3D 重建和逆向渲染
 
 
 <div class="dpr-home-promo-card">

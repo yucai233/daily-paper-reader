@@ -1,0 +1,51 @@
+{
+  "label": "2026-04-10",
+  "date": "2026-04-10",
+  "generated_at": "2026-04-10T19:54:56",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202604/10/2604.07053v2-anchorsplat-feed-forward-3d-gaussian-splatting-with-3d-geometric-priors",
+      "section": "quick",
+      "title_en": "AnchorSplat: Feed-Forward 3D Gaussian Splatting with 3D Geometric Priors",
+      "authors": "Xiaoxue Zhang, Xiaoxu Zheng, Yixuan Yin, Tiao Zhao, Kaihua Tang, Michael Bi Mi, Zhan Xu, Dave Zhenyu Chen",
+      "date": "2026-04-08",
+      "pdf": "https://arxiv.org/pdf/2604.07053v2",
+      "score": "7.0",
+      "evidence": "体素引导的前馈3D高斯泼溅",
+      "tldr": "针对现有前馈3D高斯重建模型过度依赖像素对齐导致表征受限的问题，本文提出AnchorSplat。该框架引入3D几何先验（如稀疏点云或体素）引导的锚点对齐高斯表示，使重建独立于图像分辨率和视角数量。通过大幅减少高斯基元数量并引入高斯精炼器，AnchorSplat在ScanNet++等基准上实现了更具视角一致性的SOTA重建效果，显著提升了计算效率。",
+      "tags": "query:q1",
+      "abstract_en": "Recent feed-forward Gaussian reconstruction models adopt a pixel-aligned formulation that maps each 2D pixel to a 3D Gaussian, entangling Gaussian representations tightly with the input images. In this paper, we propose AnchorSplat, a novel feed-forward 3DGS framework for scene-level reconstruction that represents the scene directly in 3D space. AnchorSplat introduces an anchor-aligned Gaussian representation guided by 3D geometric priors (e.g., sparse point clouds, voxels, or RGB-D point clouds), enabling a more geometry-aware renderable 3D Gaussians that is independent of image resolution and number of views. This design substantially reduces the number of required Gaussians, improving computational efficiency while enhancing reconstruction fidelity. Beyond the anchor-aligned design, we utilize a Gaussian Refiner to adjust the intermediate Gaussiansy via merely a few forward passes. Experiments on the ScanNet++ v2 NVS benchmark demonstrate the SOTA performance, outperforming previous methods with more view-consistent and substantially fewer Gaussian primitives.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/10/2604.08370v1-surfelsplat-learning-efficient-and-generalizable-gaussian-surfel-representations-for-sparse-view-surface-reconstruction",
+      "section": "quick",
+      "title_en": "SurfelSplat: Learning Efficient and Generalizable Gaussian Surfel Representations for Sparse-View Surface Reconstruction",
+      "authors": "Chensheng Dai, Shengjun Zhang, Min Chen, Yueqi Duan",
+      "date": "2026-04-09",
+      "pdf": "https://arxiv.org/pdf/2604.08370v1",
+      "score": "7.0",
+      "evidence": "用于表面重建的高斯面元表示",
+      "tldr": "针对3D高斯泼溅在多视图重建中依赖密集视图且单场景优化耗时的问题，本文提出SurfelSplat。这是一个前馈框架，能从稀疏视图中生成可泛化的像素对齐高斯面片。通过引入基于奈奎斯特采样定理的跨视图特征聚合模块和低通滤波器，解决了传统前馈结构在几何属性恢复上的局限。该方法在DTU基准上实现了与SOTA相当的精度，且推理速度提升100倍，无需逐场景训练。",
+      "tags": "query:q1",
+      "abstract_en": "3D Gaussian Splatting (3DGS) has demonstrated impressive performance in 3D scene reconstruction. Beyond novel view synthesis, it shows great potential for multi-view surface reconstruction. Existing methods employ optimization-based reconstruction pipelines that achieve precise and complete surface extractions. However, these approaches typically require dense input views and high time consumption for per-scene optimization. To address these limitations, we propose SurfelSplat, a feed-forward framework that generates efficient and generalizable pixel-aligned Gaussian surfel representations from sparse-view images. We observe that conventional feed-forward structures struggle to recover accurate geometric attributes of Gaussian surfels because the spatial frequency of pixel-aligned primitives exceeds Nyquist sampling rates. Therefore, we propose a cross-view feature aggregation module based on the Nyquist sampling theorem. Specifically, we first adapt the geometric forms of Gaussian surfels with spatial sampling rate-guided low-pass filters. We then project the filtered surfels across all input views to obtain cross-view feature correlations. By processing these correlations through a specially designed feature fusion network, we can finally regress Gaussian surfels with precise geometry. Extensive experiments on DTU reconstruction benchmarks demonstrate that our model achieves comparable results with state-of-the-art methods, and predict Gaussian surfels within 1 second, offering a 100x speedup without costly per-scene training.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/10/2604.05182v1-lsrm-high-fidelity-object-centric-reconstruction-via-scaled-context-windows",
+      "section": "quick",
+      "title_en": "LSRM: High-Fidelity Object-Centric Reconstruction via Scaled Context Windows",
+      "authors": "Zhengqin Li, Cheng Zhang, Jakob Engel, Zhao Dong",
+      "date": "2026-04-06",
+      "pdf": "https://arxiv.org/pdf/2604.05182v1",
+      "score": "6.0",
+      "evidence": "使用 Transformer 进行前馈 3D 重建和逆向渲染",
+      "tldr": "LSRM研究了扩展Transformer上下文窗口对前馈3D重建的影响。针对现有方法在精细纹理恢复上的不足，该模型通过大幅增加物体和图像Token数量，并结合稀疏注意力机制、粗到精的残差预测、3D感知空间路由及高效并行策略，实现了高保真3D重建。实验显示其在多项指标上显著超越现有SOTA，甚至在逆渲染任务中达到密集视图优化方法的水平。",
+      "tags": "query:q1",
+      "abstract_en": "We introduce the Large Sparse Reconstruction Model to study how scaling transformer context windows impacts feed-forward 3D reconstruction. Although recent object-centric feed-forward methods deliver robust, high-quality reconstruction, they still lag behind dense-view optimization in recovering fine-grained texture and appearance. We show that expanding the context window -- by substantially increasing the number of active object and image tokens -- remarkably narrows this gap and enables high-fidelity 3D object reconstruction and inverse rendering. To scale effectively, we adapt native sparse attention in our architecture design, unlocking its capacity for 3D reconstruction with three key contributions: (1) an efficient coarse-to-fine pipeline that focuses computation on informative regions by predicting sparse high-resolution residuals; (2) a 3D-aware spatial routing mechanism that establishes accurate 2D-3D correspondences using explicit geometric distances rather than standard attention scores; and (3) a custom block-aware sequence parallelism strategy utilizing an All-gather-KV protocol to balance dynamic, sparse workloads across GPUs. As a result, LSRM handles 20x more object tokens and >2x more image tokens than prior state-of-the-art (SOTA) methods. Extensive evaluations on standard novel-view synthesis benchmarks show substantial gains over the current SOTA, yielding 2.5 dB higher PSNR and 40% lower LPIPS. Furthermore, when extending LSRM to inverse rendering tasks, qualitative and quantitative evaluations on widely-used benchmarks demonstrate consistent improvements in texture and geometry details, achieving an LPIPS that matches or exceeds that of SOTA dense-view optimization methods. Code and model will be released on our project page.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
