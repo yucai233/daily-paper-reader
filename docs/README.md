@@ -6,32 +6,32 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-10
-- 运行时间：2026-04-10 19:54:47 UTC
+- 最新运行日期：2026-04-11
+- 运行时间：2026-04-11 20:10:45 UTC
 - 运行状态：成功
 - 本次总论文数：3
 - 精读区：0
 - 速读区：3
 
 ### 今日简报（AI）
-今日聚焦 3D 高斯泼溅（3DGS）前沿，探索从稀疏视角到高精度物体建模的几何重建新范式。
-重点关注 AnchorSplat 与 SurfelSplat，通过引入几何先验与高斯面片显著提升了稀疏视角下的重建效率与泛化能力。
-建议关注 3DGS 与几何先验结合
-- 详情：[/202604/10/README](/202604/10/README)
+今日聚焦 3D Gaussian Splatting 在复杂场景渲染与多模态风格迁移中的前沿突破。
+重点推荐 3DGS 在多人物/多物体高效渲染及跨模态风格化方面的两项 7.0 分研究。
+建议普通读者关注 3DGS 如何从单纯的重建走向更具艺术感和交互性的三维内容生成。
+- 详情：[/202604/11/README](/202604/11/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [AnchorSplat: Feed-Forward 3D Gaussian Splatting with 3D Geometric Priors](/202604/10/2604.07053v2-anchorsplat-feed-forward-3d-gaussian-splatting-with-3d-geometric-priors)  
+1. [Rendering Multi-Human and Multi-Object with 3D Gaussian Splatting](/202604/11/2604.02996v2-rendering-multi-human-and-multi-object-with-3d-gaussian-splatting)  
    标签：评分：7.0/10、query:q1
-   evidence：体素引导的前馈3D高斯泼溅
-2. [SurfelSplat: Learning Efficient and Generalizable Gaussian Surfel Representations for Sparse-View Surface Reconstruction](/202604/10/2604.08370v1-surfelsplat-learning-efficient-and-generalizable-gaussian-surfel-representations-for-sparse-view-surface-reconstruction)  
+   evidence：基于3D高斯泼溅的层次化渲染框架
+2. [M2StyleGS: Multi-Modality 3D Style Transfer with Gaussian Splatting](/202604/11/2604.03773v1-m2stylegs-multi-modality-3d-style-transfer-with-gaussian-splatting)  
    标签：评分：7.0/10、query:q1
-   evidence：用于表面重建的高斯面元表示
-3. [LSRM: High-Fidelity Object-Centric Reconstruction via Scaled Context Windows](/202604/10/2604.05182v1-lsrm-high-fidelity-object-centric-reconstruction-via-scaled-context-windows)  
+   evidence：用于实时神经渲染的3D高斯泼溅
+3. [Sparsity-Aware Voxel Attention and Foreground Modulation for 3D Semantic Scene Completion](/202604/11/2604.05780v1-sparsity-aware-voxel-attention-and-foreground-modulation-for-3d-semantic-scene-completion)  
    标签：评分：6.0/10、query:q1
-   evidence：使用 Transformer 进行前馈 3D 重建和逆向渲染
+   evidence：基于体素的3D语义场景补全与重建
 
 
 <div class="dpr-home-promo-card">

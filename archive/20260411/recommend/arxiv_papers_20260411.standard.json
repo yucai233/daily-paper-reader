@@ -1,0 +1,134 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-11T20:10:29.760132+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.02996v2",
+      "title": "Rendering Multi-Human and Multi-Object with 3D Gaussian Splatting",
+      "abstract": "Reconstructing dynamic scenes with multiple interacting humans and objects from sparse-view inputs is a critical yet challenging task, essential for creating high-fidelity digital twins for robotics and VR/AR. This problem, which we term Multi-Human Multi-Object (MHMO) rendering, presents two significant obstacles: achieving view-consistent representations for individual instances under severe mutual occlusion, and explicitly modeling the complex and combinatorial dependencies that arise from their interactions. To overcome these challenges, we propose MM-GS, a novel hierarchical framework built upon 3D Gaussian Splatting. Our method first employs a Per-Instance Multi-View Fusion module to establish a robust and consistent representation for each instance by aggregating visual information across all available views. Subsequently, a Scene-Level Instance Interaction module operates on a global scene graph to reason about relationships between all participants, refining their attributes to capture subtle interaction effects. Extensive experiments on challenging datasets demonstrate that our method significantly outperforms strong baselines, producing state-of-the-art results with high-fidelity details and plausible inter-instance contacts.",
+      "authors": [
+        "Weiquan Wang",
+        "Jun Xiao",
+        "Feifei Shao",
+        "Yi Yang",
+        "Yueting Zhuang",
+        "Long Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-03T12:20:36+00:00",
+      "link": "https://arxiv.org/pdf/2604.02996v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "hierarchical framework built upon 3D Gaussian Splatting for rendering",
+      "llm_evidence_cn": "基于3D高斯泼溅的层次化渲染框架",
+      "llm_evidence": "基于3D高斯泼溅的层次化渲染框架",
+      "canonical_evidence": "基于3D高斯泼溅的层次化渲染框架",
+      "llm_tldr_en": "Proposes a hierarchical 3D Gaussian Splatting framework for rendering complex multi-human and multi-object scenes.",
+      "llm_tldr_cn": "提出了一种基于3D高斯泼溅的层次化框架，用于渲染复杂的多人多物场景。",
+      "llm_tldr": "提出了一种基于3D高斯泼溅的层次化框架，用于渲染复杂的多人多物场景。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.05780v1",
+      "title": "Sparsity-Aware Voxel Attention and Foreground Modulation for 3D Semantic Scene Completion",
+      "abstract": "Monocular Semantic Scene Completion (SSC) aims to reconstruct complete 3D semantic scenes from a single RGB image, offering a cost-effective solution for autonomous driving and robotics. However, the inherently imbalanced nature of voxel distributions, where over 93% of voxels are empty and foreground classes are rare, poses significant challenges. Existing methods often suffer from redundant emphasis on uninformative voxels and poor generalization to long-tailed categories. To address these issues, we propose VoxSAMNet (Voxel Sparsity-Aware Modulation Network), a unified framework that explicitly models voxel sparsity and semantic imbalance. Our approach introduces: (1) a Dummy Shortcut for Feature Refinement (DSFR) module that bypasses empty voxels via a shared dummy node while refining occupied ones with deformable attention; and (2) a Foreground Modulation Strategy combining Foreground Dropout (FD) and Text-Guided Image Filter (TGIF) to alleviate overfitting and enhance class-relevant features. Extensive experiments on the public benchmarks SemanticKITTI and SSCBench-KITTI-360 demonstrate that VoxSAMNet achieves state-of-the-art performance, surpassing prior monocular and stereo baselines with mIoU scores of 18.2% and 20.2%, respectively. Our results highlight the importance of sparsity-aware and semantics-guided design for efficient and accurate 3D scene completion, offering a promising direction for future research.",
+      "authors": [
+        "Yu Xue",
+        "Longjun Gao",
+        "Yuanqi Su",
+        "HaoAng Lu",
+        "Xiaoning Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-07T12:17:31+00:00",
+      "link": "https://arxiv.org/pdf/2604.05780v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "voxel-based 3D semantic scene completion and reconstruction",
+      "llm_evidence_cn": "基于体素的3D语义场景补全与重建",
+      "llm_evidence": "基于体素的3D语义场景补全与重建",
+      "canonical_evidence": "基于体素的3D语义场景补全与重建",
+      "llm_tldr_en": "Proposes a network for 3D semantic scene completion by modeling voxel sparsity and semantic imbalance.",
+      "llm_tldr_cn": "提出一种通过建模体素稀疏性和语义不平衡来进行3D语义场景补全的网络。",
+      "llm_tldr": "提出一种通过建模体素稀疏性和语义不平衡来进行3D语义场景补全的网络。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.03773v1",
+      "title": "M2StyleGS: Multi-Modality 3D Style Transfer with Gaussian Splatting",
+      "abstract": "Conventional 3D style transfer methods rely on a fixed reference image to apply artistic patterns to 3D scenes. However, in practical applications such as virtual or augmented reality, users often prefer more flexible inputs, including textual descriptions and diverse imagery. In this work, we introduce a novel real-time styling technique M2StyleGS to generate a sequence of precisely color-mapped views. It utilizes 3D Gaussian Splatting (3DGS) as a 3D presentation and multi-modality knowledge refined by CLIP as a reference style. M2StyleGS resolves the abnormal transformation issue by employing a precise feature alignment, namely subdivisive flow, it strengthens the projection of the mapped CLIP text-visual combination feature to the VGG style feature. In addition, we introduce observation loss, which assists in the stylized scene better matching the reference style during the generation, and suppression loss, which suppresses the offset of reference color information throughout the decoding process. By integrating these approaches, M2StyleGS can employ text or images as references to generate a set of style-enhanced novel views. Our experiments show that M2StyleGS achieves better visual quality and surpasses the previous work by up to 32.92% in terms of consistency.",
+      "authors": [
+        "Xingyu Miao",
+        "Xueqi Qiu",
+        "Haoran Duan",
+        "Yawen Huang",
+        "Xian Wu",
+        "Jingjing Deng",
+        "Yang Long"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-04T15:51:56+00:00",
+      "link": "https://arxiv.org/pdf/2604.03773v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting for real-time neural rendering",
+      "llm_evidence_cn": "用于实时神经渲染的3D高斯泼溅",
+      "llm_evidence": "用于实时神经渲染的3D高斯泼溅",
+      "canonical_evidence": "用于实时神经渲染的3D高斯泼溅",
+      "llm_tldr_en": "Introduces a real-time 3D style transfer technique using Gaussian Splatting and multi-modality knowledge.",
+      "llm_tldr_cn": "介绍了一种利用高斯泼溅和多模态知识的实时3D风格迁移技术。",
+      "llm_tldr": "介绍了一种利用高斯泼溅和多模态知识的实时3D风格迁移技术。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
