@@ -1,0 +1,37 @@
+{
+  "label": "2026-04-12",
+  "date": "2026-04-12",
+  "generated_at": "2026-04-12T20:04:32",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202604/12/2604.04787v1-avatarpointillist-autoregressive-4d-gaussian-avatarization",
+      "section": "quick",
+      "title_en": "AvatarPointillist: AutoRegressive 4D Gaussian Avatarization",
+      "authors": "Hongyu Liu, Xuan Wang, Yating Wang, Zijian Wu, Ziyu Wan, Yue Ma, Runtao Liu, Boyao Zhou, Yujun Shen, Qifeng Chen",
+      "date": "2026-04-06",
+      "pdf": "https://arxiv.org/pdf/2604.04787v1",
+      "score": "7.0",
+      "evidence": "通过高斯泼溅进行神经体渲染",
+      "tldr": "本研究提出 AvatarPointillist，一种从单张肖像生成动态 4D 高斯化身的新框架。核心采用仅解码器的 Transformer 自回归生成 3D 高斯点云，支持根据主体复杂度动态调整点密度和数量。该模型在生成点的同时预测绑定信息以实现逼真动画，并通过专用高斯解码器将点转化为可渲染属性。实验证明该方法在生成高质量、写实且可控的化身方面具有显著优势，为化身生成提供了新的自回归范式。",
+      "tags": "query:q1",
+      "abstract_en": "We introduce AvatarPointillist, a novel framework for generating dynamic 4D Gaussian avatars from a single portrait image. At the core of our method is a decoder-only Transformer that autoregressively generates a point cloud for 3D Gaussian Splatting. This sequential approach allows for precise, adaptive construction, dynamically adjusting point density and the total number of points based on the subject's complexity. During point generation, the AR model also jointly predicts per-point binding information, enabling realistic animation. After generation, a dedicated Gaussian decoder converts the points into complete, renderable Gaussian attributes. We demonstrate that conditioning the decoder on the latent features from the AR generator enables effective interaction between stages and markedly improves fidelity. Extensive experiments validate that AvatarPointillist produces high-quality, photorealistic, and controllable avatars. We believe this autoregressive formulation represents a new paradigm for avatar generation, and we will release our code inspire future research.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/12/2604.07337v1-from-blobs-to-spokes-high-fidelity-surface-reconstruction-via-oriented-gaussians",
+      "section": "quick",
+      "title_en": "From Blobs to Spokes: High-Fidelity Surface Reconstruction via Oriented Gaussians",
+      "authors": "Diego Gomez, Antoine Guédon, Nissim Maruani, Bingchen Gong, Maks Ovsjanikov",
+      "date": "2026-04-08",
+      "pdf": "https://arxiv.org/pdf/2604.07337v1",
+      "score": "7.0",
+      "evidence": "神经体渲染与占用场",
+      "tldr": "针对3D Gaussian Splatting（3DGS）因缺乏全局几何场而难以进行高质量表面重建的问题，本文提出了Gaussian Wrapping。该方法通过为每个高斯基元引入可学习的定向法线和改进的衰减公式，推导出闭式解的占用场与法线场。结合一致性损失和新型加密策略，该方法能生成完整、水密的网格，并能精确捕捉自行车辐条等极细结构，在DTU和Tanks and Temples数据集上达到了SOTA水平。",
+      "tags": "query:profile-1",
+      "abstract_en": "3D Gaussian Splatting (3DGS) has revolutionized fast novel view synthesis, yet its opacity-based formulation makes surface extraction fundamentally difficult. Unlike implicit methods built on Signed Distance Fields or occupancy, 3DGS lacks a global geometric field, forcing existing approaches to resort to heuristics such as TSDF fusion of blended depth maps.   Inspired by the Objects as Volumes framework, we derive a principled occupancy field for Gaussian Splatting and show how it can be used to extract highly accurate watertight meshes of complex scenes. Our key contribution is to introduce a learnable oriented normal at each Gaussian element and to define an adapted attenuation formulation, which leads to closed-form expressions for both the normal and occupancy fields at arbitrary locations in space. We further introduce a novel consistency loss and a dedicated densification strategy to enforce Gaussians to wrap the entire surface by closing geometric holes, ensuring a complete shell of oriented primitives. We modify the differentiable rasterizer to output depth as an isosurface of our continuous model, and introduce Primal Adaptive Meshing for Region-of-Interest meshing at arbitrary resolution.   We additionally expose fundamental biases in standard surface evaluation protocols and propose two more rigorous alternatives. Overall, our method Gaussian Wrapping sets a new state-of-the-art on DTU and Tanks and Temples, producing complete, watertight meshes at a fraction of the size of concurrent work-recovering thin structures such as the notoriously elusive bicycle spokes.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,98 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-12T20:04:02.028567+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.04787v1",
+      "title": "AvatarPointillist: AutoRegressive 4D Gaussian Avatarization",
+      "abstract": "We introduce AvatarPointillist, a novel framework for generating dynamic 4D Gaussian avatars from a single portrait image. At the core of our method is a decoder-only Transformer that autoregressively generates a point cloud for 3D Gaussian Splatting. This sequential approach allows for precise, adaptive construction, dynamically adjusting point density and the total number of points based on the subject's complexity. During point generation, the AR model also jointly predicts per-point binding information, enabling realistic animation. After generation, a dedicated Gaussian decoder converts the points into complete, renderable Gaussian attributes. We demonstrate that conditioning the decoder on the latent features from the AR generator enables effective interaction between stages and markedly improves fidelity. Extensive experiments validate that AvatarPointillist produces high-quality, photorealistic, and controllable avatars. We believe this autoregressive formulation represents a new paradigm for avatar generation, and we will release our code inspire future research.",
+      "authors": [
+        "Hongyu Liu",
+        "Xuan Wang",
+        "Yating Wang",
+        "Zijian Wu",
+        "Ziyu Wan",
+        "Yue Ma",
+        "Runtao Liu",
+        "Boyao Zhou",
+        "Yujun Shen",
+        "Qifeng Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-06T15:56:50+00:00",
+      "link": "https://arxiv.org/pdf/2604.04787v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural volume rendering via Gaussian Splatting",
+      "llm_evidence_cn": "通过高斯泼溅进行神经体渲染",
+      "llm_evidence": "通过高斯泼溅进行神经体渲染",
+      "canonical_evidence": "通过高斯泼溅进行神经体渲染",
+      "llm_tldr_en": "Generates 4D Gaussian avatars from single images using an autoregressive Transformer and Gaussian decoder.",
+      "llm_tldr_cn": "使用自回归Transformer和高斯解码器从单张图像生成4D高斯头像。",
+      "llm_tldr": "使用自回归Transformer和高斯解码器从单张图像生成4D高斯头像。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.07337v1",
+      "title": "From Blobs to Spokes: High-Fidelity Surface Reconstruction via Oriented Gaussians",
+      "abstract": "3D Gaussian Splatting (3DGS) has revolutionized fast novel view synthesis, yet its opacity-based formulation makes surface extraction fundamentally difficult. Unlike implicit methods built on Signed Distance Fields or occupancy, 3DGS lacks a global geometric field, forcing existing approaches to resort to heuristics such as TSDF fusion of blended depth maps.   Inspired by the Objects as Volumes framework, we derive a principled occupancy field for Gaussian Splatting and show how it can be used to extract highly accurate watertight meshes of complex scenes. Our key contribution is to introduce a learnable oriented normal at each Gaussian element and to define an adapted attenuation formulation, which leads to closed-form expressions for both the normal and occupancy fields at arbitrary locations in space. We further introduce a novel consistency loss and a dedicated densification strategy to enforce Gaussians to wrap the entire surface by closing geometric holes, ensuring a complete shell of oriented primitives. We modify the differentiable rasterizer to output depth as an isosurface of our continuous model, and introduce Primal Adaptive Meshing for Region-of-Interest meshing at arbitrary resolution.   We additionally expose fundamental biases in standard surface evaluation protocols and propose two more rigorous alternatives. Overall, our method Gaussian Wrapping sets a new state-of-the-art on DTU and Tanks and Temples, producing complete, watertight meshes at a fraction of the size of concurrent work-recovering thin structures such as the notoriously elusive bicycle spokes.",
+      "authors": [
+        "Diego Gomez",
+        "Antoine Guédon",
+        "Nissim Maruani",
+        "Bingchen Gong",
+        "Maks Ovsjanikov"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-08T17:52:39+00:00",
+      "link": "https://arxiv.org/pdf/2604.07337v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural volume rendering and occupancy fields",
+      "llm_evidence_cn": "神经体渲染与占用场",
+      "llm_evidence": "神经体渲染与占用场",
+      "canonical_evidence": "神经体渲染与占用场",
+      "llm_tldr_en": "Derives a principled occupancy field for Gaussian Splatting to enable high-fidelity surface reconstruction.",
+      "llm_tldr_cn": "为高斯泼溅推导出原则性的占用场，以实现高保真表面重建。",
+      "llm_tldr": "为高斯泼溅推导出原则性的占用场，以实现高保真表面重建。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
