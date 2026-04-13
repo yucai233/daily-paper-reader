@@ -1,0 +1,356 @@
+Title: AudioGS: Spectrogram-Based Audio Gaussian Splatting for Sound Field Reconstruction
+
+URL Source: https://arxiv.org/pdf/2604.08967v1
+
+Published Time: Mon, 13 Apr 2026 00:29:22 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+# AudioGS: Spectrogram-Based Audio Gaussian Splatting for Sound Field Reconstruction 
+
+Chunhao Bi 1, Houqiang Zhong 1, Zhixin Xu 2, Li Song 1* , Zhengxue Cheng 1* 
+
+> 1
+
+School of Electronic Information and Electrical Engineering, Shanghai Jiao Tong University , Shanghai, China 
+
+> 2
+
+Institute of Cultural and Creative Industry, Shanghai Jiao Tong University , Shanghai, China Emails: {bichunhao, zhonghouqiang, zhixin.xu, song li, zxcheng }@sjtu.edu.cn 
+
+Abstract —Spatial audio is fundamental to immersive virtual experiences, yet synthesizing high-fidelity binaural audio from sparse observations remains a significant challenge. Existing methods typically rely on implicit neural representations con-ditioned on visual priors, which often struggle to capture fine-grained acoustic structures. Inspired by 3D Gaussian Splatting (3DGS), we introduce AudioGS, a novel visual-free framework that explicitly encodes the sound field as a set of Audio Gaus-sians based on spectrograms. AudioGS associates each time-frequency bin with an Audio Gaussian equipped with dual spherical harmonic (SH) coefficients and a decay coefficient. For a target pose, we render binaural audio by evaluating the SH field to capture directionality, incorporating geometry-guided distance attenuation and phase correction, and reconstructing the waveform. Experiments on the Replay-NVAS dataset demonstrate that AudioGS successfully captures complex spatial cues and out-performs state-of-the-art visual-dependent baselines. Specifically, AudioGS reduces the magnitude reconstruction error (MAG) by over 14% and reduces the perceptual quality metric (DPAM) by approximately 25% compared to the best performing visual-guided method. 
+
+Index Terms —3D Gaussian Splatting, Novel-view Acoustic Synthesis, Binaural Audio 
+
+I. I NTRODUCTION 
+
+Recent advancements in immersive technologies, such as VR, AR, and XR, have democratized access to 3D con-tent. Originally rooted in gaming, these applications have rapidly expanded into diverse domains, including education, personal communication, and virtual conferencing. Spatial audio is important for these experiences, enhancing realism by simulating a physical auditory space. However, despite the progress in visual rendering, audio often remains limited to conventional channel-based formats. These inputs lack genuine spatial depth, creating a sensory mismatch—where sound is perceived as “flat” regardless of user movement—that severely undermines immersive realism. To address this challenge, Chen et al. [1] introduced the task of novel-view acoustic synthesis (NVAS). NVAS aims to synthesize binaural audio from a novel listener pose, given visual and acoustic input from another source viewpoint in the same scene. Existing methods, such as ViGAS [1] and 
+
+> *
+
+Corresponding authors. This work was partly supported by the NSFC (62431015, 62571317, 62501387), the Fundamental Research Funds for the Central Universities, Shanghai Key Laboratory of Digital Media Processing and Transmission under Grant 22DZ2229005, Special Fund for Promot-ing High-Quality Industrial Development (2025358) and the 111 Project BP0719010. 3DGS  AudioGS                
+
+> Source Mono ViGAS AV -NeRF AV -Cloud AudioGS
+> render
+> Binaural
+> Audio
+> Acoustic
+> Adaptation
+> Gaussians
+> •Position (𝜇 )
+> •Covariance (Σ)
+> •Opacity (𝛼 )
+> •Color(SH)
+> Audio Gaussians
+> •Position (x𝑓 ,𝑡 )
+> •Decay Factor( 𝛼 𝑓 ,𝑡 )
+> •Source Energy( 𝐴 )
+> •Magnitude(SH)
+> RGB images Spectrograms
+> 14% 25%
+
+Fig. 1. AudioGS framework and performance. Top: Inspired by 3D Visual Gaussian Splatting, we propose AudioGS, a visual-free framework that models the sound field as a set of learnable 3D Audio Gaussians. Bottom: Quantitative comparison on the Replay-NVAS dataset. AudioGS significantly outperforms baselines in reconstruction quality (MAG) and perceptual fidelity (DPAM). 
+
+AV-NeRF [2], typically employ implicit neural representations conditioned on visual priors. However, relying on learned cross-modal priors to predict the acoustic environment often fails to capture the unique, fine-grained details of the sound field, leading to over-smoothed spectral estimations. Addition-ally, these methods neglect the modeling of phase shifts by simply reusing the source phase for the target view, resulting in inaccurate Inter-Aural Time Difference (ITD) cues and significant spatial misalignment. This raises a natural question: 
+
+Is it possible to explicitly reconstruct the 3D sound field solely from sparse acoustic observations, and use it to synthesize high-fidelity binaural audio at unseen listener poses without relying on visual priors? 
+
+Inspired by the great success of 3D Gaussian Splatting (3DGS) [3] in novel view synthesis, we propose AudioGS, a novel visual-free framework that explicitly models the sound field using a set of learnable Audio Gaussians without relying on visual priors. We adapt 3DGS by replacing anisotropic covariance with a physical decay coefficient, formulating Audio Gaussians as isotropic radiators governed by wave             
+
+> arXiv:2604.08967v1 [cs.SD] 10 Apr 2026 𝒙 𝒔 (𝒕 )
+> Source Audio
+> 𝑨 (𝒇 ,𝒕 )
+> Target Pose
+> 𝐩 ,𝐑 𝐜𝐚𝐦
+> 𝐱 𝒇 ,𝒕 ,𝒄 𝒇 ,𝒕
+> 𝐦𝐨𝐧 o,𝒄 𝒇 ,𝒕
+> 𝐝𝐢𝐟 f,𝜶 𝒇 ,𝒕
+> Audio Gaussian
+> SH E valuation
+> Distance
+> Attenuation
+> Magnitude Modulation
+> 𝑴 (𝒇 ,𝒕 )
+> 𝑫 (𝒇 ,𝒕 )
+> 𝑮 (𝒇 ,𝒕 )
+> |෡𝑺 𝑹 |
+> |෡𝑺 𝑳 |
+> Inference
+> ∠𝑺 𝒔𝒓𝒄 STFT
+> Init .
+> ITD
+> 𝐝 𝐟 ,𝐭
+> Phase Correction
+> 𝚫 𝝓 𝑳 /𝑹 𝒇 ,𝒕
+> 𝑨 (𝒇 ,𝒕 )
+> ∠𝑺 𝒔𝒓𝒄
+> iSTFT
+> Predicted
+> Audio
+
++
+
+> GT
+> ∠𝑺
+> ∠෡𝑺 𝑳 /𝑹
+
+⊗
+
+⊗ +
+
+− 
+
+> |෡𝑺 𝐦𝐨𝐧𝐨 |
+> |෡𝑺 𝐝𝐢𝐟𝐟 |
+> STFT
+> |𝑺 |𝓛 𝐦𝐚𝐠
+> 𝓛 phs
+> Binaural Synthesis
+> 𝒆 𝒋 (∙)
+
+⊗    
+
+> |෡𝑺 |Fig. 2. Overview of the AudioGS framework. We explicitly represent the sound field by encoding the source spectrogram into a set of Audio Gaussians, where each Gaussian corresponds to a specific time-frequency bin. For a target listener pose, the rendering pipeline separates into two streams: (1) Magnitude Modulation , which utilizes spherical harmonics and distance attenuation to model directional energy and spatial decay; and (2) Phase Correction , which computes inter-aural time differences (ITD) based on wave propagation delays. Finally, the modulated magnitudes and corrected phases are combined via inverse STFT (iSTFT) to synthesize high-fidelity binaural audio.
+
+propagation. Specifically, as Fig. 1, each Gaussian corresponds to a spectrogram bin and utilizes Spherical Harmonics (SH) to encode directional energy. Our main contributions are summarized as follows: 1) We introduce a visual-free explicit representation for the NVAS task. We formulate the sound field as a set of Audio Gaussians directly mapped from specific time-frequency bins. This explicit representation allows for compact and interpretable modeling of the sound field. 2) We design a dual SH parameterization to decouple directional energy from spatial binaural cues, integrated with geometry-guided distance decay and phase correction. 3) Experiments on the Replay-NVAS dataset demonstrate that AudioGS signif-icantly outperforms existing state-of-the-art visual-dependent methods. As shown in Fig. 1, without visual data, our method reduces the magnitude reconstruction error (MAG) by over 
+
+14% and improves perceptual quality (DPAM) by approxi-mately 25% compared to the visual-guided SOTA baselines. II. R ELATED WORK 
+
+A. Acoustic Modeling and Field Representation 
+
+Traditional acoustic modeling typically relies on the convo-lution of source audio with RIR. Early approaches are based either on numerically solving the wave equation [4] or on the assumptions of geometrical acoustics [5]. Recent methods leverage deep learning to synthesize spatial RIR [6]. However, these RIR generators typically require source positions and detailed scene geometry, which are often challenging to mea-sure in real-world scenarios. To bypass geometric constraints, researchers have proposed reconstructing spatial audio directly from visual imagery. Chen et al. [7] proposed a cross-modal Transformer to infuse visual attributes into the audio stream via attention mechanisms. Similarly, Mono2Binaural [8] uti-lizes a CNN to predict binaural signals consistent with the visual spatial layout, while PseudoBinaural [9] uses spherical harmonic decomposition to render spatial audio mapped from video pixel coordinates. However, these works only synthesize acoustics for a given viewpoint rather than a novel viewpoint. 
+
+B. Novel-View Acoustic Synthesis 
+
+In order to synthesize the sound in a scene from a novel viewpoint, Chen et al. [1] introduced the NVAS task and ViGAS, which learns to synthesize spatial audio guided by visual observations. Subsequently, AV-NeRF [2] integrated acoustic rendering into Neural Radiance Fields (NeRF) to jointly synthesize novel-view video and audio, though it re-mains restricted to static, single-source scenes. Most recently, AV-Cloud [10] adopted an explicit point-based approach, employing Structure-from-Motion (SfM) to reconstruct sparse audio-visual anchors for geometry modeling. However, AV-Cloud heavily relies on accurate camera calibration and visual textures to obtain SfM points, causing performance degrada-tion in untextured or noisy environments. 
+
+C. 3D Gaussian Splatting for Acoustic Tasks 
+
+3DGS explicitly models 3D scenes using anisotropic 3D Gaussians optimized via differentiable rendering. While suc-cessful in vision, its acoustic applications are limited. Ref-erence [11] encodes audio into points with SH coefficients but relies on a U-Net for rendering, diverging from the explicit splatting pipeline. AV-GS [12] integrates audio-guided parameters into 3DGS to capture holistic scene conditions and geometry. However, similar to AV-Cloud, AV-GS depends heavily on visual reconstruction quality. Consequently, its performance suffers in scenarios with sparse visual data or inconsistent camera calibration. Thus, we thus propose Au-dioGS, a spectrogram-based Gaussian Splatting framework to represent a 3D sound field without relying on visual priors. III. M ETHODS 
+
+AudioGS introduces a novel explicit representation for sound field reconstruction. As illustrated in Fig. 2, our frame-work directly encodes the audio spectrogram into a set of learnable 3D Audio Gaussians, without using visual priors. 
+
+A. 3DGS Modeling of Spatial Audio 
+
+Given a training sample consisting of a source binaural waveform xs(t) recorded at a reference listener position pref ∈
+
+R3, a target listener pose (p, R cam ), and the corresponding ground-truth binaural waveform y(t) at the target, we aim to synthesize the spatial audio at (p, R cam ). We transform xs(t)
+
+into the time-frequency domain via STFT, obtaining complex spectrograms Ssrc ,k (f, t ) ∈ CF ×T for k ∈ { L, R }, where 
+
+F and T denote the numbers of frequency bins and time frames respectively. We define the source content magnitude as A(f, t ) = 12 (|Ssrc ,L (f, t )| + |Ssrc ,R (f, t )|), and keep the per-ear source phases ∠Ssrc ,k (f, t ) for reconstruction. Our explicit representation leverages the sparsity of speech signals in the T-F domain. Jourjine et al. [13] showed that speech mixtures exhibit approximate W-disjoint orthogonality, suggesting that the energy at a given T-F bin is often domi-nated by a single source component. Furthermore, in the con-text of SH-domain processing, Cobos et al. [14] demonstrated that the sound-field coefficients at a specific (f, t ) bin can be factorized into a source-dependent term and a direction-dependent term (Modal Directional Pattern, MDP). Together, these observations motivate mapping each T-F bin to an Audio Gaussian as an explicit spatial primitive. 
+
+AudioGS Initialization. We associate each STFT bin (f, t )
+
+with an Audio Gaussian and represent the sound field as 
+
+G = {(xf,t , cmono  
+
+> f,t
+
+, cdiff  
+
+> f,t
+
+, α f,t )}. (1) Here (f, t ) indexes a bin on the F × T STFT grid (i.e., 
+
+f ∈ { 1, . . . , F } and t ∈ { 1, . . . , T }). Each Audio Gaussian is parameterized by a learnable 3D position xf,t ∈ R3,dual SH coefficient vectors cmono  
+
+> f,t
+
+and cdiff  
+
+> f,t
+
+, and a learnable distance decay coefficient αf,t > 0. To decouple acoustic content from spatial geometry, we treat A(f, t ) as the source energy carrier and use SH coefficients purely for directional modulation: cmono  
+
+> f,t
+
+produces a non-negative shared (monaural) energy pattern, while cdiff  
+
+> f,t
+
+encodes signed left-right difference cues for binaural perception. 
+
+Magnitude Modulation. To render the audio for a listener at position p with orientation Rcam , we first calculate the relative direction df,t from each Gaussian xf,t to the listener. We then employ spherical harmonics to model the directional energy distribution. The mono mask M (f, t ) and difference mask 
+
+D(f, t ) are obtained by projecting the learned coefficients onto the SH basis functions Y(df,t ) [15]: 
+
+M (f, t ) = 2 · sigmoid  ⟨cmono  
+
+> f,t
+
+, Y(df,t )⟩ ,D(f, t ) = ⟨cdiff  
+
+> f,t
+
+, Y(df,t )⟩. (2) To adhere to physical wave propagation laws [16], we introduce a distance attenuation term. We model the spectral magnitude decay with respect to a reference training pose 
+
+pref ∈ R3:
+
+G(f, t ) = 
+
+ ∥pref − xf,t ∥2 + ε
+
+∥p − xf,t ∥2 + ε
+
+αf,t 
+
+. (3) where ε is a numerical stability term and αf,t > 0 is a learn-able decay coefficient. This allows the model to adaptively capture varying acoustic propagation characteristics, ranging from reverberant fields ( α close to 0) to direct path attenuation (α ≈ 1). 
+
+Phase Correction. Let θf,t denote the signed azimuth of xf,t 
+
+in the listener frame. We compute a non-negative ITD magni-tude τphys (f, |θ|) using a rigid sphere model [17], and introduce a bounded multiplicative residual ηf,t = 1 + λ tanh( δf,t ).
+
+λ controls the residual range. Denoting the reference-view azimuth as θref  
+
+> f,t
+
+, the per-ear phase correction is: 
+
+∆ϕk(f, t ) = ∓ ωf
+
+2 ηf,t 
+
+
+
+τphys (f, |θf,t |) − τphys (f, |θref  
+
+> f,t
+
+|)
+
+
+
+, (4) where ∓ is negative/positive for the contralateral/ipsilateral ear, and ωf is the angular frequency of STFT bin f .
+
+B. Binaural Synthesis 
+
+To avoid shortcut learning in spatialization [8], we adopt a cascaded strategy where the difference envelope modulates the predicted mono energy. We first compute the mono magnitude 
+
+| ˆSmono | by applying distance attenuation G(f, t ) and the mono mask M (f, t ) to the source content A(f, t ). Subsequently, the Left ( L) and Right ( R) magnitudes are derived by adding or subtracting the difference component, which is scaled relative to the mono energy: 
+
+| ˆSmono (f, t )| = A(f, t ) · G(f, t ) · M (f, t ),
+
+| ˆSL/R (f, t )| = ReLU 
+
+
+
+| ˆSmono (f, t )| · (1 ± D(f, t )) 
+
+
+
+. (5) Here, the term | ˆSmono | · D(f, t ) represents the difference magnitude | ˆSdiff |. The sign ± is positive for the left ear and negative for the right. We combine these magnitudes with the corrected phase to reconstruct the complex spectrograms: 
+
+ˆSk(f, t ) = | ˆSk(f, t )| · exp ( j (∠Ssrc ,k (f, t ) + ∆ ϕk(f, t ))) ,
+
+(6) for k ∈ { L, R }. Finally, the complex spectrograms are trans-formed back to the time domain via inverse STFT (iSTFT) to produce the binaural waveform. 
+
+C. Training Loss 
+
+Given the predicted binaural complex spectrograms ˆSk
+
+(from Eq. (6)) and the ground-truth Sk for k ∈ { L, R }, we first transform them into mono and difference components: 
+
+Smono = SL + SR, Sdiff = SL − SR. (7) We apply the same transformation to the predicted signals to obtain ˆSmono and ˆSdiff .
+
+Magnitude Loss. We minimize the L2 distance between the log-magnitude spectrograms [18]: 
+
+Lmag (S, ˆS) = log |S| − log | ˆS| 22. (8) TABLE I RESULTS ON REPLAY -NVAS DATASET . B ACKGROUND COLORS INDICATE PERFORMANCE RANKING : FIRST , SECOND , AND THIRD BEST RESULTS .Method Visual SC-1044 SC-1052 SC-1074                                                                                                                                                                                     
+
+> MAG ↓ENV ↓LRE ↓DPAM ↓MAG ↓ENV ↓LRE ↓DPAM ↓MAG ↓ENV ↓LRE ↓DPAM ↓
+> Source Binaural ✗0.2468 0.1030 2.5450 0.1279 0.0966 0.0318 3.0069 0.1477 0.0547 0.0187 1.9118 0.1247 Mono ✗0.2029 0.0836 0.5400 0.1280 0.0836 0.0269 0.8100 0.1477 0.0460 0.0158 0.5287 0.1247 ViGAS [1] ✓0.1945 0.0608 0.5517 0.1105 0.0842 0.0225 0.4802 0.1062 0.0511 0.0147 0.4700 0.1095 AV-NeRF [2] ✓0.2354 0.0942 0.6315 0.2278 0.0883 0.0289 0.8424 0.2946 0.0456 0.0142 0.5770 0.4999 AV-Cloud [10] ✓0.2004 0.0707 0.4380 0.2271 0.0665 0.0204 0.6658 0.1621 0.0439 0.0143 0.4357 0.2546 Ours ✗0.1720 0.0633 0.4496 0.0767 0.0609 0.0201 0.7521 0.0621 0.0428 0.0137 0.5247 0.0829
+> SC-1084 SC-1107 Overall
+> MAG ↓ENV ↓LRE ↓DPAM ↓MAG ↓ENV ↓LRE ↓DPAM ↓MAG ↓ENV ↓LRE ↓DPAM ↓
+> Source Binaural ✗0.0507 0.0198 2.4710 0.1607 0.1798 0.0617 2.5849 0.1569 0.1257 0.0470 2.5039 0.1436 Mono ✗0.0431 0.0178 0.4970 0.1607 0.1512 0.0510 0.6053 0.1569 0.1054 0.0390 0.5962 0.1436 ViGAS ✓0.0439 0.0137 0.4949 0.1453 0.1706 0.0474 0.5716 0.1179 0.1089 0.0318 0.5137 0.1179 AV-NeRF ✓0.0359 0.0128 0.4082 0.1245 0.1477 0.0471 0.3531 0.2803 0.1106 0.0394 0.5624 0.2854 AV-Cloud ✓0.0474 0.0178 0.6211 0.2096 0.1636 0.0528 0.5257 0.2306 0.1044 0.0352 0.5373 0.2168 Ours ✗0.0370 0.0122 0.4757 0.0846 0.1336 0.0407 0.4325 0.1370 0.0893 0.0300 0.5269 0.0887
+
+Phase Loss. To address the discontinuity issues of phase wraparound, we map the phase angles to their corresponding rectangular coordinates on the unit circle: 
+
+Lphs (S, ˆS) = sin( ∠S)−sin( ∠ ˆS) 22+ cos( ∠S)−cos( ∠ ˆS) 22,
+
+(9) where ∠S and ∠ ˆS denote the phase angles of the ground-truth and predicted spectrograms respectively. 
+
+Total Loss. For brevity, we let Lk 
+
+> ∗
+
+denote the loss term 
+
+L∗(Sk, ˆSk) for a component k ∈ { mono , diff , L, R}. The final objective aggregates the magnitude and phase losses for both mono and difference components: 
+
+Ltotal = Lmono mag + λdiff Ldiff mag + λphs 
+
+ LLphs + LRphs 
+
+ . (10) where λdiff and λphs are weighting factors for the spatial difference component and phase losses. IV. E XPERIMENTS 
+
+A. Experimental Setup 
+
+Dataset. We evaluate our method on the Replay-NVAS 
+
+dataset [1], [19], which captures synchronized multi-view RGB videos and spatial audio in real-world indoor envi-ronments. The dataset features diverse daily scenarios (e.g., conversations, dining) recorded from eight Digital Single Lens Reflex (DSLR) cameras arranged around a central region. We select five representative scenes with high-quality audio and camera calibration, processing each scene into 3-second audio clips for training and evaluation. We utilize 7 of the 8 listener poses as the training set to optimize the representation, while the remaining pose is completely held out for testing. This setting challenges the model to interpolate the sound field from sparse discrete samples rather than dense arrays. Following ViGAS [1], we resample all audio to 16 kHz and apply a 
+
+150 Hz highpass filter to reduce low-frequency noise. In total, we utilize 660 seconds of audio data for evaluation. 
+
+Implementation Details. We compute the STFT using a 512 -point FFT, a window length of 400 , a hop size of 160 and a Hamming window. For initialization, the 3D coordinates of the Audio Gaussians are initialized near the mean center of the DSLR cameras with a small radius. All SH coefficients are initialized to 0 and the decay coefficients are initialized to 
+
+1. We train for 60 epochs using Adam with separate learning rates for positions and the remaining parameters. 
+
+Baselines. We compare AudioGS against the following meth-ods: 1) Source Binaural : The unprocessed binaural audio at the source viewpoint. 2) Mono : Simply averaging the left and right channels of the source binaural audio. 3) 
+
+ViGAS [1]: A neural rendering method that achieves novel-view acoustic synthesis by analyzing audio-visual cues from source viewpoints. 4) AV-NeRF [2]: A NeRF-based system that synthesizes binaural audio for a given camera pose by first rendering a pair of RGB and depth images from the same camera position to guide the acoustic synthesis. 5) AV-Cloud [10]: An explicit point-based approach that adopts SfM to reconstruct sparse audio-visual anchors for geometry mod-eling. We use the official pre-trained model for ViGAS. For AV-NeRF and AV-Cloud, we use the official implementations and train a separate model for each scene under the same train/test split. AV-NeRF additionally requires a sound source position as input; since Replay-NVAS does not provide source annotations, we set it to the mean center of the DSLR cameras for each scene. 
+
+B. Evaluation Metrics 
+
+We report four quantitative metrics to assess reconstruction quality, spatial accuracy, and perceptual fidelity: 1) Magnitude Spectrogram Distance [1] (MAG) ↓: The average L1 distance between the predicted and ground-truth magnitude spectro-grams, measuring the audio quality in the time-frequency domain. 2) Envelope Distance [2] (ENV) ↓: The Euclidean distance between the Hilbert envelopes of the predicted and ground-truth waveforms, assessing the audio quality in the time domain. 3) Left-Right Energy Ratio Error [1] (LRE) 
+
+↓: The absolute difference in the left-to-right energy ratio (in dB), evaluating the accuracy of spatial sound. 4) Deep Perceptual Audio Metric [20] (DPAM) ↓: A deep learning-based perceptual metric correlated with human judgment of audio quality. AudioGS Source  ViGAS  AV -NeRF  AV -Cloud  GT Source Viewpoint                              
+
+> Target Viewpoint
+> L
+> R
+> 0.064/0.020
+> 0.523/0.28 6
+> 0.044 /0.014
+> 0.336 /0.042
+> 0.051/0.014
+> 0.397/0.083
+> 0.048/ 0.013
+> 0.514/0.055
+> MAG ↓/ENV ↓
+> LRE ↓/DPAM ↓Fig. 3. Comparison of binaural waveform synthesis. Left: Images of source and target viewpoints provided for spatial context. Note that unlike visual-dependent baselines, AudioGS does not utilize these RGB images. Right: Synthesized waveforms compared against the Ground Truth (GT). The red boxes highlight regions with distinct transient acoustic events. Baseline methods (ViGAS, AV-NeRF) often produce attenuated or over-smoothed responses in these high-frequency regions. In contrast, AudioGS accurately reconstructs the signal envelope, matching the GT closely. The embedded table reports the scene-specific metrics, where AudioGS achieves the best spatial accuracy (LRE) and perceptual quality (DPAM). TABLE II ABLATION STUDY OF KEY COMPONENTS IN AUDIO GS. Methods MAG ↓ENV ↓LRE ↓DPAM ↓
+> AudioGS 0.0892 0.0300 0.5269 0.0887
+> w/o DA 0.1018 0.0341 0.8618 0.0930 w/o SH 0.0911 0.0309 0.6437 0.0896 w/o PC 0.0906 0.0302 0.7932 0.0893
+
+C. Results and Analysis 
+
+Table I presents the quantitative comparison on the Replay-NVAS dataset. Our method, AudioGS, achieves the best per-formance across most metrics in the overall evaluation. 
+
+Reconstruction Quality. In terms of signal fidelity, AudioGS consistently outperforms baseline methods. Specifically, we reduce the overall MAG by over 14% and ENV by approxi-mately 6% compared to the second-best performing methods. This significant margin indicates that our explicit point-based representation preserves the fine-grained time-frequency struc-ture better than implicit neural representations like ViGAS and AV-NeRF, which often suffer from over-smoothing artifacts. Similarly, the point-based method AV-Cloud relies on SfM for geometry initialization, which struggles in texture-less regions and leads to less accurate audio field coverage. 
+
+Perceptual and Spatial Fidelity. For perceptual quality, AudioGS improves DPAM by 25% relative to the runner-up, suggesting that our synthesized audio sounds the most realistic and closest to the ground truth to human ears. Regarding spatial cues, our method shows competitive performance in LRE. AudioGS successfully offers a balanced trade-off be-tween spatial accuracy and audio quality. Overall, AudioGS provides a robust and high-fidelity solution for novel-view acoustic synthesis without relying on visual priors. 
+
+Ablation Study. To validate the effectiveness of our explicit physical modeling, we remove key components individually. The results in Table II demonstrate their specific contributions: 
+
+1) Distance Attenuation (DA). DA models the distance-based magnitude decay. Removing this component causes the most severe degradation in spatial accuracy. This confirms that ex-plicitly encoding the physical energy attenuation law is funda-mental for establishing correct relative energy levels between ears. 2) Spherical Harmonics (SH). SH is responsible for en-coding directional magnitude radiation. Removing SH leads to a noticeable drop in reconstruction quality. This indicates that SH effectively captures directional energy distribution, refining the ILD cues required for realistic binauralization. 3) Phase Correction (PC). PC accounts for the wave propagation delay based on geometry. Excluding this module results in phase misalignment, as evidenced by the drop in LRE. This validates that our geometry-guided correction successfully reconstructs ITD cues, which are critical for horizontal localization but cannot be recovered by magnitude modeling alone. 
+
+D. Subjective and Qualitative Analysis 
+
+Waveform Reconstruction Quality. Fig. 3 presents a detailed comparison of synthesized waveforms along with source audio and GT. As observed, implicit methods such as ViGAS and AV-NeRF struggle to capture the full amplitude of these transients, resulting in over-smoothed envelopes and a loss of acoustic energy. While AV-Cloud captures some high-frequency content, its waveforms differ significantly from GT. In contrast, AudioGS faithfully reconstructs the fine-grained temporal variations, showing high alignment with the GT within the highlighted regions. 
+
+Subjective Listening Test. We conduct a MUSHRA listening test with 12 participants [21] (students and faculty, including participants with professional audio expertise). Each partici-pant rates six representative novel-view clips with the ground-Fig. 4. MUSHRA listening test on Replay-NVAS dataset. Mean Basic Au-dio Quality (BAQ) ratings (0–100) from 12 participants on six representative novel-view samples. Error bars denote the standard error of the mean (SEM). Lowest 20% magnitude  Lowest 50% magnitude  Overall 
+
+Fig. 5. The spatial distribution of Audio Gaussians filtered by STFT mag-nitudes. Left/Middle: Gaussians with the lowest 20% and 50% magnitudes remain clustered near the initialization center, representing silence or noise. 
+
+Right: Overall distribution shows that high-energy Gaussians spread out spatially, effectively encoding the directional sound field structure. 
+
+truth binaural audio as the reference. As shown in Fig. 4, AudioGS achieves the highest mean rating across all samples, consistent with the objective metrics (DPAM) in Table I. 
+
+Sound Field Structure. In Fig. 5, low-energy Gaussians stay near the initialization center, whereas high-energy Gaussians spread out spatially. This distribution suggests the optimization process effectively identifies the acoustic components to cap-ture spatial cues, while keeping non-informative components compact. This demonstrates AudioGS successfully learns a meaningful spatial representation of the sound field. V. C ONCLUSION 
+
+We introduced AudioGS, a novel framework for novel-view acoustic synthesis. Unlike previous methods relying on implicit neural fields or visual priors, AudioGS explicitly reconstructs the sound field via a set of learnable Audio Gaussians directly mapped from the spectrogram. By inte-grating geometry-guided magnitude modulation and phase correction, our model achieves high-fidelity spatial audio ren-dering. Experiments on the real-world dataset demonstrate that AudioGS significantly outperforms state-of-the-art baselines. Future work includes extending AudioGS to dynamic scenes via 4D Gaussian Splatting and integrating it with visual 3DGS for unified volumetric audio-visual streaming. REFERENCES [1] Changan Chen and et al., “Novel-view acoustic synthesis,” in Pro-ceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2023, pp. 6409–6419. [2] Susan Liang, Chao Huang, Yapeng Tian, Anurag Kumar, and Chenliang Xu, “Av-nerf: Learning neural fields for real-world audio-visual scene synthesis,” Advances in Neural Information Processing Systems , vol. 36, pp. 37472–37490, 2023. [3] Bernhard Kerbl, Georgios Kopanas, Thomas Leimk¨ uhler, and George Drettakis, “3d gaussian splatting for real-time radiance field rendering.,” 
+
+ACM Trans. Graph. , vol. 42, no. 4, pp. 139–1, 2023. [4] Lauri Savioja and U Peter Svensson, “Overview of geometrical room acoustic modeling techniques,” The Journal of the Acoustical Society of America , vol. 138, no. 2, pp. 708–730, 2015. [5] Zhenyu Tang, Lianwu Chen, Bo Wu, Dong Yu, and Dinesh Manocha, “Improving reverberant speech training using diffuse acoustic simu-lation,” in ICASSP 2020-2020 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP) . IEEE, 2020, pp. 6969–6973. [6] Anton Ratnarajah and et al., “Fast-rir: Fast neural diffuse room impulse response generator,” in ICASSP 2022-2022 IEEE International Con-ference on Acoustics, Speech and Signal Processing (ICASSP) . IEEE, 2022, pp. 571–575. [7] Changan Chen, Ruohan Gao, Paul Calamia, and Kristen Grauman, “Visual acoustic matching,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2022, pp. 18858–18868. [8] Ruohan Gao and Kristen Grauman, “2.5 d visual sound,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recogni-tion , 2019, pp. 324–333. [9] Xudong Xu, Hang Zhou, Ziwei Liu, Bo Dai, Xiaogang Wang, and Dahua Lin, “Visually informed binaural audio generation without binaural audios,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2021, pp. 15485–15494. [10] Mingfei Chen and Eli Shlizerman, “Av-cloud: Spatial audio rendering through audio-visual cloud splatting,” Advances in Neural Information Processing Systems , vol. 37, pp. 141021–141044, 2024. [11] Masaki Yoshida, Ren Togo, Takahiro Ogawa, and Miki Haseyama, “Extending gaussian splatting to audio: Optimizing audio points for novel-view acoustic synthesis,” in 2025 IEEE Conference on Virtual Reality and 3D User Interfaces Abstracts and Workshops (VRW) . IEEE, 2025, pp. 1412–1413. [12] Swapnil Bhosale, Haosen Yang, Diptesh Kanojia, Jiankang Deng, and Xiatian Zhu, “Av-gs: Learning material and geometry aware priors for novel view acoustic synthesis,” Advances in Neural Information Processing Systems , vol. 37, pp. 28920–28937, 2024. [13] Alexander Jourjine, Scott Rickard, and Ozgur Yilmaz, “Blind separation of disjoint orthogonal signals: Demixing n sources from 2 mixtures,” in 
+
+2000 IEEE International Conference on Acoustics, Speech, and Signal Processing. Proceedings (Cat. No. 00CH37100) . IEEE, 2000, vol. 5, pp. 2985–2988. [14] Maximo Cobos, Mirco Pezzoli, Fabio Antonacci, and Augusto Sarti, “Acoustic source localization in the spherical harmonics domain exploit-ing low-rank approximations,” in ICASSP 2023-2023 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP) .IEEE, 2023, pp. 1–5. [15] Qiang Zhang, Seung-Hwan Baek, Szymon Rusinkiewicz, and Felix Heide, “Differentiable point-based radiance fields for efficient view synthesis,” in SIGGRAPH Asia 2022 Conference Papers , 2022, pp. 1–12. [16] John S Bradley, “Predictors of speech intelligibility in rooms,” The Journal of the Acoustical Society of America , vol. 80, no. 3, pp. 837– 845, 1986. [17] Neil L Aaronson and William M Hartmann, “Testing, correcting, and extending the woodworth model for interaural time difference,” The Journal of the Acoustical Society of America , vol. 135, no. 2, pp. 817– 823, 2014. [18] Changan Chen, Wei Sun, David Harwath, and Kristen Grauman, “Learning audio-visual dereverberation,” in ICASSP 2023-2023 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP) . IEEE, 2023, pp. 1–5. [19] Roman Shapovalov and et al., “Replay: Multi-modal multi-view acted videos for casual holography,” 2023. [20] Pranay Manocha, Adam Finkelstein, Richard Zhang, Nicholas J Bryan, Gautham J Mysore, and Zeyu Jin, “A differentiable perceptual au-dio metric learned from just noticeable differences,” arXiv preprint arXiv:2001.04460 , 2020. [21] Michael Schoeffler and et al., “webmushra—a comprehensive frame-work for web-based listening tests,” Journal of Open Research Software ,vol. 6, no. 1, 2018.

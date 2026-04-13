@@ -1,0 +1,218 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-13T20:25:13.670608+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.07882v1",
+      "title": "ReconPhys: Reconstruct Appearance and Physical Attributes from Single Video",
+      "abstract": "Reconstructing non-rigid objects with physical plausibility remains a significant challenge. Existing approaches leverage differentiable rendering for per-scene optimization, recovering geometry and dynamics but requiring expensive tuning or manual annotation, which limits practicality and generalizability. To address this, we propose ReconPhys, the first feedforward framework that jointly learns physical attribute estimation and 3D Gaussian Splatting reconstruction from a single monocular video. Our method employs a dual-branch architecture trained via a self-supervised strategy, eliminating the need for ground-truth physics labels. Given a video sequence, ReconPhys simultaneously infers geometry, appearance, and physical attributes. Experiments on a large-scale synthetic dataset demonstrate superior performance: our method achieves 21.64 PSNR in future prediction compared to 13.27 by state-of-the-art optimization baselines, while reducing Chamfer Distance from 0.349 to 0.004. Crucially, ReconPhys enables fast inference (<1 second) versus hours required by existing methods, facilitating rapid generation of simulation-ready assets for robotics and graphics.",
+      "authors": [
+        "Boyuan Wang",
+        "Xiaofeng Wang",
+        "Yongkang Li",
+        "Zheng Zhu",
+        "Yifan Chang",
+        "Angen Ye",
+        "Guosheng Zhao",
+        "Chaojun Ni",
+        "Guan Huang",
+        "Yijie Ren",
+        "Yueqi Duan",
+        "Xingang Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-09T06:51:14+00:00",
+      "link": "https://arxiv.org/pdf/2604.07882v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "differentiable rendering and 3D Gaussian Splatting reconstruction",
+      "llm_evidence_cn": "可微渲染与3D高斯泼溅重建",
+      "llm_evidence": "可微渲染与3D高斯泼溅重建",
+      "canonical_evidence": "可微渲染与3D高斯泼溅重建",
+      "llm_tldr_en": "A feedforward framework for jointly learning physical attributes and 3D Gaussian Splatting from video.",
+      "llm_tldr_cn": "一种从视频中共同学习物理属性和3D高斯泼溅重建的前馈框架。",
+      "llm_tldr": "一种从视频中共同学习物理属性和3D高斯泼溅重建的前馈框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.08967v1",
+      "title": "AudioGS: Spectrogram-Based Audio Gaussian Splatting for Sound Field Reconstruction",
+      "abstract": "Spatial audio is fundamental to immersive virtual experiences, yet synthesizing high-fidelity binaural audio from sparse observations remains a significant challenge. Existing methods typically rely on implicit neural representations conditioned on visual priors, which often struggle to capture fine-grained acoustic structures. Inspired by 3D Gaussian Splatting (3DGS), we introduce AudioGS, a novel visual-free framework that explicitly encodes the sound field as a set of Audio Gaussians based on spectrograms. AudioGS associates each time-frequency bin with an Audio Gaussian equipped with dual Spherical Harmonic (SH) coefficients and a decay coefficient. For a target pose, we render binaural audio by evaluating the SH field to capture directionality, incorporating geometry-guided distance attenuation and phase correction, and reconstructing the waveform. Experiments on the Replay-NVAS dataset demonstrate that AudioGS successfully captures complex spatial cues and outperforms state-of-the-art visual-dependent baselines. Specifically, AudioGS reduces the magnitude reconstruction error (MAG) by over 14% and reduces the perceptual quality metric (DPAM) by approximately 25% compared to the best performing visual-guided method.",
+      "authors": [
+        "Chunhao Bi",
+        "Houqiang Zhong",
+        "Zhixin Xu",
+        "Li Song",
+        "Zhengxue Cheng"
+      ],
+      "primary_category": "cs.SD",
+      "categories": [
+        "cs.SD"
+      ],
+      "published": "2026-04-10T05:11:02+00:00",
+      "link": "https://arxiv.org/pdf/2604.08967v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "explicitly encodes sound field using Gaussian Splatting rendering",
+      "llm_evidence_cn": "使用高斯泼溅渲染显式编码声场",
+      "llm_evidence": "使用高斯泼溅渲染显式编码声场",
+      "canonical_evidence": "使用高斯泼溅渲染显式编码声场",
+      "llm_tldr_en": "Adapts Gaussian Splatting to reconstruct and render high-fidelity spatial audio sound fields.",
+      "llm_tldr_cn": "将高斯泼溅技术应用于空间音频，实现高保真声场的重建与渲染。",
+      "llm_tldr": "将高斯泼溅技术应用于空间音频，实现高保真声场的重建与渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.09045v1",
+      "title": "Scene-Agnostic Object-Centric Representation Learning for 3D Gaussian Splatting",
+      "abstract": "Recent works on 3D scene understanding leverage 2D masks from visual foundation models (VFMs) to supervise radiance fields, enabling instance-level 3D segmentation. However, the supervision signals from foundation models are not fundamentally object-centric and often require additional mask pre/post-processing or specialized training and loss design to resolve mask identity conflicts across views. The learned identity of the 3D scene is scene-dependent, limiting generalizability across scenes. Therefore, we propose a dataset-level, object-centric supervision scheme to learn object representations in 3D Gaussian Splatting (3DGS). Building on a pre-trained slot attention-based Global Object Centric Learning (GOCL) module, we learn a scene-agnostic object codebook that provides consistent, identity-anchored representations across views and scenes. By coupling the codebook with the module's unsupervised object masks, we can directly supervise the identity features of 3D Gaussians without additional mask pre-/post-processing or explicit multi-view alignment. The learned scene-agnostic codebook enables object supervision and identification without per-scene fine-tuning or retraining. Our method thus introduces unsupervised object-centric learning (OCL) into 3DGS, yielding more structured representations and better generalization for downstream tasks such as robotic interaction, scene understanding, and cross-scene generalization.",
+      "authors": [
+        "Tsuheng Hsu",
+        "Guiyu Liu",
+        "Juho Kannala",
+        "Janne Heikkilä"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-10T07:07:10+00:00",
+      "link": "https://arxiv.org/pdf/2604.09045v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "object-centric representation in 3D Gaussian Splatting",
+      "llm_evidence_cn": "3D高斯泼溅中的以物体为中心的表示",
+      "llm_evidence": "3D高斯泼溅中的以物体为中心的表示",
+      "canonical_evidence": "3D高斯泼溅中的以物体为中心的表示",
+      "llm_tldr_en": "Learns scene-agnostic object representations for 3D Gaussian Splatting using slot attention.",
+      "llm_tldr_cn": "利用槽注意力机制为3D高斯泼溅学习场景无关的物体表示。",
+      "llm_tldr": "利用槽注意力机制为3D高斯泼溅学习场景无关的物体表示。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.09473v1",
+      "title": "Realizing Immersive Volumetric Video: A Multimodal Framework for 6-DoF VR Engagement",
+      "abstract": "Fully immersive experiences that tightly integrate 6-DoF visual and auditory interaction are essential for virtual and augmented reality. While such experiences can be achieved through computer-generated content, constructing them directly from real-world captured videos remains largely unexplored. We introduce Immersive Volumetric Videos, a new volumetric media format designed to provide large 6-DoF interaction spaces, audiovisual feedback, and high-resolution, high-frame-rate dynamic content. To support IVV construction, we present ImViD, a multi-view, multi-modal dataset built upon a space-oriented capture philosophy. Our custom capture rig enables synchronized multi-view video-audio acquisition during motion, facilitating efficient capture of complex indoor and outdoor scenes with rich foreground--background interactions and challenging dynamics. The dataset provides 5K-resolution videos at 60 FPS with durations of 1-5 minutes, offering richer spatial, temporal, and multimodal coverage than existing benchmarks. Leveraging this dataset, we develop a dynamic light field reconstruction framework built upon a Gaussian-based spatio-temporal representation, incorporating flow-guided sparse initialization, joint camera temporal calibration, and multi-term spatio-temporal supervision for robust and accurate modeling of complex motion. We further propose, to our knowledge, the first method for sound field reconstruction from such multi-view audiovisual data. Together, these components form a unified pipeline for immersive volumetric video production. Extensive benchmarks and immersive VR experiments demonstrate that our pipeline generates high-quality, temporally stable audiovisual volumetric content with large 6-DoF interaction spaces. This work provides both a foundational definition and a practical construction methodology for immersive volumetric videos.",
+      "authors": [
+        "Zhengxian Yang",
+        "Shengqi Wang",
+        "Shi Pan",
+        "Hongshuai Li",
+        "Haoxiang Wang",
+        "Lin Li",
+        "Guanjun Li",
+        "Zhengqi Wen",
+        "Borong Lin",
+        "Jianhua Tao",
+        "Tao Yu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-10T16:31:12+00:00",
+      "link": "https://arxiv.org/pdf/2604.09473v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "volumetric media format for immersive 6-DoF interaction",
+      "llm_evidence_cn": "用于沉浸式6自由度交互的体积媒体格式",
+      "llm_evidence": "用于沉浸式6自由度交互的体积媒体格式",
+      "canonical_evidence": "用于沉浸式6自由度交互的体积媒体格式",
+      "llm_tldr_en": "Introduces a new volumetric video format and dataset for immersive 6-DoF audiovisual VR experiences.",
+      "llm_tldr_cn": "介绍了一种新的体积视频格式和数据集，用于支持沉浸式6自由度视听VR体验。",
+      "llm_tldr": "介绍了一种新的体积视频格式和数据集，用于支持沉浸式6自由度视听VR体验。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.09505v1",
+      "title": "Enhancing the accuracy of under-resolved numerical simulations of atmospheric flows with super resolution",
+      "abstract": "Super-resolution (SR) techniques based on deep learning have recently emerged as a promising approach to enhance the spatial resolution of computational fluid dynamics simulations while containing computational cost. In this paper, we investigate several SR architectures to improve coarse-grid simulations of mesoscale atmospheric flows, with training data generated from simulations of the weakly compressible Euler equations. We compare a baseline convolutional neural network (CNN), an attention-enhanced CNN, a multi-scale CNN designed to capture flow structures across different spatial scales, and a diffusion-based SR model. The methods are evaluated on two standard atmospheric benchmarks: the rising thermal bubble and the density current. Results show that the baseline CNN can accurately reconstruct simpler flow features, while more complex flows require multi-scale architectures. Overall, SR based on the multi-scale CNN provides the best balance of accuracy, robustness, and computational efficiency, outperforming even a state-of-the-art diffusion-based approach. We also analyze the sensitivity of the models to the size of the training dataset, highlighting limitations and trade-offs of the proposed SR strategies.",
+      "authors": [
+        "Armin Sheidani",
+        "Michele Girfoglio",
+        "Annalisa Quaini",
+        "Gianluigi Rozza"
+      ],
+      "primary_category": "physics.flu-dyn",
+      "categories": [
+        "physics.flu-dyn"
+      ],
+      "published": "2026-04-10T17:18:32+00:00",
+      "link": "https://arxiv.org/pdf/2604.09505v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "deep learning for atmospheric flow simulation and super-resolution",
+      "llm_evidence_cn": "深度学习用于大气流模拟与超分辨率",
+      "llm_evidence": "深度学习用于大气流模拟与超分辨率",
+      "canonical_evidence": "深度学习用于大气流模拟与超分辨率",
+      "llm_tldr_en": "Investigates deep learning architectures to enhance the resolution of atmospheric flow numerical simulations.",
+      "llm_tldr_cn": "研究深度学习架构以增强大气流数值模拟的分辨率。",
+      "llm_tldr": "研究深度学习架构以增强大气流数值模拟的分辨率。",
+      "llm_tags": [
+        "query:q5"
+      ],
+      "matched_query_tag": "query:q5",
+      "matched_query_text": "deep learning methods for volumetric cloud rendering and simulation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

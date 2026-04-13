@@ -1,0 +1,544 @@
+Title: Realizing Immersive Volumetric Video: A Multimodal Framework for 6-DoF VR Engagement
+
+URL Source: https://arxiv.org/pdf/2604.09473v1
+
+Published Time: Mon, 13 Apr 2026 01:16:40 GMT
+
+Number of Pages: 15
+
+Markdown Content:
+> 1
+
+# Realizing Immersive Volumetric Video: A Multimodal Framework for 6-DoF VR Engagement 
+
+Zhengxian Yang, Shengqi Wang, Shi Pan, Hongshuai Li, Haoxiang Wang, Lin Li, Guanjun Li Member, IEEE ,Zhengqi Wen, Member, IEEE Borong Lin, Jianhua Tao, Senior Member, IEEE , and Tao Yu, Member, IEEE 
+
+Abstract —Fully immersive experiences that tightly integrate 6-DoF visual and auditory interaction are essential for virtual and augmented reality (VR/AR). While such experiences can be achieved through computer-generated content, constructing them directly from real-world captured videos remains largely unexplored. We introduce Immersive Volumetric Videos (IVV), a new volumetric media format designed to provide large 6-DoF interaction spaces, audiovisual feedback, and high-resolution, high-frame-rate dynamic content. To support IVV construction, we present ImViD , a multi-view, multi-modal dataset built upon a space-oriented capture philosophy. Our custom capture rig enables synchronized multi-view video-audio acquisition during motion, facilitating efficient capture of complex indoor and out-door scenes with rich foreground–background interactions and challenging dynamics. The dataset provides 5K-resolution videos at 60 FPS with durations of 1–5 minutes, offering richer spatial, temporal, and multimodal coverage than existing benchmarks. Leveraging this dataset, we develop a dynamic light field reconstruction framework built upon a Gaussian-based spatio-temporal representation, incorporating flow-guided sparse ini-tialization, joint camera temporal calibration, and multi-term spatio-temporal supervision for robust and accurate modeling of complex motion. We further propose, to our knowledge, the first method for sound field reconstruction from such multi-view audiovisual data. Together, these components form a unified pipeline for immersive volumetric video production. Extensive benchmarks and immersive VR experiments demonstrate that our pipeline generates high-quality, temporally stable audiovisual volumetric content with large 6-DoF interaction spaces. This work provides both a foundational definition and a practical construction methodology for immersive volumetric videos, facil-itating future research in immersive media production. Project page: https://github.com/Metaverse-AI-Lab-THU/ImViD 
+
+Index Terms —Immersive Volumetric Videos, 4D Gaussian Splatting, Sound Field Reconstruction, VR/AR Applications. 
+
+This work was supported by the National Natural Science Foundation of China under Grant 62171255, the Tsinghua University-Fuzhou Joint Institute for Data Technology under Grant JIDT2024003, the Tsinghua University-Migu Xinkong Culture Technology (Xiamen) Co. Ltd. Joint Research Center for Intelligent Light Field and Interaction Technology, and the Beijing Mu-nicipal Science and Technology Commission “Generic Technology Platform for Light Fields” Project under Grant Z23111000290000. (Zhengxian Yang, Shengqi Wang and Shi Pan contributed equally to this work.) (Corresponding author: Tao Yu.) 
+
+Zhengxian Yang, Shengqi Wang, Shi Pan and Haoxiang Wang are with Tsinghua University, Beijing, China. (e-mails: zx-yang23, shengqi-21, ps23, whx22@mails.tsinghua.edu.cn). Hongshuai Li and Guanjun Li are with the Institute of Automa-tion, Chinese Academy of Sciences, Beijing, China. (e-mails: lihong-shuai24@mails.ucas.ac.cn, guanjun.li@nlpr.ia.ac.cn). Lin Li is with the Migu Beijing Research Institute, Beijing, China (e-mail: lilin@migu.chinamobile.com). Borong Lin is with the School of Architecture, Tsinghua University, Beijing, China. (e-mail: linbr@tsinghua.edu.cn). Jianhua Tao is with the Department of Automation, Tsinghua University, Beijing, China. (e-mail: jhtao@tsinghua.edu.cn). Zhengqi Wen and Tao Yu are with the BNRist, Tsinghua University, Beijing, China. (e-mails: zqwen@tsinghua.edu.cn, ytrock@mail.tsinghua.edu.cn). b) Reconstruction    
+
+> Quality-Storage Frontier
+> 28.50
+> 24.29
+> 23.42 23.32
+> 22.33
+> Better
+> c) Immersive VR
+> Interaction
+> Rotate Zoom
+> View 1
+> View 2
+> View 3
+> a) Multimodal
+> Data Acquisition
+
+Fig. 1: Equipped with a) Multimodal Capture, b) a State-of-the-art Audiovisual Reconstruction Framework, and c) Seam-less 6-DoF VR Interaction, we achieve high-fidelity Immersive Volumetric Videos (IVV) construction. I. I NTRODUCTION 
+
+# HIGH-QUALITY, high-fidelity digital modeling of the real world has long been a central goal in computer vision and graphics. With recent advances in multi-view reconstruction and virtual reality technologies, generating vi-sually compelling and interactive 3D content has become in-creasingly feasible, enabling applications such as holographic telepresence, immersive training, virtual tourism and cultural heritage preservation. More recently, generative models like Marble [1] and Seedance 2.0 [2] have demonstrated impressive capabilities in synthesizing novel views with consistent styles and plausible geometry from limited image inputs. However, despite their creative potential, these generative approaches still struggle to support free-viewpoint exploration of expan-sive environments or to faithfully record and restore complex dynamic content for authentic immersive viewing. Achieving truly immersive user experiences that mirror the real world, therefore, remains an open challenge. 
+
+What constitutes the next generation of immersive media? 
+
+Drawing on prior immersive systems [3], [4] and user stud-ies [5], [6], we identify four technical pillars essential for deep immersion: (i) Omnidirectional coverage of both foreground and background, (ii) High-quality 6-DoF interaction, (iii) Multi-modal experience with visual-auditory feedback, and (iv) High-frame-rate, long-duration dynamic content. We refer to a media format that simultaneously fulfills all these criteria as an immersive volumetric video .Despite steady progress in capture systems and reconstruc-tion algorithms, existing solutions fall short of meeting all four requirements. Human- or object-centric datasets such 
+
+> arXiv:2604.09473v1 [cs.CV] 10 Apr 2026 2
+
+as Panoptic Sports [7], ZJU-Mocap [8], and DiVa-360 [9] achieve dense 360 ◦ capture but lack complex backgrounds and multi-modal signals. Google Immersive Light Field Video [3] enables high-quality 6-DoF rendering, yet remains limited in temporal duration, frame rate, and auditory immersion. Replay [10] introduces spatial audio but adopts a camera con-figuration that is less compatible with natural human viewing, restricting interaction quality. These limitations highlight the absence of an integrated capture and reconstruction paradigm tailored for immersive volumetric videos. In parallel, advances in neural rendering and explicit scene representations have significantly improved the fidelity and efficiency of 3D reconstruction. NeRF [11] and its subsequent extensions have demonstrated impressive visual quality, while 3D Gaussian Splatting (3DGS) [12] and its variants [13]– [19] have enabled real-time rendering via explicit representa-tions. Nevertheless, reconstructing dynamic immersive scenes remains particularly challenging. Existing dynamic light field methods, whether explicit Gaussian-based approaches [20]– [24] or implicit neural representations [25]–[31], struggle to balance foreground–background accuracy, temporal coher-ence, rendering efficiency, and storage costs in real-world, texture-rich environments with complex motion. Moreover, even millisecond-level temporal misalignment across multi-view cameras can cause noticeable artifacts in fast motion, an issue often overlooked in existing pipelines. To better support immersive volumetric video research and address the challenges discussed above, we develop a mobile multi-view capture rig equipped with synchronized cameras and microphones, together with space-oriented acquisition strategies that combine dense static sampling with long-duration dynamic capture. Based on this system, we construct 
+
+ImViD , an audiovisual dataset comprising large-scale indoor and outdoor scenes with 360 ◦ coverage, high resolution (5K), high frame rate (60 FPS), and rich foreground–background interactions. We further propose a robust dynamic light field reconstruction framework based on a Gaussian-based spatio-temporal representation to address complex motion and real-world capture imperfections. Our method integrates flow-guided sparse initialization to decouple static and dynamic regions, introduces camera-wise temporal calibration to explic-itly compensate for residual sub-frame misalignment during joint optimization, and employs spatio-temporal supervision to enforce photometric, geometric, and motion consistency across long-duration sequences. Together, these designs enable faith-ful reconstruction of temporally coherent 4D light fields under challenging in-the-wild conditions. Finally, we incorporate a sound field reconstruction module to support consistent 6-DoF audiovisual immersion. A complete pipeline for immersive volumetric video construction is established. Our main contributions can be summarized as follows:  
+
+> •
+
+We define Immersive Volumetric Videos (IVV) as a new volumetric media for VR/AR applications and introduce 
+
+ImViD , a high-quality multi-view, multimodal dataset for immersive volumetric video. It features 360 ◦ foreground– background capture, long-duration video & audio data under high resolution @5K and high frame rate @60 FPS.  
+
+> •
+
+We propose a robust dynamic light field reconstruction framework using a Gaussian-based spatio-temporal repre-sentation. By integrating flow-guided initialization, joint temporal calibration, and spatio-temporal supervision, our approach achieves high-fidelity, coherent reconstruction for in-the-wild motion, surpassing existing methods.  
+
+> •
+
+We establish a comprehensive pipeline for IVV produc-tion (Fig. 3), which, to our knowledge, is the first to jointly reconstruct dynamic light and sound fields from multi-view audiovisual captures. The effectiveness of our framework is validated through extensive experiments and immersive VR demonstrations, providing a practical methodology for high-quality immersive media creation. II. R ELATED WORK 
+
+A. Datasets for Dynamic Novel View Synthesis 
+
+Early studies on dynamic scene reconstruction mainly fo-cused on human avatars. Representative datasets like Hu-man3.6M [32], Panoptic Sports [7], ZJU-Mocap [8], and Tensor-4D [31] primarily capture simple human motions with limited or no background content, limiting their applicability to immersive experiences. In the following, we review more complex datasets that incorporate environmental context, in-cluding both monocular and multi-view acquisitions. Monocular acquisition systems are attractive due to their low cost and ease of deployment. Datasets such as HyperN-eRF [33], Dynamic Scene Dataset [34], and D2NeRF [35] use a mobile phone as the capture device for recording dynamic scenes through handheld motion. However, these datasets suffer from resolutions below 1080p, limited capture space (similar to fixed-point shooting), and durations under one minute. Although NeRF On-the-go [36] allows for larger capture ranges by walking while shooting, high-quality recon-structions are confined to the vicinity of the capture path, and the small field of view (FOV) limits prolonged observations of specific scene positions. Multi-camera capture has gained significant attention for its ability to provide wider FOVs and richer details. For example, the Immersive Light Field dataset [3] employs 46 cameras to capture 15 indoor and outdoor scenes, while Technicolor [37] uses a 4 ×4 camera rig for 12 indoor sequences. The UCSD Dynamic Scene Dataset [38] consists of 96 outdoor videos focused on single-person activities captured by 10 cameras. The Plenoptic Dataset [25] uses 21 cameras for 6 indoor scenes. Similarly, datasets like [39]–[41] utilize 13, 18, and 24 cameras, respectively. Despite the increased camera counts, these systems rely on static capture setups, limiting them to frontal views and hindering 360 ◦ reconstruction. Moreover, the video sequences are typically short, with a maximum duration of 2 minutes (often less than 30 seconds) and a maximum resolution of 3840 ×2160, which is insufficient for high-quality immersive VR experiences. In addition, the previously mentioned datasets, whether monocular or multi-view, lack sound recordings, despite the importance of multimodality for immersion. The Replay dataset [10] addresses this by focusing on long sequences with professional actors in familiar settings. It employs a ring of 3
+
+Fig. 2: We introduce ImViD , a dataset for immersive volumetric videos. ImViD records dynamic scenes using a multi-view audio-video capture rig moving in a space-oriented manner, which provides a new benchmark for immersive volumetric video reconstruction and its application. 8 static DSLR cameras paired with binaural microphones and 3 head-mounted GoPro cameras, providing 46 videos at 4K. However, aside from the head-mounted cameras, which can rotate slightly with head movements, all other cameras remain static. Furthermore, the DSLR arrangement does not align with human viewing habits in VR, making them unsuitable as benchmarks for novel view synthesis tasks. The latest work [42] presents a dataset of 28 scenes captured with a 360 ◦
+
+camera, each including multiple audio and video sequences. However, this dataset is constrained by a fixed-point shooting strategy, resulting in sparse viewpoints that hinder the recon-struction of high-quality dynamic scenes. Further comparisons between our work and these datasets can be found in Table I. 
+
+B. Dynamic Light&Sound Field Reconstruction 
+
+Temporal variations in input images make reconstructing dynamic scenes more challenging than static ones. The key issue is efficiently representing 4D scenes while ensuring spatiotemporal consistency and high accuracy. Traditional ap-proaches address scene dynamics by estimating time-varying geometries, such as surfaces [43] and depth maps [44]. Re-cently, research efforts have shifted towards adapting neural radiance field representations to dynamic scenes. DyNeRF [25] pioneered dynamic scene reconstruction using neural radiance fields. Following DyNeRF, a series of works [26]–[31], [39] have focused on improving the fidelity and efficiency of 4D neural representations. However, these methods commonly suffer from high memory consumption and the difficulty of modeling complex spatiotemporal dynamics. More recent work has extended 3DGS to dynamic scenes, enabling high-quality, real-time rendering. While modeling dynamic scenes as static ones is straightforward, methods relying solely on monocular data [45], [46] are not suitable for this paradigm and face challenges in adding constraints or priors to better supervise training. Other approaches leverage multi-view data as input. Works such as [47] and [48] adopt frame-to-frame initialization to construct per-frame Gaussian point clouds, resulting in high memory consumption and temporal artifacts, including abrupt appearance and disappearance. 4DGS [20] introduces Hexplane to encode spatiotemporal information, using MLPs to predict changes in Gaussian properties. Sub-sequent works [49]–[51] further add geometric and optical flow constraints to improve frame-to-frame motion but perform well only on short sequences with small actions. Other ap-proaches [21]–[24], [52], [53] employ the explicit parametric form (such as radial basis functions) of 3DGS to enhance spatiotemporal consistency. Some methods [54], [55] focus on representation with dual quaternions, 4D spherical harmonics, or rotors for end-to-end training. More improvements, such as parallel training [56] and using codebooks and masks to enhance scene compactness [57], indicate the potential for efficient and high-quality representation of long-term complex dynamic scenes. In addition to light field reconstruction, reconstructing the sound field from multimodal data is equally important, often referred to as novel-view acoustic synthesis. For the novel-view acoustic synthesis task, AV-NeRF [58] synthesizes spatial audio by leveraging visual features from rendered images. NeRAF [59] further decouples the camera and microphone poses used for training. AV-GS [60] incorporates a 3D scene representation during sound field synthesis, addressing the is-sue where previous methods overlooked the contribution of the broader 3D scene geometry. SOAF [61] considers occlusion in the light field when synthesizing the sound field. However, the above novel-view acoustic synthesis tasks typically require a large amount of multimodal training data collected from different locations, which is often user-unfriendly in practical applications. Moreover, these methods generally cannot solve the problem of sound field synthesis for moving sound sources. This paper proposes a training-free novel-view acoustic syn-thesis approach for our dataset, which also supports sound field synthesis for moving sound sources. III. ImViD DATASET 
+
+Our goal is to construct a real-world immersive volu-metric video dataset that jointly captures foreground and background content, thereby supporting research on spatial video reconstruction and VR/AR applications. To this end, we carefully design the entire data acquisition pipeline as described in [64], including hardware configuration, scene 4
+
+TABLE I: Existing real-world datasets for dynamic novel view synthesis. 
+
+Datasets No. Scene Outdoor/ Indoor Cameras Mobility Resolution Angles Duration FPS Multi-modality Content 
+
+PanopticSports [7] 65 Indoor 480 cameras Static 640 ×480 360 ◦ 5mins 25 % Human-centric actions Technicolor [37] 12 Indoor 16 cameras Static 2048 ×1088 Frontal 2s 30 %
+
+Has a number of close-ups sequences, captured medium angle scenes and other animated scenes where the movement does not come from a human Immersive-Lightfield [3] 15 both 46 cameras Static 2560 ×1920 Frontal 10–30s 30 % Simple and slow motion of human, animals, objects HyperNeRF [33] 17 Indoor 1 hand-held phone Fixed-point Waving 1920 ×1080 Frontal 30–60s 30 % Waving a mobile phone in front of a moving scene, object-centric Dynamic Scene Datasets (NVIDIA) [34] 8 Outdoor 1 Mobile phone /12 cameras Fixed-point Waving/Static 1920 ×1080 Frontal 5s 60 % Simple body motions (facial, jump, etc.) UCSD Dynamic [38] 96 Outdoor 10 cameras Static 1920 ×1080 Frontal 1–2mins 120 % Various visual effects and human interactions ZJU-Mocap [8] 10 Indoor 21 cameras Static 1024 ×1024 360 ◦ 20s 50 % Simple body motions (punch, kick, etc.) Plenoptic Dataset (DyNeRF/Neural 3D) [25] 6 Indoor 21 cameras Static 2704 ×2028 Frontal 10–30s 30 %
+
+Contains high specularity, translucency and transparency objects, motions with changing topology, selfcast moving shadows, volumetric effects, various lighting conditions and multiple people moving around in open living room space D2NeRF [35] 10 Indoor dual-hold phone Fixed-point Waving 1920 ×1080 Frontal 5s 30 %
+
+Contains more challenging scenarios with rapid motion and non-trivial dynamic shadows iPhone Datasets [62] 14 both 1 hand-held phone/2 cameras Fixed-point Waving/Static 640 ×480 Frontal 8–15s 30/60 %
+
+Featuring non-repetitive motion, from various categories such as generic objects, humans, and pets Meetroom Datasets [39] 4 Indoor 13 cameras Static 1280 ×720 Frontal 10s 30 % One or three persons have discussion, working, trimming in a meeting room ENeRF-Outdoor [40] 4 Outdoor 18 cameras Static 1920 ×1080 Frontal 20–40s 30 % Complex human motions Replay [10] 46 Indoor 12 cameras Static 3840 ×2160 360 ◦ 5mins 30 ✓(Audio) Dancing, chatting, playing video games, unwrapping presents, playing ping pong Campus Datasets [41] 6 Outdoor 24 cameras Static 3840 ×2160 Frontal 5–10s 30 %
+
+Includes more realistic observations such as pedestrians, moving cars, and grasses with people playing MoDGS [63] 6 both 1 cameras Static – Frontal – – % Contains diverse subjects like skating, a dog eating food, YOGA, etc. DiVa-360 [9] 53 Indoor 53 cameras Static 1280 ×720 Frontal 51s 120 ✓(Audio) For Object-centric tasks. Contains dynamic objects and intricate hand-object interactions NeRF On-the-go [36] 12 both 1 hand-held phone Moveable 4032 ×3024 360 ◦ 5–10s 30 %
+
+Including 10 outdoor and 2 indoor scenes, features a wide range of dynamic objects including pedestrians, cyclists, strollers, toys, cars, robots, and trams, along with diverse occlusion ratios ranging from 5% to 30% 360+X [42] 28 both 1 360 ◦ cams 1 Spectacles cam Static 5760 ×2880 360 ◦ 10s 30 ✓(Audio) Capture in 17 cities across 5 countries. Panoptic perspective to scene understanding with audio 
+
+ImViD(Ours) 7 both 39 cameras Moveable 5312 ×2988 Frontal/ 360 ◦ 1–5mins 60 ✓(Audio) 
+
+Seven common indoor and outdoor scenes in daily life, including opera, face-to-face communication, teaching, discussion, music performance, interaction with pets, and playing. Each scene has high-quality synchronized multi-view video and audio with a duration of more than 1 minute, and contains rich elements such as various small objects, glass, and changes in light and shadow 5a) Multi-View Video & Audio Capture 
+
+> (Fixed Rig / Moving Rig)
+> c) Immersive Volumetric Video for
+> .... Deep VR Immersion Timecode B ased -
+> Video & Audio Synchronization Fixed / Moving Rig
+> Dual Capture Strategies
+> b2) Sound Field Reconstruction
+> b1) Dynamic Light Field Reconstruction
+> Initialization
+> Sound Localization
+> Representation
+> Spatial Sound Generation
+> Scene Optimization
+
+Fig. 3: The pipeline to realize the multimodal 6-DoF immersive VR experiences. We applied a carefully designed rig to 
+
+(a) simultaneously capture multi-view video and audio. The (b1) presents our proposed dynamic light field reconstruction framework while (b2) demonstrates the construction process of sound field, details can be seen in Sec. IV. Ultimately, we achieve a 6-DoF audiovisual experience (c) , demonstrate the effectiveness of both our dataset and the proposed pipeline. selection, capture strategies, and data processing, ensuring that the elements of interest to researchers are preserved to the greatest extent. With informed consent obtained from all participants involved in dynamic scenes prior to data collec-tion, the released ImViD dataset comprises a total of 7 large scenes, including 5 indoor and 2 outdoor environments. The captured content covers a diverse set of everyday activities, such as opera performances, meetings, teaching scenarios, and outdoor leisure activities. Each scene provides a 360 ◦ coverage of the environment through static images, along with multi-view, time-synchronized video and audio sequences captured at 5K resolution and 60 FPS. Two complementary capture strategies are employed to capture dynamic scenes with both fine-grained motion details and extended spatial coverage, along with calibrated camera poses. 
+
+A. Data Acquisition 
+
+Handheld monocular cameras offer flexible motion but only sparse viewpoints from various locations. In contrast, fixed camera arrays, while stationary, offer dense perspectives within a limited range. We aim to combine the advantages of both to design an effective data collection system and strategy for a fully immersive VR experience. As shown in Fig. 4, our system consists of 39 GoPro cameras installed on a hemi-spherical surface mounted on a remotely controllable mobile platform, all of which are connected to a PC for synchronized triggering and control. The rig is carefully designed to be positioned at approximately human eye height, and the camera are oriented outward to emulate a natural inside-looking-out perspective consistent with human viewing. This system can 
+
+Fig. 4: Our rig support two kinds of capturing strategies for high resolution, high frame rate and 360 ◦ dynamic data. synchronously collect about 1,000 images at 5K resolution within a space of at least 6 m³ in 2 min. It further enables synchronized video and audio recording at 5K resolution and 60 FPS for up to 30 min (limited by heat dissipation). Based on this hardware setup, we adopt the following capture strategy: 
+
+Step 1: Efficient, high-quality, high-density 360 ◦ image ac-quisition of static environments. 
+
+Step 2: Continuous synchronous collection of dynamic scenes under two different strategies. i) Fixed-point shooting. The cart remains stationary during the capture, focusing on capturing dynamic details. ii) Moving shooting. The cart slowly moves while the scene 6
+
+TABLE II: Detailed Statistics of the ImViD Dataset.                                                                              
+
+> Name #Camera #Static Views #Take #Strategy Density ( m3/s )Viewing Space Avg. Duration Storage (GB) Scene 1 Opera 39 1152 21–180 ◦3min22s 226 Scene 2 Laboratory 39 1225 220.10 360 ◦1min42s 137.3 Scene 3 Classroom 39 1223 220.10 360 ◦4min42s 497 Scene 4 Meeting 39 1223 11–360 ◦3min16s 114 Scene 5 Rendition 39 1620 420.10 360 ◦2min02s 516 Scene 6 Puppy 39 1404 320.10 360 ◦1min50s 359 Scene 7 Playing 39 1224 220.10 360 ◦1min10s 220
+> Total ––16 –––38min46s 2069.3
+> Note: #Take represents the number of episodes. #Strategy indicates the capture strategy in Step 2 (1: fixed-point only; 2: both fixed and moving).
+> Density denotes the spatiotemporal captured volume per second.
+
+is in motion, providing additional levels of detail and a larger exploratory space. Throughout the capture process, world time codes are strictly synchronized across all devices. Camera parameters, including focal length, exposure, and white balance, are manually calibrated per-scene through iterative adjustment to minimize hardware-induced variations in data quality. To ensure high-fidelity audio, camera noise reduction coefficients are optimized, and external environmental noise is strictly controlled during acquisition. 
+
+B. Data Processing 
+
+The data processing pipeline is designed to ensure high-precision geometric and temporal alignment across multimodal sequences. For Step 1 images, we perform Structure-from-Motion (SfM) using COLMAP [65]. Camera intrinsic priors and the known relative arrangement of the rig are incorporated to accelerate calibration and improve stability. This procedure establishes a globally consistent coordinate system and pro-duces a sparse geometric reference for each scene. For the video and audio from Step 2, synchronization across all cameras is first verified via embedded world time codes. Accurate temporal alignment is critical, as synchronization quality directly affects the fidelity of dynamic reconstruction and the spatial consistency of the sound field. The resulting synchronization error is approximately 5 ms. For fixed-point sequences, cameras at Frame 0 are registered to the cali-brated static scene through feature matching and triangulation, yielding intrinsic and extrinsic parameters within the same global coordinate system. This guarantees seamless spatial integration of dynamic content with the 360 ◦ background. Subsequent frames inherit these parameters, with sparse point clouds generated via frame-wise triangulation. For moving sequences, the static scene is treated as a geometric backbone. At each time step, camera poses are estimated through feature matching with the static environment, using the previous frame as initialization for optimization to improve efficiency and temporal smoothness in long-duration captures. Since the rig is not perfectly rigid and may undergo slight deformation during motion, per-frame camera parameters are optimized rather than enforcing a single rigid transformation across the sequence. Given that the audiovisual data is captured by integrated GoPro units, the spatial offset between the lens and the internal microphone is negligible relative to the scene scale. 600 mm    
+
+> Over 5
+> seconds
+> 1000mm
+> 1000mm
+> 1) 2) 3)
+
+Fig. 5: Calculation method for spatiotemporal capture den-sity . 1) the capture strategy of handheld monocular camera 2) represents the fixed camera array 3) Our rig moving covers a volume of 0.6π × 0.52 m3 over 5 seconds. Accordingly, the estimated camera poses are used as the microphone positions for sound field reconstruction. 
+
+C. Dataset Analysis 
+
+Diversity. Our dataset, as depicted in Table II, includes 7 common indoor and outdoor scenes, each comprising one or more takes, totaling 16 video sequences. Each scene is rich in foreground and background elements, meticulously crafted to preserve the authenticity of the environment. The characters, clothing, and motions within each scene exhibit a diverse range, set against varying ambient lighting conditions. We also included areas of interest, such as tables, chairs, and windows, as much as possible for researchers. 
+
+Quality. Leveraging a total of 39 cameras, we captured dynamic scenes at a resolution of 5312 ×2988 and 60 FPS. The images of the static environment are 5568 ×4176. 
+
+Duration. As outlined in Table II, each scene in our dataset contains at least 1 minute of footage. The longest sequence in our forthcoming public dataset spans approximately 5 minutes. The total processed data duration amounts to 38 minutes and 46 seconds, including 139,560 frames per camera. 
+
+Coverage. As highlighted in Table II, we conducted image acquisition from over 1,000 viewpoints before recording dy-namic content, thereby offering a 180 ◦–360 ◦ viewing space in VR. To characterize the mobile rig, we propose a met-ric termed ‘spatiotemporal capture density’, quantifying the 7Flow        
+
+> Color
+> Depth
+> Motion
+> Render_Color Render_Depth Render_Flow
+> GT_Flow GT_Depth GT_Color
+> Oi
+> Owy
+> x
+> z
+> t1t2t3tRef. Time
+> Alpha Blending
+> Camera_1
+> Capture Time
+> Camera_k
+
+Loss   
+
+> b) Gaussian-Based Spatio-Temporal Representation a) Flow-Guided Sparse Initialization d) Spatio-Temporal Supervision
+> c) Joint Camera Temporal Calibration
+> Learnable
+> Temporal Offset
+> Camera Calibration
+> 3D Points
+> Classification
+> GT_Flow
+> Static Initialization
+> Dynamic Initialization
+> xn Frames
+> t
+> t
+
+Fig. 6: Overview of the proposed Dynamic Light Field Reconstruction method. The pipeline starts with Flow-Guided Sparse Initialization (a) , which leverages SfM geometry and optical flow priors to decouple static and dynamic regions, initializing static primitives globally and dynamic ones per frame to reduce redundancy. The scene is then represented using a Gaussian-Based Spatio-Temporal Representation (b) , encoding spatial geometry, appearance, and temporal dynamics, where motion is modeled by linear velocity and visibility by Gaussian-modulated temporal opacity. In the final stage, we jointly optimize the scene parameters and perform Joint Camera Temporal Calibration (c) to refine per-camera temporal offsets for sub-frame alignment. Rendered color, depth, and optical flow maps are further supervised through Spatio-Temporal Supervision (d) , enforcing photometric, geometric, and motion consistency. captured volume covered by our rig per second, as shown in Fig. 5. This metric, unavailable in current datasets (where static camera arrays are deemed 0 and handheld monocular cameras follow a single trajectory without capturing volume), registers at approximately 0.10 m3/s in our dataset. IV. M ETHOD 
+
+Evolving from the preliminary framework in [64], our pro-posed framework comprises two main components: (i) a novel Gaussian-based dynamic light field reconstruction method, as illustrated in Fig. 6, which incorporates flow-guided sparse initialization strategy to decouple static and dynamic regions, joint camera temporal calibration mechanism to address resid-ual sub-frame misalignment, and multi-term spatio-temporal supervision to simultaneously regularize photometric, geomet-ric, and motion consistency for high-fidelity rendering; (ii) a sound field reconstruction method that synthesizes spatial audio to complement the visual realism, ensuring coherent and immersive audiovisual engagement. 
+
+A. Dynamic Light Field Reconstruction 1) Gaussian-based Spatio-temporal Representation: Build-ing upon 3D Gaussian Splatting (3DGS) [12], we represent a dynamic scene as a set of spatio-temporal Gaussian primitives 
+
+G = {Gi}Ni=1 . Each primitive encodes spatial geometry, appearance, and temporal dynamics, and is parameterized as 
+
+Gi = {μi, q i, s i, f i, o i, v i, τ i, t i}, (1) where μi ∈ R3, qi ∈ R4, and si ∈ R3 denote the canonical center position, rotation quaternion, and scaling factors respec-tively. fi represents the Spherical Harmonics (SH) coefficients for view-dependent color, and oi is the base opacity logit. To model temporal behavior, we introduce a velocity vector 
+
+vi ∈ R3, a temporal extent τi controlling visibility duration, and a temporal center ti, which denotes the peak visibility timestamp, serving as the temporal reference. At time t, the spatial center of each primitive evolves linearly as: 
+
+μi(t) = μi + vi(t − ti). (2) Temporal visibility is modeled by Gaussian decay on the opacity: 
+
+σi(t) = σ(oi) exp 
+
+
+
+− (t − ti)2
+
+τ 2
+
+> i
+
+
+
+, (3) where σ(·) denotes the sigmoid function. With fixed rotation 
+
+qi and scale si, each spatio-temporal Gaussian primitive at time t effectively reduces to a standard 3D Gaussian 
+
+{μi(t), q i, s i, f i, σ i(t)}, enabling real-time rendering via the original tile-based rasterization pipeline of 3DGS. 8
+
+2) Flow-Guided Sparse Initialization: In complex dynamic scenes, objects may abruptly appear or disappear, making initialization from a single-frame point cloud (e.g., Gaus-sian4D [20], 4DGS [54]) insufficient and often leading to blur and floating artifacts. STG [21] alleviates this issue by aggregating sparse point clouds across frames, but simple concatenation introduces substantial redundancy and hampers optimization efficiency. Therefore, we propose an effective initialization strategy to reduce primitive redundancy and accelerate convergence. Leveraging SfM-calibrated geometry and dense optical flow estimated by VideoFlow [66], we classify each triangulated 3D point by querying the optical flow magnitude at its projected 2D location across multiple views. A point is labeled as dy-namic if the sampled flow exceeds a threshold ϵf in any view; otherwise, it is considered static . Based on this classification, we adopt different initialization strategies: 
+
+Dynamic Initialization: Dynamic points are instantiated on a per-frame basis, with frame-aligned temporal centers and compact temporal extents to capture localized motion. 
+
+Static Initialization: Static points are initialized once from a reference frame (typically frame 0), using fixed temporal centers and larger temporal extents to ensure temporal stability. We unify static and dynamic primitives across all frames to construct the initial representation. This strategy yields a sparse yet expressive set of spatio-temporal Gaussian primi-tives, enabling accurate modeling of dynamic regions while maintaining representation compactness for static areas. 
+
+3) Joint Camera Temporal Calibration: Accurate temporal alignment across cameras is critical for sharp 4D reconstruc-tion, especially in practical in-the-wild capture setups. As illus-trated in Fig. 6(c), sub-frame timing discrepancies caused by electronic trigger latency and sensor readout delays can intro-duce noticeable inter-view misalignment. Although hardware-based world time codes typically achieve millisecond-level synchronization, this accuracy is often insufficient for high-fidelity dynamic reconstruction, leading to blurring or ghosting artifacts in fast-moving regions if left unmodeled. To address this issue, we introduce a learnable per-camera temporal offset ∆γk ∈ R to model residual deviations from the nominal capture time. Given the synchronized timestamp 
+
+t, the effective capture time of camera k is defined as 
+
+t′ 
+
+> k
+
+= t + ∆ γk. (4) The offset ∆γk is shared across all frames of the same camera, capturing camera-specific yet temporally consistent latency. By jointly optimizing these offsets together with the spatio-temporal Gaussian primitives, rendered observations are temporally realigned to better match the underlying scene dy-namics. An L2 regularization term Lreg is applied to constrain excessive temporal drift, ensuring stable optimization while remaining close to the hardware-synchronized timestamps. 
+
+4) Spatio-temporal Supervision: We further design a multi-term supervision scheme to better guide the joint optimization of spatio-temporal Gaussian primitives and camera temporal offsets. By integrating photometric, geometric, and motion constraints, the proposed supervision encourages temporally coherent geometry and visually faithful appearance. 
+
+Photometric Reliability. To compensate for view-dependent photometric inconsistencies across cameras, we apply acamera-specific learnable bilateral grid [67] to the rendered image, producing a color-aligned output ˆIrend . The recon-struction is supervised using a photometric loss that combines an ℓ1 term with DSSIM: 
+
+Lcolor = (1 − λdssim )∥ˆIrend − I gt ∥1
+
++ λdssim LDSSIM (ˆIrend , Igt ). (5) 
+
+Geometric Consistency. To reduce geometric ambiguity in textureless regions, we incorporate monocular depth priors estimated by Depth-Anything-V2 [68]. Following [12], [69], we first align the raw predicted depth Dpred to the sparse COLMAP SfM points using a per-frame linear transformation, yielding the scale-consistent depth ˆDpred . We then supervise the rendered depth Drend using an ℓ1 loss: 
+
+Ldepth = ∥D rend − ˆDpred ∥1. (6) 
+
+Motion Continuity. Although the velocity parameter vi allows Gaussians to model dynamic behavior, recovering accurate 3D motion solely from photometric supervision remains chal-lenging, particularly in areas involving complex motion or textureless surfaces. In such areas, weak photometric gradients offer insufficient constraints, allowing Gaussians to exhibit un-stable or drifting motion. For example, in static yet textureless regions, primitives initialized with zero velocity may continue to move arbitrarily, as the rendered appearance remains vi-sually consistent with the ground truth despite the underlying physical inaccuracy. To enforce physically plausible dynamics, we align projected 3D velocities with observed 2D optical flow. Specifically, a world-space velocity vi is transformed into the camera coordinate system using the rotation matrix 
+
+R and projected onto the image plane via the Jacobian J:
+
+f 2Di = J(Rvi), where J =
+
+" fx 
+
+> Z
+
+0 − fxXZ2
+
+0 fy 
+
+> Z
+
+− fy YZ2
+
+#
+
+. (7) Here, (X, Y, Z ) denotes the Gaussian center in camera space, and (fx, f y ) denotes the focal lengths. Similar to color ren-dering, we aggregate these projected 2D velocities f 2Di using alpha blending to obtain the pixel-wise rasterized optical flow 
+
+Frend = P 
+
+> i∈N
+
+f 2Di αi
+
+Qi−1
+
+> j=1
+
+(1 − αj ). We then supervise the velocity parameters by minimizing the endpoint error (EPE) between Frend and the pseudo-ground-truth flow Fpred 
+
+estimated using VideoFlow [66]: 
+
+Lf low = ∥F rend − F pred ∥2. (8) 
+
+Total Loss. The overall objective is defined as a weighted sum of the above terms and regularization: 
+
+Ltotal = λcolor Lcolor + λperc Lperc + λdepth Ldepth 
+
++ λf low Lf low + λreg Lreg , (9) where each weight λ controls the contribution of its cor-responding term, and Lperc denotes the LPIPS (AlexNet) perceptual loss [70]. 9
+
+B. Sound Field Reconstruction 
+
+To complete the immersive experience, we complement our high-fidelity visual reconstruction with a spatial audio synthesis framework, shown in Fig. 7. Taking the recording microphone as the origin of the coordinate system, we denote the coordinates of the sound source as s(t) = {xs(t), y s(t)},the user wearing the VR device as l(t) = {xl(t), y l(t)}, and the angle of deviation from the y-axis in the counterclockwise direction as θl(t), where t is the time index. Based on these premises, generating the user’s binaural spatial audio can be divided into three parts: sound direction mapping, sound dis-tance mapping, and sound auralization. Note that we assume there is only one dominant sound source (omnidirectional emitting) to simplify the sound field reconstruction. In the sound direction mapping part, we calculate the direction of the sound source relative to the user’s ears, θs(t),
+
+θs(t) = arccos v1(t)v2(t)
+
+|v1(t)|| v2(t)| , (10) where 
+
+v1(t) = [ xs(t) − xl(t), y s(t) − yl(t)] T , (11) 
+
+v2(t) = [ − sin ( θl(t)) , cos ( θl(t))] T , (12) In the sound distance mapping part, we calculate the scaling of the sound source at the user’s ears, relative to the original recording. We denote this scaling parameter as λ(t),
+
+λ(t) = 
+
+px2
+
+> s
+
+(t) + y2 
+
+> s
+
+(t)
+
+p(xs(t) − xl(t)) 2 + ( ys(t) − yl(t)) 2 (13) In the sound auralization part, we convert the original record-ing into spatial audio based on θs(t) and λ(t). In the short-time Fourier transform (STFT) domain, we denote the audio from the left and right ears as AL(t, f ) and AR(t, f ), respectively, where f is the frequency index. Then AL(t, f ) and AR(t, f )
+
+can be written as 
+
+AL(t, f ) = FL(θs(t)) Fl(t, f )AO (t, f ) (14) 
+
+AR(t, f ) = FR(θs(t)) Fl(t, f )AO (t, f ), (15) where FL(θs(t)) and FR(θs(t)) are head-related transfer func-tions (HRTF) based on θs(t), Fl(t) denotes the room impulse response (RIR) at the user’s location, and AO (t, f ) is the sound emitted from the speaker in the STFT domain. We utilize θs(t) to retrieve FL(θs(t)) and FR(θs(t)) from the SADIE II dataset [71]. In order to model Fl(t) and AO (t, f ),we make the following assumptions: Fl(t) changes between different locations at the same time index t depending only on the parameter λ(t), i.e., 
+
+Fl(t, f ) = λ(t)F (t, f ), (16) where F (t) is the RIR at the recording microphone. Using the above assumption, Eq.(14) and Eq.(15) can be rewritten as 
+
+AL(t, f ) = λ(t)FL(θs(t)) A(t, f ), (17) 
+
+AR(t, f ) = λ(t)FR(θs(t)) A(t, f ), (18) where A(t, f ) = F (t, f )AO (t, f ) is the audio at the recording microphone. Amplitude     
+
+> Scaling
+> HRTF Dataset
+> Spatialization
+> Raw Sound Input
+> Sound Localization
+> Keypoints Detection VR
+> Position: xyz
+> Direction: θ
+> Spatial Sound Generation
+> 1.Sound Direction
+> Mapping
+> 2.Sound Distance
+> Calculation
+> Keypoints Triangulation
+> Reference
+> Coordinate
+> Origin: O
+> Spatial
+> Sound
+> HRTF
+> Sound
+> Direction
+> Sound
+> Distance
+> 3.Sound
+> Auralization
+
+Fig. 7: Overview of the proposed sound field reconstruction framework. The pipeline consists of two main modules. 
+
+Sound Localization estimates the 3D coordinates of the sound source. Spatial Sound Generation then synthesizes binaural audio based on the VR user’s real-time pose. 
+
+C. Implementation Details 
+
+Our dynamic light field reconstruction framework is imple-mented in PyTorch and optimized using Adam for 30 epochs, where each epoch corresponds to one full random permutation of the training frames. The spatio-temporal parameters are optimized with distinct learning rates: 2 × 10 −3 for velocity 
+
+vi, 1 × 10 −5 for temporal centers ti, and 3 × 10 −2 for temporal extents τi. All remaining parameters follow the same learning rate schedule in vanilla 3DGS. The loss weights are set as follows: λdssim = 0 .2, λcolor = 1 .0, λperc = 0 .1,
+
+λdepth = 1 .0, λf low = 1 .0, and λreg = 10 −4. For flow-guided initialization, we use a fixed flow threshold ϵf = 0 .1 across all scenes. For sound field reconstruction, we estimate the 3D sound source location by tracking the speaker’s mouth across frames using RTMPose [72]. Multi-view 2D keypoints are triangu-lated to obtain the 3D position, which is treated as a point sound source. The microphone of the central camera serves as the recording microphone and defines the origin of the sound field coordinate system. V. E XPERIMENTAL SETTINGS 
+
+a) Datasets: We conduct experiments on five dynamic view synthesis datasets, including our proposed ImViD and four public benchmarks. N3V [25] contains 6 indoor scenes captured with 19–21 cameras at a resolution of 2704 ×2028 and 30 FPS. MPEG-GSC [73] includes two indoor sequences with fast motions, captured by 20–30 cameras at approxi-mately 1080p resolution and 30 FPS. MeetRoom [39] com-prises 4 indoor scenes recorded using 13 cameras at 1280 ×720 and 30 FPS. Google Immersive [3] provides 15 indoor and outdoor scenes captured with 46 cameras at 2560 ×1920 and 30 FPS. For each scene, we select 300 frames for evaluation. 
+
+b) Baselines: To evaluate both the effectiveness of our 
+
+ImViD dataset and the performance of our dynamic light field reconstruction framework, we conduct comparative ex-periments with four recent representative Gaussian-based dy-namic reconstruction methods: Gaussian4D [20], 4DGS [54], 
+
+STG [21], and Ex4DGS [52]. 10 
+
+c) Evaluation Protocol: We follow a unified evaluation protocol to ensure fair and reproducible comparisons across all methods. 
+
+Hardware: All dynamic light field reconstruction experiments are conducted on a single NVIDIA A100 GPU. 
+
+Resolution: For MeetRoom and MPEG-GSC , we preserve the original input resolution, as these datasets are captured at relatively low resolutions, and retaining the native scale better reveals reconstruction details. For N3V and Google Immersive ,we apply 2 × downsampling following common practice in prior works [20], [21], [52], [54]. All methods on ImViD are also evaluated using 2 × downsampled inputs. 
+
+Train-Test split: Consistent with standard dynamic view synthesis benchmarks, we hold out a single viewpoint for testing and use the remaining views for training. Specifically, Camera 10 is used for MPEG-GSC , Camera 1 for Google Immersive , and Camera 0 for ImViD , N3V , and MeetRoom .
+
+Metrics: We report PSNR, SSIM, and LPIPS (AlexNet) as the primary quantitative evaluation metrics. VI. R ESULTS AND ANALYSIS 
+
+A. Dynamic Light Field Reconstruction 1) Quantitative Evaluation: As shown in Table III, our dynamic scene reconstruction method consistently establishes state-of-the-art performance across all five datasets on the evaluated metrics (PSNR, SSIM, and LPIPS). Notably, on the 
+
+ImViD dataset, which represents the most challenging in-the-wild scenario, our method achieves substantial gains, with an average PSNR improvement of 4.21 dB over the strongest baseline and a significant reduction in LPIPS from 0.153 to 0.078. While certain baseline methods outperform ours on individual metrics in specific scenes, these differences are largely attributable to scene characteristics and methodological biases. For example, on N3V , Gaussian4D benefits from an additional static stage, leading to stronger background fitting in scenes with limited motion and marginally higher PSNR. Our approach achieves a superior trade-off between re-construction quality and storage overhead. As shown in Ta-ble IV, our method maintains a compact storage footprint while delivering significantly higher rendering quality than existing baselines in complex ImViD scenes. Furthermore, our implementation reaches an average rendering speed of 200 FPS on an NVIDIA RTX 4090 GPU. 
+
+2) Qualitative Assessment: Fig. 8 presents qualitative com-parisons between our method and representative baselines on our proposed dataset. Benefiting from effective spatio-temporal consistency supervision and camera-wise temporal alignment, our method better preserves sharp and fast-moving structures. Notably, our approach not only robustly models fast foreground motion but also faithfully reconstructs subtle background dynamics, such as the swaying leaves. Additional qualitative results and visual comparisons across four other benchmark datasets ( N3V , MPEG-GSC , MeetRoom ,and Google Immersive ) are provided in the supplementary material, which is available at https://sheng-qi.github.io/IVV/. As shown in Supp. Fig. 1 on N3V , the fine details of rapidly moving objects, such as the spoon and flamethrower, are reconstructed more accurately. In scenes with even faster motion (Supp. Fig. 2), such as the basketball and the shaking hand in MPEG-GSC , our method maintains clear geometry and appearance without noticeable temporal artifacts. On Meet-Room (Supp. Fig. 3), our method preserves clearer boundaries in fast-moving regions, while maintaining more stable visual details in low-texture indoor conditions. Across various scenes in Supp. Fig. 4, particularly for flames, our method achieves clearer and more coherent reconstructions, with Gaussian motion better aligned with the underlying dynamics. 
+
+3) Ablation Studies: We conduct ablation studies on the 
+
+ImViD dataset to evaluate the contribution of each core com-ponent in our framework. 
+
+a) Effectiveness of Flow-Guided Sparse Initialization: 
+
+Compared with initializing sparse point clouds at every frame (as adopted in STG [21]), our flow-guided strategy substan-tially reduces the number of initial primitives. As shown in Table V, our method achieves higher reconstruction quality while using only about half of the final spatio-temporal Gaus-sian primitives. This indicates that the proposed initialization effectively suppresses redundant geometry in repetitive or low-motion regions while enabling efficient primitive growth in dynamically informative areas. 
+
+b) Effectiveness of Joint Camera Temporal Calibration: 
+
+Table VI and Fig. 10 validate the effectiveness of jointly optimizing camera-wise temporal offsets ( ∆γ). Although hard-ware synchronization constrains the temporal error at the mil-lisecond level, residual misalignment still introduces incorrect supervision on fast-moving regions, leading to visible artifacts. By jointly optimizing temporal offsets and applying an ℓ2
+
+regularization term, our method suppresses excessive temporal drifting and significantly improves reconstruction stability. 
+
+c) Effectiveness of Spatio-temporal Supervision: We evaluate the contribution of geometric (depth) and motion (flow) constraints to reconstruction quality. Since the central view is inherently observed by more cameras and thus benefits from stronger multi-view supervision, using it as the test view cannot fully reveal the impact of these constraints, especially in scenes with moderate motion. Therefore, we adopt a pe-ripheral view (Cam 10) as the test view for evaluation. As shown in Table VII, removing the depth and flow con-straints leads to a substantial performance degradation. In these regions with limited multi-view coverage, the optimization lacks sufficient visual cues and tends to overfit, resulting in disorganized “floater” artifacts that severely degrade image quality. As illustrated in Fig. 9, incorporating spatio-temporal supervision effectively regularizes both geometry and motion in such challenging areas. These results demonstrate that the proposed constraints are crucial for achieving high-quality reconstruction across the full 6-DoF interaction space. 
+
+B. Effectiveness of Sound Field Data a) Quantitative Results: Since the proposed sound field reconstruction algorithm is non-trainable and operates on real-world multi-view audiovisual recordings, the reconstructed spatial audio does not have a corresponding ground-truth reference, making standard quantitative evaluation infeasi-ble. Furthermore, reconstructing sound fields from multi-view 11 
+
+TABLE III: Quantitative comparison on Gaussian-based dynamic light field reconstruction method across multiple datasets. All metrics are calculated on the test views across all frames (300 frames for each scene). The best , second and third results are highlighted with color blocks. 
+
+(a) ImViD Gaussian4D 4DGS STG Ex4DGS Ours 
+
+PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓
+
+Scene 1 Opera 25.61 0.873 0.206 25.01 0.877 0.174 26.30 0.899 0.169 23.08 0.835 0.219 33.51 0.916 0.070 Scene 2 Laboratory 22.15 0.908 0.099 21.02 0.910 0.081 23.40 0.920 0.067 20.29 0.896 0.106 31.10 0.941 0.034 Scene 5 Rendition 25.78 0.848 0.206 26.23 0.865 0.158 26.21 0.861 0.145 24.73 0.857 0.159 27.84 0.884 0.073 Scene 6 Puppy 20.15 0.408 0.553 21.03 0.568 0.299 21.25 0.597 0.231 21.21 0.586 0.226 21.53 0.607 0.135 Average 23.42 0.759 0.266 23.32 0.805 0.178 24.29 0.819 0.153 22.33 0.794 0.178 28.50 0.837 0.078 
+
+(b) N3V Gaussian4D 4DGS STG Ex4DGS Ours 
+
+PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓
+
+Coffee Martini 28.62 0.909 0.083 27.32 0.893 0.097 27.55 0.913 0.075 28.12 0.915 0.067 27.69 0.908 0.044 Cook Spinach 32.39 0.947 0.049 32.59 0.946 0.054 33.01 0.955 0.042 32.34 0.955 0.043 34.61 0.958 0.021 Cut Roasted Beef 27.48 0.932 0.059 29.59 0.932 0.057 33.20 0.955 0.043 32.04 0.953 0.035 35.38 0.960 0.021 Flame Salmon 28.86 0.912 0.081 27.84 0.896 0.094 28.78 0.920 0.069 28.69 0.921 0.066 28.27 0.916 0.039 Flame Steak 32.28 0.954 0.040 31.05 0.950 0.047 33.68 0.964 0.031 33.32 0.962 0.036 36.19 0.967 0.018 Sear Steak 33.27 0.955 0.040 32.66 0.952 0.050 33.68 0.964 0.033 32.77 0.961 0.033 37.16 0.968 0.016 Average 30.48 0.935 0.059 30.18 0.928 0.067 31.65 0.945 0.049 31.21 0.945 0.047 33.22 0.946 0.027 
+
+(c) MPEG-GSC Gaussian4D 4DGS STG Ex4DGS Ours 
+
+PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓
+
+Bartender 32.29 0.918 0.097 35.31 0.945 0.052 34.88 0.945 0.058 32.80 0.930 0.076 36.16 0.948 0.026 CBA 25.52 0.897 0.171 29.85 0.944 0.055 31.99 0.949 0.045 28.07 0.923 0.069 32.17 0.949 0.028 Average 28.91 0.908 0.134 32.58 0.945 0.054 33.44 0.947 0.052 30.44 0.927 0.073 34.17 0.949 0.027 
+
+(d) MeetRoom Gaussian4D 4DGS STG Ex4DGS Ours 
+
+PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓
+
+Discussion 30.64 0.952 0.041 30.80 0.958 0.038 31.77 0.965 0.031 28.53 0.936 0.055 35.01 0.967 0.018 Trimming 28.76 0.948 0.044 28.20 0.954 0.039 32.64 0.963 0.036 30.33 0.948 0.050 33.33 0.964 0.018 VRheadset 29.99 0.948 0.044 29.38 0.950 0.039 31.23 0.959 0.036 27.92 0.938 0.059 32.08 0.959 0.020 Average 29.80 0.949 0.043 29.46 0.954 0.039 31.88 0.962 0.034 28.93 0.941 0.055 33.47 0.963 0.019 
+
+(e) Google Immersive 
+
+Gaussian4D 4DGS STG Ex4DGS Ours 
+
+PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓
+
+02 Flames 19.83 0.752 0.354 30.70 0.922 0.106 30.48 0.932 0.063 27.70 0.924 0.081 31.85 0.940 0.031 03 Dog 18.51 0.632 0.550 23.25 0.753 0.325 20.89 0.726 0.415 22.87 0.736 0.222 25.18 0.801 0.102 10 Face Paint 23.61 0.878 0.305 29.65 0.929 0.156 31.86 0.964 0.058 26.94 0.954 0.074 32.48 0.957 0.034 Average 20.65 0.754 0.403 27.87 0.868 0.196 27.74 0.874 0.179 25.84 0.871 0.126 29.84 0.899 0.056 
+
+TABLE IV: Quantitative results and storage footprint on the 
+
+ImViD dataset (300 frames for each scene). 
+
+Method Scene 1 Opera Scene 2 Laboratory Scene 5 Rendition Scene 6 Puppy Average Gaussian4D PSNR ↑ 25.61 22.15 25.78 20.15 23.42 Size (MB) ↓ 107 174 92 183 139.0 4DGS PSNR ↑ 25.01 21.02 26.23 21.03 23.32 Size (MB) ↓ 1802 4832 1403 5233 3317.5 STG PSNR ↑ 26.30 23.40 26.21 21.25 24.29 Size (MB) ↓ 540 542 366 1493 735.3 Ex4DGS PSNR ↑ 23.08 20.29 24.73 21.21 22.33 Size (MB) ↓ 2449 714 674 8918 3188.8 
+
+Ours PSNR ↑ 33.51 31.10 27.84 21.53 28.50 Size (MB) ↓ 210 209 140 581 285.0 
+
+TABLE V: Ablation on Flow-Guided Initialization. Our strat-egy maintains high reconstruction fidelity while significantly reducing initial primitive redundancy. 
+
+Setting Init. Pts (Ratio) Final Pts PSNR ↑ SSIM ↑ LPIPS ↓
+
+w/o Flow Init. 2.48M (100%) 4.52M 33.13 0.915 0.070 w Flow Init. (Ours) 0.29M (11.6% ) 2.50M 33.51 0.916 0.070 
+
+audiovisual data is, to the best of our knowledge, largely unexplored in prior work, and no established benchmark or objective evaluation protocol currently exists. Therefore, we conduct a user study with 21 experts (all of whom provided TABLE VI: Ablation on Joint Camera Temporal Calibration. Jointly optimizing camera temporal offsets ( ∆γ) improves reconstruction quality. Metrics are reported exclusively for the dynamic foreground involving the opera performers. 
+
+Setting λreg PSNR ↑ SSIM ↑ LPIPS ↓
+
+w/o ∆γ Opt. - 30.59 0.910 0.035 w/ ∆γ Opt. 0 29.93 0.903 0.033 w/ ∆γ Opt. 10 −2 30.50 0.911 0.031 w/ ∆γ Opt. (Ours) 10 −4 30.94 0.917 0.028 
+
+TABLE VII: Ablation on Spatio-temporal Supervision. Met-rics are evaluated on Cam 10 to reveal the contribution of geometric and motion constraints. 
+
+Loss Component Peripheral View Metrics 
+
+Lf low Ldepth PSNR ↑ SSIM ↑ LPIPS ↓
+
+- - 24.43 0.729 0.287 
+
+✓ - 30.03 0.748 0.153 - ✓ 30.45 0.760 0.134 
+
+✓ ✓ 30.98 0.772 0.124 
+
+informed consent prior to the study) to assess the perceptual quality and spatial plausibility of the reconstructed sound field. Each participant rated the sound field reconstruction on three dimensions: auditory spatial perception, sound quality, 12      
+
+> Gaussian4D 4DGS STG Ex4DGS Ours Ground Truth
+> Opera Laboratory Rendition Puppy
+
+Fig. 8: Qualitative Comparison on ImViD Dataset. 
+
+and immersiveness. Auditory spatial perception refers to the listener’s ability to perceive the distribution and localization of sound in space. Sound quality refers to the audio quality of the spatial audio compared to the corresponding microphone-recorded signal. Immersiveness refers to the listener’s sense of being in a space where the sound source genuinely exists. The results of the user study are shown in Table VIII, with numbers expressed as percentages of participants. The majority of the participants (61.90%) rated the auditory spatial perception as excellent; 80.94% of participants felt that the generated spatial audio did not exhibit significant degradation in quality, and 90.46% found the audio immersive, which demonstrates the effectiveness of our data capture and sound field reconstruction methods. 
+
+b) Ablations: To further assess the effectiveness of each module in our proposed SFR method, we conduct an ablation study based on user feedback shown in Table IX. The average 13 
+
+w/o Flow & Depth w/o Depth w/o Flow Full Framework Ground Truth 
+
+Fig. 9: Ablation on Spatio-temporal Supervision. Qualitative results on Cam 10 show that removing depth and flow constraints leads to severe artifacts. Rendered flow maps reveal that lacking flow supervision induces chaotic background motion, directly causing severe temporal flickering. 
+
+w/o ∆γ Opt. Full Framework Ground Truth 
+
+Fig. 10: Ablation on Joint Camera Temporal Calibration. 
+
+Qualitative results on the test view (Cam 00) show that jointly optimizing camera temporal offsets effectively improves re-construction quality in fast-moving regions, yielding a clearer texture and sharper motion boundaries. TABLE VIII: User study for the sound field construction. 21 participants rated the sound field reconstruction.                   
+
+> Rating Spatial Perception Sound Quality Immersiveness Very poor 0.00% 0.00% 0.00% Poor 0.00% 0.00% 0.00% Fair 14.28% 19.04% 9.52% Good 23.80% 33.33% 42.85% Excellent 61.90% 47.61% 47.61%
+
+TABLE IX: Ablation studies on the Sound Field Reconstruc-tion (SFR) baseline. 58 participants rated sense of direction and distance (Scale 1–5).             
+
+> Method Direction Score ↑Distance Score ↑
+> w/o SFR 1.17 1.67 SFR + distance 1.69 3.02 SFR + direction 3.81 3.03 SFR + distance + direction 3.91 3.07
+
+scores for both metrics indicate that incorporating direction and distance modeling in sound field reconstruction signifi-3
+
+> 1
+> 24
+> 5
+> 1
+> 2
+> 3
+> 4
+> 5
+
+Fig. 11: Visualization of the interaction trajectory and corre-sponding visual & auditory results. The multi-modal feedback changes consistently with the positions and orientations. cantly enhances participants’ immersive experiences, further demonstrating our SFR algorithm as a practical baseline. 
+
+C. Multi-modal VR Experiences 
+
+We finally integrated dynamic light field and sound field re-construction results to achieve a 6-DoF multi-modal immersive VR experience with a real-time rendering speed of 60 FPS on a single 3090 GPU. As shown in Fig. 11 , the visual and auditory experiences correspond uniquely to the user’s position and viewing direction. The experience can be further explored by listening through headphones with the supplementary video. VII. D ISCUSSION 
+
+Despite the promising results, our current framework has certain limitations. First, the substantial volume of image data 14 
+
+requires caching into memory to maintain training efficiency, which restricts the number of frames that can be processed concurrently on a single machine. Future research could in-vestigate more scalable training strategies or advanced data-loading schemes to mitigate this memory bottleneck. Second, our pipeline does not specifically optimize for preprocess-ing and training speed, which remains an area for potential improvement. Future work could incorporate learning-based priors, or even explore end-to-end reconstruction paradigms, to further enhance efficiency. VIII. C ONCLUSION 
+
+In this paper, we introduced the concept of Immersive Vol-umetric Videos (IVV) and presented a comprehensive pipeline for its production. First, we introduced ImViD , a large-scale multimodal dataset captured with a custom-designed rig, offer-ing wide spatial coverage and tightly synchronized audiovisual data tailored for 6-DoF VR experiences, addressing the critical scarcity of efficiently captured high-quality data in open-world scenarios. Second, to handle complex real-world motion, we proposed a robust dynamic light field reconstruction frame-work. Built upon a Gaussian-based spatio-temporal represen-tation, our method integrates flow-guided initialization, joint temporal calibration and multi-term supervision, enabling the faithful reconstruction of high-fidelity, temporally coherent 4D light fields. Finally, we incorporated a sound field reconstruc-tion module to achieve full multimodal immersion. Exten-sive experiments demonstrate that our approach significantly outperforms existing methods in rendering quality, temporal stability, and audiovisual coherence. We believe this work establishes a solid foundation for next-generation immersive media and will inspire further research into holistic scene reconstruction, understanding, and generation. REFERENCES [1] https://www.worldlabs.ai/blog/marble-world-model. [2] https://seed.bytedance.com/en/seedance2 0. [3] M. Broxton, J. Flynn, R. Overbeck, D. Erickson, P. Hedman, M. Duvall, J. Dourgarian, J. Busch, M. Whalen, and P. Debevec, “Immersive light field video with a layered mesh representation,” ACM Transactions on Graphics (TOG) , vol. 39, no. 4, pp. 86–1, 2020. [4] https://www.apple.com/newsroom/2024/07/ new-apple-immersive-video-series-and-films-premiere-on-vision-pro/. [5] D. Narciso, M. Bessa, M. Melo, A. Coelho, and J. Vasconcelos-Raposo, “Immersive 360ˆ ° video user experience: impact of different variables in the sense of presence and cybersickness,” Universal Access in the Information Society , vol. 18, pp. 77–87, 2019. [6] https://www.gracia.ai/. [7] H. Joo, T. Simon, X. Li, H. Liu, L. Tan, L. Gui, S. Banerjee, T. S. Godisart, B. Nabbe, I. Matthews, T. Kanade, S. Nobuhara, and Y. Sheikh, “Panoptic studio: A massively multiview system for social interaction capture,” IEEE Transactions on Pattern Analysis and Machine Intelli-gence , 2017. [8] S. Peng, Y. Zhang, Y. Xu, Q. Wang, Q. Shuai, H. Bao, and X. Zhou, “Neural body: Implicit neural representations with structured latent codes for novel view synthesis of dynamic humans,” in CVPR , 2021. [9] C.-Y. Lu, P. Zhou, A. Xing, C. Pokhariya, A. Dey, I. N. Shah, R. Mavidipalli, D. Hu, A. I. Comport, K. Chen et al. , “Diva-360: The dynamic visual dataset for immersive neural fields,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,2024, pp. 22 466–22 476. [10] R. Shapovalov, Y. Kleiman, I. Rocco, D. Novotny, A. Vedaldi, C. Chen, F. Kokkinos, B. Graham, and N. Neverova, “Replay: Multi-modal multi-view acted videos for casual holography,” in Proceedings of the IEEE/CVF International Conference on Computer Vision , 2023, pp. 20 338–20 348. [11] B. Mildenhall, P. P. Srinivasan, M. Tancik, J. T. Barron, R. Ramamoorthi, and R. Ng, “Nerf: Representing scenes as neural radiance fields for view synthesis,” Communications of the ACM , vol. 65, no. 1, pp. 99–106, 2021. [12] B. Kerbl, G. Kopanas, T. Leimkuehler, and G. Drettakis, “3D Gaussian Splatting for Real-Time Radiance Field Rendering,” ACM Transactions on Graphics , vol. 42, no. 4, pp. 1–14, Aug. 2023. [13] T. Lu, M. Yu, L. Xu, Y. Xiangli, L. Wang, D. Lin, and B. Dai, “Scaffold-gs: Structured 3d gaussians for view-adaptive rendering,” arXiv preprint arXiv:2312.00109 , 2023. [14] Y. Yan, H. Lin, C. Zhou, W. Wang, H. Sun, K. Zhan, X. Lang, X. Zhou, and S. Peng, “Street gaussians for modeling dynamic urban scenes,” 
+
+arXiv preprint arXiv:2401.01339 , 2024. [15] Z. Yang, X. Gao, Y. Sun, Y. Huang, X. Lyu, W. Zhou, S. Jiao, X. Qi, and X. Jin, “Spec-gaussian: Anisotropic view-dependent appearance for 3d gaussian splatting,” arXiv preprint arXiv:2402.15870 , 2024. [16] D. Malarz, W. Smolak, J. Tabor, S. Tadeja, and P. Spurek, “Gaussian splatting with nerf-based color and opacity.” [17] D. Zhang, C. Wang, W. Wang, P. Li, M. Qin, and H. Wang, “Gaussian in the wild: 3d gaussian splatting for unconstrained image collections,” 
+
+arXiv preprint arXiv:2403.15704 , 2024. [18] K. Cheng, X. Long, K. Yang, Y. Yao, W. Yin, Y. Ma, W. Wang, and X. Chen, “Gaussianpro: 3d gaussian splatting with progressive propagation,” arXiv preprint arXiv:2402.14650 , 2024. [19] Y. Li, C. Lyu, Y. Di, G. Zhai, G. H. Lee, and F. Tombari, “Geogaussian: Geometry-aware gaussian splatting for scene rendering,” arXiv preprint arXiv:2403.11324 , 2024. [20] G. Wu, T. Yi, J. Fang, L. Xie, X. Zhang, W. Wei, W. Liu, Q. Tian, and X. Wang, “4d gaussian splatting for real-time dynamic scene rendering,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2024, pp. 20 310–20 320. [21] Z. Li, Z. Chen, Z. Li, and Y. Xu, “Spacetime gaussian feature splatting for real-time dynamic view synthesis,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2024, pp. 8508–8520. [22] K. Katsumata, D. M. Vo, and H. Nakayama, “A compact dynamic 3d gaussian representation for real-time dynamic view synthesis,” 2024. [Online]. Available: https://arxiv.org/abs/2311.12897 [23] A. Kratimenos, J. Lei, and K. Daniilidis, “Dynmf: Neural motion factorization for real-time dynamic view synthesis with 3d gaussian splatting,” arXiv preprint arXiv:2312.00112 , 2023. [24] Y. Lin, Z. Dai, S. Zhu, and Y. Yao, “Gaussian-flow: 4d reconstruction with dynamic 3d gaussian particle,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2024, pp. 21 136–21 145. [25] T. Li, M. Slavcheva, M. Zollhoefer, S. Green, C. Lassner, C. Kim, T. Schmidt, S. Lovegrove, M. Goesele, R. Newcombe et al. , “Neural 3d video synthesis from multi-view video,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2022, pp. 5521–5531. [26] L. Song, A. Chen, Z. Li, Z. Chen, L. Chen, J. Yuan, Y. Xu, and A. Geiger, “Nerfplayer: A streamable dynamic scene representation with decomposed neural radiance fields,” IEEE Transactions on Visualization and Computer Graphics , vol. 29, no. 5, pp. 2732–2742, 2023. [27] F. Wang, S. Tan, X. Li, Z. Tian, Y. Song, and H. Liu, “Mixed neural voxels for fast multi-view video synthesis,” in Proceedings of the IEEE/CVF International Conference on Computer Vision , 2023, pp. 19 706–19 716. [28] B. Attal, J.-B. Huang, C. Richardt, M. Zollhoefer, J. Kopf, M. O’Toole, and C. Kim, “Hyperreel: High-fidelity 6-dof video with ray-conditioned sampling,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2023, pp. 16 610–16 620. [29] S. Fridovich-Keil, G. Meanti, F. R. Warburg, B. Recht, and A. Kanazawa, “K-planes: Explicit radiance fields in space, time, and appearance,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2023, pp. 12 479–12 488. [30] A. Cao and J. Johnson, “Hexplane: A fast representation for dynamic scenes,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2023, pp. 130–141. [31] R. Shao, Z. Zheng, H. Tu, B. Liu, H. Zhang, and Y. Liu, “Tensor4d: Efficient neural 4d decomposition for high-fidelity dynamic reconstruc-tion and rendering,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2023, pp. 16 632–16 642. [32] C. Ionescu, D. Papava, V. Olaru, and C. Sminchisescu, “Human3. 6m: Large scale datasets and predictive methods for 3d human sensing in natural environments,” IEEE transactions on pattern analysis and machine intelligence , vol. 36, no. 7, pp. 1325–1339, 2013. 15 
+
+[33] K. Park, U. Sinha, P. Hedman, J. T. Barron, S. Bouaziz, D. B. Goldman, R. Martin-Brualla, and S. M. Seitz, “Hypernerf: A higher-dimensional representation for topologically varying neural radiance fields,” arXiv preprint arXiv:2106.13228 , 2021. [34] J. S. Yoon, K. Kim, O. Gallo, H. S. Park, and J. Kautz, “Novel view synthesis of dynamic scenes with globally coherent depths from a monocular camera,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2020, pp. 5336–5345. [35] T. Wu, F. Zhong, A. Tagliasacchi, F. Cole, and C. Oztireli, “Dˆ 2nerf: Self-supervised decoupling of dynamic and static objects from a monocular video,” Advances in neural information processing systems ,vol. 35, pp. 32 653–32 666, 2022. [36] W. Ren, Z. Zhu, B. Sun, J. Chen, M. Pollefeys, and S. Peng, “Nerf on-the-go: Exploiting uncertainty for distractor-free nerfs in the wild,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2024, pp. 8931–8940. [37] N. Sabater, G. Boisson, B. Vandame, P. Kerbiriou, F. Babon, M. Hog, R. Gendrot, T. Langlois, O. Bureller, A. Schubert et al. , “Dataset and pipeline for multi-view light-field video,” in Proceedings of the IEEE conference on computer vision and pattern recognition Workshops , 2017, pp. 30–40. [38] K.-E. Lin, L. Xiao, F. Liu, G. Yang, and R. Ramamoorthi, “Deep 3d mask volume for view synthesis of dynamic scenes,” in Proceedings of the IEEE/CVF International Conference on Computer Vision , 2021, pp. 1749–1758. [39] L. Li, Z. Shen, Z. Wang, L. Shen, and P. Tan, “Streaming radiance fields for 3d video synthesis,” Advances in Neural Information Processing Systems , vol. 35, pp. 13 485–13 498, 2022. [40] H. Lin, S. Peng, Z. Xu, Y. Yan, Q. Shuai, H. Bao, and X. Zhou, “Efficient neural radiance fields for interactive free-viewpoint video,” in SIGGRAPH Asia 2022 Conference Papers , 2022, pp. 1–9. [41] F. Wang, Z. Chen, G. Wang, Y. Song, and H. Liu, “Masked space-time hash encoding for efficient dynamic scene reconstruction,” Advances in Neural Information Processing Systems , vol. 36, 2024. [42] H. Chen, Y. Hou, C. Qu, I. Testini, X. Hong, and J. Jiao, “360+x: A panoptic multi-modal scene understanding dataset,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,2024, pp. 19 373–19 382. [43] A. Collet, M. Chuang, P. Sweeney, D. Gillett, D. Evseev, D. Calabrese, H. Hoppe, A. Kirk, and S. Sullivan, “High-quality streamable free-viewpoint video,” ACM Transactions on Graphics (ToG) , vol. 34, no. 4, pp. 1–13, 2015. [44] T. Kanade, P. Rander, and P. Narayanan, “Virtualized reality: Construct-ing virtual worlds from real scenes,” IEEE multimedia , vol. 4, no. 1, pp. 34–47, 1997. [45] H. Jung, N. Brasch, J. Song, E. Perez-Pellitero, Y. Zhou, Z. Li, N. Navab, and B. Busam, “Deformable 3d gaussian splatting for animatable human avatars,” arXiv preprint arXiv:2312.15059 , 2023. [46] Y. Liang, N. Khan, Z. Li, T. Nguyen-Phuoc, D. Lanman, J. Tompkin, and L. Xiao, “Gaufre: Gaussian deformation fields for real-time dynamic novel view synthesis,” arXiv preprint arXiv:2312.11458 , 2023. [47] J. Luiten, G. Kopanas, B. Leibe, and D. Ramanan, “Dynamic 3d gaus-sians: Tracking by persistent dynamic view synthesis,” arXiv preprint arXiv:2308.09713 , 2023. [48] J. Sun, H. Jiao, G. Li, Z. Zhang, L. Zhao, and W. Xing, “3dgstream: On-the-fly training of 3d gaussians for efficient streaming of photo-realistic free-viewpoint videos,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2024, pp. 20 675–20 685. [49] B. P. Duisterhof, Z. Mandi, Y. Yao, J.-W. Liu, M. Z. Shou, S. Song, and J. Ichnowski, “Md-splatting: Learning metric deformation from 4d gaus-sians in highly deformable scenes,” arXiv preprint arXiv:2312.00583 ,2023. [50] Z. Guo, W. Zhou, L. Li, M. Wang, and H. Li, “Motion-aware 3d gaussian splatting for efficient dynamic scene reconstruction,” arXiv preprint arXiv:2403.11447 , 2024. [51] D. Li, S.-S. Huang, Z. Lu, X. Duan, and H. Huang, “St-4dgs: Spatial-temporally consistent 4d gaussian splatting for efficient dynamic scene rendering,” in ACM SIGGRAPH 2024 Conference Papers , 2024, pp. 1– 11. [52] J. Lee, C. Won, H. Jung, I. Bae, and H.-G. Jeon, “Fully explicit dynamic gaussian splatting,” in The Thirty-eighth Annual Conference on Neural Information Processing Systems , 2024. [53] Y. Wang, P. Yang, Z. Xu, J. Sun, Z. Zhang, Y. Chen, H. Bao, S. Peng, and X. Zhou, “Freetimegs: Free gaussian primitives at anytime anywhere for dynamic scene reconstruction,” in Proceedings of the Computer Vision and Pattern Recognition Conference , 2025, pp. 21 750–21 760. [54] Z. Yang, H. Yang, Z. Pan, X. Zhu, and L. Zhang, “Real-time photo-realistic dynamic scene representation and rendering with 4d gaussian splatting,” arXiv preprint arXiv:2310.10642 , 2023. [55] Y. Duan, F. Wei, Q. Dai, Y. He, W. Chen, and B. Chen, “4d-rotor gaussian splatting: Towards efficient novel view synthesis for dynamic scenes,” in ACM SIGGRAPH 2024 Conference Papers , 2024, pp. 1–11. [56] R. Shaw, M. Nazarczuk, J. Song, A. Moreau, S. Catley-Chandar, H. Dhamo, and E. P´ erez-Pellitero, “Swings: sliding windows for dy-namic 3d gaussian splatting,” in European Conference on Computer Vision . Springer, 2024, pp. 37–54. [57] J. C. Lee, D. Rho, X. Sun, J. H. Ko, and E. Park, “Compact 3d gaussian splatting for static and dynamic radiance fields,” arXiv preprint arXiv:2408.03822 , 2024. [58] S. Liang, C. Huang, Y. Tian, A. Kumar, and C. Xu, “Av-nerf: Learning neural fields for real-world audio-visual scene synthesis,” Advances in Neural Information Processing Systems , vol. 36, pp. 37 472–37 490, 2023. [59] A. Brunetto, S. Hornauer, and F. Moutarde, “Neraf: 3d scene infused neural radiance and acoustic fields,” arXiv preprint arXiv:2405.18213 ,2024. [60] S. Bhosale, H. Yang, D. Kanojia, J. Deng, and X. Zhu, “Av-gs: Learning material and geometry aware priors for novel view acoustic synthesis,” 
+
+arXiv preprint arXiv:2406.08920 , 2024. [61] H. Gao, J. Ma, D. Ahmedt-Aristizabal, C. Nguyen, and M. Liu, “Soaf: Scene occlusion-aware neural acoustic field,” arXiv preprint arXiv:2407.02264 , 2024. [62] H. Gao, R. Li, S. Tulsiani, B. Russell, and A. Kanazawa, “Monocular dynamic view synthesis: A reality check,” Advances in Neural Informa-tion Processing Systems , vol. 35, pp. 33 768–33 780, 2022. [63] Q. Liu, Y. Liu, J. Wang, X. Lv, P. Wang, W. Wang, and J. Hou, “Modgs: Dynamic gaussian splatting from causually-captured monocular videos,” 
+
+arXiv preprint arXiv:2406.00434 , 2024. [64] Z. Yang, S. Pan, S. Wang, H. Wang, L. Lin, G. Li, Z. Wen, B. Lin, J. Tao, and T. Yu, “Imvid: Immersive volumetric videos for enhanced vr engagement,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , June 2025, pp. 16 554–16 564. [65] J. L. Sch¨ onberger and J.-M. Frahm, “Structure-from-motion revisited,” in Conference on Computer Vision and Pattern Recognition (CVPR) ,2016. [66] X. Shi, Z. Huang, W. Bian, D. Li, M. Zhang, K. C. Cheung, S. See, H. Qin, J. Dai, and H. Li, “Videoflow: Exploiting temporal cues for multi-frame optical flow estimation,” in Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) , October 2023, pp. 12 469–12 480. [67] Y. Wang, C. Wang, B. Gong, and T. Xue, “Bilateral guided radiance field processing,” ACM Transactions on Graphics (TOG) , vol. 43, no. 4, pp. 1–13, 2024. [68] L. Yang, B. Kang, Z. Huang, Z. Zhao, X. Xu, J. Feng, and H. Zhao, “Depth anything v2,” arXiv:2406.09414 , 2024. [69] B. Kerbl, A. Meuleman, G. Kopanas, M. Wimmer, A. Lanvin, and G. Drettakis, “A hierarchical 3d gaussian representation for real-time rendering of very large datasets,” ACM Transactions on Graphics (TOG) ,vol. 43, no. 4, pp. 1–15, 2024. [70] R. Zhang, P. Isola, A. A. Efros, E. Shechtman, and O. Wang, “The unreasonable effectiveness of deep features as a perceptual metric,” in 
+
+CVPR , 2018. [71] C. Armstrong, L. Thresh, D. Murphy, and G. Kearney, “A perceptual evaluation of individual and non-individual hrtfs: A case study of the sadie ii database,” Applied Sciences , vol. 8, no. 11, p. 2029, 2018. [72] T. Jiang, P. Lu, L. Zhang, N. Ma, R. Han, C. Lyu, Y. Li, and K. Chen, “Rtmpose: Real-time multi-person pose estimation based on mmpose,” 
+
+arXiv preprint arXiv:2303.07399 , 2023. [73] H. Li, S. Li, X. Gao, A. Batuer, L. Yu, and Y. Liao, “Gifstream: 4d gaussian-based immersive video with feature stream,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , June 2025, pp. 21 761–21 770.
