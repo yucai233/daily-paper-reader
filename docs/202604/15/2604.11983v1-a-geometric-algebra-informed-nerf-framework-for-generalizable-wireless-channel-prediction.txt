@@ -1,0 +1,445 @@
+Title: A Geometric Algebra-informed NeRF Framework for Generalizable Wireless Channel Prediction
+
+URL Source: https://arxiv.org/pdf/2604.11983v1
+
+Published Time: Wed, 15 Apr 2026 00:08:01 GMT
+
+Number of Pages: 10
+
+Markdown Content:
+# A Geometric Algebra-informed NeRF Framework for Generalizable Wireless Channel Prediction 
+
+Jingzhou Shen ∗, Luis Lago Enamorado ∗, Shiwen Mao †, Xuyu Wang * § ,
+
+> ∗
+
+Knight Foundation School of Computing and Information Sciences, Florida International University, Miami, FL 33199, US 
+
+> †
+
+Department of Electrical and Computer Engineering, Auburn University, Auburn, AL 36849, US Emails: jshen020@fiu.edu, llago016@fiu.edu, smao@ieee.org, xuywang@fiu.edu 
+
+Abstract —In this paper, we propose the geometric algebra-informed neural radiance fields (GAI-NeRF), a novel frame-work for wireless channel prediction that leverages geometric algebra attention mechanisms to capture ray-object interactions in complex propagation environments. Our approach incorpo-rates global token representations, drawing inspiration from transformer architectures in language and vision domains, to aggregate learned spatial-electromagnetic features and enhance scene understanding. We identify limitations in conventional static ray tracing modules that hinder model generalization and address this challenge through a new ray tracing architec-ture. This design enables effective generalization across diverse wireless scenarios while maintaining computational efficiency. Experimental results demonstrate that GAI-NeRF achieves su-perior performance in channel prediction tasks by combining geometric algebra principles with neural scene representations, offering a promising direction for next-generation wireless com-munication systems. Moreover, GAI-NeRF greatly outperforms existing methods across multiple wireless scenarios. To ensure comprehensive assessment, we further evaluate our approach against multiple benchmarks using newly collected real-world indoor datasets tailored for single-scene downstream tasks and generalization testing, confirming its robust performance in unseen environments and establishing its high efficacy for wireless channel prediction. 
+
+Index Terms —Neural Radiance Field (NeRF), Wireless Chan-nel Prediction, and Geometric Algebra. 
+
+I. I NTRODUCTION 
+
+Modern society has witnessed an unprecedented integration of connected devices into every aspect of daily life. Smart sen-sors, wearable technology, and autonomous systems form an intricate web of wireless communication that underpins critical infrastructure and personal conveniences. This transformation has elevated the importance of wireless channel modeling to a fundamental challenge in telecommunications. Wireless chan-nel modeling characterizes the propagation of electromagnetic signals through diverse environments, capturing phenomena such as signal attenuation, reflection, diffraction, and scat-tering [1]–[4]. Precise channel models are vital for effective network design, resource allocation, and quality of service optimization in increasingly dense and heterogeneous wireless networks [5]. Traditional modeling approaches, including statistical meth-ods and deterministic ray tracing techniques [6]–[8], face limitations in balancing computational efficiency with mod-eling accuracy, particularly in complex indoor and urban 
+
+> §
+
+The corresponding author is Xuyu Wang (xuywang@fiu.edu). 
+
+environments. Driven by recent advancements in machine learning, various data-driven approaches are proposed for wireless channel modeling [9]–[13]. However, conventional machine learning models often represent channel character-istics as statistical patterns without incorporating information about the propagation environment. The emergence of NeRF [14] in computer vision provides a novel opportunity to address these challenges. Unlike tra-ditional ray tracing methods that require detailed geometric models and material properties, NeRF can learn signal prop-agation characteristics directly from measurement data while implicitly capturing environmental geometry. This capability enables accurate channel prediction in environments where obtaining precise 3D models is impractical or costly. Recent work has demonstrated the feasibility of this approach, with studies showing that NeRF variants can effectively capture complex propagation phenomena, including multipath effects and shadowing [15], [16]. Furthermore, NeRF’s continuous spatial representation allows for channel prediction at arbitrary locations within the modeled space, providing the fine-grained spatial resolution that discrete measurement-based methods cannot achieve. The implicit scene representation learned by NeRF also enables efficient storage and deployment compared to maintaining detailed environmental databases required by deterministic models. Additionally, NeRF’s differentiable na-ture facilitates integration with optimization frameworks for network planning and resource allocation tasks. While NeRF demonstrates strong reconstruction capabilities for wireless channel modeling, enabling accurate channel pre-diction at arbitrary locations through implicit scene representa-tions, it faces several limitations in wireless applications. Orig-inally designed for visual rendering, NeRF does not explicitly model electromagnetic wave phenomena such as reflection coefficients and diffraction patterns, which are fundamental to radio propagation. Additionally, NeRF models exhibit poor generalization to new environments and lack interpretability, preventing researchers from extracting physical insights or validating predictions against electromagnetic theory. While some models address generalization by incorporating spectrum and position information, the inclusion of image data increases both information requirements and training time. These limi-tations necessitate significant modifications before NeRF can be effectively deployed in practical wireless systems. 
+
+Challenges. We face two primary challenges in this work. 
+
+> arXiv:2604.11983v1 [cs.NI] 13 Apr 2026
+
+First, modeling ray-object interactions in wireless environ-ments requires careful consideration of multiple factors. How-ever, limited research has examined how these interactions affect wireless channel modeling. This gap presents substantial obstacles to accurate channel prediction and effective sys-tem design. While computer vision research has addressed related problems, for example, NeRFReN [17] utilizes sep-arate NeRFs to model direct transmission and reflections, and NeuS [18] incorporates signed distance fields (SDF) to enhance volume rendering, wireless applications introduce unique constraints that differ significantly from vision-based scenarios. Although some studies have adapted these tech-niques to wireless domains [19], [20], current approaches often oversimplify interactions as frequency-independent specular reflections or use opaque neural models with poor generaliza-tion. These methods fail to fully exploit NeRF’s capabilities for accurate wireless channel modeling. Second, achieving model generalization across diverse environments is critical for practical deployment. Real-world wireless environments vary significantly from training conditions due to differences in building materials, furniture layouts, and structural con-figurations. These variations directly impact signal propaga-tion patterns. Without robust generalization, models would require retraining for each deployment scenario, making them impractical for network planning across urban and indoor environments. Thus, developing models that maintain accuracy across different physical configurations while adapting to envi-ronmental changes is essential for wireless system deployment. 
+
+Solutions. To overcome these challenges, we propose a novel multi-view framework that effectively integrates geo-metric algebra [21]–[23] with Euclidean algebra. First, we introduce a specialized tokenizer employing multiple algebraic embeddings, allowing the model to learn comprehensive ray-object interactions at both local and global scales. Second, instead of operating on individual sampled points, we utilize a NeRF-inspired approach enhanced with Kolmogorov-Arnold networks (KANs) [24] to generate spatial representations at the ray level, facilitating more robust and physically consis-tent feature extraction. Third, we propose an attention-driven ray tracing module that leverages learned interactions rather than relying on traditional numerical calculations, significantly improving the accuracy of the final signal strength predic-tions. Unlike existing NeRF variants that focus on point-to-point interactions, our ray-to-ray paradigm efficiently cap-tures complex spatial dependencies and propagation behaviors that conventional coordinate-based methods fail to represent. Our model demonstrates superior generalization performance compared to recent approaches such as NeRF 2 [25] and classic machine learning models in wireless communications. The proposed method achieves improved adaptability across diverse downstream tasks without requiring additional training data. Unlike GWRF [26], which relies heavily on spectrum image data and incurs significant computational and memory costs, our spatial-data-only approach provides a more efficient and scalable solution for wireless channel modeling. The main contributions of this paper are summarized as follows:  
+
+> •
+
+To the best of our knowledge, this work is the first to leverage cross-algebra representation learning for wire-less channel prediction. By encoding signals across mul-tiple geometric spaces, our approach exploits different mathematical structures to capture the complementary aspects of channel behavior. This multi-view strategy enhances the model’s ability to identify both structural patterns and invariant properties inherent in wireless channels.  
+
+> •
+
+We propose a multi-view tokenizer that enhances embed-dings by implicitly learning ray-object interactions while combining Euclidean and geometric algebra advantages.  
+
+> •
+
+Our method achieves superior performance in both single-scene evaluation and cross-scenario generalization, out-performing existing baseline approaches. Additionally, we will release a custom-built dataset to support and advance future research in this domain. II. P RELIMINARY 
+
+A. NeRF in Wireless Domain 
+
+NeRF 2 [25] extends the NeRF framework to model wireless signal propagation. Traditional NeRF methods approximate the scene radiance field by optimizing a neural network Fθ that predicts emitted radiance c and density σ at a 3D location x,given a viewing direction d:
+
+(σ, c) = Fθ (x, d). (1) NeRF 2 adapts this formulation specifically for radio-frequency (RF) signals, predicting the attenuation and signal phase components crucial to wireless propagation: 
+
+(α, ϕ ) = Gψ (x, v, ptx ), (2) where α and ϕ represent signal attenuation and phase, respec-tively, v denotes the view direction toward the receiver (RX), and ptx is the transmitter position. By incorporating geometric and material-dependent features into neural representations, NeRF 2 can capture multipath propagation phenomena, in-cluding reflection, diffraction, and scattering. This enables accurate and efficient predictions of complex RF environ-ments, substantially improving wireless channel modeling over traditional methods. Recent studies have explored applying NeRF to wireless field reconstruction [26]–[30]. 
+
+B. Geometric Algebra 
+
+Geometric algebra provides a unified mathematical frame-work that extends traditional vector algebra by incorporating higher-dimensional geometric objects and operations. This algebraic system, developed by Clifford, enables the repre-sentation of rotations, reflections, and other geometric trans-formations through a single coherent structure [21]–[23]. The geometric algebra G3,0,1 represents a four-dimensional space with three spatial dimensions and one temporal dimension, making it particularly suitable for space-time calculations and relativistic physics applications. In this algebra, the fundamen-tal elements include scalars, vectors, bivectors, trivectors, and pseudoscalars, where each element corresponds to different ge-ometric interpretations. The geometric product of two vectors 
+
+a and b is defined as: 
+
+ab = a · b + a ∧ b, (3) where a · b denotes the symmetric inner product and a ∧ b
+
+represents the antisymmetric outer product. The algebra G3,0,1
+
+operates with a basis {1, e1, e2, e3, e4} where the spatial basis vectors satisfy e2 
+
+> i
+
+= 1 for i = 1, 2, 3 and the temporal basis vector satisfies e24 = −1. This structure allows for natural representation of Lorentz transformations and provides computational advantages in physics simulations and com-puter graphics applications that require efficient handling of rotational and translational operations in space-time. Recent works demonstrate that geometric algebra can be integrated into different machine learning models, resulting in improved performance [31]–[34]. III. F RAMEWORK 
+
+A. Overview 
+
+In this paper, we present GAI-NeRF, a NeRF-based model designed to reconstruct wireless channels using various wire-less measurements. Our approach addresses two key objec-tives: first, we incorporate geometric information into the model to enable learning of ray-object interactions during training; second, we leverage this information to enhance wireless channel modeling with improved accuracy and gener-alizability. Inspired by classification tokens in large language models (LLMs) [35] and multimodal models [36], we develop a multi-view tokenizer that captures both global and local information to inform the learning process. Attention-based     
+
+> Ray Tracing
+> Multi-view
+> Tokenizer
+> E(P X)Feature f
+> E(P TX )
+> E(ω)
+> Rays
+> Fuse
+> FiLM
+> Attenuation
+> Representation δ
+> Signal
+> Representation ξ
+> Attenuation Network
+> Signal Network
+
+Fig. 1: Model overview. Fig. 1 illustrates our model architecture, which comprises three main components: a multi-view tokenizer, a NeRF-based model, and an attention-based ray tracing module. Fig. 2 illustrates how our tokenizer captures ray-object interactions in wireless environments. The parameters Rr , D, T , and R0
+
+represent rotors for different physical interactions, which are formulated as sandwich products and learned implicitly by our geometric encoder. This unified algebraic representation enables our geometric algebra-based attention mechanism to model complex propagation phenomena within a single math-ematical framework. The total transformations in the wireless scene are expressed as V′ = IVI−1, where I represents the combination of multiple ray-object interactions, V denotes the original ray properties (direction, wave vector, or signal characteristics), and V′ represents the final propagation state after successive interactions including reflection, refraction, and diffraction. This approach eliminates the need for separate specialized modules for each physical effect. The NeRF-based model includes two subnetworks: the attenuation network and the signal network. The attenuation network processes local embeddings from sampled points along each ray to generate attenuation representations and a feature vector f . The signal network takes multiple inputs, including the feature-wise linear modulation (FiLM) output of feature f , local embeddings of view directions, transmitter positions, and global embeddings of these parameters and sample points. This network produces signal representations that undergo mean pooling before concatenation. The concate-nated representations then pass through the attention-based ray tracing module to generate the final outputs. ···   
+
+> Ray-Object Interaction in Geometric Algebra
+> ···
+> =
+> Geometric Algebra
+> Transformer Encoder
+> V' VII-1 =
+> Diffraction
+> Penetration
+> Reflection
+> Reflection
+
+Fig. 2: Geometric algebra in wireless scene. 
+
+B. Multi-view Tokenizer 
+
+We next elaborate on how to design the multi-view to-kenizer, shown in Fig. 3, to obtain the local and global embeddings for the entire wireless scenes. 
+
+1) Geometric Algebra Transformer Encoder: We employ the geometric algebra transformer (GATr) [32] as an encoder to extract initial global embeddings before feeding data into our model. In geometric algebra G(3,0,1), transformations such as rotations, reflections, and diffractions are elegantly represented through sandwich products. This mathematical framework pro-vides a unified approach to describe ray-object interactions in wireless communications. The attention mechanism in neural networks can also be formulated as a sandwich product, enabling us to use geometric attention to implicitly learn spatial ray-object interactions. This structure preserves vector grade and maintains algebraic consistency across different wireless propagation scenarios. In wireless ray propagation, electromagnetic waves interact with surfaces through sandwich product representations. When a ray x encounters surface normal ˆn, reflection follows the transformation: x′ = −RxR −1, where R corresponds to Rr
+
+and R0 in Fig. 2. For edge diffraction, the transformation employs diffraction operator D: x′ ≈ DxD−1, where D
+
+can only approximate the physical process, since diffraction alters amplitude, phase, and spatial distribution in ways that cannot be captured by a strict algebraic mapping. Penetration through materials can be represented similarly through sand-wich products with appropriate material operators. Multiple interactions along ray paths compose as sequential sandwich product operations: 
+
+V ′ = I1I2 · · · InV I −1 
+
+> n
+
+· · · I−12 I−11
+
+= IV I −1, (4) where each Ii represents an individual ray-object interaction. The geometric algebra attention mechanism exhibits struc-tural correspondence with physical transformations. We derive the attention operation from input tensors q, k, and v, which contain nc channels. The standard attention operation: Attention (q, k, v )i′c′ = X
+
+> i
+
+Softmax i
+
+ ⟨qi′c, k ic ⟩√8nc
+
+
+
+vic ′ (5) can be approximately transformed to the sandwich product form: Attention (q, k, v )i′c′ = P 
+
+> i
+
+Ai′ vic ′ A−1 
+
+> i′
+
+, where Ai′ rep-resents the geometric operator from attention weights, i, i ′
+
+refer to label indices, and c, c ′ correspond to channel indices. Pos/Direction    
+
+> Information
+> Geometric Algebra
+> Transformer
+> Encoder
+> Geometric Algebra
+> Global Token
+> Euclidean Algebra
+> Local Token
+> Multi-view
+> Global Embedding
+> Position
+> Embedding
+> Multi-view
+> Local Embedding Multi-view Token
+> Global Token
+> Local Token
+> Norm & MLP
+
+Fig. 3: Multi-view tokenizer overview. The geometric algebra framework provides structural ad-vantages by enabling early encoding of scene geometry and electromagnetic interactions. These identical sandwich product formulations directly map spatial and wave propagation char-acteristics to physically meaningful operations. This approach reduces computational complexity while naturally capturing fundamental electromagnetic principles within a unified math-ematical structure. The framework captures reflection, diffrac-tion, and penetration effects through implicit learning of trans-formations that model electromagnetic ray-object interactions in wireless environments. Moreover, this approach markedly enhances model general-izability by embedding physical laws directly into the learned representations. Geometric algebra inherently preserves ro-tational and reflectional symmetries, allowing the model to generalize across different orientations and environmental configurations without extensive retraining. Unlike traditional statistical methods, the physics-based nature of the sandwich product ensures the model relies on universal wave propa-gation patterns rather than environment-specific correlations. The model therefore maintains accuracy in previously unseen wireless scenarios with minimal additional data or adaptation. To effectively utilize these learned ray-object interactions, we extract the encoded information and generate multi-view global [CLS] tokens. These embeddings are integrated into our model through a mechanism similar to the token approach in LLMs. This integration enables the model to leverage the comprehensive understanding of electromagnetic interactions, leading to improved performance and enhanced generalizabil-ity across diverse wireless environments. The global [CLS] 
+
+token serves as a universal token that aggregates information from the entire input sequence. In standard transformers [37], the final encoding of the [CLS] token captures a global representation of the input through attention mechanisms. Its output encoding is used for sequence-level tasks because it attends to all other tokens and extracts the most relevant features for downstream applications. When employing a GATr encoder to acquire [CLS] to-ken, we gain distinct advantages for wireless communication scenarios. This geometric [CLS] token learns to encode the collective ray-object interactions across the entire scene. Our GATr encoder provides rotation and reflection equivariance for the global [CLS] token, enabling natural adaptation to different wireless environment orientations. The token devel-ops a complete geometric understanding of wave propagation patterns within a single multivector representation that directly captures electromagnetic interaction structures. 
+
+2) Local and Global Embeddings: Our geometric alge-bra global token, obtained from GATr encoder, passes into the Norm & MLP module to enhance representation qual-ity without information compression. The multi-layer per-ceptron (MLP) functions as a feature refinement module that implicitly distills ray–object interaction information from the GATr output, providing critical guidance for subsequent NeRF-variant learning. This refinement not only enhances the quality of the representations but also maintains the essential geometric information encoded by GATr, thereby enabling the model to effectively capture the underlying electromag-netic propagation dynamics and improving the accuracy of wireless channel modeling. Then, we use standard positional embeddings to generate the Euclidean algebra local token. After processing, the global embedding represents scene-level electromagnetic interactions, while local embedding pre-serves spatial relationships within the propagation context. This framework captures both channel-level characteristics and scene-specific signal behaviors for wireless channel modeling. Finally, embeddings are concatenated as the multi-view token and then fed into the following NeRF-based model, integrating geometric interactions with wave patterns. Specifically, we regard the multi-view global embedding of the concatenated token as the global [CLS] token. Ray in   
+
+> p1
+> p2
+> p3
+> pn
+> Rx
+> p1
+> p2
+> p3
+> pn
+> Rx
+> p2
+> p3
+> pn
+> p1
+> p2
+> p3
+> pn
+> p1
+> Encoder
+> Ray in Ray out
+> p1
+> p2
+> p3
+> pn
+> Rx
+> p1
+> p2
+> p3
+> pn
+> Rx
+> NeRF
+> NeRF
+> NeRF
+> NeRF
+> NeRF: point-in-point-out Ours: ray-in-ray-out
+> Ray out
+
+Fig. 4: Comparison of our ray-in-ray-out and point-in-point-out models with backtraced propagation paths from Rx. 
+
+C. GAI-NeRF Model 
+
+In this subsection, we introduce how to structure our GAI-NeRF to obtain representations of attenuation of signal. 
+
+1) Ray-to-Ray Model: We adopt a ray-in-ray-out frame-work [38] in lieu of the traditional point-in-point-out approach. As illustrated in Fig. 4, in contrast to existing NeRF variants that utilize spatial points on the ray as encoder inputs, our method processes entire rays as the fundamental input units to the NeRF encoder. The ray-based representation captures directional propagation characteristics and spatial coherence of electromagnetic waves while encoding angular information es-sential for multipath modeling. Our approach enables efficient computation of path loss and phase variations by modeling continuous wave propagation along entire ray paths rather than at isolated spatial points, thereby ensuring closer alignment with the physical principles of wireless signal propagation. 
+
+2) Model Structure: Following the NeRF 2 framework, our architecture consists of two distinct subnetworks: the attenu-ation network and the signal network. We replace standard MLPs with efficient KANs using PowerMLP [39]. Pow-erMLP is an efficient variant of the KANs, designed to enhance computational speed while preserving interpretability and performance. Unlike standard KANs, which use spline functions, PowerMLP employs a simpler polynomial-like ac-tivation known as the rectified power unit (RePU). Specifically, the RePU activation function is defined as: RePU (x) = ( max (0 , x )) p, (6) where p is a learnable exponent parameter. By dynamically adjusting the exponent during training, PowerMLP captures nonlinear relationships without requiring complex spline com-putations, thus reducing computational overhead. The attenuation network models how signal power decays as it propagates through the wireless environment. It predicts the path-loss coefficient at each spatial location, determining how much energy is absorbed or scattered along each ray. This network directly influences coverage and channel re-construction accuracy by controlling spatial signal attenuation patterns. It consists of eight layers of PowerMLPs and outputs the attenuation representation δ. This representation is highly related to the materials of the voxel and independent of the incoming signals. Also, we implement skip-connection in the middle of those layers to allow gradients and features to bypass intermediate layers, facilitating training and preserving essential information across depths. The signal network handles the actual radiance computation and color prediction. This component processes the attenuated wireless information to generate the final pixel colors observed from different viewpoints. The signal network captures the directional properties of wireless channel propagation and scattering characteristics, enabling accurate channel state re-construction across various angular distributions. The structure of signal network is similar to the attenuation network. We also use PowerMLPs to replace, and generate the signal emission representation ξ. The signal network processes three key inputs: the attenuation feature f, embeddings of transmitter positions, and view direction encodings. Before feeding these inputs into the subnetwork, we apply the FiLM module to capture spatial correlations and view-dependent interactions efficiently. FiLM is a conditioning mechanism that modulates neural network activations through learned affine transforma-tions, enabling effective integration of external information by applying element-wise scaling and shifting operations to feature maps based on conditioning inputs. The Performer module enables linear-complexity attention computation while allowing the network to focus on relevant spatial locations. This mechanism helps the signal network identify critical ge-ometric features and establish relationships between different positions within the propagation environment, thereby enhanc-ing the network’s ability to model complex electromagnetic interactions and location-dependent channel effects. 
+
+3) Attention-based ray tracing Module: As illustrated in Fig. 5a, we first conduct exploratory experiments to evaluate generalization performance on synthetic datasets [27]. We utilize datasets containing two initial scenes, training our models on one dataset and evaluating on the other one, with mean absolute error (MAE) serving as the primary validation metric. The results show that basic machine learning models achieve better performance than more complex alternatives. This improved generalization may be attributed to the fact that statistical calculations used in rendering can limit the model’s ability to generalize across different datasets. MLP VAE NeRF2  
+
+> Model
+> 0
+> 2
+> 4
+> 6
+> 8
+> MAE
+> Bedroom
+> Conference
+> (a) Pilot generalization results. (b) Data collection devices.
+
+Fig. 5: Exploratory performance evaluation and experimental setup. To improve generalizability across diverse scenarios, we approximate the ray tracing module through attention-based mechanisms. The volumetric ray tracing equation combines attenuation and signal emission through an integral formu-lation that naturally aligns with attention mechanisms. The standard ray tracing equation computes the observed radiance 
+
+C(r) along a ray as: 
+
+C(r) = 
+
+Z tf
+
+> tn
+
+T (t) · σ(t) · c(t) dt, (7) where T (t) = exp 
+
+
+
+− R ttn σ(s) ds 
+
+
+
+represents the transmit-tance function, σ(t) is the density coefficient, and c(t) is the emitted radiance at position t along the ray. The transmittance term T (t) acts as an exponential weighting function that determines how much electromagnetic radiation from each point reaches the receiver. This weighting mechanism mirrors the attention mechanism in neural networks, where exponential functions create soft attention weights that emphasize relevant spatial locations. The discretized form of this continuous equation can be represented as follows: 
+
+C(r) = 
+
+> N
+
+X
+
+> i=1
+
+wi · ci, (8) where wi = Ti · σi · ∆ti represents the attention weights and ci is the color value at sample point i. The similarity between ray tracing weights and attention weights enables neural networks to learn the volumetric rendering process through attention mechanisms, allowing the network to focus on important spatial regions while maintaining the physical interpretation of electromagnetic wave propagation. Enhanced Ray Feature 
+
+> P1P2Pn-1 Pn
+> Multi-head Local Self-Attention
+> Linear Projection and Pooling
+> Concat
+> Rx
+> Output
+> Q
+> V
+> K
+> Ray Embeddings
+> Multi-head Global Attention Weighted Pooling
+> Local Tokens
+> Global Tokens Guided
+
+Fig. 6: Attention-based ray tracing module. Fig. 6 illustrates our attention-based ray tracing module architecture. After obtaining the outputs, where the global 
+
+[CLS] token enhances scene representation and improves the accuracy and generalization of our GAI-NeRF, we generate ray embeddings from the rays and their sampled points. These embeddings are added to the input to produce enhanced ray features. We then separate the global [CLS] token from the local tokens. The local tokens pass through a multi-head local self-attention module to obtain initial results. Similar to the GWRF framework [26], we use ten attention heads corresponding to all possible pairwise interactions between field components, where each attention head captures specific interaction patterns between real and imaginary parts of com-plex field representations. To reduce memory consumption and accelerate training, we employ Performer [40] as our attention mechanism. Performer is a linear attention mechanism that approximates the standard softmax attention in Transformers using random feature maps. The key innovation lies in de-composing the attention matrix Aij = exp( qTi kj /√d) into a product of two smaller matrices through the kernel trick. Specifically, Performer uses positive random features ϕ(x) to approximate the exponential kernel. This allows the attention computation to be reformulated as: 
+
+Attention( Q, K, V ) = softmax 
+
+ QK ⊤
+
+√d
+
+
+
+V
+
+≈ ϕ(Q)  ϕ(K)⊤V .
+
+(9) After obtaining voxel tokens from local self-attention, we calculate attention weights for each ray guided by the [CLS] 
+
+token, then pool each ray based on these learned weights. These weights indicate how obstacles affect ray propagation paths using the ray-object interaction knowledge encoded in the [CLS] token. Finally, the weighted outputs are concate-nated with the global [CLS] token and then passed through a linear projection layer to produce the final predictions. Our ray tracing approach offers significant advantages over the original method by using a learnable [CLS] token to ag-gregate global scene information. This token works alongside local tokens to create a centralized representation that summa-rizes ray-object interactions across the entire wireless scene. Compared to the original GWRF ray tracing implementation, our design significantly improves modeling flexibility as well as generalization and predictive performance. IV. E XPERIMENTAL EVALUATION AND ANALYSIS 
+
+A. Our Own Datasets 1) Experiment setup: We developed a semi-automated plat-form for comprehensive indoor received signal strength indi-cator (RSSI) mapping across the two frequency bands of 2.4 GHz and 5 GHz. The experimental setup employed a human-operated robotic system, shown in Fig. 5b, to collect the RSSI measurements throughout a 35 m 2 indoor environment over an 18-day period. While the robot positioning throughout the indoor environment was manually controlled, the measurement procedures were fully automated to ensure consistency across measurements and prevent human direct intervention from affecting the signal propagation. 
+
+B. Hardware Configuration 
+
+The mobile measurement platform, illustrated in Fig. 5b, consists of a TurtleBot 4 running on Ubuntu 24.04 with ROS2 Jazzy. The TurtleBot 4 integrates an RPLIDAR A1M8 sensor, which provides 360 ◦ laser scanning capabilities with a 12 m range, enabling robust Simultaneous Localization and Map-ping (SLAM) functionalities. The platform utilizes the Nav2 navigation stack with Adaptive Monte Carlo Localization (AMCL) for position estimation. The SLAM system enables real-time 2D occupancy grid generation while simultaneously tracking the robot’s pose within the generated map. This enables precise ( x, y, z) coordinate acquisition, which is required for spatially-referenced RSSI measurements. Propagation Environment 
+
+> Ground Truth at 2.4GHz
+> Ground Truth at 5GHz
+> (a) Room 1 setting and ground truth. Propagation Environment
+> Ground Truth at 2.4GHz
+> Ground Truth at 5GHz
+> (b) Room 2 setting and ground truth.
+
+Fig. 7: Propagation environments and ground truth of our dataset. A Raspberry Pi 4 Model B (4 GB of memory) served as the primary measurement unit, mounted and fixed at the geometric center of the TurtleBot 4’s upper platform. To support RSSI measurements, a TP-Link Archer T3U AC1300 Mini MU-MIMO USB 3.0 adapter, based on a Realtek RTL8812BU chipset, is connected to the Raspberry Pi. The adapter supports dual-band operation (2.4 GHz and 5 GHz) with 2 × 2 spatial streams. The measurement infrastructure was supported by two ASUS RT-AC86U Dual-Band Wireless-AC2900 routers. The data collection procedure combined manual navigation of the TurtleBot 4 with automated RSSI measurements. Using a joystick control, the TurtleBot 4 was manually navigated to a predefined location on the map, after which the control system automatically recorded the robot’s coordinates via the /amcl_pose ROS 2. Subsequently, the control virtual machine (VM) initiated a secure shell (SSH) connection to the Raspberry Pi and executed a script that implemented five consecutive RSSI measurements with a 1 s interval for both frequency bands. Each final measurement was considered valid only if all five samples were successfully collected. Incomplete measurements were automatically discarded and repeated at the same location until five samples were success-fully recorded. Fig. 7 displays the rooms and ground truth in our two experimental scenes. The blue regions represent columns, which provide clear obstructions for detecting ray-object interactions within the indoor environment. 
+
+C. CSI Datasets from NeRF 2 and NewRF 
+
+We further use a few more datasets mentioned in NeRF 2 and NewRF [27]. From NeRF 2, we used a MIMO-CSI dataset, i.e., the Argos channel dataset [41], which contains a total of 100 K measurements. On the other hand, we use the simulated data from the NewRF repository [27]. Each simulated environment features a single transmitter with fixed placement and 443,975 receiver locations distributed throughout the three-dimensional space. The channel measurements incorporate a 52-subcarrier orthogonal frequency-division multiplexing (OFDM) configu-ration to capture frequency-selective fading characteristics. We address signal distortions in channel estimation by applying a three-step standardization process in FIRE [42]. These transformations remove uniform distortions, including global phase offsets and linear phase trends, while preserving key channel features such as inter-antenna amplitude/phase relationships and the non-linear frequency response that char-acterizes the wireless channel. 
+
+D. Baselines 
+
+Our approach is compared with four distinct baseline ar-chitectures. The first baseline employs the MLP structure containing four layers with respective hidden dimensions of 256, 128, 64, and 64 units, culminating in a linear clas-sification layer. The second baseline incorporates a varia-tional autoencoder (VAE) framework derived from FIRE [42], featuring three encoding layers paired with four decoding layers that maintain equivalent hidden unit specifications. The third comparative model utilizes a multi-layered perceptron implementation of DCGAN [43], constructed with four layers each for both generator and discriminator components, where the initial hidden dimension of 512 units systematically re-duces by fifty percent across successive layers. The fourth baseline follows the established NeRF 2 architectural frame-work as specified in their original implementation. For the final baseline evaluation, we adopt the ray tracing module from GWRF [26] to assess generalizability. However, GWRF demonstrates poor performance with RSSI data, generating uniform predicted values across the output matrix. This lim-itation occurs because our RSSI data exhibits significantly lower variance than the public CSI data, and the sum and mean pooling in GWRF compresses data variance, further preventing the model from detecting subtle differences in low-variance datasets. NewRF [27] faces similar challenges as its sampling mechanism produces extremely small or zero weights in our scenarios, which discards important information in our datasets. These fundamental design limitations led to the exclusion of both models from some evaluations. We evaluate performance using the median of MAE and signal-to-noise ratio (SNR) as our primary metrics. 
+
+E. Evaluations 1) Single-scene performance: Table I presents a compre-hensive comparison between our proposed GAI-NeRF model and several baseline methods across diverse evaluation sce-narios. To improve efficiency, we remove the self-attention TABLE I: Performance comparison of GAI-NeRF against baseline methods across different room configurations and CSI scenarios. Lower MAE values and higher SNR values indicate better performance. 
+
+Method Room 1 (Our RSSI Dataset) Room 2 (Our RSSI Dataset) Other CSI Datasets MAE (dB) ↓ SNR (dB) ↑
+
+2.4 GHz 5.0 GHz 2.4 GHz 5.0 GHz MIMO Bedroom Conference 
+
+MLP 7.31 9.28 8.15 9.87 19.86 17.67 16.12 VAE 5.75 5.49 4.53 2.73 21.47 15.11 18.90 DCGAN 4.01 3.39 4.22 2.95 13.12 14.10 13.45 NeRF 2 3.58 2.87 3.92 2.07 23.85 21.65 20.88 GWRF — — — — 25.08 28.35 26.92 
+
+GAI-NeRF 3.17 1.75 3.06 1.80 25.78 29.13 27.54 0 5 10 15 20 25 
+
+> SNR (dB)
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> CDF  GWRF
+> VAE
+> MLP
+> DCGAN
+> NeRF2
+> Ours
+
+(a) MIMO-CSI dataset. 0 5 10 15 20 25 30  
+
+> SNR (dB)
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> CDF  GWRF
+> VAE
+> MLP
+> DCGAN
+> NeRF2
+> Ours
+
+(b) Bedroom dataset. 0 5 10 15 20 25  
+
+> SNR (dB)
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> CDF  GWRF
+> VAE
+> MLP
+> DCGAN
+> NeRF2
+> Ours
+
+(c) Conference dataset. 
+
+Fig. 8: CDF-SNR performance comparisons across three CSI datasets. mechanism in the tokenizer while keeping the overall ar-chitecture unchanged. The results demonstrate the effective-ness of our approach for wireless channel modeling. In the Room 1 dataset, GAI-NeRF achieves MAE values of 3.17 dB at 2.4 GHz and 1.75 dB at 5.0 GHz, marking substantial improvements compared with NeRF 2, which records 3.58 dB and 2.87 dB. Traditional deep learning methods exhibit weaker performance, with DCGAN yielding 4.01 dB and 3.39 dB, VAE reaching 5.75 dB and 5.49 dB, and the MLP baseline producing errors as high as 7.31 dB and 9.28 dB. The Room 2 dataset reveals a similar trend. GAI-NeRF achieves the lowest error rates of 3.06 dB at 2.4 GHz and 1.80 dB at 5.0 GHz, while NeRF 2 follows with 3.92 dB and 2.07 dB, and the gap further widens against DCGAN, VAE, and MLP. The perfor-mance evaluations across three specialized datasets provide the validation of GAI-NeRF’s robustness and generalization. In Fig. 8, within the MIMO dataset GAI-NeRF reaches an SNR of 25.78 dB, very close to the strongest competitor GWRF at 25.08 dB, yet higher than NeRF 2 at 23.85 dB, VAE at 21.47 dB, MLP at 19.86 dB, and DCGAN at 13.12 dB. In the Bedroom dataset, where multipath propagation is espe-cially complex, GAI-NeRF shows its most striking advantage, achieving 29.13 dB and outperforming GWRF at 28.35 dB while far exceeding NeRF 2, MLP, VAE, and DCGAN. A consistent pattern emerges in the Conference room dataset, where GAI-NeRF achieves 27.54 dB compared with 26.92 dB for GWRF, while the remaining baselines remain several decibels lower. These results highlight that GAI-NeRF not only achieves state-of-the-art accuracy but also delivers robust and physically consistent predictions across a wide range of wireless environments and frequency bands, underscoring the value of integrating geometric structure with electromagnetic interaction patterns in a unified learning framework. GAI-NeRF 
+
+> (Full Model)
+> w/o Multi-view
+> Tokenizer
+> w/o Attention Based
+> Ray Tracing
+> Model Configurations
+> 24
+> 25
+> 26
+> 27
+> 28
+> 29
+> 30
+> SNR (dB)
+> Bedroom
+> Conference
+> MIMO-CSI
+
+Fig. 9: Ablation study on GAI-NeRF in CSI datasets. 
+
+2) Ablation Study for CSI datasets: Fig. 9 presents our ablation study results across three datasets: Bedroom, Con-ference, and MIMO-CSI. Our complete GAI-NeRF model achieves the highest SNR values of 29.13 dB, 27.54 dB, and 25.78 dB respectively. When removing the multi-view tokenizer component, performance decreases by 1.49 dB on Bedroom, 1.12 dB on Conference, and 0.72 dB on MIMO-CSI, demonstrating its importance for capturing spatial rela-tionships. Similarly, excluding the attention-based ray tracing module results in SNR reductions of 1.10 dB, 1.39 dB, and 0.47 dB across the three datasets. These results confirm that both components contribute significantly to the model’s perfor-mance, with the multi-view tokenizer showing slightly greater impact on the Bedroom dataset while the attention-based ray tracing module proves more crucial for the Conference environment. MLP VAE DCGAN NeRF² GAI-NeRF 
+
+> (Ours)
+> Models
+> 0.0
+> 2.5
+> 5.0
+> 7.5
+> 10.0
+> 12.5
+> 15.0
+> MAE (dB)
+> 2.4GHz → 5GHz
+> 5GHz → 2.4GHz
+
+Fig. 10: Generalization performance comparison across differ-ent models and frequencies in our own-built dataset. Results are averaged across both rooms (Evaluation metrics: MAE). 
+
+3) Generalization: In this paper, we consider two gen-eralization settings: frequencies and environment changes. Fig. 10 presents the generalization performance of our pro-posed GAI-NeRF model compared to baseline methods for cross-frequency channel prediction. We evaluate the MAE for bidirectional frequency translation between 2.4 GHz and 5 GHz bands. Results are presented with mean values in both rooms. GAI-NeRF achieves the lowest error rates in both directions, with 4.27 MAE for 2.4 GHz to 5 GHz prediction and 5.00 MAE for the reverse direction. This represents a significant improvement over the NeRF 2, reducing error by 15.8% and 17.6% respectively. The generative models (VAE and DCGAN) demonstrate intermediate performance, while the standard MLP exhibits the highest error rates, confirming the limitations of direct mapping approaches for cross-frequency channel prediction. These results validate that our integration of geometric awareness and implicit neural representations enables more accurate frequency translation compared to existing methods.    
+
+> (a) Initial Scene. (b) Addition. (c) Relocation. (d) Removal.
+
+Fig. 11: Three generalization scenes are evaluated to test the framework’s adaptability. Scene 1 involves adding a tablet set to the empty table. Scene 2 examines the impact of relocating the laptop to different locations. Scene 3 tests the removal of the laptop from the tablet setup. These scenarios assess the model’s robustness under various environmental changes. Fig. 11 presents the four fundamental scenarios used to eval-uate our model’s generalization capabilities: the initial scene, addition of tablet devices, relocation of the tablet set, and removal of the laptop from the tablet configuration. Table II evaluates the generalization capability of our proposed GAI-NeRF model against baseline methods across three distinct scenes using RSSI data at both 2.4 GHz and 5 GHz. Across all scenarios, GAI-NeRF consistently delivers the lowest MAE values, for instance reducing errors in Scene 1 to 3.25 dB at 2.4 GHz and 3.37 dB at 5 GHz, while achieving similarly strong results of 3.48 dB and 2.33 dB in Scene 2 and 3.45 dB and 2.27 dB in Scene 3. These outcomes correspond to notable margins over the strongest baseline, NeRF 2, with improvements approaching 1 dB in several cases, and sub-stantially larger gains over conventional models. Compared with traditional approaches, GAI-NeRF consistently narrows prediction error by wide margins—exceeding MLP by nearly 9–11 dB and outperforming VAE and DCGAN by several decibels—demonstrating that the integration of geometric al-gebra principles with multi-view learning provides not only numerical advantages but also robust generalization across frequencies and diverse propagation environments. TABLE II: Detailed generalization performance (MAE in dB ↓)across different models and scenes on our RSSI dataset at 2.4 GHz and 5 GHz.                                     
+
+> Model Scene 1 Scene 2 Scene 3
+> 2.4 GHz 5 GHz 2.4 GHz 5 GHz 2.4 GHz 5 GHz MLP 11.92 9.65 12.52 10.08 13.51 10.21 VAE 6.63 5.51 5.91 6.13 6.14 5.50 DCGAN 4.61 4.48 4.91 4.33 4.23 4.17 NeRF 24.34 3.79 4.14 2.93 3.67 2.97
+> GAI-NeRF (Ours) 3.25 3.37 3.48 2.33 3.45 2.27
+
+V. C ONCLUSION 
+
+In this paper, we propose the first multi-view framework for wireless channel modeling, grounded in geometric algebra and wireless ray transmission theory to guide the learning of ray-object interactions. Our study demonstrates that integrating geometric scene structure with electromagnetic interaction patterns enables physically consistent channel predictions that more faithfully reflect the underlying propagation mechanisms. The attention-augmented ray tracing module proves essential for improving generalization, allowing the model to remain robust in dynamic environments. Beyond achieving state-of-the-art accuracy across both our newly collected datasets and existing benchmarks, our findings highlight a key insight: multi-view learning provides a principled pathway to unify geometric understanding and electromagnetic modeling within a single framework. This not only enhances predictive per-formance but also strengthens the theoretical foundation of wireless channel modeling. VI. A CKNOWLEDGMENT 
+
+This work is supported in part by the NSF (CNS-2415209, CNS-2317190, CNS-2107190, CNS-2415208, IIS-2306791, and CNS-2319343). REFERENCES [1] H. Jiang, M. Mukherjee, J. Zhou, and J. Lloret, “Channel modeling and characteristics for 6G wireless communications,” IEEE Network , vol. 35, no. 1, pp. 296–303, 2020. [2] C. Wen, J. Tong, Y. Hu, Z. Lin, and J. Zhang, “WRF-GS: Wireless radiation field reconstruction with 3D gaussian splatting,” in IEEE IN-FOCOM 2025-IEEE Conference on Computer Communications . IEEE, 2025, pp. 1–10. [3] N. Wang, T. Zhao, S. Mao, and X. Wang, “Privacy-preserving Wi-Fi data generation via differential privacy in diffusion models,” in 
+
+IEEE INFOCOM 2025-IEEE Conference on Computer Communications .IEEE, 2025, pp. 1–10. [4] T. Zhao, X. Wang, and S. Mao, “Cross-domain, scalable, and in-terpretable rf device fingerprinting,” in IEEE INFOCOM 2024-IEEE Conference on Computer Communications . IEEE, 2024, pp. 2099– 2108. [5] C.-X. Wang, J. Bian, J. Sun, W. Zhang, and M. Zhang, “A survey of 5G channel measurements and models,” IEEE Communications Surveys & Tutorials , vol. 20, no. 4, pp. 3142–3168, 2018. [6] J. Huang, C.-X. Wang, L. Bai, J. Sun, Y. Yang, J. Li, O. Tirkkonen, and M.-T. Zhou, “A big data enabled channel model for 5G wireless communication systems,” IEEE Transactions on Big Data , vol. 6, no. 2, pp. 211–222, 2018. [7] R. He, B. Ai, A. F. Molisch, G. L. Stuber, Q. Li, Z. Zhong, and J. Yu, “Clustering enabled wireless channel modeling using big data algorithms,” IEEE Communications Magazine , vol. 56, no. 5, pp. 177– 183, 2018. [8] Z. Yun and M. F. Iskander, “Ray tracing for radio propagation modeling: Principles and applications,” IEEE access , vol. 3, pp. 1089–1100, 2015. [9] Y. Yang, Y. Li, W. Zhang, F. Qin, P. Zhu, and C.-X. Wang, “Generative-adversarial-network-based wireless channel modeling: Challenges and opportunities,” IEEE Communications Magazine , vol. 57, no. 3, pp. 22– 27, 2019. [10] S. Navabi, C. Wang, O. Y. Bursalioglu, and H. Papadopoulos, “Pre-dicting wireless channel features using neural networks,” in 2018 IEEE international conference on communications (ICC) . IEEE, 2018, pp. 1–6. [11] E. Ostlin, H.-J. Zepernick, and H. Suzuki, “Macrocell path-loss predic-tion using artificial neural networks,” IEEE Transactions on Vehicular Technology , vol. 59, no. 6, pp. 2735–2747, 2010. [12] C. Jiang, H. Zhang, Y. Ren, Z. Han, K.-C. Chen, and L. Hanzo, “Machine learning paradigms for next-generation wireless networks,” 
+
+IEEE Wireless Communications , vol. 24, no. 2, pp. 98–105, 2016. [13] A. Bakshi, Y. Mao, K. Srinivasan, and S. Parthasarathy, “Fast and efficient cross band channel prediction using machine learning,” in 
+
+The 25th Annual International Conference on Mobile Computing and Networking , 2019, pp. 1–16. [14] B. Mildenhall, P. P. Srinivasan, M. Tancik, J. T. Barron, R. Ramamoorthi, and R. Ng, “Nerf: Representing scenes as neural radiance fields for view synthesis,” Communications of the ACM , vol. 65, no. 1, pp. 99–106, 2021. [15] H. Jia, X. Chen, Y. Wei, Y. Sun, and Y. Pi, “Neural reflectance fields for radio-frequency ray tracing,” in GLOBECOM 2024-2024 IEEE Global Communications Conference . IEEE, 2024, pp. 4226–4231. [16] J. Shen and X. Wang, “An efficient and explainable KAN framework for wireless radiation field prediction,” in IEEE MASS 2025-IEEE 22nd International Conference on Mobile Ad-Hoc and Smart Systems (MASS) .IEEE, 2025, pp. 1–9. [17] Y.-C. Guo, D. Kang, L. Bao, Y. He, and S.-H. Zhang, “Nerfren: Neural radiance fields with reflections,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2022, pp. 18 409–18 418. [18] P. Wang, L. Liu, Y. Liu, C. Theobalt, T. Komura, and W. Wang, “Neus: Learning neural implicit surfaces by volume rendering for multi-view reconstruction,” arXiv preprint arXiv:2106.10689 , 2021. [19] T. Orekondy, P. Kumar, S. Kadambi, H. Ye, J. Soriaga, and A. Behboodi, “Winert: Towards neural ray tracing for wireless channel modelling and differentiable simulations,” in The Eleventh International Conference on Learning Representations , 2023. [20] J. Hoydis, F. A¨ ıt Aoudia, S. Cammerer, M. Nimier-David, N. Binder, G. Marcus, and A. Keller, “Sionna RT: Differentiable ray tracing for radio propagation modeling,” in 2023 IEEE Globecom Workshops (GC Wkshps) . IEEE, 2023, pp. 317–321. [21] L. Dorst and S. De Keninck, “A guided tour to the plane-based geometric algebra pga,” URL https://bivector. net/PGA4CS. html , 2022. [22] D. Fontijne, L. Dorstand, and S. Mann, “Geometric algebra for computer science: An object-oriented approach to geometry (the morgan kaufmann series in computer graphics),” 2007. [23] M. Roelfs and S. D. Keninck, “Graded symmetry groups: Plane and simple,” 2021. [Online]. Available: https://arxiv.org/abs/2107.03771 [24] Z. Liu, Y. Wang, S. Vaidya, F. Ruehle, J. Halverson, M. Soljacic, T. Y. Hou, and M. Tegmark, “KAN: Kolmogorov–arnold networks,” in 
+
+The Thirteenth International Conference on Learning Representations ,2025. [Online]. Available: https://openreview.net/forum?id=Ozo7qJ5vZi [25] X. Zhao, Z. An, Q. Pan, and L. Yang, “Nerf2: Neural radio-frequency radiance fields,” in Proceedings of the 29th Annual International Con-ference on Mobile Computing and Networking , 2023, pp. 1–15. [26] K. Yang, Y. Chen, and W. Du, “Gwrf: A generalizable wireless ra-diance field for wireless signal propagation modeling,” arXiv preprint arXiv:2502.05708 , 2025. [27] H. Lu, C. Vattheuer, B. Mirzasoleiman, and O. Abari, “NeWRF: A deep learning framework for wireless radiation field reconstruction and channel prediction,” in Forty-first International Conference on Machine Learning , 2024. [Online]. Available: https://openreview.net/forum?id=181hXof7ho [28] J. Shen, T. Zhao, Y. Wu, and X. Wang, “NeRF-APT: A new nerf frame-work for wireless channel prediction,” arXiv preprint arXiv:2504.16094 ,2025. [29] H. Yuan, Z. Chen, Z. Lin, J. Peng, Y. Zhong, X. Hu, S. Xue, W. Li, and Y. Gao, “Constructing 4d radio map in leo satellite networks with limited samples,” in IEEE INFOCOM 2025-IEEE Conference on Computer Communications . IEEE, 2025, pp. 1–10. [30] J. Tong, X. Zhao, Z. Wang, D. Dai, Z. An, and L. Yang, “Commercial RFIDs as reconfigurable intelligent surfaces,” in IEEE INFOCOM 2025-IEEE Conference on Computer Communications . IEEE, 2025, pp. 1–10. [31] D. Ruhe, J. K. Gupta, S. De Keninck, M. Welling, and J. Brandstetter, “Geometric clifford algebra networks,” in International Conference on Machine Learning . PMLR, 2023, pp. 29 306–29 337. [32] J. Brehmer, P. De Haan, S. Behrends, and T. S. Cohen, “Geometric alge-bra transformer,” Advances in Neural Information Processing Systems ,vol. 36, pp. 35 472–35 496, 2023. [33] J. Zhong and W. Cao, “Graph geometric algebra networks for graph representation learning,” Scientific Reports , vol. 15, no. 1, p. 170, 2025. [34] J. Spinner, V. Bres´ o, P. De Haan, T. Plehn, J. Thaler, and J. Brehmer, “Lorentz-equivariant geometric algebra transformers for high-energy physics,” Advances in neural information processing systems , vol. 37, pp. 22 178–22 205, 2024. [35] J. Devlin, M.-W. Chang, K. Lee, and K. Toutanova, “Bert: Pre-training of deep bidirectional transformers for language understanding,” in Pro-ceedings of the 2019 conference of the North American chapter of the association for computational linguistics: human language technologies, volume 1 (long and short papers) , 2019, pp. 4171–4186. [36] J. Li, D. Li, C. Xiong, and S. Hoi, “Blip: Bootstrapping language-image pre-training for unified vision-language understanding and generation,” in International conference on machine learning . PMLR, 2022, pp. 12 888–12 900. [37] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, Ł. Kaiser, and I. Polosukhin, “Attention is all you need,” Advances in neural information processing systems , vol. 30, 2017. [38] Y. Wang, Y. Li, P. Liu, T. Dai, and S.-T. Xia, “NeXT: towards high quality neural radiance fields via multi-skip transformer,” in European Conference on Computer Vision . Springer, 2022, pp. 69–86. [39] R. Qiu, Y. Miao, S. Wang, Y. Zhu, L. Yu, and X.-S. Gao, “PowerMLP: An efficient version of KAN,” in Proceedings of the AAAI Conference on Artificial Intelligence , vol. 39, no. 19, 2025, pp. 20 069–20 076. [40] K. Choromanski, V. Likhosherstov, D. Dohan, X. Song, A. Gane, T. Sar-los, P. Hawkins, J. Davis, A. Mohiuddin, L. Kaiser et al. , “Rethinking attention with performers,” arXiv preprint arXiv:2009.14794 , 2020. [41] C. Shepard, J. Ding, R. E. Guerra, and L. Zhong, “Understanding real many-antenna MU-MIMO channels,” in 2016 50th Asilomar Conference on Signals, Systems and Computers . IEEE, 2016, pp. 461–467. [42] Z. Liu, G. Singh, C. Xu, and D. Vasisht, “FIRE: enabling reciprocity for FDD MIMO systems,” in Proceedings of the 27th Annual International Conference on Mobile Computing and Networking , 2021, pp. 628–641. [43] A. Radford, L. Metz, and S. Chintala, “Unsupervised representation learning with deep convolutional generative adversarial networks,” arXiv preprint arXiv:1511.06434 , 2015.
