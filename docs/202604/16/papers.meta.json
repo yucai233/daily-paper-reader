@@ -1,0 +1,93 @@
+{
+  "label": "2026-04-16",
+  "date": "2026-04-16",
+  "generated_at": "2026-04-16T20:10:20",
+  "count": 6,
+  "papers": [
+    {
+      "paper_id": "202604/16/2604.13918v1-partnerface-part-based-neural-radiance-fields-for-animatable-facial-avatar-reconstruction",
+      "section": "deep",
+      "title_en": "PartNerFace: Part-based Neural Radiance Fields for Animatable Facial Avatar Reconstruction",
+      "authors": "Xianggang Yu, Lingteng Qiu, Xiaohang Ren, Guanying Chen, Shuguang Cui, Xiaoguang Han, Baoyuan Wang",
+      "date": "2026-04-15",
+      "pdf": "https://arxiv.org/pdf/2604.13918v1",
+      "score": "8.0",
+      "evidence": "用于3D面部重建的分块神经辐射场",
+      "tldr": "针对单目视频重建可驱动面部化身时，现有方法难以泛化至未知表情且缺乏细节的问题，本文提出PartNerFace。该方法结合参数化头部模型的逆向蒙皮技术将观察点映射至标准空间，并引入基于分块的变形场。通过多个局部MLP和软权重机制，自适应地对不同面部区域进行精细建模，显著提升了对复杂表情的捕捉能力和泛化性能，实现了高质量的面部重建与驱动。",
+      "tags": "query:q1",
+      "abstract_en": "We present PartNerFace, a part-based neural radiance fields approach, for reconstructing animatable facial avatar from monocular RGB videos. Existing solutions either simply condition the implicit network with the morphable model parameters or learn an imaginary canonical radiance field, making them fail to generalize to unseen facial expressions and capture fine-scale motion details. To address these challenges, we first apply inverse skinning based on a parametric head model to map an observed point to the canonical space, and then model fine-scale motions with a part-based deformation field. Our key insight is that the deformation of different facial parts should be modeled differently. Specifically, our part-based deformation field consists of multiple local MLPs to adaptively partition the canonical space into different parts, where the deformation of a 3D point is computed by aggregating the prediction of all local MLPs by a soft-weighting mechanism. Extensive experiments demonstrate that our method generalizes well to unseen expressions and is capable of modeling fine-scale facial motions, outperforming state-of-the-art methods both quantitatively and qualitatively.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/16/2604.13191v1-fast-voxelization-and-level-of-detail-for-microgeometry-rendering",
+      "section": "quick",
+      "title_en": "Fast Voxelization and Level of Detail for Microgeometry Rendering",
+      "authors": "Javier Fabre, Carlos Castillo, Carlos Rodriguez-Pardo, Jorge Lopez-Moreno",
+      "date": "2026-04-14",
+      "pdf": "https://arxiv.org/pdf/2604.13191v1",
+      "score": "7.0",
+      "evidence": "微观结构体渲染的快速体素化和细节层次",
+      "tldr": "本研究针对具有微观结构（如纤维、拉丝金属）的材质在渲染时面临的高分辨率体素化耗时及多尺度细节层次（LoD）表示难题，提出了一种高效的并行体素化方法。该方法支持快速的多分辨率数据聚合，并引入了基于分层SGGX聚类的新型表示模型。通过CUDA实现，在三角网格和显式纤维织物上验证了其在保持渲染准确性的同时，显著提升了体素化效率和LoD渲染质量。",
+      "tags": "query:q7",
+      "abstract_en": "Many materials show anisotropic light scattering patterns due to the shape and local alignment of their underlying micro structures: surfaces with small elements such as fibers, or the ridges of a brushed metal, are very sparse and require a high spatial resolution to be properly represented as a volume. The acquisition of voxel data from such objects is a time and memory-intensive task, and most rendering approaches require an additional Level-of-Detail (LoD) data structure to aggregate the visual appearance, as observed from multiple distances, in order to reduce the number of samples computed per pixel (E.g.: MIP mapping). In this work we introduce first, an efficient parallel voxelization method designed to facilitate fast data aggregation at multiple resolution levels, and second, a novel representation based on hierarchical SGGX clustering that provides better accuracy than baseline methods. We validate our approach with a CUDA-based implementation of the voxelizer, tested both on triangle meshes and volumetric fabrics modeled with explicit fibers. Finally, we show the results generated with a path tracer based on the proposed LoD rendering model.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/16/2604.09862v1-ff3r-feedforward-feature-3d-reconstruction-from-unconstrained-views",
+      "section": "quick",
+      "title_en": "FF3R: Feedforward Feature 3D Reconstruction from Unconstrained views",
+      "authors": "Chaoyi Zhou, Run Wang, Feng Luo, Mert D. Pesé, Zhiwen Fan, Yiqi Zhong, Siyu Huang",
+      "date": "2026-04-10",
+      "pdf": "https://arxiv.org/pdf/2604.09862v1",
+      "score": "6.0",
+      "evidence": "3D重建中RGB和特征图的渲染监督",
+      "tldr": "FF3R是一个无需标注的端到端前馈框架，旨在从无约束的多视图图像中统一实现3D几何重建与语义理解。该方法无需相机位姿、深度图或语义标签，通过Token级融合模块和语义-几何互促机制，解决了全局语义不一致和局部结构不一致的问题。实验证明其在视图合成、语义分割和深度估计方面表现优异，具有极强的泛化能力，为具身智能系统提供了高效的空间与语义感知方案。",
+      "tags": "query:q1",
+      "abstract_en": "Recent advances in vision foundation models have revolutionized geometry reconstruction and semantic understanding. Yet, most of the existing approaches treat these capabilities in isolation, leading to redundant pipelines and compounded errors. This paper introduces FF3R, a fully annotation-free feed-forward framework that unifies geometric and semantic reasoning from unconstrained multi-view image sequences. Unlike previous methods, FF3R does not require camera poses, depth maps, or semantic labels, relying solely on rendering supervision for RGB and feature maps, establishing a scalable paradigm for unified 3D reasoning. In addition, we address two critical challenges in feedforward feature reconstruction pipelines, namely global semantic inconsistency and local structural inconsistency, through two key innovations: (i) a Token-wise Fusion Module that enriches geometry tokens with semantic context via cross-attention, and (ii) a Semantic-Geometry Mutual Boosting mechanism combining geometry-guided feature warping for global consistency with semantic-aware voxelization for local coherence. Extensive experiments on ScanNet and DL3DV-10K demonstrate FF3R's superior performance in novel-view synthesis, open-vocabulary semantic segmentation, and depth estimation, with strong generalization to in-the-wild scenarios, paving the way for embodied intelligence systems that demand both spatial and semantic understanding.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/16/2604.12580v1-pdf-gs-progressive-distractor-filtering-for-robust-3d-gaussian-splatting",
+      "section": "quick",
+      "title_en": "PDF-GS: Progressive Distractor Filtering for Robust 3D Gaussian Splatting",
+      "authors": "Kangmin Seo, MinKyu Lee, Tae-Young Kim, ByeongCheol Lee, JoonSeoung An, Jae-Pil Heo",
+      "date": "2026-04-14",
+      "pdf": "https://arxiv.org/pdf/2604.12580v1",
+      "score": "6.0",
+      "evidence": "用于照片级真实感渲染的3D高斯泼溅",
+      "tldr": "针对3D高斯泼溅（3DGS）在处理多视图不一致（如动态干扰物）时易产生伪影的问题，本文提出PDF-GS框架。该方法利用3DGS固有的信号抑制能力，通过渐进式多阶段优化策略，利用差异线索逐步过滤干扰物并恢复一致的精细细节。PDF-GS在多个数据集上达到SOTA性能，且无需修改架构，具有轻量级和易适配的特点。",
+      "tags": "query:q1",
+      "abstract_en": "Recent advances in 3D Gaussian Splatting (3DGS) have enabled impressive real-time photorealistic rendering. However, conventional training pipelines inherently assume full multi-view consistency among input images, which makes them sensitive to distractors that violate this assumption and cause visual artifacts. In this work, we revisit an underexplored aspect of 3DGS: its inherent ability to suppress inconsistent signals. Building on this insight, we propose PDF-GS (Progressive Distractor Filtering for Robust 3D Gaussian Splatting), a framework that amplifies this self-filtering property through a progressive multi-phase optimization. The progressive filtering phases gradually remove distractors by exploiting discrepancy cues, while the following reconstruction phase restores fine-grained, view-consistent details from the purified Gaussian representation. Through this iterative refinement, PDF-GS achieves robust, high-fidelity, and distractor-free reconstructions, consistently outperforming baselines across diverse datasets and challenging real-world conditions. Moreover, our approach is lightweight and easily adaptable to existing 3DGS frameworks, requiring no architectural changes or additional inference overhead, leading to a new state-of-the-art performance. The code is publicly available at https://github.com/kangrnin/PDF-GS.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/16/2604.13746v1-clipgstream-clip-stream-gaussian-splatting-for-any-length-and-any-motion-multi-view-dynamic-scene-reconstruction",
+      "section": "quick",
+      "title_en": "ClipGStream: Clip-Stream Gaussian Splatting for Any Length and Any Motion Multi-View Dynamic Scene Reconstruction",
+      "authors": "Jie Liang, Jiahao Wu, Chao Wang, Jiayu Yang, Xiaoyun Zheng, Kaiqiang Xiong, Zhanke Wang, Jinbo Yan, Feng Gao, Ronggang Wang",
+      "date": "2026-04-15",
+      "pdf": "https://arxiv.org/pdf/2604.13746v1",
+      "score": "6.0",
+      "evidence": "利用时空场进行动态3D场景重建",
+      "tldr": "针对长序列、大运动的多视图动态场景重建难题，本文提出ClipGStream框架。该方法结合了帧流式（Frame-Stream）的可扩展性和剪辑式（Clip）的局部一致性，通过剪辑级别的流式优化实现。它利用剪辑独立的时空场和残差锚点补偿捕捉局部变化，并通过跨剪辑的锚点与解码器继承确保全局结构一致性。该设计实现了长视频的高质量、无闪烁重建，显著降低了内存开销，在重建质量和效率上达到SOTA水平。",
+      "tags": "query:q1",
+      "abstract_en": "Dynamic 3D scene reconstruction is essential for immersive media such as VR, MR, and XR, yet remains challenging for long multi-view sequences with large-scale motion. Existing dynamic Gaussian approaches are either Frame-Stream, offering scalability but poor temporal stability, or Clip, achieving local consistency at the cost of high memory and limited sequence length. We propose ClipGStream, a hybrid reconstruction framework that performs stream optimization at the clip level rather than the frame level. The sequence is divided into short clips, where dynamic motion is modeled using clip-independent spatio-temporal fields and residual anchor compensation to capture local variations efficiently, while inter-clip inherited anchors and decoders maintain structural consistency across clips. This Clip-Stream design enables scalable, flicker-free reconstruction of long dynamic videos with high temporal coherence and reduced memory overhead. Extensive experiments demonstrate that ClipGStream achieves state-of-the-art reconstruction quality and efficiency. The project page is available at: https://liangjie1999.github.io/ClipGStreamWeb/",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/16/2604.13905v1-rethinking-image-to-3d-generation-with-sparse-queries-efficiency-capacity-and-input-view-bias",
+      "section": "quick",
+      "title_en": "Rethinking Image-to-3D Generation with Sparse Queries: Efficiency, Capacity, and Input-View Bias",
+      "authors": "Zhiyuan Xu, Jiuming Liu, Yuxin Chen, Masayoshi Tomizuka, Chenfeng Xu, Chensheng Peng",
+      "date": "2026-04-15",
+      "pdf": "https://arxiv.org/pdf/2604.13905v1",
+      "score": "6.0",
+      "evidence": "高效图像转3D生成，替代密集体积网格",
+      "tldr": "本研究提出SparseGen框架，旨在解决图像转3D生成中计算开销大和输入视角偏差的问题。该方法摒弃了传统的密集表示，采用稀疏的3D锚点查询和扩展算子，将查询解码为局部3D高斯原语。通过整流流重建目标进行无3D监督训练，SparseGen在显著降低内存和推理时间的同时，保持了高多视角保真度，并有效缓解了对输入视角的过拟合，为高效3D生成提供了新思路。",
+      "tags": "query:q1",
+      "abstract_en": "We present SparseGen, a novel framework for efficient image-to-3D generation, which exhibits low input-view bias while being significantly faster. Unlike traditional approaches that rely on dense volumetric grids, triplanes, or pixel-aligned primitives, we model scenes with a compact sparse set of learned 3D anchor queries and a learned expansion operator that decodes each transformed query into a small local set of 3D Gaussian primitives. Trained under a rectified-flow reconstruction objective without 3D supervision, our model learns to allocate representation capacity where geometry and appearance matter, achieving significant reductions in memory and inference time while preserving multi-view fidelity. We introduce quantitative measures of input-view bias and utilization to show that sparse queries reduce overfitting to conditioning views while being representationally efficient. Our results argue that sparse set-latent expansion is a principled, practical alternative for efficient 3D generative modeling.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

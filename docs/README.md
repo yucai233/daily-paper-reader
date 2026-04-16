@@ -6,43 +6,40 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-15
-- 运行时间：2026-04-15 20:10:16 UTC
+- 最新运行日期：2026-04-16
+- 运行时间：2026-04-16 20:10:11 UTC
 - 运行状态：成功
-- 本次总论文数：7
+- 本次总论文数：6
 - 精读区：1
-- 速读区：6
+- 速读区：5
 
 ### 今日简报（AI）
-今日聚焦 4D 场景理解与动态光照，重点解读获 9.0 高分的视觉体素 Transformer（VVGT）技术。
-VVGT 在视觉体素对齐上取得突破，配合 4D 几何推理与动态光照压缩，显著提升了复杂场景的感知精度。
-建议优先研读 VVGT 论文，深入了解
-- 详情：[/202604/15/README](/202604/15/README)
+今日聚焦 3D 重建与动态人脸建模，深度解析基于部件的神经辐射场（NeRF）前沿技术。
+重点关注 PartNerFace 实现的高精度可驱动人脸重建，以及 PDF-GS 在复杂环境下对 3D 高斯泼溅的鲁棒性优化。
+建议深入了解 3D 渲染效率与非约束视角重建的结合，探索微
+- 详情：[/202604/16/README](/202604/16/README)
 
 ### 精读区论文标签
-1. [VVGT: Visual Volume-Grounded Transformer](/202604/15/2604.12217v1-vvgt-visual-volume-grounded-transformer)  
-   标签：评分：9.0/10、query:q7
-   evidence：将体积数据映射到 3D Gaussian Splatting 以进行可视化的前馈框架
+1. [PartNerFace: Part-based Neural Radiance Fields for Animatable Facial Avatar Reconstruction](/202604/16/2604.13918v1-partnerface-part-based-neural-radiance-fields-for-animatable-facial-avatar-reconstruction)  
+   标签：评分：8.0/10、query:q1
+   evidence：用于3D面部重建的分块神经辐射场
 
 ### 速读区论文标签
-1. [Neural Dynamic GI: Random-Access Neural Compression for Temporal Lightmaps in Dynamic Lighting Environments](/202604/15/2604.12625v1-neural-dynamic-gi-random-access-neural-compression-for-temporal-lightmaps-in-dynamic-lighting-environments)  
+1. [Fast Voxelization and Level of Detail for Microgeometry Rendering](/202604/16/2604.13191v1-fast-voxelization-and-level-of-detail-for-microgeometry-rendering)  
    标签：评分：7.0/10、query:q7
-   evidence：用于实时渲染加速的神经压缩
-2. [PanopticQuery: Unified Query-Time Reasoning for 4D Scenes](/202604/15/2604.05638v1-panopticquery-unified-query-time-reasoning-for-4d-scenes)  
-   标签：评分：6.0/10、query:profile-1
-   evidence：用于动态场景重建的4D高斯泼溅
-3. [Robust 4D Visual Geometry Transformer with Uncertainty-Aware Priors](/202604/15/2604.09366v1-robust-4d-visual-geometry-transformer-with-uncertainty-aware-priors)  
-   标签：评分：6.0/10、query:profile-1
-   evidence：神经4D场景重建与几何纯化
-4. [Rays as Pixels: Learning A Joint Distribution of Videos and Camera Trajectories](/202604/15/2604.09429v1-rays-as-pixels-learning-a-joint-distribution-of-videos-and-camera-trajectories)  
+   evidence：微观结构体渲染的快速体素化和细节层次
+2. [FF3R: Feedforward Feature 3D Reconstruction from Unconstrained views](/202604/16/2604.09862v1-ff3r-feedforward-feature-3d-reconstruction-from-unconstrained-views)  
    标签：评分：6.0/10、query:q1
-   evidence：使用光线进行新视角场景渲染
-5. [A Geometric Algebra-informed NeRF Framework for Generalizable Wireless Channel Prediction](/202604/15/2604.11983v1-a-geometric-algebra-informed-nerf-framework-for-generalizable-wireless-channel-prediction)  
+   evidence：3D重建中RGB和特征图的渲染监督
+3. [PDF-GS: Progressive Distractor Filtering for Robust 3D Gaussian Splatting](/202604/16/2604.12580v1-pdf-gs-progressive-distractor-filtering-for-robust-3d-gaussian-splatting)  
    标签：评分：6.0/10、query:q1
-   evidence：用于射线-物体交互的神经辐射场框架
-6. [Representing 3D Faces with Learnable B-Spline Volumes](/202604/15/2604.12894v1-representing-3d-faces-with-learnable-b-spline-volumes)  
+   evidence：用于照片级真实感渲染的3D高斯泼溅
+4. [ClipGStream: Clip-Stream Gaussian Splatting for Any Length and Any Motion Multi-View Dynamic Scene Reconstruction](/202604/16/2604.13746v1-clipgstream-clip-stream-gaussian-splatting-for-any-length-and-any-motion-multi-view-dynamic-scene-reconstruction)  
    标签：评分：6.0/10、query:q1
-   evidence：结合学习特征的B样条体用于3D表示
+   evidence：利用时空场进行动态3D场景重建
+5. [Rethinking Image-to-3D Generation with Sparse Queries: Efficiency, Capacity, and Input-View Bias](/202604/16/2604.13905v1-rethinking-image-to-3d-generation-with-sparse-queries-efficiency-capacity-and-input-view-bias)  
+   标签：评分：6.0/10、query:q1
+   evidence：高效图像转3D生成，替代密集体积网格
 
 
 <div class="dpr-home-promo-card">
