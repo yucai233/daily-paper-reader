@@ -1,0 +1,317 @@
+Title: Hybrid Latents -- Geometry-Appearance-Aware Surfel Splatting
+
+URL Source: https://arxiv.org/pdf/2604.14928v1
+
+Published Time: Fri, 17 Apr 2026 01:06:54 GMT
+
+Number of Pages: 22
+
+Markdown Content:
+# Hybrid Latents -Geometry-Appearance-Aware Surfel Splatting 
+
+Neel Kelkar 1,2 , Simon Niedermayr 1 , Klaus Engel 2 , Rüdiger Westermann 1 
+
+> 1
+
+Technical University of Munich, Munich, Germany 
+
+{neel.kelkar, simon.niedermayr, westermann}@tum.de  
+
+> 2
+
+Siemens Healthineers, Erlangen, Germany 
+
+{neel.kelkar, engel.klaus}@siemens-healthineers.com 2DGS  
+
+> 31.25 PSNR
+> 800 K Primitives
+> Ours
+> 32.77 PSNR
+> 188 K Primitives
+> Ours Ours (no hashgrid) Ours
+> (13 K Primitives)
+> 2DGS
+> (130 K Primitives)
+> NeST
+> (92 K Primitives)
+
+Fig. 1: Hybrid Latents disentangle low-frequency scene components (via per-surfel latent features) from high-frequency texture details (via a hash-grid). They achieve superior visual quality with fewer surfels and improve geometric fidelity, shown by an accurate silhouette (vs. ground truth in white) and depth reconstruction (right). 
+
+Abstract. We introduce a hybrid Gaussian-hash-grid radiance repre-sentation for reconstructing 2D Gaussian scene models from multi-view images. Similar to NeST splatting, our approach reduces the entangle-ment between geometry and appearance common in NeRF-based mod-els, but adds per-Gaussian latent features alongside hash-grid features to bias the optimizer toward a separation of low- and high-frequency scene components. This explicit frequency-based decomposition reduces the tendency of high-frequency texture to compensate for geometric errors. Encouraging Gaussians with hard opacity falloffs further strengthens the separation between geometry and appearance, improving both geome-try reconstruction and rendering efficiency. Finally, probabilistic pruning combined with a sparsity-inducing BCE opacity loss allows redundant Gaussians to be turned off, yielding a minimal set of Gaussians sufficient to represent the scene. Using both synthetic and real-world datasets, we compare against the state of the art in Gaussian-based novel-view syn-thesis and demonstrate superior reconstruction fidelity with an order of magnitude fewer primitives. 
+
+Keywords: Gaussian Splatting · Sparsification · Texture  
+
+> arXiv:2604.14928v1 [cs.CV] 16 Apr 2026 2N. Kelkar et al.
+
+## 1 Introduction 
+
+Neural Radiance Fields (NeRF) [17] and 3D Gaussian Splatting (3DGS) [14] have fundamentally redefined the benchmarks for high-fidelity 3D model reconstruc-tion and photorealistic Novel View Synthesis (NVS). While NeRF rests upon a rigorous, continuous volumetric framework that for the first time achieved un-precedented detail in synthesizing new viewpoints from sparse 2D images, 3DGS shifted the paradigm towards explicit primitives, enabling real-time rasterization and compatibility with traditional graphics pipelines. Subsequent works have explored alternative primitive kernels to improve re-construction quality and efficiency. 2D Gaussian Splatting (2DGS) [11] utilizes oriented planar Gaussian discs as surface elements (surfels), with ray-surfel in-tersection to precisely model scene geometry. However, because each Gaussian encodes appearance via a single set of Spherical Harmonics (SH), 2DGS requires a prohibitive number of primitives to capture high-frequency texture variations, leading to high memory costs and redundant geometry. To mitigate this problem, high-frequency texture variations can be modelled explicitly. Textures can be encoded into the primitives [3, 20, 24, 27], but this suffers from memory restrictions and unstable optimization. Neural Shell Tex-ture Splatting (NeST) [33] advances the 3DGS-2DGS transition by using 2D Gaussians and offloading a scene’s appearance to a hash-grid-based neural fea-ture field. Such a hybrid representation encourages a cleaner separation between geometry and texture, simultaneously reducing the number of primitives and their required capacity. However, because the 2D Gaussians serve merely as "coordinate samplers" for the neural field, the optimization often bloats the geometry into a dilated volumetric hull solely to use high-capacity appearance features that compensate for geometric errors (see Fig. 1). Geometry-related low-frequency scene com-ponents, which are smooth in space and stable across viewpoints, cannot be encoded efficiently in a hash-grid without overfitting. This results in reduced accuracy due to inaccurate surface reconstruction and slower rendering from an excessive number of primitives. We propose a geometry-appearance-aware decoupling that restores the ge-ometric role of the surfels. We introduce a hybrid latent representation where each 2D surfel carries a base feature signal that replaces the coarse levels of the hash-grid. This forces the surfels to learn the low-frequency "base coat" of the scene geometry and lighting, while the finer layers of the hash-grid focus on high-frequency residual textures. This inductive bias stabilizes optimization, as the per-surfel component compensates for the unstable positional gradients caused by discontinuous hash collisions. This prevents geometric dilation and allows the primitives to snap tightly to the true surface, as shown in Fig. 1. By reducing the number of required primitives and avoiding unnecessary hash-grid queries, we achieve real-time rendering speeds faster than other primitive texturing approaches. To encourage a tight geometric representation, we replace standard Gaussian kernels with bounded Beta kernels [16]. These kernels can adaptively morph be-Hybrid Latents 3
+
+tween soft volumetric blobs and hard, planar disks with a compact support. This allows our method to efficiently capture flat opaque surfaces while minimizing overdraw and to utilize softer surfels to model complex surfaces and volumetric components. To optimize these primitives, we leverage a stochastic MCMC framework [15, 16], which replaces traditional heuristic-based densification [14] with a principled relocation strategy. This approach treats primitive opacities as probabilities, allowing "dead" surfels in under-reconstructed regions to be respawned in active areas of the scene. However, while MCMC ensures robust primitive placement, it can yield a "foggy" volumetric distribution, increasing the number of redundant hash-grid queries. To resolve this, we introduce a Binary Cross-Entropy (BCE) loss on opacity values to penalize semi-transparency. This optimization aggressively eliminates redundant primitives, achieving significantly sparser reconstructions than prior hybrid methods. Furthermore, this high degree of sparsity, combined with the compact support of the beta kernel that enables efficient axis-aligned culling [28], minimizes expensive neural queries in empty space and maintains real-time rendering performance. In summary, our contributions are: 
+
+– A hybrid latent decomposition that reduces the entanglement of geometry and appearance. This delivers improved surface accuracy, increased training and rendering speed, and reduces the required number of surfels. 
+
+– Utilizing Beta kernels to minimize overdraw and maximize reconstruction sparsity wherever possible. This further boosts rendering speed without com-promising reconstruction quality. 
+
+– A tailored optimization framework that integrates Bayesian sampling (MCMC) with sparsity induction. This results in a robust pipeline that achieves su-perior sparsity, handles reconstruction ambiguities, and maintains real-time rendering performance. 
+
+## 2 Related Work 
+
+Novel View Synthesis Neural Radiance Fields (NeRF) [17] and its successors have significantly advanced NVS by representing scenes as continuous volumetric functions parameterized by coordinate-based neural networks. They achieve pho-torealistic quality by optimizing density and directional color via differentiable volume rendering [30]. However, the high computational cost of querying MLPs along the rays limits real-time performance. To address this, Instant-NGP [18] introduced multi-resolution hash encodings for neural features, enabling training and inference in near real time by reducing the MLP size and leveraging efficient memory lookups. Crucially, these methods model appearance as a continuous spatial function, in stark contrast to primitive-based approaches where features are usually unchanging across the extent of a discrete primitive. 
+
+Splatting Based Approaches 3D Gaussian Splatting (3DGS) [14] has emerged as a powerful explicit representation. By explicitly representing the 4 N. Kelkar et al. 
+
+scene with anisotropic 3D Gaussians and using EWA Splatting [35] with a tiled rasterization pipeline, 3DGS achieves state-of-the-art visual quality at real-time rendering speeds. However, because each Gaussian has a feature that remains constant throughout its entire volume, capturing high-frequency texture varia-tions requires an excessive number of Gaussians leading to excessive memory consumption and storage demands. While recent compression techniques [4, 19] effectively reduce the memory footprint of the Gaussians, they do not address the sheer number of primitives required, which remains a fundamental limitation of per-primitive features. To improve geometric reconstruction and alleviate volume-like artifacts, 2D Gaussian Splatting [12] constrains the 3D Gaussians into oriented 2D disks(surfels). This improved geometry capture comes at the cost of rendering quality and over-fitting capacity and ultimately still struggles to capture high-frequency textures without a large primitive count. Other works have proposed generalized, flexi-ble kernels, such as Exponential Gaussians[9] and Beta-distribution kernels [16]. These flexible kernels enable primitives to better fit high-frequency effects in the scene’s structural geometry and sharp boundaries, thus improving render-ing quality. However, because they model variations in geometry rather than in texture, they do not fundamentally reduce the number of primitives required to capture textures. 
+
+Texture Learning in Radiance Fields Disentangling geometry from ap-pearance is crucial to overcoming these limitations. In the NeRF domain, meth-ods such as NeuTex [31] demonstrated the benefits of explicit texture learning by mapping neural features to surface meshes to recover high-frequency details. In the context of 3D Gaussians and other primitives, the standard formu-lation relies on storing high-degree Spherical Harmonics (SH) coefficients per primitive, limiting the resolution of surface details to the splat density. To break this dependency, there has been a resurgence of explicit texture mapping for surfel-based representations. By constraining Gaussians to align with the sur-face(e.g. via 2DGS) and assigning UV coordinates, several methods explicitly map textures onto the primitives [2, 23, 25, 26, 29, 32]. Such approaches suc-cessfully decouples geometric resolution from appearance resolution, allowing the primitives to render much faster while improving visual quality, but can suffer from unstable optimization or memory restrictions from per-primitive textures. 
+
+Hybrid Neural Texturing To avoid memory constraints and optimiza-tion instability, Neural Shell Texture Splatting(NeST) [33] introduced a highly effective hybrid representation. NeST combines 2D Gaussians with a contin-uous, multi-resolution spatial hash grid. By fully disentangling the geometry into Gaussians and the appearance on the spatial hash grid, NeST efficiently captures spatial textures with stable optimization and a sparser reconstruction than primitive-based methods. NeST, however, suffers from limitations in its rendering efficiency and loses the tendency of 2DGS to closely model scene ge-ometry due to its per-primitive features. Instead of fully separating features from the geometry, our method strikes a balance between per-primitive features and spatially varying texture-features. Hybrid Latents 5Surfel Features Grid Features View Direction 
+
+> Neural Decoder
+
+Fig. 2: Method Overview: Features from per-surfel representations and a single-resolution hash-grid are blended via volumetric rendering along each view ray. The blended feature, augmented with viewing direction, is processed by an MLP to output color. 
+
+## 3 Method 
+
+Our method augments 2D surfels with a learnable per-surfel latent and modu-lates this representation with spatial samples from a 3D hash-grid latent. In this way, a strong separation between base geometry - encoded in the per-surfel latent - and residual texture - encoded in the single-resolution hash-grid - is achieved. During rendering, modulated per-fragment latents are blended and decoded by an MLP into color and opacity. Fig. 2 illustrates the hybrid latent representation and its use in the rendering process. 
+
+3.1 Differentiable Surfel Splatting 
+
+Surfels [21], short for surface elements, are two-dimensional primitives used in computer graphics to represent 3D objects as a dense collection of points rather than a connected polygonal mesh. Each surfel typically stores attributes such as position, normal vector, and color, enabling the efficient rendering of complex geometries using point-based techniques. 3DGS [14] evolves the concept of surfels by replacing flat disks with volumetric ellipsoids, using EWA Splatting to effi-ciently transform the 3D Gaussians into the 2D image plane for rendering. 2DGS "flattens" the volumetric ellipsoids back into oriented planar disks, effectively re-turning to the surfel concept but using differentiable, soft-edged Gaussians to ensure the scene remains both geometrically accurate and photorealistic. Each surfel i is parameterized by a position μi, rotation qi, two-dimensional scale si and opacity oi. In differentiable surfel rendering, the color of a pixel C is computed by alpha-blending a depth-sorted sequence of N surfels that overlap a specific screen coordinate. For any given kernel G (such as a 2D disk, an EWA-filtered ellipsoid, or a 2D Gaussian), the contribution of the i-th surfel is determined by its opacity αi and its spatial influence G(x), leading to the "over" composition formula: 
+
+C =
+
+> N
+
+X
+
+> i=1
+
+ci(x)σii−1Y
+
+> j=1
+
+(1 − σj ) (1) 6 N. Kelkar et al. 
+
+where σi = αiG(x) represents the effective transparency at the point x. The color ci(x) can either be a per-surfel constant color value (e.g., as in 3DGS, 2DGS), or depend on the position x for textured surfels. Because this formulation is fully differentiable with respect to the surfel at-tributes like position, color, and the shape parameters defining G, the entire scene can be optimized via differentiable rendering to match a set of reference images as described by Kerbl etal. [14]. b = 5 b = 0 b = 10              
+
+> (a) Beta kernels . Negative bvalues yield flat-ter peaks with sharper cutoffs for learning sharp geometry, whereas positive bvalues produce smooth distributions resembling the Gaussian kernel (dashed line). b=4.00
+> PSNR=35.58
+> FPS=125
+> PSNR=33.60  b=0.1
+> 150 FPS
+> PSNR=35.28  b=0.5
+> 138 FPS
+> PSNR=35.37  b=1.0
+> 133 FPS
+> (b) Number of rendered surfels contribut-ing to each pixel . Decreasing bresults in de-creasing number of surfels, less intersections and increasing frame rates
+
+Fig. 3: Beta kernels and their effects. 
+
+3.2 Deformable beta kernels 
+
+Deformable beta kernels [16] replace the Gaussian kernel of 3DGS with a Beta function that has a learnable parameter b, allowing it to represent both Gaussian-like and opaque ellipsoidal shape functions. We replace the Gaussian kernel used in 2DGS with a beta kernel 
+
+B(x; b) = (1 − x)βb , β(b) = 4 σ(b), x ∈ [0 , 1] , b ∈ R, (2) where σ(·) is the sigmoid function. x is the normalized radial distance from the center of the kernel. As shown in Figure 3a, this allows the surfels to represent both 2D Gaussian-like elements (with large b values) while also supporting more disk-like elements with small b values. This added flexibility facilitates more efficient surface modeling with fewer primitives, without losing the Gaussians’ ability to model non-surface-like structures. As shown in Fig. 3b, flat opaque surfaces can be captured with reduced overdraw, enabling faster rendering. 
+
+3.3 Hybrid Latent Colors 
+
+Unlike prior methods relying on a single neural field for representing color, we concatenate a learnable, per-surfel constant feature vector fg ∈ RDg with a high-frequency latent feature vector H(xi) fh ∈ RDh , where xi is the exact Hybrid Latents 7
+
+3D intersection point of the view ray with the surfel plane using the ray-splat intersection formulation from [11] and H(xi) is queried from the neural hash-grid as described by Müller et al . [18]. 
+
+Feature Compositing. For a given pixel, we iterate through the depth-sorted surfels intersecting the line of sight. For each primitive pi, we first retrieve the learnable base feature fg,i . We then find the per-intersection high-frequency hash feature H(xi) and concatenate it with fg,i .Unlike standard splatting, which accumulates view-dependent RGB colors directly, we accumulate the concatenated hybrid feature vectors. The per-pixel feature vector Fpix is computed via alpha blending: 
+
+Fpix = X
+
+> i∈N
+
+Tiαi · concat (fg,i , H(xi))  (3) where Ti is the transmittance and αi is the opacity computed via the beta kernel (Eq. 2). This late-fusion approach allows the rasterizer to efficiently blend the low-frequency geometric signal ( fg ) with the high-frequency texture signal (fh) in a unified latent space. 
+
+Neural Decoding. The composited feature vector Fpix acts as a neural descriptor for the surface visible at that pixel. This vector is passed through a MLP, Φ, to recover the final color. To model view-dependent effects such as specularity, the normalized view direction d is encoded using SH coefficients and concatenated with the feature vector: 
+
+Cf inal = Φθ (Fpix , SH (d)) . (4) By training the MLP on these concatenated features, the network effectively learns to treat the hash features as a high-frequency residual to the structural “base paint” provided by the per-surfel features. This inductive bias enables our method to utilize large surfels as textured billboards, maintaining high visual fidelity even when the primitive count is significantly lowered. 
+
+## 4 Optimization 
+
+Optimizing hybrid representations faces the problem of competing gradients be-tween geometric primitives and the neural texture field. Gradient-based densi-fication techniques [14] tend to result in geometric dilation, where primitives expand to maximize the neural field’s sampling area rather than adhering to the physical surface. To resolve this, we adopt a stochastic optimization strategy inspired by recent advances in sampling-based rendering. 
+
+4.1 Stochastic Geometry Optimization 
+
+To avoid local minima and better explore the parameter space than pure gradient descent, we follow Kheradmand et al. [15](MCMC) and use Stochastic Gradient 8 N. Kelkar et al. 
+
+Langevin Dynamics to update geometric parameters. Instead of direct energy minimization, the optimization of 2D Gaussian surfel parameters is framed as sampling from a probability distribution where the density is proportional to rendering quality. Instead of the heuristic cloning and splitting strategies used in standard 3DGS [14], the set of primitives are viewed as particles in a Markov Chain. The update rule for a primitive’s position μ at step t is given by 
+
+μt+1 = μt − η∇μLtotal + p2η · ϵt, (5) where η is the learning rate and ϵt ∼ N (0 , Σp) is noise injected to encourage ex-ploration. Unlike the original 3D formulation, we constrain the noise injection ϵt
+
+primarily to the tangent plane of the 2D surfel to encourage surface exploration while minimizing off-surface floating artifacts. This stochasticity allows prim-itives to escape local minima and “relocate” to regions of high reconstruction error without complex densification heuristics. 
+
+4.2 Sparsity via Binary Entropy Regularization 
+
+While the MCMC framework naturally manages primitive density, standard opacity regularization (L1) often leads to a “fog” of semi-transparent Gaussians. In our hybrid architecture, this is detrimental for two reasons: (1) it increases the number of expensive neural field queries per ray, and (2) it prevents the formation of the hard surfaces required for efficient adaptive culling. To enforce the formation of a hard shell, we introduce a Binary Cross-Entropy (BCE) regularization term on the opacity σi. Unlike L1 regularization which encourages opacities to shrink towards zero, BCE encourages opacities to commit to being either fully opaque ( σi = 1 ) or fully transparent ( σi = 0 ): 
+
+LBCE = λbce 
+
+X
+
+> i
+
+− (σi log( σi) + (1 − σi) log(1 − σi))  (6) By penalizing intermediate values ( 0 < σ i < 1), we force the optimization to make discrete decisions about the placement of primitives. Primitives that can-not justify being fully opaque are driven to zero and pruned. This regularization works in tandem with the beta kernels (Sec. 3.2) to produce a scene representa-tion that is both geometrically sharp and highly sparse. We activate BCE regularization in the later stages of training, after the end of the MCMC relocation phase, to avoid pruning too early and to avoid conflicts with the opacity regularizer in the early stages of optimization. 
+
+4.3 Total Loss 
+
+The final loss function combines the photometric reconstruction loss with the geometric regularizers: 
+
+Ltotal = LRGB + λdist Ldist (7) 
+
++ λnormal Lnormal + λopacity Lopacity (8) 
+
++ λbce LBCE  (9) Hybrid Latents 9
+
+where LRGB is the standard L1+SSIM rendering loss, and Ldist and Lnormal are the distortion and normal consistency losses adapted from 2DGS [12]. Lopacity 
+
+is the MCMC opacity loss. LBCE is the sparsity inducing BCE loss. 
+
+## 5 Experiments 
+
+We evaluate our hybrid latent representation on standard benchmarks to demon-strate high rendering quality, geometric reconstruction, and significant sparsity in the number of primitives used. 
+
+5.1 Implementation Details 
+
+Our framework is implemented in PyTorch with custom CUDA rasterization. We build upon the NeST Splatting codebase. NeST uses a multi-resolution hash-grid with L = 6 levels and 4 features per level. We use a single-level hash-grid with a table size of 219 for small scenes (synthetic, DTU) and 221 for large scenes (MipNeRF360). Our hybrid concatenated features consist of 20 hash-grid features and 4 per-surfel features, being on par with the 24 features NeST uses. We use the same MLP architecture as NeST, with two hidden layers of width 256. We set the initial beta kernel shape parameter to 10 (a Gaussian-like curve) and do the same for any cloned or relocated primitives. We optimize for 30,000 iterations, with a 10,000-iteration 2DGS warm-up phase for initialization. We set our opacity regularization weight λopacity to 0.01 and our BCE regularization weight λBCE to 0.01. The rest of our hyperparameters follow NeST-Splatting. All experiments were conducted on a single NVIDIA RTX 5090 GPU. 
+
+5.2 Datasets and Comparisons 
+
+The evaluation includes the NeRF Synthetic [17] dataset, Mip-NeRF 360 [1] dataset, and DTU [13] dataset. We measure our visual quality using the standard metrics: PSNR, SSIM, and LPIPS used in novel-view synthesis. We compare our method against baseline splatting approaches 3DGS [14] and 2DGS [12], adaptive kernel with high/low frequency separation Beta Splatting [16], per-primitive texturing approach SuperGS [32], and the spatial texturing baseline NeST Splatting [33]. 
+
+5.3 NVS & Efficiency 
+
+We report PSNR, SSIM, LPIPS, and the number of primitives(Points) in Ta-ble 1. Our method with Gaussian kernels achieves high rendering quality, while integrating beta kernels yields significantly sparser reconstructions (at higher framerates - Table 3). We attribute the LPIPS improvement to the hash-grid’s effective capture of scene textures. This complements our per-primitive features, which capture larger effects and thus improve PSNR. 10 N. Kelkar et al. 
+
+Table 1: Quantitative Results. Comparisons on the NeRF Synthetic, Mip-NeRF 360, and DTU datasets. We include a version of our model with Gaussian kernels and reduced sparsity but higher visual quality. Both kernels demonstrate excellent perceptual quality at reduced primitive counts.                                                                                                                           
+
+> NeRF Synthetic Mip-NeRF 360 DTU Method PSNR ↑SSIM ↑LPIPS ↓Points ↓PSNR ↑SSIM ↑LPIPS ↓Points ↓PSNR ↑SSIM ↑LPIPS ↓Points ↓
+> 3DGS 33.34 0.969 0.030 288k 27.21 0.815 0.214 2.7M 33.58 0.965 0.045 323k 2DGS 33.15 0.968 0.034 102k 27.04 0.805 0.252 2.0M 33.53 0.965 0.050 129k SuperGS 33.71 0.970 0.031 207k 26.55 0.767 0.293 0.5M 34.03 0.967 0.055 493k NeST-Splatting 33.50 0.967 0.032 73k 26.68 0.795 0.212 1.0M 33.67 0.964 0.042 80k
+> Beta-Splatting 33.82 0.971 0.031 100k 28.10 0.829 0.192 3.1M 34.05 0.966 0.049 100k Beta-Splatting(small) 33.70 0.969 0.035 50k 27.28 0.795 0.259 0.4M 33.93 0.965 0.058 50k
+> Ours (Gaussian) 33.53 0.969 0.031 36k 27.20 0.801 0.199 0.7M 33.73 0.965 0.042 95k Ours (Beta) 33.20 0.954 0.035 19k 26.85 0.794 0.218 0.2M 33.63 0.963 0.045 50k
+
+We note that our primary objective in using beta kernels is to reduce re-dundant hash queries, whereas Beta Splatting relies on a large number of semi-transparent primitives to achieve high visual fidelity. Upon fixing the number of 3D beta kernels to 0.4M, we achieve superior LPIPS with even fewer primitives. Beta Splatting reports higher PSNR due to its usage of spherical harmonics, and it also benefits from using 3D kernels compared to our 2D surfels, as flat primitives are more optimized for geometry reconstruction than visual quality. This effect is evident in the superior visual quality of 3DGS compared to 2DGS. 
+
+5.4 Spectral Disentanglement Analysis 
+
+A key contribution of our method is the semantic separation of low- and high-frequency scene components. To demonstrate this, we visualize the components of our trained model in Figure 4. We render the scene while isolating our per-primitive features by masking out the hash-grid contribution. The result is a smooth, geometry-consistent reconstruction that captures large lighting effects and base colors (inadvertently low-frequency), confirming that our primitives adhere to the scene structure. In contrast, Beta Splatting[16] proposes to mask out primitives with high beta values to extract the structural components of the scenes. We see that this often results in broken geometry or empty voids, since their separation is simply a byproduct of lower beta values that favor low-frequency effects, but there is no explicit separation of the two. Our hybrid latents share the per-primitive feature at all intersection points over a surfel, creating an inductive bias towards covering lower-frequency effects. When combined with sparsity regularization, this makes the primitives as large as possible and ensures they cover the scene geometry without holes. Furthermore, since we query the hash-grid at each 3D intersection, it naturally captures the high-frequency effects in the scene, effectively acting as textured billboards (see Fig 5). 
+
+5.5 Geometric Reconstruction 
+
+We quantify geometric accuracy on the DTU dataset using Chamfer Distance (CD). As shown in Table 2, our method achieves lower error than NeST Splat-Hybrid Latents 11 Ours  
+
+> Beta Splatting
+> Ours
+> Beta Splatting
+> Full Render
+> Ours
+> Beta Splatting
+> Ours Beta Splatting
+
+Fig. 4: Qualitative comparison of Beta Splatting [16] and Ours . Left: Full ren-dering. Middle: Our without the hash-grid to visualize the low-frequency components encoded in the surfel latents. Right: Beta Splatting using the 70% of splats with the lowest b values, as proposed by the authors for low-frequency decomposition. Ground Truth   
+
+> Textured
+> Hyb
+> Surfel
+> Hyb,MC Hyb,MC,BC Hyb,MC,BC,Beta
+
+Fig. 5: Per-primitive information with increasing sparsity . Left: GT Image. Top: Renders with hybrid features. Bottom: Renders with the hash-grid features dis-abled. With each additional step in Fig. 3, surfels turn more into textured billboards. 
+
+ting. By forcing the primitives to carry the low-frequency signal, we stabilize the optimization and obtain better depth and geometry. 
+
+5.6 Ablation: Efficiency Analysis 
+
+We analyze the efficiency impact of each step of our method for the Bicycle scene in the Mip-NeRF 360 dataset in Table 3. When we introduce hybrid Gaussian 12 N. Kelkar et al. Treehill Flowers Room Bonsai     
+
+> GT 2DGS Beta Splatting NeST Ours
+
+Fig. 6: Qualitative results for 2DGS [11], Beta Splatting [16], NeST [33] and Ours from the MipNeRF Dataset [1]. The images are contrast-enhanced. Hybrid Latents 13                                          
+
+> Table 2: Geometric re-construction accuracy on DTU measured by Chamfer Distance (mm). Lower is bet-ter.
+> Method Chamfer Dist. (mm) ↓
+> 3DGS 1.96 2DGS 0.80 NeST-Splatting 0.89 Ours 0.85
+> Table 3: Reconstruction sparsity on the Bicy-cle Scene of Mip 360. We demonstrate increasing sparsity with each additional component.
+> Method PSNR ↑LPIPS ↓Points ↓FPS ↑
+> NeST 24.49 0.236 2M 23 Hyb 24.72 0.217 3M 20 Hyb,MC 24.77 0.234 0.76M 25 Hyb,MC,BC 24.37 0.252 0.14M 59 Hyb,MC,BC,Beta 23.41 0.292 0.08M 80
+
+features into the NeST framework, we see an improvement in visual quality at the cost of sparsity. Compared to NeST, where the per-Gaussian positional gradient is influenced by its multi-resolution hash-grid, our hybrid latents provide more stable gradients due to fewer hash collisions from a single hash layer. The number of primitives increases due to the greater capacity to overfit the scene in per-surfel features, whereas a full hash-grid method is limited by the maximum size of the hash table. We then introduce MCMC optimization with a maximum budget of 1 mil-lion surfels. We observe that the PSNR improves and the number of primitives reduces by a factor of 3. Despite the sparser reconstruction, we see a negligible improvement in framerate because MCMC favors utilizing foggy primitives to maximize visual fidelity. This leads to more intersections per pixel, more hash-grid queries, and reduced rendering speed. Upon adding BCE regularization, the number of primitives declines to a tenth of the original NeST reconstruction. As we prune a large number of Gaussians from the MCMC optimization, we lose some visual fidelity but see a large increase in the framerate. This is partly due to the reduced number of primitives but mainly because of the reduced number of intersections per pixel. Finally, when we change our surfels to beta kernels, we obtain a dramatic improvement in efficiency at the cost of rendering quality. As our method is geared towards sparsity, our beta kernels tend to favor flatter reconstructions. High opacities from our BCE and flat beta kernels lead to significantly fewer intersections per pixel, giving us a further rendering speed boost and enabling our method to perform real-time rendering. We attribute the lower reconstruction quality to two factors: Due to the bounded support of beta kernels and the flat opacity falloff of lower beta values, our kernels receive weaker positional gradients, reducing their capacity to overfit a scene without the exploration component of the MCMC optimization. A sparse number of per-primitive latent features, coupled with a single-level hash grid, results in lower representational capacity. 14 N. Kelkar et al. 
+
+## 6 Limitations 
+
+Despite achieving high reconstruction quality with far fewer surfels, the large view-space MLP with 256-dim hidden layers ends up being a performance bot-tleneck. This makes it difficult to compete with the simple spherical-harmonic queries of Gaussian splatting methods. Furthermore, the implicit nature of the hash-grids and the view-space decoder limits applications that require merging different scene models, such as scene editing operations. While explicit primitives can be easily moved or combined, merging hash-grids optimized for separate scenes remains an open challenge. 
+
+## 7 Discussion and Conclusions 
+
+We demonstrate, through extensive experiments on real-world and synthetic datasets, that our proposed hybrid latent representation achieves a significant improvement in scene reconstruction, effectively bridging the gap between high visual fidelity and sparse reconstruction. By combining a sparse hash-grid with differentiable surfel primitives, the model captures fine-grained surface details that are often missed by traditional point-based methods. Furthermore, due to its sparsity, our approach proves remarkably efficient and compact; by leveraging latent features to encode complex appearance data, the system requires far fewer primitives and exhibits lower overdraw without sacrificing quality. In the future, we see substantial potential to further optimize rendering speeds. One promising direction is to shift the decoder to 3D and bake the resulting per-intersection RGB values directly into static, textured surfels. This shift would move the computational burden from real-time latent decoding to standard rasterization pipelines, potentially enabling photorealistic performance on mobile or resource-constrained hardware. Another research direction would be to further leverage the geometric ac-curacy of our approach to reconstruct explicit geometric scene representations, for instance, by reconstructing watertight textured meshes from the surfel rep-resentation. Given its properties, our hybrid representation framework could serve as a powerful texturing method for mesh reconstruction techniques such as MeshInTheLoop [8] or TriangleSplatting [10]. Bibliography 
+
+[1] Barron, J.T., Mildenhall, B., Verbin, D., Srinivasan, P.P., Hedman, P.: Mip-NeRF 360: Unbounded Anti-Aliased Neural Radiance Fields. In: 2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR). pp. 5460–5469. IEEE, New Orleans, LA, USA (Jun 2022). https: //doi.org/10.1109/CVPR52688.2022.00539 , https://ieeexplore. ieee.org/document/9878829/ 9, 12 [2] Chao, B., Tseng, H.Y., Porzi, L., Gao, C., Li, T., Li, Q., Saraf, A., Huang, J.B., Kopf, J., Wetzstein, G., Kim, C.: Textured gaussians for enhanced 3d scene appearance modeling. In: CVPR (2025) 4 [3] Chao, B., Tseng, H.Y., Porzi, L., Gao, C., Li, T., Li, Q., Saraf, A., Huang, J.B., Kopf, J., Wetzstein, G., et al.: Textured gaussians for enhanced 3d scene appearance modeling. In: Proceedings of the Computer Vision and Pattern Recognition Conference. pp. 8964–8974 (2025) 2 [4] Chen, Y., Wu, Q., Lin, W., Harandi, M., Cai, J.: Hac++: Towards 100x compression of 3d gaussian splatting. IEEE Transactions on Pattern Anal-ysis and Machine Intelligence (2025) 4 [5] Duckworth, D., Hedman, P., Reiser, C., Zhizhin, P., Thibert, J.F., Lučić, M., Szeliski, R., Barron, J.T.: Smerf: Streamable memory efficient radiance fields for real-time large-scene exploration. ACM Transactions on Graphics (TOG) 43 (4), 1–13 (2024) 22 [6] Fang, G., Wang, B.: Mini-splatting: Representing scenes with a constrained number of gaussians. In: European conference on computer vision. pp. 165– 181. Springer (2024) 18 [7] Girish, S., Shrivastava, A., Gupta, K.: Shacira: Scalable hash-grid compres-sion for implicit neural representations. In: Proceedings of the IEEE/CVF International Conference on Computer Vision. pp. 17513–17524 (2023) 22 [8] Guédon, A., Gomez, D., Maruani, N., Gong, B., Drettakis, G., Ovsjanikov, M.: Milo: Mesh-in-the-loop gaussian splatting for detailed and efficient surface reconstruction. ACM Trans. Graph. 44 (6) (Dec 2025). https: //doi.org/10.1145/3763339 , https://doi.org/10.1145/3763339 14 [9] Hamdi, A., Melas-Kyriazi, L., Mai, J., Qian, G., Liu, R., Vondrick, C., Ghanem, B., Vedaldi, A.: Ges: Generalized exponential splatting for efficient radiance field rendering. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 19812–19822 (2024) 4 [10] Held, J., Vandeghen, R., Deliege, A., Hamdi, A., Cioppa, A., Giancola, S., Vedaldi, A., Ghanem, B., Tagliasacchi, A., Van Droogenbroeck, M.: Triangle splatting for real-time radiance field rendering. arXiv (2025) 14 [11] Huang, B., Yu, Z., Chen, A., Geiger, A., Gao, S.: 2d gaussian splatting for geometrically accurate radiance fields. In: SIGGRAPH 2024 Conference Papers. Association for Computing Machinery (2024). https://doi.org/ 10.1145/3641519.3657428 2, 7, 12 16 N. Kelkar et al. 
+
+[12] Huang, B., Yu, Z., Chen, A., Geiger, A., Gao, S.: 2d gaussian splatting for geometrically accurate radiance fields. In: ACM SIGGRAPH 2024 confer-ence papers. pp. 1–11 (2024) 4, 9 [13] Jensen, R., Dahl, A., Vogiatzis, G., Tola, E., Aanæs, H.: Large scale multi-view stereopsis evaluation. In: 2014 IEEE Conference on Computer Vision and Pattern Recognition. pp. 406–413. IEEE (2014) 9 [14] Kerbl, B., Kopanas, G., Leimkuehler, T., Drettakis, G.: 3D Gaussian Splat-ting for Real-Time Radiance Field Rendering. ACM Trans. Graph. 42 (4) (Jul 2023). https://doi.org/10.1145/3592433 , https://doi.org/10. 1145/3592433 2, 3, 5, 6, 7, 8, 9 [15] Kheradmand, S., Rebain, D., Sharma, G., Sun, W., Tseng, Y.C., Isack, H., Kar, A., Tagliasacchi, A., Yi, K.M.: 3d gaussian splatting as markov chain monte carlo. In: Advances in Neural Information Processing Systems (NeurIPS) (2024), spotlight Presentation 3, 7 [16] Liu, R., Sun, D., Chen, M., Wang, Y., Feng, A.: Deformable beta splatting. In: ACM SIGGRAPH 2025 Conference Proceedings (SIGGRAPH ’25). As-sociation for Computing Machinery, New York, NY, USA (August 2025). 
+
+https://doi.org/10.1145/3XXXXXX.3XXXXXX 2, 3, 4, 6, 9, 10, 11, 12 [17] Mildenhall, B., Srinivasan, P.P., Tancik, M., Barron, J.T., Ramamoorthi, R., Ng, R.: Nerf: Representing scenes as neural radiance fields for view synthesis. Communications of the ACM 65 (1), 99–106 (2021), publisher: ACM New York, NY, USA 2, 3, 9 [18] Müller, T., Evans, A., Schied, C., Keller, A.: Instant neural graphics primi-tives with a multiresolution hash encoding. ACM Transactions on Graphics (ToG) 41 (4), 1–15 (2022), publisher: ACM New York, NY, USA 3, 7 [19] Niedermayr, S., Stumpfegger, J., Westermann, R.: Compressed 3d gaus-sian splatting for accelerated novel view synthesis. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR). pp. 10349–10358 (June 2024) 4, 22 [20] Papantonakis, P., Kopanas, G., Durand, F., Drettakis, G.: Content-aware texturing for gaussian splatting. arXiv preprint arXiv:2512.02621 (2025) 2 [21] Pfister, H., Zwicker, M., Van Baar, J., Gross, M.: Surfels: Surface elements as rendering primitives. In: Proceedings of the 27th annual conference on Computer graphics and interactive techniques. pp. 335–342 (2000) 5 [22] Reiser, C., Szeliski, R., Verbin, D., Srinivasan, P., Mildenhall, B., Geiger, A., Barron, J., Hedman, P.: Merf: Memory-efficient radiance fields for real-time view synthesis in unbounded scenes. ACM Transactions on Graphics (ToG) 42 (4), 1–12 (2023) 22 [23] Rong, V., Chen, J., Bahmani, S., Kutulakos, K.N., Lindell, D.B.: Gstex: Per-primitive texturing of 2d gaussian splatting for decoupled appearance and geometry modeling. arXiv preprint arXiv:2409.12954 (2024) 4 [24] Rong, V., Chen, J., Bahmani, S., Kutulakos, K.N., Lindell, D.B.: Gstex: Per-primitive texturing of 2d gaussian splatting for decoupled appearance and geometry modeling. In: 2025 IEEE/CVF Winter Conference on Appli-cations of Computer Vision (WACV). pp. 3508–3518. IEEE (2025) 2 Hybrid Latents 17 
+
+[25] Song, Y., Lin, H., Lei, J., Liu, L., Daniilidis, K.: Hdgs: Textured 2d gaussian splatting for enhanced scene rendering. arXiv preprint arXiv:2412.01823 (2024) 4 [26] Svitov, D., Morerio, P., Agapito, L., Bue, A.D.: Billboard splatting (bb-splat): Learnable textured primitives for novel view synthesis (2025), https: //arxiv.org/abs/2411.08508 4[27] Svitov, D., Morerio, P., Agapito, L., Del Bue, A.: Billboard splatting (bb-splat): Learnable textured primitives for novel view synthesis. In: Proceed-ings of the IEEE/CVF International Conference on Computer Vision. pp. 25029–25039 (2025) 2 [28] Wang, X., Yi, R., Ma, L.: Adr-gaussian: Accelerating gaussian splatting with adaptive radius. In: SIGGRAPH Asia 2024 Conference Papers. pp. 1–10 (2024) 3 [29] Weiss, S., Bradley, D.: Gaussian billboards: Expressive 2d gaussian splatting with textures (2024), https://arxiv.org/abs/2412.12734 4[30] Weiss, S., Westermann, R.: Differentiable Direct Volume Rendering. In: IEEE Transactions on Visualization and Computer Graphics. vol. 28, pp. 562–572 (2022). https://doi.org/10.1109/TVCG.2021.3114769 , issue: 1 3[31] Xiang, F., Xu, Z., Hasan, M., Hold-Geoffroy, Y., Sunkavalli, K., Su, H.: Neutex: Neural texture mapping for volumetric neural rendering. In: Pro-ceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 7119–7128 (2021) 4 [32] Xu, R., Chen, W., Wang, J., Liu, Y., Wang, P., Gao, L., Xin, S., Komura, T., Li, X., Wang, W.: Supergaussians: Enhancing gaussian splatting using primitives with spatially varying colors (2024) 4, 9 [33] Zhang, X., Chen, A., Xiong, J., Dai, P., Shen, Y., Xu, W.: Neural shell texture splatting: More details and fewer primitives. In: Proceedings of the IEEE/CVF International Conference on Computer Vision. pp. 25229–25238 (2025) 2, 4, 9, 12 [34] Zhang, Y., Jia, W., Niu, W., Yin, M.: Gaussianspa: An" optimizing-sparsifying" simplification framework for compact and high-quality 3d gaus-sian splatting. In: Proceedings of the Computer Vision and Pattern Recog-nition Conference. pp. 26673–26682 (2025) 18 [35] Zwicker, M., Pfister, H., Van Baar, J., Gross, M.: Ewa splatting. IEEE Transactions on Visualization and Computer Graphics 8(3), 223–238 (2002) 418 N. Kelkar et al. 
+
+## 8 Supplementary Materials 
+
+8.1 Sparsification methods 
+
+There have been recent works on sparsifying Gaussian reconstructions, such as Mini-Splatting[6] and GaussianSpa[34], providing significantly sparser recon-structions at higher quality than the vanilla 3DGS optimization. For instance, GaussianSpa is an optimization-based simplification framework, where simplifi-cation is formulated as a constrained optimization problem. While GaussianSpa alternately solves two independent sub-problems and then uses classical 3DGS for novel view synthesis, our approach addresses explicitly the disentanglement between geometry and appearance. Since in GaussianSpa the feature representation is still per-Gaussian spherical harmonics, our experiments show that below a certain number of Gaussians, such features struggle to capture textures regardless of the optimization method. As we can see in Figure 7, both GaussianSpa and Mini-Splatting are unable to represent the chair texture at a reduced primitive count. Mini-Splatting still manages to represent it at a higher primitive count, something that the baseline Gaussian Splatting optimization is incapable to do. NeST Splatting and our hybrid representation capture the textures perfectly even at a low primitive count. We also note that our hybrid latent method can be combined with either of these sparsifying optimizations. We select MCMC in the paper because Beta-Splatting - the method closest to ours regarding the separation of low and high frequency components into the scene geometry - utilizes MCMC for its optimiza-tion. Ground Truth GT Ours (14k) NeST (40k)   
+
+> GSPA (87k) MiniSplat (105k) MiniSplat (253k)
+
+Fig. 7: Per-primitive features vs texturing methods . Our method and NeST Splatting manage to represent the textures from the chair scene. GaussianSpa and Mini-Splat both fail below a certain primitive count due to the limitations of per-primitive spherical harmonics. Hybrid Latents 19 
+
+8.2 Hash-grid Levels 
+
+In Table 4, we compare the effect of replacing the coarser levels of the multireso-lution hash-grid in NeST Splatting with per-Gaussian features. The total feature size is set to 24D. We use 6 hash levels, which is equivalent to the baseline NeST, and as we replace coarser levels, the hybrid feature dimensionality remains at 24D. Using fewer hash-levels helps us avoid the overhead of querying a multireso-lution hash-grid. Since the per-Gaussian feature is loaded into shared memory, this speeds up training and inference in addition to the speed benefit from the in-creased sparsity of our method. We even observe improvements in the rendering quality with a hybrid representation. Replacing all hash-grid levels with per-Gaussian features leads to the same limitations in texture representation as Gaussian Splatting, as demonstrated in Figure 8 (no hash-grid). Per-Gaussian features struggle to represent textures, regardless of whether we use spherical harmonics or a 2D MLP decoder.                            
+
+> Hash Levels Mip360 NeRFSyn DTU 6(NeST) 26.52 33.37 33.62 526.71 33.46 33.73 426.64 33.49 33.75 326.62 33.52 33.78 226.56 33.50 33.77 126.62 33.50 33.69 026.23 33.42 33.60
+> Table 4: PSNR scores across different hash-grid levels. 20 N. Kelkar et al. Ground Truth no hash-grid
+> 1-level
+> Fig. 8: Using a single hash-grid layer vs pure per-primitive features . Us-ing only per-primitive features causes similar artifacts to using per-Gaussian spherical harmonics. A hybrid feature with even a single hash-grid layer captures all texture variation.
+
+8.3 MCMC primitive limits 
+
+For all Beta Splatting results in the novel-view-synthesis table(Tab. 1 in paper) except the large model on the Mip-NeRF 360 dataset, we report the primitive upper-limit set on the MCMC optimization since their formulation relies on utilizing a lot of low-opacity primitives to overfit a scene. The actual active number of primitives (opacity<0.001) might be slightly lower than the limit set by the MCMC optimization. In our method we observe a significant reduction from the cap due to our BCE optimization deleting low opacity Gaussians. 
+
+8.4 Feature Decomposition 
+
+In Figure 9, in the first column, we mask out the hash features to obtain the low-frequency structural details of our method. In the middle column we show the combined hybrid feature output. In the third column, we mask out the per-primitive features to visualize what texture details are stored in the hashgrid. We also provide videos of these decompositions. Hybrid Latents 21 Structure Render Texture 
+
+Fig. 9: The separation of features into low-frequency structural components on the primitives (left) and high-frequency texture components in the hash-grid (right) .
+
+8.5 Mip-360 
+
+For the Mip-NeRF 360 dataset, we use the –images flag, which uses the Im-ageMagick downscaled images as used in the original 3DGS. Using the –resolution flag provides better results with its bicubic downsampling. In Table 5 we report our per-scene results for the Mip-NeRF 360 dataset with our sparsest method with the beta kernels, our best looking method with Gaussian kernels but with less sparsity, and our sparsest Gaussian kernels with the same setting as the Beta kernel results. 
+
+8.6 Beta Kernels 
+
+We use beta kernels with a sigmoidal range between 0 and 4 instead of the full exponential range of Beta-Splatting since having a larger value of Beta only makes the kernels sharp with a smaller support. Our method already separates appearance into low and high frequencies so we do not require the sharper Beta kernels for fitting these high-frequency details. 
+
+8.7 2DGS warm-up 
+
+As NeST Splatting, our method needs to start with a 2DGS warm-up phase for the best results, since the initial optimization faces problems with the used 22 N. Kelkar et al. 
+
+Table 5: Per-scene results on the Mip-NeRF 360 dataset. Method Bon Ctr Kit Rm Ind. Bic Flw Gdn Stp Trh Out. Mean                                                                                                                      
+
+> Beta 32.13 28.60 30.45 30.44 30.41 24.45 20.15 26.94 26.27 22.26 24.01 26.85 Gauss(Large) 33.01 29.21 30.77 31.53 31.13 24.61 20.52 27.04 26.31 21.80 24.06 27.20
+> Gauss(Small) 32.55 28.79 30.85 30.69 30.72 24.48 20.49 27.11 26.08 21.97 24.03 27.00 Beta 0.935 0.894 0.914 0.904 0.912 0.731 0.549 0.846 0.754 0.619 0.700 0.794 Gauss(Large) 0.943 0.905 0.921 0.913 0.921 0.748 0.574 0.853 0.762 0.596 0.707 0.802
+> Gauss(Small) 0.938 0.898 0.919 0.907 0.916 0.736 0.571 0.850 0.750 0.617 0.705 0.79F9 Beta 0.192 0.208 0.134 0.209 0.186 0.234 0.329 0.130 0.234 0.292 0.244 0.218 Gauss(Large) 0.182 0.188 0.121 0.197 0.172 0.202 0.298 0.114 0.211 0.281 0.221 0.199
+> Gauss(Small) 0.188 0.201 0.129 0.207 0.181 0.229 0.310 0.126 0.239 0.286 0.238 0.213 Beta 103.20 76.10 123.00 44.30 86.70 328.50 407.80 331.30 399.00 294.20 352.20 234.20
+> Gauss(Large) 373.00 321.90 502.70 227.30 356.20 2291.10 1688.40 1795.00 2242.40 1948.80 1993.10 1265.60 Gauss(Small) 159.80 119.40 209.50 70.40 139.80 417.30 627.80 374.90 370.00 469.20 451.80 313.10
+
+screen-space MLP. Methods such as MeRF [22] and SMeRF [5] combine a small view-space MLP with a view-independent 3D MLP during training that they bake into a light-weight feature representation during inference. This 3D MLP formulation would be a good future direction to explore for from-scratch opti-mization and faster inference. 
+
+8.8 Parameter Count 
+
+We do not explore the parameter count of our method as the purpose of this work is sparsity. Since we use a single hash-grid level and our per-Gaussian features are 24D, much smaller than the 48D SH used by Gaussian Splatting, our parameter count should be significantly lower when combined with a post-processing quantization method [19]. For further storage efficiency one can even quantize the hashgrid using a method such as SHACIRA[7]. The overhead of storing the MLP weights is negligible. 
+
+8.9 Rendering Speed 
+
+Since the purpose of this paper is to demonstrate the effectiveness of a hybrid feature representation, we have not attempted to optimize the rendering pipeline of NeST Splatting. The large width of the MLP hidden layers (256) and the size of the features in our experiments (24D) match the NeST implementation and are bottlenecks in improving rendering speed. As mentioned in the paper, there are various future directions to explore for improving rendering speed. With the success of methods like SMeRF [5] and MeRF [22], modifying the MLP architecture might be one of them.

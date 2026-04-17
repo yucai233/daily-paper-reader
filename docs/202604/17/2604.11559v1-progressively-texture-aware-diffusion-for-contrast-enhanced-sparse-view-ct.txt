@@ -1,0 +1,278 @@
+Title: Progressively Texture-Aware Diffusion for Contrast-Enhanced Sparse-View CT
+
+URL Source: https://arxiv.org/pdf/2604.11559v1
+
+Published Time: Tue, 14 Apr 2026 02:26:03 GMT
+
+Number of Pages: 5
+
+Markdown Content:
+## PROGRESSIVELY TEXTURE-AWARE DIFFUSION FOR CONTRAST-ENHANCED SPARSE-VIEW CT 
+
+## Tianqi Wang Wenchao Du ∗ Hongyu Yang 
+
+## The College of Computer Science, Sichuan University, Chengdu 610065, China wangtianqi2@stu.scu.edu.cn, {wenchaodu.cs, yanghongyu }@scu.edu.cn 
+
+ABSTRACT 
+
+Diffusion-based sparse-view CT (SVCT) imaging has achieved remarkable advancements in recent years, thanks to its more stable generative capability. However, recovering reliable image content and visually consistent textures is still a cru-cial challenge. In this paper, we present a Progressively Texture-aware Diffusion (PTD) model, a coarse-to-fine learn-ing framework tailored for SVCT. Specifically, PTD com-prises a basic reconstructive module PTD rec and a conditional diffusion module PTD diff . PTD rec first learns a determinis-tic mapping to recover the majority of the underlying low-frequency signals (i.e., coarse content with smoothed tex-tures), which serves as the initial estimation to enable fidelity. Moreover, PTD diff aims to reconstruct high-fidelity details for coarse prediction, which explores a dual-domain guided con-ditional diffusion to generate reliable and consistent textures. Extensive experiments on sparse-view CT reconstruction demonstrate that our PTD achieves superior performance in terms of structure similarity and visual appeal with only a few sampling steps, which mitigates the randomness inherent in general diffusion models and enables a better trade-off between visual quality and fidelity of high-frequency details. 
+
+Index Terms — Sparse-view CT, coarse-to-fine, dual-domain guidance, conditional diffusion 
+
+1. INTRODUCTION 
+
+X-ray Computed Tomography (CT) is a highly valuable and widely used medical imaging technology, yet it exposes pa-tients to significant levels of radiation, potentially harming their health [1]. While existing learning-based methods have achieved notable breakthroughs in mitigating latent risks by reducing radiation dose, they typically employ a mapping model to produce deterministic results. A persistent chal-lenge is that these approaches frequently yield unsatisfactory details, as they are trained to minimize pixel-level error, aligning output with routine-dose CT images by Norm-based losses. Generative adversarial networks (GANs) have been exploited to generate visually pleasing results [2]. However, 
+
+> ∗Corresponding author
+
+undesired artifacts always emerge in the results due to their unstable adversarial nature. Diffusion models (DMs) have revolutionized image gen-eration and yielded diverse and realistic image content [3]. Leading studies have explored conditional DMs for low-dose CT to produce perceptually appealing results that closely re-semble routine-dose CT images [4]. However, a crucial chal-lenge is that recovering the high-fidelity content required in CT imaging clashes with the stochastic nature of diffusion models. A plausible solution involves integrating the physi-cal degradation models with neural networks or crafting hand-designed priors to mitigate the inherent randomness of the dif-fusion paradigm. Although previous studies [5] have adopted this approach to ensure reliable structure restoration, they lack generalization ability and introduce undesired artifacts. To address the above problems, we present a Progres-sively Texture-aware Diffusion model (shortened by PTD), a coarse-to-fine learning architecture, to reconstruct contrast-enhanced CT images. PTD integrates the idea of divide-and-conquer into an end-to-end training scheme, i.e., comprising a basic reconstructive module PTD rec and a conditional dif-fusion module PTD diff . PTD rec models a deterministic map-ping to recover low-frequency image content (i.e., smoothed structures), which provides an initial estimation. By focus-ing on low-frequency content, PTD rec ensures structural con-sistency and maintains fidelity, serving as a reliable starting point for the diffusion process. PTD diff models a bijective mapping between low-frequency and high-frequency image domains, which explores the dual-domain conditional diffu-sion model to generate contrast-enhanced structure details. By incorporating low and high-frequency content priors into the diffusion network, PTD can further eliminate noise and artifacts while recovering more reliable details. Extensive experiments demonstrate that PTD achieves superior perfor-mance against state-of-the-art methods on structural preser-vation and visual perception. In short, our contributions are summarized: 1) Propose a novel Progressively Texture-aware Diffusion framework for high-fidelity CT imaging, which in-tegrates the idea of divide-and-conquer into the general diffu-sion process, recovering signals in a coarse-to-fine manner; 2) 
+
+Construct a dual-domain guided conditional diffusion model, which exploits image and multiscale feature prompts to drive 
+
+> arXiv:2604.11559v1 [cs.CV] 13 Apr 2026
+
+reliable and consistent texture generation; 3) Extensive ex-periments on sparse-view CT demonstrate that our method achieves a better trade-off between structural preservation and visual appeal. 
+
+2. METHOD 2.1. Preliminaries of Diffusion Schr¨ odinger Bridge 
+
+To make the paper self-contained, we first briefly review the Diffusion Schr¨ odinger Bridge (DSB) [6]. DSB directly mod-els a bijective translation between source and target image do-mains, and has presented promising progress in natural image restoration and low-dose CT reconstruction [7]. Assuming the paired data (X0, X 1) is available, X0 ∈ pA
+
+and X1 ∈ pB are drawn from boundary distributions in two distinct domains, Xt is designed to follow the distribution: 
+
+q(Xt|X0, X 1) = 
+
+N (Xt; ¯σ2
+
+> t
+
+¯σ2 
+
+> t
+
++ σ2
+
+> t
+
+X0 + σ2
+
+> t
+
+¯σ2 
+
+> t
+
++ σ2
+
+> t
+
+X1; σ2 
+
+> t
+
+¯σ2
+
+> t
+
+¯σ2 
+
+> t
+
++ σ2
+
+> t
+
+I), (1) where t ∈ [0 , 1] denotes the discrete time-step by 0 = t0 <
+
+· · · tn < · · · < t N = 1 , σ2 
+
+> t
+
+= R t 
+
+> 0
+
+βτ dτ and ¯σ2 
+
+> t
+
+= R 1 
+
+> t
+
+βτ dτ
+
+represent variances accumulated from either side, and β de-termines the speed of diffusion. Assuming Xt is sampled ana-lytically using Eq 1, the denoising network ϵ(Xt, t ; θ) can be efficiently trained to predict the difference between Xt and 
+
+X0 by minimizing the loss function: 
+
+θ∗ = arg min  
+
+> θ
+
+EX0,X 1
+
+Et∼U [0 ,1] ,X t∼q(Xt|X0,X 1)∥ϵ(Xt, t ; θ) − Xt − X0
+
+σt
+
+∥.
+
+(2) During the generative stage, DSB first begins with XN
+
+and iteratively approaches the target domain image X0. In the step from Xn+1 to Xn, ˆX0 is first calculated by the pretrained 
+
+ϵ and Xn+1 :
+
+ˆX0 = Xn+1 − σn+1 ϵ(Xn+1 , t n+1 ; θ∗), (3) where ˆX0 is an approximation of X0. Xn is sampled from the DDPM [3] posterior p using ˆX0 and Xn+1 :
+
+Xn ∼ p(Xn| ˆX0, X n+1 ), (4) here the posterior p is expressed as 
+
+p(Xn|X0, X n+1 ) = 
+
+N (Xn; α2
+
+> n
+
+α2 
+
+> n
+
++ σ2
+
+> n
+
+X0 + σ2
+
+> n
+
+α2 
+
+> n
+
++ σ2
+
+> n
+
+Xn+1 , α2
+
+> n
+
+σ2
+
+> n
+
+α2 
+
+> n
+
++ σ2
+
+> n
+
+I), (5) where α2 
+
+> t
+
+= R tn+1  
+
+> tn
+
+βτ dτ denotes the accumulated variance between consecutive time steps tn and tn+1 . The DDPM pos-terior p satisfies the equation 
+
+q(Xn|X0, X N ) = 
+
+Z
+
+p(Xn|X0, X n+1 )q(Xn+1 |X0, X N )d Xn+1 , (6) 
+
+Fig. 1 . Overview of framework. (a) PTD first exploits a de-terministic predictor to produce an initial results, and then which joint the Multiscale High-Frequency texture Guidance (MHFG) as extra prompts to guide high-frequency signal gen-eration with a Diffusion Schrdinger Bridge (DSB) model; (b) MHFG module, it explores the multi-scale lightweight super-resolution networks to generate fine texture prompts. which guarantees that Xn sampled using Eq 4 is exactly a sample from q(Xn|X0, X N ) assuming the trained network ϵ∗
+
+is perfect. In fact, training a perfect ϵ∗ is difficult, which clashes with the stochastic nature of the diffusion process, and also requires extensive data and lengthy training cycles for effective learning. Therefore, PTD aims to explore a con-ditional DSB model to alleviate the stochastic nature of the diffusion, the whole framework is shown in Fig 1. 
+
+2.2. Dual-Domain Guided Conditional DSB 
+
+2.2.1. Initial Predictor 
+
+The basic reconstructive module PTD rec aims to recover the coarse structure and content of the CT image from the low-dose data y. Following [8, 9], PTD rec directly learns a de-terministic predictor Fθ (·) between the sparsely sampled data (i.e., y) and the corresponding routine-dose data X0. There-fore, PTD rec can be implemented by any existing CNN-based model, which would produce an initial estimation Xinit . The content loss LContent is defined as the mean squared error between the coarse prediction Xinit and X0.
+
+2.2.2. Low-Frequency Guided DSB 
+
+PTD diff aims to generate high-frequency details through the dual-domain conditional DSB, where the visual prompts from pixel and feature spaces are used to guide reliable texture generation. Therefore, the Xinit is directly used as a condi-tional input Xc to guide the diffusion process. For the feature prompt, we further explore the multiscale texture representa-tions to guide consistent high-frequencies generation, which serves as implicit bias that informs the PTD diff about the high-frequency prior at the intermediate layers. PTD diff joint the sparse-view CT image (i.e., XT ) and ini-tial estimation Xinit as input, bridging a domain translation between the noisy CT image XT and the routine-dose CT im-age X0, so that the Eq 2 is rewritten as ϵ(Xt, t, X c; θ). Con-sidering that the low-frequency image priors have been cou-pled into the denoising network, PTD diff will focus on high-frequency detail restoration. We have noted that the recent advances [10] explored the residual diffusion paradigms to generate high-frequency details from noisy inputs. However, 
+
+there is a key challenge lies in that high- and low-frequency signals are generally coupled in pixel space, directly gener-ating consistent and reliable textures from noisy data remains challenging, which can not achieve a better trade-off between structure preservation and visual appeal .
+
+2.2.3. Multiscale High-Frequency Guidance 
+
+In order to guide consistent and reliable texture generation, we further introduce a Multiscale High-Frequency Guid-ance module (MHFG, shown in Fig 1(b)), which exploits the explicit texture representation as an initial high-frequency estimation, and guides high-fidelity diffusion. Specifically, MHFG explores the lightweight super-resolution network 
+
+T (·) to generate multiscale texture representations from conditional low-frequency Xc, therefore forming a specific super-resolution task to learn the latent texture prior distribu-tion to some degree, 
+
+Lk 
+
+> Guidance
+
+= E ∥(Tk(↓k (Xinit ))) − ↓ k (X0)∥2 (7) where ↓k (·) denotes the downsampling operation with a fac-tor of 2k. In practice, we set k = 1 , 2, 3, 4, i.e., MHFG con-tains four light super-resolution subnetworks {T k(·)}, each of which shares the same network but receives inputs of dif-ferent scales. Therefore, Eq 7 is rewritten as LGuidance =PKk=1 LkGuidance . Following [11], we implement each sub-network with a lightweight three-layer CNNs, and the output of the intermediate layer is used as latent texture represen-tation. As shown in Fig 1(a), we insert the MHFG module into the denoising network ϵ∗ by adding the extracted rep-resentations to the feature maps at the respective scale on the encoder and decoder as the specific biases. To compensate for the depth difference, as each corresponding scale, we apply a convolutional layer with 1×1 kernel that has the same number of feature channels as those in the encoder and decoder. By aggregating the information from the condition Xc,and the multiscale texture guidance {T k(Xc)}, the denoising loss of the conditional DSB model from Eq 2 is rewritten as: 
+
+LDiff = E∥ϵ(Xt, t, X c, {T k(Xc)}; θ) − Xt − X0
+
+σt
+
+∥2 (8) 
+
+2.2.4. Joint Optimization 
+
+The PTD adopts an end-to-end joint training strategy for both the reconstructive module (PTD rec ) and the conditional diffu-sion module (PTD diff ), the total loss function is summarized: 
+
+Ltotal = LContent + LGuidance + LDiff . (9) 
+
+3. EXPERIMENTS AND RESULTS 3.1. Experiment settings 
+
+3.1.1. Datasets and implementation details 
+
+We select the “2016 NIH-AAPM-Mayo Clinic Low-Dose CT Grand Challenge” dataset [12] to evaluate the performance of our method, which contains 5936 slices from 10 patients (8 for training, 1 for validation, and 1 for testing). Follow-ing [13], we adopt the distance-driven method with fan-beam geometry to generate sparse-view data, where the distances from the X-ray source to the rotation center and detector are set to 595 mm and 1085.6 mm, respectively. The number of detectors Nd is 368, and the length of each is 2.5716 mm. The height and width of each pixel are both 1.3282 mm. The simu-lated sparse-view projections are uniformly sampled over the full 360 ◦ range. To simulate the real noise, we also exploit the statistical model of the pre-logarithm projection data: 
+
+I = Poisson (I0 exp( −ˆy)) + Normal (0 , σ 2 
+
+> e
+
+), (10) where I0 is the incident x-ray intensity, σ2 
+
+> e
+
+denotes back-ground electronic noise variance, ˆy is noisy-free sinogram data. We set I0 = 1 e6, σ 2 = 10 according to [13]. The noisy sinogram data y is calculated by performing the loga-rithm transformation on the transmission data I.We use a representative algorithm as PTD rec , i.e., LEARN [9]. For PTD diff , we only adopt the same denoising network as DDPM but using more lightweight configuration, it con-tains four encoding and four decoding layers, and the feature dimensions are set to [32 , 64 , 128 , 256] in them separately. The whole model is trained on one Nvidia RTX 4090 GPU, and the initial learning rate is set 5e − 4, total iteration is 
+
+200 k, and diffusion step is 10 for all the experiments using quadratic discretization. The distortion-aware Peak Signal-to-Noise Ratio (PSNR), Structural Similarity (SSIM), and perception-aware Learned Perceptual Image Patch Similarity (LPIPS) [14] are used as evaluation metrics. The code is released at https://github.com/Wenchao-Du/PTD. 
+
+3.2. Results and Analysis 
+
+3.2.1. Comparison with SOTA methods 
+
+We select the representative FBPConv [15], DuDoTrans [16], LEARN [9], Regformer [13], and Diffusion-based DDDM [17] for comparison. Note that DDDM builds a dual-domain diffusion framework, i.e., projection and image domains dif-fusion via DDIM model [18]. Following official setting, we only evaluate it under 32-view condition. Quantitative results are illuminated in table 1, all the methods achieve significant performance gains. Specifically, by integrating the non-local image priors into the deep unrolled model, RegFormer has the best PSNR and SSIM values on 32-view CT. Instead, DDDM only achieves slightly better metrics compared to FBPConv Table 1 . Comparison of Results on 32 and 64 Projection Views. The best and second best are bolded and underlined separately.                                                             
+
+> Method 32-views 64-views
+> PSNR ↑SSIM ↑LPIPS ↓(%) PSNR ↑SSIM ↑LPIPS ↓(%) FBP 21.08 0.307 39.97 25.22 0.489 28.56 FBPConv [15] 33.45 0.869 6.49 38.13 0.933 3.96 DuDoTrans [16] 35.26 0.895 4.79 39.52 0.950 2.55 LEARN [9] 39.14 0.944 2.82 42.64 0.973 1.36 RegFormer [13] 41.17 0.961 1.91 44 .55 0.980 0.95 DDDM [17] 36.53 0.907 3.42 –––PTD-1 41 .09 0.959 1.84 44.58 0.980 0.87 PTD-5 39.97 0.950 1.29 43.69 0.976 0.63
+> PTD-8 39.50 0.944 1.13 43.12 0.973 0.51
+
+Fig. 2 . Visualized results on sparse 32-view CT. (a) Ground Truth, (b) FBP, (c) FBPConv, (d) DuDoTrans, (e) LEARN, (f) RegFormer, (g) DDDM and (h) PTD-8. The display window is [-160, 240]HU. and DuDoTrans. Our PTD model presents significant gains against original LEARN, which achieves competitive PSNR and SSIM metrics against RegFormer, and has lower LPIPS value with only one sampling step (denoted by PTD-1). Fur-thermore, visualized results are shown in Fig 2. Most meth-ods result in heavy oversmoothness in reconstructed images. DDDM preserves more texture details. However, undesired artifacts and distorted textures also leads to lower PSNR and SSIM values. In contrast, our PTD achieves the sharper de-tails for high-fidelity reconstruction with 8 time steps only (denoted as PTD-8). 
+
+3.2.2. Ablation Studies 
+
+We analyze the effects of each component of our PTD, in-cluding the reconstruction and conditional guidance modules. Experiments are performed on validation set under sparse 32-view settings. All the variants are trained from scratch with 50k iterations, and sampled with five steps during the infer-ence stage. Table 2 gives the detailed results. It is obvious that the DSB model (denoted by LDiff ) achieves significant perfor-mance gains against the initial FBP results, which has been validated in recent advances [4, 7]. We then sequentially in-
+
+Table 2 . Ablation studies on each component in our frame-work.                               
+
+> Task Training Scheme Metric #Params (M)
+> LDiff LContent LGuidance PSNR SSIM LPIPS FBP –––20.36 0.2957 39.30 –SVCT
+> √35.69 0.9031 2.192 5.19 √√39.73 0.9515 1.040 8.58 √√√40.03 0.9541 1.066 8.64
+
+Fig. 3 . Visualized analysis for key components of our frame-work on different reconstruction tasks. (a) Ground Truth, (b) Initial reconstruction from basic predictor in Fig 1, (c) En-hanced Result and (d) Residual map between (b) and (c). sert the reconstructive module and MHFG prompts (denoted by LContent and LGuidance ) into the baseline, which brings con-sistent gains in terms of PSNR and SSIM metrics, but the LPIPS values show slight changes. This is because the base-line generates pleasing visual details during the diffusion pro-cess, and extra modules lead to the contrast-enhanced struc-tures in the results. Furthermore, inserting the LEARN-based reconstruction module brings more significant gains among metrics. Finally, we insert the MHFG module into the base-line model, which achieves better PSNR and SSIM values. Fig 3 presents visualized results for key components in our framework. Integrating the initial reconstruction result into the DSB module still generates over-smoothed structures and textures, although it leads to higher PSNR and SSIM metrics. In contrast, our PTD framework can alleviate this problem. As shown in Fig 3(c), PTD focuses on the contrast-enhanced tissues and reliable texture generation. The residual map (shown in Fig 3(d)) implies our PTD could bring signif-icantly better structural details and visual appeal. 
+
+4. CONCLUSION 
+
+This paper proposes a progressively texture-aware diffusion model for sparse-view CT imaging, which integrates a basic reconstructive module and a conditional diffusion model to recover low- and high-frequency image signals in a coarse-to-fine manner. The key to our method is combining effec-tive image content and texture priors to drive deterministic diffusion and produce crucial tissue and structural details, it easily adapts to different low-dose CT tasks with a flexible re-construction module, and achieves a better trade-off between structural preservation and visual appeal with only a few sam-pling steps. 5. ACKNOWLEDGMENT 
+
+This work was supported in part by the National Natural Science Foundation of China under Grants 62301345 and U25A20439, in part by Sichuan Province Postdoctoral Spe-cial Funding under Grant TB2025010, in part by the Na-tional Basic Scientific Research Project of China under Grant JCKY2024110C080. 
+
+6. REFERENCES 
+
+[1] Rebecca Smith-Bindman, Jafi Lipson, Ralph Marcus, Kwang-Pyo Kim, Mahadevappa Mahesh, Robert Gould, Amy Berrington De Gonz´ alez, and Diana L Miglioretti, “Radiation dose associated with common computed to-mography examinations and the associated lifetime at-tributable risk of cancer,” Archives of internal medicine ,vol. 169, no. 22, pp. 2078–2086, 2009. [2] Qingsong Yang, Pingkun Yan, Yanbo Zhang, Hengyong Yu, Yongyi Shi, Xuanqin Mou, Mannudeep K Kalra, Yi Zhang, Ling Sun, and Ge Wang, “Low-dose ct image denoising using a generative adversarial network with wasserstein distance and perceptual loss,” IEEE trans-actions on medical imaging , vol. 37, no. 6, pp. 1348– 1357, 2018. [3] Jonathan Ho, Ajay Jain, and Pieter Abbeel, “Denoising diffusion probabilistic models,” Advances in neural in-formation processing systems , vol. 33, pp. 6840–6851, 2020. [4] Qi Gao, Zilong Li, Junping Zhang, Yi Zhang, and Hong-ming Shan, “Corediff: Contextual error-modulated gen-eralized diffusion model for low-dose ct denoising and generalization,” IEEE Transactions on Medical Imag-ing , 2023. [5] Yang Song, Liyue Shen, Lei Xing, and Stefano Ermon, “Solving inverse problems in medical imaging with score-based generative models,” International Confer-ence on Learning Representations , 2022. [6] Guan-Horng Liu, Arash Vahdat, De-An Huang, Evange-los A. Theodorou, Weili Nie, and Anima Anandkumar, “I2sb: Image-to-image schr¨ odinger bridge,” in Interna-tional Conference on Machine Learning , 2023. [7] Wenchao Du, HuanHuan Cui, LinChao He, Hu Chen, Yi Zhang, and Hongyu Yang, “Structure-aware diffu-sion for low-dose ct imaging,” Physics in Medicine & Biology , vol. 69, no. 15, pp. 155008, 2024. [8] Hu Chen, Yi Zhang, Mannudeep K Kalra, Feng Lin, Yang Chen, Peixi Liao, Jiliu Zhou, and Ge Wang, “Low-dose ct with a residual encoder-decoder convolutional neural network,” IEEE transactions on medical imag-ing , vol. 36, no. 12, pp. 2524–2535, 2017. [9] Hu Chen, Yi Zhang, Yunjin Chen, Junfeng Zhang, Weihua Zhang, Huaiqiang Sun, Yang Lv, Peixi Liao, Jiliu Zhou, and Ge Wang, “Learn: Learned experts’ assessment-based reconstruction network for sparse-data ct,” IEEE transactions on medical imaging , vol. 37, no. 6, pp. 1333–1347, 2018. [10] Tian Ye, Sixiang Chen, Wenhao Chai, Zhaohu Xing, Jing Qin, Ge Lin, and Lei Zhu, “Learning diffusion tex-ture priors for image restoration,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2024, pp. 2524–2534. [11] Chao Dong, Chen Change Loy, Kaiming He, and Xi-aoou Tang, “Image super-resolution using deep convo-lutional networks,” IEEE Transactions on Pattern Anal-ysis and Machine Intelligence , vol. 38, pp. 295–307, 2014. [12] Cynthia H. McCollough, “Tu-fg-207a-04: Overview of the low dose ct grand challenge.,” Medical physics , vol. 43 6, pp. 3759–3760, 2016. [13] Wenjun Xia, Ziyuan Yang, Zexin Lu, Zhongxian Wang, and Yi Zhang, “Regformer: A local–nonlocal regularization-based model for sparse-view ct recon-struction,” IEEE Transactions on Radiation and Plasma Medical Sciences , vol. 8, pp. 184–194, 2024. [14] Richard Zhang, Phillip Isola, Alexei A. Efros, Eli Shechtman, and Oliver Wang, “The unreasonable effec-tiveness of deep features as a perceptual metric,” 2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition , pp. 586–595, 2018. [15] Kyong Hwan Jin, Michael T McCann, Emmanuel Froustey, and Michael Unser, “Deep convolutional neu-ral network for inverse problems in imaging,” IEEE transactions on image processing , vol. 26, no. 9, pp. 4509–4522, 2017. [16] Ce Wang, Kun Shang, Haimiao Zhang, Qian Li, and S Kevin Zhou, “Dudotrans: dual-domain transformer for sparse-view ct reconstruction,” in International Workshop on Machine Learning for Medical Image Re-construction . Springer, 2022, pp. 84–94. [17] Chun Yang, Dian Sheng, Bo Yang, Wenfeng Zheng, and Chao Liu, “A dual-domain diffusion model for sparse-view ct reconstruction,” IEEE Signal Processing Let-ters , 2024. [18] Jiaming Song, Chenlin Meng, and Stefano Ermon, “De-noising diffusion implicit models,” International Con-ference on Learning Representations , 2020.

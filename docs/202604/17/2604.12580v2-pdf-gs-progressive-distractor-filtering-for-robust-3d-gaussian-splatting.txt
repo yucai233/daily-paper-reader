@@ -1,0 +1,421 @@
+Title: PDF-GS: Progressive Distractor Filtering for Robust 3D Gaussian Splatting
+
+URL Source: https://arxiv.org/pdf/2604.12580v2
+
+Published Time: Fri, 17 Apr 2026 00:33:18 GMT
+
+Number of Pages: 12
+
+Markdown Content:
+# PDF-GS: Progressive Distractor Filtering for Robust 3D Gaussian Splatting 
+
+## Kangmin Seo, MinKyu Lee, Tae-Young Kim, ByeongCheol Lee, JoonSeoung An, Jae-Pil Heo *
+
+## Sungkyunkwan University 
+
+{skmskku, bluelati98, jackdawson, bc7817, ajs3801, jaepilheo }@skku.edu 
+
+Figure 1. Overview of PDF-GS. During the Progressive Filtering Phases (phases 1–3), PDF-GS progressively removes transient, view-inconsistent distractors. Across successive phases, inconsistent regions are suppressed while stable, view-consistent structures are pre-served. In the final Reconstruction Phase (phase 4), fine-grained appearance details are recovered from the purified representation, leading to a high-fidelity and distractor-free 3D reconstruction. 
+
+## Abstract 
+
+Recent advances in 3D Gaussian Splatting (3DGS) have en-abled impressive real-time photorealistic rendering. How-ever, conventional training pipelines inherently assume full multi-view consistency among input images, which makes them sensitive to distractors that violate this assumption and cause visual artifacts. In this work, we revisit an un-derexplored aspect of 3DGS: its inherent ability to sup-press inconsistent signals. Building on this insight, we propose PDF-GS (Progressive Distractor Filtering for Ro-bust 3D Gaussian Splatting), a framework that ampli-fies this self-filtering property through a progressive multi-phase optimization. The progressive filtering phases grad-ually remove distractors by exploiting discrepancy cues, while the following reconstruction phase restores fine-
+
+> ∗Corresponding author
+
+grained, view-consistent details from the purified Gaussian representation. Through this iterative refinement, PDF-GS achieves robust, high-fidelity, and distractor-free re-constructions, consistently outperforming baselines across diverse datasets and challenging real-world conditions. Moreover, our approach is lightweight and easily adaptable to existing 3DGS frameworks, requiring no architectural changes or additional inference overhead, leading to a new state-of-the-art performance. The code is publicly available at https://github.com/kangrnin/PDF-GS .
+
+## 1. Introduction 
+
+Recent advances in 3D Gaussian Splatting (3DGS) [6] have demonstrated impressive rendering quality and efficiency for novel view synthesis [2, 3, 13, 17]. However, standard 3DGS pipelines operate under an implicit assumption that 
+
+> arXiv:2604.12580v2 [cs.CV] 16 Apr 2026
+
+all training images depict a static and view-consistent scene. In real-world environments, this assumption is often vio-lated. Scenes frequently include distractors , such as tran-sient, dynamic, or view-dependent contents (e.g., pedes-trians, vehicles, or shadows). These distractors introduce multi-view inconsistencies that corrupt the training signal, resulting in artifacts, blurred regions, and unstable geome-try in the reconstructed 3D representation. Prior approaches have primarily relied on explicit dis-tractor modeling through mask prediction or decomposi-tion [4, 10, 21, 23]. In this work, we take a conceptually distinct perspective by leveraging a fundamental yet un-derexplored property of 3DGS: its inherent ability to sup-press view-inconsistent regions while faithfully reconstruct-ing view-consistent structures. Transient or view-dependent objects, often regarded as distractors, fail to provide consis-tent multi-view observations and therefore tend to disappear or become blurred in rendered outputs (Fig. 2). We refer to this observation as the self-filtering phenomenon, which motivates our key idea: to reinterpret 3DGS as a refinement mechanism that removes distractors from the training data. However, this self-filtering behavior alone is not suf-ficient to eliminate distractors completely. In practice, distractor-driven artifacts often remain after a single opti-mization pass (Fig. 1). Motivated by this limitation, we aim to progressively amplify 3DGS’s intrinsic filtering behav-ior through iterative refinement. To this end, we propose PDF-GS, a multi-phase framework comprising (1) Progres-sive Filtering Phases and a subsequent (2) Reconstruction Phase. 
+
+Progressive Filtering Phases build on the self-filtering behavior of 3DGS, reinterpreting it as a mechanism for dis-tractor removal. Their primary objective is to iteratively refine the scene by identifying and eliminating distractors, rather than fine-grained reconstruction. Each filtering phase aims to refine the scene representation by gradually re-ducing the influence of distractors while preserving view-consistent structures. Specifically, each filtering phase first localizes and masks out distractor-prone regions in the train image, based on the discrepancy between the train image and the rendered outputs from the previous phase. Each fil-tering phase then introduces a re-initialized set of Gaussian parameters, and optimizes it with the masked train images, where the newly optimized parameters are passed to the next phase. By iteratively alternating between discrepancy-based masking and re-optimization, the process progres-sively exposes and suppresses distractors that cannot be reliably reconstructed, producing increasingly purified and distractor-free Gaussian parameter sets. The Reconstruction Phase aims to recover fine-grained details that are insufficiently optimized during the preceding filtering phases. In this stage, we apply the standard 3DGS loss to refine the geometry and appearance of the scene     
+
+> (a) Ground Truth (b) 3DGS Render
+> Figure 2. Self-filtering behavior of vanilla 3DGS. After stan-dard 3DGS training, distractor objects visible in the train view (a) are removed in the rendered result (b), indicating that inconsistent regions tend to either disappear or become blurred in the recon-struction ( Crab2 scene in RobustNeRF dataset [20]).
+
+for fine-grained details, while maintaining the discrepancy-based distractor mask to prevent the reactivation of incon-sistent regions. The result from this phase serves as the final 3DGS model of our entire framework. Through this multi-phase design, PDF-GS reframes 3DGS as an active inconsistency filter and subsequently leverages it for high-fidelity reconstruction. Our approach is conceptually simple, requires no architectural modifications to 3DGS, does not require any computational overhead at inference time. 
+
+## 2. Related Works 
+
+2.1. Novel View Synthesis 
+
+Novel View Synthesis is the task of producing photorealis-tic views from novel viewpoints given a limited set of posed images. Neural Radiance Fields (NeRF) [14], which rep-resent a scene as a coordinate-based volumetric radiance field and enable MLP-based differentiable rendering via ray marching, has led to a wide range of methods for novel-view synthesis [1, 11, 12, 16]. However, because NeRF employs an MLP-based implicit representation, it suffers from slow rendering speed. To overcome this limitation, 3D Gaussian Splatting (3DGS) [6] has recently been proposed, which represents a scene as an explicit set of anisotropic 3D Gaus-sians and renders them via differentiable splatting, enabling real-time rendering [2, 5, 9, 25]. 
+
+2.2. Robustness Against Distractors in 3DGS 
+
+While methods for novel view synthesis [6, 14] assume a static scene, this assumption fails in unconstrained real-world captures where dynamic or transient objects (dis-tractors) are often included, leading to inaccurate scene reconstructions. Recently, many 3DGS-based approaches have been proposed to address dynamic/transient objects. SpotLessSplats [21] leverages pretrained semantic features from Stable Diffusion [19] and detects distractors using spa-Figure 3. Conceptual illustration of PDF-GS. Our method progressively filters out transient and view-inconsistent distractors through iterative refinement. During the filtering phases, regions exhibiting multi-view inconsistencies are identified by the discrepancies between rendered views and training images. These inconsistent regions are then masked out, while stable view-consistent regions exhibiting small discrepancy are preserved. This progressive filtering process yields a purified 3D Gaussian representation, but often lacks fine-grained details. In the final reconstruction phase, we aim to further restore the fine-grained details that are not fully optimized during the filtering phases. Accordingly, we re-introduce the standard 3DGS loss which leads to both high-fidelity and distractor-free scene reconstruction. The output of the reconstruction phase serves as the final result of our framework. 
+
+tial and spatio-temporal clustering combined with a robust masking scheme. DeSplat [23] decomposes a 3DGS scene into static Gaussian space and per-view transient Gaus-sian space by optimizing only a photometric loss, with-out relying on a pretrained model. HybridGS [10] shares motivation with DeSplat, but detects distractors using 2D Gaussians [26] and a multi-stage training scheme. Ro-bustSplat [4] mitigates artifacts caused by distractors in 3DGS by delaying densification and applying a coarse-to-fine bootstrapping of transient masks using DINOv2 [15] features. AsymGS [8] trains two 3DGS models in parallel, leveraging cross-model consistency to suppress stochastic artifacts. In this work, we take a different perspective by leveraging the inherent property of 3DGS to preserve multi-view consistency during optimization, where we progres-sively identify and remove distractors and achieve robust and high-fidelity reconstruction. 
+
+## 3. Method 
+
+Overview. The key motivation of PDF-GS is the observa-tion of the inherent property of 3DGS: its tendency to sup-press inconsistent signals and naturally filter out distractors (Fig. 2). However, we also find that a single optimization pass often fails to fully suppress distractor-driven artifacts. Building on this observation, we introduce a multi-phase framework consisting of: (1) Progressive Filtering Phases 
+
+and (2) a consecutive Reconstruction Phase .The Progressive Filtering Phases operate over refine-ment phases indexed by k, where 1 ≤ k < K . The pri-mary goal of these phases is to identify and eliminate dis-tractor signals, focusing on purification instead of detailed reconstruction. Each refinement phase produces a Gaussian parameter set Θ(k) that becomes progressively purified of distractors. After K − 1 phases, the process transitions to      
+
+> (a) Ground Truth (b) Standard 3DGS Loss (c) Structure-Oriented
+> Figure 4. Effectiveness of the structure-oriented objective (Eq. 4). The model trained with standard 3DGS loss (b) over-fits transient distractors and exhibits color bleeding, while using structure-oriented objective (c) preserves structural consistency and better suppresses distractors ( Patio scene in NeRF On-the-go [18]).
+
+the Reconstruction Phase at phase k = K.The Reconstruction Phase then generates the final 3DGS representation, recovering fine-grained details that may be attenuated during the progressive filtering phases. To-gether, these phases yield a 3D representation that main-tains stable multi-view structural consistency while produc-ing distractor-free, high-fidelity reconstructions. 
+
+3.1. Progressive Filtering Phases 
+
+Overview. We begin with a converged initial Gaussian pa-rameter set Θ(1) for k = 1 . Phase k proceeds through two key steps: (1) identifying distractor regions using the pre-vious representation Θ(k−1) , and (2) training a new param-eter set Θ(k), which is re-initialized from Structure-from-Motion (SfM) points, while masking out those identified distractor regions from the training images. By repeat-edly updating the discrepancy maps and re-optimizing with masked supervision, each phase progressively improves the fidelity and robustness of the Gaussian representation. 3.1.1. Initialization (k = 1) .
+
+We begin the refinement process by constructing an initial set of Gaussian parameters Θ(1) that serves as a coarse but reliable starting point. This initialization leverages the natu-ral self-filtering behavior of 3DGS, which tends to suppress multi-view inconsistent content (Fig. 2). Accordingly, ob-taining Θ(1) is straightforward: we largely follow the stan-dard 3DGS training procedure but with modifications spec-ified in Sec. 3.1.3 for additional robustness. The resulting Gaussian representation is expected to capture the domi-nant, view-consistent structure of the scene. 
+
+3.1.2. Progressive Filtering (1 < k < K ).Remark. Within the Progressive Filtering stages, we aim to identify and mask out distractor regions in the training images, thereby progressively improving the robustness of the Gaussian parameter Θ(k) for each phase k. Note that at each progressive filtering phase, we re-initialize a fresh Gaussian set from the SfM points, instead of reusing the Gaussians from the prior phase. This design prevents accu-mulated error propagation of prior steps such as color drift or geometric biases (Fig. 7). 
+
+Distractor Identification. At each filtering phase k, dis-tractor regions are identified by comparing the training im-ages with the rendered outputs generated from the previous Gaussian parameter set Θ(k−1) . The intuition is that 3DGS naturally suppresses signals that are not consistent across views. Transient or view-dependent content, i.e., distrac-tors, is not stably reconstructed and thus tends to diminish in the rendered outputs. As a result, these regions exhibit significant discrepancies when compared against the corre-sponding training images, enabling reliable identification of distractor areas. Specifically, for training view v ∈ V and refinement phase k, we compute a discrepancy map that measures the difference between the ground truth image Igt v and the ren-dered image Irv (Θ (k−1) ) from the Gaussians of the previous phase k − 1. With an additional transformation F (·) for ro-bustness under low-level visual variation, the discrepancy map is defined as: 
+
+D(k−1)  
+
+> v
+
+= F (Igt v ) − F
+
+
+
+Irv (Θ (k−1) )
+
+
+
+> 2
+
+. (1) Here, we use DINOv3 [22] features for F (·), yielding a patch-level semantic discrepancy measure. Because Θ(k−1) 
+
+becomes increasingly purified across phases, the resulting 
+
+D(k−1)  
+
+> v
+
+provides progressively more accurate localization of distractors, forming the basis for the subsequent masked optimization step. 
+
+Progressive Masked Optimization. Regions with high discrepancy are interpreted as distractors and thereby should be removed from the training signal, while the re-maining regions provide clean structural supervision. Ac-cordingly, given the discrepancy map D(k−1)  
+
+> v
+
+, we derive a binary mask that excludes distractor regions from supervi-sion during the current filtering phase. For each pixel p in view v, the mask and the corresponding masked images are defined as: 
+
+M (k−1)  
+
+> v
+
+(p) = 1
+
+h
+
+D(k−1)  
+
+> v
+
+(p) ≤ τk
+
+i
+
+, (2) 
+
+˜Igt, (k) 
+
+> v
+
+= M (k−1)  
+
+> v
+
+⊙Igt v , ˜Ir, (k) 
+
+> v
+
+= M (k−1)  
+
+> v
+
+⊙Irv (Θ (k)), (3) where τk is the threshold at phase k and 1 is the indicator function. Using the masked images ˜Igt, (k) 
+
+> v
+
+and ˜Ir, (k) 
+
+> v
+
+, the current Gaussian parameter set Θ(k) is optimized following the standard 3DGS training pipeline, but with robustness-oriented modifications as specified in Sec. 3.1.3. Importantly, this masked optimization progressively im-proves over phases: as Θ(k−1) becomes more refined, discrepancy maps D(k−1)  
+
+> v
+
+and the corresponding masks 
+
+M (k−1)  
+
+> v
+
+can better identify true distractor regions. Con-sequently, each filtering phase k benefits from a more distractor-free supervision signal than the previous one, en-abling the Gaussian representation Θ(k) to become more ro-bust and structurally consistent. 
+
+3.1.3. Training Objective (1 ≤ k < K )
+
+Remark. Below we elaborate on two modifications in-troduced on top of the standard 3DGS framework. These modifications are designed not to enhance fine-grained ap-pearance modeling, but rather to reshape the optimization trajectory such that distractor-prone, multi-view inconsis-tent regions become clearly excluded during training. As a result, subtle low-level appearance differences may arise compared to standard 3DGS optimization; however, when coupled with an appropriate metric robust under subtle low-level variations (e.g., Eq. 1 with DINOv3 features), these modifications significantly improve robustness in identify-ing and suppressing distractors. These modifications are employed during the filtering phases (for 1 ≤ k < K ). 
+
+Structure-Oriented Supervision. To achieve robustness under challenging, distractor-heavy training conditions, we adopt a purely structural supervision signal rather than con-ventional 3DGS loss. This choice is motivated by observa-tions in prior work [18], which indicate that structural sim-ilarity measures such as SSIM [24] emphasize patch-level geometric consistency while being comparatively insensi-tive to localized color variations or transient artifacts. This property aligns well with our goal of suppressing distrac-tors, which are typically view-inconsistent and often mani-fest through unstable color or texture patterns. For filtering phase k, the training objective within the filtering phases L(k) 
+
+> filter
+
+is defined as: L(k) 
+
+> filter
+
+=
+
+P 
+
+> v∈V
+
+Lssim 
+
+
+
+Ir, (k) 
+
+> v
+
+, I gt, (k)
+
+> v
+
+
+
+, k = 1 ,
+
+P 
+
+> v∈V
+
+L3DGS 
+
+ ˜Ir, (k) 
+
+> v
+
+, ˜Igt, (k)
+
+> v
+
+
+
+, otherwise, (4) where L3DGS refers to the standard 3DGS loss [6] which consists of an L1 loss and an SSIM loss. In the first filtering phase, by relying solely on structural similarity, this structure-oriented loss encourages the model to preserve globally consistent geometry while avoiding premature overfitting to view-dependent distractors. Empir-ically, we find that structural-only supervision plays a crit-ical role in stabilizing the filtering process and preventing distractor accumulation during early stages of optimization (Fig. 4). 
+
+Sparse Color Updates for View Consistency. SfM-initialized Gaussians provide a reliable starting point with stable geometry and view-consistent colors, as SfM inher-ently relies on cross-view feature correspondences. How-ever, during the filtering process, frequent color updates can cause these stable Gaussians to drift toward transient, single-view appearances introduced by distractors, thereby reducing consistency and weakening geometric stability. To mitigate the influence of such single-view signals while preserving multi-view coherence, we adopt a sparse color update strategy. Specifically, t denotes the optimiza-tion step within phase k, and color parameters Θt,k  
+
+> color
+
+for phase k are updated only once every N iterations as: 
+
+Θt,k  
+
+> color
+
+←
+
+(Θt,k  
+
+> color
+
+− η∇Θt,k 
+
+> color
+
+L(k)
+
+> filter
+
+, t mod N = 0 ,
+
+Θt,k 
+
+> color
+
+, otherwise , (5) while geometry and opacity parameters continue to be optimized at every step. Leveraging the reliable SfM ini-tialization, this strategy reinforces stability throughout the filtering process, which aims to progressively suppress dis-tractor signals while maintaining overall consistency rather than pursuing exact color reconstruction. 
+
+3.2. Reconstruction Phase 
+
+Overview. While the preceding Progressive Filtering Phases ( 1 ≤ k < K) suppress distractors and stabi-lize multi-view geometry, they intentionally sacrifice fine-grained appearance to prevent overfitting to transient con-tent. The goal of the Reconstruction Phase ( k = K) is therefore to refine this purified representation by reintro-ducing the standard 3DGS objective, enabling recovery of detailed textures, shading, and subtle color variations. 
+
+3.2.1. Initialization (k = K)
+
+Initialization plays a critical role in 3DGS training, as the early optimization trajectory heavily influences the final reconstruction quality. While conventional pipelines ini-tialize parameters using raw SfM points, we instead ini-tialize Gaussian parameters for the Reconstruction Phase 
+
+Θ(K) with the final output of the Progressive Filtering Phase, denoted as Θ(K−1) . Since Θ(K−1) has undergone 
+
+K − 1 phases of discrepancy-guided filtering and mask-based structural optimization, it exhibits improved multi-view consistent geometry without interference with tran-sient contents. These characteristics make Θ(K−1) a far more reliable and stable initialization than SfM. Thus, the Reconstruction Phase begins from this purified parameter set, providing an ideal scaffold for fine-grained appearance recovery. 
+
+3.2.2. Training Objective (k = K).
+
+In the Reconstruction Phase, we introduce the standard 3DGS loss to recover fine-grained appearance, while ap-plying masking to prevent the distractor reactivation. To this end, we use the mask M ⋆v from the final filtering phase 
+
+Θ(K−1) , and define the reconstruction objective as: 
+
+˜Igt,⋆ v = M ⋆v ⊙ Igt v , ˜Ir,⋆ v = M ⋆v ⊙ Irv
+
+ Θ(K). (6) 
+
+Lrec = X
+
+> v∈V
+
+L3DGS ( ˜Ir,⋆ v , ˜Igt,⋆ v ), (7) which restores fine details while preserving distractor-free, structurally consistent representation established by filter-ing phases. Using M ⋆v from k=K−1 and optimizing Θ(K),the reconstruction phase prevents previously excised dis-tractor regions from influencing optimization, ensuring sta-ble refinement. 
+
+## 4. Experiments 
+
+Implementation Details. We follow the 3DGS [6] pipeline and adopt three progressive filtering phases followed by a reconstruction phase, resulting in a total of 40K optimiza-tion steps. Each filtering phase and the reconstruction phase are optimized for 10K steps. At the beginning of the recon-struction phase, all spherical harmonic coefficients above the zeroth order are re-initialized. During the first progres-sive filtering phase ( k = 1), the structure-oriented loss is rescaled to match the magnitude of the standard 3DGS loss used in the reconstruction stage. We dilate the discrepancy-based mask by 7 pixels prior to application. 
+
+Experimental Setup. We evaluate our method on two chal-lenging benchmarks: RobustNeRF [20] and NeRF On-the-go [18], both of which contain substantial transient or view-inconsistent content. Following prior works [4, 23], all in-put images are downscaled by a factor of 8, with the excep-tion of the patio scene in NeRF On-the-go, for which we use a downscaling factor of 4. Table 1. Quantitative comparison between PDF-GS (Ours) and recent State-of-the-Art methods on the NeRF On-the-go dataset [18]. For DeSplat [23], we have reproduced the results indicated as *, where we report the best scores over five runs, with all metrics obtained using the officially released training and rendering implementation.                                                                                                                                      
+
+> Method Low Occlusion Medium Occlusion High Occlusion Mountain Fountain Corner Patio Spot Patio-High Mean
+> PSNR SSIM LPIPS PSNR SSIM LPIPS PSNR SSIM LPIPS PSNR SSIM LPIPS PSNR SSIM LPIPS PSNR SSIM LPIPS PSNR SSIM LPIPS 3DGS [6] 19.22 0.69 0.23 20.08 0.69 0.21 22.65 0.84 0.16 17.04 0.71 0.23 18.54 0.72 0.33 17.04 0.66 0.31 19.09 0.72 0.25 SpotLessSplats [21] 20.67 0.67 0.28 20.63 0.65 0.27 25.47 0.86 0.16 21.43 0.80 0.17 23.64 0.82 0.21 21.17 0.75 0.24 22.17 0.76 0.22 WildGaussians [7] 20.77 0.70 0.27 20.48 0.67 0.25 25.21 0.87 0.14 21.17 0.80 0.17 24.60 0.87 0.14 22.44 0.80 0.18 22.45 0.78 0.19 DeSplat* [23] 19.32 0.71 0.20 20.45 0.68 0.21 26.30 0.88 0.11 18.81 0.81 0.14 26.03 0.89 0.12 22.38 0.83 0.16 22.21 0.80 0.16 RobustSplat [4] 21.15 0.74 0.20 21.01 0.70 0.20 26.42 0.90 0.10 21.63 0.83 0.14 26.21 0.91 0.10 22.87 0.84 0.15 23.22 0.82 0.15
+> PDF-GS (Ours) 21.82 0.75 0.18 21.19 0.70 0.20 26.41 0.90 0.10 21.54 0.83 0.14 25.94 0.91 0.10 23.00 0.84 0.15 23.32 0.82 0.15
+
+Table 2. Quantitative comparison between PDF-GS (Ours) and recent State-of-the-Art methods on the RobustNeRF dataset [20]. For DeSplat [23], we have reproduced the results indicated as *, where we report the best scores over five runs, with all metrics obtained using the officially released training and rendering implementation. 
+
+Method Android Crab2 Statue Yoda Mean 
+
+PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓ PSNR ↑ SSIM ↑ LPIPS ↓
+
+3DGS [6] 23.32 0.79 0.16 31.76 0.93 0.17 20.83 0.83 0.15 28.92 0.91 0.19 26.21 0.86 0.17 WildGaussians [7] 24.67 0.83 0.15 30.52 0.91 0.21 22.54 0.86 0.13 30.55 0.91 0.20 27.07 0.88 0.17 SpotLessSplats [21] 24.20 0.81 0.16 33.90 0.93 0.17 21.97 0.82 0.16 34.24 0.94 0.16 28.58 0.88 0.16 DeSplat* [23] 24.20 0.82 0.16 34.12 0.93 0.14 22.93 0.85 0.12 34.15 0.94 0.15 28.85 0.88 0.15 RobustSplat [4] 24.62 0.83 0.13 34.88 0.94 0.15 22.80 0.87 0.11 35.14 0.94 0.15 29.36 0.90 0.14 
+
+PDF-GS (Ours) 24.74 0.83 0.12 35.35 0.94 0.15 22.98 0.87 0.11 35.54 0.95 0.15 29.65 0.90 0.13 
+
+4.1. Quantitative Evaluation 
+
+As shown in Tab. 1 and Tab. 2, PDF-GS consistently out-performs prior methods in all three metrics (PSNR, SSIM, and LPIPS), leading to a new state-of-the-art performance. Specifically, PDF-GS surpasses prior approaches that rely on predicting masks with dedicated predictors [4, 7, 21] as well as methods that decompose static content and dis-tractors using per-view Gaussians [23]. This improvement largely stems from our multi-phase optimization, where the filtering phases effectively remove distractor-induced inconsistencies, and the subsequent reconstruction phase faithfully restores fine geometric and appearance details without reintroducing artifacts. 
+
+4.2. Qualitative Evaluation 
+
+In Fig. 6, we show qualitative comparison of our method and previous methods. Our method effectively removes distractors while preserving fine-grained scene details and accurately rendering static regions, as highlighted by the red arrows. The progressive filtering phases suppress view-inconsistent content, and the reconstruction phase recovers detailed appearance, together yielding distractor-free, high-fidelity reconstructions. 1 2 3 4 5
+
+> Filtering Iterations
+> 22.80
+> 22.98
+> 23.15
+> 23.32
+> 23.50
+> PSNR
+> Filtering Phases
+
+Figure 5. Analysis on the number of filtering phases. Quantita-tive results show a gradual increase in reconstruction scores as the number of filtering phases increases, with performance saturating around three phases (NeRF On-the-go dataset [18]). 
+
+4.3. Ablation Study 
+
+To better understand the contribution of each component in our framework, we conduct a series of ablation studies on the NeRF On-the-go dataset. Unless otherwise stated, we use three progressive filtering phases ( K = 4 including the final reconstruction phase) as the default configuration. 
+
+4.3.1. Number of Progressive Filtering Phases. 
+
+We evaluate the impact of the number of Progressive Fil-tering Phases on the final reconstruction quality (Fig. 5). Figure 6. Qualitative results of PDF-GS (Ours) and baseline State-of-the-Art methods. Our method generates noticeably fewer distractor-induced artifacts and more accurate reconstruction of static objects and backgrounds than previous methods. 
+
+As the number of filtering phases increases, performance consistently improves because each phase further removes residual distractors that remain from previous stages. The most notable improvement is observed when in-creasing the number of phases from one to two, suggest-ing that a single filtering pass is insufficient for reliable dis-tractor suppression. Beyond three phases, the performance gain saturates, as most distractor-prone regions have already been suppressed and subsequent passes mainly refine minor inconsistencies. To balance quality and efficiency, we therefore adopt three filtering phases as the default setting for all experi-ments, achieving strong reconstruction quality while main-taining moderate training cost. 
+
+4.3.2. Effect of Components on the Filtering Phase 
+
+We then analyze the contribution of two key design choices in our filtering phase objective: (1) structure-only loss (Eq. 4 for k=1 ), and (2) sparse color update scheme (Eq. 5). Results in Tab. 3 show that removing either component degrades performance. Without the structure-oriented loss, optimization easily overfits to local color inconsistencies and may fail to sufficiently suppress distractor artifacts. Without sparse color updates, Gaussian colors gradually drift toward single-view biases, weakening multi-view con-sistency. Using both strategies jointly yields the highest re-                                
+
+> Table 3. Ablation studies on the NeRF On-the-go dataset [18]. We ablate filtering phase components, re-initialization strategies, and threshold scheduling. †indicates our default setting. Setting PSNR SSIM LPIPS
+> Filtering Phase Components
+> Struct. Loss + Sparse Color †23.32 0.82 0.15 Struct. Loss only 23.06 0.82 0.15 Sparse Color only 23.20 0.82 0.15 Neither 23.02 0.81 0.15
+> Re-initialization Scheme
+> Between Filtering Phases †23.32 0.82 0.15 Always 23.08 0.81 0.16 Never 22.95 0.82 0.13
+> Threshold Schedule
+> Decreasing †23.32 0.82 0.15 Static 23.06 0.81 0.15
+
+construction quality, validating that the combination of structure-guided supervision and controlled color updates effectively exposes and removes distractors while maintain-ing geometric stability. (a) w/o Reinitialization (b) Ours      
+
+> Figure 7. Effect of re-initialization between filtering phases. (a) Without re-initialization. Accumulated errors propagate across filtering iterations and appear as persistent artifacts. (b) With re-initialization (Ours). Such error buildup is avoided, resulting in a cleaner and more stable reconstruction. ( Corner scene in NeRF On-the-go dataset [18]).
+
+4.3.3. Gradually Decreasing Threshold. 
+
+During the progressive filtering process, we progressively decrease the threshold τk used in Eq. 2 to generate binary masks. That is, early phases conservatively flag only clear outliers with very large discrepancy as distractors, while subsequent phases apply stricter criteria, gradually exclud-ing borderline regions that were previously tolerated. As shown in Tab. 3, the proposed decreasing schedule outperforms a static threshold (23.32 vs. 23.06 dB), con-firming that a progressive transition from conservative to strict masking yields a better balance between distractor suppression and detail preservation. 
+
+4.3.4. Re-initialization Between Filtering Phases. 
+
+We examine the effect of different Gaussian re-initialization strategies across filtering phases. We compare three set-tings: (1) Re-initializing with SfM points at each filter-ing phase, and fine-tuning the final Gaussians from the last filtering phase during the reconstruction phase, (2) re-initializing before every phase, and (3) continuing optimiza-tion from previous parameters without re-initialization. Tab. 3 shows that our default setting achieves the best performance. Always re-initializing leads to slower conver-gence and loss of accumulated geometry, while never re-initializing causes color drift and error accumulation. Thus, periodic re-initialization effectively resets transient biases while preserving stable structures, leading to consistent and robust optimization across phases. 
+
+4.4. Visualization of Progressive Mask Evolution 
+
+Fig. 8 visualizes how per-view masks evolve across our pro-gressive filtering phases. In the first phase, distractors have not yet been removed, which leads to supervision that is noticeably noisier than in later stages. To avoid discarding valid content under this noisy setting, we adopt a conserva-tive masking threshold that filters out only regions showing strong discrepancy signals. 
+
+Train View Filtering Phase 1 Filtering Phase 2 Filtering Phase 3     
+
+> Figure 8. Progressive mask refinement across phases. The dotted outlines in the images of the leftmost column denote the distractor region, and the red overlay indicates the masked pix-els. As training progresses through phases, the masks become increasingly refined and better aligned with true distractors. For example, in the third row ( fountain scene from the NeRF On-the-go dataset [18]), background cars that were not masked in earlier phases are correctly identified as distractors in later phases.
+
+As training moves through later phases, the supervision becomes progressively cleaner, allowing the masking crite-rion to be applied more strictly. The masks therefore be-come more effective over phases, enabling a larger portion of distractors to be identified while consistently preserving view-consistent regions. This progressive refinement reflects the core principle of our framework: each phase benefits from the increasingly cleaner supervision produced by the preceding one, leading to continual improvements in mask quality. 
+
+## 5. Conclusion 
+
+We presented PDF-GS, a progressive filtering framework that enhances the robustness of 3D Gaussian Splatting in real-world, distractor-rich scenes. Instead of relying on explicit mask prediction or scene decomposition, PDF-GS leverages the inherent self-filtering property of 3DGS and amplifies it through iterative discrepancy-guided refine-ment. Across multiple filtering phases, the model progres-sively suppresses view-inconsistent distractors while pre-serving stable, view-consistent structures. A final recon-struction phase recovers fine-grained details from this puri-fied representation, yielding high-fidelity and distractor-free results. Extensive experimental results show that PDF-GS consistently improves reconstruction quality under noisy training images with distractors. Acknowledgements 
+
+This work was supported in part by MSIT/IITP (No. RS-2022-II220680, RS-2020-II201821, RS-2019-II190421, RS-2024-00459618, RS-2024-00360227, RS-2024-00437633, RS-2024-00437102, RS-2025-25442569), MSIT/NRF (No. RS-2024-00357729), and KNPA/KIPoT (No. RS-2025-25393280). 
+
+## References 
+
+[1] Jonathan T Barron, Ben Mildenhall, Matthew Tancik, Peter Hedman, Ricardo Martin-Brualla, and Pratul P Srinivasan. Mip-nerf: A multiscale representation for anti-aliasing neu-ral radiance fields. In Proceedings of the IEEE/CVF inter-national conference on computer vision , pages 5855–5864, 2021. 2 [2] Yiwen Chen, Zilong Chen, Chi Zhang, Feng Wang, Xi-aofeng Yang, Yikai Wang, Zhongang Cai, Lei Yang, Huaping Liu, and Guosheng Lin. Gaussianeditor: Swift and control-lable 3d editing with gaussian splatting. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 21476–21485, 2024. 1, 2 [3] Zilong Chen, Feng Wang, Yikai Wang, and Huaping Liu. Text-to-3d using gaussian splatting. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 21401–21412, 2024. 1 [4] Chuanyu Fu, Yuqi Zhang, Kunbin Yao, Guanying Chen, Yuan Xiong, Chuan Huang, Shuguang Cui, and Xiaochun Cao. Robustsplat: Decoupling densification and dynamics for transient-free 3dgs. In Proceedings of the IEEE/CVF In-ternational Conference on Computer Vision , pages 27126– 27136, 2025. 2, 3, 5, 6, 1 [5] Yi-Hua Huang, Yang-Tian Sun, Ziyi Yang, Xiaoyang Lyu, Yan-Pei Cao, and Xiaojuan Qi. Sc-gs: Sparse-controlled gaussian splatting for editable dynamic scenes. In Proceed-ings of the IEEE/CVF conference on computer vision and pattern recognition , pages 4220–4230, 2024. 2 [6] Bernhard Kerbl, Georgios Kopanas, Thomas Leimk¨ uhler, George Drettakis, et al. 3d gaussian splatting for real-time radiance field rendering. ACM Trans. Graph. , 42(4):139–1, 2023. 1, 2, 5, 6 [7] Jonas Kulhanek, Songyou Peng, Zuzana Kukelova, Marc Pollefeys, and Torsten Sattler. WildGaussians: 3D gaus-sian splatting in the wild. In Proceedings of the 38th Inter-national Conference on Neural Information Processing Sys-tems , 2024. 6 [8] Chengqi Li, Zhihao Shi, Yangdi Lu, Wenbo He, and Xiangyu Xu. Robust neural rendering in the wild with asymmetric dual 3d gaussian splatting. In The Thirty-ninth Annual Con-ference on Neural Information Processing Systems , 2025. 3 [9] Jiaqi Lin, Zhihao Li, Xiao Tang, Jianzhuang Liu, Shiyong Liu, Jiayue Liu, Yangdi Lu, Xiaofei Wu, Songcen Xu, You-liang Yan, et al. Vastgaussian: Vast 3d gaussians for large scene reconstruction. In Proceedings of the IEEE/CVF Con-ference on Computer Vision and Pattern Recognition , pages 5166–5175, 2024. 2 [10] Jingyu Lin, Jiaqi Gu, Lubin Fan, Bojian Wu, Yujing Lou, Renjie Chen, Ligang Liu, and Jieping Ye. Hybridgs: Decou-pling transients and statics with 2d and 3d gaussian splatting. In Proceedings of the Computer Vision and Pattern Recogni-tion Conference , pages 788–797, 2025. 2, 3 [11] Li Ma, Xiaoyu Li, Jing Liao, Qi Zhang, Xuan Wang, Jue Wang, and Pedro V Sander. Deblur-nerf: Neural radiance fields from blurry images. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition ,pages 12861–12870, 2022. 2 [12] Ricardo Martin-Brualla, Noha Radwan, Mehdi SM Sajjadi, Jonathan T Barron, Alexey Dosovitskiy, and Daniel Duck-worth. Nerf in the wild: Neural radiance fields for uncon-strained photo collections. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition ,pages 7210–7219, 2021. 2 [13] Hidenobu Matsuki, Riku Murai, Paul HJ Kelly, and An-drew J Davison. Gaussian splatting slam. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 18039–18048, 2024. 1 [14] Ben Mildenhall, Pratul P Srinivasan, Matthew Tancik, Jonathan T Barron, Ravi Ramamoorthi, and Ren Ng. Nerf: Representing scenes as neural radiance fields for view syn-thesis. Communications of the ACM , 65(1):99–106, 2021. 2[15] Maxime Oquab, Timoth´ ee Darcet, Theo Moutakanni, Huy V. Vo, Marc Szafraniec, Vasil Khalidov, Pierre Fernandez, Daniel Haziza, Francisco Massa, Alaaeldin El-Nouby, Rus-sell Howes, Po-Yao Huang, Hu Xu, Vasu Sharma, Shang-Wen Li, Wojciech Galuba, Mike Rabbat, Mido Assran, Nico-las Ballas, Gabriel Synnaeve, Ishan Misra, Herve Jegou, Julien Mairal, Patrick Labatut, Armand Joulin, and Piotr Bo-janowski. Dinov2: Learning robust visual features without supervision, 2023. 3, 1 [16] Albert Pumarola, Enric Corona, Gerard Pons-Moll, and Francesc Moreno-Noguer. D-nerf: Neural radiance fields for dynamic scenes. In Proceedings of the IEEE/CVF con-ference on computer vision and pattern recognition , pages 10318–10327, 2021. 2 [17] Minghan Qin, Wanhua Li, Jiawei Zhou, Haoqian Wang, and Hanspeter Pfister. Langsplat: 3d language gaussian splatting. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 20051–20060, 2024. 1[18] Weining Ren, Zihan Zhu, Boyang Sun, Jiaqi Chen, Marc Pollefeys, and Songyou Peng. Nerf on-the-go: Exploiting uncertainty for distractor-free nerfs in the wild. In Proceed-ings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 8931–8940, 2024. 3, 4, 5, 6, 7, 8, 1 [19] Robin Rombach, Andreas Blattmann, Dominik Lorenz, Patrick Esser, and Bj¨ orn Ommer. High-resolution image synthesis with latent diffusion models. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 10684–10695, 2022. 2 [20] Sara Sabour, Suhani Vora, Daniel Duckworth, Ivan Krasin, David J Fleet, and Andrea Tagliasacchi. Robustnerf: Ig-noring distractors with robust losses. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 20626–20636, 2023. 2, 5, 6, 1 [21] Sara Sabour, Lily Goli, George Kopanas, Mark Matthews, Dmitry Lagun, Leonidas Guibas, Alec Jacobson, David Fleet, and Andrea Tagliasacchi. Spotlesssplats: Ignoring distractors in 3d gaussian splatting. ACM Transactions on Graphics , 44(2):1–11, 2025. 2, 6 [22] Oriane Sim´ eoni, Huy V Vo, Maximilian Seitzer, Federico Baldassarre, Maxime Oquab, Cijo Jose, Vasil Khalidov, Marc Szafraniec, Seungeun Yi, Micha¨ el Ramamonjisoa, et al. Dinov3. arXiv preprint arXiv:2508.10104 , 2025. 4, 1[23] Yihao Wang, Marcus Klasson, Matias Turkulainen, Shuzhe Wang, Juho Kannala, and Arno Solin. Desplat: Decomposed gaussian splatting for distractor-free rendering. In Proceed-ings of the Computer Vision and Pattern Recognition Con-ference , pages 722–732, 2025. 2, 3, 5, 6 [24] Zhou Wang, Alan C Bovik, Hamid R Sheikh, and Eero P Si-moncelli. Image quality assessment: from error visibility to structural similarity. IEEE transactions on image processing ,13(4):600–612, 2004. 4 [25] Zehao Yu, Anpei Chen, Binbin Huang, Torsten Sattler, and Andreas Geiger. Mip-splatting: Alias-free 3d gaussian splat-ting. In Proceedings of the IEEE/CVF conference on com-puter vision and pattern recognition , pages 19447–19456, 2024. 2 [26] Xinjie Zhang, Xingtong Ge, Tongda Xu, Dailan He, Yan Wang, Hongwei Qin, Guo Lu, Jing Geng, and Jun Zhang. Gaussianimage: 1000 fps image representation and compres-sion by 2d gaussian splatting. In European Conference on Computer Vision , pages 327–345. Springer, 2024. 3 PDF-GS: Progressive Distractor Filtering for Robust 3D Gaussian Splatting 
+
+# Supplementary Material 
+
+## A. Additional Experiments 
+
+A.1. Phase-wise Reconstruction Quality. 1 2 3 4    
+
+> Phases
+> 26.0
+> 27.0
+> 28.0
+> 29.0
+> 30.0
+> PSNR
+> (a) RobustNeRF dataset [20] 1234
+> Phases
+> 22.0
+> 22.5
+> 23.0
+> 23.5
+> PSNR (b) NeRF On-the-go dataset [18]
+
+Figure A1. Phase-wise evolution of reconstruction quality. 
+
+Both datasets show a gradual increase in reconstruction quality as the model advances through the phases of our progressive filter-ing framework, with improvements accumulating across succes-sive phases. 
+
+In addition to evaluating the final performance for dif-ferent numbers of filtering phases, we further analyze how reconstruction quality evolves during training by report-ing the phase-wise PSNR averaged over all scenes in both the RobustNeRF [20] and NeRF On-the-go [18] datasets (Fig. A1). Across both benchmarks, the PSNR consistently in-creases as the model progresses through successive phases. Each phase removes additional multi-view inconsistent signals, enabling cleaner supervision for the subsequent phases. Thus, the progressive design leads to cumulative quality improvements beyond single-pass optimization (i.e., training performed in one continuous optimization). The first phase shows relatively low PSNR due to the use of a structure-oriented loss, which emphasizes local struc-tures and reduces sensitivity to photometric cues affected by distractors. In addition, no mask is available at this stage and distractors have not yet been removed, resulting in con-siderably noisier supervision than in later phases. As train-ing proceeds through the filtering phases, the masks and Gaussian representations are progressively refined, and by the final phase the model benefits from these improvements together with standard 3DGS objective, yielding the highest reconstruction quality. 
+
+A.2. Progressive Filtering on Single-Pass Baselines 
+
+We examine how our progressive filtering strategy can improve methods that perform distractor removal and re-construction in a single optimization pass, using Robust-Splat [4] as a representative example. While such single-pass approaches aim to complete filtering and reconstruc-tion in one continuous process, our framework conducts 
+
+Table A1. Evaluation of applying our progressive filtering pro-cedure to a single-pass baseline (RobustSplat [4]) on the Robust-NeRF dataset [20]. We report results using both DINOv2 [15] and DINOv3 [22] backbones, and ∗ indicates our reproduced results. Method PSNR SSIM LPIPS RobustSplat ∗ [4] (DINOv2) 29.24 0.89 0.13 + Progressive Filtering (DINOv2) 29.32 0.90 0.14 RobustSplat ∗ [4] (DINOv3) 29.14 0.89 0.13 + Progressive Filtering (DINOv3) 29.43 0.89 0.15 
+
+these steps progressively across multiple filtering phases followed by a reconstruction phase. This difference moti-vates evaluating whether progressive filtering can enhance a method originally designed for a single-pass pipeline. Specifically, we augment RobustSplat [4] by running its training loop for three successive phases while keeping its original architecture unchanged. Each phase is trained for 15k iterations, summing to 45k iterations in total, which is comparable to the 40k iterations used in our full frame-work. In each phase, we apply only the progressive filter-ing procedure, where phase-wise masks are computed from the discrepancy between the ground-truth images and the rendered training views of the preceding phase. Since Ro-bustSplat [4] is designed to perform reconstruction within a single optimization pass, no additional reconstruction stage is introduced beyond these repeated optimization loops. We observe this simple form of integration improves re-construction quality (Tab. A1), indicating that our progres-sive filtering can strengthen the reconstruction process even when applied to methods originally designed for a single optimization pass. 
+
+A.3. Integration of Learned Mask Predictors 
+
+Table A2. Comparison of different masking strategies within our framework on the NeRF On-the-go dataset [18]. Masking Method PSNR SSIM LPIPS Discrepancy-based (Ours) 23.32 0.82 0.15 Learned predictor (RobustSplat) 23.39 0.82 0.14 
+
+Beyond augmenting existing baselines with our progres-sive filtering strategy, we also investigate a complemen-tary direction that incorporates mechanisms from previous work into the mask generation step, using RobustSplat [4] as a representative example. Our framework uses a sim-ple discrepancy-based masking scheme in conjunction with mechanisms that leverage and amplify the inherent ten-dency of 3DGS to suppress view-inconsistent signals during optimization. By feeding progressively cleaner supervision back into subsequent phases, this mechanism reinforces the natural filtering behavior of 3DGS. Despite its simplicity, this masking approach achieves strong performance. At the same time, our framework is compatible with more sophisticated masking strategies, including those that incorporate learned predictors. We therefore integrate the masking strategy of RobustSplat [4], which incorpo-rates a learned MLP predictor, and use it as the mask-ing component within our multi-phase pipeline. As shown in Tab. A2, employing RobustSplat’s strategy within our framework further improves reconstruction quality, illus-trating the complementary nature of our method and its compatibility with masking mechanisms developed in prior works. 
+
+A.4. Training Speed Comparison              
+
+> Table A3. Wall clock training time comparison on the Robust-NeRF [20] dataset. Method Android Crab2 Statue Yoda RobustSplat [4] 21.6 min 24.5 min 28.7 min 24.2 min Ours 25.2 min 23.5 min 28.1 min 23.9 min
+
+We compare the wall clock training time of our method with RobustSplat [4] on the RobustNeRF [20] dataset, mea-suring end-to-end training time for each scene under the same hardware setting (Tab. A3). Although our method uses 40k optimization iterations, which is more than the 30k iterations in RobustSplat, the overall training time re-mains comparable. This is largely because RobustSplat [4] performs feature extraction at every iteration, whereas our method computes features only between phases. This per-phase design decouples feature extraction from the inner optimization loop, allowing it to be performed significantly less frequently and making it feasible to use heavier features or more advanced techniques. Exploring such extensions is an interesting direction for future work. 
+
+A.5. Effect on Different Masking Metrics. 
+
+We next study the effect of different feature transformations 
+
+F (·) in Eq. 1 of the main paper for computing the discrep-ancy map between rendered and ground-truth images. This choice directly affects how distractor regions are localized and masked out. As shown in Tab. A4, DINOv3 features yield the best overall performance (PSNR = 29.65 dB), outperforming                  
+
+> Table A4. Quantitative results with different masking metrics. †
+> indicates our default setting. Our method with DINOv3 yields the best performance. Even when using low-level metrics such as PSNR and SSIM, our method outperforms vanilla 3DGS. Method PSNR SSIM LPIPS DINOv3 †29.65 0.90 0.13 DINOv2 29.42 0.89 0.14 SSIM 28.88 0.89 0.13 PSNR 28.71 0.89 0.14
+
+earlier versions such as DINOv2 (29.42 dB) and simple low-level metrics like SSIM or PSNR. However, note that even when low-level metrics as PSNR and SSIM are em-ployed (i.e., without any pretrained model), our method consistently surpasses vanilla 3DGS across all evaluation metrics. This confirms that the proposed progressive filter-ing strategy itself is intrinsically effective, while stronger feature representations such as DINOv3 further amplify its robustness and accuracy.

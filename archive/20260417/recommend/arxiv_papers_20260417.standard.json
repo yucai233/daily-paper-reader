@@ -1,0 +1,334 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-17T20:08:00.618717+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 8,
+    "quick_skim_target": 11,
+    "quick_selected": 8
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.12580v2",
+      "title": "PDF-GS: Progressive Distractor Filtering for Robust 3D Gaussian Splatting",
+      "abstract": "Recent advances in 3D Gaussian Splatting (3DGS) have enabled impressive real-time photorealistic rendering. However, conventional training pipelines inherently assume full multi-view consistency among input images, which makes them sensitive to distractors that violate this assumption and cause visual artifacts. In this work, we revisit an underexplored aspect of 3DGS: its inherent ability to suppress inconsistent signals. Building on this insight, we propose PDF-GS (Progressive Distractor Filtering for Robust 3D Gaussian Splatting), a framework that amplifies this self-filtering property through a progressive multi-phase optimization. The progressive filtering phases gradually remove distractors by exploiting discrepancy cues, while the following reconstruction phase restores fine-grained, view-consistent details from the purified Gaussian representation. Through this iterative refinement, PDF-GS achieves robust, high-fidelity, and distractor-free reconstructions, consistently outperforming baselines across diverse datasets and challenging real-world conditions. Moreover, our approach is lightweight and easily adaptable to existing 3DGS frameworks, requiring no architectural changes or additional inference overhead, leading to a new state-of-the-art performance. The code is publicly available at https://github.com/kangrnin/PDF-GS.",
+      "authors": [
+        "Kangmin Seo",
+        "MinKyu Lee",
+        "Tae-Young Kim",
+        "ByeongCheol Lee",
+        "JoonSeoung An",
+        "Jae-Pil Heo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-14T11:03:55+00:00",
+      "link": "https://arxiv.org/pdf/2604.12580v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Neural rendering via 3D Gaussian Splatting optimization",
+      "llm_evidence_cn": "通过3D高斯泼溅优化的神经渲染",
+      "llm_evidence": "通过3D高斯泼溅优化的神经渲染",
+      "canonical_evidence": "通过3D高斯泼溅优化的神经渲染",
+      "llm_tldr_en": "Improves 3D Gaussian Splatting robustness by progressively filtering out inconsistent distractors during training.",
+      "llm_tldr_cn": "通过在训练过程中逐步过滤不一致的干扰物，提高了3D高斯泼溅的鲁棒性。",
+      "llm_tldr": "通过在训练过程中逐步过滤不一致的干扰物，提高了3D高斯泼溅的鲁棒性。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.11559v1",
+      "title": "Progressively Texture-Aware Diffusion for Contrast-Enhanced Sparse-View CT",
+      "abstract": "Diffusion-based sparse-view CT (SVCT) imaging has achieved remarkable advancements in recent years, thanks to its more stable generative capability. However, recovering reliable image content and visually consistent textures is still a crucial challenge. In this paper, we present a Progressively Texture-aware Diffusion (PTD) model, a coarse-to-fine learning framework tailored for SVCT. Specifically, PTD comprises a basic reconstructive module PTD$_{\\textit{rec}}$ and a conditional diffusion module PTD$_{\\textit{diff}}$. PTD$_{\\textit{rec}}$ first learns a deterministic mapping to recover the majority of the underlying low-frequency signals (i.e., coarse content with smoothed textures), which serves as the initial estimation to enable fidelity. Moreover, PTD$_{\\textit{diff}}$ aims to reconstruct high-fidelity details for coarse prediction, which explores a dual-domain guided conditional diffusion to generate reliable and consistent textures. Extensive experiments on sparse-view CT reconstruction demonstrate that our PTD achieves superior performance in terms of structure similarity and visual appeal with only a few sampling steps, which mitigates the randomness inherent in general diffusion models and enables a better trade-off between visual quality and fidelity of high-frequency details.",
+      "authors": [
+        "Tianqi Wang",
+        "Wenchao Du",
+        "Hongyu Yang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "physics.med-ph"
+      ],
+      "published": "2026-04-13T14:45:09+00:00",
+      "link": "https://arxiv.org/pdf/2604.11559v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Diffusion-based volumetric reconstruction for sparse-view CT",
+      "llm_evidence_cn": "基于扩散模型的稀疏视角CT体重建",
+      "llm_evidence": "基于扩散模型的稀疏视角CT体重建",
+      "canonical_evidence": "基于扩散模型的稀疏视角CT体重建",
+      "llm_tldr_en": "Presents a texture-aware diffusion model for high-fidelity volumetric reconstruction in sparse-view CT.",
+      "llm_tldr_cn": "提出一种纹理感知扩散模型，用于稀疏视角CT中的高保真体重建。",
+      "llm_tldr": "提出一种纹理感知扩散模型，用于稀疏视角CT中的高保真体重建。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.14025v1",
+      "title": "Feed-Forward 3D Scene Modeling: A Problem-Driven Perspective",
+      "abstract": "Reconstructing 3D representations from 2D inputs is a fundamental task in computer vision and graphics, serving as a cornerstone for understanding and interacting with the physical world. While traditional methods achieve high fidelity, they are limited by slow per-scene optimization or category-specific training, which hinders their practical deployment and scalability. Hence, generalizable feed-forward 3D reconstruction has witnessed rapid development in recent years. By learning a model that maps images directly to 3D representations in a single forward pass, these methods enable efficient reconstruction and robust cross-scene generalization. Our survey is motivated by a critical observation: despite the diverse geometric output representations, ranging from implicit fields to explicit primitives, existing feed-forward approaches share similar high-level architectural patterns, such as image feature extraction backbones, multi-view information fusion mechanisms, and geometry-aware design principles. Consequently, we abstract away from these representation differences and instead focus on model design, proposing a novel taxonomy centered on model design strategies that are agnostic to the output format. Our proposed taxonomy organizes the research directions into five key problems that drive recent research development: feature enhancement, geometry awareness, model efficiency, augmentation strategies and temporal-aware models. To support this taxonomy with empirical grounding and standardized evaluation, we further comprehensively review related benchmarks and datasets, and extensively discuss and categorize real-world applications based on feed-forward 3D models. Finally, we outline future directions to address open challenges such as scalability, evaluation standards, and world modeling.",
+      "authors": [
+        "Weijie Wang",
+        "Qihang Cao",
+        "Sensen Gao",
+        "Donny Y. Chen",
+        "Haofei Xu",
+        "Wenjing Bian",
+        "Songyou Peng",
+        "Tat-Jen Cham",
+        "Chuanxia Zheng",
+        "Andreas Geiger",
+        "Jianfei Cai",
+        "Jia-Wang Bian",
+        "Bohan Zhuang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.GR"
+      ],
+      "published": "2026-04-15T16:07:18+00:00",
+      "link": "https://arxiv.org/pdf/2604.14025v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "survey of feed-forward 3D scene modeling and geometric output representations",
+      "llm_evidence_cn": "前馈3D场景建模与几何输出表示的综述",
+      "llm_evidence": "前馈3D场景建模与几何输出表示的综述",
+      "canonical_evidence": "前馈3D场景建模与几何输出表示的综述",
+      "llm_tldr_en": "A survey on feed-forward 3D reconstruction methods mapping images directly to 3D representations.",
+      "llm_tldr_cn": "关于将图像直接映射到3D表示的前馈3D重建方法的综述。",
+      "llm_tldr": "关于将图像直接映射到3D表示的前馈3D重建方法的综述。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.13416v1",
+      "title": "DF3DV-1K: A Large-Scale Dataset and Benchmark for Distractor-Free Novel View Synthesis",
+      "abstract": "Advances in radiance fields have enabled photorealistic novel view synthesis. In several domains, large-scale real-world datasets have been developed to support comprehensive benchmarking and to facilitate progress beyond scene-specific reconstruction. However, for distractor-free radiance fields, a large-scale dataset with clean and cluttered images per scene remains lacking, limiting the development. To address this gap, we introduce DF3DV-1K, a large-scale real-world dataset comprising 1,048 scenes, each providing clean and cluttered image sets for benchmarking. In total, the dataset contains 89,924 images captured using consumer cameras to mimic casual capture, spanning 128 distractor types and 161 scene themes across indoor and outdoor environments. A curated subset of 41 scenes, DF3DV-41, is systematically designed to evaluate the robustness of distractor-free radiance field methods under challenging scenarios. Using DF3DV-1K, we benchmark nine recent distractor-free radiance field methods and 3D Gaussian Splatting, identifying the most robust methods and the most challenging scenarios. Beyond benchmarking, we demonstrate an application of DF3DV-1K by fine-tuning a diffusion-based 2D enhancer to improve radiance field methods, achieving average improvements of 0.96 dB PSNR and 0.057 LPIPS on the held-out set (e.g., DF3DV-41) and the On-the-go dataset. We hope DF3DV-1K facilitates the development of distractor-free vision and promotes progress beyond scene-specific approaches.",
+      "authors": [
+        "Cheng-You Lu",
+        "Yi-Shan Hung",
+        "Wei-Ling Chi",
+        "Hao-Ping Wang",
+        "Charlie Li-Ting Tsai",
+        "Yu-Cheng Chang",
+        "Yu-Lun Liu",
+        "Thomas Do",
+        "Chin-Teng Lin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-04-15T02:33:44+00:00",
+      "link": "https://arxiv.org/pdf/2604.13416v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Large-scale dataset for radiance fields and novel view synthesis",
+      "llm_evidence_cn": "用于辐射场和新视角合成的大规模数据集",
+      "llm_evidence": "用于辐射场和新视角合成的大规模数据集",
+      "canonical_evidence": "用于辐射场和新视角合成的大规模数据集",
+      "llm_tldr_en": "Introduces a large-scale real-world dataset to benchmark distractor-free radiance field reconstruction.",
+      "llm_tldr_cn": "引入一个大规模真实世界数据集，用于基准测试无干扰物的辐射场重建。",
+      "llm_tldr": "引入一个大规模真实世界数据集，用于基准测试无干扰物的辐射场重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.14928v1",
+      "title": "Hybrid Latents -- Geometry-Appearance-Aware Surfel Splatting",
+      "abstract": "We introduce a hybrid Gaussian-hash-grid radiance representation for reconstructing 2D Gaussian scene models from multi-view images. Similar to NeST splatting, our approach reduces the entanglement between geometry and appearance common in NeRF-based models, but adds per-Gaussian latent features alongside hash-grid features to bias the optimizer toward a separation of low- and high-frequency scene components. This explicit frequency-based decomposition reduces the tendency of high-frequency texture to compensate for geometric errors. Encouraging Gaussians with hard opacity falloffs further strengthens the separation between geometry and appearance, improving both geometry reconstruction and rendering efficiency. Finally, probabilistic pruning combined with a sparsity-inducing BCE opacity loss allows redundant Gaussians to be turned off, yielding a minimal set of Gaussians sufficient to represent the scene. Using both synthetic and real-world datasets, we compare against the state of the art in Gaussian-based novel-view synthesis and demonstrate superior reconstruction fidelity with an order of magnitude fewer primitives.",
+      "authors": [
+        "Neel Kelkar",
+        "Simon Niedermayr",
+        "Klaus Engel",
+        "Rüdiger Westermann"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-04-16T12:13:09+00:00",
+      "link": "https://arxiv.org/pdf/2604.14928v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "improving rendering efficiency and geometry reconstruction",
+      "llm_evidence_cn": "提高渲染效率与几何重建质量",
+      "llm_evidence": "提高渲染效率与几何重建质量",
+      "canonical_evidence": "提高渲染效率与几何重建质量",
+      "llm_tldr_en": "Uses hybrid Gaussian-hash-grid representations to improve rendering efficiency and scene reconstruction.",
+      "llm_tldr_cn": "采用混合高斯哈希网格表示来提高渲染效率和场景重建质量。",
+      "llm_tldr": "采用混合高斯哈希网格表示来提高渲染效率和场景重建质量。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.13856v1",
+      "title": "Any3DAvatar: Fast and High-Quality Full-Head 3D Avatar Reconstruction from Single Portrait Image",
+      "abstract": "Reconstructing a complete 3D head from a single portrait remains challenging because existing methods still face a sharp quality-speed trade-off: high-fidelity pipelines often rely on multi-stage processing and per-subject optimization, while fast feed-forward models struggle with complete geometry and fine appearance details. To bridge this gap, we propose Any3DAvatar, a fast and high-quality method for single-image 3D Gaussian head avatar generation, whose fastest setting reconstructs a full head in under one second while preserving high-fidelity geometry and texture. First, we build AnyHead, a unified data suite that combines identity diversity, dense multi-view supervision, and realistic accessories, filling the main gaps of existing head data in coverage, full-head geometry, and complex appearance. Second, rather than sampling unstructured noise, we initialize from a Plücker-aware structured 3D Gaussian scaffold and perform one-step conditional denoising, formulating full-head reconstruction into a single forward pass while retaining high fidelity. Third, we introduce auxiliary view-conditioned appearance supervision on the same latent tokens alongside 3D Gaussian reconstruction, improving novel-view texture details at zero extra inference cost. Experiments show that Any3DAvatar outperforms prior single-image full-head reconstruction methods in rendering fidelity while remaining substantially faster.",
+      "authors": [
+        "Yujie Gao",
+        "Yao Xiao",
+        "Xiangnan Zhu",
+        "Ya Li",
+        "Yiyi Zhang",
+        "Liqing Zhang",
+        "Jianfu Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-15T13:24:47+00:00",
+      "link": "https://arxiv.org/pdf/2604.13856v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "fast feed-forward 3D Gaussian head avatar generation",
+      "llm_evidence_cn": "快速前馈3D高斯头部头像生成",
+      "llm_evidence": "快速前馈3D高斯头部头像生成",
+      "canonical_evidence": "快速前馈3D高斯头部头像生成",
+      "llm_tldr_en": "Any3DAvatar enables high-quality, sub-second 3D head reconstruction from a single image using Gaussian Splatting.",
+      "llm_tldr_cn": "Any3DAvatar利用高斯泼溅技术实现单张图像的高质量、亚秒级3D头部重建。",
+      "llm_tldr": "Any3DAvatar利用高斯泼溅技术实现单张图像的高质量、亚秒级3D头部重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.15047v1",
+      "title": "Implicit Neural Representations: A Signal Processing Perspective",
+      "abstract": "Implicit neural representations (INRs) mark a fundamental shift in signal modeling, moving from discrete sampled data to continuous functional representations. By parameterizing signals as neural networks, INRs provide a unified framework for representing images, audio, video, 3D geometry, and beyond as continuous functions of their coordinates. This functional viewpoint enables signal operations such as differentiation to be carried out analytically through automatic differentiation rather than through discrete approximations. In this article, we examine the evolution of INRs from a signal processing perspective, emphasizing spectral behavior, sampling theory, and multiscale representation. We trace the progression from standard coordinate based networks, which exhibit a spectral bias toward low frequency components, to more advanced designs that reshape the approximation space through specialized activations, including periodic, localized, and adaptive functions. We also discuss structured representations, such as hierarchical decompositions and hash grid encodings, that improve spatial adaptivity and computational efficiency. We further highlight the utility of INRs across a broad range of applications, including inverse problems in medical and radar imaging, compression, and 3D scene representation. By interpreting INRs as learned signal models whose approximation spaces adapt to the underlying data, this article clarifies the field's core conceptual developments and outlines open challenges in theoretical stability, weight space interpretability, and large scale generalization.",
+      "authors": [
+        "Dhananjaya Jayasundara",
+        "Vishal M. Patel"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-16T14:12:06+00:00",
+      "link": "https://arxiv.org/pdf/2604.15047v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "implicit neural representations for 3D geometry and continuous functions",
+      "llm_evidence_cn": "用于3D几何和连续函数的隐式神经表示",
+      "llm_evidence": "用于3D几何和连续函数的隐式神经表示",
+      "canonical_evidence": "用于3D几何和连续函数的隐式神经表示",
+      "llm_tldr_en": "Reviews implicit neural representations as continuous functional models for signals and 3D geometry.",
+      "llm_tldr_cn": "从信号处理角度综述了作为信号和3D几何连续函数模型的隐式神经表示。",
+      "llm_tldr": "从信号处理角度综述了作为信号和3D几何连续函数模型的隐式神经表示。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.15239v1",
+      "title": "TokenGS: Decoupling 3D Gaussian Prediction from Pixels with Learnable Tokens",
+      "abstract": "In this work, we revisit several key design choices of modern Transformer-based approaches for feed-forward 3D Gaussian Splatting (3DGS) prediction. We argue that the common practice of regressing Gaussian means as depths along camera rays is suboptimal, and instead propose to directly regress 3D mean coordinates using only a self-supervised rendering loss. This formulation allows us to move from the standard encoder-only design to an encoder-decoder architecture with learnable Gaussian tokens, thereby unbinding the number of predicted primitives from input image resolution and number of views. Our resulting method, TokenGS, demonstrates improved robustness to pose noise and multiview inconsistencies, while naturally supporting efficient test-time optimization in token space without degrading learned priors. TokenGS achieves state-of-the-art feed-forward reconstruction performance on both static and dynamic scenes, producing more regularized geometry and more balanced 3DGS distribution, while seamlessly recovering emergent scene attributes such as static-dynamic decomposition and scene flow.",
+      "authors": [
+        "Jiawei Ren",
+        "Michal Jan Tyszkiewicz",
+        "Jiahui Huang",
+        "Zan Gojcic"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-16T17:12:37+00:00",
+      "link": "https://arxiv.org/pdf/2604.15239v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Transformer-based 3D Gaussian Splatting prediction and rendering loss",
+      "llm_evidence_cn": "基于Transformer的3D高斯泼溅预测与渲染损失",
+      "llm_evidence": "基于Transformer的3D高斯泼溅预测与渲染损失",
+      "canonical_evidence": "基于Transformer的3D高斯泼溅预测与渲染损失",
+      "llm_tldr_en": "Decouples 3D Gaussian prediction from pixels using learnable tokens for more robust feed-forward synthesis.",
+      "llm_tldr_cn": "使用可学习标记将3D高斯预测与像素解耦，实现更鲁棒的前馈合成。",
+      "llm_tldr": "使用可学习标记将3D高斯预测与像素解耦，实现更鲁棒的前馈合成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

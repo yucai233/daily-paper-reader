@@ -1,0 +1,536 @@
+Title: DF3DV-1K: A Large-Scale Dataset and Benchmark for Distractor-Free Novel View Synthesis
+
+URL Source: https://arxiv.org/pdf/2604.13416v1
+
+Published Time: Thu, 16 Apr 2026 00:26:11 GMT
+
+Number of Pages: 21
+
+Markdown Content:
+# DF3DV-1K: A Large-Scale Dataset and Benchmark for Distractor-Free Novel View Synthesis 
+
+Cheng-You Lu 1, Yi-Shan Hung 2, Wei-Ling Chi 3⋆, Hao-Ping Wang 3∗, Charlie Li-Ting Tsai 1, Yu-Cheng Chang 1, Yu-Lun Liu 3, Thomas Do 1, and Chin-Teng Lin 1
+
+1 University of Technology Sydney 
+
+2 University of Sydney 
+
+3 National Yang Ming Chiao Tung University (a) DF3DV -1K 
+
+* 1048 Indoor/Outdoor Scenes 
+
+> Manual capture over 9 months
+
+* Cluttered & Clean Image per Scene 
+
+* 128 Distractor Types 
+
+* Full Benchmark across 10 Methods 
+
+> ~2.03 L4/L40 GPU Years
+
+(b) DF Dataset Comparison  (c) DF3DV -1K Full Benchmark across 10 Methods       
+
+> No. of
+> Scenes* Difficulty
+> (3DGS LPIPS)
+> No. of
+> Outdoor
+> Scenes*
+> No. of
+> Indoor
+> Scenes* No. of
+> Benchmarkable
+> Scenes*
+> No. of
+> Images*
+> No. of
+> Themes*
+> No. of
+> Distractor
+> Types*
+> DF3DV -1K RobustNeRF On -the -go PSNR ↑LPIPS ↓SSIM ↑
+
+## … …  
+
+> Cluttered Images Synthesis Clean Images Distractor -Free Radiance Fields
+
+… … …
+
+Fig. 1: Features of the DF3DV-1K dataset and benchmark. (a) DF3DV-1K Dataset. We introduce DF3DV-1K, a large-scale distractor-free dataset comprising 1,048 manually captured indoor and outdoor scenes, with clean and cluttered images per scene spanning 128 distractor types. (b) Distractor-Free Dataset Compari-son. * denotes log scale in the normalized radar chart. We compare DF3DV-1K with public datasets [63, 65], showing a larger scale (e.g., ∼100 × more scenes), broader scene diversity (e.g., ∼10 × more distractor types), and increased difficulty, reflected by higher 3DGS [27] LPIPS. (c) DF3DV-1K Benchmark. A comprehensive bench-mark across nine recent distractor-free radiance field methods [19,30,33,44,50,64,79,82] and 3DGS [27] reveals varying levels of robustness to distractors. 
+
+Abstract. Advances in radiance fields have enabled photorealistic novel view synthesis. In several domains, large-scale real-world datasets have 
+
+⋆ Equal contribution. 
+
+> arXiv:2604.13416v1 [cs.CV] 15 Apr 2026
+
+2 C.-Y. Lu et al. been developed to support comprehensive benchmarking and to facilitate progress beyond scene-specific reconstruction. However, for distractor-free radiance fields, a large-scale dataset with clean and cluttered im-ages per scene remains lacking, limiting the development. To address this gap, we introduce DF3DV-1K, a large-scale real-world dataset com-prising 1,048 scenes, each providing clean and cluttered image sets for benchmarking. In total, the dataset contains 89,924 images captured us-ing consumer cameras to mimic casual capture, spanning 128 distractor types and 161 scene themes across indoor and outdoor environments. A curated subset of 41 scenes, DF3DV-41, is systematically designed to evaluate the robustness of distractor-free radiance field methods un-der challenging scenarios. Using DF3DV-1K, we benchmark nine recent distractor-free radiance field methods and 3D Gaussian Splatting, iden-tifying the most robust methods and the most challenging scenarios. Beyond benchmarking, we demonstrate an application of DF3DV-1K by fine-tuning a diffusion-based 2D enhancer to improve radiance field methods, achieving average improvements of 0.96 dB PSNR and 0.057 LPIPS on the held-out set (e.g., DF3DV-41) and the On-the-go dataset. We hope DF3DV-1K facilitates the development of distractor-free vision and promotes progress beyond scene-specific approaches. 
+
+Keywords: Dataset · Benchmark · Radiance Field 
+
+## 1 Introduction 
+
+Radiance fields [27, 52] have shown photorealistic novel view synthesis abilities. (a) Distractor -free task 
+
+> (b) In -the -wild task (with large temporal gap)
+> (c) Dynamic task
+
+Fig. 2: Comparison of radiance fields. (a) Distractor-free tasks [63] use casually captured images within a short period. (b) In-the-wild tasks [24,51], with large temporal gaps, often target images collected across seasons. (c) Dynamic tasks [89] target 4D scene synthesis and assume densely captured sequential data. 
+
+Their variants such as in-the-wild (with large temporal gap) [3, 10, 11, 14, 18, 30, 33, 37, 51, 53, 80, 82–84, 88, 92, 95] and dynamic radiance fields [7, 17, 36, 40, 69, 70, 77, 81, 86, 89, 90] have been in-troduced together with comprehensive benchmarks and large-scale datasets [6, 22, 26, 42, 45, 46, 49, 61, 75, 75, 93, 100] to identify remaining limitations and support further research. Despite recent advances, distractor-free radiance field methods, which aim to synthesize clean novel views from images containing visual distractors commonly observed in short-span casual image capture (see Fig. 2), still lack a large-scale, chal-lenging dataset and benchmark with clean and cluttered images per scene (see Tab. 1). This absence leads to two major issues: (1) it becomes dif-DF3DV-1K 3
+
+Table 1: Comparison of the 3D datasets. We compare datasets based on the number of scenes, image resolution, capture density, scale of visual changes, camera intrinsic consistency within each scene, availability of clean and cluttered images, and indoor/outdoor coverage. Despite recent progress, distractor-free radiance field research still lacks a large-scale real-world dataset with clean and cluttered images per scene, limiting further development in this area.                                                                                                                       
+
+> Dataset Scene Resolution Capture Change Scale Intrinsics Clean Clutter Indoor Outdoor
+> Vanilla
+> DTU [22] 124 1K sparse —shared ✓✗✓✗
+> RealEstate10K [100] 10K 1K dense —shared ✓✗✓✗
+> ACID [46] 13K —dense —shared ✓✗✗✓
+> ScanNet++ [93] 1K 8K dense —shared ✓✗✓✗
+> DL3DV-10K [45] 10K 4K dense —shared ✓✗✓✓
+> In-the-wild (with large temporal gap)
+> Phototourism [24] 25 —sparse global multiple ✓✓✗✓
+> MegaScenes [75] 430K —sparse global multiple ✗✓✓✓
+> Dynamic
+> D2NeRF [89] 50.5K dense local shared ✓✓✓✗
+> SEED4D [26] 10K —dense local shared ✗✓✗✓
+> Dynamic RealEstate10K [12] 15K —dense local shared ✗✓✓✗
+> Distractor-free
+> RobustNeRF [65] 54K sparse local shared ✓✓✓✗
+> On-the-go [63] 12 4K sparse local shared ✓✓✓✓
+> DF3DV-1K (Ours) 1K 4K sparse local shared ✓✓✓✓
+
+ficult to identify the strengths and limitations of recent approaches, and (2) progress from scene-specific methods toward generalizable solutions is hindered. RobustNeRF 
+
+> Data. & Bench.
+> On -the -go
+> Data. & Bench.
+> ? Data. & Bench.
+> 1st Gen. DF -3DGS
+
+Fig. 3: Number of distractor-free radiance field papers. The first distractor-free radiance field method [65], targeting images captured over short time spans, was introduced in 2023 together with a benchmark. The research area rapidly gained attention in 2024 with the release of the On-the-go benchmark [63]. Although the number of works doubled in 2025, a public, large-scale, challenging dataset and benchmark systematically designed for this area are still lacking. 
+
+In fact, the first issue can be ob-served in recent works [19, 33, 44, 79]. For example, Fig. 10 in [44], Fig. 7 in [19], and Fig. 4 in [33] reveal sub-tle background differences often visible only under zoomed-in views. In other cases (see Fig. 4 in [79]), evaluations rely on cross-domain datasets support-ing only qualitative analysis. The num-ber of distractor-free radiance field pa-pers targeting casually captured images doubled in 2025 (see Fig. 3), yet no sys-tematically designed, large-scale public dataset or benchmark has emerged to keep pace with this rapid growth. These observations do not indicate short-comings of existing benchmarks but rather reflect the rapid progress of the field, highlighting the need for a new, challenging, and systematic benchmark (see Fig. 4) better aligned with current method capabilities, which our work aims to address. Similarly, the second issue 4 C.-Y. Lu et al. 
+
+Table 2: Comparison of real-world distractor-free radiance field datasets. We compare datasets based on the number of scenes, indoor and outdoor environments, distractor types, themes, images, and image resolution. DF3DV-1K is a large-scale, diverse real-world dataset, providing clean and cluttered images for each scene.                                                                                          
+
+> Dataset Scene Indoor Outdoor Distractor Theme Image Resolution Clean
+> Not released yet
+> Entity-NeRF [56] 303>3 378 —✗
+> UniVerse [8] 6—>3 >3 >3 ——✓
+> Wild3A [37] 321>3 3——✓
+> StaticNeRF [32] 880—2——✓
+> D-RE10K-iPhone [12] 50 50 0>2 41.8K —✓
+> Public
+> DeGauss [79] 440>5 4>11K —✗
+> RobustNeRF [65] 550441.6K 4K ✓
+> On-the-go [63] 12 210 14 10 2.2K 4K ✓
+> Not published yet (March 2026)
+> RealX3D [47] 55 55 0———7K ✓
+> T-3DGS [50] 550>2 4——✓
+> DF3DV-1K (Ours) 1K 726 322 128 161 89.9K 4K ✓
+
+can be observed by examining the development history of distractor-free radi-ance fields. The first distractor-free radiance field method [65], explicitly target-ing images captured over short time spans, was introduced in 2023 together with a benchmark, followed by several subsequent approaches [10,30,50,56,63,76,83]. Among them, [63] introduced a new paradigm and benchmark that influenced later research. Subsequently, many methods emerged [3,8,18,19,29,33,37,38,41, 44, 64, 79, 82], yet most require per-scene optimization. Only recently, in 2026, a generalizable radiance field model 4 fine-tuned on synthetic and small-scale real-world datasets [63] has been explored in this setting [2]. This delay highlights the need for a large-scale real-world dataset with clean and cluttered images per scene to enable research beyond scene-specific approaches. To facilitate progress, we present DF3DV-1K (Distractor-Free 3D Vision 1K) , a newly collected dataset designed for distractor-free novel view synthe-sis. The dataset comprises clean and cluttered images for each scene. In total, DF3DV-1K contains 1,048 indoor and outdoor scenes spanning 128 distractor types and 161 scene themes, with 89,924 images overall. To support and chal-lenge distractor-free radiance field research focusing on casually captured images, we mimic real-world capture conditions by systematically collecting data using consumer cameras (see Figs. 4 and 6). DF3DV-1K represents a large-scale, real-world, and diverse dataset with clean and cluttered images per scene for this research area (see Tab. 2). This extensive effort establishes a large-scale benchmark for distractor-free novel view synthesis. Using this bench-mark, we evaluate nine recent open-source distractor-free radiance field meth-ods [19, 30, 33, 44, 50, 64, 79, 82] together with 3DGS [27] across all 1,048 scenes. The large-scale evaluation identifies AsymGS [33] and RobustSplat [19] as the most robust methods, followed by OCSplats [44] and DeGauss [79] as the second- 
+
+> 4
+
+The codebase [2] was under preparation at the time of submission. DF3DV-1K 5Color -similar distractors: The distractor has 
+
+a color similar to the static parts. 
+
+Frontal occlusion distractors: The distractor 
+
+(e.g., fingers) occludes the view from the front .
+
+Fluid distractors: Distractors (e.g., water) exhibit 
+
+non -rigid, irregular, or scattered visual patterns. 
+
+Slow -motion distractors: The distractors (e.g., 
+
+train) move slowly over time. 
+
+Semi -transient distractors: Distractors (e.g., 
+
+rolling shutter) start moving from a static state. 
+
+Shadow distractors: Shadows cause appearance 
+
+changes without altering the geometric structure .
+
+Highly reflective distractors: Distractors (e.g., 
+
+CD) that exhibit strong specular reflections. 
+
+Large -scale distractors: Distractors that are 
+
+large in scale. 
+
+Local air distractors: Air distractors (e.g., smoke) 
+
+introduce transient, semi -transparent structures .
+
+Semantically similar distractors: The distractor 
+
+is semantically similar to the static parts. 
+
+Local appearance distractors: Distractors (e.g., 
+
+lighting changes) that alter surface appearance 
+
+without changing geometry. 
+
+Semi -transparent distractors: Distractors (e.g., 
+
+windows) cause foreground –background mixing. 
+
+Various distractors: Different distractors appear 
+
+across views. 
+
+Daily scenes: Dynamic interactions and object 
+
+manipulations in everyday scenes. 
+
+Common distractors as static parts: Common 
+
+distractors (e.g., passer -by) appear as static parts .
+
+Nighttime scenes: Low -light conditions and 
+
+artificial illumination introduce noise and reduce 
+
+the visibility of distractors. 
+
+Other distractors/scenes: Regular scenes with 
+
+common distractors (e.g., bag). 
+
+Other distractors/scenes: Regular large -scale 
+
+scenes with common distractors (e.g., passer -by). 
+
+Fig. 4: Samples of systematically designed scenarios in DF3DV-41. Each ex-ample, where green and red boxes denote clean and cluttered images, respectively, illus-trates a carefully designed scenario with curated distractor types or scene conditions, highlighting the benchmark’s diversity. These 17 scenarios systematically evaluate the robustness of distractor-free 3D reconstruction methods under challenging conditions. 
+
+best methods (see Tab. 3 and Fig. S.15). Interestingly, the ranking follows the publication timeline, particularly in PSNR and SSIM, reflecting a consistent and reasonable progression in performance as more recent methods advance the field. These methods are further benchmarked on DF3DV-41, a subset of DF3DV-1K consisting of 41 systematically designed capture scenes covering 17 distractor and scene scenarios (see Fig. 4 and S.5-6). This analysis identifies the most challenging cases (e.g., semantically similar and fluid distractors and nighttime scenes) and shows that AsymGS [33], RobustSplat [19], and OCSplats [44] re-main comparatively robust, while other methods degrade under certain scenarios (see Tabs. S.1-3). In addition, the results in Fig. 9 and Fig. S.1-4 reveal that exist-ing approaches, while demonstrating promising performance on prior datasets, still leave room for improvement in challenging scenarios. Finally, to promote progress beyond scene-specific methods, we apply DIFIX [87], a 2D enhance-ment framework for sparse-view radiance fields, to distractor-free radiance fields 6 C.-Y. Lu et al. 0 4   
+
+> 4 8
+> 8 12
+> 12 16
+> 16 20
+> 20 24
+> 24 28
+> 28 32
+> 32 36
+> 36 40
+> PSNR
+> 10 0
+> 10 1
+> 10 2
+> 10 3
+> 10 4
+> Number of images (log scale)
+> 0.0 0.1
+> 0.1 0.2
+> 0.2 0.3
+> 0.3 0.4
+> 0.4 0.5
+> 0.5 0.6
+> 0.6 0.7
+> 0.7 0.8
+> 0.8 0.9
+> 0.9 1.0
+> SSIM
+> 0.0 0.1
+> 0.1 0.2
+> 0.2 0.3
+> 0.3 0.4
+> 0.4 0.5
+> 0.5 0.6
+> 0.6 0.7
+> 0.7 0.8
+> 0.8 0.9
+> 0.9 1.0
+> LPIPS
+> Per-Image Performance Distribution of 3DGS
+> DF3DV-1K On-the-go RobustNeRF
+
+Fig. 5: Dataset difficulty analysis via per-image performance distributions. 
+
+DF3DV-1K shows wider LPIPS and SSIM distributions, indicating greater diversity and increased difficulty. In contrast, RobustNeRF [65] is relatively clean, where a vanilla 3DGS [27] frequently achieves PSNR values exceeding 30 dB. 
+
+by fine-tuning on DF3DV-1K* (e.g., 1,007 scenes) and evaluating on DF3DV-41 and the On-the-go dataset [63]. The resulting model, referred to as DI 2FIX (Distractor-Free DIFIX), achieves improvements of 0.96 dB PSNR and 0.057 LPIPS. The contributions are: (1) DF3DV-1K, a large-scale, real-world, and di-verse dataset for distractor-free novel view synthesis containing 1,048 indoor and outdoor scenes with clean and cluttered images spanning 128 distractor types and 161 scene themes. (2) A comprehensive benchmark evaluating nine recent distractor-free radiance field methods together with 3DGS, enabling system-atic robustness analysis across methods and scenarios. (3) DI 2FIX, an enhancer that leverages large-scale data to improve distractor-free radiance field rendering quality, achieving gains of 0.96 dB PSNR and a 0.057 reduction in LPIPS. 
+
+## 2 Related Work 
+
+2.1 Radiance Fields 
+
+Neural Radiance Fields [52] and 3D Gaussian Splatting (3DGS) [27] are widely used for novel view synthesis due to their photorealistic rendering capabili-ties. One line extends radiance fields from scene-specific to generalizable mod-els [2, 9, 13, 15, 20, 23, 25, 78, 91, 94, 97, 99, 102], which eliminate test-time opti-mization. Another line focuses on dynamic radiance fields [7, 17, 69, 77, 79, 89], enabling novel view synthesis for 4D scenes. A separate line investigates in-the-wild radiance fields with large temporal gaps [3, 10, 11, 14, 18, 30, 33, 37, 51, 53, 80, 82–84, 88, 92, 95], which typically aim to render novel views from images captured across seasons. Among the variants, distractor-free radiance fields [2,3,8,10,18,19,29,30,32,33,37,38,41,44,50,56,57,63–65,73,76,79,82,83,96] demonstrate the ability to synthesize clean novel views from casually captured images collected over short time spans 5. Although the boundaries between these lines [3, 10, 18, 30, 33, 37, 79, 82, 83] may overlap, we emphasize that each line typ-ically targets a specific data domain (see Fig. 2). Most existing distractor-free  
+
+> 5
+
+As this survey focuses on general scenarios, multi-modal [34,59,62], task-specific [16, 74, 85, 98], and domain-specific [1, 21, 39, 48, 71, 101] approaches are excluded. DF3DV-1K 7Metadata Annotation                                    
+
+> •Theme: kitchen
+> •Distractor: vegetable, ...
+> •Environment: indoor
+> Controllable Capture
+> •Clean capture •Cluttered capture
+> (a) Scene Design and Capture
+> Scene Design
+> •Theme: kitchen
+> •Distractor: vegetable, ...
+> •Coverage: 360 °
+> •Viewpoint: landscape
+> •#Clean: 50
+> •#Clutter: 50
+> (b) Data Curation
+> •Device: iPhone 15
+> •Resolution: 4K
+> •Image Format: JPEG
+> •Exposure: auto
+> •Focus: auto
+> •Anti -shake: disabled
+> Capture Setup Non -Controllable Capture
+> •Capture •Clean
+> •Clutter
+> Data Review
+> •Remove low -quality images
+> •Ensure clean images are free
+> of distractors
+> Pose Estimation and Undistortion
+> •COLMAP image undistortion
+> •COLMAP pose estimation
+> Tool -Assisted Data Verification
+> •instant -ngp
+> •Pass
+> •Fail
+
+Fig. 6: Overview of the data collection and curation pipeline. (a) Scene de-sign and capture. We design scenes with predefined themes, distractor types, cover-age (e.g., 180 ◦-360 ◦), viewpoint orientation (e.g., landscape or portrait), and the num-ber of images per scene. Images are captured using consumer cameras (e.g., iPhone). Camera settings such as exposure and focus are set to automatic by default and ad-justed only when necessary. Anti-shake settings are disabled to ensure consistent image resolution within each scene. For controllable setups, clean and cluttered scenes are captured separately. Otherwise, they are captured simultaneously and later separated by operators. (b) Data curation. Low-quality images (e.g., defocused samples) are removed through manual inspection by two experts per scene. Then, camera poses are jointly estimated using COLMAP [67, 68], followed by image undistortion. Next, scenes are reconstructed with instant-ngp [54] for verification. Failed cases are repro-cessed with adjusted COLMAP [67, 68] parameters and discarded if reconstruction remains unsuccessful. Finally, metadata are manually annotated. 
+
+radiance field methods remain scene-specific and require per-scene optimization. Only recently, the first generalizable distractor-free 3DGS [2] was introduced by fine-tuning a pretrained generalizable model [13] on synthetic data and a small-scale real-world dataset [63]. This delayed emergence of generalizable methods underscores the need for a large-scale, real-world, distractor-free dataset to en-able scalable training. Meanwhile, the rapid growth of distractor-free radiance field research (see Fig. 3) underscores the need for a large-scale, challenging dataset and benchmark for systematic evaluation across methods. 
+
+2.2 Datasets for Distractor-Free Radiance Fields 
+
+RobustNeRF [65] introduces an indoor, tabletop-scale dataset consisting of five scenes spanning four themes and four distractor types. Each scene provides both clean and cluttered image sets, in which distractor objects are manually repo-sitioned by operators between captures. Although it served as the first widely adopted dataset and benchmark, it has become less challenging for recent state-of-the-art methods, making it difficult to clearly distinguish among their perfor-mance differences. Another widely used dataset is the On-the-go dataset [63], which contains twelve scenes, including two indoor and ten outdoor scenes. The dataset spans ten scene themes and fourteen distractor types. Among these, six scenes provide clean images, enabling both qualitative and quantitative bench-8 C.-Y. Lu et al. Scene Count (log scale)              
+
+> iPhone 15 iPhone 12 Samsung Galaxy A15 Samsung Galaxy S22+ iPhone 16 iPhone 14 iPad Air Samsung Galaxy S7 iPhone 13 XREAL Beam Pro DJI Mini 3 Pro Samsung Galaxy Z Fold 5 0.0 0.5 1.0 1.5 2.0 2.5
+> Scene Distribution by Device Type Scene Count (log scale)
+> 4032x3024 3024x4032 3056x4080 4000x1848 4080x3060 3060x4080 5712x4284 4080x3072 4000x3000 0123
+> Scene Distribution by Resolution (W x H) Scene Count (log scale)
+> 2025-05 2025-06 2025-07 2025-08 2025-09 2025-10 2025-11 2025-12 2026-01 0.0 0.5 1.0 1.5 2.0 2.5
+> Scene Distribution by Month
+
+Fig. 7: Distribution of DF3DV-1K by capture device, resolution, and month of data collection. The distributions highlight the diversity of acquisition settings. 
+
+marking. This dataset has been widely adopted because it extends the eval-uation setting to outdoor environments and presents more challenging scenes (see Fig. 5). Despite being more challenging, as discussed in Sec. 1, it has also become saturated for recent methods, requiring many approaches to empha-size subtle visual differences in background regions to demonstrate performance gains. Some private datasets [8,37,56] or unpublished datasets [12,47,50], which are not publicly accessible before submission, are proposed. Among them, two amazing concurrent works, RealX3D [47] and D-RE10K-iPhone [12], provide paired clean and cluttered images captured with rail-mounted professional cam-eras and sparse-view indoor settings, respectively. As shown in Fig. 1 and Tab. 2, DF3DV-1K stands out by providing a large-scale collection of data with clean and cluttered images per scene, greater diversity, support for both qualitative and quantitative benchmarking, and more challenging, systematically designed scenarios under casual capture settings. 
+
+## 3 Data Acquisition and Curation 
+
+3.1 Data Acquisition Scene Design. The goal is to construct a large-scale dataset with clean and clut-tered images per scene for distractor-free radiance fields. Operators (see Fig. 6) first predefine each scene by specifying the scene theme (e.g., kitchen), poten-tial distractors (e.g., vegetables), viewpoint coverage ranging from 180 ◦ to 360 ◦,viewpoint orientation (e.g., landscape or portrait), and the approximate number of clean and cluttered images to be captured. The indoor and outdoor capture protocols follow prior works [63, 65]. For indoor scenes, distractors are manually introduced. In contrast, for uncontrolled environments where distractors natu-rally exist, no or limited additional distractors are introduced. 
+
+Capture Setup. Operators select a device configured to capture 4K JPEG im-ages with automatic exposure and focus. Images are taken individually rather than in video mode, and anti-shake is disabled to maintain consistent resolution. Operators may adjust exposure or focus when needed to prevent defocusing. 
+
+Capture. For controllable scenes, operators capture clean and cluttered im-ages separately. For uncontrollable scenes, both conditions are captured together and later manually separated. Operators are instructed to pause capture dur-ing windy conditions. This manual capture process closely mimics casual image DF3DV-1K 90 10% 
+
+> 10 20%
+> 20 30%
+> 30 40%
+> 40 50%
+> 50 60%
+> 60 70%
+> 70 80%
+> 80 90%
+> 90 100%
+> Image ratio per scene
+> 0
+> 100
+> 200
+> 300
+> Number of scenes  Scene Count by Clean Image Ratio
+> 0 10%
+> 10 20%
+> 20 30%
+> 30 40%
+> 40 50%
+> 50 60%
+> 60 70%
+> 70 80%
+> 80 90%
+> 90 100%
+> Image ratio per scene
+> Number of scenes  Scene Count by Cluttered Image Ratio
+> 0 20
+> 20 40
+> 40 60
+> 60 80
+> 80 100
+> 100 120
+> 120 140
+> 140+
+> Number of images
+> Number of scenes  Scene Count by Total Image Count
+
+Fig. 8: Scene count distribution. Clean images per scene skew slightly toward lower bins for efficient novel-view benchmarking, whereas cluttered images extend toward higher bins to capture diverse distractor conditions. Total images per scene remain comparable to typical non-sparse radiance field settings. 
+
+acquisition and thereby aligns with our dataset design goals. Furthermore, col-lecting data ourselves rather than sourcing images from existing data enables the customized design of challenging scenarios (see Fig. 4 and Figs. S.5-S.6). 
+
+3.2 Data Curation Data Review. Operators manually remove low-quality images (e.g., motion blur in static regions) and ensure the clean image set contains no distractors (see Fig. 6). We allow distractors themselves to exhibit lower visual quality (e.g., motion blur), as such artifacts naturally occur in casual capture scenarios. 
+
+Pose Estimation and Undistortion. Following common practice [63, 65], we use COLMAP [67, 68] to jointly estimate camera poses from clean and cluttered images, leveraging reliable correspondences from clean views to improve robust-ness and enforce a shared camera coordinate system. We then use these camera parameters to undistort all images, producing data used in our benchmark. 
+
+Tool-Assisted Data Verification. We reconstruct each scene using instant-ngp [54] to verify data quality. Failure cases typically include missing geometry, degenerate solutions, or fragmented reconstructions. When failures occur, we ad-just COLMAP [67, 68] parameters (e.g., minimum inlier threshold, registration trials, and minimum model size) to improve pose registration and avoid degen-eracy. Scenes that still fail after tuning are discarded. In practice, most scenes pass verification directly, with only a few requiring additional tuning. 
+
+Annotation. Finally, we annotate passed scenes with metadata that requires manual labeling, including the scene theme, distractor type, and environment. 
+
+3.3 Data Statistics Scale. DF3DV-1K contains 1,048 scenes (726 indoor, 322 outdoor) with clean and cluttered image sets, totaling 89,924 images (see Tab. 2). The clean image ratio (see Fig. 8) per scene skews slightly toward lower ratios for efficient bench-marking, while the cluttered image ratio shifts toward higher ratios to cover more diverse distractors. Overall, the total number of images per scene is cen-tered around 50 images, comparable to commonly used radiance field datasets. 
+
+Semantic Diversity. DF3DV-1K covers 128 distractor types. The types span 10 C.-Y. Lu et al. 
+
+Table 3: Benchmark results on RobustNeRF [65], On-the-go [63], DF3DV-1K, and DF3DV-41. RobustNeRF [65] is the least challenging benchmark, where all methods achieve strong performance, with several methods exceeding 29 dB PSNR, comparable to results on clean benchmarks [31]. Compared with RobustNeRF [65], On-the-go [63] is more challenging due to the inclusion of outdoor scenes. DF3DV-1K and DF3DV-41 are the most challenging benchmarks, featuring large-scale data with diverse distractor scenarios. On DF3DV-1K and DF3DV-41, AsymGS [33] and RobustSplat [19] are the most robust, followed by OCSplats [44] and DeGauss [79].                                                                                                                                                  
+
+> Method Venue RobustNeRF [65] On-the-go [63] DF3DV-1K DF3DV-41
+> PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓
+> 3DGS [27] TOG’23 25.44 0.834 0.157 19.33 0.662 0.306 17.93 0.630 0.330 18.10 0.620 0.331 T-3DGS [50] arXiv 28.46 0.890 0.098 22.80 0.818 0.128 18.92 0.682 0.263 19.00 0.672 0.259 T-3DGS-TMR [50] arXiv 26.79 0.872 0.121 19.82 0.736 0.231 18.11 0.657 0.296 18.41 0.654 0.279 WildGaussians [30] NeurIPS’24 27.25 0.872 0.130 22.60 0.793 0.155 18.78 0.669 0.293 19.26 0.670 0.285 SLS [64] TOG’25 28.70 0.873 0.103 22.73 0.779 0.153 19.75 0.694 0.263 19.37 0.662 0.287 DeSplat [82] CVPR’25 28.57 0.880 0.096 22.74 0.805 0.121 19.26 0.681 0.249 19.31 0.662 0.248 DeGauss [79] ICCV’25 29.22 0.892 0.089 23.57 0.831 0.107 20.00 0.714 0.243 19.98 0.695 0.236 OCSplats [44] ICCV’25 28.91 0.884 0.088 22.98 0.817 0.108 20.02 0.710 0.247 19.84 0.689 0.249 RobustSplat [19] ICCV’25 29.19 0.889 0.089 23.09 0.825 0.112 20.13 0.714 0.226 19.95 0.696 0.232 AsymGS [33] NeurIPS’25 29.44 0.896 0.096 23.16 0.821 0.136 20.49 0.735 0.229 20.35 0.712 0.247
+
+from common objects (e.g., cars) to less frequent or large-scale distractors (e.g., planes). In addition, DF3DV-41 (see Fig. 4) contains systematically designed distractor types (e.g., semantically similar distractors challenging feature-based methods) and scene themes. See Fig. S.16 for detailed distributions. 
+
+Capture Diversity. DF3DV-1K is collected over nine months. The dataset in-cludes data captured using 12 consumer cameras, ranging from iPhone to Sam-sung smartphones, covering nine different image resolutions (see Fig. 7). 
+
+## 4 Benchmarks & Experiments 
+
+4.1 DF3DV-1K and DF3DV-41 Benchmarks Benchmark Methods. We evaluate recent open-source distractor-free radi-ance field methods, including AsymGS [33], RobustSplat [19], OCSplats [44], DeGauss [79], SLS [64], DeSplat [82], WildGaussians [30], T-3DGS and T-3DGS-TMR [50], together with 3DGS [27]. See Sec. S.2 for more details. 
+
+Most Robust Methods on Large-Scale Benchmarks. Tab. 3 shows that AsymGS [33] and RobustSplat [19] are the most robust methods on DF3DV-1K and DF3DV-41, followed by OCSplats [44] and DeGauss [79] as the second most robust. This trend aligns with the publication timeline, reflecting steady performance improvements as methods evolve and supporting benchmark relia-bility. Tabs. S.1-3 present the relative improvements of each method compared to 3DGS [27] across scenarios. Among them, AsymGS [33], RobustSplat [19], and OCSplats [44] show stronger robustness, consistently outperforming 3DGS [27], while other methods degrade under specific scenarios. Fig. 9 and Figs. S.1-4 show similar a trend, with AsymGS [33], RobustSplat [19], OCSplats [44], and DeGauss [79] performing relatively well across several scenarios. DF3DV-1K 11 Semantically  Similar  
+
+> Distractors
+> Color-Similar Distractors
+> GT
+> 3DGS
+> T-3DGS
+> WildGaussians
+> SLS
+> DeSplat
+> DeGauss
+> OCSplats
+> RobustSplat
+> AsymGS
+> GT
+> 3DGS
+> T-3DGS
+> WildGaussians
+> SLS
+> DeSplat
+> DeGauss
+> OCSplats RobustSplat
+> AsymGS
+
+Fig. 9: Qualitative results of the radiance field methods on DF3DV-41. The benchmark introduces systematically challenging conditions that enable clear visual comparison across methods and support the evaluation of robustness differences. For instance, WildGaussian [30] is less robust to color-similar distractors and tends to blend the black distractors with the background, while DeSplat [82] produces a noisier background in the chess scene. 
+
+DF3DV-1K and DF3DV-41 vs. Prior Benchmarks. Compared with the public benchmarks [63, 65], DF3DV-1K and DF3DV-41 are larger in scale and more diverse in distractor types and scene themes, discouraging per-scene tuning, and posing greater challenges. Tab. 3 further confirms this trend. The Robust-NeRF [65] benchmark appears less challenging, as improvements over 3DGS [27] are modest while many methods still achieve PSNR above 29 dB, comparable to 3DGS performance on clean-scene benchmarks [31]. In contrast, DF3DV-1K and DF3DV-41 are more challenging than On-the-go [63], exhibiting lower PSNR and SSIM, higher LPIPS, and smaller gains over 3DGS [27] across methods. Fig. S.15 shows the top-4 most robust methods on RobustNeRF [65], On-the-go [63], and DF3DV-1K. Rankings differ across datasets, underscoring the importance of large-scale and diverse benchmarking. Notably, rankings on DF3DV-1K roughly follow publication timelines, a trend less evident in prior benchmarks. Recent methods often rely on subtle background differences in qualitative comparisons on earlier benchmarks to highlight strengths or limitations (see Sec. 1). This is not a shortcoming of existing benchmarks, but rather reflects rapid method-ological progress and the need for more challenging evaluations. Our benchmark addresses this gap by enabling “zoom-in no more” qualitative comparisons, where performance differences are directly observable. 
+
+Limitations of Current Methods. Tabs. S.1-3 show the relative improve-ment of each method relative to 3DGS [27] across scenarios. The quantitative results show that semantically similar and fluid distractors are the most chal-lenging distractor types, while nighttime scenes represent the most difficult scene type, as indicated by the lower 3DGS performance and smaller achievable im-12 C.-Y. Lu et al. 
+
+Table 4: Effect of enhancers. Vanilla is the rendering result of the methods [19, 27, 30, 33, 44, 50, 64, 79, 82]. DIFIX+RobustNeRF and DI 2FIX are DIFIX [87] fine-tuned on RobustNeRF [65] and DF3DV-1K*, respec-tively. Results report mean performance relative to Vanilla on the On-the-go [63] and DF3DV-41.                
+
+> Method PSNR ↑SSIM ↑LPIPS ↓
+> Vanilla 20 .82 0.731 0.211
+> DIFIX [87] 20 .16 0.663 0.223
+> DIFIX+RobustNeRF 20 .54 0.695 0.203
+> DI 2FIX (Ours) 21 .78 0.737 0.154
+
+Table 5: Effect of train-ing data scale and diver-sity on DI 2FIX. We vary the number of DF3DV-1K* training scenes from 250, 500, 750, to 1,007 and report the mean per-formance on the On-the-go [63] and DF3DV-41. Per-formance consistently im-proves as the training set size increases, and begins to plateau at larger scales.               
+
+> Method Scenes PSNR ↑SSIM ↑LPIPS ↓
+> DI 2FIX 250 21 .42 0.723 0.169
+> 500 21 .57 0.731 0.163
+> 750 21 .69 0.736 0.159
+> 1K 21 .78 0.737 0.154
+
+Table 6: Effect of train-ing data degradation level on DI 2FIX. We vary the LPIPS threshold used to select training pairs and report the mean per-formance on the On-the-go [63] and DF3DV-41. Moderate thresholds yield the best performance, while overly strict or overly loose selection slightly reduces performance.                   
+
+> Method ≤LPIPS PSNR ↑SSIM ↑LPIPS ↓
+> DI 2FIX 0.1 21 .55 0.734 0.166
+> 0.3 21 .64 0.737 0.160
+> 0.5 21 .78 0.737 0.154
+> 0.7 21 .70 0.734 0.161
+> 0.9 21 .73 0.731 0.165
+
+provements. This difficulty arises because many methods rely on semantic fea-tures [28,55,60,72] to identify distractors. When distractors share similar seman-tic meanings with static scene objects, distinguishing distractors becomes diffi-cult (see Fig. 9 and Fig. S.2). For fluid distractors, many methods learn masks online to remove dynamic content. However, fluid phenomena (e.g., splashes) are often spatially scattered and semi-transparent, which causes masking strategies to inadvertently remove large valid scene or fail to fully suppress the distractors (see blending artifacts in Fig. S.1). For nighttime scenes, many approaches rely on fixed thresholds to filter distractors. Because these thresholds are typically tuned for daytime conditions, they become unreliable under low illumination, where distractors and static components are harder to distinguish (see Fig. S.4). 
+
+4.2 Beyond Scene-Specific Methods 
+
+Distractor-free radiance field methods show promising results but still exhibit limitations (see Fig. 9 and Figs. S1-4), motivating the question of whether per-formance can be improved by enhancing existing methods without model modifi-cations or scene-specific tuning. We therefore conduct a pilot experiment demon-strating how DF3DV-1K facilitates generalizable solutions. 
+
+Experimental Details. We introduce DI 2FIX (Distractor-Free DIFIX), a plug-and-play 2D enhancer 6 built on DIFIX [87] to improve radiance field render-ings. DIFIX [87] is a diffusion-based model [58, 66] that enhances radiance field renderings under sparse input using a clean reference view and degraded target view. To adapt DIFIX [87] to distractor-free tasks, we replace the clean reference view with a radiance field rendering (see Sec. S.3 for details). We construct paired  
+
+> 6
+
+We choose DIFIX [87] instead of other methods [29] due to its real-time speed and publicly available codebase. DF3DV-1K 13 3. 
+
+> 현
+> 편
+> GT
+> Target
+> (T-3DGS)
+> DIFIX
+> DIFIX+RobustNeRF
+> DI2FIX
+> GT
+> Target
+> (DeGauss)
+> DIFIX
+> DIFIX+RobustNeRF
+> DI2FIX
+> 1월
+> 4
+
+Fig. 10: Qualitative results of enhancers. Leveraging DF3DV-1K*, a large-scale and diverse dataset, DI 2FIX effectively removes distractor artifacts (e.g., dynamic chess pieces and vegetable artifacts) while inpainting occluded regions in target views. GT    
+
+> Target
+> (RobustSplat)
+> DF3DV-250 DF3DV-500
+> DF3DV-750
+> DF3DV-1K
+> GT
+> Target
+> (3DGS)
+> DF3DV-250 DF3DV-500 DF3DV-750
+> DF3DV-1K
+
+Fig. 11: Qualitative results of DI 2FIX trained with different data scales. 
+
+Increasing the amount and diversity of training data improves robustness. In particular, DI 2FIX progressively removes distractor artifacts (e.g., the chess pieces) while avoiding incorrect modifications to static scene content (e.g., the animal toy). 
+
+training data by reconstructing scenes from cluttered images in DF3DV-1K* (ex-cluding DF3DV-41) using radiance field methods [19,27, 30,33,44,50,79,82] and rendering novel views at clean-image views. This yields 316,890 candidate pairs, from which those with LPIPS ≤ γ are retained, where γ = 0 .5 in the final setting. We then fine-tune DIFIX [87] into DI 2FIX. 
+
+DI 2FIX Results. Tab. 4 reports the performance of 2D enhancers, where DI-FIX+Robust and DI 2FIX denote DIFIX [87] fine-tuned on RobustNeRF [65] data and DF3DV-1K*, respectively. DI 2FIX improves the average rendering quality of 3DGS [27] and distractor-free radiance-field methods, particularly in PSNR and LPIPS, achieving a 0.96 dB PSNR gain and a 0.057 reduction in LPIPS. In contrast, DIFIX [87] without domain-specific fine-tuning degrades performance on average, while DIFIX+RobustNeRF still results in notable per-formance drops. Tab. S.4 shows that DI 2FIX consistently improves PSNR and reduces LPIPS for every method. The SSIM changes are relatively limited, which is unsurprising since DIFIX [87] does not use an SSIM loss, and the perceptual trade-off with respect to SSIM has been reported in prior studies [4, 5, 35, 43]. Benefiting from large-scale and diverse supervision, DI 2FIX suppresses distrac-tor artifacts and restores visual structures across several challenging scenarios, whereas DIFIX and DIFIX+RobustNeRF often retain distractors or mistakenly modify static components (see Fig. 10 and Figs. S.7-12). 
+
+Importance of Dataset Scale and Diversity. We randomly split DF3DV-1K into training sets of 250, 500, and 750 scenes and fine-tune DIFIX [87] to 14 C.-Y. Lu et al.  
+
+> Fig. 12: Qualitative results of DI 2FIX trained using different LPIPS filtering thresholds. Overly strict thresholds (e.g., 0.1) exclude many challenging image pairs, making artifacts difficult to remove (e.g., floaters around the cutting board). Overly loose thresholds (e.g., 0.9) introduce excessive noisy training samples, which may lead to undesired modifications of scene content (e.g., disappearing game cards). A moderate threshold provides a better balance between data quality and diversity.
+
+obtain DI 2FIX. Performance improves with larger training sets (see Tab. 5), and qualitative results (see Fig. 11) show that additional scenes help DI 2FIX better identify distractors and avoid editing static regions. 
+
+Effect of Training Data Degradation Level. To analyze the effect, we select pairs with LPIPS ≤ γ, and fine-tune DIFIX [87] to obtain DI 2FIX. Tab. 6 and Fig. 12 show that a moderate threshold promotes better perfor-mance. Stricter thresholds make the training set less diverse and challenging, weakening the model’s ability to handle distractors, while looser thresholds en-courage unnecessary edits to non-distractor regions. 
+
+Out-of-Distribution Test. To evaluate the generalizability of DI 2FIX to un-seen radiance-field methods, we conduct a leave-one-method-out training and evaluation. Tab. S.5 shows stable out-of-distribution performance, with worst-case changes limited to 0.1 dB PSNR, 0.005 SSIM decrease, and a 0.009 LPIPS increase, indicating that DI 2FIX generalizes well to unseen methods. 
+
+## 5 Conclusion 
+
+We introduced DF3DV-1K, a large-scale real-world dataset and benchmark for distractor-free novel view synthesis. It contains 1,048 indoor and outdoor scenes with clean and cluttered images, spanning 161 scene themes and 128 distractor types, and includes DF3DV-41 as a systematically designed challenging subset for scenario-wise evaluation. We establish a comprehensive benchmark across 10 representative methods, enabling reliable large-scale comparisons and revealing remaining failure cases. Beyond benchmarking, we show that DF3DV-1K enables progress beyond scene-specific vision by fine-tuning DIFIX on DF3DV-1K* to obtain DI 2FIX, a plug-and-play 2D enhancer for distractor-free radiance fields that delivers consistent improvements. We hope DF3DV-1K accelerates the de-velopment of more robust and generalizable distractor-free vision methods. 
+
+Limitations. DF3DV-1K is smaller than general datasets [45] due to higher capture costs and careful scenario design. Slight cloud movement may still occur in clean images, but it is minimal due to the short capture duration. DI 2FIX may fail when input views are severely corrupted or exhibit confirmation bias (see Fig. S.14). A multi-reference framework is a good future direction. DF3DV-1K 15 
+
+## References 
+
+1. Bai, N., Yang, A., Chen, H., Du, C.: Satgs: Remote sensing novel view synthe-sis using multi-temporal satellite images with appearance-adaptive 3dgs. Remote Sensing 17 (9), 1609 (2025) 2. Bao, Y., Liao, J., Huo, J., Gao, Y.: Distractor-free generalizable 3d gaussian splat-ting. In: The Fourteenth International Conference on Learning Representations (2026) 3. Bao, Y., Tang, C., Wang, Y., Li, H.: Seg-wild: Interactive segmentation based on 3d gaussian splatting for unconstrained image collections. In: Proceedings of the 33rd ACM International Conference on Multimedia. pp. 8567–8576 (2025) 4. Blau, Y., Michaeli, T.: The perception-distortion tradeoff. In: Proceedings of the IEEE conference on computer vision and pattern recognition. pp. 6228–6237 (2018) 5. Blau, Y., Michaeli, T.: Rethinking lossy compression: The rate-distortion-perception tradeoff. In: International Conference on Machine Learning. pp. 675– 685. PMLR (2019) 6. Broxton, M., Flynn, J., Overbeck, R., Erickson, D., Hedman, P., Duvall, M., Dourgarian, J., Busch, J., Whalen, M., Debevec, P.: Immersive light field video with a layered mesh representation. ACM Transactions on Graphics (TOG) 39 (4), 86–1 (2020) 7. Cao, A., Johnson, J.: Hexplane: A fast representation for dynamic scenes. In: Pro-ceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recog-nition. pp. 130–141 (2023) 8. Cao, J., Wu, H., Feng, Z., Bao, H., Zhou, X., Peng, S.: Universe: Unleashing the scene prior of video diffusion models for robust radiance field reconstruction. In: Proceedings of the IEEE/CVF International Conference on Computer Vision. pp. 27031–27041 (2025) 9. Charatan, D., Li, S.L., Tagliasacchi, A., Sitzmann, V.: pixelsplat: 3d gaussian splats from image pairs for scalable generalizable 3d reconstruction. In: Proceed-ings of the IEEE/CVF conference on computer vision and pattern recognition. pp. 19457–19467 (2024) 10. Chen, J., Qin, Y., Liu, L., Lu, J., Li, G.: Nerf-hugs: Improved neural radiance fields in non-static scenes using heuristics-guided segmentation. CVPR (2024) 11. Chen, X., Zhang, Q., Li, X., Chen, Y., Feng, Y., Wang, X., Wang, J.: Hallucinated neural radiance fields in the wild. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 12943–12952 (2022) 12. Chen, X., Zhou, W., Cheng, Z.: Wildrayzer: Self-supervised large view synthesis in dynamic environments. In: Proceedings of the IEEE/CVF conference on computer vision and pattern recognition (2026) 13. Chen, Y., Xu, H., Zheng, C., Zhuang, B., Pollefeys, M., Geiger, A., Cham, T.J., Cai, J.: Mvsplat: Efficient 3d gaussian splatting from sparse multi-view images. In: European conference on computer vision. pp. 370–386. Springer (2024) 14. Dahmani, H., Bennehar, M., Piasco, N., Roldao, L., Tsishkou, D.: Swag: Splatting in the wild images with appearance-conditioned gaussians. In: European Confer-ence on Computer Vision. pp. 325–340. Springer (2024) 15. Dey, A., Lu, C.Y., Comport, A.I., Sridhar, S., Lin, C.T., Martinet, J.: Hfgaussian: Learning generalizable gaussian human with integrated human features. IEEE Transactions on Artificial Intelligence (2025) 16 C.-Y. Lu et al. 16. Du, S., Liu, J., Chen, Q., Chen, H.X., Mu, T.J., Yang, S.: Rge-gs: Reward-guided expansive driving scene reconstruction via diffusion priors. In: Proceedings of the IEEE/CVF International Conference on Computer Vision. pp. 25756–25764 (2025) 17. Fridovich-Keil, S., Meanti, G., Warburg, F.R., Recht, B., Kanazawa, A.: K-planes: Explicit radiance fields in space, time, and appearance. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 12479– 12488 (2023) 18. Fu, C., Chen, G., Zhang, Y., Yao, K., Xiong, Y., Huang, C., Cui, S., Matsushita, Y., Cao, X.: Robustsplat++: Decoupling densification, dynamics, and illumina-tion for in-the-wild 3dgs. arXiv preprint arXiv:2512.04815 (2025) 19. Fu, C., Zhang, Y., Yao, K., Chen, G., Xiong, Y., Huang, C., Cui, S., Cao, X.: Robustsplat: Decoupling densification and dynamics for transient-free 3dgs. In: ICCV (2025) 20. Hosseinzadeh, M., Chng, S.F., Xu, Y., Lucey, S., Reid, I., Garg, R.: G3splat: Geometrically consistent generalizable gaussian splatting. arXiv preprint arXiv:2512.17547 (2025) 21. Huang, X., Liu, X., Wan, Y., Zheng, Z., Zhang, B., Xiong, M., Pei, Y., Zhang, Y.: Skysplat: Generalizable 3d gaussian splatting from multi-temporal sparse satellite images. arXiv preprint arXiv:2508.09479 (2025) 22. Jensen, R., Dahl, A., Vogiatzis, G., Tola, E., Aanæs, H.: Large scale multi-view stereopsis evaluation. In: Proceedings of the IEEE conference on computer vision and pattern recognition. pp. 406–413 (2014) 23. Jiang, L., Mao, Y., Xu, L., Lu, T., Ren, K., Jin, Y., Xu, X., Yu, M., Pang, J., Zhao, F., et al.: Anysplat: Feed-forward 3d gaussian splatting from unconstrained views. ACM Transactions on Graphics (TOG) 44 (6), 1–16 (2025) 24. Jin, Y., Mishkin, D., Mishchuk, A., Matas, J., Fua, P., Yi, K.M., Trulls, E.: Image matching across wide baselines: From paper to practice. International Journal of Computer Vision 129 (2), 517–547 (2021) 25. Kang, G., Nam, S., Yang, S., Sun, X., Khamis, S., Mohamed, A., Park, E.: ilrm: An iterative large 3d reconstruction model. arXiv preprint arXiv:2507.23277 (2025) 26. Kästingschäfer, M., Gieruc, T., Bernhard, S., Campbell, D., Insafutdinov, E., Na-jafli, E., Brox, T.: Seed4d: A synthetic ego-exo dynamic 4d data generator, driving dataset and benchmark. In: 2025 IEEE/CVF Winter Conference on Applications of Computer Vision (WACV). pp. 7752–7764. IEEE (2025) 27. Kerbl, B., Kopanas, G., Leimkühler, T., Drettakis, G.: 3d gaussian splatting for real-time radiance field rendering. ACM Trans. Graph. 42 (4), 139–1 (2023) 28. Kirillov, A., Mintun, E., Ravi, N., Mao, H., Rolland, C., Gustafson, L., Xiao, T., Whitehead, S., Berg, A.C., Lo, W.Y., et al.: Segment anything. In: Proceedings of the IEEE/CVF international conference on computer vision. pp. 4015–4026 (2023) 29. Kong, H., Yang, X., Wang, X.: Rogsplat: Robust gaussian splatting via generative priors. In: Proceedings of the IEEE/CVF International Conference on Computer Vision. pp. 25735–25745 (2025) 30. Kulhanek, J., Peng, S., Kukelova, Z., Pollefeys, M., Sattler, T.: WildGaussians: 3D gaussian splatting in the wild. In: Proceedings of the 38th International Con-ference on Neural Information Processing Systems (2024) 31. Kulhanek, J., Sattler, T.: Nerfbaselines: Consistent and reproducible evaluation of novel view synthesis methods. In: Proceedings of the 39th International Con-ference on Neural Information Processing Systems (NeurIPS 2025) (2025) DF3DV-1K 17 32. Lee, J., Yang, G., Ma, S., Cho, Y.: Freeze-frame with staticnerf: Uncertainty-guided nerf map reconstruction in dynamic scenes. IEEE Robotics and Automa-tion Letters 11 (1), 778–785 (2025) 33. Li, C., Shi, Z., Lu, Y., He, W., Xu, X.: Robust neural rendering in the wild with asymmetric dual 3d gaussian splatting. In: The Thirty-ninth Annual Conference on Neural Information Processing Systems (2025) 34. Li, D., Feng, J., Chen, J., Dong, W., Li, G., Shi, G., Jiao, L.: Egosplat: Open-vocabulary egocentric scene understanding with language embedded 3d gaussian splatting. arXiv preprint arXiv:2503.11345 (2025) 35. Li, J., Cao, J., Guo, Y., Li, W., Zhang, Y.: One diffusion step to real-world super-resolution via flow trajectory distillation. In: International Conference on Machine Learning. pp. 34044–34053. PMLR (2025) 36. Li, L., Shen, Z., Wang, Z., Shen, L., Tan, P.: Streaming radiance fields for 3d video synthesis. Advances in Neural Information Processing Systems 35 , 13485–13498 (2022) 37. Li, M., Zhai, S., Zhao, Z., Sun, L., Wang, X., Li, D., Liu, S., Wang, H.: Wild3a: Novel view synthesis from any dynamic images in seconds. In: Proceedings of the 33rd ACM International Conference on Multimedia. pp. 7472–7480 (2025) 38. Li, R., Cheung, Y.m.: Modeling and identifying distractors with curriculum for robust 3d gaussian splatting. In: Proceedings of the 33rd ACM International Conference on Multimedia. pp. 10122–10131 (2025) 39. Li, Y., Wu, J., Zhao, L., Liu, P.: Derainnerf: 3d scene estimation with adhesive waterdrop removal. In: 2024 IEEE International Conference on Robotics and Au-tomation (ICRA). pp. 2787–2793. IEEE (2024) 40. Li, Z., Wang, Q., Cole, F., Tucker, R., Snavely, N.: Dynibar: Neural dynamic image-based rendering. In: Proceedings of the IEEE/CVF Conference on Com-puter Vision and Pattern Recognition. pp. 4273–4284 (2023) 41. Lin, J., Gu, J., Fan, L., Wu, B., Lou, Y., Chen, R., Liu, L., Ye, J.: Hybridgs: De-coupling transients and statics with 2d and 3d gaussian splatting. In: Proceedings of the Computer Vision and Pattern Recognition Conference. pp. 788–797 (2025) 42. Lin, K.E., Xiao, L., Liu, F., Yang, G., Ramamoorthi, R.: Deep 3d mask volume for view synthesis of dynamic scenes. In: Proceedings of the IEEE/CVF International Conference on Computer Vision. pp. 1749–1758 (2021) 43. Lin, X., Yu, F., Hu, J., You, Z., Shi, W., Ren, J.S., Gu, J., Dong, C.: Harnessing diffusion-yielded score priors for image restoration. ACM Transactions on Graph-ics (TOG) 44 (6), 1–21 (2025) 44. Ling, H., Xu, X., Sun, Y., Sun, Q.: Ocsplats: Observation completeness quan-tification and label noise separation in 3dgs. In: Proceedings of the IEEE/CVF International Conference on Computer Vision. pp. 25680–25689 (2025) 45. Ling, L., Sheng, Y., Tu, Z., Zhao, W., Xin, C., Wan, K., Yu, L., Guo, Q., Yu, Z., Lu, Y., et al.: Dl3dv-10k: A large-scale scene dataset for deep learning-based 3d vision. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 22160–22169 (2024) 46. Liu, A., Tucker, R., Jampani, V., Makadia, A., Snavely, N., Kanazawa, A.: Infi-nite nature: Perpetual view generation of natural scenes from a single image. In: Proceedings of the IEEE/CVF International Conference on Computer Vision. pp. 14458–14467 (2021) 47. Liu, S., Bao, C., Cui, Z., Liu, Y., Chu, X., Gu, L., Conde, M.V., Umagami, R., Hashimoto, T., Hu, Z., et al.: Realx3d: A physically-degraded 3d benchmark for multi-view visual restoration and reconstruction. arXiv preprint arXiv:2512.23437 (2025) 18 C.-Y. Lu et al. 48. Liu, S., Chen, X., Chen, H., Xu, Q., Li, M.: Deraings: Gaussian splatting for enhanced scene reconstruction in rainy environments. In: Proceedings of the AAAI Conference on Artificial Intelligence. vol. 39, pp. 5558–5566 (2025) 49. Lu, C.Y., Zhou, P., Xing, A., Pokhariya, C., Dey, A., Shah, I.N., Mavidipalli, R., Hu, D., Comport, A.I., Chen, K., et al.: Diva-360: The dynamic visual dataset for immersive neural fields. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 22466–22476 (2024) 50. Markin, A., Pryadilshchikov, V., Komarichev, A., Rakhimov, R., Wonka, P., Bur-naev, E.: T-3dgs: Removing transient objects for 3d scene reconstruction. arXiv preprint arXiv:2412.00155 (2024) 51. Martin-Brualla, R., Radwan, N., Sajjadi, M.S., Barron, J.T., Dosovitskiy, A., Duckworth, D.: Nerf in the wild: Neural radiance fields for unconstrained photo collections. In: Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. pp. 7210–7219 (2021) 52. Mildenhall, B., Srinivasan, P.P., Tancik, M., Barron, J.T., Ramamoorthi, R., Ng, R.: Nerf: Representing scenes as neural radiance fields for view synthesis. Com-munications of the ACM 65 (1), 99–106 (2021) 53. Mithun, N.C., Pham, T., Wang, Q., Southall, B., Minhas, K., Matei, B., Mandt, S., Samarasekera, S., Kumar, R.: Diffusion-guided gaussian splatting for large-scale unconstrained 3d reconstruction and novel view synthesis. arXiv preprint arXiv:2504.01960 (2025) 54. Müller, T., Evans, A., Schied, C., Keller, A.: Instant neural graphics primitives with a multiresolution hash encoding. ACM transactions on graphics (TOG) 
+
+41 (4), 1–15 (2022) 55. Oquab, M., Darcet, T., Moutakanni, T., Vo, H., Szafraniec, M., Khalidov, V., Fernandez, P., Haziza, D., Massa, F., El-Nouby, A., et al.: Dinov2: Learning robust visual features without supervision. Transactions on Machine Learning Research Journal (2024) 56. Otonari, T., Ikehata, S., Aizawa, K.: Entity-nerf: Detecting and removing mov-ing entities in urban scenes. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 20892–20901 (2024) 57. Park, W., Nam, M., Kim, S., Jo, S., Lee, S.: Forestsplats: Deformable transient field for gaussian splatting in the wild. In: Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision. pp. 6978–6987 (2026) 58. Parmar, G., Park, T., Narasimhan, S., Zhu, J.Y.: One-step image translation with text-to-image models. arXiv preprint arXiv:2403.12036 (2024) 59. Prabakaran, A., Shukla, P.: Semantic-guided 3d gaussian splatting for transient object removal. arXiv preprint arXiv:2602.15516 (2026) 60. Ravi, N., Gabeur, V., Hu, Y.T., Hu, R., Ryali, C., Ma, T., Khedr, H., Rädle, R., Rolland, C., Gustafson, L., et al.: Sam 2: Segment anything in images and videos. In: The Thirteenth International Conference on Learning Representations (2025) 61. Reizenstein, J., Shapovalov, R., Henzler, P., Sbordone, L., Labatut, P., Novotny, D.: Common objects in 3d: Large-scale learning and evaluation of real-life 3d cat-egory reconstruction. In: Proceedings of the IEEE/CVF international conference on computer vision. pp. 10901–10911 (2021) 62. Rematas, K., Liu, A., Srinivasan, P.P., Barron, J.T., Tagliasacchi, A., Funkhouser, T., Ferrari, V.: Urban radiance fields. In: Proceedings of the IEEE/CVF confer-ence on computer vision and pattern recognition. pp. 12932–12942 (2022) 63. Ren, W., Zhu, Z., Sun, B., Chen, J., Pollefeys, M., Peng, S.: Nerf on-the-go: Exploiting uncertainty for distractor-free nerfs in the wild. In: IEEE/CVF Con-ference on Computer Vision and Pattern Recognition (CVPR) (2024) DF3DV-1K 19 64. Sabour, S., Goli, L., Kopanas, G., Matthews, M., Lagun, D., Guibas, L., Jacobson, A., Fleet, D., Tagliasacchi, A.: Spotlesssplats: Ignoring distractors in 3d gaussian splatting. ACM Transactions on Graphics 44 (2), 1–11 (2025) 65. Sabour, S., Vora, S., Duckworth, D., Krasin, I., Fleet, D.J., Tagliasacchi, A.: Robustnerf: Ignoring distractors with robust losses. In: Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. pp. 20626– 20636 (2023) 66. Sauer, A., Lorenz, D., Blattmann, A., Rombach, R.: Adversarial diffusion distilla-tion. In: European Conference on Computer Vision. pp. 87–103. Springer (2024) 67. Schönberger, J.L., Frahm, J.M.: Structure-from-motion revisited. In: Conference on Computer Vision and Pattern Recognition (CVPR) (2016) 68. Schönberger, J.L., Zheng, E., Pollefeys, M., Frahm, J.M.: Pixelwise view selection for unstructured multi-view stereo. In: European Conference on Computer Vision (ECCV) (2016) 69. Song, L., Chen, A., Li, Z., Chen, Z., Chen, L., Yuan, J., Xu, Y., Geiger, A.: Nerfplayer: A streamable dynamic scene representation with decomposed neu-ral radiance fields. IEEE Transactions on Visualization and Computer Graphics 
+
+29 (5), 2732–2742 (2023) 70. Sun, D., Guan, H., Zhang, K., Xie, X., Zhou, S.K.: Sdd-4dgs: Static-dynamic aware decoupling in gaussian splatting for 4d scene reconstruction. arXiv preprint arXiv:2503.09332 (2025) 71. Tang, J., Gao, Y., Yang, D., Yan, L., Yue, Y., Yang, Y.: Dronesplat: 3d gaussian splatting for robust 3d reconstruction from in-the-wild drone imagery. In: Proceed-ings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 833–843 (2025) 72. Tang, L., Jia, M., Wang, Q., Phoo, C.P., Hariharan, B.: Emergent correspon-dence from image diffusion. Advances in neural information processing systems 
+
+36 , 1363–1389 (2023) 73. Tang, Y., Xu, D., Hou, Y., Wang, Z., Jiang, M.: Nexussplats: Efficient 3d gaussian splatting in the wild. arXiv preprint arXiv:2411.14514 (2024) 74. Trevithick, A., Paiss, R., Henzler, P., Verbin, D., Wu, R., Alzayer, H., Gao, R., Poole, B., Barron, J.T., Holynski, A., et al.: Simvs: Simulating world inconsis-tencies for robust view synthesis. In: Proceedings of the Computer Vision and Pattern Recognition Conference. pp. 16464–16474 (2025) 75. Tung, J., Chou, G., Cai, R., Yang, G., Zhang, K., Wetzstein, G., Hariharan, B., Snavely, N.: Megascenes: Scene-level view synthesis at scale. In: European conference on computer vision. pp. 197–214. Springer (2024) 76. Ungermann, P., Ettenhofer, A., Nießner, M., Roessle, B.: Robust 3d gaussian splatting for novel view synthesis in presence of distractors. In: DAGM German Conference on Pattern Recognition. pp. 153–167. Springer (2024) 77. Wang, F., Tan, S., Li, X., Tian, Z., Song, Y., Liu, H.: Mixed neural voxels for fast multi-view video synthesis. In: Proceedings of the IEEE/CVF International Conference on Computer Vision. pp. 19706–19716 (2023) 78. Wang, Q., Wang, Z., Genova, K., Srinivasan, P.P., Zhou, H., Barron, J.T., Martin-Brualla, R., Snavely, N., Funkhouser, T.: Ibrnet: Learning multi-view image-based rendering. In: Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. pp. 4690–4699 (2021) 79. Wang, R., Lohmeyer, Q., Meboldt, M., Tang, S.: Degauss: Dynamic-static decom-position with gaussian splatting for distractor-free 3d reconstruction. In: Pro-ceedings of the IEEE/CVF International Conference on Computer Vision. pp. 6294–6303 (2025) 20 C.-Y. Lu et al. 80. Wang, S., Xu, H., Li, Y., Chen, J., Tan, G.: Ie-nerf: Exploring transient mask inpainting to enhance neural radiance fields in the wild. Neurocomputing 618 ,129112 (2025) 81. Wang, W., Shao, F., Li, L., Wang, Z., Xiao, J., Chen, L.: Uncertainty-aware 4d gaussian splatting for monocular occluded human rendering. arXiv preprint arXiv:2602.06343 (2026) 82. Wang, Y., Klasson, M., Turkulainen, M., Wang, S., Kannala, J., Solin, A.: Desplat: Decomposed gaussian splatting for distractor-free rendering. In: Proceedings of the Computer Vision and Pattern Recognition Conference. pp. 722–732 (2025) 83. Wang, Y., Li, K., Chen, M., Wang, L., Zhou, S., Xue, K., Guo, Y.: Distractor-free novel view synthesis via exploiting memorization effect in optimization. In: European Conference on Computer Vision. pp. 477–493. Springer (2024) 84. Wang, Y., Wang, J., Qi, Y.: We-gs: An in-the-wild efficient 3d gaussian repre-sentation for unconstrained photo collections. arXiv preprint arXiv:2406.02407 (2024) 85. Warburg*, F., Weber*, E., Tancik, M., HoÅ‚yÅ„ski, A., Kanazawa, A.: Nerf-busters: Removing ghostly artifacts from casually captured nerfs. In: International Conference on Computer Vision (ICCV) (2023) 86. Wu, G., Yi, T., Fang, J., Xie, L., Zhang, X., Wei, W., Liu, W., Tian, Q., Wang, X.: 4d gaussian splatting for real-time dynamic scene rendering. In: Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. pp. 20310–20320 (2024) 87. Wu, J.Z., Zhang, Y., Turki, H., Ren, X., Gao, J., Shou, M.Z., Fidler, S., Gojcic, Z., Ling, H.: Difix3d+: Improving 3d reconstructions with single-step diffusion mod-els. In: Proceedings of the Computer Vision and Pattern Recognition Conference. pp. 26024–26035 (2025) 88. Wu, L., Zhang, T.: Wildsplatting: Unposed incremental 3d gaussian splatting reconstruction in the wild. In: Proceedings of the 2025 20th ACM SIGGRAPH International Conference on Virtual-Reality Continuum and its Applications in Industry. pp. 1–6 (2025) 89. Wu, T., Zhong, F., Tagliasacchi, A., Cole, F., Oztireli, C.: Dˆ 2nerf: Self-supervised decoupling of dynamic and static objects from a monocular video. Advances in neural information processing systems 35 , 32653–32666 (2022) 90. Xiao, Y., Lin, Z., Lu, C., Zhai, D., Jiang, K., Zhao, W., Zhang, W., Jiang, J., Wang, H., Liu, X.: Vdegaussian: Video diffusion enhanced 4d gaussian splatting for dynamic urban scenes modeling. arXiv preprint arXiv:2508.02129 (2025) 91. Xu, H., Peng, S., Wang, F., Blum, H., Barath, D., Geiger, A., Pollefeys, M.: Depthsplat: Connecting gaussian splatting and depth. In: CVPR (2025) 92. Xu, J., Mei, Y., Patel, V.: Wild-gs: Real-time novel view synthesis from uncon-strained photo collections. Advances in Neural Information Processing Systems 
+
+37 , 103334–103355 (2024) 93. Yeshwanth, C., Liu, Y.C., Nießner, M., Dai, A.: Scannet++: A high-fidelity dataset of 3d indoor scenes. In: Proceedings of the IEEE/CVF International Con-ference on Computer Vision. pp. 12–22 (2023) 94. Yu, A., Ye, V., Tancik, M., Kanazawa, A.: pixelnerf: Neural radiance fields from one or few images. In: Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. pp. 4578–4587 (2021) 95. Zhang, D., Wang, C., Wang, W., Li, P., Qin, M., Wang, H.: Gaussian in the wild: 3d gaussian splatting for unconstrained image collections. In: European Conference on Computer Vision. pp. 341–359. Springer (2024) DF3DV-1K 21 96. Zheng, J., Zhu, Z., Bieri, V., Pollefeys, M., Peng, S., Armeni, I.: Wildgs-slam: Monocular gaussian splatting slam in dynamic environments. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 11461–11471 (2025) 97. Zheng, S., Zhou, B., Shao, R., Liu, B., Zhang, S., Nie, L., Liu, Y.: Gps-gaussian: Generalizable pixel-wise 3d gaussian splatting for real-time human novel view synthesis. In: Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. pp. 19680–19690 (2024) 98. Zheng, W., Ou, L., He, J., Zhou, L., Yu, X., Wei, Y.: Up-slam: Adaptively struc-tured gaussian slam with uncertainty prediction in dynamic environments. arXiv preprint arXiv:2505.22335 (2025) 99. Zhou, B., Zheng, S., Tu, H., Shao, R., Liu, B., Zhang, S., Nie, L., Liu, Y.: Gps-gaussian+: Generalizable pixel-wise 3d gaussian splatting for real-time human-scene rendering from sparse views. IEEE Transactions on Pattern Analysis and Machine Intelligence (2025) 100. Zhou, T., Tucker, R., Flynn, J., Fyffe, G., Snavely, N.: Stereo magnification: Learn-ing view synthesis using multiplane images. In: SIGGRAPH (2018) 101. Zhu, C., Wan, R., Tang, Y., Shi, B.: Occlusion-free scene recovery via neural radiance fields. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 20722–20731 (2023) 102. Ziwen, C., Tan, H., Zhang, K., Bi, S., Luan, F., Hong, Y., Fuxin, L., Xu, Z.: Long-lrm: Long-sequence large reconstruction model for wide-coverage gaussian splats. In: Proceedings of the IEEE/CVF International Conference on Computer Vision. pp. 4349–4359 (2025)
