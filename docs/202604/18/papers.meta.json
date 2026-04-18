@@ -1,0 +1,37 @@
+{
+  "label": "2026-04-18",
+  "date": "2026-04-18",
+  "generated_at": "2026-04-18T20:02:08",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202604/18/2604.09543v1-antic-adaptive-neural-temporal-in-situ-compressor",
+      "section": "quick",
+      "title_en": "ANTIC: Adaptive Neural Temporal In-situ Compressor",
+      "authors": "Sandeep S. Cranganore, Andrei Bodnar, Gianluca Galleti, Fabian Paischer, Johannes Brandstetter",
+      "date": "2026-04-10",
+      "pdf": "https://arxiv.org/pdf/2604.09543v1",
+      "score": "6.0",
+      "evidence": "高维物理模拟的神经压缩",
+      "tldr": "ANTIC是一个针对大规模高维偏微分方程（PDE）模拟数据的端到端原位压缩框架。它结合了自适应时间选择器和基于神经场的空间压缩模块，通过单次流式处理识别关键快照并学习残差更新，在显著降低存储需求的同时保持了极高的物理精度，有效解决了高性能计算中的数据存储瓶颈。",
+      "tags": "query:q5",
+      "abstract_en": "The persistent storage requirements for high-resolution, spatiotemporally evolving fields governed by large-scale and high-dimensional partial differential equations (PDEs) have reached the petabyte-to-exabyte scale. Transient simulations modeling Navier-Stokes equations, magnetohydrodynamics, plasma physics, or binary black hole mergers generate data volumes that are prohibitive for modern high-performance computing (HPC) infrastructures. To address this bottleneck, we introduce ANTIC (Adaptive Neural Temporal in situ Compressor), an end-to-end in situ compression pipeline. ANTIC consists of an adaptive temporal selector tailored to high-dimensional physics that identifies and filters informative snapshots at simulation time, combined with a spatial neural compression module based on continual fine-tuning that learns residual updates between adjacent snapshots using neural fields. By operating in a single streaming pass, ANTIC enables a combined compression of temporal and spatial components and effectively alleviates the need for explicit on-disk storage of entire time-evolved trajectories. Experimental results demonstrate how storage reductions of several orders of magnitude relate to physics accuracy.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/18/2604.13227v1-inverse-scattering-beyond-born-approximation-via-rotation-equivariance-aware-neural-network-and-low-rank-structure",
+      "section": "quick",
+      "title_en": "Inverse scattering beyond Born approximation via rotation-equivariance-aware neural network and low-rank structure",
+      "authors": "Yuyuan Zhou, Shixu Meng",
+      "date": "2026-04-14",
+      "pdf": "https://arxiv.org/pdf/2604.13227v1",
+      "score": "6.0",
+      "evidence": "用于逆介质散射问题的神经网络",
+      "tldr": "本研究提出了一种解决二维逆介质散射问题的混合方法（ULR），通过结合旋转等变神经网络与低秩结构，实现了超越Born近似的高精度反演。该方法利用神经网络将观测数据映射为Born数据，并利用低秩结构设计逆Born求解器以提取正则化解，同时引入了互惠关系和旋转等变性等物理约束。实验表明，该方法在全孔径和有限孔径数据下均表现优异，显著提升了反演的稳定性和抗噪能力。",
+      "tags": "query:q4",
+      "abstract_en": "This work proposes a hybrid method (ULR) which integrates a rotation-equivariance-aware neural network and a low-rank structure to solve the two dimensional inverse medium scattering problem. The neural network is to model the data corrector which maps the full data to the Born data, and the low-rank structure is to design an inverse Born solver that finds a regularized solution from the perturbed Born data. The proposed rotation-equivariance-aware neural network naturally incorporates the reciprocity relation and the rotation-equivariance in inverse scattering, while the low-rank structure effectively filters high-frequency noise in the output of the neural network and leads to a regularized method supported by theoretical stability in the Born region. For a comparative study, we replace the low-rank inverse Born solver by another rotation-equvariance-aware neural network to propose a two-step neural network (UU). Furthermore, we extend the proposed methods (ULR and UU) to tackle the more challenging case with only limited aperture data. A variety of numerical experiments are conducted to compare the proposed ULR, UU, and a black-box neural network.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
