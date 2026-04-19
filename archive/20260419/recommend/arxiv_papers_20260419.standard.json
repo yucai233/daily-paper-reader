@@ -1,0 +1,104 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-19T19:26:40.486291+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.13340v1",
+      "title": "MSGS: Multispectral 3D Gaussian Splatting",
+      "abstract": "We present a multispectral extension to 3D Gaussian Splatting (3DGS) for wavelength-aware view synthesis. Each Gaussian is augmented with spectral radiance, represented via per-band spherical harmonics, and optimized under a dual-loss supervision scheme combining RGB and multispectral signals. To improve rendering fidelity, we perform spectral-to-RGB conversion at the pixel level, allowing richer spectral cues to be retained during optimization. Our method is evaluated on both public and self-captured real-world datasets, demonstrating consistent improvements over the RGB-only 3DGS baseline in terms of image quality and spectral consistency. Notably, it excels in challenging scenes involving translucent materials and anisotropic reflections. The proposed approach maintains the compactness and real-time efficiency of 3DGS while laying the foundation for future integration with physically based shading models.",
+      "authors": [
+        "Iris Zheng",
+        "Guojun Tang",
+        "Alexander Doronin",
+        "Paul Teal",
+        "Fang-Lue Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-04-14T23:03:38+00:00",
+      "link": "https://arxiv.org/pdf/2604.13340v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "multispectral extension to 3D Gaussian Splatting for translucent materials",
+      "llm_evidence_cn": "针对半透明材料的3D高斯泼溅多光谱扩展",
+      "llm_evidence": "针对半透明材料的3D高斯泼溅多光谱扩展",
+      "canonical_evidence": "针对半透明材料的3D高斯泼溅多光谱扩展",
+      "llm_tldr_en": "Extends 3DGS to multispectral radiance for improved rendering of translucent and anisotropic materials.",
+      "llm_tldr_cn": "将3DGS扩展到多光谱辐射，以改进半透明和各向异性材料的渲染。",
+      "llm_tldr": "将3DGS扩展到多光谱辐射，以改进半透明和各向异性材料的渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.13036v1",
+      "title": "Lyra 2.0: Explorable Generative 3D Worlds",
+      "abstract": "Recent advances in video generation enable a new paradigm for 3D scene creation: generating camera-controlled videos that simulate scene walkthroughs, then lifting them to 3D via feed-forward reconstruction techniques. This generative reconstruction approach combines the visual fidelity and creative capacity of video models with 3D outputs ready for real-time rendering and simulation. Scaling to large, complex environments requires 3D-consistent video generation over long camera trajectories with large viewpoint changes and location revisits, a setting where current video models degrade quickly. Existing methods for long-horizon generation are fundamentally limited by two forms of degradation: spatial forgetting and temporal drifting. As exploration proceeds, previously observed regions fall outside the model's temporal context, forcing the model to hallucinate structures when revisited. Meanwhile, autoregressive generation accumulates small synthesis errors over time, gradually distorting scene appearance and geometry. We present Lyra 2.0, a framework for generating persistent, explorable 3D worlds at scale. To address spatial forgetting, we maintain per-frame 3D geometry and use it solely for information routing -- retrieving relevant past frames and establishing dense correspondences with the target viewpoints -- while relying on the generative prior for appearance synthesis. To address temporal drifting, we train with self-augmented histories that expose the model to its own degraded outputs, teaching it to correct drift rather than propagate it. Together, these enable substantially longer and 3D-consistent video trajectories, which we leverage to fine-tune feed-forward reconstruction models that reliably recover high-quality 3D scenes.",
+      "authors": [
+        "Tianchang Shen",
+        "Sherwin Bahmani",
+        "Kai He",
+        "Sangeetha Grama Srinivasan",
+        "Tianshi Cao",
+        "Jiawei Ren",
+        "Ruilong Li",
+        "Zian Wang",
+        "Nicholas Sharp",
+        "Zan Gojcic",
+        "Sanja Fidler",
+        "Jiahui Huang",
+        "Huan Ling",
+        "Jun Gao",
+        "Xuanchi Ren"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-14T17:59:44+00:00",
+      "link": "https://arxiv.org/pdf/2604.13036v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "generative reconstruction for real-time rendering and simulation",
+      "llm_evidence_cn": "用于实时渲染和模拟的生成式重建",
+      "llm_evidence": "用于实时渲染和模拟的生成式重建",
+      "canonical_evidence": "用于实时渲染和模拟的生成式重建",
+      "llm_tldr_en": "A framework for generating 3D-consistent videos and lifting them to 3D for real-time rendering.",
+      "llm_tldr_cn": "一种生成 3D 一致性视频并将其提升为 3D 以进行实时渲染的框架。",
+      "llm_tldr": "一种生成 3D 一致性视频并将其提升为 3D 以进行实时渲染的框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

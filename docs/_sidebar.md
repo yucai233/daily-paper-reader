@@ -1,6 +1,10 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-04-19 <!--dpr-date:20260419-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202604/19/2604.13340v1-msgs-multispectral-3d-gaussian-splatting" data-sidebar-item="{&quot;title&quot;: &quot;MSGS: Multispectral 3D Gaussian Splatting&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2604.13340v1-msgs-multispectral-3d-gaussian-splatting&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;q1&quot;}], &quot;evidence&quot;: &quot;针对半透明材料的3D高斯泼溅多光谱扩展&quot;}">MSGS: Multispectral 3D Gaussian Splatting</a>
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202604/19/2604.13036v1-lyra-20-explorable-generative-3d-worlds" data-sidebar-item="{&quot;title&quot;: &quot;Lyra 2.0: Explorable Generative 3D Worlds&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2604.13036v1-lyra-20-explorable-generative-3d-worlds&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;q1&quot;}], &quot;evidence&quot;: &quot;用于实时渲染和模拟的生成式重建&quot;}">Lyra 2.0: Explorable Generative 3D Worlds</a>
   * 2026-04-18 <!--dpr-date:20260418-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202604/18/2604.09543v1-antic-adaptive-neural-temporal-in-situ-compressor" data-sidebar-item="{&quot;title&quot;: &quot;ANTIC: Adaptive Neural Temporal In-situ Compressor&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2604.09543v1-antic-adaptive-neural-temporal-in-situ-compressor&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;q5&quot;}], &quot;evidence&quot;: &quot;高维物理模拟的神经压缩&quot;}">ANTIC: Adaptive Neural Temporal In-situ Compressor</a>

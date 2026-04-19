@@ -6,29 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-18
-- 运行时间：2026-04-18 20:01:59 UTC
+- 最新运行日期：2026-04-19
+- 运行时间：2026-04-19 19:26:57 UTC
 - 运行状态：成功
 - 本次总论文数：2
 - 精读区：0
 - 速读区：2
 
 ### 今日简报（AI）
-今日聚焦 AI 赋能的科学计算，涵盖自适应数据压缩与突破 Born 近似的逆散射成像技术。
-重点关注 ANTIC 神经压缩器对时序数据的原位处理，以及利用旋转等变性提升逆散射成像精度的创新方案。
-建议关注神经网络在处理复杂物理场数据及高维信息压缩中的跨界应用潜力。
-- 详情：[/202604/18/README](/202604/18/README)
+今日聚焦 3D 高斯泼溅的多光谱演进与可探索生成式 3D 世界的构建。
+重点关注 MSGS 将 3DGS 引入多光谱领域，以及 Lyra 2.0 在打造大规模沉浸式交互场景上的新进展。
+建议关注 3D 视觉技术在非可见光成像与自动化世界建模中的跨界融合。
+- 详情：[/202604/19/README](/202604/19/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [ANTIC: Adaptive Neural Temporal In-situ Compressor](/202604/18/2604.09543v1-antic-adaptive-neural-temporal-in-situ-compressor)  
-   标签：评分：6.0/10、query:q5
-   evidence：高维物理模拟的神经压缩
-2. [Inverse scattering beyond Born approximation via rotation-equivariance-aware neural network and low-rank structure](/202604/18/2604.13227v1-inverse-scattering-beyond-born-approximation-via-rotation-equivariance-aware-neural-network-and-low-rank-structure)  
-   标签：评分：6.0/10、query:q4
-   evidence：用于逆介质散射问题的神经网络
+1. [MSGS: Multispectral 3D Gaussian Splatting](/202604/19/2604.13340v1-msgs-multispectral-3d-gaussian-splatting)  
+   标签：评分：7.0/10、query:q1
+   evidence：针对半透明材料的3D高斯泼溅多光谱扩展
+2. [Lyra 2.0: Explorable Generative 3D Worlds](/202604/19/2604.13036v1-lyra-20-explorable-generative-3d-worlds)  
+   标签：评分：6.0/10、query:q1
+   evidence：用于实时渲染和模拟的生成式重建
 
 
 <div class="dpr-home-promo-card">

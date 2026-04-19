@@ -1,0 +1,37 @@
+{
+  "label": "2026-04-19",
+  "date": "2026-04-19",
+  "generated_at": "2026-04-19T19:27:08",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202604/19/2604.13340v1-msgs-multispectral-3d-gaussian-splatting",
+      "section": "quick",
+      "title_en": "MSGS: Multispectral 3D Gaussian Splatting",
+      "authors": "Iris Zheng, Guojun Tang, Alexander Doronin, Paul Teal, Fang-Lue Zhang",
+      "date": "2026-04-14",
+      "pdf": "https://arxiv.org/pdf/2604.13340v1",
+      "score": "7.0",
+      "evidence": "针对半透明材料的3D高斯泼溅多光谱扩展",
+      "tldr": "本研究提出MSGS，将3D高斯泼溅扩展至多光谱领域。通过为高斯点增加谱辐射度表示，并结合RGB与多光谱双重损失监督，该方法在保持实时渲染效率的同时，显著提升了复杂场景（如半透明材质）的渲染质量和光谱一致性，实现了波长感知的视图合成。",
+      "tags": "query:q1",
+      "abstract_en": "We present a multispectral extension to 3D Gaussian Splatting (3DGS) for wavelength-aware view synthesis. Each Gaussian is augmented with spectral radiance, represented via per-band spherical harmonics, and optimized under a dual-loss supervision scheme combining RGB and multispectral signals. To improve rendering fidelity, we perform spectral-to-RGB conversion at the pixel level, allowing richer spectral cues to be retained during optimization. Our method is evaluated on both public and self-captured real-world datasets, demonstrating consistent improvements over the RGB-only 3DGS baseline in terms of image quality and spectral consistency. Notably, it excels in challenging scenes involving translucent materials and anisotropic reflections. The proposed approach maintains the compactness and real-time efficiency of 3DGS while laying the foundation for future integration with physically based shading models.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/19/2604.13036v1-lyra-20-explorable-generative-3d-worlds",
+      "section": "quick",
+      "title_en": "Lyra 2.0: Explorable Generative 3D Worlds",
+      "authors": "Tianchang Shen, Sherwin Bahmani, Kai He, Sangeetha Grama Srinivasan, Tianshi Cao, Jiawei Ren, Ruilong Li, Zian Wang, Nicholas Sharp, Zan Gojcic, Sanja Fidler, Jiahui Huang, Huan Ling, Jun Gao, Xuanchi Ren",
+      "date": "2026-04-14",
+      "pdf": "https://arxiv.org/pdf/2604.13036v1",
+      "score": "6.0",
+      "evidence": "用于实时渲染和模拟的生成式重建",
+      "tldr": "Lyra 2.0 提出了一种生成可探索 3D 世界的新框架，通过将相机控制的视频生成与前馈重建相结合来创建大规模场景。针对长程生成中的空间遗忘和时间漂移问题，该方法利用 3D 几何引导信息检索并采用自增强历史训练策略。这显著提升了视频生成的 3D 一致性和轨迹长度，从而能够重建出高质量、可实时渲染的复杂 3D 环境。",
+      "tags": "query:q1",
+      "abstract_en": "Recent advances in video generation enable a new paradigm for 3D scene creation: generating camera-controlled videos that simulate scene walkthroughs, then lifting them to 3D via feed-forward reconstruction techniques. This generative reconstruction approach combines the visual fidelity and creative capacity of video models with 3D outputs ready for real-time rendering and simulation. Scaling to large, complex environments requires 3D-consistent video generation over long camera trajectories with large viewpoint changes and location revisits, a setting where current video models degrade quickly. Existing methods for long-horizon generation are fundamentally limited by two forms of degradation: spatial forgetting and temporal drifting. As exploration proceeds, previously observed regions fall outside the model's temporal context, forcing the model to hallucinate structures when revisited. Meanwhile, autoregressive generation accumulates small synthesis errors over time, gradually distorting scene appearance and geometry. We present Lyra 2.0, a framework for generating persistent, explorable 3D worlds at scale. To address spatial forgetting, we maintain per-frame 3D geometry and use it solely for information routing -- retrieving relevant past frames and establishing dense correspondences with the target viewpoints -- while relying on the generative prior for appearance synthesis. To address temporal drifting, we train with self-augmented histories that expose the model to its own degraded outputs, teaching it to correct drift rather than propagate it. Together, these enable substantially longer and 3D-consistent video trajectories, which we leverage to fine-tune feed-forward reconstruction models that reliably recover high-quality 3D scenes.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
