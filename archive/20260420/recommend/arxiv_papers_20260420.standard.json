@@ -1,0 +1,162 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-20T20:34:46.180986+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2604.14928v2",
+      "title": "Hybrid Latents: Geometry-Appearance-Aware Surfel Splatting",
+      "abstract": "We introduce a hybrid Gaussian-hash-grid radiance representation for reconstructing 2D Gaussian scene models from multi-view images. Similar to NeST splatting, our approach reduces the entanglement between geometry and appearance common in NeRF-based models, but adds per-Gaussian latent features alongside hash-grid features to bias the optimizer toward a separation of low- and high-frequency scene components. This explicit frequency-based decomposition reduces the tendency of high-frequency texture to compensate for geometric errors. Encouraging Gaussians with hard opacity falloffs further strengthens the separation between geometry and appearance, improving both geometry reconstruction and rendering efficiency. Finally, probabilistic pruning combined with a sparsity-inducing BCE opacity loss allows redundant Gaussians to be turned off, yielding a minimal set of Gaussians sufficient to represent the scene. Using both synthetic and real-world datasets, we compare against the state of the art in Gaussian-based novel-view synthesis and demonstrate superior reconstruction fidelity with an order of magnitude fewer primitives.",
+      "authors": [
+        "Neel Kelkar",
+        "Simon Niedermayr",
+        "Klaus Engel",
+        "Rüdiger Westermann"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-04-16T12:13:09+00:00",
+      "link": "https://arxiv.org/pdf/2604.14928v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "hybrid neural radiance representation for rendering",
+      "llm_evidence_cn": "用于渲染的混合神经辐射表示",
+      "llm_evidence": "用于渲染的混合神经辐射表示",
+      "canonical_evidence": "用于渲染的混合神经辐射表示",
+      "llm_tldr_en": "Combines Gaussian splatting with hash-grids to improve geometry-appearance separation and rendering efficiency.",
+      "llm_tldr_cn": "结合高斯泼溅与哈希网格，改善几何与外观的分离并提升渲染效率。",
+      "llm_tldr": "结合高斯泼溅与哈希网格，改善几何与外观的分离并提升渲染效率。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.15941v1",
+      "title": "Neural Gabor Splatting: Enhanced Gaussian Splatting with Neural Gabor for High-frequency Surface Reconstruction",
+      "abstract": "Recent years have witnessed the rapid emergence of 3D Gaussian splatting (3DGS) as a powerful approach for 3D reconstruction and novel view synthesis. Its explicit representation with Gaussian primitives enables fast training, real-time rendering, and convenient post-processing such as editing and surface reconstruction. However, 3DGS suffers from a critical drawback: the number of primitives grows drastically for scenes with high-frequency appearance details, since each primitive can represent only a single color, requiring multiple primitives for every sharp color transition. To overcome this limitation, we propose neural Gabor splatting, which augments each Gaussian primitive with a lightweight multi-layer perceptron that models a wide range of color variations within a single primitive. To further control primitive numbers, we introduce a frequency-aware densification strategy that selects mismatch primitives for pruning and cloning based on frequency energy. Our method achieves accurate reconstruction of challenging high-frequency surfaces. We demonstrate its effectiveness through extensive experiments on both standard benchmarks, such as Mip-NeRF360 and High-Frequency datasets (e.g., checkered patterns), supported by comprehensive ablation studies.",
+      "authors": [
+        "Haato Watanabe",
+        "Nobuyuki Umetani"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-04-17T11:00:19+00:00",
+      "link": "https://arxiv.org/pdf/2604.15941v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "neural Gabor splatting for enhanced volume rendering",
+      "llm_evidence_cn": "用于增强体渲染的神经Gabor泼溅",
+      "llm_evidence": "用于增强体渲染的神经Gabor泼溅",
+      "canonical_evidence": "用于增强体渲染的神经Gabor泼溅",
+      "llm_tldr_en": "Augments Gaussian splatting with neural Gabor filters to better represent high-frequency details in 3D scenes.",
+      "llm_tldr_cn": "通过神经Gabor滤波器增强高斯泼溅，以更好地表现3D场景中的高频细节。",
+      "llm_tldr": "通过神经Gabor滤波器增强高斯泼溅，以更好地表现3D场景中的高频细节。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2604.15875v1",
+      "title": "CLOTH-HUGS: Cloth Aware Human Gaussian Splatting",
+      "abstract": "We present Cloth-HUGS, a Gaussian Splatting based neural rendering framework for photorealistic clothed human reconstruction that explicitly disentangles body and clothing. Unlike prior methods that absorb clothing into a single body representation and struggle with loose garments and complex deformations, Cloth-HUGS represents the performer using separate Gaussian layers for body and cloth within a shared canonical space. The canonical volume jointly encodes body, cloth, and scene primitives and is deformed through SMPL-driven articulation with learned linear blend skinning weights. To improve cloth realism, we initialize cloth Gaussians from mesh topology and apply physics-inspired constraints, including simulation-consistency, ARAP regularization, and mask supervision. We further introduce a depth-aware multi-pass rendering strategy for robust body-cloth-scene compositing, enabling real-time rendering at over 60 FPS. Experiments on multiple benchmarks show that Cloth-HUGS improves perceptual quality and geometric fidelity over state-of-the-art baselines, reducing LPIPS by up to 28% while producing temporally coherent cloth dynamics.",
+      "authors": [
+        "Sadia Mubashshira",
+        "Nazanin Amini",
+        "Kevin Desai"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-17T09:22:58+00:00",
+      "link": "https://arxiv.org/pdf/2604.15875v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural rendering framework for canonical volumes",
+      "llm_evidence_cn": "规范体积的神经渲染框架",
+      "llm_evidence": "规范体积的神经渲染框架",
+      "canonical_evidence": "规范体积的神经渲染框架",
+      "llm_tldr_en": "A Gaussian splatting framework that disentangles body and clothing in a shared canonical volume.",
+      "llm_tldr_cn": "一种高斯泼溅框架，在共享的规范体积中解耦人体与衣物。",
+      "llm_tldr": "一种高斯泼溅框架，在共享的规范体积中解耦人体与衣物。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.12251v1",
+      "title": "ArtifactWorld: Scaling 3D Gaussian Splatting Artifact Restoration via Video Generation Models",
+      "abstract": "3D Gaussian Splatting (3DGS) delivers high-fidelity real-time rendering but suffers from geometric and photometric degradations under sparse-view constraints. Current generative restoration approaches are often limited by insufficient temporal coherence, a lack of explicit spatial constraints, and a lack of large-scale training data, resulting in multi-view inconsistencies, erroneous geometric hallucinations, and limited generalization to diverse real-world artifact distributions. In this paper, we present ArtifactWorld, a framework that resolves 3DGS artifact repair through systematic data expansion and a homogeneous dual-model paradigm. To address the data bottleneck, we establish a fine-grained phenomenological taxonomy of 3DGS artifacts and construct a comprehensive training set of 107.5K diverse paired video clips to enhance model robustness. Architecturally, we unify the restoration process within a video diffusion backbone, utilizing an isomorphic predictor to localize structural defects via an artifact heatmap. This heatmap then guides the restoration through an Artifact-Aware Triplet Fusion mechanism, enabling precise, intensity-guided spatio-temporal repair within native self-attention. Extensive experiments demonstrate that ArtifactWorld achieves state-of-the-art performance in sparse novel view synthesis and robust 3D reconstruction. Code and dataset will be made public.",
+      "authors": [
+        "Xinliang Wang",
+        "Yifeng Shi",
+        "Zhenyu Wu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-14T03:55:44+00:00",
+      "link": "https://arxiv.org/pdf/2604.12251v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "3D Gaussian Splatting for high-fidelity real-time rendering",
+      "llm_evidence_cn": "用于高保真实时渲染的3D高斯泼溅技术",
+      "llm_evidence": "用于高保真实时渲染的3D高斯泼溅技术",
+      "canonical_evidence": "用于高保真实时渲染的3D高斯泼溅技术",
+      "llm_tldr_en": "Restores 3D Gaussian Splatting artifacts using video generation models for better geometric consistency.",
+      "llm_tldr_cn": "利用视频生成模型修复3D高斯泼溅中的伪影，提升几何一致性。",
+      "llm_tldr": "利用视频生成模型修复3D高斯泼溅中的伪影，提升几何一致性。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

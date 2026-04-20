@@ -1,0 +1,65 @@
+{
+  "label": "2026-04-20",
+  "date": "2026-04-20",
+  "generated_at": "2026-04-20T20:35:48",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202604/20/2604.14928v2-hybrid-latents-geometry-appearance-aware-surfel-splatting",
+      "section": "deep",
+      "title_en": "Hybrid Latents: Geometry-Appearance-Aware Surfel Splatting",
+      "authors": "Neel Kelkar, Simon Niedermayr, Klaus Engel, Rüdiger Westermann",
+      "date": "2026-04-16",
+      "pdf": "https://arxiv.org/pdf/2604.14928v2",
+      "score": "8.0",
+      "evidence": "用于渲染的混合神经辐射表示",
+      "tldr": "本研究提出了一种混合高斯-哈希网格的辐射场表示方法，旨在解决2D高斯泼溅中几何与外观纠缠的问题。通过结合每高斯潜变量与哈希网格特征，显式分解场景的高低频成分，并引入硬透明度衰减和BCE稀疏性损失。该方法在提升几何重建精度的同时，显著减少了基元数量，实现了高效且高质量的新视角合成。",
+      "tags": "query:q1",
+      "abstract_en": "We introduce a hybrid Gaussian-hash-grid radiance representation for reconstructing 2D Gaussian scene models from multi-view images. Similar to NeST splatting, our approach reduces the entanglement between geometry and appearance common in NeRF-based models, but adds per-Gaussian latent features alongside hash-grid features to bias the optimizer toward a separation of low- and high-frequency scene components. This explicit frequency-based decomposition reduces the tendency of high-frequency texture to compensate for geometric errors. Encouraging Gaussians with hard opacity falloffs further strengthens the separation between geometry and appearance, improving both geometry reconstruction and rendering efficiency. Finally, probabilistic pruning combined with a sparsity-inducing BCE opacity loss allows redundant Gaussians to be turned off, yielding a minimal set of Gaussians sufficient to represent the scene. Using both synthetic and real-world datasets, we compare against the state of the art in Gaussian-based novel-view synthesis and demonstrate superior reconstruction fidelity with an order of magnitude fewer primitives.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/20/2604.15941v1-neural-gabor-splatting-enhanced-gaussian-splatting-with-neural-gabor-for-high-frequency-surface-reconstruction",
+      "section": "deep",
+      "title_en": "Neural Gabor Splatting: Enhanced Gaussian Splatting with Neural Gabor for High-frequency Surface Reconstruction",
+      "authors": "Haato Watanabe, Nobuyuki Umetani",
+      "date": "2026-04-17",
+      "pdf": "https://arxiv.org/pdf/2604.15941v1",
+      "score": "8.0",
+      "evidence": "用于增强体渲染的神经Gabor泼溅",
+      "tldr": "针对3D高斯泼溅（3DGS）在处理高频细节时因单基元单颜色导致基元数量激增的问题，本文提出Neural Gabor Splatting。该方法通过为每个高斯基元引入轻量级MLP来建模复杂的颜色变化，并结合频率感知加密策略优化基元分布。实验证明，该方法在保持渲染效率的同时，显著提升了高频表面重建的精度，有效减少了基元冗余。",
+      "tags": "query:q1",
+      "abstract_en": "Recent years have witnessed the rapid emergence of 3D Gaussian splatting (3DGS) as a powerful approach for 3D reconstruction and novel view synthesis. Its explicit representation with Gaussian primitives enables fast training, real-time rendering, and convenient post-processing such as editing and surface reconstruction. However, 3DGS suffers from a critical drawback: the number of primitives grows drastically for scenes with high-frequency appearance details, since each primitive can represent only a single color, requiring multiple primitives for every sharp color transition. To overcome this limitation, we propose neural Gabor splatting, which augments each Gaussian primitive with a lightweight multi-layer perceptron that models a wide range of color variations within a single primitive. To further control primitive numbers, we introduce a frequency-aware densification strategy that selects mismatch primitives for pruning and cloning based on frequency energy. Our method achieves accurate reconstruction of challenging high-frequency surfaces. We demonstrate its effectiveness through extensive experiments on both standard benchmarks, such as Mip-NeRF360 and High-Frequency datasets (e.g., checkered patterns), supported by comprehensive ablation studies.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/20/2604.15875v1-cloth-hugs-cloth-aware-human-gaussian-splatting",
+      "section": "quick",
+      "title_en": "CLOTH-HUGS: Cloth Aware Human Gaussian Splatting",
+      "authors": "Sadia Mubashshira, Nazanin Amini, Kevin Desai",
+      "date": "2026-04-17",
+      "pdf": "https://arxiv.org/pdf/2604.15875v1",
+      "score": "7.0",
+      "evidence": "规范体积的神经渲染框架",
+      "tldr": "Cloth-HUGS 是一种基于高斯泼溅的神经渲染框架，专门用于高质量的着衣人体重建。它通过在共享规范空间中将身体和服装解耦为独立的高斯层，解决了以往方法在处理宽松衣物和复杂变形时的局限性。该框架结合了 SMPL 驱动的变形、物理启发约束以及深度感知多通路渲染技术，在保证超过 60 FPS 实时渲染的同时，显著提升了重建的几何保真度和视觉一致性。",
+      "tags": "query:q1",
+      "abstract_en": "We present Cloth-HUGS, a Gaussian Splatting based neural rendering framework for photorealistic clothed human reconstruction that explicitly disentangles body and clothing. Unlike prior methods that absorb clothing into a single body representation and struggle with loose garments and complex deformations, Cloth-HUGS represents the performer using separate Gaussian layers for body and cloth within a shared canonical space. The canonical volume jointly encodes body, cloth, and scene primitives and is deformed through SMPL-driven articulation with learned linear blend skinning weights. To improve cloth realism, we initialize cloth Gaussians from mesh topology and apply physics-inspired constraints, including simulation-consistency, ARAP regularization, and mask supervision. We further introduce a depth-aware multi-pass rendering strategy for robust body-cloth-scene compositing, enabling real-time rendering at over 60 FPS. Experiments on multiple benchmarks show that Cloth-HUGS improves perceptual quality and geometric fidelity over state-of-the-art baselines, reducing LPIPS by up to 28% while producing temporally coherent cloth dynamics.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/20/2604.12251v1-artifactworld-scaling-3d-gaussian-splatting-artifact-restoration-via-video-generation-models",
+      "section": "quick",
+      "title_en": "ArtifactWorld: Scaling 3D Gaussian Splatting Artifact Restoration via Video Generation Models",
+      "authors": "Xinliang Wang, Yifeng Shi, Zhenyu Wu",
+      "date": "2026-04-14",
+      "pdf": "https://arxiv.org/pdf/2604.12251v1",
+      "score": "6.0",
+      "evidence": "用于高保真实时渲染的3D高斯泼溅技术",
+      "tldr": "针对3D高斯泼溅（3DGS）在稀疏视图下出现的几何与光度伪影，本文提出ArtifactWorld框架。该研究通过构建包含10.75万个视频剪辑的大规模数据集，利用视频扩散模型结合同构预测器生成的伪影热图，并配合伪影感知三元融合机制，实现了高一致性的时空修复，显著提升了稀疏视图合成与3D重建的质量。",
+      "tags": "query:q1",
+      "abstract_en": "3D Gaussian Splatting (3DGS) delivers high-fidelity real-time rendering but suffers from geometric and photometric degradations under sparse-view constraints. Current generative restoration approaches are often limited by insufficient temporal coherence, a lack of explicit spatial constraints, and a lack of large-scale training data, resulting in multi-view inconsistencies, erroneous geometric hallucinations, and limited generalization to diverse real-world artifact distributions. In this paper, we present ArtifactWorld, a framework that resolves 3DGS artifact repair through systematic data expansion and a homogeneous dual-model paradigm. To address the data bottleneck, we establish a fine-grained phenomenological taxonomy of 3DGS artifacts and construct a comprehensive training set of 107.5K diverse paired video clips to enhance model robustness. Architecturally, we unify the restoration process within a video diffusion backbone, utilizing an isomorphic predictor to localize structural defects via an artifact heatmap. This heatmap then guides the restoration through an Artifact-Aware Triplet Fusion mechanism, enabling precise, intensity-guided spatio-temporal repair within native self-attention. Extensive experiments demonstrate that ArtifactWorld achieves state-of-the-art performance in sparse novel view synthesis and robust 3D reconstruction. Code and dataset will be made public.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

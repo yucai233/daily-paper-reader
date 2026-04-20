@@ -6,29 +6,34 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-19
-- 运行时间：2026-04-19 19:26:57 UTC
+- 最新运行日期：2026-04-20
+- 运行时间：2026-04-20 20:35:38 UTC
 - 运行状态：成功
-- 本次总论文数：2
-- 精读区：0
+- 本次总论文数：4
+- 精读区：2
 - 速读区：2
 
 ### 今日简报（AI）
-今日聚焦 3D 高斯泼溅的多光谱演进与可探索生成式 3D 世界的构建。
-重点关注 MSGS 将 3DGS 引入多光谱领域，以及 Lyra 2.0 在打造大规模沉浸式交互场景上的新进展。
-建议关注 3D 视觉技术在非可见光成像与自动化世界建模中的跨界融合。
-- 详情：[/202604/19/README](/202604/19/README)
+今日聚焦 Gaussian Splatting 的前沿演进，重点攻克高频表面重建与几何外观感知的建模难题。
+推荐关注 Hybrid Latents 与 Neural Gabor Splatting，两者通过混合潜变量与 Gabor 滤波器显著提升了复杂几何与细节还原的精度。
+建议优先研读两篇 8 分精读论文，掌握利用神经表示优化 3D 场景精细化建模的核心思路。
+- 详情：[/202604/20/README](/202604/20/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [Hybrid Latents: Geometry-Appearance-Aware Surfel Splatting](/202604/20/2604.14928v2-hybrid-latents-geometry-appearance-aware-surfel-splatting)  
+   标签：评分：8.0/10、query:q1
+   evidence：用于渲染的混合神经辐射表示
+2. [Neural Gabor Splatting: Enhanced Gaussian Splatting with Neural Gabor for High-frequency Surface Reconstruction](/202604/20/2604.15941v1-neural-gabor-splatting-enhanced-gaussian-splatting-with-neural-gabor-for-high-frequency-surface-reconstruction)  
+   标签：评分：8.0/10、query:q1
+   evidence：用于增强体渲染的神经Gabor泼溅
 
 ### 速读区论文标签
-1. [MSGS: Multispectral 3D Gaussian Splatting](/202604/19/2604.13340v1-msgs-multispectral-3d-gaussian-splatting)  
+1. [CLOTH-HUGS: Cloth Aware Human Gaussian Splatting](/202604/20/2604.15875v1-cloth-hugs-cloth-aware-human-gaussian-splatting)  
    标签：评分：7.0/10、query:q1
-   evidence：针对半透明材料的3D高斯泼溅多光谱扩展
-2. [Lyra 2.0: Explorable Generative 3D Worlds](/202604/19/2604.13036v1-lyra-20-explorable-generative-3d-worlds)  
+   evidence：规范体积的神经渲染框架
+2. [ArtifactWorld: Scaling 3D Gaussian Splatting Artifact Restoration via Video Generation Models](/202604/20/2604.12251v1-artifactworld-scaling-3d-gaussian-splatting-artifact-restoration-via-video-generation-models)  
    标签：评分：6.0/10、query:q1
-   evidence：用于实时渲染和模拟的生成式重建
+   evidence：用于高保真实时渲染的3D高斯泼溅技术
 
 
 <div class="dpr-home-promo-card">
