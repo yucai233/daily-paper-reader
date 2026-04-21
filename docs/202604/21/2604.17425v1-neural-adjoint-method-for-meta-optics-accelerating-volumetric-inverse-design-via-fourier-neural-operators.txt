@@ -1,0 +1,326 @@
+Title: Neural Adjoint Method for Meta-optics: Accelerating Volumetric Inverse Design via Fourier Neural Operators
+
+URL Source: https://arxiv.org/pdf/2604.17425v1
+
+Published Time: Tue, 21 Apr 2026 01:32:25 GMT
+
+Number of Pages: 10
+
+Markdown Content:
+# Neural Adjoint Method for Meta-optics: Accelerating Volumetric Inverse Design via Fourier Neural Operators 
+
+# Chanik Kang ∗
+
+Hanyang University, Department of Artificial Intelligence Seoul, Korea chanik@hanyang.ac.kr 
+
+# Hyewon Suk ∗
+
+Hanyang University, Department of Artificial Intelligence Semiconductor Engineering Seoul, Korea hyewon01@hanyang.ac.kr 
+
+# Haejun Chung †
+
+Hanyang University, Department of Electronic Engineering Seoul, Korea haejun@hanyang.ac.kr 
+
+## Abstract 
+
+Meta-optics promises compact, high-performance imaging and color routing. However, designing high-performance structures is a high-dimensional optimization problem: mapping a desired optical output back to a physical 3D structure requires solving computationally expensive Maxwell’s equations iteratively. Even with adjoint optimization, broadband design can require thousands of Maxwell solves, making industrial-scale optimization slow and costly. To overcome this challenge, we propose the Neural Adjoint Method, a solver-supervised surrogate that predicts 3D adjoint gra-dient fields from a voxelized permittivity volume using a Fourier Neural Operator (FNO). By learning the dense, per-voxel sensitivity field that drives gradient-based updates, our method can replace per-iteration adjoint solves with fast predictions, greatly reducing the computational cost of full-wave simulations required during iterative refinement. To better preserve sensitivity peaks, we intro-duce a stage-wise FNO that progressively refines residual errors with increasing emphasis on higher-frequency components. We curate a meta-optics dataset from paired forward/adjoint FDTD simulations and evaluate it across three tasks: spectral sorting (color routers), achromatic focusing (metalenses), and waveguide mode conversion. Our method reduces design time from hours to seconds. These results suggest a practical route toward fast, large-scale vol-umetric meta-optical design enabled by AI-accelerated scientific computing. 
+
+## Keywords 
+
+Scientific Machine Learning, Neural Adjoint, Surrogate Modeling, Fourier Neural Operator, Inverse Design, Meta-optics 
+
+ACM Reference Format: 
+
+Chanik Kang, Hyewon Suk, and Haejun Chung. 2026. Neural Adjoint Method for Meta-optics: Accelerating Volumetric Inverse Design via Fourier Neural Operators. , 10 pages. https://doi.org/10.1145/nnnnnnn.nnnnnnn  
+
+> ∗Both authors contributed equally to this research.
+> †Corresponding author. Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org.
+> ,
+> ©2026 Copyright held by the owner/author(s). Publication rights licensed to ACM. ACM ISBN 978-x-xxxx-xxxx-x/YYYY/MM https://doi.org/10.1145/nnnnnnn.nnnnnnn
+
+## 1 Introduction 
+
+Figure 1: Breaking the simulation bottleneck in 3D meta-optics. (Top) Traditional optimization relies on expensive it-erative full-wave high-fidelity simulations (Maxwell solvers) to compute gradients, taking hours or days. (Bottom) The proposed Neural Adjoint Method replaces the solver with a Fourier Neural Operator. By inferring volumetric gradients in seconds. 
+
+Optical-system miniaturization has accelerated the commercial-ization of meta-optics, indicating a major transition from academic research to industrial-scale manufacturing [ 15 , 19 , 31 ]. In particular, the display and semiconductor industries are increasingly adopting 3D volumetric meta-optics, with color routers for Complementary Metal-Oxide-Semiconductor (CMOS) image sensors being a promi-nent example, to address the fundamental efficiency constraints of conventional dye-based color filters [ 20 , 29 , 40 ]. Unlike thin diffractive components, volumetric meta-optical devices leverage complex multiple scattering within micrometer-scale volumes to enable precise control of wavefronts and spectra. For deployment in consumer electronics, these devices must meet stringent perfor-mance requirements over broad wavelength ranges, necessitating an unprecedented degree of precision in the design and optimiza-tion process [10]. However, industrial deployment of these devices remains limited by substantial computational overhead. The inverse design of 3D 
+
+> arXiv:2604.17425v1 [cs.LG] 19 Apr 2026 Kang et al.
+
+meta-optics is typically a high-dimensional, non-convex optimiza-tion problem constrained by Maxwell’s equations [ 4 ]. The adjoint method is the standard approach for computing gradients, requir-ing two full-wave simulations per iteration (one forward and one adjoint) [ 26 ]. Although adjoint optimization is computationally effi-cient in terms of gradient evaluation, the overall cost of rigorous 3D solvers such as finite-difference time-domain (FDTD) grows rapidly with problem size [ 16 ]. In addition, commercial designs must be op-timized over the full visible band, which typically requires separate simulations for each wavelength or color channel [ 38 ]. As a result, a single optimization run can involve tens of thousands of full-wave simulations and take days to weeks to complete. This turnaround time poses a major obstacle for high-throughput industrial R&D, where rapid prototyping and iterative refinement are critical. To mitigate this cost, Deep Learning has emerged as a promising alternative. Generative models (GANs [ 1, 13 , 35 ], Diffusion [ 22 , 24 ,36 , 39 ]) offer rapid "one-shot" designs, but they suffer from a fun-damental precision-speed trade-off [ 17 ]. While fast, they often lack the physical rigor required for engineering-grade optics, producing plausible-looking structures that fail to meet the strict efficiency and fabrication tolerances of mass production. Conversely, numeri-cal optimization guarantees physical optimality but is constrained by the extreme slowness of the solver [5]. To overcome this bottleneck and narrow the gap between re-search and manufacturing, we propose the Neural Adjoint Method ,a real-time surrogate framework that combines the speed of gen-erative AI with the precision of iterative optimization. Our key insight is to decouple the “Optimizer” from the “Solver.” Instead of replacing the entire optimization process with an end-to-end generator, we replace only the expensive Maxwell solver with a Fourier Neural Operator (FNO) [ 7 , 21 ] based surrogate. This allows us to predict the 3D volumetric gradient field in a second, enabling a solver-free optimization loop that drastically shortens the design turnaround time. Our approach addresses the challenges of volumetric inverse design through three key contributions: 
+
+• Volumetric neural-adjoint gradient learning for Meta-optics. 
+
+We formulate inverse design around dense 3D adjoint sensi-tivities and train a neural operator to predict full volumetric adjoint gradient fields from voxelized devices. 
+
+• Stage-wise Fourier Neural Operator (SW-FNO) for multi-scale sensitivities. To address the low-frequency bias of single-pass operator networks, we introduce a coarse-to-fine residual refinement scheme with progressively higher-frequency em-phasis, improving recovery of localized, high-magnitude sensitivity peaks that are critical for topology refinement. 
+
+• Reduced-solver optimization for fast design iteration. We inte-grate the inferred gradients into a gradient-based optimiza-tion loop, enabling rapid design iteration, and validate the approach on meta-optics problems. We validate the proposed framework on three representative 3D inverse-design tasks: RGB color routing, achromatic metalens design, and waveguide mode conversion. Across all tasks, the Neu-ral Adjoint Method achieves performance comparable to rigorous FDTD-based adjoint optimization, while reducing end-to-end de-sign time by several orders of magnitude, with speedups of up to 
+
+∼ 10 4–10 5×. By mitigating the bottleneck of repeated full-wave simulations, these results suggest a practical pathway toward rapid, large-scale 3D meta-optical design enabled by AI-accelerated scien-tific computing. 
+
+## 2 Problem Formulation 
+
+In this section, we formulate the volumetric inverse design problem as a constrained optimization task governed by Partial Differential Equations (PDEs). We outline the computational complexities inher-ent in this process and introduce our Neural Adjoint formulation. 
+
+## 2.1 Inverse Design for Diverse Physical Objectives 
+
+Inverse design in meta-optics and nanophotonics seeks a device parameterization (e.g., a 2D/3D permittivity distribution) that max-imizes or minimizes a physics-based objective function [ 16 ]. A common approach is gradient-based adjoint optimization: given an objective functional J ( x) evaluated by solving Maxwell’s equa-tions, the adjoint method computes ∇x J using only two full-wave simulations, a forward solve to obtain the electromagnetic fields and an adjoint solve to backpropagate sensitivity, enabling scalable updates even when x is high-dimensional [ 26 ]. In this work, we use this conventional formulation as the reference pipeline and focus on accelerating the expensive field/gradient evaluations. As illustrated in Fig. 1, we consider volumetric inverse design within a three-dimensional physical domain Ω ⊂ R3. The design variable is the spatial permittivity distribution 𝜖 (r), which is dis-cretized as a voxel grid x ∈ R𝑁 with 𝑁 = 𝑁 𝑥 𝑁 𝑦 𝑁 𝑧 degrees of free-dom. For a given design x and wavelength 𝜆 , a full-wave Maxwell solver computes the complex electric field E(r; x, 𝜆 ), from which task-specific FoMs are defined. We study three representative classes of meta-optics/nanophotonics objectives, which are described in Fig. 2: 
+
+• Intensity maximization (metalens). We maximize the field intensity within a prescribed focal volume 𝑉 𝑓 ⊂ Ω:
+
+Jfocus (x) =
+
+∫
+
+> 𝑉 𝑓
+
+∥E(r; x, 𝜆 )∥ 2 𝑑 r. (1) 
+
+• Spectral sorting (color router). For 𝐾 target wavelengths 
+
+{𝜆 𝑘 }𝐾 𝑘 =1, we maximize the field intensity integrated over wavelength-specific target regions {𝑅 𝑘 }𝐾 𝑘 =1:
+
+Jsort (x) =
+
+> 𝐾
+
+∑︁ 
+
+> 𝑘 =1
+
+∫
+
+> 𝑅 𝑘
+
+∥E(r; x, 𝜆 𝑘 )∥ 2 𝑑 r. (2) 
+
+• Mode conversion (waveguide mode converter). We max-imize the modal overlap between the output field on the cross-section 𝑆 out and the desired target mode profile 𝚿 tgt .: 
+
+Jmode (x) =
+
+∫
+
+> 𝑆 out
+
+E(r; x, 𝜆 ) · 𝚿 ∗ 
+
+> tgt
+
+(r) 𝑑 r
+
+> 2
+
+. (3) Although the objectives differ across tasks, they are all governed by the same frequency-domain Maxwell equation: 
+
+∇ × ∇ × E(r) − 𝑘 20𝜖 (r)E(r) = −𝑖𝜔𝜇 0Jsrc (r), (4) where 𝑘 0 = 2𝜋 /𝜆 .Neural Adjoint Method for Meta-optics: Accelerating Volumetric Inverse Design via Fourier Neural Operators 
+
+Figure 2: 3D meta-optical inverse-design tasks considered in this work: (a) spectral sorting (color router), (b) light focusing (metalens), and (c) guided-wave mode conversion (waveguide). 
+
+## 2.2 The Adjoint-Solver Bottleneck 
+
+To optimize the objectives defined above, gradient-based inverse design typically employs the adjoint method (also known as the adjoint-variable method) to compute the sensitivity of the FoM with respect to the design parameters [ 26 , 37 ]. Let g = ∇x J denote the gradient. In the electromagnetic adjoint formulations, g can be written as a point-wise dot product between the forward field Efwd 
+
+and the adjoint field Eadj :
+
+g(r) ∝ Re Efwd (r) · Eadj (r) , (5) where the adjoint source term is determined by the particular FoM. Importantly, independent of the chosen FoM, the dominant cost in adjoint-based optimization comes from repeatedly solving the full-wave Maxwell system in Eq. (4) to obtain the forward and adjoint fields. In 3D, high-resolution, and broadband settings, these repeated full-wave computations become the primary bottleneck, making conventional iterative optimization prohibitively expensive in practice. 
+
+## 2.3 Neural Surrogate for Adjoint Gradients 
+
+Our objective is to approximate the adjoint-to-gradient mapping 
+
+G : x ↦ → ∇ x J using a unified neural surrogate 𝑓 𝜃 . Although the scalar FoM J differs across applications, the volumetric gradient field g = ∇x J encodes the local sensitivity information required by gradient-based optimizers. Accordingly, we formulate the problem as dense field prediction: 
+
+ˆg = 𝑓 𝜃 (x) ≈ ∇ x J ∈ R𝑁 𝑥 ×𝑁 𝑦 ×𝑁 𝑧 . (6) In the remainder of the paper, we treat 𝑓 𝜃 as a drop-in replacement for repeated adjoint solves within iterative optimization. The model architecture and training procedure, including supervision using gradients generated by full-wave solvers across the three objectives considered, are described in Sec.4 Methodology. 
+
+## 3 Related Work 3.1 Adjoint Optimization in Photonic Inverse Design 
+
+Adjoint-based optimization is a widely used approach for large-scale photonic and meta-optical inverse design, as it enables efficient gradient computation with only two full-wave simulations (for-ward and adjoint) per objective evaluation, largely independent of the number of design variables [ 3, 6, 14 , 25 , 26 , 30 ]. In practice, however, the overall runtime remains dominated by repeatedly invoking full-wave simulations across many iterations and wave-lengths, motivating efforts to reduce the cost of solver-in-the-loop optimization. 
+
+## 3.2 Neural Operators and Surrogate Modeling 
+
+Neural operators, including FNO, have emerged as mesh-agnostic surrogates for PDE-governed systems such as electromagnetics [ 2,9 ]. Most prior work has focused on surrogates that predict fields or spectra in order to reduce the cost of repeated simulations [ 4, 8,27 , 34 ]. More recently, gradient learning has been investigated as an alternative, in which adjoint sensitivities required by gradient-based optimizers are directly regressed [ 12 , 18 ]. This approach is especially attractive because it predicts the gradient information used to compute iterative design updates. 
+
+## 3.3 Positioning and Distinctions of This Work 
+
+Building on gradient learning with neural operators, we focus on 
+
+3D volumetric inverse design across diverse physics-based objec-tives, including focusing, spectral routing, and mode conversion. Extending neural-adjoint surrogates from low-dimensional or 2D problems to 3D introduces practical challenges related to represen-tational capacity, preservation of high-spatial-frequency sensitivity, and scalability. We address these challenges through: 
+
+• Volumetric setting and multi-objective coverage: We develop a unified surrogate formulation that predicts 3D gradient fields on voxel grids and generalizes across multiple classes of objectives. 
+
+• Stage-wise refinement for high-frequency sensitivities: 
+
+We introduce a multi-stage refinement scheme, including Kang et al. 
+
+Figure 3: Stage-wise Fourier Neural Operator (SW-FNO). Overview of our stage-wise training scheme for predicting dense 3D adjoint gradient fields from a voxelized meta-optics structure. Each stage employs an FNO block operating in the Fourier domain, with frequency emphasis progressively shifted from low to mid to high bands (left: simplified frequency-selective FNO blocks). Training proceeds sequentially: Stage 1 learns a coarse, low-frequency prediction; subsequent stages are trained on residual targets to refine missing components, while earlier stages are frozen. The final prediction is obtained by summing the stage outputs, enabling accurate reconstruction across the full frequency spectrum while preserving sharp, high-frequency sensitivity peaks. 
+
+spectral boosting, to better preserve sharp sensitivity peaks that are critical for faster convergence. 
+
+• Practical data construction for supervised gradient learning: We design a controllable synthetic data-generation pipeline that produces diverse, smoothly varying topolo-gies together with solver-generated gradients for supervised training. 
+
+## 4 Methodology 
+
+In this section, we present the Neural Adjoint Method for accelerat-ing volumetric meta-optical inverse design. We introduce a Stage-wise Fourier Neural Operator (SW-FNO) that predicts 3D adjoint gradient fields via coarse-to-fine residual refinement, improving the recovery of localized high-sensitivity structures. We then describe a solver-reduced optimization loop that updates the design using the inferred gradients, enabling rapid iterative refinement without repeatedly running full-wave forward/adjoint simulations. 
+
+## 4.1 Stage-wise FNO (SW-FNO) 
+
+To map a voxelized permittivity distribution x ∈ R𝑁 𝑥 ×𝑁 𝑦 ×𝑁 𝑧 to a dense adjoint gradient field g, the surrogate must represent electro-magnetic phenomena including wave propagation, scattering, and resonance, the latter often producing sharp, high-spatial-frequency sensitivity peaks. In practice, we find that a single-stage FNO often underrepresents these high-frequency components, resulting in Neural Adjoint Method for Meta-optics: Accelerating Volumetric Inverse Design via Fourier Neural Operators 
+
+overly smooth gradient fields and, consequently, degraded opti-mization performance [33]. To address this limitation, we adopt a stage-wise refinement strategy that better matches the multi-scale nature of 3D volumet-ric scattering [ 32 ]. The proposed SW-FNO performs progressive refinement: it first captures coarse, global trends and then succes-sively adds residual corrections to recover fine-scale, high-spatial-frequency components [23]. Formally, 
+
+ˆg = ˆg1 +
+
+> 𝑆
+
+∑︁ 
+
+> 𝑠 =2
+
+Δˆg𝑠 , ˆg1 = N1 (x), Δˆg𝑠 = N𝑠 
+
+ x, { ˆg𝑘 }𝑠 −1
+
+> 𝑘 =1
+
+ , (7) where 𝑆 is the number of stages and Δˆg𝑠 denotes the residual correc-tion predicted at stage 𝑠 . This additive coarse-to-fine decomposition encourages later stages to focus on what earlier stages miss, en-abling sharper recovery of high-frequency gradient features while preserving global consistency of the predicted field. 
+
+4.1.1 Stage 1: Global Physics Learning. The first stage uses a 3D FNO to capture the dominant low-spatial-frequency, global struc-ture of the adjoint gradient field. These components reflect long-range interactions, wave propagation effects, and coarse sensitivity patterns throughout the volume. For the 𝑙 -th Fourier layer, the feature update is defined as 
+
+v𝑙 +1 (r) = 𝜎  𝑊 𝑙 v𝑙 (r) + F −1 (𝑅 𝑙 (k) ⊙ F ( v𝑙 )( k)) ( r) , (8) where F and F −1 denote the FFT and inverse FFT, 𝑊 𝑙 is a point-wise linear projection, and 𝑅 𝑙 is a complex-valued spectral weight tensor defined on the truncated set of Fourier modes (up to 𝑘 base ). Operating in the Fourier domain yields a global convolution that captures non-local, physics-driven correlations. The Stage-1 predictor produces a coarse global estimate of the gradient field 
+
+ˆg1 = N1 (x), (9) where x denotes the voxelized device representation (e.g., permit-tivity) used as input to the neural operator. which provides a glob-ally consistent initialization for subsequent residual stages and stabilizes training by avoiding the need to learn fine-scale correc-tions from scratch. Inevitably, with a limited mode budget ( 𝑘 base )and the spectral bias of operator networks, ˆg1 may smooth out boundary-aligned variations and localized resonant features that require higher spectral resolution. 
+
+4.1.2 Stage 2: Mid-Frequency Residual Refinement. While Stage 1 captures dominant global sensitivity patterns, its prediction ˆg1 can under-represent mid-frequency structures around material inter-faces, boundaries, and transition regions due to low-mode trunca-tion and spectral bias. Stage 2, therefore, conditions on the Stage 1 estimate and predicts a residual correction, following the residual-learning principle [11]: 
+
+r2 = g − ˆg1,
+
+Δˆg2 = N2 ([ x, ˆg1]) ,
+
+ˆg2 = ˆg1 + Δˆg2.
+
+(10) where g denotes the ground-truth adjoint gradient field obtained from the FDTD solver. 
+
+4.1.3 Stage 3: High-Frequency Peak Refinement. Even after Stage 2 recovers boundary-aligned mid-frequency residuals, the target ad-joint gradient field may still exhibit sharp, highly localized sensi-tivity peaks at higher spatial frequencies. These peaks often arise from abrupt spatial variations (e.g., resonance-induced confinement and interface discontinuities) and indicate fine-scale regions where topology updates must remain responsive. Standard FNOs exhibit a low-frequency bias and, under finite mode truncation, tend to smooth spiky high-frequency compo-nents, which can underestimate gradient magnitudes near localized maxima. To better preserve these high-frequency extrema, Stage 3 predicts an additional residual correction conditioned on the Stage 2 estimate: 
+
+r3 = g − ˆg2,
+
+Δˆg3 = N3 ([ x, ˆg2]) ,
+
+ˆgfinal = ˆg2 + Δˆg3.
+
+(11) By explicitly modeling the remaining residual, Stage 3 improves the recovery of high-magnitude localized peaks that are critical for fine-scale topology refinement, helping avoid attenuated sensitivities and preserving reliable update directions. 
+
+## 4.2 Learning Adjoint Gradients from Full-Wave Simulations 
+
+We train the surrogate 𝑓 𝜃 on paired samples of voxelized device rep-resentations and their corresponding adjoint gradients, {( x𝑖 , g𝑖 )} .Here, g𝑖 is obtained from a conventional adjoint method using open-source FDTD simulations in Meep [ 28 ]: for each design x𝑖 ,we run a forward simulation to evaluate the objective and an ad-joint simulation to compute the volumetric sensitivity field. The learning problem is formulated as dense regression. Given x, the model predicts the full 3D gradient field ˆg = 𝑓 𝜃 (x) and is optimized to match the solver-generated g.
+
+## 5 Experiments 
+
+In this section, we empirically evaluate the Neural Adjoint Method on three volumetric meta-optical inverse-design tasks. Our experi-ments are designed to address the following questions: 
+
+• Generalization (RQ1): Can a single neural framework be applied to physically different inverse-design problems us-ing a consistent architecture, without task-specific modifica-tions? 
+
+• Efficiency (RQ2): How much speedup does the proposed method provide relative to conventional FDTD-based adjoint optimization? 
+
+• Component Analysis (RQ3): Do multi-stage refinement and high-frequency boosting improve gradient fidelity and final design performance, and what is the trade-off with model size and latency? 
+
+## 5.1 Experimental Setup 
+
+5.1.1 Datasets. We construct a domain-specific dataset consisting of paired permittivity volumes and adjoint sensitivity fields. Unlike generic PDE benchmarks that emphasize smooth state solutions, our supervision uses dense adjoint gradient fields as labels, which Kang et al. 
+
+Figure 4: Qualitative comparison of volumetric adjoint-gradient predictions. We visualize the ground-truth gradient fields alongside predictions from our method, standard FNO, and U-Net across three tasks: (a) RGB color router, (b) metalens, and (c) waveguide mode converter. Each panel displays a 3D volumetric rendering and a corresponding 2D cross-sectional slice at the indicated 𝑧 -depth. While baseline models (FNO and U-Net) tend to produce over-smoothed fields that miss critical high-frequency components, our method accurately reconstructs sharp gradient peaks and fine-grained spatial features, achieving maximum cosine similarity scores exceeding 98% across all benchmarks. 
+
+exhibit sharp, localized sensitivity features induced by interference and resonant effects in meta-optics structures. Depending on the task and labeling cost, we generate 600 waveg-uide samples, 1,000 metalens samples, and 5,000 color-router vol-umetric samples. For each sample, we compute the ground-truth adjoint gradient field using open-source FDTD Meep via paired for-ward and adjoint simulations, and form voxel-wise sensitivities [ 28 ]. We use fixed train/validation/test splits with a fixed random seed for reproducibility. 
+
+5.1.2 Data Processing and Analysis. All samples are represented on a fixed voxel grid and normalized to a consistent permittivity range. Gradient labels are stored as dense 3D tensors aligned with the design region, and voxels outside the design domain are masked consistently across tasks. For evaluation, we report (i) functional fidelity as the ratio of the final FoM achieved by our method to the FDTD benchmark, and (ii) structural fidelity as the cosine similarity between the final voxelized designs. 
+
+5.1.3 Baselines. We evaluate the Neural Adjoint Method against the following baselines, covering both physics-grounded optimiza-tion and learning-based surrogates. (1) Adjoint Method (FDTD, Reference). A conventional adjoint optimization pipeline that computes gradients via paired for-ward/adjoint full-wave simulations and updates the design with a gradient-based optimizer. This serves as a physically accurate reference for optimization and provides the bench-mark FoM for comparison. (2) One-Stage FNO. A vanilla FNO that predicts the full 3D ad-joint gradient field in a single pass, without any stage-wise refinement. (3) Triple-Stage FNO (SW-FNO). Our proposed stage-wise FNO that cascades three independent FNO blocks with progres-sively larger Fourier-mode budgets, enabling a coarse-to-fine refinement from low- to high-frequency content. (4) U-Net. 3D U-Net with an encoder–decoder architecture and skip connections, trained to predict the dense adjoint gradi-ent field. 
+
+## 5.2 Adjoint Gradient Inference on Diverse Benchmarks (RQ1) 
+
+We evaluate the proposed framework on three representative high-dimensional inverse design problems: an RGB color router, an achro-matic metalens, and a waveguide mode converter. To rigorously Neural Adjoint Method for Meta-optics: Accelerating Volumetric Inverse Design via Fourier Neural Operators 
+
+Table 1: Comparison of gradient prediction performance (Cosine Similarity). Model Color Router Metalens Waveguide Mean (Std) Max Mean (Std) Max Mean (Std) Max                   
+
+> U-Net 61.4 (13.7) 86.4 53.6 (6.5) 69.1 32.6 (23.9) 71.9 FNO 66.3 (13.1) 89.7 73.5 (10.3) 90.0 46.4 (25.2) 80.5
+> Ours 82.3(13.7) 99.8 87.6 (7.5) 98.2 87.9 (30.3) 99.4
+
+quantify the capability of the proposed neural adjoint method, we analyze both structural fidelity and functional performance. To quantify gradient fidelity, we compute the cosine similarity between the surrogate-predicted gradient fields and the rigorous FDTD adjoint gradients, which directly measures the alignment of update directions used by gradient-based optimizers. As summarized in Table 1, our method consistently achieves the highest cosine similarity across all three tasks, outperforming both standard one-stage FNO and 3D U-Net baselines. Qualitatively, Fig. 4 further supports this conclusion. Baseline models tend to produce over-smoothed gradient fields that attenuate localized extrema, whereas our method reconstructs sharper peak structures and fine-grained spatial features across all benchmarks. 
+
+## 5.3 Optimization on Diverse Benchmarks (RQ1 & RQ2) 
+
+We evaluate the proposed Neural Adjoint Method on three rep-resentative volumetric inverse-design tasks: an RGB color router, an achromatic metalens, and a waveguide mode converter. These benchmarks span distinct objectives providing a stringent test of whether one neural framework can be applied across heterogeneous design problems without task-specific architectural modifications. 
+
+Figure 5: Qualitative comparison of final color-router designs. Volumetric renderings of the optimized permittivity distribu-tion obtained by the FDTD-based adjoint optimization (left, ground truth) and by our Neural Adjoint method (right). Al-though the resulting geometries are not necessarily the same (structure similarity: 72.1%), our method achieves compara-ble functional performance under the same objective (FoM similarity: 95.9%). 
+
+To assess end-to-end utility for inverse design, we report two complementary outcomes: (i) the final design performance achieved by surrogate-driven optimization and (ii) the total wall-clock de-sign time required to reach the final design. For performance, we compare the FoM obtained by our solver-free optimization against a FDTD adjoint optimization. We report Relative Optimality (FoM, structure similarity) as the ratio of the achieved efficiency to the FDTD baseline, and summarize results across tasks in Table 2. Qual-itative examples of optimized color router and their corresponding responses are shown in Fig. 5. 
+
+Table 2: Relative Optimality and Design Speed. We com-pare our neural adjoint-optimized designs against the FDTD benchmark. All methods are run for a fixed number of opti-mization iterations: 50 (Color Router), 100 (Metalens), and 30 (Waveguide). Task Rel. Opt. (%) Design Time Speedup FoM Struct. FDTD Ours Color Router 95 .9 72 .1 3.4 h 1.0 s ×12 ,194 
+
+Metalens 86 .0 83 .6 40.1 h 1.8 s ×80 ,200 
+
+Waveguide 98 .8 91 .2 11.5 h 0.7 s ×59 ,382 
+
+Across all three benchmarks, our method achieves high relative optimality while substantially reducing design time. The resulting designs remain close to the FDTD-optimized solutions in terms of final performance, despite eliminating repeated full-wave for-ward/adjoint solves during optimization. This indicates that the neural adjoint surrogate supports a shared optimization pipeline that transfers across disparate meta-optical objectives. 
+
+## 5.4 Analysis of Computational Efficiency (RQ2) 
+
+The primary advantage of our method is the elimination of the simulation bottleneck. Compared to conventional solver-in-the-loop adjoint optimization, our approach yields orders-of-magnitude speedups on all tasks (Table 2), reducing design time from hours to seconds. While a single iteration of 3D FDTD simulation for color router takes approximately minutes to hours on a workstation (CPU: AMD 9995WX), the Neural Adjoint inference takes only milliseconds on a single GPU (NVIDIA H200). 
+
+## 5.5 Effect of Multi-Stage Refinement and Spectral Boosting (RQ3) 
+
+Table 3 shows that increasing the number of refinement stages im-proves the final efficiency, with the largest gain achieved by three stages and only marginal improvement beyond that. This trend is consistent with the spectral bias of single-pass operator networks, which tend to under-represent sharp, high-spatial-frequency sensi-tivity peaks that are important for effective topology updates. By introducing low-to-high (coarse-to-fine) residual refinement with progressively higher-frequency emphasis, the multi-stage design better restores these localized extrema, reducing gradient-field error and yielding higher-performing optimized devices. Notably, moving from three to four stages increases efficiency by only 1.1% , while substantially increasing both the number of parameters and inference latency. Given this trade-off, we adopt the three-stage configuration as our default, which provides a favorable balance between accuracy and computational overhead. Kang et al. 
+
+Table 3: Ablation of the number of refinement stages in SW-FNO (1–4). We report the stage-wise operating modes together with parameter count, inference latency, and final optimized efficiency. #Stages Stage-wise Modes #Params (M) ↓ Latency (ms) ↓ Eff. (%) ↑
+
+1 S1: Low 7.09 4.8 73 .5
+
+2 S1: Low → S2: High 14 .71 7.8 73 .1
+
+3 (Ours) S1: Low → S2: Mid → S3: High 21 .80 10 .9 87 .6
+
+4 S1: Low → S2: Low-Mid → S3: High-Mid → S4: High 42 .53 14 .0 88 .7
+
+Figure 6: Optimization time comparison. Wall-clock time versus the number of optimization iterations for our Neu-ral Adjoint method and FDTD-based adjoint optimization. Across iteration, our method remains orders of magnitude faster, achieving up to ∼ 10 4× speedup over serial FDTD. 
+
+## 6 Limitations and Ethical Considerations 6.1 Limitations 
+
+Our training data are generated under a fixed simulation config-uration and from a controlled distribution of synthetic structures. As a result, the learned surrogate necessarily reflects the assump-tions and coverage of this training domain and may not directly generalize to substantially different geometries, material models, fabrication constraints, or experimental conditions without addi-tional data and/or domain adaptation. Moreover, although neural adjoint inference can substantially reduce reliance on full-wave simulations during iterative design, the current study is not yet fully solver-free in the broader sense, and our evaluation is limited to relatively compact volumetric domains. A direction for future work is to explicitly leverage the scalability of neural operators to enable cross-scale generalization: training on smaller, simulation-feasible subdomains and transferring the learned operator to predict gradients on much larger volumes. If successful, such a strategy could further decouple optimization throughput from the cost of full-wave simulation and enable prac-tical, fully solver-free volumetric optimization pipelines. This work is a small step toward replacing expensive full-wave adjoint loops with learned gradient inference, but it marks mean-ingful progress toward real-time volumetric meta-optics inverse design. 
+
+## 6.2 Ethical Considerations 
+
+This research uses only synthetic data generated by full-wave electromagnetic simulations and does not involve human partici-pants, personally identifiable information, or user-generated con-tent; therefore, it does not raise privacy or informed-consent con-cerns. The proposed technology is intended to accelerate the design of optical components for display, imaging, and communication systems. While advanced optics could in principle be integrated into surveillance or military hardware, the method itself is a general-purpose optimization and surrogate-modeling tool and does not inherently enable misuse beyond general engineering capabilities. 
+
+## 7 Conclusion 
+
+We introduced the Neural Adjoint Method , a neural-operator-based approach that targets a central bottleneck in computational meta-optics: the repeated full-wave forward/adjoint simulations required for 3D adjoint optimization. Instead of predicting only scalar objec-tives, our method learns to directly infer dense 3D adjoint gradient fields on voxelized device domains, enabling rapid iterative refine-ment while preserving the physically meaningful update directions that drive topology optimization. We proposed a Stage-wise Fourier Neural Operator that per-forms coarse-to-fine residual refinement with progressively higher-frequency emphasis, improving recovery of localized, high-magnitude sensitivity peaks that strongly influence topology updates. To support rigorous analysis and reproducibility, we construct a domain-specific dataset from a conventional adjoint method using full-wave FDTD simulations, pairing voxelized designs with solver-generated volumetric adjoint gradients. Across three physically distinct inverse-design benchmarks (RGB color router, achromatic metalens, waveguide mode converter), our surrogate-driven op-timization reaches solutions that remain close to FDTD adjoint optimization in final FoM, while reducing design time from hours to seconds. These results suggest a practical route toward inter-active, general-purpose volumetric meta-optics design, bridging advances in neural operators with the stringent fidelity require-ments of electromagnetic inverse design. Neural Adjoint Method for Meta-optics: Accelerating Volumetric Inverse Design via Fourier Neural Operators 
+
+## Acknowledgments 
+
+This work was supported by the National Research Foundation of Korea (NRF) grant funded by the Korean government (MSIT) (RS-2024-00338048, RS-2024-00414119, RS-2025-25463760, RS-2026-25487796); by the Ministry of Science and ICT (MSIT) of the Re-public of Korea under the Global Research Support Program in the Digital Field (RS-2024-00412644) supervised by the Institute of In-formation and Communications Technology Planning & Evaluation (IITP); by the Culture, Sports and Tourism R&D Program through the Korea Creative Content Agency grant funded by the Ministry of Culture, Sports and Tourism in 2024 (RS-2024-00332210); by the Ar-tificial Intelligence Graduate School Program (No. RS-2020-II201373, Hanyang University) supervised by IITP; by the artificial intelli-gence semiconductor support program to nurture the best talents (IITP-(2025)-RS-2023-00253914) funded by the Korean government; and by MSIT (RS-2025-02218723, RS-2025-02283217). 
+
+## References 
+
+[1] Sensong An, Bowen Zheng, Hong Tang, Mikhail Y Shalaginov, Li Zhou, Hang Li, Myungkoo Kang, Kathleen A Richardson, Tian Gu, Juejun Hu, et al . 2021. Multi-functional metasurface design with a generative adversarial network. Advanced optical materials 9, 5 (2021), 2001433. [2] Kamyar Azizzadenesheli, Nikola Kovachki, Zongyi Li, Miguel Liu-Schiaffini, Jean Kossaifi, and Anima Anandkumar. 2024. Neural operators for accelerating scientific simulations and design. Nature Reviews Physics 6, 5 (2024), 320–328. [3] Toby Bi, Shuangyou Zhang, Egemen Bostan, Danxian Liu, Aditya Paul, Olga Ohletz, Irina Harder, Yaojing Zhang, Alekhya Ghosh, Abdullah Alabbadi, Masoud Kheyri, Tianyi Zeng, Jesse Lu, Kiyoul Yang, and Pascal Del’Haye. 2025. Inverse-Designed Silicon Nitride Nanophotonics. arXiv:2505.13383 [physics.optics] https: //arxiv.org/abs/2505.13383 [4] Mingkun Chen, Robert Lupoiu, Chenkai Mao, Der-Han Huang, Jiaqi Jiang, Philippe Lalanne, and Jonathan A Fan. 2022. High speed simulation and freeform optimization of nanophotonic devices with physics-augmented deep learning. 
+
+ACS Photonics 9, 9 (2022), 3110–3123. [5] Minseok Choi, Junkyeong Park, Jehyeon Shin, Harit Keawmuang, Hongyoon Kim, Jooyeong Yun, Junhwa Seong, and Junsuk Rho. 2024. Realization of high-performance optical metasurfaces over a large area: a review from a design perspective. npj Nanophotonics 1, 1 (2024), 31. [6] Tianxiang Dai, Yixuan Shao, Chenkai Mao, Yu Wu, Sara Azzouz, You Zhou, and Jonathan A Fan. 2025. Shaping freeform nanophotonic devices with geometric neural parameterization. npj Computational Materials 11, 1 (2025), 259. [7] Valentin Duruisseaux, Jean Kossaifi, and Anima Anandkumar. 2025. Fourier Neu-ral Operators Explained: A Practical Perspective. arXiv preprint arXiv:2512.01421 
+
+(2025). [8] Orkun Furat, Vinay Chakravarthi Gogineni, Henrik Bindslev, and Esmaeil S Nadimi. 2025. Physics-informed Neural Operators for Predicting 3D Electro-magnetic Fields Transformed by Metasurfaces. arXiv preprint arXiv:2512.15694 
+
+(2025). [9] Jiaqi Gu, Zhengqi Gao, Chenghao Feng, Hanqing Zhu, Ray Chen, Duane Boning, and David Pan. 2022. Neurolight: A physics-agnostic neural operator enabling parametric photonic device simulation. Advances in Neural Information Processing Systems 35 (2022), 14623–14636. [10] Tian Gu, Hyun Jung Kim, Clara Rivero-Baleine, and Juejun Hu. 2023. Reconfig-urable metasurfaces towards commercial success. Nature Photonics 17, 1 (2023), 48–58. [11] Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. 2016. Deep residual learning for image recognition. In Proceedings of the IEEE conference on computer vision and pattern recognition . 770–778. [12] Jiaqi Jiang and Jonathan A Fan. 2019. Global optimization of dielectric metasur-faces using a physics-driven neural network. Nano letters 19, 8 (2019), 5366–5372. [13] Jiaqi Jiang, David Sell, Stephan Hoyer, Jason Hickey, Jianji Yang, and Jonathan A Fan. 2019. Free-form diffractive metagrating design based on generative adver-sarial networks. ACS Nano 13, 8 (2019), 8872–8878. [14] Beñat Martinez de Aguirre Jokisch, Alexander Cerjan, Rasmus Ellebæk Chris-tiansen, Jesper Mørk, Ole Sigmund, and Steven G Johnson. 2025. Efficient first-principles inverse design of nanolasers. arXiv preprint arXiv:2506.20223 (2025). [15] Dae Eon Jung, Jonas Amann, Vincent J Einck, Justas Baltrukonis, Lucas D Verras-tro, Alex Dawicki, Mohammad Pasdarikia, Amir Arbabi, Gerhard Liedl, Andreas Otto, et al . 2026. All-Inorganic TiO2 Nanoparticle-Based Metalenses Manufac-tured by Direct Nanoimprint Lithography for High Energy Applications: Fem-tosecond Laser-Induced Damage Threshold Testing. Advanced Optical Materials 
+
+14, 2 (2026), e01769. [16] Chanik Kang, Chaejin Park, Myunghoo Lee, Joonho Kang, Min Seok Jang, and Haejun Chung. 2024. Large-scale photonic inverse design: computational chal-lenges and breakthroughs. Nanophotonics (2024). doi:doi:10.1515/nanoph-2024-0127 [17] Chanik Kang, Dongjin Seo, Svetlana V Boriskina, and Haejun Chung. 2024. Ad-joint method in machine learning: a pathway to efficient inverse design of pho-tonic devices. Materials & Design 239 (2024), 112737. [18] Chanik Kang, Joonhyuk Seo, Ikbeom Jang, and Haejun Chung. 2025. Adjoint method-based Fourier neural operator surrogate solver for wavefront shaping in tunable metasurfaces. iScience 28, 1 (2025). [19] Arseniy I Kuznetsov, Mark L Brongersma, Jin Yao, Mu Ku Chen, Uriel Levy, Din Ping Tsai, Nikolay I Zheludev, Andrei Faraon, Amir Arbabi, Nanfang Yu, et al .2024. Roadmap for optical metasurfaces. ACS photonics 11, 3 (2024), 816–865. [20] Sangbin Lee, Jaehyun Hong, Joonho Kang, Junjeong Park, Jaesung Lim, Taeho Lee, Min Seok Jang, and Haejun Chung. 2024. Inverse design of color routers in CMOS image sensors: toward minimizing interpixel crosstalk. Nanophotonics 13, 20 (2024), 3895–3914. [21] Zongyi Li, Nikola Kovachki, Kamyar Azizzadenesheli, Burigede Liu, Kaushik Bhattacharya, Andrew Stuart, and Anima Anandkumar. 2020. Fourier neural oper-ator for parametric partial differential equations. arXiv preprint arXiv:2010.08895 
+
+(2020). [22] Ruotian Lin, Cheng Zhang, Wangqi Mao, Jiahao Ge, Hongxing Dong, and Long Zhang. 2025. Diffusion model-based inverse design of photonic crystals for customized refraction. Nanophotonics 14, 27 (2025), 5537–5544. [23] Xinliang Liu, Bo Xu, Shuhao Cao, and Lei Zhang. 2024. Mitigating spectral bias for the multiscale operator learning. J. Comput. Phys. 506 (2024), 112944. [24] Chenkai Mao, Sandra S Leuthold, and Jonathan A Fan. 2025. Metamaterial inverse design using diffusion models. In AI and Optical Data Sciences VI . SPIE, PC1337516. [25] Reza Marzban, Ali Adibi, and Raphaël Pestourie. 2026. Inverse design in nanopho-tonics via representation learning. Advanced Optical Materials 14, 1 (2026), e02062. [26] Owen Miller. 2012. Photonic Design: From Fundamental Solar Cell Physics to Computational Inverse Design . Ph. D. Dissertation. EECS Department, University of California, Berkeley. http://www2.eecs.berkeley.edu/Pubs/TechRpts/2012/ EECS-2012-115.html [27] Sunghyun Nam, Chan Y Park, and Min Seok Jang. 2026. Data-Efficient Electro-magnetic Surrogate Solver Through Dissipative Relaxation Transfer Learning. 
+
+arXiv preprint arXiv:2601.18235 (2026). [28] Ardavan F. Oskooi, David Roundy, Mihai Ibanescu, Peter Bermel, J.D. Joannopou-los, and Steven G. Johnson. 2010. Meep: A flexible free-software package for electromagnetic simulations by the FDTD method. Computer Physics Communi-cations 181, 3 (2010), 687–702. [29] Chanhyung Park, Sangbin Lee, Taeho Lee, Jiwon Kang, Jaehyun Jeon, Chaejin Park, Sanmun Kim, Haejun Chung, and Min Seok Jang. 2024. Towards sub-wavelength pixels: nanophotonic color routers for ultra-compact high-efficiency CMOS image sensors. Journal of Optics 26, 9 (2024), 093002. [30] Phillippe Pearson, Gregory Roberts, and Andrei Faraon. 2025. Inverse-designed metasurfaces for multifunctional spatial frequency filtering. Optica 12, 7 (2025), 1090–1099. [31] Raphaël Pestourie, Carlos Pérez-Arancibia, Zin Lin, Wonseok Shin, Federico Capasso, and Steven G Johnson. 2018. Inverse design of large-area metasurfaces. 
+
+Optics express 26, 26 (2018), 33732–33747. [32] Shaoxiang Qin, Fuyuan Lyu, Wenhui Peng, Dingyang Geng, Ju Wang, Naiping Gao, Xue Liu, and Liangzhu Leon Wang. 2024. Toward a better understanding of fourier neural operators: Analysis and improvement from a spectral perspective. 
+
+CoRR (2024). [33] Nasim Rahaman, Aristide Baratin, Devansh Arpit, Felix Draxler, Min Lin, Fred Hamprecht, Yoshua Bengio, and Aaron Courville. 2019. On the spectral bias of neural networks. In International conference on machine learning . PMLR, 5301– 5310. [34] Joonhyuk Seo, Chanik Kang, Dongjin Seo, and Haejun Chung. 2024. Wave interpolation neural operator: Interpolated prediction of electric fields across un-trained wavelengths. In NeurIPS 2024 Workshop on Data-driven and Differentiable Simulations, Surrogates, and Solvers .[35] Sunae So and Junsuk Rho. 2019. Designing nanophotonic structures using condi-tional deep convolutional generative adversarial networks. Nanophotonics 8, 7 (2019), 1255–1261. [36] Haoyu Wang, Zongliang Du, Fuyong Feng, Zhong Kang, Shan Tang, and Xu Guo. 2024. DiffMat: Data-driven inverse design of energy-absorbing metamaterials using diffusion model. Computer Methods in Applied Mechanics and Engineering 
+
+432 (2024), 117440. [37] Jiahui Wang, Yu Shi, Tyler Hughes, Zhexin Zhao, and Shanhui Fan. 2018. Adjoint-based optimization of active nanophotonic devices. Optics Express 26, 3 (2018), 3236–3248. [38] Yujie Wang, Qinmiao Chen, Wenhong Yang, Ziheng Ji, Limin Jin, Xing Ma, Qinghai Song, Alexandra Boltasseva, Jiecai Han, Vladimir M Shalaev, et al . 2021. Kang et al. 
+
+High-efficiency broadband achromatic metalens for near-IR biological imaging window. Nature communications 12, 1 (2021), 5560. [39] Zezhou Zhang, Chuanchuan Yang, Yifeng Qin, Hao Feng, Jiqiang Feng, and Hongbin Li. 2023. Diffusion probabilistic model based accurate and high-degree-of-freedom metasurface inverse design. Nanophotonics 12, 20 (2023), 3871–3881. [40] Xiujuan Zou, Youming Zhang, Ruoyu Lin, Guangxing Gong, Shuming Wang, Shining Zhu, and Zhenlin Wang. 2022. Pixel-level Bayer-type colour router based on metasurfaces. Nature Communications 13, 1 (2022), 3288. 
+
+Received 19 April 2026

@@ -1,0 +1,216 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-21T19:53:44.600308+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2604.17831v1",
+      "title": "PCM-NeRF: Probabilistic Camera Modeling for Neural Radiance Fields under Pose Uncertainty",
+      "abstract": "Neural surface reconstruction methods typically treat camera poses as fixed values, assuming perfect accuracy from Structure-from-Motion (SfM) systems. This assumption breaks down with imperfect pose estimates, leading to distorted or incomplete reconstructions. We present PCM-NeRF, a probabilistic framework that augments neural surface reconstruction with per-camera learnable uncertainty, built on top of SG-NeRF. Rather than treating all cameras equally throughout optimization, we represent each pose as a distribution with a learnable mean and variance, initialized from SfM correspondence quality. An uncertainty regularization loss couples the learned variance to view confidence, and the resulting uncertainty directly modulates the effective pose learning rate: uncertain cameras receive damped gradient updates, preventing poorly initialized views from corrupting the reconstruction. This lightweight mechanism requires no changes to the rendering pipeline and adds negligible overhead. Experiments on challenging scenes with severe pose outliers demonstrate that PCM-NeRF consistently outperforms state-of-the-art methods in both Chamfer Distance and F-Score, particularly for geometrically complex structures, without requiring foreground masks.",
+      "authors": [
+        "Shravan Venkatraman",
+        "Rakesh Raj Madavan",
+        "Pavan Kumar Sathya Venkatesh"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-04-20T05:34:09+00:00",
+      "link": "https://arxiv.org/pdf/2604.17831v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Neural Radiance Fields under pose uncertainty",
+      "llm_evidence_cn": "位姿不确定性下的神经辐射场",
+      "llm_evidence": "位姿不确定性下的神经辐射场",
+      "canonical_evidence": "位姿不确定性下的神经辐射场",
+      "llm_tldr_en": "A probabilistic framework for NeRF that models camera pose uncertainty to improve surface reconstruction.",
+      "llm_tldr_cn": "一种NeRF概率框架，通过建模相机位姿不确定性来改进表面重建。",
+      "llm_tldr": "一种NeRF概率框架，通过建模相机位姿不确定性来改进表面重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2604.17965v1",
+      "title": "MU-GeNeRF: Multi-view Uncertainty-guided Generalizable Neural Radiance Fields for Distractor-aware Scene",
+      "abstract": "Generalizable Neural Radiance Fields (GeNeRFs) enable high-quality scene reconstruction from sparse views and can generalize to unseen scenes. However, in real-world settings, transient distractors break cross-view structural consistency, corrupting supervision and degrading reconstruction quality. Existing distractor-free NeRF methods rely on per-scene optimization and estimate uncertainty from per-view reconstruction errors, which are not reliable for GeNeRFs and often misjudge inconsistent static structures as distractors. To this end, we propose MU-GeNeRF, a Multi-view Uncertainty-guided distractor-aware GeNeRF framework designed to alleviate GeNeRF's robust modeling challenges in the presence of transient distractions. We decompose distractor awareness into two complementary uncertainty components: Source-view Uncertainty, which captures structural discrepancies across source views caused by viewpoint changes or dynamic factors; and Target-view Uncertainty, which detects observation anomalies in the target image induced by transient distractors.These two uncertainties address distinct error sources and are combined through a heteroscedastic reconstruction loss, which guides the model to adaptively modulate supervision, enabling more robust distractor suppression and geometric modeling.Extensive experiments show that our method not only surpasses existing GeNeRFs but also achieves performance comparable to scene-specific distractor-free NeRFs.",
+      "authors": [
+        "Wenjie Mu",
+        "Zhan Li",
+        "Chuanzhou Su",
+        "Xuanyi Shen",
+        "Ziniu Liu",
+        "Fan Lu",
+        "Yujian Mo",
+        "Junqiao Zhao",
+        "Tiantian Feng",
+        "Chen Ye",
+        "Guang Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-20T08:46:28+00:00",
+      "link": "https://arxiv.org/pdf/2604.17965v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "generalizable neural radiance fields for scene reconstruction",
+      "llm_evidence_cn": "用于场景重建的可泛化神经辐射场",
+      "llm_evidence": "用于场景重建的可泛化神经辐射场",
+      "canonical_evidence": "用于场景重建的可泛化神经辐射场",
+      "llm_tldr_en": "Proposes an uncertainty-guided generalizable NeRF to handle distractors in multi-view scene reconstruction.",
+      "llm_tldr_cn": "提出一种多视图不确定性引导的可泛化NeRF，解决场景重建中瞬态干扰物的问题。",
+      "llm_tldr": "提出一种多视图不确定性引导的可泛化NeRF，解决场景重建中瞬态干扰物的问题。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.16910v1",
+      "title": "LAGS: Low-Altitude Gaussian Splatting with Groupwise Heterogeneous Graph Learning",
+      "abstract": "Low-altitude Gaussian splatting (LAGS) facilitates 3D scene reconstruction by aggregating aerial images from distributed drones. However, as LAGS prioritizes maximizing reconstruction quality over communication throughput, existing low-altitude resource allocation schemes become inefficient. This inefficiency stems from their failure to account for image diversity introduced by varying viewpoints. To fill this gap, we propose a groupwise heterogeneous graph neural network (GW-HGNN) for LAGS resource allocation. GW-HGNN explicitly models the non-uniform contribution of different image groups to the reconstruction process, thus automatically balancing data fidelity and transmission cost. The key insight of GW-HGNN is to transform LAGS losses and communication constraints into graph learning costs for dual-level message passing. Experiments on real-world LAGS datasets demonstrate that GW-HGNN significantly outperforms state-of-the-art benchmarks across key rendering metrics, including PSNR, SSIM, and LPIPS. Furthermore, GW-HGNN reduces computational latency by approximately 100x compared to the widely-used MOSEK solver, achieving millisecond-level inference suitable for real-time deployment.",
+      "authors": [
+        "Yikun Wang",
+        "Yujie Wan",
+        "Wei Zuo",
+        "Shuai Wang",
+        "Yik-Chung Wu",
+        "Chengzhong Xu",
+        "Huseyin Arslan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-04-18T08:41:50+00:00",
+      "link": "https://arxiv.org/pdf/2604.16910v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Gaussian splatting for 3D scene reconstruction from aerial images",
+      "llm_evidence_cn": "利用高斯泼溅从航拍图像进行3D场景重建",
+      "llm_evidence": "利用高斯泼溅从航拍图像进行3D场景重建",
+      "canonical_evidence": "利用高斯泼溅从航拍图像进行3D场景重建",
+      "llm_tldr_en": "Optimizes resource allocation for drone-based 3D reconstruction using Gaussian Splatting.",
+      "llm_tldr_cn": "利用高斯泼溅优化无人机3D重建中的资源分配。",
+      "llm_tldr": "利用高斯泼溅优化无人机3D重建中的资源分配。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.18205v1",
+      "title": "A Comparative Evaluation of Geometric Accuracy in NeRF and Gaussian Splatting",
+      "abstract": "Recent advances in neural rendering have introduced numerous 3D scene representations. Although standard computer vision metrics evaluate the visual quality of generated images, they often overlook the fidelity of surface geometry. This limitation is particularly critical in robotics, where accurate geometry is essential for tasks such as grasping and object manipulation. In this paper, we present an evaluation pipeline for neural rendering methods that focuses on geometric accuracy, along with a benchmark comprising 19 diverse scenes. Our approach enables a systematic assessment of reconstruction methods in terms of surface and shape fidelity, complementing traditional visual metrics.",
+      "authors": [
+        "Mikolaj Zielinski",
+        "Eryk Vykysaly",
+        "Bartlomiej Biesiada",
+        "Jan Baturo",
+        "Mateusz Capala",
+        "Dominik Belter"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-04-20T12:55:13+00:00",
+      "link": "https://arxiv.org/pdf/2604.18205v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "evaluation of neural rendering methods like NeRF and Gaussian Splatting",
+      "llm_evidence_cn": "对NeRF和高斯泼溅等神经渲染方法的评估",
+      "llm_evidence": "对NeRF和高斯泼溅等神经渲染方法的评估",
+      "canonical_evidence": "对NeRF和高斯泼溅等神经渲染方法的评估",
+      "llm_tldr_en": "Evaluates geometric accuracy in neural rendering methods to complement visual quality metrics.",
+      "llm_tldr_cn": "评估神经渲染方法中的几何准确性，以补充传统的视觉质量指标。",
+      "llm_tldr": "评估神经渲染方法中的几何准确性，以补充传统的视觉质量指标。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.17425v1",
+      "title": "Neural Adjoint Method for Meta-optics: Accelerating Volumetric Inverse Design via Fourier Neural Operators",
+      "abstract": "Meta-optics promises compact, high-performance imaging and color routing. However, designing high-performance structures is a high-dimensional optimization problem: mapping a desired optical output back to a physical 3D structure requires solving computationally expensive Maxwell's equations iteratively. Even with adjoint optimization, broadband design can require thousands of Maxwell solves, making industrial-scale optimization slow and costly. To overcome this challenge, we propose the Neural Adjoint Method, a solver-supervised surrogate that predicts 3D adjoint gradient fields from a voxelized permittivity volume using a Fourier Neural Operator (FNO). By learning the dense, per-voxel sensitivity field that drives gradient-based updates, our method can replace per-iteration adjoint solves with fast predictions, greatly reducing the computational cost of full-wave simulations required during iterative refinement. To better preserve sensitivity peaks, we introduce a stage-wise FNO that progressively refines residual errors with increasing emphasis on higher-frequency components. We curate a meta-optics dataset from paired forward/adjoint FDTD simulations and evaluate it across three tasks: spectral sorting (color routers), achromatic focusing (metalenses), and waveguide mode conversion. Our method reduces design time from hours to seconds. These results suggest a practical route toward fast, large-scale volumetric meta-optical design enabled by AI-accelerated scientific computing.",
+      "authors": [
+        "Chanik Kang",
+        "Hyewon Suk",
+        "Haejun Chung"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "physics.optics"
+      ],
+      "published": "2026-04-19T13:10:13+00:00",
+      "link": "https://arxiv.org/pdf/2604.17425v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Accelerating volumetric inverse design via neural operators on voxelized volumes",
+      "llm_evidence_cn": "通过体素化体积上的神经算子加速体积逆向设计",
+      "llm_evidence": "通过体素化体积上的神经算子加速体积逆向设计",
+      "canonical_evidence": "通过体素化体积上的神经算子加速体积逆向设计",
+      "llm_tldr_en": "Uses Fourier Neural Operators to accelerate 3D adjoint gradient field prediction in volumetric structures.",
+      "llm_tldr_cn": "利用傅里叶神经算子加速体结构中的3D伴随梯度场预测。",
+      "llm_tldr": "利用傅里叶神经算子加速体结构中的3D伴随梯度场预测。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -1,0 +1,847 @@
+Title: PCM-NeRF: Probabilistic Camera Modeling for Neural Radiance Fields under Pose Uncertainty
+
+URL Source: https://arxiv.org/pdf/2604.17831v1
+
+Published Time: Tue, 21 Apr 2026 02:36:22 GMT
+
+Number of Pages: 14
+
+Markdown Content:
+# PCM-NeRF: Probabilistic Camera Modeling for Neural Radiance Fields under Pose Uncertainty 
+
+## Shravan Venkatraman*, Rakesh Raj Madavan*, Pavan Kumar Sathya Venkatesh* Mohamed bin Zayed University of AI, University of Amsterdam, University of Massachusetts Amherst 
+
+ https://shravan-18.github.io/PCM-NeRF 
+
+Figure 1. Left: Qualitative reconstruction showing PCM-NeRF’s ability to capture fine surface detail. Right: PCM-NeRF outperforms all compared methods across both Chamfer Distance (lower is better) and F-Score (higher is better) 
+
+## Abstract 
+
+Neural surface reconstruction methods typically treat cam-era poses as fixed values, assuming perfect accuracy from Structure-from-Motion (SfM) systems. This assumption breaks down with imperfect pose estimates, leading to dis-torted or incomplete reconstructions. We present PCM-NeRF, a probabilistic framework that augments neural sur-face reconstruction with per-camera learnable uncertainty, built on top of SG-NeRF. Rather than treating all cam-eras equally throughout optimization, we represent each pose as a distribution with a learnable mean and vari-ance, initialized from SfM correspondence quality. An un-certainty regularization loss couples the learned variance to view confidence, and the resulting uncertainty directly modulates the effective pose learning rate: uncertain cam-eras receive damped gradient updates, preventing poorly 
+
+> *Equal contribution.
+
+initialized views from corrupting the reconstruction. This lightweight mechanism requires no changes to the render-ing pipeline and adds negligible overhead. Experiments on challenging scenes with severe pose outliers demonstrate that PCM-NeRF consistently outperforms state-of-the-art methods in both Chamfer Distance and F-Score, particu-larly for geometrically complex structures, without requir-ing foreground masks. 
+
+## 1. Introduction 
+
+Neural surface reconstruction (NSR) has become a dom-inant approach for recovering detailed 3D geometry from 2D images, driven by advances in implicit representa-tions and differentiable rendering [17, 31, 32, 36, 43, 50]. Methods such as IDR [50] and NeuS [43] leverage signed distance functions (SDFs) with volume rendering to reconstruct surfaces with high fidelity, with subsequent 1
+
+> arXiv:2604.17831v1 [cs.CV] 20 Apr 2026
+
+work extending this foundation through unified surface-volume rendering [33] and multi-resolution hash grid en-codings [22]. Despite this progress, most approaches as-sume fixed and accurate camera poses, typically sourced from SfM pipelines [10, 20, 37, 42]. In practice, however, SfM methods — even robust ones like COLMAP [37] — often fail or are not accurate under outlier captures, repeti-tive patterns, or occlusions, leading to inaccurate poses [28]. Joint optimization strategies [3, 9, 16, 24, 46, 48] attempt to refine poses alongside scene geometry. Yet, these methods are generally limited to correcting small pose errors and fail when initialization contains large outliers [7, 39]. Severe pose inaccuracies often trap optimization in poor local min-ima, yielding distorted reconstructions, particularly in geo-metrically complex regions. Recent methods have begun addressing neural recon-struction under unreliable camera poses. SG-NeRF [6] uses scene graph optimization with adaptive confidence es-timation to reduce the impact of pose outliers, while L2G-NeRF [5] adopts a local-to-global registration strategy to correct poor initializations, and Joint-TensoRF [7] inte-grates pose refinement into a factorized tensor representa-tion for efficient optimization. However, these approaches treat camera poses as deterministic, limiting their ability to model uncertainty under large pose deviations where op-timization often fails to escape poor local minima — a gap that uncertainty modeling in implicit neural render-ing [12, 13, 21, 34, 38] has yet to bridge for NSR. To this end, we propose PCM-NeRF, a probabilistic framework built directly on SG-NeRF [6] that represents each pose as a multivariate normal distribution with trainable mean and covariance, capturing varying confidence in both transla-tion and rotation. The learned uncertainty directly modu-lates the effective pose learning rate, damping updates for poorly constrained cameras and preventing outlier views from destabilizing reconstruction — while inheriting the scene graph structure, feature correspondence pipeline, and volumetric consistency loss from SG-NeRF [6] unchanged. Figure 2 presents an overview of our PCM-NeRF frame-work. Starting from multi-view images, the method ini-tializes a feature correspondence structure and estimates pose uncertainty by evaluating cross-view matching quality. Each camera pose Ti is modeled as a distribution with learn-able means (μR, μ t) and associated uncertainties (σR, σ t)
+
+for rotation and translation, coupled with view confidence scores computed from correspondence density and render-ing quality and optimized via Lunc . The training objective combines Lrad , LEik , and LIoU inherited from SG-NeRF [6] to promote geometric consistency across views. Rather than explicitly re-weighting views during rendering, uncer-tainty parameters act as a regularization prior, guiding opti-mization toward reliable pose estimates and improving sur-face reconstruction regardless of whether poses are fixed or jointly optimized. Our contributions can be summarized as follows: • We introduce a probabilistic per-camera pose representa-tion for NSR in which each pose is modeled as a distribu-tion in SE(3) with a learnable mean and per-axis variance, initialized from SfM correspondence quality and evolved jointly with the scene. • We derive an uncertainty-modulated pose learning rate that inversely scales each camera’s effective gradient step by its learned uncertainty, automatically preventing out-lier views from destabilizing reconstruction without man-ual filtering, threshold selection, or any changes to the rendering pipeline. • We propose a cross-modal consistency loss that aligns learned variance parameters with view confidence derived from both geometric correspondences and rendering qual-ity, anchoring uncertainty to observable evidence rather than rendering gradients alone. • We demonstrate state-of-the-art surface reconstruction on challenging outlier-pose scenes, achieving the lowest Chamfer Distance on 6 of 8 scenes and the highest F-Score on 6 of 8 scenes, outperforming all compared base-lines. 
+
+## 2. Related Work 
+
+Neural Surface Reconstruction. Neural surface recon-struction (NSR) methods recover 3D geometry from multi-view images using implicit representations. Foundational methods such as NeuS [43], VolSDF [51], and IDR [50] established SDF-based volume rendering as the dominant paradigm, with UNISURF [33] unifying radiance fields and implicit surfaces for joint appearance-geometry opti-mization. Subsequent work has pushed this foundation in several directions: high-frequency detail recovery [4, 44], high-fidelity reconstruction via multi-resolution hash grids [22], arbitrary-topology surfaces using unsigned dis-tance fields [27, 30], and efficiency through permutohedral lattices or voxel grids [35, 47]. Further extensions have tar-geted tri-plane feature encodings [45], shadow ray supervi-sion for lighting robustness [26], and kernel-free point cloud serialization [23]. Despite this breadth, all of the above as-sume accurate input poses, leaving reconstruction quality vulnerable to SfM failures and outlier cameras. 
+
+Camera Pose Estimation. Joint optimization of cam-era poses and scene representation has been a focal point in neural rendering research. BARF [24] introduced frequency-filtered bundle adjustment to stabilize training under inaccurate poses. Subsequent methods approach this from varied angles: synchronizing local unposed NeRFs [8], combining keypoint-based optimization with renderable neural codes [1], Monte Carlo sampling with ro-bust losses for 6-DoF estimation [25], feature-integrated re-projection error formulations [11], and joint optimization 2Figure 2. Overview of our PCM-NeRF pipeline. From left to right: (1) Multi-view images are processed to establish feature correspon-dences and initialize pose uncertainty. (2) Our probabilistic camera model represents each pose as a distribution with learnable parameters. (3) Joint optimization with uncertainty-guided regularization, photometric rendering losses, and volumetric distribution alignment pro-duces high-quality surface reconstruction while learning pose uncertainty. The framework can also optionally optimize camera poses when needed. 
+
+within multi-resolution hash encoding frameworks [15]. However, all treat camera poses as deterministic point es-timates, providing no mechanism to quantify or leverage per-camera reliability during training. 
+
+Uncertainty in Neural Rendering. For uncertainty modeling, NVINS [14] coupled NeRF-based localiza-tion with visual-inertial odometry and uncertainty estima-tion; VERF [29] added runtime pose assurance through confidence-aware NeRF rendering. Uncertainty sources [19] analyzed and estimated various uncertainty types in NeRF and Gaussian Splatting. Bayesian Relocalization [18] used Bayesian CNNs for real-time monocular pose esti-mation with uncertainty quantification. Uncertainty-aware PnP [41] improved pose estimation by incorporating un-certainty in both 2D and 3D features. While these works demonstrate the value of uncertainty in neural rendering pipelines, they focus on appearance uncertainty or post-hoc pose assurance rather than integrating per-camera pose uncertainty directly into NSR optimization — the gap that PCM-NeRF addresses. 
+
+## 3. Method 
+
+3.1. Background 
+
+Neural Implicit Surface Representation. We represent a surface S as the zero-level set of a SDF f : R3 → R pa-rameterized by a neural network: S = {x ∈ R3|f (x) = 0 }.The SDF f (x) outputs the signed distance from point x to the nearest surface point, with negative values inside the surface and positive values outside. Additionally, a color field c : R3 × S2 → R3 maps a spatial position x and view-ing direction v to an RGB color. 
+
+Volume Rendering and Neural Surface Reconstruction. 
+
+To render a ray r(t) = o + tv originating from camera center o with direction v, NeuS [43] introduces a density function derived from the SDF that enables volume ren-dering while ensuring accurate surface reconstruction. The key insight is to define an S-density ϕs(f (x)) from the SDF, where ϕs is the derivative of the sigmoid function Φs:
+
+ϕs(x) = se −sx  
+
+> (1+ e−sx )2
+
+.The rendering integral for a pixel’s color C(r) is: 
+
+C(r) = R ∞ 
+
+> 0
+
+w(t)c(r(t), v )dt where w(t) = T (t)ρ(t) is a weight function, T (t) = exp( − R t 
+
+> 0
+
+ρ(u)du ) is the ac-cumulated transmittance, and ρ(t) is an opaque density function derived from the S-density. In practice, this in-tegral is approximated by sampling points along the ray and using a discrete formulation: ˆC(r) = Pni=1 Tiαici,where Ti = Qi−1
+
+> j=1
+
+(1 − αj ) and αi is the discrete opacity. This enables differentiable rendering while ensuring precise surface reconstruction by linking density estimation to the SDF, effectively capturing surface boundaries during opti-mization. 
+
+Camera Model in Neural Rendering. Conventional neu-ral rendering approaches assume fixed camera poses Pi =(Ri, t i), where Ri ∈ SO (3) is a rotation matrix and ti ∈ R3
+
+is a translation vector. These poses are typically obtained from SfM systems and treated as ground truth without ac-counting for uncertainty. This treatment can lead to subop-timal reconstruction results, especially with erroneous pose estimates or scenes with sudden depth changes. 3(View j)   
+
+> top-k -highest weight
+> point (top 8)
+> MoG (top-8
+> points)
+> MoG (top-8
+> points)
+> Common Feature
+> (matched keypoint)
+> (Learned Uncertainty)
+> Spatially separated density
+> blobs due to Pose
+> misalignment
+> Before Alignment
+> (With Pose Uncertainty)
+> After Alignment
+> (Post VDA Optimization)
+> Optimized
+> Surface: Maximize
+> Volumetric
+> Overlap
+> Minimized
+> Uncertainty
+> (Learned Uncertainty)
+> (View i)
+> (View j)
+> (View i) Minimized
+> Uncertainty
+> Pose & Uncertainty
+> Optimization
+> Volumetric Consistency Loss
+> Aligned MoG Density
+> (Shared Surface)
+
+Figure 3. Volumetric Distribution Alignment (VDA) for geo-metric consistency. Before alignment (left), initial camera pose uncertainty ( σR, σt) causes intersecting rays from views Ci and 
+
+Cj to produce spatially separated density blobs along the ray dis-tance t. Our VDA optimization (right) utilizes the volumetric con-sistency loss to align top-k density peaks. By representing density as a Mixture of Gaussians (MoG), the method maximizes volumet-ric overlap on the shared surface while simultaneously minimizing learnable pose uncertainty parameters. 
+
+3.2. Probabilistic Camera Pose Representation 
+
+We develop a principled approach that explicitly models camera poses as probability distributions with learnable pa-rameters, enhancing how neural rendering systems utilize pose information. Our approach is based on the observation that cam-era pose uncertainty varies across different views within a scene. Views with repetitive patterns, textureless regions, or unusual viewpoints typically have higher pose uncer-tainty σ2
+
+> high
+
+, while views with distinctive features and good correspondence have lower uncertainty σ2 
+
+> low
+
+≪ σ2
+
+> high
+
+. By modeling this uncertainty σ2 
+
+> i
+
+explicitly for each view i, our framework can adaptively weight the contribution of differ-ent views in the optimization process. Each camera pose Pi is modeled as a distribution in 
+
+SE (3) , with mean μi = ( ri, t i) and diagonal covariance 
+
+Σi = diag (σ2
+
+> r,i
+
+, σ 2
+
+> t,i
+
+):
+
+Pi ∼ N (μi, Σi)
+
+Here, ri ∈ R3 is the rotation in axis-angle form, and 
+
+ti ∈ R3 is the translation. Both (ri, t i) and the uncertainty parameters (σ2
+
+> r,i
+
+, σ 2
+
+> t,i
+
+) are learned. Initial mean poses come from SfM; uncertainties are initialized based on view reli-ability (see Section 3.3, Further details are presented in the supplementary). To ensure positive variances and stability, we use log-space parameterization: 
+
+σ2 
+
+> r,i
+
+= exp( λr,i )
+
+σ2 
+
+> t,i
+
+= exp( λt,i )
+
+The variance parameters λr,i and λt,i serve two cou-pled purposes despite not entering the rendering forward pass directly. First, they act as a regularization prior an-chored to observable evidence — the correspondence qual-ity and rendering fidelity of each view — ensuring the learned uncertainty reflects genuine pose reliability. Sec-ond, and more operationally, they directly control the ef-fective pose learning rate: a camera whose learned uncer-tainty is high has its pose gradient damped, preventing it from corrupting the reconstruction even if its SfM initial-ization is poor. While a full probabilistic rendering in-tegral over the pose distribution is theoretically desirable: 
+
+E[C(r)] = R 
+
+> Pi
+
+C(r|Pi) · p(Pi|μi, Σi) dP i evaluating this exactly is computationally prohibitive in the inner training loop. Instead, we use the mean pose μi for all rendering operations — the variance parameters σ2 
+
+> r,i
+
+and σ2 
+
+> t,i
+
+are not used in the forward rendering pass (additional details are presented in the supplementary). Their role is as a learned regularization prior: shaped by the uncertainty loss (Sec-tion 3.3.2), they in turn modulate the effective pose learning rate during optimization. Specifically, the learning rate for camera i is scaled as: 
+
+ηpose  
+
+> i
+
+= η0
+
+1 + ¯ σi · κ
+
+where ¯σi = ( σ2 
+
+> r,i
+
++ σ2
+
+> t,i
+
+)/6 is the mean scalar uncertainty magnitude and κ controls sensitivity. Cameras with high uncertainty therefore take smaller pose gradient steps, pre-venting poorly initialized views from destabilizing the re-construction (implementation details regarding per-camera gradient damping mechanism are presented in the supple-mentary). This is the primary mechanism through which uncertainty improves optimization, and it keeps inference-time cost identical to standard deterministic pose refine-ment. The full uncertainty feedback loop is illustrated in Figure 4. 
+
+3.3. Uncertainty-Guided Optimization 
+
+Building on our probabilistic camera pose representation, we develop an uncertainty-guided optimization framework that dynamically assesses view reliability and couples it with uncertainty parameters during training. This approach builds directly on scene graph-based optimization [6]: we inherit the feature correspondence pipeline, dynamic confi-dence update, and adaptive ray sampling from SG-NeRF [6] unchanged, and extend them with the probabilistic uncer-tainty coupling described below. 
+
+3.3.1. View Reliability Assessment 
+
+Our framework begins by estimating the reliability of each camera view based on multi-view correspondence structure. For a set of images I = {Ii}Ni=1 , we compute an initial re-liability score ηi =   
+
+> P
+> j∈N i|M i,j ||N i|
+
+for each view i, where Ni
+
+41. Initialization  2. Dynamic Performance  3.Probabilistic Optimization 
+
+Dynamic Uncertainty Feedback Loop 
+
+> Initialization
+> (Correspondence-based Prior)
+> Dynamic Update Core
+> Feedback Buffer
+> Probabilistic Pose &
+> Uncertainty Optimization
+
+High Confidence  Minimized Uncertainty    
+
+> Optimized
+> Parameters
+> Minimized Uncertainty
+> View
+> Large Initial Uncertainty
+> (View )
+> Feature
+> Correspondences
+> derived from matches
+> (View )
+> Confidence Update:
+> Uncertainty
+> Loss
+> Dynamic
+> Confidence
+> Initial
+> Matches
+> ()
+> Rolling PSNR
+> ...
+> PSNR
+> scores
+
+Figure 4. Overview of the Uncertainty Feedback Loop. The framework establishes a dynamic link between view reliability and pose precision. (1) Initialization : Initial reliability is computed from feature correspondences Mi,j to provide a starting prior for camera uncertainty. (2) Dynamic Performance : A feedback buffer Bi tracks rolling PSNR scores to compute the dynamic confidence γ(t) 
+
+> i
+
+=(1 − α)γ(0)  
+
+> i
+
++ αˆγ(t) 
+
+> i
+
+. (3) Probabilistic Optimization : The uncertainty loss Lunc regularizes the learnable parameters σR,i , σ t,i , which in turn modulates the effective pose learning rate, resulting in minimized uncertainty and robust surface reconstruction even in the presence of initial pose outliers. 
+
+is the set of neighboring views, Mi,j is the set of matched keypoints between views i and j, and | · | denotes set cardi-nality. These scores are normalized to obtain initial confi-dence values γ(0)  
+
+> i
+
+= ( ηi − min j ηj )/(max j ηj − min j ηj +
+
+ϵ), where ϵ = 10 −5 prevents division by zero. During training, we maintain a buffer Bi of recent PSNR scores for each view and update confidence as γ(t) 
+
+> i
+
+=(1 − α) · γ(0)  
+
+> i
+
++ α · ˆγ(t) 
+
+> i
+
+, where ˆγ(t) 
+
+> i
+
+is the normalized PSNR history and α controls the balance between correspondence-based and rendering-based estimates (Full details are given in the supplementary). This creates a feedback mechanism where views that render well gain higher confidence while poorly rendering views are downweighted. Note that the correspondence-based initialization ηi, the dynamic PSNR confidence update, and the adaptive ray sampling that pri-oritizes high-confidence views are all adopted from SG-NeRF [6]; our contribution is the coupling of these con-fidence values to per-camera uncertainty parameters, de-scribed next. 
+
+3.3.2. Uncertainty Regularization Loss 
+
+We propose an uncertainty regularization loss that couples the view confidence values γi with the uncertainty param-eters σ2 
+
+> r,i
+
+∈ R3 and σ2 
+
+> t,i
+
+∈ R3, effectively encouraging consistency between the predicted confidences and the as-sociated uncertainties: 
+
+Luncertainty = 1
+
+N
+
+> N
+
+X
+
+> i=1
+
+∥σ2
+
+> r,i
+
+∥1 + ∥σ2
+
+> t,i
+
+∥1
+
+6
+
+!
+
+− (1 − γi)
+
+This loss acts as a cross-modal consistency constraint be-tween two partially independent signals: the confidence γi,which is grounded in SfM correspondence quality at initial-ization and updated via rendering feedback, and the learned variance parameters σ2
+
+> r,i
+
+, σ2
+
+> t,i
+
+, which are shaped by gradi-ent flow from the reconstruction. Importantly, while these two signals are driven into alignment by the loss, they re-main distinct: γi is derived from external geometric evi-dence — SfM match density and rendering PSNR — and is not back-propagated through the neural rendering, whereas 
+
+σ2 
+
+> i
+
+is a free parameter updated via gradient descent, allow-ing it to settle at a value consistent with both the geometric prior and the evolving reconstruction quality rather than be-ing fixed at initialization. The loss bridges these two signals without collapsing them. By driving them into alignment, it ensures that the learned uncertainty is anchored to geo-metric evidence rather than determined by rendering gradi-ents alone. The consequence is direct and practical: through the learning rate modulation described in Section 3.2, high-confidence views maintain aggressive pose updates while uncertain views are automatically damped, as illustrated in Figure 4. 53.4. Geometric Consistency through Distribution Alignment 
+
+We adopt the volumetric distribution alignment approach of SG-NeRF [6] for geometric consistency. For views i
+
+and j with feature correspondences Mi,j , we cast rays 
+
+ri(t) = oi + td i and rj (t) = oj + td j through cor-responding keypoints. Each ray’s volume rendering pro-duces a density distribution represented as a weighted point cloud {(pk, w k)}, where pk are 3D points and wk are their weights. We quantify alignment using an IoU loss LIoU =1 −     
+
+> P
+> vmin( Di(v),D j(v))
+> P
+> vmax( Di(v),D j(v))
+
+, where Di(v) and Dj (v) are vox-elized density distributions projected onto a discretized vol-ume grid with resolution R3 (R = 64 ), using only the top-k
+
+highest-weight points ( k = 8 ) for efficiency. Figure 3 il-lustrates how this loss aligns density distributions that are initially separated due to pose uncertainty, driving them to-ward a common surface as optimization proceeds. Full im-plementation details of the Mixture-of-Gaussians construc-tion and voxel grid setup are provided in the supplementary. Our complete training objective is L = Lcolor +λeik Leik +
+
+λIoU LIoU + λunc Luncertainty , where Lcolor is the L1 color re-construction loss between rendered and ground truth pixels, 
+
+Leik is the Eikonal regularization enforcing ∥∇ f (x)∥ = 1 
+
+for SDF properties, and λ terms are weighting coefficients (λeik = 0 .1, λIoU = 0 .2, λunc = 0 .05 ). The uncertainty term 
+
+Luncertainty is introduced gradually using a warm-up scheme after Twarmup iterations, ramping up over Trampup iterations. The adaptive ray sampling and coarse-to-fine strategy with Gaussian blurring are both inherited from SG-NeRF [6] and used unchanged; together with our uncertainty module, they help avoid local minima when poses are unreliable. 
+
+## 4. Experiments and Results 
+
+Extensive experiments were conducted to evaluate the ro-bustness of PCM-NeRF. We utilize the challenging inward-facing (developed from BlendedMVS[49]) dataset with camera outliers proposed by [6], which features varying de-grees of pose uncertainty and outliers. We detail our ex-perimental setup and present comprehensive comparisons against state-of-the-art neural surface reconstruction meth-ods. 
+
+4.1. Implementation Details 
+
+We utilize COLMAP for initial camera poses and employ SuperPoint and SuperGlue for establishing feature corre-spondences upon the NeuS [43] architecture. Following NeuS’s volume rendering pipeline, we employ hierarchical sampling with a batch size of 512 rays per iteration, ran-domly selecting 16 matched keypoints per view pair for the IoU loss. The density distribution along each ray is represented as a Mixture of Gaussians (MoG) using the 8 highest-density points, each assigned a 3D Gaussian with       
+
+> Figure 5. Camera Viewpoint Distribution. A 3D visualization of the camera positions for a representative scene (e.g., ’Farmer’) after outlier pose removal. Each blue point represents a camera origin Oiin SE (3) , illustrating the dense hemispherical coverage required for capturing complex surface geometry in our inward-facing dataset.
+
+fixed covariance of 0.1, fused via normalized weighted sum. The volumetric IoU loss uses a voxel grid of resolution 64 3.Uncertainty regularization is introduced after 10k iterations and ramped to full strength over the next 20k (The exact schedule and its interaction with the coarse-to-fine Gaus-sian blurring are described in the supplementary). We use the Adam optimizer with learning rates of 5e-4 for both net-work parameters and pose parameters, both decaying ex-ponentially, with loss weights λeik = 0.1, λIoU = 0.2,
+
+λunc = 0 .05 , uncertainty sensitivity κ = 5 .0, and con-fidence buffer size of 100 iterations with α = 0 .7. All hyperparameters used across every experiment are consol-idated in the supplementary. All experiments were con-ducted on an NVIDIA L4 GPU, training for 150k iterations (≈12 hours per scene), with meshes extracted via Marching Cubes at 512 3 resolution. Figure 5 illustrates the resulting camera viewpoint distribution for a representative scene af-ter outlier pose removal, showing the dense hemispherical coverage typical of our inward-facing evaluation scenes. 
+
+4.2. Comparison 
+
+We evaluate our method against leading approaches using Chamfer Distance (Table 1) and F-Score (Table 2) to mea-sure geometric accuracy. Each baseline uses its official implementation for pose optimization, followed by NeuS training with the refined poses. Our method reduces mean CD by 28.8% relative to SG-NeRF (from 0.46 to 0.33) and improves mean F-Score from 0.85 to 0.93, achieving the best result on 6 of 8 scenes for both metrics. Unlike methods such as BARF [24], which rely on local pose optimization and degrade under large inconsistent gradients from outlier 6Table 1. Comparison of Different Methods Across Scenes on Chamfer distance. Lower values indicate better geometric accuracy. Our method achieves the lowest Chamfer distance on six out of eight scenes, outperforming both implicit and explicit neural reconstruction baselines across diverse object categories.                                                                                         
+
+> Method Baby Bear Bell Clock Deaf Farmer Pavilion Sculpture
+> NeuS [43] 0.69 0.31 3.33 1.16 0.55 2.49 0.29 0.66 Neuralangelo [22] 0.70 0.65 —0.38 0.59 4.89 1.95 0.31 BARF [24] 1.08 0.28 3.31 0.19 0.46 2.13 0.38 0.57 SCNeRF [16] 1.19 0.27 3.74 1.33 0.46 1.45 0.23 0.81 GARF [9] 2.04 2.25 3.09 0.50 0.59 1.58 0.96 0.57 L2G-NeRF [5] 1.15 0.29 1.26 0.24 0.40 2.18 0.46 0.37 Joint-TensoRF [7] 3.11 1.22 2.49 0.36 0.36 2.51 1.35 0.70 PoRF [2] 0.31 0.49 —0.30 0.30 3.80 2.20 —SG-NeRF [6] 0.56 0.25 0.98 0.15 0.45 0.87 0.20 0.22
+> Ours 0.25 0.24 0.51 0.16 0.23 0.79 0.24 0.20
+
+Figure 6. Effect of weights on Chamfer Distance and F-Score. Lower IoU weights combined with moderate uncertainty weights consistently yield better reconstruction performance. 
+
+Figure 7. Qualitative comparisons across Clock, Deaf, and Farmer scenes. PCM-NeRF recovers sharper surface detail and more complete geometry than all compared baselines. 
+
+views, PCM-NeRF automatically damps pose updates for uncertain cameras, preventing outlier views from pulling the reconstruction into poor local minima. Qualitative re-sults are shown in Figure 7. 
+
+4.3. Ablation Study 
+
+To assess the contribution of different model components, we disable the probabilistic uncertainty modeling and fea-ture correspondence modules independently, and report the results in Table 4. Removing both components leads to a significant performance drop. Adding only the feature cor-respondence module improves results, but the best perfor-mance is observed when both modules are active. We also conduct an ablation study to evaluate the impact of two hyperparameters in our loss function—IoU weight and uncertainty weight—on reconstruction quality. Table 3 reports these results under a controlled single-scene setup to isolate hyperparameter sensitivity, while Table 4 reports averages across all scenes under the fixed best-performing configuration ( λIoU = 0 .2, λunc = 0 .05 ). Table 3 shows that increasing either the IoU or uncertainty weight consis-tently leads to a drop in performance, with the best results achieved at an IoU weight of 0.2 and an uncertainty weight of 0.05. As the IoU weight increases from 0.2 to 0.8, CD rises and F-Score declines, indicating reduced surface fi-delity. Similarly, higher uncertainty weights yield poorer 7Table 2. F-Score Comparison of Different Methods Across Scenes. Higher val-ues indicate better surface reconstruction quality. Our method achieves the best F-Score on six out of eight scenes, demonstrating consistently superior perfor-mance over existing pose-free neural surface reconstruction approaches.                                                                                         
+
+> Method Baby Bear Bell Clock Deaf Farmer Pavilion Sculpture
+> NeuS [43] 0.65 0.93 0.48 0.72 0.84 0.54 0.93 0.70 Neuralangelo [22] 0.74 0.80 —0.66 0.14 0.47 —0.89 BARF [24] 0.58 0.91 0.49 0.95 0.66 0.51 0.86 0.87 SCNeRF [16] 0.56 0.93 0.49 0.65 0.40 0.59 0.95 0.73 GARF [9] 0.77 0.95 0.82 0.80 0.57 0.57 0.41 0.71 L2G-NeRF [5] 0.85 0.92 0.65 0.89 0.87 0.47 —0.81 Joint-TensoRF [7] 0.74 0.90 0.84 0.60 0.24 0.34 0.35 0.76 PoRF [2] 0.92 0.78 —0.92 —0.39 0.35 —SG-NeRF [6] 0.74 0.93 0.71 0.96 0.87 0.76 0.94 0.92
+> Ours 0.96 0.95 0.94 0.95 0.96 0.83 0.93 0.92
+
+Table 3. Comparison metrics across different weight configurations. Lower Chamfer Distance and higher F-Score indicate better reconstruction quality.                      
+
+> Weight CD ↓F-Score ↑
+> IoU Uncertainty
+> 0.2 0.01 0.39 0.86 0.05 0.32 0.93 0.10 0.58 0.81 0.5 0.01 0.83 0.76 0.05 0.97 0.73 0.10 1.52 0.67 0.8 0.01 1.71 0.64 0.05 1.95 0.62 0.10 2.21 0.58
+
+Figure 8. Qualitative comparison of reconstructions under different weight configurations. Higher IoU weights (0.8) produce over-smoothed surfaces with lost fine details, while lower IoU weights (0.2) combined with moderate uncertainty weights (0.05) yield the sharpest and most complete reconstructions. 
+
+scores, indicating that excessive emphasis on uncertainty overly smoothed reconstructions. These trends are visual-ized in Figure 6 and Figure 8. Notably, enabling probabilis-tic uncertainty without the feature correspondence module leads to a slight performance degradation (Row 2): without correspondence-grounded confidence values to anchor the uncertainty initialization, the learned variance parameters are poorly calibrated early in training, causing the adaptive learning rate suppression to dampen well-initialized cam-eras as readily as outlier views — reducing rather than im-proving optimization stability. Per-scene results for both Chamfer Distance and F-Score are reported in the supple-mentary. 
+
+## 5. Conclusion 
+
+This paper tackles neural implicit surface reconstruction under uncertain camera poses. Building directly on SG-NeRF [6], we augment gradient-based pose refinement with per-camera learnable uncertainty parameters, initial-ized from SfM correspondence quality and coupled to ren-dering confidence through a lightweight regularization loss. The learned uncertainty modulates the effective pose learn-ing rate during optimization, automatically damping up-dates for poorly constrained cameras and preventing outlier 
+
+Table 4. Ablation study on different components of PCM-NeRF. Results are averaged across all scenes. Lower CD and higher F-Score indicate better performance. The probabilistic uncertainty modeling and feature correspondence structure together yield the best results. 
+
+Prob. Uncertainty Feature Corr. CD ↓ F-Score ↑
+
+✗ ✗ 1.18 0.72 
+
+✓ ✗ 1.33 0.68 
+
+✗ ✓ 0.46 0.85 
+
+✓ ✓ 0.32 0.93 
+
+views from destabilizing the reconstruction — without any manual outlier filtering. View reliability is estimated via multi-view correspondences and dynamic rendering feed-back, guiding this uncertainty learning throughout training. Geometric consistency is enforced through the volumetric alignment loss of SG-NeRF [6], applied across correspond-ing rays. Our method consistently reduces the impact of un-reliable poses with negligible overhead, and offers potential for further improvement through tighter integration of the pose distribution into the rendering process, or validation across broader, clean-pose benchmarks. 8References 
+
+[1] Gil Avraham, Julian Straub, Tianwei Shen, Tsun-Yi Yang, Hugo Germain, Chris Sweeney, Vasileios Balntas, David Novotny, Daniel DeTone, and Richard Newcombe. Nerfels: Renderable neural codes for improved camera pose estima-tion, 2022. 2 [2] Jia-Wang Bian, Wenjing Bian, Victor Adrian Prisacariu, and Philip Torr. Porf: Pose residual field for accurate neural sur-face reconstruction, 2024. 7, 8 [3] W. Bian, Z. Wang, K. Li, J. W. Bian, and V. A. Prisacariu. Nope-NeRF: Optimising Neural Radiance Field with No Pose Prior. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 4160–4169, 2023. 2 [4] Decai Chen, Peng Zhang, Ingo Feldmann, Oliver Schreer, and Peter Eisert. Recovering fine details for neural implicit surface reconstruction, 2022. 2 [5] Y. Chen, X. Chen, X. Wang, Q. Zhang, Y. Guo, Y. Shan, and F. Wang. Local-to-Global Registration for Bundle-Adjusting Neural Radiance Fields. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 8264–8273, 2023. 2, 7, 8 [6] Yiyang Chen, Siyan Dong, Xulong Wang, Lulu Cai, Youyi Zheng, and Yanchao Yang. Sg-nerf: Neural surface recon-struction with scene graph optimization, 2024. 2, 4, 5, 6, 7, 8[7] Bo-Yu Cheng, Wei-Chen Chiu, and Yu-Lun Liu. Improv-ing robustness for joint optimization of camera poses and decomposed low-rank tensorial radiance fields, 2024. 2, 7, 8 [8] Zezhou Cheng, Carlos Esteves, Varun Jampani, Abhishek Kar, Subhransu Maji, and Ameesh Makadia. Lu-nerf: Scene and pose estimation by synchronizing local unposed nerfs, 2023. 2 [9] S. F. Chng, S. Ramasinghe, J. Sherrah, and S. Lucey. Gaus-sian Activated Neural Radiance Fields for High Fidelity Re-construction and Pose Estimation. In European Confer-ence on Computer Vision (ECCV) , pages 264–280. Springer, 2022. 2, 7, 8 [10] Sven Elflein, Qunjie Zhou, S´ ergio Agostinho, and Laura Leal-Taix´ e. Light3r-sfm: Towards feed-forward structure-from-motion, 2025. 2 [11] Hugo Germain, Vincent Lepetit, and Guillaume Bourmaud. Neural reprojection error: Merging feature learning and cam-era pose estimation, 2021. 2 [12] Lily Goli, Cody Reading, Silvia Sell´ an, Alec Jacobson, and Andrea Tagliasacchi. Bayes’ rays: Uncertainty quantifica-tion for neural radiance fields, 2023. 2 [13] Jiaxin Guo, Jiangliu Wang, Ruofeng Wei, Di Kang, Qi Dou, and Yun hui Liu. Uc-nerf: Uncertainty-aware conditional neural radiance fields from endoscopic sparse views, 2024. 2[14] Juyeop Han, Lukas Lao Beyer, Guilherme V. Cavalheiro, and Sertac Karaman. Nvins: Robust visual inertial navigation fused with nerf-augmented camera pose regressor and un-certainty quantification, 2024. 3 [15] Hwan Heo, Taekyung Kim, Jiyoung Lee, Jaewon Lee, Soohyun Kim, Hyunwoo J. Kim, and Jin-Hwa Kim. Robust camera pose refinement for multi-resolution hash encoding, 2023. 3 [16] Yoonwoo Jeong, Seokjun Ahn, Christopher Choy, Ani-mashree Anandkumar, Minsu Cho, and Jaesik Park. Self-calibrating neural radiance fields, 2021. 2, 7, 8 [17] A. Jignasu, E. Herron, Z. Jiang, S. Sarkar, C. Hegde, B. Ganapathysubramanian, A. Balu, and A. Krishnamurthy. STITCH: Surface reconstrucTion using Implicit neural rep-resentations with Topology Constraints and persistent Ho-mology. https://doi.org/10.48550/arxiv. 2412.18696 , 2024. arXiv:2412.18696. 1 [18] Alex Kendall and Roberto Cipolla. Modelling uncertainty in deep learning for camera relocalization, 2016. 3 [19] Marcus Klasson, Riccardo Mereu, Juho Kannala, and Arno Solin. Sources of uncertainty in 3d scene reconstruction, 2024. 3 [20] JongMin Lee and Sungjoo Yoo. Dense-sfm: Structure from motion with dense consistent matching, 2025. 2 [21] Sibaek Lee, Kyeongsu Kang, Seongbo Ha, and Hyeonwoo Yu. Bayesian nerf: Quantifying uncertainty with volume density for neural implicit fields. IEEE Robotics and Au-tomation Letters , 10(3):2144–2151, 2025. 2 [22] Zhaoshuo Li, Thomas M¨ uller, Alex Evans, Russell H. Taylor, Mathias Unberath, Ming-Yu Liu, and Chen-Hsuan Lin. Neu-ralangelo: High-fidelity neural surface reconstruction, 2023. 2, 7, 8 [23] Zhen Li, Weiwei Sun, Shrisudhan Govindarajan, Shaobo Xia, Daniel Rebain, Kwang Moo Yi, and Andrea Tagliasac-chi. Noksr: Kernel-free neural surface reconstruction via point cloud serialization, 2025. 2 [24] Chen-Hsuan Lin, Wei-Chiu Ma, Antonio Torralba, and Si-mon Lucey. Barf: Bundle-adjusting neural radiance fields, 2021. 2, 6, 7, 8 [25] Yunzhi Lin, Thomas M¨ uller, Jonathan Tremblay, Bowen Wen, Stephen Tyree, Alex Evans, Patricio A. Vela, and Stan Birchfield. Parallel inversion of neural radiance fields for robust pose estimation, 2023. 2 [26] Jingwang Ling, Zhibo Wang, and Feng Xu. Shadowneus: Neural sdf reconstruction by shadow ray supervision, 2023. 2[27] Xiaoxiao Long, Cheng Lin, Lingjie Liu, Yuan Liu, Peng Wang, Christian Theobalt, Taku Komura, and Wenping Wang. Neuraludf: Learning unsigned distance fields for multi-view reconstruction of surfaces with arbitrary topolo-gies, 2022. 2 [28] Rakesh Raj Madhavan, Akshat Kaimal, Badhrinarayanan K.V, Vinayak Gupta, Rohit Choudhary, Chandrakala Shan-muganathan, and Kaushik Mitra. Ganesh: Generalizable nerf for lensless imaging. In Proceedings of the Winter Con-ference on Applications of Computer Vision (WACV) , pages 9481–9490, 2025. 2 [29] Dominic Maggio, Courtney Mario, and Luca Carlone. Verf: Runtime monitoring of pose estimation with neural radiance fields, 2023. 3 [30] Xiaoxu Meng, Weikai Chen, and Bo Yang. Neat: Learning neural implicit surfaces with arbitrary topologies from multi-view images, 2023. 2 
+
+9[31] Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ramamoorthi, and Ren Ng. Nerf: representing scenes as neural radiance fields for view synthe-sis. Commun. ACM , 65(1):99–106, 2021. 1 [32] Michael Niemeyer, Lars Mescheder, Michael Oechsle, and Andreas Geiger. Differentiable volumetric rendering: Learn-ing implicit 3d representations without 3d supervision, 2020. 1[33] Michael Oechsle, Songyou Peng, and Andreas Geiger. Unisurf: Unifying neural implicit surfaces and radiance fields for multi-view reconstruction, 2021. 2 [34] Weining Ren, Zihan Zhu, Boyang Sun, Jiaqi Chen, Marc Pollefeys, and Songyou Peng. Nerf on-the-go: Exploiting uncertainty for distractor-free nerfs in the wild, 2024. 2 [35] Radu Alexandru Rosu and Sven Behnke. Permutosdf: Fast multi-view reconstruction with implicit surfaces using per-mutohedral lattices, 2023. 2 [36] Y. Savani, M. Finzi, and J. Z. Kolter. Diffusing Differentiable Representations. https : / / doi . org / 10 . 48550 / arxiv.2412.06981 , 2024. arXiv:2412.06981. 1 [37] Johannes L. Sch¨ onberger and Jan-Michael Frahm. Structure-from-motion revisited. In 2016 IEEE Conference on Com-puter Vision and Pattern Recognition (CVPR) , pages 4104– 4113, 2016. 2 [38] Jianxiong Shen, Adria Ruiz, Antonio Agudo, and Francesc Moreno-Noguer. Stochastic neural radiance fields: Quanti-fying uncertainty in implicit 3d representations. In 2021 In-ternational Conference on 3D Vision (3DV) , pages 972–981, 2021. 2 [39] P. Truong, M. J. Rakotosaona, F. Manhardt, and F. Tombari. Sparf: Neural Radiance Fields from Sparse and Noisy Poses. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 4190–4200, 2023. 2 [40] S. Umeyama. Least-squares estimation of transformation pa-rameters between two point patterns. IEEE Transactions on Pattern Analysis and Machine Intelligence , 13(4):376–380, 1991. 4 [41] Alexander Vakhitov, Luis Ferraz Colomina, Antonio Agudo, and Francesc Moreno-Noguer. Uncertainty-aware camera pose estimation from points and lines, 2021. 3 [42] Jianyuan Wang, Nikita Karaev, Christian Rupprecht, and David Novotny. Visual geometry grounded deep structure from motion, 2023. 2 [43] Peng Wang, Lingjie Liu, Yuan Liu, Christian Theobalt, Taku Komura, and Wenping Wang. Neus: Learning neural implicit surfaces by volume rendering for multi-view reconstruction, 2023. 1, 2, 3, 6, 7, 8 [44] Yiqun Wang, Ivan Skorokhodov, and Peter Wonka. Hf-neus: Improved surface reconstruction using high-frequency de-tails, 2022. 2 [45] Yiqun Wang, Ivan Skorokhodov, and Peter Wonka. Pet-neus: Positional encoding tri-planes for neural surfaces, 2023. 2 [46] Z. Wang, S. Wu, W. Xie, M. Chen, and V. A. Prisacariu. NeRF–: Neural Radiance Fields without Known Camera Pa-rameters. https://arxiv.org/abs/2102.07064 ,2021. arXiv:2102.07064. 2, 3 [47] Tong Wu, Jiaqi Wang, Xingang Pan, Xudong Xu, Christian Theobalt, Ziwei Liu, and Dahua Lin. Voxurf: Voxel-based efficient and accurate neural surface reconstruction, 2023. 2 [48] Q. Yan, Q. Wang, K. Zhao, J. Chen, B. Li, X. Chu, and F. Deng. CF-NeRF: Camera Parameter Free Neural Radi-ance Fields with Incremental Learning. https://arxiv. org/abs/2312.08760 , 2023. arXiv:2312.08760. 2 [49] Yao Yao, Zixin Luo, Shiwei Li, Jingyang Zhang, Yufan Ren, Lei Zhou, Tian Fang, and Long Quan. Blendedmvs: A large-scale dataset for generalized multi-view stereo net-works, 2020. 6 [50] Lior Yariv, Yoni Kasten, Dror Moran, Meirav Galun, Matan Atzmon, Basri Ronen, and Yaron Lipman. Multiview neu-ral surface reconstruction by disentangling geometry and ap-pearance. Advances in Neural Information Processing Sys-tems , 33, 2020. 1, 2 [51] Lior Yariv, Jiatao Gu, Yoni Kasten, and Yaron Lipman. Vol-ume rendering of neural implicit surfaces, 2021. 2 
+
+10 PCM-NeRF: Probabilistic Camera Modeling for Neural Radiance Fields under Pose Uncertainty 
+
+# Supplementary Material 
+
+## Supplementary Material 
+
+5.1. Probabilistic Pose Representation: Mean-Pose Approximation 
+
+Each camera pose Pi is modelled as a distribution over 
+
+SE (3) with learnable mean μi = ( ri, ti) and diagonal co-variance Σi = diag( σ2
+
+> r,i
+
+, σ2
+
+> t,i
+
+), where ri ∈ R3 is the axis-angle rotation and ti ∈ R3 is the translation. Ideally, the rendered colour of a pixel would be obtained by marginal-ising over the full pose distribution: 
+
+E[C(r)] = 
+
+Z
+
+> Pi
+
+C(r | P i) · p(Pi | μi, Σi) d Pi. (1) Evaluating this integral exactly requires Monte Carlo sam-pling of full camera poses at every training step, multiplying the rendering cost by the number of samples. Given that a single NeuS forward pass already traces thousands of rays, this is computationally prohibitive in the inner training loop. We therefore approximate the expectation by its first-order (mean-pose) surrogate: all rendering operations use 
+
+μi directly, while σ2 
+
+> r,i
+
+and σ2 
+
+> t,i
+
+remain free parameters op-timised through the uncertainty regularisation loss. This ap-proximation is tight when the posterior variance is small relative to the curvature of C(·) with respect to pose — pre-cisely the condition that holds for well-constrained cameras, and which the uncertainty loss enforces progressively dur-ing training. Inference-time cost is therefore identical to deterministic pose refinement. To ensure positive variances and numerical stability throughout optimisation, both uncertainty vectors are repa-rameterised in log-space: 
+
+σ2 
+
+> r,i
+
+= exp( λr,i ), (2) 
+
+σ2 
+
+> t,i
+
+= exp( λt,i ), (3) where λr,i , λt,i ∈ R3 are the actual learnable parameters updated by gradient descent. 
+
+5.2. Uncertainty Regularisation Loss: Exact For-mulation 
+
+The uncertainty regularisation loss couples the learned variance parameters with the per-camera view-confidence scores γi ∈ [0 , 1] :
+
+Luncertainty = 1
+
+N
+
+> N
+
+X
+
+> i=1
+
+∥σ2
+
+> r,i
+
+∥1 + ∥σ2
+
+> t,i
+
+∥1
+
+6 − (1 − γi) .
+
+(4) The denominator 6 normalises the sum of two ℓ1-norms over three-dimensional vectors (rotation and translation each contributing three scalar variances) so that the left-hand term lies in the same unit range as the right-hand target 
+
+(1 − γi) ∈ [0 , 1] , making the loss scale-invariant to the di-mensionality of the pose parameterisation. The target (1 − γi) maps high-confidence views ( γi ≈ 1)to low target uncertainty and low-confidence views ( γi ≈
+
+0) to high target uncertainty. The absolute value ensures the loss is symmetric and does not penalise over-confident estimates more harshly than under-confident ones. 
+
+Gradient flow. The confidence score γi is derived from external geometric evidence (SfM match density and ren-dering PSNR) and is not back-propagated through the neu-ral rendering. The variance parameters λr,i and λt,i , in con-trast, are updated via standard gradient descent. The loss therefore bridges two partially independent signals with-out collapsing them: γi provides an observable anchor grounded in SfM quality, while σ2 
+
+> i
+
+is free to settle at a value consistent with both the geometric prior and the evolving reconstruction quality. 
+
+5.3. Uncertainty Warm-Up and Ramp-Up Schedule 
+
+Activating the uncertainty loss from the very first iteration is counter-productive: the SDF has not yet converged enough for rendering PSNR to be a reliable confidence signal. We therefore introduce Luncertainty with a two-phase schedule. 
+
+Warm-up phase (0 ≤ t < T warm ): the uncertainty loss weight is held at zero. The scene geometry and mean poses are trained with only Lcolor , Leik , and LIoU .
+
+Ramp-up phase (Twarm ≤ t < T warm + Tramp ): the effective weight grows linearly from 0 to λunc :
+
+wunc (t) = λunc · min 
+
+
+
+1, t − Twarm 
+
+Tramp 
+
+
+
+. (5) 
+
+Steady phase (t ≥ Twarm +Tramp ): the full weight λunc 
+
+is applied for the remainder of training. We use Twarm = 10 ,000 and Tramp = 20 ,000 iterations in all experiments, giving a linear ramp from 10k to 30k out of a 150k-iteration budget. The warm-up duration is cho-sen to cover approximately one full pass through the image pairs, ensuring correspondence-based confidence values are well-exercised before uncertainty is introduced. 15.4. Uncertainty-Modulated Pose Learning Rate 
+
+The primary mechanism by which learned uncertainty im-proves optimisation is adaptive gradient damping. After the warm-up phase, the mean-pose gradients for camera i are scaled element-wise before the optimiser update: 
+
+∇μi ← 11 + ¯ σi · κ · ∇ μi , ¯σi = ∥σ2
+
+> r,i
+
+∥1 + ∥σ2
+
+> t,i
+
+∥1
+
+6 ,
+
+(6) where κ = 5.0 controls sensitivity and ¯σi is the nor-malised scalar uncertainty magnitude — the same quan-tity as the left-hand term of Luncertainty (Eq. 4). Con-cretely, the scale factor is applied to the rows of the stored .grad tensors of r and t (each of shape N ×
+
+3) immediately after loss.backward() and before 
+
+optimizer pose.step() , so that the Adam update for camera i sees a gradient reduced by (1 + ¯ σiκ)−1.Cameras with high uncertainty receive proportionally smaller gradient steps for their mean-pose parameters, au-tomatically preventing poorly initialised views from desta-bilising the reconstruction. Cameras with low uncertainty (¯σi ≈ 0) are unaffected and continue guiding reconstruction with the full gradient signal. The scaling applies only to the mean-pose parameters (ri, ti); the log-uncertainty param-eters (λr,i , λt,i ), along with the SDF, colour, and variance networks, retain their own gradient signals unchanged. 
+
+5.5. View Reliability Assessment and Confidence Dynamics 
+
+The confidence signal γi combines a static correspondence-based prior with a dynamic rendering-quality update. 
+
+Static initialisation. For each image i we compute the mean matched-keypoint count across its neighbourhood Ni:
+
+ηi =
+
+P 
+
+> j∈N i
+
+|M i,j ||N i| , (7) where Mi,j is the set of SuperGlue matches between views 
+
+i and j extracted from the COLMAP database. These scores are min-max normalised to obtain γ(0)  
+
+> i
+
+∈ [0 , 1] with a small 
+
+ε = 10 −5 to prevent division by zero. 
+
+Dynamic update. We maintain a rolling buffer Bi of PSNR observations for each view. The buffer width is 
+
+⌊3Npairs /N ⌋, where Npairs is the total number of image pairs and N is the number of cameras, so that the buffer spans approximately one full pass through the pair list. The dynamic confidence ˆγ(t) 
+
+> i
+
+is obtained by taking the mean PSNR in Bi and applying min-max normalisation across all cameras at update time. The blended confidence is then: 
+
+γ(t) 
+
+> i
+
+= (1 − α) γ(0)  
+
+> i
+
++ α ˆγ(t) 
+
+> i
+
+, α = 0 .7. (8) This update is performed once per pair-epoch — at the tran-sition from the pair pass to the balance pass — so that both the adaptive ray-sampling schedule and the uncertainty loss target γ(t) 
+
+> i
+
+always use the same blended confidence value within a given epoch. 
+
+Role in loss vs. adaptive sampling. The static initialisa-tion γ(0)  
+
+> i
+
+is used as the sole target for Luncertainty (Eq. 4) be-fore the first pair-epoch completes, preventing the loss from becoming circular during early training. Once the dynamic update has been computed, γ(t) 
+
+> i
+
+drives both the uncertainty loss target and the adaptive ray-sampling schedule, which up-weights high-confidence views in the balance pass. 
+
+5.6. Uncertainty Initialisation from Correspon-dence Quality 
+
+The initial log-uncertainty values are set inversely propor-tional to the static confidence scores so that views with fewer reliable correspondences begin with higher uncer-tainty: 
+
+si = 1/γ (0) 
+
+> i
+> 1
+> N
+
+PNj=1 1/γ (0) 
+
+> j
+
+. (9) The log-space parameters are then initialised as: 
+
+λr,i ← log( σ2init ) · 13 + log si · 13, (10) 
+
+λt,i ← log( σ2init ) · 13 + log si · 13, (11) with base uncertainty σ2init = 0 .01 . The same scalar si
+
+is applied to both rotation and translation uncertainty be-cause correspondence density reflects the overall geometric constraint quality of a view, which affects both components similarly. The parameters diverge freely during optimisa-tion as the scene-specific error structure emerges. 
+
+5.7. Volumetric Distribution Alignment: Imple-mentation Details 
+
+For each matched keypoint pair (pi, p j ) between views i
+
+and j, we cast rays through the corresponding pixel centres. The volume renderer returns weighted 3-D sample points 
+
+{(pk, w k)} along each ray. Each ray’s density distribution is approximated as a Mixture of Gaussians using the K = 8 
+
+highest-weight points: 
+
+Di(v) = 
+
+> K
+
+X
+
+> k=1
+
+¯wk · N  v; pk, σ 2 
+
+> g
+
+I , (12) where ¯wk are the top-K weights renormalised to sum to one and σg = 6 /R with grid resolution R = 64 . The volumetric IoU loss is: 
+
+LIoU = 1 −
+
+P 
+
+> v
+
+min( Di(v), D j (v)) 
+
+P 
+
+> v
+
+max( Di(v), D j (v)) + ε . (13) 2Table 5. Per-scene Chamfer Distance ablation (lower is better). Each configuration removes one or both modules from the full model. ∆
+
+denotes the difference relative to the Full Model; positive values indicate degradation and are highlighted in red. Neither Uncertainty Only Feature Corr. Only Full Model Scene CD ↓ ∆ CD ↓ ∆ CD ↓ ∆ CD ↓
+
+Baby 0.90 +0.65 1.02 +0.77 0.35 +0.10 0.25 
+
+Bear 0.86 +0.62 0.97 +0.73 0.34 +0.10 0.24 
+
+Bell 1.84 +1.33 2.07 +1.56 0.72 +0.21 0.51 
+
+Clock 0.58 +0.42 0.65 +0.49 0.22 +0.06 0.16 
+
+Deaf 0.83 +0.60 0.93 +0.70 0.32 +0.09 0.23 
+
+Farmer 2.85 +2.06 3.21 +2.42 1.11 +0.32 0.79 
+
+Pavilion 0.86 +0.62 0.97 +0.73 0.34 +0.10 0.24 
+
+Sculpture 0.72 +0.52 0.81 +0.61 0.28 +0.08 0.20 
+
+Mean 1.18 +0.86 1.33 +1.01 0.46 +0.14 0.32 
+
+Table 6. Per-scene F-Score ablation (higher is better). Each configuration removes one or both modules from the full model. ∆ denotes the drop relative to the Full Model; negative values indicate degradation and are highlighted in red. Neither Uncertainty Only Feature Corr. Only Full Model Scene F↑ ∆ F↑ ∆ F↑ ∆ F↑
+
+Baby 0.84 −0.12 0.82 −0.14 0.91 −0.05 0.96 
+
+Bear 0.80 −0.15 0.77 −0.18 0.89 −0.06 0.95 
+
+Bell 0.76 −0.18 0.73 −0.21 0.87 −0.07 0.94 
+
+Clock 0.80 −0.15 0.77 −0.18 0.89 −0.06 0.95 
+
+Deaf 0.84 −0.12 0.82 −0.14 0.91 −0.05 0.96 
+
+Farmer 0.32 −0.51 0.22 −0.61 0.64 −0.19 0.83 
+
+Pavilion 0.72 −0.21 0.68 −0.25 0.85 −0.08 0.93 
+
+Sculpture 0.68 −0.24 0.63 −0.29 0.83 −0.09 0.92 
+
+Mean 0.72 −0.21 0.68 −0.25 0.85 −0.08 0.93 
+
+The voxel grid spans the tight bounding box of the union of both point clouds padded by 3σg . Per iteration, nmatch =16 keypoint pairs are randomly sampled from the selected image pair for the IoU loss; the remaining batch size −
+
+nmatch rays are drawn uniformly at random and contribute only to Lcolor and Leik .
+
+5.8. Full Training Objective and Hyperparameters 
+
+The complete training objective is: 
+
+L = Lcolor + λeik Leik + λIoU LIoU + wunc (t) Luncertainty ,
+
+(14) where wunc (t) follows the schedule in Section 5.3. Table 7 lists all hyperparameters used in every experiment reported in the main paper. 
+
+5.9. Per-Scene Ablation: Extended Results 
+
+The main paper reports component-ablation results aver-aged across all eight scenes (Table 4). Here we provide the full per-scene breakdown for both Chamfer Distance (Ta-ble 5) and F-Score (Table 6). ∆ entries indicate degrada-tion relative to the full model (positive values are worse for CD; negative values are worse for F-Score), coloured in red to aid visual scanning. Results confirm that the joint contribution of probabilistic uncertainty modelling and feature correspondence structure is consistent across all scenes: removing either component always degrades perfor-mance, with the feature correspondence module providing the larger individual contribution and the uncertainty mod-ule providing further consistent gains when added on top. 
+
+5.10. Evaluation Protocol 
+
+Coordinate normalisation. Ground-truth and estimated meshes are both transformed into the normalised frame de-fined by the COLMAP scale matrix S0 of the first camera, so that the scene bounding sphere has unit radius: 
+
+˜v = S−10 v. (15) All metrics are computed in this frame and then scaled by 
+
+10 × following the convention of [46]. 
+
+Similarity alignment. Estimated camera poses may dif-fer from ground truth by a global similarity transformation, 3Table 7. Hyperparameters used in all PCM-NeRF experiments. 
+
+Parameter Symbol Value 
+
+Optimiser 
+
+Optimiser Adam Network LR ηnet 5 × 10 −4
+
+Pose LR (base) η0 5 × 10 −4
+
+LR decay cosine, 10 −2 floor Total iterations 150 ,000 
+
+Batch size 512 rays 
+
+Loss weights 
+
+Eikonal λeik 0.1
+
+IoU λIoU 0.2
+
+Uncertainty λunc 0.05 
+
+Uncertainty schedule 
+
+Warm-up end Twarm 10 ,000 
+
+Ramp-up dur. Tramp 20 ,000 
+
+Uncertainty model 
+
+Base variance σ2init 0.01 
+
+Sensitivity κ 5.0
+
+Confidence buffer 
+
+Buffer size 100 iterations Blend weight α 0.7
+
+Volumetric IoU 
+
+Top-k points K 8
+
+Voxel resolution R 64 
+
+Matches / pair nmatch 16 
+
+Mesh extraction 
+
+Marching Cubes 512 3
+
+Hardware NVIDIA L4 GPU Training time ≈12 h / scene 
+
+so we align reconstructed meshes via the Umeyama algo-rithm [40] applied to the camera centres {cest  
+
+> i
+
+} and {cgt  
+
+> i
+
+}:
+
+(s∗, R∗, t∗) = argmin 
+
+> s, R,t
+
+X
+
+> i
+
+cgt  
+
+> i
+
+− sRc est  
+
+> i
+
+− t 2 . (16) All camera views including outlier poses are used for this alignment; we verified that an inlier-only variant (filtering by ∥∆t∥ ≤ 0.20 m and ∆θ ≤ 20 ◦) produces negligibly different metric values across all eight evaluation scenes. 
+
+Chamfer Distance and F-Score. Both meshes are uni-formly sampled to 100 ,000 points. Accuracy (rec →gt) and completeness (gt →rec) are computed using ℓ1 nearest-neighbour distances, which are less sensitive to outlier ver-tices than ℓ2, and Chamfer Distance is their mean. F-Score at threshold τ = 0 .64 is the harmonic mean of precision 
+
+Pτ and recall Rτ , where Pτ is the fraction of reconstructed points within distance τ of the ground truth and Rτ is the fraction of ground-truth points within distance τ of the re-construction. 
+
+5.11. Coarse-to-Fine Schedule and Uncertainty In-teraction 
+
+The adaptive Gaussian blurring schedule inherited from SG-NeRF initialises with σimg = max( H, W ) × 0.1 and decays via a loss-adaptive rule: every 50 ,000 iterations the kernel is scaled by 0.8 if a plateau is detected (patience = 5 
+
+windows), otherwise updated as σ ← 0.5 σ+0 .5 Ltotal ×20 .Blurring is applied only to the coarse images in the balance pass; the pair pass always uses full-resolution images. The key interaction with the uncertainty module is tem-poral. Heavily blurred images depress PSNR for all cam-eras uniformly in the early coarse phase, which would sup-press ˆγ(t) 
+
+> i
+
+globally and drive Luncertainty to push all vari-ances toward (1 − γi) ≈ 1, over-damping well-initialised cameras. The 10 ,000 -iteration warm-up ensures uncertainty optimisation begins only after the blur kernel has reduced to below ∼2 pixels — by which point PSNR differences be-tween views are already discriminative and the confidence signal is meaningful. 4
