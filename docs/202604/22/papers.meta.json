@@ -1,0 +1,51 @@
+{
+  "label": "2026-04-22",
+  "date": "2026-04-22",
+  "generated_at": "2026-04-22T19:58:46",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202604/22/2604.18980v1-adagscale-viewpoint-adaptive-gaussian-scaling-in-3d-gaussian-splatting-to-reduce-gaussian-tile-pairs",
+      "section": "deep",
+      "title_en": "AdaGScale: Viewpoint-Adaptive Gaussian Scaling in 3D Gaussian Splatting to Reduce Gaussian-Tile Pairs",
+      "authors": "Joongho Jo, Hyerin Lim, Hanjun Choi, Jongsun Park",
+      "date": "2026-04-21",
+      "pdf": "https://arxiv.org/pdf/2604.18980v1",
+      "score": "8.0",
+      "evidence": "加速3D高斯泼溅渲染",
+      "tldr": "针对3D高斯泼溅（3D-GS）渲染中高斯-瓦片对数量过多导致的性能瓶颈，本文提出AdaGScale技术。该方法基于边缘瓦片颜色贡献微小的观察，在预处理阶段评估高斯的边缘得分，并根据视点自适应缩放其尺寸。通过在相交测试中减小低重要性高斯的范围，显著减少了计算量，同时在颜色累加阶段保留原始尺寸以维持画质。实验表明，该方法在城市级场景中实现了13.8倍的加速，且画质损失极小。",
+      "tags": "query:q7",
+      "abstract_en": "Reducing the number of Gaussian-tile pairs is one of the most promising approaches to improve 3D Gaussian Splatting (3D-GS) rendering speed on GPUs. However, the importance difference existing among Gaussian-tile pairs has never been considered in the previous works. In this paper, we propose AdaGScale, a novel viewpoint-adaptive Gaussian scaling technique for reducing the number of Gaussian-tile pairs. AdaGScale is based on the observation that the peripheral tiles located far from Gaussian center contribute negligibly to pixel color accumulation. This suggests an opportunity for reducing the number of Gaussian-tile pairs based on color contribution. AdaGScale efficiently estimates the color contribution in the peripheral region of each Gaussian during a preprocessing stage and adaptively scales its size based on the peripheral score. As a result, Gaussians with lower importance intersect with fewer tiles during the intersection test, which improves rendering speed while maintaining image quality. The adjusted size is used only for tile intersection test, and the original size is retained during color accumulation to preserve visual fidelity. Experimental results show that AdaGScale achieves a geometric mean speedup of 13.8x over original 3D-GS on a GPU, with only about 0.5 dB degradation in PSNR on city-scale scenes.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/22/2604.19127v1-ot-uvgs-revisiting-uv-mapping-for-gaussian-splatting-as-a-capacity-allocation-problem",
+      "section": "quick",
+      "title_en": "OT-UVGS: Revisiting UV Mapping for Gaussian Splatting as a Capacity Allocation Problem",
+      "authors": "Byunghyun Kim",
+      "date": "2026-04-21",
+      "pdf": "https://arxiv.org/pdf/2604.19127v1",
+      "score": "6.0",
+      "evidence": "用于3D表示的高斯泼溅技术",
+      "tldr": "针对UV参数化高斯泼溅（UVGS）中球形投影导致的UV槽位利用率低和碰撞问题，本文提出OT-UVGS。该方法将UV映射重新定义为固定预算下的容量分配问题，采用受一维最优传输启发的轻量级映射算法。通过基于秩的排序实现全局耦合分配，在保持原有表示形式的同时，显著提升了UV利用率和渲染质量，为紧凑型3D表示提供了更高效的方案。",
+      "tags": "query:q1",
+      "abstract_en": "UV-parameterized Gaussian Splatting (UVGS) maps an unstructured set of 3D Gaussians to a regular UV tensor, enabling compact storage and explicit control of representation capacity. Existing UVGS, however, uses a deterministic spherical pro- jection to assign Gaussians to UV locations. Because this mapping ignores the global Gaussian distribution, it often leaves many UV slots empty while causing frequent collisions in dense regions. We reinterpret UV mapping as a capacity-allocation problem under a fixed UV budget and propose OT-UVGS, a lightweight, separable one-dimensional optimal-transport-inspired mapping that globally couples assignments while preserving the original UVGS representation. The method is implemented with rank-based sorting, has O(N log N) complexity for N Gaussians, and can be used as a drop-in replacement for spherical UVGS. Across 184 object-centric scenes and the Mip-NeRF dataset, OT-UVGS consistently improves peak signal-to-noise ratio (PSNR), structural similarity (SSIM), and Learned Perceptual Image Patch Similarity (LPIPS) under the same UV resolution and per-slot capacity (K=1). These gains are accompanied by substantially better UV utilization, including higher non-empty slot ratios, fewer collisions, and higher Gaussian retention. Our results show that revisiting the mapping alone can unlock a significant fraction of the latent capacity of UVGS.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/22/2604.19609v1-volume-transformer-revisiting-vanilla-transformers-for-3d-scene-understanding",
+      "section": "quick",
+      "title_en": "Volume Transformer: Revisiting Vanilla Transformers for 3D Scene Understanding",
+      "authors": "Kadir Yilmaz, Adrian Kruse, Tristan Höfer, Daan de Geus, Bastian Leibe",
+      "date": "2026-04-21",
+      "pdf": "https://arxiv.org/pdf/2604.19609v1",
+      "score": "6.0",
+      "evidence": "将3D场景划分为用于Transformer的体积补丁令牌",
+      "tldr": "本研究针对3D场景理解长期依赖特定领域架构的问题，提出了Volume Transformer (Volt)，将原生Transformer引入3D领域。Volt通过体积补丁化、全局自注意力和3D旋转位置嵌入实现，并结合强增强、知识蒸馏及多数据集联合训练策略克服了数据规模限制。实验表明，Volt在语义和实例分割任务上均超越了现有专用模型，展现了通用架构在3D任务中的巨大潜力与扩展性。",
+      "tags": "query:profile-1",
+      "abstract_en": "Transformers have become a common foundation across deep learning, yet 3D scene understanding still relies on specialized backbones with strong domain priors. This keeps the field isolated from the broader Transformer ecosystem, limiting the transfer of new advances as well as the benefits of increasingly optimized software and hardware stacks. To bridge this gap, we adapt the vanilla Transformer encoder to 3D scenes with minimal modifications. Given an input 3D scene, we partition it into volumetric patch tokens, process them with full global self-attention, and inject positional information via a 3D extension of rotary positional embeddings. We call the resulting model the Volume Transformer (Volt) and apply it to 3D semantic segmentation. Naively training Volt on standard 3D benchmarks leads to shortcut learning, highlighting the limited scale of current 3D supervision. To overcome this, we introduce a data-efficient training recipe based on strong 3D augmentations, regularization, and distillation from a convolutional teacher, making Volt competitive with state-of-the-art methods. We then scale supervision through joint training on multiple datasets and show that Volt benefits more from increased scale than domain-specific 3D backbones, achieving state-of-the-art results across indoor and outdoor datasets. Finally, when used as a drop-in backbone in a standard 3D instance segmentation pipeline, Volt again sets a new state of the art, highlighting its potential as a simple, scalable, general-purpose backbone for 3D scene understanding.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

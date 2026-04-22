@@ -1,0 +1,126 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-22T19:57:39.653628+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2604.18980v1",
+      "title": "AdaGScale: Viewpoint-Adaptive Gaussian Scaling in 3D Gaussian Splatting to Reduce Gaussian-Tile Pairs",
+      "abstract": "Reducing the number of Gaussian-tile pairs is one of the most promising approaches to improve 3D Gaussian Splatting (3D-GS) rendering speed on GPUs. However, the importance difference existing among Gaussian-tile pairs has never been considered in the previous works. In this paper, we propose AdaGScale, a novel viewpoint-adaptive Gaussian scaling technique for reducing the number of Gaussian-tile pairs. AdaGScale is based on the observation that the peripheral tiles located far from Gaussian center contribute negligibly to pixel color accumulation. This suggests an opportunity for reducing the number of Gaussian-tile pairs based on color contribution. AdaGScale efficiently estimates the color contribution in the peripheral region of each Gaussian during a preprocessing stage and adaptively scales its size based on the peripheral score. As a result, Gaussians with lower importance intersect with fewer tiles during the intersection test, which improves rendering speed while maintaining image quality. The adjusted size is used only for tile intersection test, and the original size is retained during color accumulation to preserve visual fidelity. Experimental results show that AdaGScale achieves a geometric mean speedup of 13.8x over original 3D-GS on a GPU, with only about 0.5 dB degradation in PSNR on city-scale scenes.",
+      "authors": [
+        "Joongho Jo",
+        "Hyerin Lim",
+        "Hanjun Choi",
+        "Jongsun Park"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-21T02:07:02+00:00",
+      "link": "https://arxiv.org/pdf/2604.18980v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "accelerating 3D Gaussian Splatting rendering",
+      "llm_evidence_cn": "加速3D高斯泼溅渲染",
+      "llm_evidence": "加速3D高斯泼溅渲染",
+      "canonical_evidence": "加速3D高斯泼溅渲染",
+      "llm_tldr_en": "Introduces viewpoint-adaptive scaling to reduce Gaussian-tile pairs and speed up rendering.",
+      "llm_tldr_cn": "引入视点自适应缩放技术，减少高斯块对以提升渲染速度。",
+      "llm_tldr": "引入视点自适应缩放技术，减少高斯块对以提升渲染速度。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2604.19127v1",
+      "title": "OT-UVGS: Revisiting UV Mapping for Gaussian Splatting as a Capacity Allocation Problem",
+      "abstract": "UV-parameterized Gaussian Splatting (UVGS) maps an unstructured set of 3D Gaussians to a regular UV tensor, enabling compact storage and explicit control of representation capacity. Existing UVGS, however, uses a deterministic spherical pro- jection to assign Gaussians to UV locations. Because this mapping ignores the global Gaussian distribution, it often leaves many UV slots empty while causing frequent collisions in dense regions. We reinterpret UV mapping as a capacity-allocation problem under a fixed UV budget and propose OT-UVGS, a lightweight, separable one-dimensional optimal-transport-inspired mapping that globally couples assignments while preserving the original UVGS representation. The method is implemented with rank-based sorting, has O(N log N) complexity for N Gaussians, and can be used as a drop-in replacement for spherical UVGS. Across 184 object-centric scenes and the Mip-NeRF dataset, OT-UVGS consistently improves peak signal-to-noise ratio (PSNR), structural similarity (SSIM), and Learned Perceptual Image Patch Similarity (LPIPS) under the same UV resolution and per-slot capacity (K=1). These gains are accompanied by substantially better UV utilization, including higher non-empty slot ratios, fewer collisions, and higher Gaussian retention. Our results show that revisiting the mapping alone can unlock a significant fraction of the latent capacity of UVGS.",
+      "authors": [
+        "Byunghyun Kim"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR"
+      ],
+      "published": "2026-04-21T06:19:22+00:00",
+      "link": "https://arxiv.org/pdf/2604.19127v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Gaussian Splatting for 3D representation",
+      "llm_evidence_cn": "用于3D表示的高斯泼溅技术",
+      "llm_evidence": "用于3D表示的高斯泼溅技术",
+      "canonical_evidence": "用于3D表示的高斯泼溅技术",
+      "llm_tldr_en": "Optimizes UV mapping for Gaussian Splatting to improve storage and capacity allocation.",
+      "llm_tldr_cn": "优化高斯泼溅的UV映射，以改进存储效率和容量分配。",
+      "llm_tldr": "优化高斯泼溅的UV映射，以改进存储效率和容量分配。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.19609v1",
+      "title": "Volume Transformer: Revisiting Vanilla Transformers for 3D Scene Understanding",
+      "abstract": "Transformers have become a common foundation across deep learning, yet 3D scene understanding still relies on specialized backbones with strong domain priors. This keeps the field isolated from the broader Transformer ecosystem, limiting the transfer of new advances as well as the benefits of increasingly optimized software and hardware stacks. To bridge this gap, we adapt the vanilla Transformer encoder to 3D scenes with minimal modifications. Given an input 3D scene, we partition it into volumetric patch tokens, process them with full global self-attention, and inject positional information via a 3D extension of rotary positional embeddings. We call the resulting model the Volume Transformer (Volt) and apply it to 3D semantic segmentation. Naively training Volt on standard 3D benchmarks leads to shortcut learning, highlighting the limited scale of current 3D supervision. To overcome this, we introduce a data-efficient training recipe based on strong 3D augmentations, regularization, and distillation from a convolutional teacher, making Volt competitive with state-of-the-art methods. We then scale supervision through joint training on multiple datasets and show that Volt benefits more from increased scale than domain-specific 3D backbones, achieving state-of-the-art results across indoor and outdoor datasets. Finally, when used as a drop-in backbone in a standard 3D instance segmentation pipeline, Volt again sets a new state of the art, highlighting its potential as a simple, scalable, general-purpose backbone for 3D scene understanding.",
+      "authors": [
+        "Kadir Yilmaz",
+        "Adrian Kruse",
+        "Tristan Höfer",
+        "Daan de Geus",
+        "Bastian Leibe"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-21T15:56:26+00:00",
+      "link": "https://arxiv.org/pdf/2604.19609v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "partitioning 3D scenes into volumetric patch tokens for Transformers",
+      "llm_evidence_cn": "将3D场景划分为用于Transformer的体积补丁令牌",
+      "llm_evidence": "将3D场景划分为用于Transformer的体积补丁令牌",
+      "canonical_evidence": "将3D场景划分为用于Transformer的体积补丁令牌",
+      "llm_tldr_en": "Adapts vanilla Transformers to 3D scene understanding using volumetric tokenization and 3D embeddings.",
+      "llm_tldr_cn": "利用体积标记化和3D嵌入，将原生Transformer适配于3D场景理解。",
+      "llm_tldr": "利用体积标记化和3D嵌入，将原生Transformer适配于3D场景理解。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
