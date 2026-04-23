@@ -6,31 +6,47 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-22
-- 运行时间：2026-04-22 19:58:36 UTC
+- 最新运行日期：2026-04-23
+- 运行时间：2026-04-23 20:08:32 UTC
 - 运行状态：成功
-- 本次总论文数：3
-- 精读区：1
-- 速读区：2
+- 本次总论文数：8
+- 精读区：0
+- 速读区：8
 
 ### 今日简报（AI）
-今日聚焦 3D 高斯泼溅（3DGS）的效率优化与场景理解，重点攻克渲染过程中的计算冗余问题。
-推荐关注 AdaGScale 提出的视点自适应缩放技术，它通过减少高斯-瓦片对显著提升了渲染性能。
-建议优先研读 AdaGScale，掌握如何利用动态缩放策略在 3D 重建中实现精度与速度的平衡。
-- 详情：[/202604/22/README](/202604/22/README)
+今日速览 8 篇前沿论文，聚焦 3D 重建效率提升与科学信号的快速拟合。
+重点关注可迁移神经场在科学信号处理中的应用，以及无需蒸馏、秒级完成 3D 高斯泼溅（3DGS）补全的新插件 GSCompleter。
+建议关注 3DGS 补全与流式重建技术，以优化实时三维建模的精度与速度。
+- 详情：[/202604/23/README](/202604/23/README)
 
 ### 精读区论文标签
-1. [AdaGScale: Viewpoint-Adaptive Gaussian Scaling in 3D Gaussian Splatting to Reduce Gaussian-Tile Pairs](/202604/22/2604.18980v1-adagscale-viewpoint-adaptive-gaussian-scaling-in-3d-gaussian-splatting-to-reduce-gaussian-tile-pairs)  
-   标签：评分：8.0/10、query:q7
-   evidence：加速3D高斯泼溅渲染
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [OT-UVGS: Revisiting UV Mapping for Gaussian Splatting as a Capacity Allocation Problem](/202604/22/2604.19127v1-ot-uvgs-revisiting-uv-mapping-for-gaussian-splatting-as-a-capacity-allocation-problem)  
+1. [Fast Amortized Fitting of Scientific Signals Across Time and Ensembles via Transferable Neural Fields](/202604/23/2604.19979v1-fast-amortized-fitting-of-scientific-signals-across-time-and-ensembles-via-transferable-neural-fields)  
+   标签：评分：7.0/10、query:q1
+   evidence：用于建模连续几何和科学信号的神经场
+2. [GSCompleter: A Distillation-Free Plugin for Metric-Aware 3D Gaussian Splatting Completion in Seconds](/202604/23/2604.20155v1-gscompleter-a-distillation-free-plugin-for-metric-aware-3d-gaussian-splatting-completion-in-seconds)  
+   标签：评分：7.0/10、query:q1
+   evidence：3D高斯泼溅补全与射线约束集成
+3. [Geometric Context Transformer for Streaming 3D Reconstruction](/202604/23/2604.14141v1-geometric-context-transformer-for-streaming-3d-reconstruction)  
    标签：评分：6.0/10、query:q1
-   evidence：用于3D表示的高斯泼溅技术
-2. [Volume Transformer: Revisiting Vanilla Transformers for 3D Scene Understanding](/202604/22/2604.19609v1-volume-transformer-revisiting-vanilla-transformers-for-3d-scene-understanding)  
+   evidence：用于流式3D重建的神经架构
+4. [URoPE: Universal Relative Position Embedding across Geometric Spaces](/202604/23/2604.18747v1-urope-universal-relative-position-embedding-across-geometric-spaces)  
+   标签：评分：6.0/10、query:q1
+   evidence：跨相机射线和3D空间的几何推理
+5. [TransSplat: Unbalanced Semantic Transport for Language-Driven 3DGS Editing](/202604/23/2604.19571v1-transsplat-unbalanced-semantic-transport-for-language-driven-3dgs-editing)  
+   标签：评分：6.0/10、query:q1
+   evidence：使用3D高斯泼溅的神经渲染编辑
+6. [FluSplat: Sparse-View 3D Editing without Test-Time Optimization](/202604/23/2604.20038v1-flusplat-sparse-view-3d-editing-without-test-time-optimization)  
+   标签：评分：6.0/10、query:q1
+   evidence：用于3D高斯泼溅场景编辑的前馈框架
+7. [Gaussians on a Diet: High-Quality Memory-Bounded 3D Gaussian Splatting Training](/202604/23/2604.20046v1-gaussians-on-a-diet-high-quality-memory-bounded-3d-gaussian-splatting-training)  
+   标签：评分：6.0/10、query:q1
+   evidence：内存受限的3D高斯泼溅训练与优化
+8. [GeoRelight: Learning Joint Geometrical Relighting and Reconstruction with Flexible Multi-Modal Diffusion Transformers](/202604/23/2604.20715v1-georelight-learning-joint-geometrical-relighting-and-reconstruction-with-flexible-multi-modal-diffusion-transformers)  
    标签：评分：6.0/10、query:profile-1
-   evidence：将3D场景划分为用于Transformer的体积补丁令牌
+   evidence：利用3D表示进行联合几何重光照与重建
 
 
 <div class="dpr-home-promo-card">

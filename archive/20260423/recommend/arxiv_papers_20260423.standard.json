@@ -1,0 +1,337 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-23T20:07:48.007102+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 8,
+    "quick_skim_target": 11,
+    "quick_selected": 8
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.19979v1",
+      "title": "Fast Amortized Fitting of Scientific Signals Across Time and Ensembles via Transferable Neural Fields",
+      "abstract": "Neural fields, also known as implicit neural representations (INRs), offer a powerful framework for modeling continuous geometry, but their effectiveness in high-dimensional scientific settings is limited by slow convergence and scaling challenges. In this study, we extend INR models to handle spatiotemporal and multivariate signals and show how INR features can be transferred across scientific signals to enable efficient and scalable representation across time and ensemble runs in an amortized fashion. Across controlled transformation regimes (e.g., geometric transformations and localized perturbations of synthetic fields) and high-fidelity scientific domains-including turbulent flows, fluid-material impact dynamics, and astrophysical systems-we show that transferable features improve not only signal fidelity but also the accuracy of derived geometric and physical quantities, including density gradients and vorticity. In particular, transferable features reduce iterations to reach target reconstruction quality by up to an order of magnitude, increase early-stage reconstruction quality by multiple dB (with gains exceeding 10 dB in some cases), and consistently improve gradient-based physical accuracy.",
+      "authors": [
+        "Sophia Zorek",
+        "Kushal Vyas",
+        "Yuhao Liu",
+        "David Lenz",
+        "Tom Peterka",
+        "Guha Balakrishnan"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CE",
+        "cs.CV"
+      ],
+      "published": "2026-04-21T20:40:05+00:00",
+      "link": "https://arxiv.org/pdf/2604.19979v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural fields for modeling continuous geometry and scientific signals",
+      "llm_evidence_cn": "用于建模连续几何和科学信号的神经场",
+      "llm_evidence": "用于建模连续几何和科学信号的神经场",
+      "canonical_evidence": "用于建模连续几何和科学信号的神经场",
+      "llm_tldr_en": "Extends neural fields to handle spatiotemporal scientific signals with efficient transferable features.",
+      "llm_tldr_cn": "扩展神经场以处理时空科学信号，并通过可迁移特征实现高效表示。",
+      "llm_tldr": "扩展神经场以处理时空科学信号，并通过可迁移特征实现高效表示。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.14141v1",
+      "title": "Geometric Context Transformer for Streaming 3D Reconstruction",
+      "abstract": "Streaming 3D reconstruction aims to recover 3D information, such as camera poses and point clouds, from a video stream, which necessitates geometric accuracy, temporal   consistency, and computational efficiency. Motivated by the principles of Simultaneous Localization and Mapping (SLAM), we introduce LingBot-Map, a feed-forward 3D foundation   model for reconstructing scenes from streaming data, built upon a geometric context transformer (GCT) architecture. A defining aspect of LingBot-Map lies in its carefully   designed attention mechanism, which integrates an anchor context, a pose-reference window, and a trajectory memory to address coordinate grounding, dense geometric cues, and   long-range drift correction, respectively. This design keeps the streaming state compact while retaining rich geometric context, enabling stable efficient inference at around   20 FPS on 518 x 378 resolution inputs over long sequences exceeding 10,000 frames. Extensive evaluations across a variety of benchmarks demonstrate that our approach   achieves superior performance compared to both existing streaming and iterative optimization-based approaches.",
+      "authors": [
+        "Lin-Zhuo Chen",
+        "Jian Gao",
+        "Yihang Chen",
+        "Ka Leong Cheng",
+        "Yipengjing Sun",
+        "Liangxiao Hu",
+        "Nan Xue",
+        "Xing Zhu",
+        "Yujun Shen",
+        "Yao Yao",
+        "Yinghao Xu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-15T17:58:13+00:00",
+      "link": "https://arxiv.org/pdf/2604.14141v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Neural architecture for streaming 3D reconstruction",
+      "llm_evidence_cn": "用于流式3D重建的神经架构",
+      "llm_evidence": "用于流式3D重建的神经架构",
+      "canonical_evidence": "用于流式3D重建的神经架构",
+      "llm_tldr_en": "Presents a geometric context transformer for efficient and consistent streaming 3D scene reconstruction.",
+      "llm_tldr_cn": "提出一种几何上下文Transformer架构，用于高效且一致的流式3D场景重建。",
+      "llm_tldr": "提出一种几何上下文Transformer架构，用于高效且一致的流式3D场景重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.20155v1",
+      "title": "GSCompleter: A Distillation-Free Plugin for Metric-Aware 3D Gaussian Splatting Completion in Seconds",
+      "abstract": "While 3D Gaussian Splatting (3DGS) has revolutionized real-time rendering, its performance degrades significantly under sparse-view extrapolation, manifesting as severe geometric voids and artifacts. Existing solutions primarily rely on an iterative \"Repair-then-Distill\" paradigm, which is inherently unstable and prone to overfitting. In this work, we propose GSCompleter, a distillation-free plugin that shifts scene completion to a stable \"Generate-then-Register\" workflow. Our approach first synthesizes plausible 2D reference images and explicitly lifts them into metric-scale 3D primitives via a robust Stereo-Anchor mechanism. These primitives are then seamlessly integrated into the global context through a novel Ray-Constrained Registration strategy. This shift to a rapid registration paradigm delivers superior 3DGS completion performance across three distinct benchmarks, enhancing the quality and efficiency of various baselines and achieving new SOTA results.",
+      "authors": [
+        "Ao Gao",
+        "Jingyu Gong",
+        "Xin Tan",
+        "Zhizhong Zhang",
+        "Yuan Xie"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-22T03:47:25+00:00",
+      "link": "https://arxiv.org/pdf/2604.20155v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting completion and ray-constrained integration",
+      "llm_evidence_cn": "3D高斯泼溅补全与射线约束集成",
+      "llm_evidence": "3D高斯泼溅补全与射线约束集成",
+      "canonical_evidence": "3D高斯泼溅补全与射线约束集成",
+      "llm_tldr_en": "Proposes GSCompleter for stable 3D Gaussian Splatting scene completion using a generate-then-register workflow.",
+      "llm_tldr_cn": "提出GSCompleter，通过生成后注册的工作流实现稳定的3D高斯泼溅场景补全。",
+      "llm_tldr": "提出GSCompleter，通过生成后注册的工作流实现稳定的3D高斯泼溅场景补全。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.18747v1",
+      "title": "URoPE: Universal Relative Position Embedding across Geometric Spaces",
+      "abstract": "Relative position embedding has become a standard mechanism for encoding positional information in Transformers. However, existing formulations are typically limited to a fixed geometric space, namely 1D sequences or regular 2D/3D grids, which restricts their applicability to many computer vision tasks that require geometric reasoning across camera views or between 2D and 3D spaces. To address this limitation, we propose URoPE, a universal extension of Rotary Position Embedding (RoPE) to cross-view or cross-dimensional geometric spaces. For each key/value image patch, URoPE samples 3D points along the corresponding camera ray at predefined depth anchors and projects them into the query image plane. Standard 2D RoPE can then be applied using the projected pixel coordinates. URoPE is a parameter-free and intrinsics-aware relative position embedding that is invariant to the choice of global coordinate systems, while remaining fully compatible with existing RoPE-optimized attention kernels. We evaluate URoPE as a plug-in positional encoding for transformer architectures across a diverse set of tasks, including novel view synthesis, 3D object detection, object tracking, and depth estimation, covering 2D-2D, 2D-3D, and temporal scenarios. Experiments show that URoPE consistently improves the performance of transformer-based models across all tasks, demonstrating its effectiveness and generality for geometric reasoning. Our project website is: https://urope-pe.github.io/.",
+      "authors": [
+        "Yichen Xie",
+        "Depu Meng",
+        "Chensheng Peng",
+        "Yihan Hu",
+        "Quentin Herau",
+        "Masayoshi Tomizuka",
+        "Wei Zhan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-20T18:52:03+00:00",
+      "link": "https://arxiv.org/pdf/2604.18747v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Geometric reasoning across camera rays and 3D spaces",
+      "llm_evidence_cn": "跨相机射线和3D空间的几何推理",
+      "llm_evidence": "跨相机射线和3D空间的几何推理",
+      "canonical_evidence": "跨相机射线和3D空间的几何推理",
+      "llm_tldr_en": "Introduces a universal relative position embedding for Transformers to reason across camera views and 3D spaces.",
+      "llm_tldr_cn": "为Transformer引入通用相对位置嵌入，以实现跨视图和3D空间的几何推理。",
+      "llm_tldr": "为Transformer引入通用相对位置嵌入，以实现跨视图和3D空间的几何推理。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.19571v1",
+      "title": "TransSplat: Unbalanced Semantic Transport for Language-Driven 3DGS Editing",
+      "abstract": "Language-driven 3D Gaussian Splatting (3DGS) editing provides a more convenient approach for modifying complex scenes in VR/AR. Standard pipelines typically adopt a two-stage strategy: first editing multiple 2D views, and then optimizing the 3D representation to match these edited observations. Existing methods mainly improve view consistency through multi-view feature fusion, attention filtering, or iterative recalibration. However, they fail to explicitly address a more fundamental issue: the semantic correspondence between edited 2D evidence and 3D Gaussians. To tackle this problem, we propose TransSplat, which formulates language-driven 3DGS editing as a multi-view unbalanced semantic transport problem. Specifically, our method establishes correspondences between visible Gaussians and view-specific editing prototypes, thereby explicitly characterizing the semantic relationship between edited 2D evidence and 3D Gaussians. It further recovers a cross-view shared canonical 3D edit field to guide unified 3D appearance updates. In addition, we use transport residuals to suppress erroneous edits in non-target regions, mitigating edit leakage and improving local control precision. Qualitative and quantitative results show that, compared with existing 3D editing methods centered on enhancing view consistency, TransSplat achieves superior performance in local editing accuracy and structural consistency.",
+      "authors": [
+        "Yanhui Chen",
+        "Jiahong Li",
+        "Jingchao Wang",
+        "Junyi Lin",
+        "Zixin Zeng",
+        "Yang Shi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-21T15:25:50+00:00",
+      "link": "https://arxiv.org/pdf/2604.19571v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "neural rendering editing using 3D Gaussian Splatting",
+      "llm_evidence_cn": "使用3D高斯泼溅的神经渲染编辑",
+      "llm_evidence": "使用3D高斯泼溅的神经渲染编辑",
+      "canonical_evidence": "使用3D高斯泼溅的神经渲染编辑",
+      "llm_tldr_en": "Formulates language-driven 3DGS editing as a semantic transport problem to improve view consistency.",
+      "llm_tldr_cn": "将语言驱动的3DGS编辑建模为语义传输问题，以提高视图一致性。",
+      "llm_tldr": "将语言驱动的3DGS编辑建模为语义传输问题，以提高视图一致性。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.20038v1",
+      "title": "FluSplat: Sparse-View 3D Editing without Test-Time Optimization",
+      "abstract": "Recent advances in text-guided image editing and 3D Gaussian Splatting (3DGS) have enabled high-quality 3D scene manipulation. However, existing pipelines rely on iterative edit-and-fit optimization at test time, alternating between 2D diffusion editing and 3D reconstruction. This process is computationally expensive, scene-specific, and prone to cross-view inconsistencies.   We propose a feed-forward framework for cross-view consistent 3D scene editing from sparse views. Instead of enforcing consistency through iterative 3D refinement, we introduce a cross-view regularization scheme in the image domain during training. By jointly supervising multi-view edits with geometric alignment constraints, our model produces view-consistent results without per-scene optimization at inference. The edited views are then lifted into 3D via a feedforward 3DGS model, yielding a coherent 3DGS representation in a single forward pass.   Experiments demonstrate competitive editing fidelity and substantially improved cross-view consistency compared to optimization-based methods, while reducing inference time by orders of magnitude.",
+      "authors": [
+        "Haitao Huang",
+        "Shin-Fang Chng",
+        "Huangying Zhan",
+        "Qingan Yan",
+        "Yi Xu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-21T22:45:20+00:00",
+      "link": "https://arxiv.org/pdf/2604.20038v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "feed-forward framework for 3D Gaussian Splatting scene editing",
+      "llm_evidence_cn": "用于3D高斯泼溅场景编辑的前馈框架",
+      "llm_evidence": "用于3D高斯泼溅场景编辑的前馈框架",
+      "canonical_evidence": "用于3D高斯泼溅场景编辑的前馈框架",
+      "llm_tldr_en": "Proposes a feed-forward framework for consistent 3D scene editing without expensive test-time optimization.",
+      "llm_tldr_cn": "提出一种前馈框架，无需昂贵的测试时优化即可实现一致的3D场景编辑。",
+      "llm_tldr": "提出一种前馈框架，无需昂贵的测试时优化即可实现一致的3D场景编辑。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.20046v1",
+      "title": "Gaussians on a Diet: High-Quality Memory-Bounded 3D Gaussian Splatting Training",
+      "abstract": "3D Gaussian Splatting (3DGS) has revolutionized novel view synthesis with high-quality rendering through continuous aggregations of millions of 3D Gaussian primitives. However, it suffers from a substantial memory footprint, particularly during training due to uncontrolled densification, posing a critical bottleneck for deployment on memory-constrained edge devices. While existing methods prune redundant Gaussians post-training, they fail to address the peak memory spikes caused by the abrupt growth of Gaussians early in the training process. To solve the training memory consumption problem, we propose a systematic memory-bounded training framework that dynamically optimizes Gaussians through iterative growth and pruning. In other words, the proposed framework alternates between incremental pruning of low-impact Gaussians and strategic growing of new primitives with an adaptive Gaussian compensation, maintaining a near-constant low memory usage while progressively refining rendering fidelity. We comprehensively evaluate the proposed training framework on various real-world datasets under strict memory constraints, showing significant improvements over existing state-of-the-art methods. Particularly, our proposed method practically enables memory-efficient 3DGS training on NVIDIA Jetson AGX Xavier, achieving similar visual quality with up to 80% lower peak training memory consumption than the original 3DGS.",
+      "authors": [
+        "Yangming Zhang",
+        "Jian Xu",
+        "Kunxiong Zhu",
+        "Wei Niu",
+        "Miao Yin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-21T23:04:03+00:00",
+      "link": "https://arxiv.org/pdf/2604.20046v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Memory-bounded 3D Gaussian Splatting training and optimization",
+      "llm_evidence_cn": "内存受限的3D高斯泼溅训练与优化",
+      "llm_evidence": "内存受限的3D高斯泼溅训练与优化",
+      "canonical_evidence": "内存受限的3D高斯泼溅训练与优化",
+      "llm_tldr_en": "Introduces a memory-bounded training framework for 3D Gaussian Splatting to reduce peak memory consumption.",
+      "llm_tldr_cn": "为3D高斯泼溅引入内存受限的训练框架，以降低峰值内存消耗。",
+      "llm_tldr": "为3D高斯泼溅引入内存受限的训练框架，以降低峰值内存消耗。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.20715v1",
+      "title": "GeoRelight: Learning Joint Geometrical Relighting and Reconstruction with Flexible Multi-Modal Diffusion Transformers",
+      "abstract": "Relighting a person from a single photo is an attractive but ill-posed task, as a 2D image ambiguously entangles 3D geometry, intrinsic appearance, and illumination. Current methods either use sequential pipelines that suffer from error accumulation, or they do not explicitly leverage 3D geometry during relighting, which limits physical consistency. Since relighting and estimation of 3D geometry are mutually beneficial tasks, we propose a unified Multi-Modal Diffusion Transformer (DiT) that jointly solves for both: GeoRelight. We make this possible through two key technical contributions: isotropic NDC-Orthographic Depth (iNOD), a distortion-free 3D representation compatible with latent diffusion models; and a strategic mixed-data training method that combines synthetic and auto-labeled real data. By solving geometry and relighting jointly, GeoRelight achieves better performance than both sequential models and previous systems that ignored geometry.",
+      "authors": [
+        "Yuxuan Xue",
+        "Ruofan Liang",
+        "Egor Zakharov",
+        "Timur Bagautdinov",
+        "Chen Cao",
+        "Giljoo Nam",
+        "Shunsuke Saito",
+        "Gerard Pons-Moll",
+        "Javier Romero"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-22T16:01:04+00:00",
+      "link": "https://arxiv.org/pdf/2604.20715v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Joint geometrical relighting and reconstruction using 3D representations",
+      "llm_evidence_cn": "利用3D表示进行联合几何重光照与重建",
+      "llm_evidence": "利用3D表示进行联合几何重光照与重建",
+      "canonical_evidence": "利用3D表示进行联合几何重光照与重建",
+      "llm_tldr_en": "A unified Diffusion Transformer for joint 3D geometry estimation and physically consistent relighting.",
+      "llm_tldr_cn": "一种统一的扩散Transformer，用于联合3D几何估计和物理一致的重光照。",
+      "llm_tldr": "一种统一的扩散Transformer，用于联合3D几何估计和物理一致的重光照。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
