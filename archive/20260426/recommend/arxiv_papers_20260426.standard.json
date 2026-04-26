@@ -1,0 +1,321 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-26T20:28:24.960560+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [
+    {
+      "id": "2604.21400v1",
+      "title": "You Only Gaussian Once: Controllable 3D Gaussian Splatting for Ultra-Densely Sampled Scenes",
+      "abstract": "3D Gaussian Splatting (3DGS) has revolutionized neural rendering, yet existing methods remain predominantly research prototypes ill-suited for production-level deployment. We identify a critical \"Industry-Academia Gap\" hindering real-world application: unpredictable resource consumption from heuristic Gaussian growth, the \"sparsity shield\" of current benchmarks that rewards hallucination over physical fidelity, and severe multi-sensor data pollution. To bridge this gap, we propose YOGO (You Only Gaussian Once), a system-level framework that reformulates the stochastic growth process into a deterministic, budget-aware equilibrium. YOGO integrates a novel budget controller for hardware-constrained resource allocation and an availability-registration protocol for robust multi-sensor fusion. To push the boundaries of reconstruction fidelity, we introduce Immersion v1.0, the first ultra-dense indoor dataset specifically designed to break the \"sparsity shield.\" By providing saturated viewpoint coverage, Immersion v1.0 forces algorithms to focus on extreme physical fidelity rather than viewpoint interpolation, and enables the community to focus on the upper limits of high-fidelity reconstruction. Extensive experiments demonstrate that YOGO achieves state-of-the-art visual quality while maintaining a strictly deterministic profile, establishing a new standard for production-grade 3DGS. To facilitate reproducibility, part scenes of Immersion v1.0 dataset and source code of YOGO has been publicly released. The project link is https://jjrcn.github.io/YOGO/.",
+      "authors": [
+        "Jinrang Jia",
+        "Zhenjia Li",
+        "Yifeng Shi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-23T08:07:42+00:00",
+      "link": "https://arxiv.org/pdf/2604.21400v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "system-level framework for controllable 3D Gaussian Splatting",
+      "llm_evidence_cn": "可控3D高斯泼溅的系统级框架",
+      "llm_evidence": "可控3D高斯泼溅的系统级框架",
+      "canonical_evidence": "可控3D高斯泼溅的系统级框架",
+      "llm_tldr_en": "YOGO provides a deterministic, budget-aware framework for industrial-scale 3D Gaussian Splatting.",
+      "llm_tldr_cn": "YOGO 为工业级 3D 高斯泼溅提供了确定性且预算可控的系统框架。",
+      "llm_tldr": "YOGO 为工业级 3D 高斯泼溅提供了确定性且预算可控的系统框架。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2604.17155v1",
+      "title": "Instant Colorization of Gaussian Splats",
+      "abstract": "Gaussian Splatting has recently become one of the most popular frameworks for photorealistic 3D scene reconstruction and rendering. While current rasterizers allow for efficient mappings of 3D Gaussian splats onto 2D camera views, this work focuses on mapping 2D image information (e.g. color, neural features or segmentation masks) efficiently back onto an existing scene of Gaussian splats. This 'opposite' direction enables applications ranging from scene relighting and stylization to 3D semantic segmentation, but also introduces challenges, such as view-dependent colorization and occlusion handling.   Our approach tackles these challenges using the normal equation to solve a visibility-weighted least squares problem for every Gaussian and can be implemented efficiently with existing differentiable rasterizers. We demonstrate the effectiveness of our approach on scene relighting, feature enrichment and 3D semantic segmentation tasks, achieving up to an order of magnitude speedup compared to gradient descent-based baselines.",
+      "authors": [
+        "Daniel Lieber",
+        "Alexander Mock",
+        "Nils Wandel"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-04-18T21:56:52+00:00",
+      "link": "https://arxiv.org/pdf/2604.17155v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "mapping neural features onto Gaussian splats for 3D scene rendering",
+      "llm_evidence_cn": "将神经特征映射到高斯泼溅以进行3D场景渲染",
+      "llm_evidence": "将神经特征映射到高斯泼溅以进行3D场景渲染",
+      "canonical_evidence": "将神经特征映射到高斯泼溅以进行3D场景渲染",
+      "llm_tldr_en": "Efficiently maps 2D information like neural features back onto 3D Gaussian splats for rendering applications.",
+      "llm_tldr_cn": "将2D神经特征高效映射回3D高斯泼溅，支持场景重光照和渲染应用。",
+      "llm_tldr": "将2D神经特征高效映射回3D高斯泼溅，支持场景重光照和渲染应用。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.18807v1",
+      "title": "VOLT: Volumetric Wide-Field Microscopy via 3D-Native Probabilistic Transport",
+      "abstract": "Three-dimensional (3D) wide-field fluorescence microscopy is a widely used modality for volumetric imaging, but suffers from characteristic out-of-focus blur. Existing reconstruction methods either struggle to operate on high-dimensional volumes or fail to provide credibility characterization of the reconstruction. In this work, we introduce Volumetric Transport (VOLT), a 3D-native probabilistic framework for wide-field fluorescence microscopy reconstruction. VOLT combines a transport-based formulation that maps degraded measurements to clean volumes via stochastic interpolants with a 3D-native anisotropic network that separates lateral and axial processing. This design operates directly in voxel space and achieves improved scalability to large volumes without relying on slice-wise approximations. We develop both stochastic (SDE) and deterministic (ODE) variants within the same framework. We validate VOLT on simulated wide-field microscopy datasets. Our results show that VOLT significantly improves reconstruction quality in both lateral and axial directions while providing voxel-wise credibility estimates.",
+      "authors": [
+        "Yetao He",
+        "Wenhan Guo",
+        "Deliang Wei",
+        "Evan Bel",
+        "Ji Yi",
+        "Yu Sun"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "physics.med-ph"
+      ],
+      "published": "2026-04-20T20:24:43+00:00",
+      "link": "https://arxiv.org/pdf/2604.18807v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "3D-native probabilistic framework for volumetric imaging",
+      "llm_evidence_cn": "用于体积成像的3D原生概率框架",
+      "llm_evidence": "用于体积成像的3D原生概率框架",
+      "canonical_evidence": "用于体积成像的3D原生概率框架",
+      "llm_tldr_en": "VOLT uses a 3D-native network for high-dimensional volumetric microscopy reconstruction.",
+      "llm_tldr_cn": "VOLT 采用 3D 原生网络实现高维显微体积图像的概率重建。",
+      "llm_tldr": "VOLT 采用 3D 原生网络实现高维显微体积图像的概率重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.19202v1",
+      "title": "SketchFaceGS: Real-Time Sketch-Driven Face Editing and Generation with Gaussian Splatting",
+      "abstract": "3D Gaussian representations have emerged as a powerful paradigm for digital head modeling, achieving photorealistic quality with real-time rendering. However, intuitive and interactive creation or editing of 3D Gaussian head models remains challenging. Although 2D sketches provide an ideal interaction modality for fast, intuitive conceptual design, they are sparse, depth-ambiguous, and lack high-frequency appearance cues, making it difficult to infer dense, geometrically consistent 3D Gaussian structures from strokes - especially under real-time constraints. To address these challenges, we propose SketchFaceGS, the first sketch-driven framework for real-time generation and editing of photorealistic 3D Gaussian head models from 2D sketches. Our method uses a feed-forward, coarse-to-fine architecture. A Transformer-based UV feature-prediction module first reconstructs a coarse but geometrically consistent UV feature map from the input sketch, and then a 3D UV feature enhancement module refines it with high-frequency, photorealistic detail to produce a high-fidelity 3D head. For editing, we introduce a UV Mask Fusion technique combined with a layer-by-layer feature-fusion strategy, enabling precise, real-time, free-viewpoint modifications. Extensive experiments show that SketchFaceGS outperforms existing methods in both generation fidelity and editing flexibility, producing high-quality, editable 3D heads from sketches in a single forward pass.",
+      "authors": [
+        "Bo Li",
+        "Jiahao Kang",
+        "Yubo Ma",
+        "Feng-Lin Liu",
+        "Bin Liu",
+        "Fang-Lue Zhang",
+        "Lin Gao"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.CV"
+      ],
+      "published": "2026-04-21T08:09:13+00:00",
+      "link": "https://arxiv.org/pdf/2604.19202v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian representations for real-time rendering",
+      "llm_evidence_cn": "用于实时渲染的3D高斯表示",
+      "llm_evidence": "用于实时渲染的3D高斯表示",
+      "canonical_evidence": "用于实时渲染的3D高斯表示",
+      "llm_tldr_en": "SketchFaceGS enables real-time sketch-driven editing of 3D Gaussian head models.",
+      "llm_tldr_cn": "SketchFaceGS 实现了基于草图的实时 3D 高斯人脸模型编辑与生成。",
+      "llm_tldr": "SketchFaceGS 实现了基于草图的实时 3D 高斯人脸模型编辑与生成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.21182v1",
+      "title": "WildSplatter: Feed-forward 3D Gaussian Splatting with Appearance Control from Unconstrained Images",
+      "abstract": "We propose WildSplatter, a feed-forward 3D Gaussian Splatting (3DGS) model for unconstrained images with unknown camera parameters and varying lighting conditions. 3DGS is an effective scene representation that enables high-quality, real-time rendering; however, it typically requires iterative optimization and multi-view images captured under consistent lighting with known camera parameters. WildSplatter is trained on unconstrained photo collections and jointly learns 3D Gaussians and appearance embeddings conditioned on input images. This design enables flexible modulation of Gaussian colors to represent significant variations in lighting and appearance. Our method reconstructs 3D Gaussians from sparse input views in under one second, while also enabling appearance control under diverse lighting conditions. Experimental results demonstrate that our approach outperforms existing pose-free 3DGS methods on challenging real-world datasets with varying illumination.",
+      "authors": [
+        "Yuki Fujimura",
+        "Takahiro Kushida",
+        "Kazuya Kitano",
+        "Takuya Funatomi",
+        "Yasuhiro Mukaigawa"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-23T00:58:43+00:00",
+      "link": "https://arxiv.org/pdf/2604.21182v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "feed-forward 3D Gaussian Splatting for neural rendering",
+      "llm_evidence_cn": "用于神经渲染的前馈3D高斯泼溅",
+      "llm_evidence": "用于神经渲染的前馈3D高斯泼溅",
+      "canonical_evidence": "用于神经渲染的前馈3D高斯泼溅",
+      "llm_tldr_en": "WildSplatter enables feed-forward 3D Gaussian reconstruction from unconstrained images.",
+      "llm_tldr_cn": "WildSplatter 实现了从无约束图像中进行前馈 3D 高斯重建与外观控制。",
+      "llm_tldr": "WildSplatter 实现了从无约束图像中进行前馈 3D 高斯重建与外观控制。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.21518v1",
+      "title": "DiffNR: Diffusion-Enhanced Neural Representation Optimization for Sparse-View 3D Tomographic Reconstruction",
+      "abstract": "Neural representations (NRs), such as neural fields and 3D Gaussians, effectively model volumetric data in computed tomography (CT) but suffer from severe artifacts under sparse-view settings. To address this, we propose DiffNR, a novel framework that enhances NR optimization with diffusion priors. At its core is SliceFixer, a single-step diffusion model designed to correct artifacts in degraded slices. We integrate specialized conditioning layers into the network and develop tailored data curation strategies to support model finetuning. During reconstruction, SliceFixer periodically generates pseudo-reference volumes, providing auxiliary 3D perceptual supervision to fix underconstrained regions. Compared to prior methods that embed CT solvers into time-consuming iterative denoising, our repair-and-augment strategy avoids frequent diffusion model queries, leading to better runtime performance. Extensive experiments show that DiffNR improves PSNR by 3.99 dB on average, generalizes well across domains, and maintains efficient optimization.",
+      "authors": [
+        "Shiyan Su",
+        "Ruyi Zha",
+        "Danli Shi",
+        "Hongdong Li",
+        "Xuelian Cheng"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.CV"
+      ],
+      "published": "2026-04-23T10:27:54+00:00",
+      "link": "https://arxiv.org/pdf/2604.21518v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural representations for volumetric data modeling",
+      "llm_evidence_cn": "用于体积数据建模的神级网络表示",
+      "llm_evidence": "用于体积数据建模的神级网络表示",
+      "canonical_evidence": "用于体积数据建模的神级网络表示",
+      "llm_tldr_en": "Enhances neural volumetric reconstruction in CT using diffusion priors to fix artifacts in sparse-view settings.",
+      "llm_tldr_cn": "利用扩散先验增强CT中的神经体积重建，修复稀疏视图下的伪影。",
+      "llm_tldr": "利用扩散先验增强CT中的神经体积重建，修复稀疏视图下的伪影。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.21631v1",
+      "title": "DualSplat: Robust 3D Gaussian Splatting via Pseudo-Mask Bootstrapping from Reconstruction Failures",
+      "abstract": "While 3D Gaussian Splatting (3DGS) achieves real-time photorealistic rendering, its performance degrades significantly when training images contain transient objects that violate multi-view consistency. Existing methods face a circular dependency: accurate transient detection requires a well-reconstructed static scene, while clean reconstruction itself depends on reliable transient masks. We address this challenge with DualSplat, a Failure-to-Prior framework that converts first-pass reconstruction failures into explicit priors for a second reconstruction stage. We observe that transients, which appear in only a subset of views, often manifest as incomplete fragments during conservative initial training. We exploit these failures to construct object-level pseudo-masks by combining photometric residuals, feature mismatches, and SAM2 instance boundaries. These pseudo-masks then guide a clean second-pass 3DGS optimization, while a lightweight MLP refines them online by gradually shifting from prior supervision to self-consistency. Experiments on RobustNeRF and NeRF On-the-go show that DualSplat outperforms existing baselines, demonstrating particularly clear advantages in transient-heavy scenes and transient regions.",
+      "authors": [
+        "Xu Wang",
+        "Zhiru Wang",
+        "Shiyun Xie",
+        "Chengwei Pan",
+        "Yisong Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-23T12:50:13+00:00",
+      "link": "https://arxiv.org/pdf/2604.21631v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting for real-time photorealistic rendering",
+      "llm_evidence_cn": "用于实时照片级渲染的3D高斯泼溅",
+      "llm_evidence": "用于实时照片级渲染的3D高斯泼溅",
+      "canonical_evidence": "用于实时照片级渲染的3D高斯泼溅",
+      "llm_tldr_en": "DualSplat improves 3D Gaussian Splatting robustness using a failure-to-prior framework.",
+      "llm_tldr_cn": "DualSplat 通过失败先验框架提升了 3D 高斯泼溅在动态场景下的鲁棒性。",
+      "llm_tldr": "DualSplat 通过失败先验框架提升了 3D 高斯泼溅在动态场景下的鲁棒性。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.21714v1",
+      "title": "High-Fidelity 3D Gaussian Human Reconstruction via Region-Aware Initialization and Geometric Priors",
+      "abstract": "Real-time, high-fidelity 3D human reconstruction from RGB images is essential for interactive applications such as virtual reality and gaming, yet remains challenging due to the complex non-rigid deformations of dynamic human bodies. Although 3D Gaussian Splatting enables efficient rendering, existing methods struggle to capture fine geometric details and often produce artifacts such as fused fingers and over-smoothed faces. Moreover, conventional spatial-field-based dynamic modeling faces a trade-off between reconstruction fidelity and GPU memory consumption. To address these issues, we propose a novel 3D Gaussian human reconstruction framework that combines region-aware initialization with rich geometric priors. Specifically, we leverage the expressive SMPL-X model to initialize both 3D Gaussians and skinning weights, providing a robust geometric foundation for precise reconstruction. We further introduce a region-aware density initialization strategy and a geometry-aware multi-scale hash encoding module to improve local detail recovery while maintaining computational efficiency.Experiments on PeopleSnapshot and GalaBasketball show that our method achieves superior reconstruction quality and finer detail preservation under complex motions, while maintaining real-time rendering speed.",
+      "authors": [
+        "Yang Liu",
+        "Zhiyong Zhang"
+      ],
+      "primary_category": "cs.MM",
+      "categories": [
+        "cs.MM"
+      ],
+      "published": "2026-04-20T20:42:55+00:00",
+      "link": "https://arxiv.org/pdf/2604.21714v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting for efficient rendering and reconstruction",
+      "llm_evidence_cn": "用于高效渲染和重建的3D高斯泼溅技术",
+      "llm_evidence": "用于高效渲染和重建的3D高斯泼溅技术",
+      "canonical_evidence": "用于高效渲染和重建的3D高斯泼溅技术",
+      "llm_tldr_en": "Proposes a 3D Gaussian framework for high-fidelity human reconstruction from RGB images.",
+      "llm_tldr_cn": "提出一种结合区域感知初始化与几何先验的 3D 高斯人体重建框架。",
+      "llm_tldr": "提出一种结合区域感知初始化与几何先验的 3D 高斯人体重建框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

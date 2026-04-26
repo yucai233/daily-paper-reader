@@ -6,47 +6,46 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-23
-- 运行时间：2026-04-23 20:08:32 UTC
+- 最新运行日期：2026-04-26
+- 运行时间：2026-04-26 20:29:28 UTC
 - 运行状态：成功
 - 本次总论文数：8
-- 精读区：0
-- 速读区：8
+- 精读区：1
+- 速读区：7
 
 ### 今日简报（AI）
-今日速览 8 篇前沿论文，聚焦 3D 重建效率提升与科学信号的快速拟合。
-重点关注可迁移神经场在科学信号处理中的应用，以及无需蒸馏、秒级完成 3D 高斯泼溅（3DGS）补全的新插件 GSCompleter。
-建议关注 3DGS 补全与流式重建技术，以优化实时三维建模的精度与速度。
-- 详情：[/202604/23/README](/202604/23/README)
+深度探索 3D Gaussian Splatting 的可控性前沿，今日重点解析超高密度场景下的精细化渲染与编辑技术。
+推荐关注 YOGO 在超密场景中的控制力突破，以及结合草图驱动与非约束图像的实时人脸编辑与快速着色方案。
+建议从 YOGO 的可控渲染入手，同步了解 3DGS 在交互式编辑与快速生成领域的最新落地应用。
+- 详情：[/202604/26/README](/202604/26/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [You Only Gaussian Once: Controllable 3D Gaussian Splatting for Ultra-Densely Sampled Scenes](/202604/26/2604.21400v1-you-only-gaussian-once-controllable-3d-gaussian-splatting-for-ultra-densely-sampled-scenes)  
+   标签：评分：8.0/10、query:q7
+   evidence：可控3D高斯泼溅的系统级框架
 
 ### 速读区论文标签
-1. [Fast Amortized Fitting of Scientific Signals Across Time and Ensembles via Transferable Neural Fields](/202604/23/2604.19979v1-fast-amortized-fitting-of-scientific-signals-across-time-and-ensembles-via-transferable-neural-fields)  
+1. [Instant Colorization of Gaussian Splats](/202604/26/2604.17155v1-instant-colorization-of-gaussian-splats)  
    标签：评分：7.0/10、query:q1
-   evidence：用于建模连续几何和科学信号的神经场
-2. [GSCompleter: A Distillation-Free Plugin for Metric-Aware 3D Gaussian Splatting Completion in Seconds](/202604/23/2604.20155v1-gscompleter-a-distillation-free-plugin-for-metric-aware-3d-gaussian-splatting-completion-in-seconds)  
+   evidence：将神经特征映射到高斯泼溅以进行3D场景渲染
+2. [SketchFaceGS: Real-Time Sketch-Driven Face Editing and Generation with Gaussian Splatting](/202604/26/2604.19202v1-sketchfacegs-real-time-sketch-driven-face-editing-and-generation-with-gaussian-splatting)  
    标签：评分：7.0/10、query:q1
-   evidence：3D高斯泼溅补全与射线约束集成
-3. [Geometric Context Transformer for Streaming 3D Reconstruction](/202604/23/2604.14141v1-geometric-context-transformer-for-streaming-3d-reconstruction)  
+   evidence：用于实时渲染的3D高斯表示
+3. [WildSplatter: Feed-forward 3D Gaussian Splatting with Appearance Control from Unconstrained Images](/202604/26/2604.21182v1-wildsplatter-feed-forward-3d-gaussian-splatting-with-appearance-control-from-unconstrained-images)  
+   标签：评分：7.0/10、query:q1
+   evidence：用于神经渲染的前馈3D高斯泼溅
+4. [DiffNR: Diffusion-Enhanced Neural Representation Optimization for Sparse-View 3D Tomographic Reconstruction](/202604/26/2604.21518v1-diffnr-diffusion-enhanced-neural-representation-optimization-for-sparse-view-3d-tomographic-reconstruction)  
+   标签：评分：7.0/10、query:q1
+   evidence：用于体积数据建模的神级网络表示
+5. [DualSplat: Robust 3D Gaussian Splatting via Pseudo-Mask Bootstrapping from Reconstruction Failures](/202604/26/2604.21631v1-dualsplat-robust-3d-gaussian-splatting-via-pseudo-mask-bootstrapping-from-reconstruction-failures)  
+   标签：评分：7.0/10、query:q1
+   evidence：用于实时照片级渲染的3D高斯泼溅
+6. [High-Fidelity 3D Gaussian Human Reconstruction via Region-Aware Initialization and Geometric Priors](/202604/26/2604.21714v1-high-fidelity-3d-gaussian-human-reconstruction-via-region-aware-initialization-and-geometric-priors)  
+   标签：评分：7.0/10、query:q1
+   evidence：用于高效渲染和重建的3D高斯泼溅技术
+7. [VOLT: Volumetric Wide-Field Microscopy via 3D-Native Probabilistic Transport](/202604/26/2604.18807v1-volt-volumetric-wide-field-microscopy-via-3d-native-probabilistic-transport)  
    标签：评分：6.0/10、query:q1
-   evidence：用于流式3D重建的神经架构
-4. [URoPE: Universal Relative Position Embedding across Geometric Spaces](/202604/23/2604.18747v1-urope-universal-relative-position-embedding-across-geometric-spaces)  
-   标签：评分：6.0/10、query:q1
-   evidence：跨相机射线和3D空间的几何推理
-5. [TransSplat: Unbalanced Semantic Transport for Language-Driven 3DGS Editing](/202604/23/2604.19571v1-transsplat-unbalanced-semantic-transport-for-language-driven-3dgs-editing)  
-   标签：评分：6.0/10、query:q1
-   evidence：使用3D高斯泼溅的神经渲染编辑
-6. [FluSplat: Sparse-View 3D Editing without Test-Time Optimization](/202604/23/2604.20038v1-flusplat-sparse-view-3d-editing-without-test-time-optimization)  
-   标签：评分：6.0/10、query:q1
-   evidence：用于3D高斯泼溅场景编辑的前馈框架
-7. [Gaussians on a Diet: High-Quality Memory-Bounded 3D Gaussian Splatting Training](/202604/23/2604.20046v1-gaussians-on-a-diet-high-quality-memory-bounded-3d-gaussian-splatting-training)  
-   标签：评分：6.0/10、query:q1
-   evidence：内存受限的3D高斯泼溅训练与优化
-8. [GeoRelight: Learning Joint Geometrical Relighting and Reconstruction with Flexible Multi-Modal Diffusion Transformers](/202604/23/2604.20715v1-georelight-learning-joint-geometrical-relighting-and-reconstruction-with-flexible-multi-modal-diffusion-transformers)  
-   标签：评分：6.0/10、query:profile-1
-   evidence：利用3D表示进行联合几何重光照与重建
+   evidence：用于体积成像的3D原生概率框架
 
 
 <div class="dpr-home-promo-card">
