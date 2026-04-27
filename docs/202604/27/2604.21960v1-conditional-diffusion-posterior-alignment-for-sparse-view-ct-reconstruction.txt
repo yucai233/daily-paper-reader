@@ -1,0 +1,345 @@
+Title: Conditional Diffusion Posterior Alignment for Sparse-View CT Reconstruction
+
+URL Source: https://arxiv.org/pdf/2604.21960v1
+
+Published Time: Mon, 27 Apr 2026 00:01:22 GMT
+
+Number of Pages: 21
+
+Markdown Content:
+# Conditional Diffusion Posterior Alignment for Sparse-View CT Reconstruction 
+
+Luis Barba ∗ Johannes Kirschner † Benjam´ ın B´ ejar ‡
+
+Abstract 
+
+Computed Tomography (CT) is a widely used imaging modality in medical and industrial applications. To limit radiation exposure and measurement time, there is a growing interest in sparse-view CT, where the number of projection views is significantly reduced. Deep neu-ral networks have shown great promise in improving reconstruction quality in sparse-view CT, especially generative diffusion models. However, these methods struggle to scale to large 3D volumes due to several reasons: (i) the high memory and computational requirements of 3D models, (ii) the lack of large 3D training datasets, and (iii) the inconsistencies across slices when using 2D models independently on each slice. We overcome these limitations and scale diffusion-based sparse-view CT reconstruction to large 3D volumes by combining con-ditional diffusion with explicit data consistency. We propose Conditional Diffusion Posterior Alignment (CDPA) to enable scalable 3D sparse-view CT reconstruction. A 2D U-Net diffu-sion model is conditioned on an initial 3D reconstruction to improve inter-slice consistency, combined with data-consistency alignment to match measured projections. Experiments on synthetic and real Cone Beam CT (CBCT) data show state-of-the-art performance, with ablations that confirm the synergistic effects of the proposed pipeline. Finally, we show that the same principles also strengthen fast denoising U-Nets, yielding near-diffusion quality at a fraction of the computational cost. 
+
+Funding: This project acknowledges funding support from the SDSC CHIP project under grant no. C22-11L. 
+
+# 1 Introduction. 
+
+Computed Tomography (CT) is a non-invasive imaging technique that reconstructs cross-sectional images of an object from its X-ray projections. It has become an essential tool in medical diagnostics, industrial inspection, and scientific research. However, acquiring high-quality CT images often requires a large number of projection views, leading to increased radiation dose and, in some settings, to longer scan times. Sparse-view CT aims to reduce the number of projections acquired while maintaining image quality, but it remains a challenging inverse problem due to the ill-posed nature of the reconstruction task. When the number of projection angles is drastically reduced, to lower radiation dose or scan time, classical analytical algorithms such as filtered back-projection (FBP) and its Cone Beam CT (CBCT) counterpart, the Feldkamp-Davis-Kress (FDK) algorithm, produce severe streak artifacts. In the particular case of CBCT where we focus our experimental results, the reconstructions cannot be decomposed into independent slices as in parallel-beam geometry CT. Therefore, CBCT poses an intrinsically 3D problem, where the aforementioned artifacts 
+
+> ∗
+
+Swiss Data Science Center (SDSC) in Paul Scherrer Institute (PSI), Villigen, Switzerland. E-mail: 
+
+luis.barba-flores@psi.ch .
+
+> †
+
+Swiss Data Science Center (SDSC) and ETH Zurich, Switzerland. E-mail: johannes.kirschner@ethz.ch .
+
+> ‡
+
+Swiss Data Science Center (SDSC) and Paul Scherrer Institute (PSI), Villigen, Switzerland. E-mail: 
+
+benjamin.bejar@psi.ch .
+
+1
+
+> arXiv:2604.21960v1 [eess.IV] 23 Apr 2026
+
+span across different slices, and where 2D approaches tend to be insufficient. Early iterative re-construction schemes with hand-made regularizers (e.g., total-variation) improve these artifacts but require long run-times, are sensitive to hyper-parameter tuning, and still fall short under high-sparsity scenarios. Deep learning has transformed sparse-view CT by introducing data-driven priors that learn image statistics directly from examples. Supervised convolutional neural networks (CNNs), in particular U-Net-based models such as FBPConvNet [13], have emerged as the standard reference method when used as post-processing on FBP/FDK reconstructions, providing good artifact suppression. We refer to these models as FBP/FDK-denoisers . More recent approaches have improved reconstruction quality through geometry-aware encoders [17] or sliding 3D sub-volumes [31], setting new state-of-the-art benchmarks for CBCT. In parallel, unsupervised meth-ods such as Deep Image Prior [26] and score-based diffusion models [2, 4, 24] have emerged as powerful priors achieving state of the art results. However, these methods are computationally expensive, making it prohibitive to scale them to large 3D-volumes. This leaves us with slice-by-slice approaches using 2D models that out-of-the-box suffer from inconsistencies across slices in 3D reconstructions. 
+
+1.1 Contributions. 
+
+Motivated by these limitations, we propose the use of conditioning on slices of the FBP/FDK volume reconstructions to improve 3D consistency. We present two complementary 2D U-Net-based approaches for sparse-view CT: (i) Conditional Diffusion models with Posterior Alignment (CDPA) and (ii) refined FBP/FDK-denoising networks, both with slice-positional encoding and data-consistency alignment. Although our method applies to all CT geometry settings, we evaluate them in CBCT datasets that deal with an intrinsically 3D reconstruction problem, where sparse-view artifacts span different slices, and which is a more prominent setting in the medical community. Our key contributions are as follows. 
+
+• We demonstrate that conditioning on FBP/FDK reconstructions significantly improves the quality and 3D slice consistency of diffusion model output, addressing a known limi-tation of unconditional slice-by-slice approaches. 
+
+• We introduce CDPA, the first guided conditional diffusion model for CT reconstruction, and show that it systematically outperforms unconditional diffusion on all benchmarked baselines. 
+
+• We show that a simple Monte Carlo averaging strategy over diffusion posterior samples yields substantial PSNR improvements, suggesting near-unimodal posteriors in practice. 
+
+• We revisit the FBPConvNet paradigm [13] with modern U-Net architectures incorporat-ing cross-attention and slice-position conditioning for better artifact removal. Combined with inference-time data-consistency fine-tuning, this approach nearly matches diffusion performance at a fraction of the computational cost and surpasses all previous approaches. 
+
+• We provide extensive experiments across synthetic and real-world CBCT datasets, demon-strating state-of-the-art PSNR and SSIM compared to recent methods. The code supporting the results in this paper can be found in https://github.com/ SwissDataScienceCenter/cbct_cdpa .
+
+# 2 Related Work. 
+
+Classical and iterative reconstruction. The filtered back-projection (FBP) algorithm is the classical analytical solution in parallel-beam CT, exploiting the Fourier slice theorem for 2exact inversion under dense angular sampling. Its cone-beam counterpart, the Feldkamp-Davis-Kress (FDK) algorithm, serves the same role in CBCT. Under aggressive sparse-view or low-dose regimes, however, both FBP and FDK violate their sampling assumptions and produce globally oriented coherent streak artifacts that obscure fine structure. Algebraic reconstruction techniques (ART) and variational formulations (e.g. quadratic data fidelity plus sparsity or total-variation penalties) alleviate streaking by explicitly regularizing the ill-posed inverse. Yet they entail (i) many forward/backprojection sweeps, (ii) sensitive balancing between data fidelity and regularization strength, and (iii) difficulty adapting the prior to heterogeneous textures (e.g. simultaneously preserving sharp edges and smooth backgrounds). As sparsity increases, hand-crafted priors either over-smooth or leave residual structured artifacts, motivating learned data-driven priors. 
+
+Supervised CNN post-processing. A widely adopted pattern is FBP+CNN : compute a fast baseline reconstruction (FBP or FDK) and feed it to a convolutional network that maps streak-corrupted images to clean images. Jin et al. [13] demonstrated that a moderately sized U-Net (FBPConvNet) can remove severe streaks from extremely sparse sinograms (e.g., tens of views) in near real-time per slice while outperforming total-variation iterative solvers. We refer to models following this paradigm as FBP/FDK-denoisers . Subsequent variants refined network depth, multi-scale skip connections, loss functions, and training curricula, cementing U-Nets as a strong supervised baseline. Recent state-of-the-art methods for CBCT have incorporated geometric awareness and 3D processing. GAAL [17] uses a geometry-aware encoder-decoder framework that encodes multi-view 2D features from various 2D X-ray projections with a 2D CNN encoder, back-projects the multi-view 2D features into 3D space to formulate a comprehensive volumetric feature map, followed by a 3D CNN decoder to recover the 3D CBCT image. S-STAR Net [31] tackles sparse-view reconstruction with sliding 3D sub-volumes, a difference-enhancement loss, volume-attention residuals, and Fourier-transform convolutions, achieving state-of-the-art PSNR/SSIM on walnut and CQ500 datasets under 30-view acquisition. Other supervised 3D baselines in-clude PTNet3D [32], which learns a direct 3D mapping for sparse-view reconstruction, and Pix2Pix3D [12], which adapts conditional image-to-image translation (pix2pix) to 3D volumes. All these 3D-algorithms are, however, limited to low-resolution volumes due to memory con-straints, and do not scale to the high-resolution CBCT volumes that we target in this work. 
+
+Unsupervised and zero-shot methods. In scenarios where large paired sinogram–image datasets are unavailable, zero-shot methods exploit architectural or generative priors without external training data. Deep Image Prior (DIP) [26] reconstructs a single scan by optimizing the weights of a randomly initialized CNN to fit the measurements, exploiting architectural bias alone as an implicit prior. The network, fed with random noise as input, is iteratively updated to minimize data fidelity; the resulting image often converges to a plausible solution before overfitting measurement noise. Although effective, DIP incurs substantial per-scan optimiza-tion overhead. Warm-start strategies [3] pre-train the network on synthetic samples and then fine-tune per instance, reducing iteration counts and stabilizing optimization. An “educated warm start” approach uses FBP reconstructions as network input instead of pure noise, further accelerating convergence. Still, DIP-style methods remain computationally heavy and do not scale well to large 3D volumes, making them less suited for medical settings. 
+
+Diffusion models for inverse problems. Score-based diffusion models [11] have emerged as powerful generative priors, learning time-indexed score functions of noisy data distributions and enabling high-fidelity sampling decoupled from specific forward operators. For inverse problems, a general strategy iteratively denoises from pure noise while nudging samples toward measurement consistency. 3Diffusion Posterior Sampling (DPS) [4] formalized this conditioning as adding an approxi-mate likelihood gradient to the learned score, improving stability under noise and allowing flex-ible noise models without retraining the diffusion prior. DDRM (Denoising Diffusion Restora-tion Models) [14] leverages a spectral factorization to incorporate measurement information analytically for certain linear operators, though computing or storing such decompositions is impractical for large CT system matrices. Latent diffusion with hard data consistency (e.g., ReSample [24]) extends these ideas to work with latent image representations. It introduces an optimization-based latent refinement that enforces exact forward consistency before a resampling step restores adherence to the learned latent manifold. Recent work [2] has adapted these ideas to non-latent diffusion for CT, further improving reconstruction quality. Deterministic samplers such as DDIM (Denois-ing Diffusion Implicit Models) [25] reduce wall-clock time by using non-Markovian trajectories with fewer function evaluations, which is critical given the computational burden of repeated forward/backprojection inside each reverse diffusion step. Despite their success, when applied slice-by-slice with 2D models to 3D volumes, diffusion methods can produce inter-slice inconsistencies because each slice is processed independently without enforcing 3D coherence. While 3D diffusion models could address these limitations in theory, in practice their memory and computational demands are prohibitive at high resolutions, not to mention the increased amount of training data required. Lee et al. [15] attempted to address this issue by modeling the 3D data distribution as a product of 2D distributions sliced in different axes and using them alternately during reconstruction. 
+
+Summary and positioning. Supervised CNNs exhibit good performance but fall short of state-of-the-art performance. Zero-shot methods (DIP) remove dependency on large datasets but incur high per-instance cost and do not exploit data priors, thus being surpassed by models using learned priors. Diffusion models unify strong generative fidelity with flexible conditioning, and recent advances (DPS, latent consistency, accelerated samplers) make them increasingly practical for CT. However, scaling diffusion methods to large 3D volumes remains challenging due to memory, compute, and training data limitations, leading to slice-by-slice approaches that suffer from inter-slice inconsistencies. Our work centers on exploiting diffusion posterior structure and data-consistency refinement under sparse-view regimes. We introduce Conditional Diffusion Posterior Alignment to scale 2D-diffusion approaches to 3D volumes using data-consistency alignment, as well as slice-position and FDK/FBP conditioning. We also show that these techniques can be applied to FBP/FDK-denoisers elevating them to near-diffusion performance without major architectural changes. Our 2D-based methods scale to much higher resolution than intrinsic 3D models, due to the independent processing of slices. 
+
+# 3 Method. 
+
+In this section, we describe the methods used in our experiments. We focus on two main approaches: diffusion-based models and FBP/FDK-denoising models, both based on the U-Net architecture. 
+
+Problem setup and notation. We denote by x0 ∈ RN the (unknown) target image and by A : RN → RM the (discrete) forward operator (parallel beam Radon transform or Cone Beam Projection). We index projection views by an angle ψ ∈ Ψ, where the finite acquired set is ψ = {ψ1, . . . , ψ K }. We decompose A into per-angle operators Aψ so that the full set of projections is 
+
+y = {yψ}ψ∈ψ, yψ = Aψx0 + ϵψ,
+
+4with ϵψ measurement noise (assumed i.i.d. Gaussian). Thus yψ denotes the detector readings for view ψ.
+
+3.1 Score-based diffusion priors and posterior sampling. 
+
+The main idea of our method is to train a diffusion model to learn the target image distribution, and then use data-consistency guidance to align the diffusion sample with the measurements as done in [2]. However, in addition to this guidance step, we make the diffusion model condi-tional by passing the sparse FDK/FBP reconstruction as input to approximate the conditional score function. Our approach combines these two conditional sampling approaches for superior performance. We describe this method in detail below. We adopt score-based diffusion models as learned image priors. Given a clean sample x0, we construct a noisy xt at noise level (or time) t ∈ [0 , 1] via xt = αtx0 +σtϵ, ϵ ∼ N (0 , I ) with known scalar schedules ( αt, σ t) (e.g., derived from a variance schedule in DDPM (Denoising Diffusion Probabilistic Models) [11]). The marginal pt(xt) denotes the probability density of the random variable xt at time t when x0 is drawn from the empirical data distribution. A score network 
+
+sθ(xt, t ) is trained to approximate ∇xt log pt(xt) (the score of the noisy marginal) by minimizing a denoising-score matching objective. We use the common ϵ-parameterization that predicts the added noise ϵθ(xt, t ); the two are related by a scaling factor. From a network output we form a denoised (Tweedie) estimate ˆ x0(xt) of x0 which we will later use inside a data-consistency loss function. When conditioning on measurements y our goal is to sample from the posterior distribution p(x0 | y). At inference, we use a fast sampler based on DDIM [25]. 
+
+Diffusion posterior alignment (DPA). For reconstruction we target the posterior over clean images given measurements p(x0 | y). Using the diffusion prior, we can express the posterior at time t as pt(xt | y) and its score as: 
+
+∇xt log pt(xt | y) = ∇xt log pt(xt) + ∇xt log pt(y | xt). (1) Diffusion Posterior Sampling (DPS) [4] approximates the term ∇xt log pt(y | xt) by propagating a data-consistency gradient from a current denoised estimate ˆ x0(xt) (e.g., via Tweedie’s formula) back to xt. We define the per-step data-consistency loss 
+
+LDC (xt) = X
+
+> ψ∈ψ
+
+Aψ ˆx0(xt) − yψ 22. (2) DPS [4] uses ∇xt LDC (through ˆ x0) as a likelihood score surrogate (scaled by an empirically tuned guidance weight). Each reverse diffusion update is then nudged toward the measure-ment manifold while the prior score preserves realism. This however requires to backpropagate through the diffusion model, which is computationally expensive, and is not compatible with the DDIM sampler we want to use. Instead, we use a variant introduced by [24] that takes the gradient ∇ˆx0(xt)LDC with respect to the Tweedie’s formula estimation ˆ x0(xt). That is, we stay in image space without backpropagating the gradient to the noisy manifold on xt. After performing several gradient steps using ∇ˆx0(xt)LDC , ensuring data consistency, we map back the resulting image to the noisy manifold at time t. To this end, we use the Resample algo-rithm introduced by [24], but avoiding the use of latent space diffusion models. Our approach is the same as in [2], but we extend it to CBCT geometries in this paper. We refer to this un-conditional diffusion posterior sampling with data consistency alignment method as Diffusion Posterior Alignment (DPA). 
+
+Conditional diffusion posterior alignment (CDPA). In the conditional formulation, we use our neural network to approximate directly the conditional score function by training it to 5predict the score of the conditional distribution with y as input in the form of its FBP/FDK reconstruction, i.e., 
+
+∇xt log pt(xt | y) ≈ ∇ xt log pt(xt | F DK (y)) . (3) We end thus with two ways to approximate the posterior score: the conditional score network and the data-consistency gradient. Our final posterior score approximation is given by the combination of both (1) and (3). We achieve this by using the conditional diffusion model to obtain the estimate ˆ x0 through Tweedie’s formula, and then applying data-consistency gradient descent updates to enforce data consistency on this estimate before mapping back to the noisy manifold at time t using the aforementioned Resample step. Throughout this work, we refer to this method as Conditional Diffusion Posterior Alignment (CDPA). Technically, one could use only the conditional score network without the data-consistency alignment step. However, we found that not using the data-consistency alignment step results in much inferior reconstruction quality and reconstructions that are almost never data-consistent. 
+
+Slice conditioning. We noticed that due to the cone-beam geometry of CBCT, artifacts generated by FDK in the sparse-view setting differ across regions of the reconstructed volume. This led us to design a model that is position-aware and is capable of handling artifacts differ-ently in different parts of the volume. To this end, we add an additional conditioning to the U-Net behind the diffusion model by using the slice-index of the reconstructed volume. More specifically, we used the cross-attention layers of the U-Net architecture to attend to a positional encoding of this slice index in the bottleneck layers of the U-Net model. 
+
+3.2 FBP/FDK-denoising models. 
+
+We revisit the ideas of [13,22] but using larger modern U-Net architectures with cross-attention layers. The network takes as input an initial FBP/FDK reconstruction ˆ xFBP obtained from the projections y and produces as output a denoised image ˆ x0. The network is trained to minimize the difference between ˆ x0 and the corresponding ground-truth image x0 in the ℓ2
+
+sense. The training dataset consists of pairs of sinograms and ground-truth images, coming from the same distributions as the images used in the testing phase. In addition to the FBP/FDK reconstruction, we also condition the network on the slice index within the volume, following the same positional encoding strategy as in transformer models. This spatial-aware conditioning helps the network to better adapt to the varying artifact patterns that depend on the slice position which are common in CBCT reconstructions. We notice that ˆ x0 is almost never data consistent. That is, the output ˆ x0 does not satisfy the data-consistency condition A ˆx0 = y. This is a common issue with FBP/FDK-denoising models, as they focus on denoising the FBP reconstruction without explicitly enforcing consistency with the measured data. Rather than adding an additional data-consistency term to the loss function during training, which did not produce satisfactory results, we propose a simple fine-tuning step at inference time to enforce data-consistency. We project ˆ x0 onto the data-consistency manifold by minimizing the data-consistency loss LDC from equation (2) for a few iterations using a small learning rate with the Adam optimizer. This step refines the reconstruction by enforcing consistency with the measured data y.
+
+# 4 Datasets. 
+
+To evaluate the effectiveness of our methods, we conducted CBCT experiments using both sim-ulated datasets (dental and spine [5]) and a real-world dataset (walnut [6]). Our low-resolution experiments (256 3 voxel volumes) follow the same setup and evaluation metrics as in [17] for fair comparison with recent state-of-the-art methods. These low-resolution datasets are available on Hugging Face at https://huggingface.co/datasets/Zhentao-Liu/TMI2024_SVCT_dataset .6Our high-resolution experiments on the full resolution walnut dataset [6] (501 3 voxel volumes) further demonstrate the scalability and effectiveness of our methods in more challenging sce-narios. We summarize the datasets, preprocessing steps, and evaluation metrics below. 
+
+4.1 CBCT Datasets. 
+
+Walnut (real CBCT). We adopt 42 real walnut scans, split 37/5 [6]. This dataset consists of three scans at different heights (high/middle/low), each with 1200 views at 0 .3◦ steps, with recorded flat-field ( I1) and dark-field ( I0). A reference ground-truth CBCT is reconstructed by combining the three height scans using an iterative procedure. We work with two resolution settings for this dataset. The first, at low resolution, allows us to compare our method with baselines that struggle to scale to full resolution. Following exactly [17], raw projections are downsampled from 768 ×972 with an effective detector pixel size of 0 .1496 mm to a third of the size, resulting in projections of size 256 ×324 and reference volumes with 256 3 voxels. For model inputs we use uniformly spaced N = 20 views from the middle scan. We also work with full resolution projections resulting in reference volumes with 501 3 voxels. In this setting, we restrict our models to work with the more challenging high scan (1200 views at 0 .3◦ steps). This produces more artifacts to further highlight the efficiency of our methods. Inputs use N ∈ { 20 , 40 , 60 , . . . , 160 , 180 } uniformly spaced views to test the effect of varying sparsity. To compare directly with S-STAR Net [31], we also train and test with N = 30 views. However, since their algorithm works only with a crop due to computational resources, we crop our 501 3 reconstructed volumes to a central crop with resolution 360 × 360 × 150 to exactly match their setting. 
+
+Dental (simulated). We used 130 dental CBCT volumes from patients resampled to 256 3
+
+voxels at (0 .3133 mm) 3, split 100/10/20 for train/val / test. For each case, we generate synthetic X-ray projections with a circular cone-beam trajectory using the ASTRA toolbox [19, 27, 28]: N = 20 uniformly spaced views over [0 ◦, 360 ◦), detector size 256 ×256 with pixel spacing 0 .4386 mm, source–object distance Lsb = 500 mm, and object–detector distance Lbd =200 mm [17]. 
+
+Spine (CTSpine1K-derived, simulated). We select 130 CT volumes from CTSpine1K [5], resample/crop/pad each to 256 3 with (2 mm) 3 voxels, split 100/10/20, and mirror the dental view protocol ( N = 20 uniform views) to generate synthetic projections. These projections use a 256 ×256 detector with 3 mm pixels, Lsb = 1000 mm and Lbd = 500 mm. 
+
+Projection correction for real data (walnut). Raw detector counts I are converted to line integrals via Beer–Lambert with per-pixel flat/dark correction: 
+
+P = − ln 
+
+ I − I0
+
+I1 − I0
+
+
+
+,
+
+where I0 and I1 are the dark-field and flat-field measurements, respectively. 
+
+# 5 Experiments. 
+
+For each of the datasets described in Section 4, we train both 2D diffusion-based models and FBP/FDK-denoising models using the methods described above and the corresponding training splits. The low-resolution datasets are restricted to N = 20 views, while for the high-resolution walnut dataset we experiment with varying numbers of views N ∈ { 20 , 40 , 60 , . . . , 160 , 180 }. For this high-resolution setting, we train a single model for all view counts by randomly selecting the number of views at each training iteration. This yields a single model that can reconstruct 7Table 1: Quantitative comparison of reconstruction methods across three CBCT datasets. Val-ues are reported as mean ± standard deviation. Best results for each metric and dataset are highlighted in bold . DPA stands for Diffusion Posterior Alignment, CDPA for Conditional Diffusion Posterior Alignment, and FT for Fine-Tuning. The operator μ indicates the mean of 20 samples from the posterior distribution. Runs with ∗ indicate results taken from GAAL’s paper [17].                                                                                                         
+
+> Method Dental (20 views) Spine (20 views) Walnut (20 views) PSNR SSIM PSNR SSIM PSNR SSIM
+> FDK 22.65 ±0.61 0.433 ±0.025 22.84 ±1.47 0.365 ±0.021 16.07 ±0.22 0.194 ±0.004 GD zero 26.68 ±1.37 0.778 ±0.018 28.58 ±2.40 0.888 ±0.043 23.93 ±0.39 0.590 ±0.008 GD F DK 28.10 ±0.63 0.745 ±0.022 28.56 ±1.11 0.846 ±0.046 23.36 ±0.24 0.582 ±0.006 NAF [30] ∗28.77 ±0.86 0.793 ±0.020 30.80 ±1.93 0.912 ±0.024 25.36 ±0.22 0.680 ±0.006 SCOPE3D [10] ∗29.39 ±0.87 0.807 ±0.019 30.91 ±2.00 0.908 ±0.024 25.92 ±0.19 0.714 ±0.009 SNAF [8] ∗30.93 ±0.51 0.844 ±0.015 31.69 ±1.39 0.902 ±0.035 27.43 ±0.29 0.748 ±0.006 PatRecon [23] ∗19.95 ±0.85 0.569 ±0.038 18.57 ±1.75 0.641 ±0.047 17.30 ±0.55 0.699 ±0.033 PixelNeRF [29] ∗26.85 ±0.57 0.775 ±0.014 28.68 ±1.64 0.890 ±0.033 24.79 ±0.15 0.732 ±0.004 DIF-Net [16] 30.48 ±0.80 0.870 ±0.015 32.28 ±1.75 0.901 ±0.034 25.99 ±0.14 0.707 ±0.004 GAAL [17] 31.44 ±1.00 0.891 ±0.016 33.14 ±1.88 0.938 ±0.020 26.84 ±0.37 0.889 ±0.006
+> DPA 30.88 ±0.81 0.834 ±0.022 32.62 ±1.84 0.889 ±0.032 25.44 ±0.17 0.653 ±0.003 CDPA 33.32 ±0.63 0.892 ±0.012 35.69 ±1.94 0.936 ±0.021 29.60 ±0.25 0.794 ±0.012 FDK-denoiser 32.91 ±1.37 0.895 ±0.016 37.06 ±1.50 0.959 ±0.008 28.18 ±0.98 0.888 ±0.005
+> μ(DPA) 33.45 ±0.67 0.906 ±0.012 34.02 ±1.68 0.932 ±0.018 27.62 ±0.22 0.681 ±0.008
+> μ(CDPA) 34.76 ±0.67 0.919 ±0.010 37.39 ±1.52 0.952 ±0.016 30.71 ±0.75 0.815 ±0.012 FDK-denoiser + FT 33.18 ±1.06 0.877 ±0.015 37.29 ±1.49 0.958 ±0.007 28.90 ±0.54 0.740 ±0.014
+
+images from different levels of sparsity without training a separate model for each case. Our model then includes an additional conditioning input on the number of views, allowing it to differentiate between sparsity levels. For the specific case of N = 30 views, we fine-tuned the model with samples at this specific sparsity to enable a fair comparison with S-STAR Net [31]. To train our diffusion model, we use the standard mse loss on the noise prediction as in [11] for both the unconditional and conditional models. For the FBP/FDK-denoising models, we use the ℓ2 loss between the denoised output and the ground-truth image. We use the Adam optimizer for all our experiments. More details about the training hyperparameters and architectures are provided in the supplementary material A. 
+
+5.1 Baseline Methods. 
+
+We compare our proposed methods against several state-of-the-art baselines for sparse-view CT reconstruction. For the 256 3 resolution CBCT experiments, we compare against all baselines reported in GAAL [17]. 
+
+FDK. The Feldkamp-Davis-Kress (FDK) algorithm serves as the analytical baseline for CBCT reconstruction. Under extreme sparse-view conditions, FDK produces severe streak artifacts that motivate data-driven approaches. 
+
+Iterative methods. We include gradient descent-based iterative reconstruction (GD) using data-consistency terms but lacking learned priors. We benchmark two variants of this ap-proach, one initialized with zeros, GD zero , and a second initialized with the FDK reconstruction, GD F DK . Gradients are computed with respect to (2). To this end, we developed a PyTorch wrapper in the ASTRA toolbox [19,27,28] that allows us to compute projections and backprop-agate gradients to image space. We use the Adam Stochastic Gradient Descent optimizer with 8mini-batches of 30 projections to improve performance and speed. Our fine-tuning steps and alignment diffusion guidance are implemented by calling this GD module. 
+
+Supervised CNN baselines. We compare against several recent approaches reported in GAAL [17]: PatRecon [23] and SCOPE3D (a 3D convolutional approach) [10]. 
+
+Neural rendering methods. We include NAF (neural attenuation fields) [30], SNAF (sparse-view neural attenuation fields) [8] and PixelNeRF [29] which leverage neural rendering tech-niques for 3D reconstruction. The results of these methods are taken from [17]. 
+
+Recent state-of-the-art. We compare against two recent state-of-the-art methods: GAAL [17], which employs a geometry-aware encoder-decoder framework with multi-view 2D features and 3D volumetric reconstruction, and DIF-Net [16], a deep image fusion network for sparse-view CT. All baseline results marked with ∗ in Table 1 are taken directly from the GAAL paper [17] to ensure fair comparison under identical evaluation protocols. For the 501 3 resolution CBCT experiments, we compare our methods against FDK and gradient descent-based iterative reconstruction (GD) baselines only, as most other methods struggle to scale to this higher resolution. For the case of 30 views, we compare our results with S-STAR Net [31] and the baselines presented there, which is the only method that we are aware of that scales close to this resolution, though it only operates on a center crop of the full-resolution walnut volume. Since no code was provided for this method, we compare against the results reported in their paper. Besides S-STAR-Net, we include the results of PTNet3D [32] and Pix2Pix3D [12] in our comparison. 
+
+5.2 Evaluation Metrics. 
+
+We evaluate the reconstruction quality in sparse-view tomography using two primary metrics: Peak Signal-to-Noise Ratio (PSNR) and Structural Similarity Index (SSIM). PSNR measures the ratio between the maximum possible pixel value squared and the Mean Squared Error (MSE) between the reconstructed and reference images, providing a quantitative measure of reconstruction quality. SSIM, on the other hand, assesses the visual impact of structural in-formation in the image, making it a more perceptually relevant metric. By employing both metrics, we aim to capture both the fidelity and perceptual quality of the reconstructed images. For the low-resolution CBCT results, including the dental, spine, and walnut datasets, we follow the exact evaluation protocol used in [17] to ensure fair comparison with recent state-of-the-art methods. This includes a predefined clamping range of values for PSNR and SSIM computation. For the dental, spine, and walnut datasets, respectively, we use the following ranges: dental: [0 .0, 0.090], spine: [0 .0, 0.051], walnut: [0 .0, 0.084] (unit-less attenuation coeffi-cients). For SSIM we use an average of the 2D SSIM computed slice-by-slice along the three orthogonal axes (axial, coronal, sagittal) to better capture 3D structural similarity. PSNR is computed in 3D directly. For our high-resolution CBCT results on the walnut dataset, we compute PSNR and SSIM with the same clamping range as in the low-resolution setting using the full volume. However, when comparing with S-STAR Net [31], we compute PSNR and SSIM on the central crop of size 360 × 360 × 150 to match their evaluation protocol. 96 Results. 
+
+6.1 Low-resolution CBCT results. 
+
+Table 1 presents a comprehensive quantitative comparison of our proposed methods against several state-of-the-art baselines across three CBCT datasets with volume size 256 3: Dental, Spine, and Walnut. The results are reported in terms of Peak Signal-to-Noise Ratio (PSNR) and Structural Similarity Index (SSIM), with values presented as mean ± standard deviation. Our baseline diffusion model (DPA) shows decent performance, but struggles to surpass some of the recent supervised CNN-based methods such as GAAL [17], as already noticed by the authors of the GAAL paper. However, when we introduce conditioning on the FDK reconstruction (CDPA), we observe a significant performance boost across all datasets, achiev-ing state-of-the-art results and improving 3D consistency. Furthermore, when considering the mean of multiple posterior samples with μ(CDPA), we achieve the best PSNR scores across all datasets, strongly suggesting that the posterior distribution is unimodal and that averaging samples effectively reduces noise and artifacts. This mean posterior estimation also helps the baseline DPA method achieve competitive results, although it is still lagging behind CDPA. Interestingly, our FDK-denoising U-Net model with slice conditioning also achieves com-petitive results, particularly in SSIM, highlighting the potential of simpler architectures when combined with data-consistency enforcement. It matches or surpasses all previous methods in both PSNR and SSIM, and we can notice that the use of fine-tuning (FDK-denoiser + FT) further improves PSNR results almost to the point of CDPA, this fine-tuning however, might decrease SSIM results, which suggests that it might be overfitting to the MSE loss and losing some of the perceptual quality of the reconstruction. To further illustrate the advantage of our slice conditioning and the fine-tuning step, we conducted an ablation study discussed in Section 6.6 (although at higher resolution). The results confirm that both components significantly contribute to the overall performance, with slice conditioning providing substantial gains and fine-tuning further enhancing the results to nearly match our diffusion-based methods. Without these components, the U-Net architecture alone falls quite short of state-of-the-art performance. 
+
+6.2 Low-resolution qualitative results. 
+
+Figures 1, 2 and 3 present qualitative reconstruction results for the Walnut, Spine and Den-tal datasets, respectively, at a resolution of 256 3 voxels using 20 views. These figures show the visual quality of our proposed methods compared to the FDK baseline, GAAL [17] and gradient descent, minimizing data-consistency loss. We can see that both conditional diffu-sion and FDK-denoising methods significantly reduce artifacts and enhance structural details compared to FDK and gradient descent, leading to clearer and more accurate reconstructions. The improvements of our methods are particularly evident in regions with complex anatomical structures, where we effectively recover fine details that are often lost by other methods. We observe that hallucinations still exist in this high-sparsity regime because the information is simply not present in the available measurements. However, μ(CDPA) ameliorates this effect by taking the average over a few samples, artifacts hallucinated by a single reconstruction are voted out, leaving a sort of “majority voting” solution to the inverse problem. Noticeably, this average reconstruction is sharp, opposite to the usual average reconstruction found in models such as variational autoencoders (VAEs). This suggests a clear unimodal posterior distribution where our mean reconstruction lies closer to the ground truth. For the walnut data based on real measurements, we can see that the coronal and sagittal views (top and bottom rows in Figure 1) still exhibit some inter-slice inconsistencies, compared with the axial view where the diffusion process is carried out. We can also see that, overall, GAAL produces results with substantially less detail and sharpness. However, producing less 10 FDK GAAL FDK-denoiser μ(CDPA) Ground Truth FDK GAAL FDK-denoiser μ(CDPA) Ground Truth FDK GAAL FDK-denoiser μ(CDPA) Ground Truth Figure 1: Slices (coronal, axial and sagittal from top to bottom) of the walnut reconstruction results with resolution 256 3 from the test dataset using 20 views uniformly spaced from the 1200 available views from the middle scan. detailed reconstructions also means that GAAL can avoid some inter-slice inconsistencies. Compared to the FDK-denoiser, we can see how diffusion models always produce detailed realistic structures, even if they are not always correct, while FDK-denoising models sometimes produce more unnatural structures, as can be seen in the walnut reconstructions in Figure 1. 
+
+6.3 High-resolution CBCT results. 
+
+Figure 5 presents the reconstruction quality (PSNR and SSIM) of our methods on the high-resolution walnut dataset with 501 3 voxels using varying numbers of views from the high scan. For each sparsity level, we selected a near-uniform subset of views from the 1200 available views in the high scan. We compare our methods against the ground-truth reconstruction using 3600 views from all three scans (high/middle/low). With 20 views, our models already achieve significantly better PSNR and SSIM than the FDK baseline using all 1200 views from the high scan, and with 40 views they outperform the gradient descent reconstruction using all 1200 views from the high scan, highlighting the effectiveness of our methods in extremely sparse-view scenarios. CDPA with mean posterior averaging, μ(CDPA), provides the best performance across all view counts, with a consistent improvement of approximately 1 dB of PSNR over standalone CDPA, demonstrating its ability to effectively leverage both learned priors and data consistency. Similarly, FDK-denoising with fine-tuning (+ FT) achieves competitive results, closely matching CDPA, especially at higher view counts. For the specific case of 30 views, we compare our results with S-STAR Net [31]. We fine-tuned our model with samples at this specific sparsity to obtain a fair comparison. We acknowledge that this fine-tuning step provides a significant advantage over the model trained for varying numbers of views, as shown in Figure 5, where we compare metrics for the whole generated volume. 11 FDK GD FDK-denoiser μ(CDPA) Ground Truth FDK GD FDK-denoiser μ(CDPA) Ground Truth Figure 2: Coronal slices of the spine reconstruction results with resolution 256 3 from the test dataset using 20 views uniformly spaced from 0 to 360 degrees. FDK GD FDK-denoiser μ(CDPA) Ground Truth FDK GD FDK-denoiser μ(CDPA) Ground Truth 
+
+Figure 3: Axial slices of the dental reconstruction results with resolution 256 3 from the test dataset using 20 views uniformly spaced from 0 to 360 degrees. 12 Ground Truth μ(CDPA) (20 views) μ(CDPA) (40 views) μ(CDPA) (60 views) μ(CDPA) (80 views)     
+
+> μ(CDPA) (100 views) μ(CDPA) (120 views) μ(CDPA) (140 views) μ(CDPA) (160 views) μ(CDPA) (180 views)
+
+Figure 4: Axial slices of a walnut reconstruction using μ(CDPA) at resolution 501 3 for the first walnut in the test dataset using progressively more views. Each view count is spaced uniformly from the 1200 available views from the high scan. The 3D consistency improves progressively as well; with only 20 views one can see inter-slice inconsistencies, but shortly after they become imperceptible. Table 2 summarizes the quantitative results for N = 30, showing that our method outper-forms S-STAR Net and other methods in both SSIM and PSNR, demonstrating that our 2D approach scales to the performance of state-of-the-art 3D approaches. Recall that these num-bers are not directly comparable with other tables as they are computed only within a central crop; thus, while the SSIM values remain similar, the PSNR values differ from those of the entire volume, as almost no background is considered. Table 2: Walnut high-resolution results for the center 360 × 360 × 150 crops conditioned on 30 views. Results with a star are taken from [31]. 
+
+Algorithm SSIM ↑ PSNR ↑
+
+U-former ∗ 0.87 ± 0.01 24 .94 ± 1.37 PTNet3D ∗ 0.82 ± 0.01 22 .09 ± 0.36 Pix2Pix3D ∗ 0.85 ± 0.01 23 .74 ± 0.56 S-STAR Net ∗ 0.90 ± 0.01 27 .17 ± 0.95 
+
+μ(CDPA) (ours) 0.91 ± 0.01 27 .35 ± 1.47 
+
+6.4 High-resolution qualitative results. 
+
+Figure 4 presents qualitative reconstruction results for the high-resolution walnut dataset with 501 3 voxels using between 20 and 180 views from the high scan. The results show a progressive improvement in the quality of the reconstruction as the number of views increases. With only 20 views, the reconstructions exhibit still significant hallucinations, and there is not enough inter-slice consistency, although the quality of the reconstruction remains high. However, as the number of views increases, our method gets closer and closer to the ground truth, with almost no discernible difference at 100 views compared to the ground truth that uses 3600 views from all three scans (high, middle and low scans). Already with 40 views (or 30 in the fine-tuned model), inter-slice inconsistencies mostly disappear, which is supported by the largest jump in SSIM and PSNR in Figure 5 after going above 20 views. 13 6.5 Computational Efficiency. 
+
+In terms of speed, Figure 6 compares the running time of our different methods on the CBCT datasets with size 256 3. Conditional diffusion requires fewer data-consistency steps than its unconditional counterpart due to the information already present in the FDK reconstruction. While these numbers may vary with the size of the GPU and how many slices are produced in one single batch, there is no denying that diffusion-based methods are significantly more computationally intensive than FDK-denoising approaches. Notably, FDK-denoising achieves performance comparable to diffusion-based models but with up to 18x faster runtime, making it a practical choice for real-world applications. 20 40 60 80 100 120 140 160 180                     
+
+> Number of Views Used
+> 15
+> 20
+> 25
+> 30
+> 35
+> 40
+> PSNR (dB)
+> PSNR vs. Views
+> 55 60 65 70 75 80 85
+> 34.0
+> 34.5
+> 35.0
+> 35.5
+> 36.0
+> 36.5
+> 37.0
+> 37.5
+> 38.0 20 40 60 80 100 120 140 160 180
+> Number of Views Used
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> SSIM
+> SSIM vs. Views
+> 55 60 65 70 75 80 85
+> 0.88
+> 0.89
+> 0.90
+> 0.91
+> 0.92
+> 0.93
+> 0.94
+> 0.95
+> μ(CDPA)
+> CDPA
+> FDK
+> FDK-denoiser + FT
+> Gradient Descent
+> FDK-denoiser
+> FDK (1200 views)
+> Gradient Descent (1200 views)
+
+Figure 5: PSNR and SSIM vs number of views for the high-resolution walnut dataset at resolu-tion 501 3 using the high-scan setting. The model was jointly trained for all sparsities. Dotted lines represent the baseline reconstruction using FDK and GD with all 1200 views from this high scan. All metrics are computed by comparing with the ground-truth reconstruction using 3600 views from all three high/middle/low scans. The star represents the result of the fine-tuned model for 30 views, showing the improvement that fine-tuning on a specific sparsity provides. 
+
+6.6 Ablation Studies. 
+
+Figure 6 (right) presents an ablation study of slice conditioning and data-consistency fine-tuning (FT) on the Walnut dataset at full resolution of 501 3 voxels. The results confirm that both components significantly contribute to the overall performance, with slice conditioning providing substantial gains and fine-tuning further enhancing the results to nearly match our diffusion-based methods. Interestingly, FT has a detrimental effect when working with only 20 views and without slice conditioning, but becomes beneficial when combined with slice conditioning at this high sparsity. This suggests that the fine-tuning step becomes beneficial when the original denoising network is already producing reasonable reconstructions, but is susceptible to overfitting in the ultra-sparse regime. Moreover, fine-tuning becomes increasingly beneficial in all settings as the number of views increases, matching the intuition that data-consistency becomes the dominant source of information as more measurements are available. Without these components, the U-Net architecture alone falls quite short of state-of-the-art performance. The improvement carries over to different sparsities, though it is more dramatic at higher sparsities (fewer views). These two components are enough to make FDK-denoising competitive with diffusion-based models, and redefine state-of-the-art, while being significantly faster. 14 FDK FDK-denoiser DPA CDPA         
+
+> Method
+> 0
+> 20
+> 40
+> 60
+> 80
+> 100
+> Time (seconds)
+> 0.1s
+> 4.1s
+> 107.2s
+> 74.9s
+> Reconstruction Time Comparison 20 40 60 80 100 120 140 160 180
+> Number of Views Used
+> 0.82
+> 0.84
+> 0.86
+> 0.88
+> 0.90
+> 0.92
+> 0.94
+> SSIM
+> SSIM vs. Views
+> FDK-denoiser
+> FDK-denoiser + FT
+> FDK-denoiser + slice conditioning
+> FDK-denoiser + slice conditioning + FT
+
+Figure 6: Left: Running time comparison of different methods on the CBCT datasets with size 256 3. Conditional diffusion requires fewer data-consistency steps than its unconditional counterpart due to the information already provided by the conditioning FDK reconstruction. FDK-denoising with fine-tuning is significantly faster than diffusion-based methods while achiev-ing comparable performance. Right: Ablation study of slice conditioning and data-consistency fine-tuning (FT) on the Walnut dataset at full resolution of 501 3 voxels. A modern U-Net archi-tecture on its own is competitive but is not state-of-the-art. The addition of slice conditioning significantly improves performance, and data-consistency fine-tuning (FT) further boosts the results to nearly match our proposed diffusion-based methods. 
+
+# 7 Uncertainty Quantification. 
+
+Uncertainty quantification is an important aspect in medical imaging applications, where un-derstanding the confidence of the reconstruction can inform clinical decision-making and guide further imaging or interventions. We explore the use of μ(CDPA) to quantify uncertainty in the reconstructions, by computing multiple samples from the posterior distribution. More specifically, we sample several times from p(x|y) using μ(CDPA) and consider the mean of these samples, as well as their pixel-wise standard deviation (STD). To assess the reliability of our uncertainty estimates, we analyzed the relationship between the STD of diffusion samples and reconstruction error against ground truth. Figure 7 presents a comprehensive uncertainty quantification analysis with a qualitative comparison of a representative axial slice, a correla-tion analysis between STD and absolute error, and a Receiver Operating Characteristic (ROC) analysis for identifying high-error regions using STD thresholds. 
+
+Correlation Analysis. The STD exhibits a positive correlation with the absolute reconstruc-tion error (Pearson r = 0 .680, Spearman ρ = 0 .735, both p < 10 −10 ), explaining 46.2% of error variance ( R2 = 0 .462) (Fig. 7A). The linear relationship (Error ≈ 1.42 ×STD+0 .0003) indicates that regions with higher sampling variability consistently exhibit larger reconstruction errors. The higher Spearman correlation suggests a monotonic relationship that slightly deviates from perfect linearity, typical of heterogeneous structures. 
+
+Discriminative Power for Quality Control. To evaluate the practical utility for identi-fying problematic reconstructions, we performed ROC analysis treating STD (normalized) as a predictor probability score for high-error regions (Fig. 7B). The method achieves strong dis-crimination across different error thresholds: AUC = 0.820 for top 25% errors, AUC = 0.902 for top 10% errors, and AUC = 0.961 for top 5% errors. Notably, the highest AUC for the most 15 0.000 0.002 0.004 0.006 0.008 0.010 0.012          
+
+> Standard Deviation (Uncertainty)
+> 0.000
+> 0.005
+> 0.010
+> 0.015
+> 0.020
+> 0.025
+> 0.030
+> Absolute Error
+> Pearson r = 0.681
+> Spearman = 0.739
+> R2= 0.464
+> Linear fit: y = 1.42x + 0.00032
+> 10 0
+> 10 1
+> 10 2
+> 10 3
+> 10 4
+> Voxel Count (log scale)
+> 0.0 0.2 0.4 0.6 0.8 1.0
+> False Positive Rate
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> True Positive Rate (Sensitivity)
+> Top 25% errors (AUC = 0.822)
+> Top 10% errors (AUC = 0.905)
+> Top 5% errors (AUC = 0.965)
+> Random classifier (AUC = 0.50) STD of 10 CDPA samples Abs Difference (μ(CDPA)-GT) Ground Truth (GT)
+
+Figure 7: Top left: Correlation between standard deviation (STD) of diffusion samples for the 256 3 walnut dataset and reconstruction error using 20 projections. The hexbin density plot shows strong positive correlation (Pearson r = 0 .680, Spearman ρ = 0 .735, R2 = 0 .462), with linear fit Error ≈ 1.42 × STD + 0 .0003. STD explains 46.2% of error variance, demonstrating its utility as an uncertainty indicator. Top right: Receiver Operating Characteristic (ROC) curves for identifying high-error regions using STD thresholds. The method achieves excellent discrimination with AUC values of 0.820, 0.902, and 0.961 for detecting the top 25%, 10%, and 5% highest-error voxels, respectively. Optimal operating points (circles) demonstrate practical trade-offs between sensitivity and specificity. At the optimal threshold for top 5% errors, the method achieves 91.3% sensitivity with only 9.2% false positive rate. Bottom: Spatial compar-ison of a representative axial slice showing ground truth, uncertainty map (STD), and absolute error. High-uncertainty regions (bright areas in STD map) spatially correspond to high-error regions, validating STD as a reliable spatial predictor of reconstruction quality. 16 severe errors indicates that STD is particularly reliable for identifying critical reconstruction failures. 
+
+Discussion. Our analysis shows promise of using the Diffusion posterior for uncertainty quan-tification. The results represented in Fig. 7 demonstrate clearly that the standard deviation of the Diffusion posterior is a strong predictor of the reconstruction error and, as such, can aid in the interpretation of the reconstruction. However, reliable uncertainty quantification for tomographic reconstruction remains a challenging topic. Directly relying on Diffusion posterior sampling does not alleviate the possibility of misspecification and hallucinations, and Diffusion posterior alignment does not sample the exact Bayesian posterior, c.f. [18]. Moreover, the Dif-fusion posterior samples do not come with formal asymptotic guaranties, such as, for example, Bootstrap based methods [21] or the Laplace approximation [1], which we therefore expect to perform better in the dense, noiseless data limit. Prior work has further investigated Bayesian models, which typically rely on approximations such as Markov-Chain Monte Carlo (MCMC), e.g. [7, 20]. Finally, recent work explores the use of sequential likelihood mixing to obtain for-mal confidence guaranties for neural network and diffusion-based reconstructions [9]. We leave further exploration of this topic for future work. 
+
+# 8 Conclusions. 
+
+In this work, we have presented two state-of-the-art reconstruction methods for sparse-view CBCT reconstruction: Conditional Diffusion Posterior Alignment (CDPA) and a new perspec-tive on the FBP/FDK-denoiser models that ensures data consistency at inference time using fine-tuning. CDPA leverages the power of diffusion models while incorporating conditioning on the FDK reconstruction to enhance performance and 3D consistency, and the guidance provided by the data-consistency through the diffusion steps. That is, we are effectively combining two tech-niques to sample from the posterior distribution and show that this combination is synergistic and leads to significant performance improvements. In addition, we noticed that averaging mul-tiple posterior samples further boosts performance, suggesting that the posterior distribution is unimodal and that averaging helps reduce noise and artifacts. This is only the case if the conditioning is strong enough, as is the case in several inverse problems. In addition, com-puting several samples from the posterior distribution allows us to quantify uncertainty in the reconstructions, which is an important aspect in medical imaging applications. The FDK-denoising approach, on the other hand, combines a U-Net architecture with slice conditioning and a data-consistency fine-tuning step to achieve competitive results with sig-nificantly reduced computational cost compared to diffusion-based methods. An ablation of these two components confirms their importance in achieving state-of-the-art performance, with slice conditioning providing substantial gains and fine-tuning further enhancing the results to nearly match our diffusion-based methods. Moreover, the computational efficiency of the FDK-denoising approach makes it a practical choice for real-world applications, especially in clinical settings where time constraints are critical. Our methods scale to high-resolution CBCT reconstruction, where other approaches have failed to do so. The approach can be further scaled up by using latent diffusion techniques, which would allow to work with even higher resolution volumes, up to Gigavoxels resolution, though data-consistency updates require significant changes to work in latent space [24]. However, the limiting factor becomes the data-consistency gradient-descent step that at the moment consumes around 100GB of memory for ≈ 1500 3 resolution volumes. While 3D-based diffusion models should further improve performance, especially in terms of 3D consistency, they come at a significant computational cost that is at the moment prohibitive for high-resolution volumes. Moreover, a limited number of training volumes, as it is the case 17 for the walnut dataset, makes it almost impossible to train a 3D-based diffusion model without overfitting, while 2D-based models can be trained with a much smaller number of volumes by leveraging the large number of slices available in each volume. We believe the use of high-sparsity reconstructions (e.g., 20 views) might be only for bench-marking purposes, real clinical applications would likely use more views to ensure high-fidelity reconstructions, but our results show that as low as 180 views (15% of the original 1200 views from the high scan and only 5% from the 3600 total views used for the ground truth) are sufficient to achieve near-perfect reconstructions, significantly reducing radiation dose while maintaining high image quality. 
+
+# Acknowledgments. 
+
+The authors would like to thank AmirEhsan Khorashadizadeh, Raphael Winkler and all par-ticipants of the CHIP project of SDSC for useful discussions. 
+
+# References. 
+
+[1] Javier Antoran, Riccardo Barbano, Johannes Leuschner, Jos´ e Miguel Hern´ andez-Lobato, and Bangti Jin. Uncertainty estimation for computed tomography with a linearised deep image prior. Transactions on Machine Learning Research , 2023. [2] Luis Barba, Johannes Kirschner, Tomas Aidukas, Manuel Guizar-Sicairos, and Benjam´ ın B´ ejar. Diffusion active learning: Towards data-driven experimental design in computed tomography. arXiv preprint arXiv:2504.03491 , 2025. [3] Riccardo Barbano, Johannes Leuschner, Maximilian Schmidt, Alexander Denker, Andreas Hauptmann, Peter Maass, and Bangti Jin. An educated warm start for deep image prior-based micro ct reconstruction. IEEE Trans. Computational Imaging , 9:134–148, 2023. [4] Hyungjin Chung, Jeongsol Kim, Michael T. McCann, Marc L. Klasky, and Jong Chul Ye. Diffusion posterior sampling for general noisy inverse problems. In Proc. ICLR , 2023. [5] Yang Deng, Ce Wang, Yuan Hui, Qian Li, Jun Li, Shiwei Luo, Mengke Sun, Quan Quan, Shuxin Yang, You Hao, et al. Ctspine1k: A large-scale dataset for spinal vertebrae seg-mentation in computed tomography. arXiv preprint arXiv:2105.14711 , 2021. [6] Henri Der Sarkissian, Felix Lucka, Maureen Van Eijnatten, Giulia Colacicco, Sophia Bethany Coban, and Kees Joost Batenburg. A cone-beam x-ray computed to-mography data collection designed for machine learning. Scientific data , 6(1):215, 2019. [7] Alain Durmus, Eric Moulines, and Marcelo Pereyra. Efficient bayesian computation by proximal markov chain monte carlo: when langevin meets moreau. SIAM Journal on Imaging Sciences , 11(1):473–506, 2018. [8] Yu Fang, Lanzhuju Mei, Changjian Li, Yuan Liu, Wenping Wang, Zhiming Cui, and Ding-gang Shen. Snaf: Sparse-view cbct reconstruction with neural attenuation fields. arXiv preprint arXiv:2211.17048 , 2022. [9] Matteo G¨ atzner and Johannes Kirschner. Principled confidence estimation for deep com-puted tomography. arXiv preprint arXiv:2602.05812 , 2026. [10] Yuhan Gu, Qing Wu, Zhechen Yuan, Xiangyu Zhang, Wenyan Su, Yuyao Zhang, and Xin Lou. An fpga accelerator for 3d cone-beam sparse-view computed tomography reconstruc-tion. In 2024 IEEE 6th International Conference on AI Circuits and Systems (AICAS) ,pages 577–581. IEEE, 2024. 18 [11] Jonathan Ho, Ajay Jain, and Pieter Abbeel. Denoising diffusion probabilistic models. 
+
+Advances in Neural Information Processing Systems , 33:6840–6851, 2020. [12] Phillip Isola, Jun-Yan Zhu, Tinghui Zhou, and Alexei A Efros. Image-to-image translation with conditional adversarial networks. In Proceedings of the IEEE conference on computer vision and pattern recognition , pages 1125–1134, 2017. [13] Kyong Hwan Jin, Michael T. McCann, Emmanuel Froustey, and Michael Unser. Deep con-volutional neural network for inverse problems in imaging. IEEE Trans. Image Processing ,26(9):4509–4522, 2017. [14] Bahjat Kawar, Gregory Vaksman, Michael Elad, Stefano Ermon, and Jiaming Song. De-noising diffusion restoration models. In Proc. NeurIPS , 2022. [15] Suhyeon Lee, Hyungjin Chung, Minyoung Park, Jonghyuk Park, Wi-Sun Ryu, and Jong Chul Ye. Improving 3d imaging with pre-trained perpendicular 2d diffusion mod-els. In Proceedings of the IEEE/CVF international conference on computer vision , pages 10710–10720, 2023. [16] Yiqun Lin, Zhongjin Luo, Wei Zhao, and Xiaomeng Li. Learning deep intensity field for extremely sparse-view cbct reconstruction. In International Conference on Medical Image Computing and Computer-Assisted Intervention , pages 13–23. Springer, 2023. [17] Zhentao Liu, Yu Fang, Changjian Li, Han Wu, Yuan Liu, Dinggang Shen, and Zhiming Cui. Geometry-aware attenuation learning for sparse-view CBCT reconstruction. 44(2):1083– 1097. [18] Liam Moroy, Guillaume Bourmaud, Fr´ ed´ eric Champagnat, and Jean-Fran¸ cois Giovannelli. On the posterior gap in plug & play diffusion methods for sparse-view computed tomogra-phy. IEEE Journal of Selected Topics in Signal Processing , 2026. [19] Willem Jan Palenstijn, Kees Joost Batenburg, and Jan Sijbers. Performance improvements for iterative electron tomography reconstruction using graphics processing units (gpus). 
+
+Journal of structural biology , 176(2):250–253, 2011. [20] Marcelo Pereyra, Luis Vargas Mieles, and Konstantinos C Zygalakis. Accelerating proximal markov chain monte carlo by using an explicit stabilized method. SIAM Journal on Imaging Sciences , 13(2):905–935, 2020. [21] Marcelo Pereyra and Juli´ an Tachella. Equivariant bootstrapping for uncertainty quantifi-cation in imaging inverse problems. In International Conference on Artificial Intelligence and Statistics , pages 4141–4149. PMLR, 2024. [22] Olaf Ronneberger, Philipp Fischer, and Thomas Brox. U-net: Convolutional networks for biomedical image segmentation. In Medical image computing and computer-assisted intervention–MICCAI 2015: 18th international conference, Munich, Germany, October 5-9, 2015, proceedings, part III 18 , pages 234–241. Springer, 2015. [23] Liyue Shen, Wei Zhao, and Lei Xing. Patient-specific reconstruction of volumetric com-puted tomography images from a single projection view via deep learning. Nature biomed-ical engineering , 3(11):880–888, 2019. [24] Bowen Song, Soo Min Kwon, Zecheng Zhang, Xinyu Hu, Qing Qu, and Liyue Shen. Solving inverse problems with latent diffusion models via hard data consistency. arXiv preprint arXiv:2307.08123 , 2023. 19 [25] Jiaming Song, Chenlin Meng, and Stefano Ermon. Denoising diffusion implicit models. 
+
+arXiv preprint arXiv:2010.02502 , 2020. [26] Dmitry Ulyanov, Andrea Vedaldi, and Victor Lempitsky. Deep image prior. In Proc. CVPR , pages 9446–9454, 2018. [27] Wim Van Aarle, Willem Jan Palenstijn, Jeroen Cant, Eline Janssens, Folkert Bleichrodt, Andrei Dabravolski, Jan De Beenhouwer, K Joost Batenburg, and Jan Sijbers. Fast and flexible x-ray tomography using the astra toolbox. Optics express , 24(22):25129–25147, 2016. [28] Wim Van Aarle, Willem Jan Palenstijn, Jan De Beenhouwer, Thomas Altantzis, Sara Bals, K Joost Batenburg, and Jan Sijbers. The astra toolbox: A platform for advanced algorithm development in electron tomography. Ultramicroscopy , 157:35–47, 2015. [29] Alex Yu, Vickie Ye, Matthew Tancik, and Angjoo Kanazawa. pixelnerf: Neural radiance fields from one or few images. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 4578–4587, 2021. [30] Ruyi Zha, Yanhao Zhang, and Hongdong Li. Naf: neural attenuation fields for sparse-view cbct reconstruction. In International Conference on Medical Image Computing and Computer-Assisted Intervention , pages 442–452. Springer, 2022. [31] Shiang Zhang, Yibo Hu, Ziheng Deng, Yujie Wang, Jun Zhao, and Jianqi Sun. Sliding volume-based streak artifact reduction network (s-STAR net) for ultra-sparse-view com-puted tomography. BMC Medical Imaging , 25(1):364, 2025. [32] Xuzhe Zhang, Xinzi He, Jia Guo, Nabil Ettehadi, Natalie Aw, David Semanek, Jonathan Posner, Andrew Laine, and Yun Wang. Ptnet3d: A 3d high-resolution longitudinal in-fant brain mri synthesizer based on transformers. IEEE transactions on medical imaging ,41(10):2925–2940, 2022. 
+
+# A Supplementary Material. 
+
+A.1 Network Architectures. 
+
+We utilize the networks and the optimizer from the diffusers library from Hugging Face https: //huggingface.co/docs/diffusers/en/index . The diffusion model is based on a U-Net ar-chitecture with cross-attention layers, similar to the one used in Stable Diffusion. The network takes as input a noisy image and the time step, and outputs the predicted noise. For the con-ditional diffusion model (CDPA), we concatenate the FDK reconstruction to the noisy image along the channel dimension, allowing the network to leverage the information from the FDK reconstruction during denoising. The model has cross-attention layers that allow us to attend to the diffusion step, the slice index, and in the case of high-resolution walnut experiments, the number of views. For the FDK-denoising U-Net model, we use the same U-Net architecture as in the diffusion model, but without the time conditioning. The network takes as input the FDK reconstruction and outputs the denoised image. We also concatenate the slice index to the input along the channel dimension to provide spatial awareness to the network, and use cross-attention on the slice index for conditioning. We use simple data augmentations during training, including random flips and rotations, to improve the generalization of the models. We train with the AdamW optimizer with a learning rate of 1 e−4 for all models and 1000 diffusion steps for training and 50 for inference. For the guidance, we used 5 epochs with a 20 batch size of min {30 , num views } and a guidance learning rate of 5 e−4. We used an A100 to train our models, and the training time for the diffusion models was around 24 hours, while for the FDK-denoising U-Net model it was around 6 hours. The inference time is reported in Figure 6 using the same A100 GPU. 21

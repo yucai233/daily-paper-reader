@@ -1,0 +1,252 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-27T20:28:45.602435+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.20046v2",
+      "title": "Gaussians on a Diet: High-Quality Memory-Bounded 3D Gaussian Splatting Training",
+      "abstract": "3D Gaussian Splatting (3DGS) has revolutionized novel view synthesis with high-quality rendering through continuous aggregations of millions of 3D Gaussian primitives. However, it suffers from a substantial memory footprint, particularly during training due to uncontrolled densification, posing a critical bottleneck for deployment on memory-constrained edge devices. While existing methods prune redundant Gaussians post-training, they fail to address the peak memory spikes caused by the abrupt growth of Gaussians early in the training process. To solve the training memory consumption problem, we propose a systematic memory-bounded training framework that dynamically optimizes Gaussians through iterative growth and pruning. In other words, the proposed framework alternates between incremental pruning of low-impact Gaussians and strategic growing of new primitives with an adaptive Gaussian compensation, maintaining a near-constant low memory usage while progressively refining rendering fidelity. We comprehensively evaluate the proposed training framework on various real-world datasets under strict memory constraints, showing significant improvements over existing state-of-the-art methods. Particularly, our proposed method practically enables memory-efficient 3DGS training on NVIDIA Jetson AGX Xavier, achieving similar visual quality with up to 80% lower peak training memory consumption than the original 3DGS.",
+      "authors": [
+        "Yangming Zhang",
+        "Jian Xu",
+        "Chaojian Li",
+        "Kunxiong Zhu",
+        "Wei Niu",
+        "Gagan Agrawal",
+        "Yang Katie Zhao",
+        "Jian Wang",
+        "Yingyan Celine Lin",
+        "Miao Yin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-21T23:04:03+00:00",
+      "link": "https://arxiv.org/pdf/2604.20046v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural rendering via Gaussian primitives",
+      "llm_evidence_cn": "通过高斯原语进行神经渲染",
+      "llm_evidence": "通过高斯原语进行神经渲染",
+      "canonical_evidence": "通过高斯原语进行神经渲染",
+      "llm_tldr_en": "Proposes a memory-bounded training framework for 3D Gaussian Splatting to reduce footprint.",
+      "llm_tldr_cn": "提出了一种内存受限的3D高斯泼溅训练框架，以减少内存占用。",
+      "llm_tldr": "提出了一种内存受限的3D高斯泼溅训练框架，以减少内存占用。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.19747v1",
+      "title": "AnyRecon: Arbitrary-View 3D Reconstruction with Video Diffusion Model",
+      "abstract": "Sparse-view 3D reconstruction is essential for modeling scenes from casual captures, but remain challenging for non-generative reconstruction. Existing diffusion-based approaches mitigates this issues by synthesizing novel views, but they often condition on only one or two capture frames, which restricts geometric consistency and limits scalability to large or diverse scenes. We propose AnyRecon, a scalable framework for reconstruction from arbitrary and unordered sparse inputs that preserves explicit geometric control while supporting flexible conditioning cardinality. To support long-range conditioning, our method constructs a persistent global scene memory via a prepended capture view cache, and removes temporal compression to maintain frame-level correspondence under large viewpoint changes. Beyond better generative model, we also find that the interplay between generation and reconstruction is crucial for large-scale 3D scenes. Thus, we introduce a geometry-aware conditioning strategy that couples generation and reconstruction through an explicit 3D geometric memory and geometry-driven capture-view retrieval. To ensure efficiency, we combine 4-step diffusion distillation with context-window sparse attention to reduce quadratic complexity. Extensive experiments demonstrate robust and scalable reconstruction across irregular inputs, large viewpoint gaps, and long trajectories.",
+      "authors": [
+        "Yutian Chen",
+        "Shi Guo",
+        "Renbiao Jin",
+        "Tianshuo Yang",
+        "Xin Cai",
+        "Yawen Luo",
+        "Mingxin Yang",
+        "Mulin Yu",
+        "Linning Xu",
+        "Tianfan Xue"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-21T17:59:47+00:00",
+      "link": "https://arxiv.org/pdf/2604.19747v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "3D reconstruction with explicit geometric control",
+      "llm_evidence_cn": "具有显式几何控制的3D重建",
+      "llm_evidence": "具有显式几何控制的3D重建",
+      "canonical_evidence": "具有显式几何控制的3D重建",
+      "llm_tldr_en": "A scalable framework for arbitrary-view 3D reconstruction using video diffusion and global scene memory.",
+      "llm_tldr_cn": "一种利用视频扩散模型和全局场景记忆进行任意视角3D重建的可扩展框架。",
+      "llm_tldr": "一种利用视频扩散模型和全局场景记忆进行任意视角3D重建的可扩展框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.21400v2",
+      "title": "You Only Gaussian Once: Controllable 3D Gaussian Splatting for Ultra-Densely Sampled Scenes",
+      "abstract": "3D Gaussian Splatting (3DGS) has revolutionized neural rendering, yet existing methods remain predominantly research prototypes ill-suited for production-level deployment. We identify a critical \"Industry-Academia Gap\" hindering real-world application: unpredictable resource consumption from heuristic Gaussian growth, the \"sparsity shield\" of current benchmarks that rewards hallucination over physical fidelity, and severe multi-sensor data pollution. To bridge this gap, we propose YOGO (You Only Gaussian Once), a system-level framework that reformulates the stochastic growth process into a deterministic, budget-aware equilibrium. YOGO integrates a novel budget controller for hardware-constrained resource allocation and an availability-registration protocol for robust multi-sensor fusion. To push the boundaries of reconstruction fidelity, we introduce Immersion v1.0, the first ultra-dense indoor dataset specifically designed to break the \"sparsity shield.\" By providing saturated viewpoint coverage, Immersion v1.0 forces algorithms to focus on extreme physical fidelity rather than viewpoint interpolation, and enables the community to focus on the upper limits of high-fidelity reconstruction. Extensive experiments demonstrate that YOGO achieves state-of-the-art visual quality while maintaining a strictly deterministic profile, establishing a new standard for production-grade 3DGS. To facilitate reproducibility, part scenes of Immersion v1.0 dataset and source code of YOGO has been publicly released. The project link is https://jjrcn.github.io/yogo-project-home/",
+      "authors": [
+        "Jinrang Jia",
+        "Zhenjia Li",
+        "Yifeng Shi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-23T08:07:42+00:00",
+      "link": "https://arxiv.org/pdf/2604.21400v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "system-level framework for controllable 3D Gaussian Splatting",
+      "llm_evidence_cn": "可控3D高斯泼溅的系统级框架",
+      "llm_evidence": "可控3D高斯泼溅的系统级框架",
+      "canonical_evidence": "可控3D高斯泼溅的系统级框架",
+      "llm_tldr_en": "Presents YOGO, a deterministic and budget-aware framework for industrial-scale 3D Gaussian Splatting.",
+      "llm_tldr_cn": "提出YOGO，一个用于工业级3D高斯泼溅的确定性且预算感知的框架。",
+      "llm_tldr": "提出YOGO，一个用于工业级3D高斯泼溅的确定性且预算感知的框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.21960v1",
+      "title": "Conditional Diffusion Posterior Alignment for Sparse-View CT Reconstruction",
+      "abstract": "Computed Tomography (CT) is a widely used imaging modality in medical and industrial applications. To limit radiation exposure and measurement time, there is a growing interest in sparse-view CT, where the number of projection views is significantly reduced. Deep neural networks have shown great promise in improving reconstruction quality in sparse-view CT, especially generative diffusion models. However, these methods struggle to scale to large 3D volumes due to several reasons: (i) the high memory and computational requirements of 3D models, (ii) the lack of large 3D training datasets, and (iii) the inconsistencies across slices when using 2D models independently on each slice. We overcome these limitations and scale diffusion-based sparse-view CT reconstruction to large 3D volumes by combining conditional diffusion with explicit data consistency. We propose Conditional Diffusion Posterior Alignment (CDPA) to enable scalable 3D sparse-view CT reconstruction. A 2D U-Net diffusion model is conditioned on an initial 3D reconstruction to improve inter-slice consistency, combined with data-consistency alignment to match measured projections. Experiments on synthetic and real Cone Beam CT (CBCT) data show state-of-the-art performance, with ablations that confirm the synergistic effects of the proposed pipeline. Finally, we show that the same principles also strengthen fast denoising U-Nets, yielding near-diffusion quality at a fraction of the computational cost.",
+      "authors": [
+        "Luis Barba",
+        "Johannes Kirschner",
+        "Benjamin Bejar"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-04-23T14:09:13+00:00",
+      "link": "https://arxiv.org/pdf/2604.21960v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "scaling diffusion-based reconstruction to large 3D volumes",
+      "llm_evidence_cn": "将基于扩散的重建扩展到大型3D体积",
+      "llm_evidence": "将基于扩散的重建扩展到大型3D体积",
+      "canonical_evidence": "将基于扩散的重建扩展到大型3D体积",
+      "llm_tldr_en": "Addresses scalability issues in 3D volumetric reconstruction using conditional diffusion alignment.",
+      "llm_tldr_cn": "利用条件扩散对齐解决了3D体积重建中的可扩展性问题。",
+      "llm_tldr": "利用条件扩散对齐解决了3D体积重建中的可扩展性问题。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.21984v1",
+      "title": "Soft Anisotropic Diagrams for Differentiable Image Representation",
+      "abstract": "We introduce Soft Anisotropic Diagrams (SAD), an explicit and differentiable image representation parameterized by a set of adaptive sites in the image plane. In SAD, each site specifies an anisotropic metric and an additively weighted distance score, and we compute pixel colors as a softmax blend over a small per-pixel top-K subset of sites. We induce a soft anisotropic additively weighted Voronoi partition (i.e., an Apollonius diagram) with learnable per-site temperatures, preserving informative gradients while allowing clear, content-aligned boundaries and explicit ownership. Such a formulation enables efficient rendering by maintaining a per-query top-K map that approximates nearest neighbors under the same shading score, allowing GPU-friendly, fixed-size local computation. We update this list using our top-K propagation scheme inspired by jump flooding, augmented with stochastic injection to provide probabilistic global coverage. Training follows a GPU-first pipeline with gradient-weighted initialization, Adam optimization, and adaptive budget control through densification and pruning. Across standard benchmarks, SAD consistently outperforms Image-GS and Instant-NGP at matched bitrate. On Kodak, SAD reaches 46.0 dB PSNR with 2.2 s encoding time (vs. 28 s for Image-GS), and delivers 4-19 times end-to-end training speedups over state-of-the-art baselines. We demonstrate the effectiveness of SAD by showcasing the seamless integration with differentiable pipelines for forward and inverse problems, efficiency of fast random access, and compact storage.",
+      "authors": [
+        "Laki Iinbor",
+        "Zhiyang Dou",
+        "Wojciech Matusik"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-23T18:07:27+00:00",
+      "link": "https://arxiv.org/pdf/2604.21984v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "differentiable image representation and efficient rendering",
+      "llm_evidence_cn": "可微图像表示与高效渲染",
+      "llm_evidence": "可微图像表示与高效渲染",
+      "canonical_evidence": "可微图像表示与高效渲染",
+      "llm_tldr_en": "Introduces Soft Anisotropic Diagrams for differentiable image representation and GPU-friendly rendering.",
+      "llm_tldr_cn": "引入软各向异性图（SAD）作为一种可微图像表示，支持GPU友好的高效渲染。",
+      "llm_tldr": "引入软各向异性图（SAD）作为一种可微图像表示，支持GPU友好的高效渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.22439v1",
+      "title": "NRGS: Neural Regularization for Robust 3D Semantic Gaussian Splatting",
+      "abstract": "We propose a neural regularization method that refines the noisy 3D semantic field produced by lifting multi-view inconsistent 2D features, in order to obtain an accurate and robust 3D semantic Gaussian Splatting. The 2D features extracted from vision foundation models suffer from multi-view inconsistency due to a lack of cross-view constraints. Lifting these inconsistent features directly into 3D Gaussians results in a noisy semantic field, which degrades the performance of downstream tasks. Previous methods either focus on obtaining consistent multi-view features in the preprocessing stage or aim to mitigate noise through improved optimization strategies, often at the cost of increased preprocessing time or expensive computational overhead. In contrast, we introduce a variance-aware conditional MLP that operates directly on the 3D Gaussians, leveraging their geometric and appearance attributes to correct semantic errors in 3D space. Experiments on different datasets show that our method enhances the accuracy of lifted semantics, providing an efficient and effective approach to robust 3D semantic Gaussian Splatting.",
+      "authors": [
+        "Zaiyan Yang",
+        "Xinpeng Liu",
+        "Heng Guo",
+        "Jinglei Shi",
+        "Zhanyu Ma",
+        "Fumio Okura"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-24T10:57:05+00:00",
+      "link": "https://arxiv.org/pdf/2604.22439v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "neural regularization for 3D semantic Gaussian Splatting",
+      "llm_evidence_cn": "用于3D语义高斯泼溅的神经正则化",
+      "llm_evidence": "用于3D语义高斯泼溅的神经正则化",
+      "canonical_evidence": "用于3D语义高斯泼溅的神经正则化",
+      "llm_tldr_en": "Refines noisy 3D semantic fields in Gaussian Splatting using a neural regularization method.",
+      "llm_tldr_cn": "使用神经正则化方法优化高斯泼溅中噪声较多的3D语义场。",
+      "llm_tldr": "使用神经正则化方法优化高斯泼溅中噪声较多的3D语义场。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
