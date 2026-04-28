@@ -6,41 +6,38 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-27
-- 运行时间：2026-04-27 20:29:23 UTC
+- 最新运行日期：2026-04-28
+- 运行时间：2026-04-28 20:18:07 UTC
 - 运行状态：成功
-- 本次总论文数：6
-- 精读区：0
-- 速读区：6
+- 本次总论文数：5
+- 精读区：2
+- 速读区：3
 
 ### 今日简报（AI）
-今日聚焦 3D 高斯泼溅（3DGS）的轻量化与可控性突破，涵盖从内存优化到视频扩散重建的前沿进展。
-重点关注如何在显存受限下实现高质量 3DGS 训练，以及超密集场景下的可控渲染技术。
-建议优先研读 3DGS 优化方案，探索如何平衡高精度渲染与计算资源消耗。
-- 详情：[/202604/27/README](/202604/27/README)
+- 今日共生成 5 篇推荐（精读 2 篇，速读 3 篇）
+- 精读：《GS-DOT: Gaussian splatting-based image reconstruction for diffuse optical tomography》（8.0/10）, 《Voxel Deformation-Aware Neural Intersection Function》（8.0/10）
+- 速读：《Soft Anisotropic Diagrams for Differentiable Image Representation》（6.0/10）, 《GenAssets: Generating in-the-wild 3D Assets in Latent Space》（6.0/10）, 《PEPS: Positional Encoding Projected Sampling -- Extended》（6.0/10）
+- 这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。
+- 详情：[/202604/28/README](/202604/28/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [GS-DOT: Gaussian splatting-based image reconstruction for diffuse optical tomography](/202604/28/2604.23675v1-gs-dot-gaussian-splatting-based-image-reconstruction-for-diffuse-optical-tomography)  
+   标签：评分：8.0/10、query:q4
+   evidence：使用高斯泼溅建模高散射介质中的光传输
+2. [Voxel Deformation-Aware Neural Intersection Function](/202604/28/2604.24666v1-voxel-deformation-aware-neural-intersection-function)  
+   标签：评分：8.0/10、query:q3
+   evidence：体素空间中射线采样的神经相交函数
 
 ### 速读区论文标签
-1. [Gaussians on a Diet: High-Quality Memory-Bounded 3D Gaussian Splatting Training](/202604/27/2604.20046v2-gaussians-on-a-diet-high-quality-memory-bounded-3d-gaussian-splatting-training)  
-   标签：评分：7.0/10、query:q1
-   evidence：通过高斯原语进行神经渲染
-2. [You Only Gaussian Once: Controllable 3D Gaussian Splatting for Ultra-Densely Sampled Scenes](/202604/27/2604.21400v2-you-only-gaussian-once-controllable-3d-gaussian-splatting-for-ultra-densely-sampled-scenes)  
-   标签：评分：7.0/10、query:q1
-   evidence：可控3D高斯泼溅的系统级框架
-3. [AnyRecon: Arbitrary-View 3D Reconstruction with Video Diffusion Model](/202604/27/2604.19747v1-anyrecon-arbitrary-view-3d-reconstruction-with-video-diffusion-model)  
+1. [Soft Anisotropic Diagrams for Differentiable Image Representation](/202604/28/2604.21984v2-soft-anisotropic-diagrams-for-differentiable-image-representation)  
+   标签：评分：6.0/10、query:q7
+   evidence：利用可微图像表示进行高效渲染
+2. [GenAssets: Generating in-the-wild 3D Assets in Latent Space](/202604/28/2604.23010v1-genassets-generating-in-the-wild-3d-assets-in-latent-space)  
    标签：评分：6.0/10、query:q1
-   evidence：具有显式几何控制的3D重建
-4. [Conditional Diffusion Posterior Alignment for Sparse-View CT Reconstruction](/202604/27/2604.21960v1-conditional-diffusion-posterior-alignment-for-sparse-view-ct-reconstruction)  
+   evidence：基于神经渲染的3D资产重建
+3. [PEPS: Positional Encoding Projected Sampling -- Extended](/202604/28/2604.24167v1-peps-positional-encoding-projected-sampling----extended)  
    标签：评分：6.0/10、query:q1
-   evidence：将基于扩散的重建扩展到大型3D体积
-5. [Soft Anisotropic Diagrams for Differentiable Image Representation](/202604/27/2604.21984v1-soft-anisotropic-diagrams-for-differentiable-image-representation)  
-   标签：评分：6.0/10、query:q1
-   evidence：可微图像表示与高效渲染
-6. [NRGS: Neural Regularization for Robust 3D Semantic Gaussian Splatting](/202604/27/2604.22439v1-nrgs-neural-regularization-for-robust-3d-semantic-gaussian-splatting)  
-   标签：评分：6.0/10、query:q1
-   evidence：用于3D语义高斯泼溅的神经正则化
+   evidence：隐式神经表示与位置编码
 
 
 <div class="dpr-home-promo-card">

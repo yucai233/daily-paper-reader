@@ -1,0 +1,79 @@
+{
+  "label": "2026-04-28",
+  "date": "2026-04-28",
+  "generated_at": "2026-04-28T20:18:15",
+  "count": 5,
+  "papers": [
+    {
+      "paper_id": "202604/28/2604.23675v1-gs-dot-gaussian-splatting-based-image-reconstruction-for-diffuse-optical-tomography",
+      "section": "deep",
+      "title_en": "GS-DOT: Gaussian splatting-based image reconstruction for diffuse optical tomography",
+      "authors": "Jingjing Jiang",
+      "date": "2026-04-26",
+      "pdf": "https://arxiv.org/pdf/2604.23675v1",
+      "score": "8.0",
+      "evidence": "使用高斯泼溅建模高散射介质中的光传输",
+      "tldr": "本研究提出GS-DOT，一种基于高斯泼溅（Gaussian Splatting）的弥散光学断层扫描（DOT）图像重建框架。该方法首次将GS算法引入光子扩散领域，通过各向异性高斯原语表示吸收系数，并利用扩散函数替代射线传输函数。实验证明，GS-DOT在合成组织模型上实现了高精度的定位与定量重建，且在抗噪性和内存效率方面表现优异，为高散射介质成像提供了高效的新方案。",
+      "tags": "query:q4",
+      "abstract_en": "This work presents GS-DOT, a novel image reconstruction framework based on Gaussian Splatting (GS) for diffuse optical tomography (DOT). Inspired by GS for rendering applications, absorption coefficients are represented as a sparse sum of anisotropic Gaussian primitives optimized to fit measured time-resolved point-spread functions through analytic gradients and Adam optimization. This is the first adaptation of GS algorithms in the photon diffusion regime, where the ray transport function is replaced by the diffusion functions to enable accurate modeling of light transport in highly scattering media. Validation on synthetic tissue models demonstrate high accuracy in localization and quantification of reconstructed absorption maps for both clean and noisy signals. GS-DOT has demonstrated high robustness to noise and showed a huge reduction in memory demand.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/28/2604.24666v1-voxel-deformation-aware-neural-intersection-function",
+      "section": "deep",
+      "title_en": "Voxel Deformation-Aware Neural Intersection Function",
+      "authors": "Chih-Chen Kao, Grzegorz Makowski, Shin Fujieda, Takahiro Harada",
+      "date": "2026-04-27",
+      "pdf": "https://arxiv.org/pdf/2604.24666v1",
+      "score": "8.0",
+      "evidence": "体素空间中射线采样的神经相交函数",
+      "tldr": "本研究针对动态和可变形几何体的光线求交问题，扩展了局部细分神经相交函数（LSNIF）。通过引入静止空间与变形空间的映射机制，将变形后的采样点映射回规范空间，使得单个神经网络无需重新训练即可在不同姿态下保持几何一致性。结合尺度不变距离回归和混合编码技术，该方法在保持高效紧凑的同时，显著提升了动态几何体神经相交预测的鲁棒性。",
+      "tags": "query:q3",
+      "abstract_en": "We extend the Locally-Subdivided Neural Intersection Function (LSNIF) to support parameterized deformable and animated geometry. Our approach introduces a rest-space and deformed-space formulation inspired by meshless rendering, allowing ray samples to be mapped back to a canonical space where a single neural network represents geometry consistently across poses without retraining. To maintain accuracy under deformation-aware training, we incorporate scale-invariant distance regression, uncertainty-weighted multi-task learning, and a hybrid positional-grid encoding. The resulting method preserves the compactness and efficiency of LSNIF while enabling robust neural intersection prediction for dynamic geometry.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/28/2604.21984v2-soft-anisotropic-diagrams-for-differentiable-image-representation",
+      "section": "quick",
+      "title_en": "Soft Anisotropic Diagrams for Differentiable Image Representation",
+      "authors": "Laki Iinbor, Zhiyang Dou, Wojciech Matusik",
+      "date": "2026-04-23",
+      "pdf": "https://arxiv.org/pdf/2604.21984v2",
+      "score": "6.0",
+      "evidence": "利用可微图像表示进行高效渲染",
+      "tldr": "本研究提出软各向异性图（SAD），一种由自适应站点参数化的显式可微图像表示方法。SAD通过各向异性度量和加权距离计算像素颜色，利用Softmax混合Top-K站点，形成具有可学习温度的软阿波罗尼奥斯图。该方法结合类跳跃洪泛的Top-K传播方案实现高效渲染，在保持高质量重建的同时，训练速度比现有SOTA提升4-19倍，且在相同比特率下性能优于Image-GS和Instant-NGP。",
+      "tags": "query:q7",
+      "abstract_en": "We introduce Soft Anisotropic Diagrams (SAD), an explicit and differentiable image representation parameterized by a set of adaptive sites in the image plane. In SAD, each site specifies an anisotropic metric and an additively weighted distance score, and we compute pixel colors as a softmax blend over a small per-pixel top-K subset of sites. We induce a soft anisotropic additively weighted Voronoi partition (i.e., an Apollonius diagram) with learnable per-site temperatures, preserving informative gradients while allowing clear, content-aligned boundaries and explicit ownership. Such a formulation enables efficient rendering by maintaining a per-query top-K map that approximates nearest neighbors under the same shading score, allowing GPU-friendly, fixed-size local computation. We update this list using our top-K propagation scheme inspired by jump flooding, augmented with stochastic injection to provide probabilistic global coverage. Training follows a GPU-first pipeline with gradient-weighted initialization, Adam optimization, and adaptive budget control through densification and pruning. Across standard benchmarks, SAD consistently outperforms Image-GS and Instant-NGP at matched bitrate. On Kodak, SAD reaches 46.0 dB PSNR with 2.2 s encoding time (vs. 28 s for Image-GS), and delivers 4-19 times end-to-end training speedups over state-of-the-art baselines. We demonstrate the effectiveness of SAD by showcasing the seamless integration with differentiable pipelines for forward and inverse problems, efficiency of fast random access, and compact storage.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/28/2604.23010v1-genassets-generating-in-the-wild-3d-assets-in-latent-space",
+      "section": "quick",
+      "title_en": "GenAssets: Generating in-the-wild 3D Assets in Latent Space",
+      "authors": "Ze Yang, Jingkang Wang, Haowei Zhang, Sivabalan Manivasagam, Yun Chen, Raquel Urtasun",
+      "date": "2026-04-24",
+      "pdf": "https://arxiv.org/pdf/2604.23010v1",
+      "score": "6.0",
+      "evidence": "基于神经渲染的3D资产重建",
+      "tldr": "本研究针对自动驾驶仿真中高质量3D资产的需求，提出GenAssets模型。针对现有神经渲染重建速度慢、视角受限，以及扩散模型在处理野外稀疏遮挡数据表现不佳的问题，该方法采用“先重建后生成”的策略。通过遮挡感知的神经渲染在多场景下构建高质量3D潜空间，并在此空间训练扩散模型，从而利用野外LiDAR和相机数据生成几何完整、外观逼真的3D资产，为仿真提供了可扩展的内容创作手段。",
+      "tags": "query:q1",
+      "abstract_en": "High-quality 3D assets for traffic participants are critical for multi-sensor simulation, which is essential for the safe end-to-end development of autonomy. Building assets from in-the-wild data is key for diversity and realism, but existing neural-rendering based reconstruction methods are slow and generate assets that render well only from viewpoints close to the original observations, limiting their usefulness in simulation. Recent diffusion-based generative models build complete and diverse assets, but perform poorly on in-the-wild driving scenes, where observed actors are captured under sparse and limited fields of view, and are partially occluded. In this work, we propose a 3D latent diffusion model that learns on in-the-wild LiDAR and camera data captured by a sensor platform and generates high-quality 3D assets with complete geometry and appearance. Key to our method is a \"reconstruct-then-generate\" approach that first leverages occlusion-aware neural rendering trained over multiple scenes to build a high-quality latent space for objects, and then trains a diffusion model that operates on the latent space. We show our method outperforms existing reconstruction and generation based methods, unlocking diverse and scalable content creation for simulation.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/28/2604.24167v1-peps-positional-encoding-projected-sampling----extended",
+      "section": "quick",
+      "title_en": "PEPS: Positional Encoding Projected Sampling -- Extended",
+      "authors": "Guillaume Perez, Janarbek Matai, Takahiro Harada",
+      "date": "2026-04-27",
+      "pdf": "https://arxiv.org/pdf/2604.24167v1",
+      "score": "6.0",
+      "evidence": "隐式神经表示与位置编码",
+      "tldr": "本研究针对隐式神经表示（INR）中位置编码能力不足及网格编码依赖高分辨率的问题，提出了位置编码投影采样（PEPS）。该方法将不同频率下的坐标投影视为兴趣点，并利用这些点随频率变化的独特运动模式作为基分解，结合网格进行学习。实验证明，PEPS在图像表示、纹理压缩和符号距离函数等任务中均优于现有技术，且在同等精度下可减少约25%的参数量。",
+      "tags": "query:q1",
+      "abstract_en": "Implicit neural representations (INRs) are increasingly being used as tools to map coordinates to signals, encompassing applications from neural fields to texture compression, shape representations, and beyond. Most INR methods are based on using high-dimensional projections of the initial coordinates through encoders such as grid or positional encoding. Nevertheless, positional encoding is often insufficient and grids, as we show in this paper, require high resolution for being able to learn. In this paper, we demonstrate that positional encoding can be used not only as a high-dimensional embedding but also decomposed as a series of meaningful points. We propose the Positional Encoding Projected Sampling, where we treat the projection of the original coordinate at each frequency as a point of interest. We describe the motion of each point with respect to the frequencies and show that it follows a unique pattern. Finally, we use the unique motion of each point as a basis decomposition for doing learned positional encoding using grids. We prove, using three competitive applications; image representation, texture compression, and signed distance function; that the proposed approach outperforms the current state of the art methods, and often requires 25\\% less parameters for equivalent reconstruction error or rendering.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
