@@ -6,38 +6,34 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-28
-- 运行时间：2026-04-28 20:18:07 UTC
+- 最新运行日期：2026-04-29
+- 运行时间：2026-04-29 20:31:50 UTC
 - 运行状态：成功
-- 本次总论文数：5
-- 精读区：2
+- 本次总论文数：4
+- 精读区：1
 - 速读区：3
 
 ### 今日简报（AI）
-- 今日共生成 5 篇推荐（精读 2 篇，速读 3 篇）
-- 精读：《GS-DOT: Gaussian splatting-based image reconstruction for diffuse optical tomography》（8.0/10）, 《Voxel Deformation-Aware Neural Intersection Function》（8.0/10）
-- 速读：《Soft Anisotropic Diagrams for Differentiable Image Representation》（6.0/10）, 《GenAssets: Generating in-the-wild 3D Assets in Latent Space》（6.0/10）, 《PEPS: Positional Encoding Projected Sampling -- Extended》（6.0/10）
-- 这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。
-- 详情：[/202604/28/README](/202604/28/README)
+今日聚焦 3D 资产的光路传输与实时渲染，深度解析了 8D 神经资产分布学习及高斯泼溅的泛化应用。
+重点推荐 8DNA 框架对复杂光路传输的革新，并关注 3DGS 在语义编码与人体建模中的实时通信潜力。
+建议开发者关注实时微分渲染与语义一致性的结合，探索沉浸式视频技术的落地新路径。
+- 详情：[/202604/29/README](/202604/29/README)
 
 ### 精读区论文标签
-1. [GS-DOT: Gaussian splatting-based image reconstruction for diffuse optical tomography](/202604/28/2604.23675v1-gs-dot-gaussian-splatting-based-image-reconstruction-for-diffuse-optical-tomography)  
+1. [8DNA: 8D Neural Asset Light Transport by Distribution Learning](/202604/29/2604.25129v1-8dna-8d-neural-asset-light-transport-by-distribution-learning)  
    标签：评分：8.0/10、query:q4
-   evidence：使用高斯泼溅建模高散射介质中的光传输
-2. [Voxel Deformation-Aware Neural Intersection Function](/202604/28/2604.24666v1-voxel-deformation-aware-neural-intersection-function)  
-   标签：评分：8.0/10、query:q3
-   evidence：体素空间中射线采样的神经相交函数
+   evidence：包含次表面散射的光线传输神经表示
 
 ### 速读区论文标签
-1. [Soft Anisotropic Diagrams for Differentiable Image Representation](/202604/28/2604.21984v2-soft-anisotropic-diagrams-for-differentiable-image-representation)  
-   标签：评分：6.0/10、query:q7
-   evidence：利用可微图像表示进行高效渲染
-2. [GenAssets: Generating in-the-wild 3D Assets in Latent Space](/202604/28/2604.23010v1-genassets-generating-in-the-wild-3d-assets-in-latent-space)  
+1. [Power Foam: Unifying Real-Time Differentiable Ray Tracing and Rasterization](/202604/29/2604.24994v1-power-foam-unifying-real-time-differentiable-ray-tracing-and-rasterization)  
+   标签：评分：7.0/10、query:q1
+   evidence：可微分3D表示与用于光线遍历的体积划分
+2. [Generalizable 3D Gaussian Splatting enabled Semantic Coding for Real-Time Immersive Video Communications](/202604/29/2604.25330v1-generalizable-3d-gaussian-splatting-enabled-semantic-coding-for-real-time-immersive-video-communications)  
    标签：评分：6.0/10、query:q1
-   evidence：基于神经渲染的3D资产重建
-3. [PEPS: Positional Encoding Projected Sampling -- Extended](/202604/28/2604.24167v1-peps-positional-encoding-projected-sampling----extended)  
+   evidence：用于实时3D重建的神经渲染
+3. [Generalizable Human Gaussian Splatting via Multi-view Semantic Consistency](/202604/29/2604.25466v1-generalizable-human-gaussian-splatting-via-multi-view-semantic-consistency)  
    标签：评分：6.0/10、query:q1
-   evidence：隐式神经表示与位置编码
+   evidence：使用高斯泼溅进行人体神经体积渲染
 
 
 <div class="dpr-home-promo-card">

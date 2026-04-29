@@ -1,0 +1,169 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-29T20:30:06.626791+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2604.25129v1",
+      "title": "8DNA: 8D Neural Asset Light Transport by Distribution Learning",
+      "abstract": "High-fidelity 3D assets exhibit intriguing global illumination effects like subsurface scattering, glossy interreflections, and fine-scale fiber scatterings, which often involve long scattering paths that are expensive to simulate. We introduce 8D neural assets (8DNA) to pre-bake these light transport effects into neural representations. Unlike prior methods that assume far-field lighting and precompute light transport into 6D functions, 8DNA learns the full 8D light transport, enabling accurate rendering under near-field illumination. Our training leverages a distribution-learning formulation that learns light transport from forward path-traced samples, which produces less optimization variance with lower training budget than the prior regression-based approaches. Experiments show our 8DNA rendering closely matches path-traced results under various scene configurations, yet it achieves improved variance reduction and fast inference speeds on challenging assets.",
+      "authors": [
+        "Liwen Wu",
+        "Haolin Lu",
+        "Bing Xu",
+        "Miloš Hašan",
+        "Ravi Ramamoorthi"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.CV"
+      ],
+      "published": "2026-04-28T02:07:42+00:00",
+      "link": "https://arxiv.org/pdf/2604.25129v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "neural representations for light transport including subsurface scattering",
+      "llm_evidence_cn": "包含次表面散射的光线传输神经表示",
+      "llm_evidence": "包含次表面散射的光线传输神经表示",
+      "canonical_evidence": "包含次表面散射的光线传输神经表示",
+      "llm_tldr_en": "Learns 8D neural light transport to pre-bake complex scattering effects for high-fidelity rendering.",
+      "llm_tldr_cn": "学习8D神经光线传输，为高保真渲染预烘焙复杂的散射效果。",
+      "llm_tldr": "学习8D神经光线传输，为高保真渲染预烘焙复杂的散射效果。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "deep learning for multiple scattering in volumes",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2604.24994v1",
+      "title": "Power Foam: Unifying Real-Time Differentiable Ray Tracing and Rasterization",
+      "abstract": "We introduce a differentiable 3D representation that unifies the ray tracing capabilities of foam-based ray tracing with the efficiency of modern rasterization pipelines. While prior foam representations enable constant-time ray traversal through an explicit volumetric partition of space, their potentially unbounded cells hinder efficient tile-based rasterization. We address this limitation by generalizing Voronoi foams to bounded power diagrams with controllable cell extents, enabling spatially bounded primitives without requiring expensive Delaunay triangulations during training. We further introduce an oriented surface formulation that explicitly models interfaces between interior and exterior regions, and decouple geometry from appearance by embedding differentiable texture directly on these surfaces. Together, these contributions yield a representation that preserves state-of-the-art ray tracing efficiency while achieving rasterization performance competitive with current generation 3DGS, providing a practical path toward unified real-time differentiable rendering.",
+      "authors": [
+        "Shrisudhan Govindarajan",
+        "Daniel Rebain",
+        "Dor Verbin",
+        "Kwang Moo Yi",
+        "Anish Prabhu",
+        "Andrea Tagliasacchi"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.CV"
+      ],
+      "published": "2026-04-27T20:58:36+00:00",
+      "link": "https://arxiv.org/pdf/2604.24994v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "differentiable 3D representation and volumetric partition for ray traversal",
+      "llm_evidence_cn": "可微分3D表示与用于光线遍历的体积划分",
+      "llm_evidence": "可微分3D表示与用于光线遍历的体积划分",
+      "canonical_evidence": "可微分3D表示与用于光线遍历的体积划分",
+      "llm_tldr_en": "Unifies ray tracing and rasterization using a differentiable volumetric partition for efficient 3D rendering.",
+      "llm_tldr_cn": "利用可微分体积划分统一光线追踪与光栅化，实现高效3D渲染。",
+      "llm_tldr": "利用可微分体积划分统一光线追踪与光栅化，实现高效3D渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.25330v1",
+      "title": "Generalizable 3D Gaussian Splatting enabled Semantic Coding for Real-Time Immersive Video Communications",
+      "abstract": "Real-time immersive video communications, particularly high-fidelity 3D telepresence, necessitates a synergistic balance between instantaneous dynamic scene reconstruction and high-efficiency data transmission. While recent advancements in feed-forward 3D Gaussian Splatting (3DGS) have enabled real-time rendering, performing multi-view video coding and 3D reconstruction in a decoupled manner leads to suboptimal compression efficiency and high computational complexity. To address this, we propose GS-SCNet, the first unified end-to-end framework that seamlessly integrates generalizable 3DGS reconstruction with a dedicated deep Semantic Coding pipeline. Our architecture is underpinned by two core technical contributions: (i) we introduce a Disparity-Guided Parallel Semantic Codec that exploits epipolar geometric priors to facilitate cross-view contextual interaction via disparity compensation and semantic fusion, thereby enabling real-time parallel processing of stereo streams while significantly enhancing rate-distortion performance, and (ii) we develop a Lightweight Gaussian Parameter Predictor which directly projects decoded semantic latents into 3DGS attributes, obviating the need for intermediate pixel-domain reconstruction. By coupling the codec with the task-specific predictor, our framework extracts geometric correlations only once, effectively eliminating the redundant computational bottleneck inherent in conventional decoupled paradigms. Extensive evaluations on both synthetic and real-world human datasets demonstrate that GS-SCNet achieves a superior trade-off across compression efficiency, rendering quality, and real-time performance. Notably, our framework exhibits strong cross-domain generalization and robustness against compression artifacts when applied to out-of-domain real-world data, significantly outperforming conventional decoupled transmission paradigms.",
+      "authors": [
+        "Dingxi Yang",
+        "Wenqi Guo",
+        "Yue Liu",
+        "Jungong Han",
+        "Zhijin Qin"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV"
+      ],
+      "published": "2026-04-28T07:46:50+00:00",
+      "link": "https://arxiv.org/pdf/2604.25330v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "neural rendering for real-time 3D reconstruction",
+      "llm_evidence_cn": "用于实时3D重建的神经渲染",
+      "llm_evidence": "用于实时3D重建的神经渲染",
+      "canonical_evidence": "用于实时3D重建的神经渲染",
+      "llm_tldr_en": "Integrates generalizable 3D Gaussian Splatting with semantic coding for real-time immersive video.",
+      "llm_tldr_cn": "将可泛化的3D高斯泼溅与语义编码结合，用于实时沉浸式视频通信。",
+      "llm_tldr": "将可泛化的3D高斯泼溅与语义编码结合，用于实时沉浸式视频通信。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.25466v1",
+      "title": "Generalizable Human Gaussian Splatting via Multi-view Semantic Consistency",
+      "abstract": "Recently, generalizable human Gaussian splatting from sparse-view inputs has been actively studied for the photorealistic human rendering. Most existing methods rely on explicit geometric constraints or predefined structural representations to accurately position 3D Gaussians. Although these approaches have shown the remarkable progress in this field, they still suffer from inconsistent feature representations across multi-view inputs due to complex articulations of the human body and limited overlaps between different views. To address this problem, we propose a novel method to accurately localize 3D Gaussians and ultimately improve the quality of human rendering. The key idea is to unproject latent embeddings encoded from each viewpoint into a shared 3D space through predicted depth maps and recalibrate them belonging to the same body part based on cross-view attention. This helps the model resolve the spatial ambiguity occurring in highly textured regions as well as occluded body parts, thus leading to the accurate localization of 3D Gaussians. Experimental results on benchmark datasets show that the proposed method efficiently improves the performance of generalizable human Gaussian splatting from sparse-view inputs.",
+      "authors": [
+        "Jingi Kim",
+        "Wonjun Kim"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-28T10:12:28+00:00",
+      "link": "https://arxiv.org/pdf/2604.25466v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "neural volume rendering using Gaussian Splatting for human rendering",
+      "llm_evidence_cn": "使用高斯泼溅进行人体神经体积渲染",
+      "llm_evidence": "使用高斯泼溅进行人体神经体积渲染",
+      "canonical_evidence": "使用高斯泼溅进行人体神经体积渲染",
+      "llm_tldr_en": "Improves generalizable human rendering using multi-view semantic consistency in Gaussian Splatting.",
+      "llm_tldr_cn": "通过多视图语义一致性提升高斯泼溅在通用人体渲染中的质量。",
+      "llm_tldr": "通过多视图语义一致性提升高斯泼溅在通用人体渲染中的质量。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

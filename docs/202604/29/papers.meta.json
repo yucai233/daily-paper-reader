@@ -1,0 +1,65 @@
+{
+  "label": "2026-04-29",
+  "date": "2026-04-29",
+  "generated_at": "2026-04-29T20:32:12",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202604/29/2604.25129v1-8dna-8d-neural-asset-light-transport-by-distribution-learning",
+      "section": "deep",
+      "title_en": "8DNA: 8D Neural Asset Light Transport by Distribution Learning",
+      "authors": "Liwen Wu, Haolin Lu, Bing Xu, Miloš Hašan, Ravi Ramamoorthi",
+      "date": "2026-04-28",
+      "pdf": "https://arxiv.org/pdf/2604.25129v1",
+      "score": "8.0",
+      "evidence": "包含次表面散射的光线传输神经表示",
+      "tldr": "针对高保真3D资产中复杂的全局光照（如次表面散射、光泽间接反射等）模拟成本高昂的问题，本文提出了8DNA。该方法通过分布学习将完整8D光传输预烘焙到神经表示中，克服了以往6D方法仅支持远场照明的局限，实现了近场照明下的精确渲染。实验证明，8DNA在降低训练成本和方差的同时，能以极快的推理速度生成与路径追踪相媲美的高质量渲染效果。",
+      "tags": "query:q4",
+      "abstract_en": "High-fidelity 3D assets exhibit intriguing global illumination effects like subsurface scattering, glossy interreflections, and fine-scale fiber scatterings, which often involve long scattering paths that are expensive to simulate. We introduce 8D neural assets (8DNA) to pre-bake these light transport effects into neural representations. Unlike prior methods that assume far-field lighting and precompute light transport into 6D functions, 8DNA learns the full 8D light transport, enabling accurate rendering under near-field illumination. Our training leverages a distribution-learning formulation that learns light transport from forward path-traced samples, which produces less optimization variance with lower training budget than the prior regression-based approaches. Experiments show our 8DNA rendering closely matches path-traced results under various scene configurations, yet it achieves improved variance reduction and fast inference speeds on challenging assets.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/29/2604.24994v1-power-foam-unifying-real-time-differentiable-ray-tracing-and-rasterization",
+      "section": "quick",
+      "title_en": "Power Foam: Unifying Real-Time Differentiable Ray Tracing and Rasterization",
+      "authors": "Shrisudhan Govindarajan, Daniel Rebain, Dor Verbin, Kwang Moo Yi, Anish Prabhu, Andrea Tagliasacchi",
+      "date": "2026-04-27",
+      "pdf": "https://arxiv.org/pdf/2604.24994v1",
+      "score": "7.0",
+      "evidence": "可微分3D表示与用于光线遍历的体积划分",
+      "tldr": "本研究提出Power Foam，一种统一了实时微分光线追踪与光栅化的3D表示方法。针对以往泡沫表示中单元格无界导致光栅化效率低的问题，该方法将Voronoi泡沫推广为具有可控单元范围的有界权重图。通过引入定向表面公式和微分纹理嵌入，实现了几何与外观的解耦。该方法在保持顶尖光线追踪效率的同时，达到了与3DGS相当的光栅化性能，为统一实时微分渲染提供了新路径。",
+      "tags": "query:q1",
+      "abstract_en": "We introduce a differentiable 3D representation that unifies the ray tracing capabilities of foam-based ray tracing with the efficiency of modern rasterization pipelines. While prior foam representations enable constant-time ray traversal through an explicit volumetric partition of space, their potentially unbounded cells hinder efficient tile-based rasterization. We address this limitation by generalizing Voronoi foams to bounded power diagrams with controllable cell extents, enabling spatially bounded primitives without requiring expensive Delaunay triangulations during training. We further introduce an oriented surface formulation that explicitly models interfaces between interior and exterior regions, and decouple geometry from appearance by embedding differentiable texture directly on these surfaces. Together, these contributions yield a representation that preserves state-of-the-art ray tracing efficiency while achieving rasterization performance competitive with current generation 3DGS, providing a practical path toward unified real-time differentiable rendering.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/29/2604.25330v1-generalizable-3d-gaussian-splatting-enabled-semantic-coding-for-real-time-immersive-video-communications",
+      "section": "quick",
+      "title_en": "Generalizable 3D Gaussian Splatting enabled Semantic Coding for Real-Time Immersive Video Communications",
+      "authors": "Dingxi Yang, Wenqi Guo, Yue Liu, Jungong Han, Zhijin Qin",
+      "date": "2026-04-28",
+      "pdf": "https://arxiv.org/pdf/2604.25330v1",
+      "score": "6.0",
+      "evidence": "用于实时3D重建的神经渲染",
+      "tldr": "针对实时沉浸式视频通信中多视图编码与3D重建解耦导致的效率低下问题，本文提出GS-SCNet框架。该框架首次将可泛化的3D高斯泼溅（3DGS）与深度语义编码集成，通过视差引导的并行语义编解码器和轻量级高斯参数预测器，实现了从语义潜空间直接到3DGS属性的映射。实验证明，该方法在压缩效率、渲染质量和实时性方面均优于传统方案，且具有极强的跨域泛化能力。",
+      "tags": "query:q1",
+      "abstract_en": "Real-time immersive video communications, particularly high-fidelity 3D telepresence, necessitates a synergistic balance between instantaneous dynamic scene reconstruction and high-efficiency data transmission. While recent advancements in feed-forward 3D Gaussian Splatting (3DGS) have enabled real-time rendering, performing multi-view video coding and 3D reconstruction in a decoupled manner leads to suboptimal compression efficiency and high computational complexity. To address this, we propose GS-SCNet, the first unified end-to-end framework that seamlessly integrates generalizable 3DGS reconstruction with a dedicated deep Semantic Coding pipeline. Our architecture is underpinned by two core technical contributions: (i) we introduce a Disparity-Guided Parallel Semantic Codec that exploits epipolar geometric priors to facilitate cross-view contextual interaction via disparity compensation and semantic fusion, thereby enabling real-time parallel processing of stereo streams while significantly enhancing rate-distortion performance, and (ii) we develop a Lightweight Gaussian Parameter Predictor which directly projects decoded semantic latents into 3DGS attributes, obviating the need for intermediate pixel-domain reconstruction. By coupling the codec with the task-specific predictor, our framework extracts geometric correlations only once, effectively eliminating the redundant computational bottleneck inherent in conventional decoupled paradigms. Extensive evaluations on both synthetic and real-world human datasets demonstrate that GS-SCNet achieves a superior trade-off across compression efficiency, rendering quality, and real-time performance. Notably, our framework exhibits strong cross-domain generalization and robustness against compression artifacts when applied to out-of-domain real-world data, significantly outperforming conventional decoupled transmission paradigms.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/29/2604.25466v1-generalizable-human-gaussian-splatting-via-multi-view-semantic-consistency",
+      "section": "quick",
+      "title_en": "Generalizable Human Gaussian Splatting via Multi-view Semantic Consistency",
+      "authors": "Jingi Kim, Wonjun Kim",
+      "date": "2026-04-28",
+      "pdf": "https://arxiv.org/pdf/2604.25466v1",
+      "score": "6.0",
+      "evidence": "使用高斯泼溅进行人体神经体积渲染",
+      "tldr": "针对稀疏视角下人体高斯泼溅渲染中特征表示不一致的问题，本文提出一种基于多视角语义一致性的泛化方法。该方法通过将各视角的潜嵌入投影至共享3D空间，并利用跨视角注意力机制根据身体部位重新校准特征，有效解决了复杂姿态和遮挡导致的定位歧义，显著提升了人体渲染的精度与质量。",
+      "tags": "query:q1",
+      "abstract_en": "Recently, generalizable human Gaussian splatting from sparse-view inputs has been actively studied for the photorealistic human rendering. Most existing methods rely on explicit geometric constraints or predefined structural representations to accurately position 3D Gaussians. Although these approaches have shown the remarkable progress in this field, they still suffer from inconsistent feature representations across multi-view inputs due to complex articulations of the human body and limited overlaps between different views. To address this problem, we propose a novel method to accurately localize 3D Gaussians and ultimately improve the quality of human rendering. The key idea is to unproject latent embeddings encoded from each viewpoint into a shared 3D space through predicted depth maps and recalibrate them belonging to the same body part based on cross-view attention. This helps the model resolve the spatial ambiguity occurring in highly textured regions as well as occluded body parts, thus leading to the accurate localization of 3D Gaussians. Experimental results on benchmark datasets show that the proposed method efficiently improves the performance of generalizable human Gaussian splatting from sparse-view inputs.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
