@@ -1,0 +1,65 @@
+{
+  "label": "2026-04-30",
+  "date": "2026-04-30",
+  "generated_at": "2026-04-30T20:16:56",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202604/30/2604.26262v1-semantic-foam-unifying-spatial-and-semantic-scene-decomposition",
+      "section": "quick",
+      "title_en": "Semantic Foam: Unifying Spatial and Semantic Scene Decomposition",
+      "authors": "Amr Sharafeldin, Shrisudhan Govindarajan, Thomas Walker, Aryan Mikaeili, Daniel Rebain, Kwang Moo Yi, Andrea Tagliasacchi",
+      "date": "2026-04-29",
+      "pdf": "https://arxiv.org/pdf/2604.26262v1",
+      "score": "7.0",
+      "evidence": "用于神经场景重建的体积Voronoi网格",
+      "tldr": "针对3D高斯泼溅等重建方法在交互和语义分解方面的局限性，本文提出Semantic Foam。该方法基于Radiant Foam的体积Voronoi网格结构，在单元级别引入显式语义特征场。通过利用Voronoi单元的固有空间结构进行正则化，有效解决了跨视图一致性差和遮挡导致的伪影问题。实验证明，该方法在物体级分割性能上优于Gaussian Grouping和SAGA等现有技术。",
+      "tags": "query:q1",
+      "abstract_en": "Modern scene reconstruction methods, such as 3D Gaussian Splatting, enable photo-realistic novel view synthesis at real-time speeds. However, their adoption in interactive graphics applications remains limited due to the difficulty of interacting with these representations compared to traditional, human-authored 3D assets. While prior work has attempted to impose semantic decomposition on these models, significant challenges remain in segmentation quality and cross-view consistency.To address these limitations, we introduce Semantic Foam, which extends the recently proposed Radiant Foam representation to semantic decomposition tasks. Our approach leverages the inherent spatial structure of Radiant Foam's volumetric Voronoi mesh and augments it with an explicit semantic feature field defined at the cell level. This design enables direct spatial regularization, improving consistency across views and mitigating artifacts caused by occlusion and inconsistent supervision, which are common issues in point-based representations.Experimental results demonstrate that our method achieves superior object-level segmentation performance compared to state-of-the-art approaches such as Gaussian Grouping and SAGA.Project page: http://semanticfoam.github.io/",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/30/2604.23372v1-physics-informed-temporal-u-net-for-high-fidelity-fluid-interpolation",
+      "section": "quick",
+      "title_en": "Physics-Informed Temporal U-Net for High-Fidelity Fluid Interpolation",
+      "authors": "Eshwar R. A., Nevin Mathew Thomas, Nehal G, Farida M. Begam",
+      "date": "2026-04-25",
+      "pdf": "https://arxiv.org/pdf/2604.23372v1",
+      "score": "6.0",
+      "evidence": "物理启发的深度学习用于流体动力学和体积插值",
+      "tldr": "针对流体动力学插值中存在的空间模糊和时间频闪问题，本文提出一种物理增强的Temporal U-Net。该模型结合了VGG感知损失和物理信息桥接，通过时间加权特征融合与抛物线边界约束，实现了高保真的流体重建。实验证明，该方法在保持结构完整性和捕捉高频湍流细节方面显著优于传统深度学习模型。",
+      "tags": "query:q5",
+      "abstract_en": "Reconstructing high-fidelity fluid dynamics from sparse temporal observations is quite challenging, mainly due to the chaotic and non-linear nature of fluid transport. Standard deep learning-based interpolation methods often tend to regress to the mean, which results in spatial blurring and temporal strobing, especially noticeable around the observed anchor frames where transitions become discontinuous. In this work, we propose a novel Temporal U-Net architecture that integrates a VGG-based perceptual loss along with a Physics-Informed Bridge to overcome these issues. By introducing time-weighted feature blending and enforcing a parabolic boundary condition defined by t(1 - t), the model ensures smooth transitions while also maintaining perfect consistency at the endpoints. Experimental results on multi-channel RGB fluid data show that our method clearly outperforms standard models, both in terms of structural fidelity and texture preservation. In particular, the model achieves a Mean Absolute Error of 0.015, compared to 0.085 for a standard L1 baseline. Further Spatial Power Spectral Density (PSD) analysis reveals that the model is able to retain high-frequency turbulent details that are usually lost in deterministic reconstructions.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/30/2604.26799v1-mesongs-post-training-compression-of-3d-gaussian-splatting-with-hyperparameter-searching",
+      "section": "quick",
+      "title_en": "MesonGS++: Post-training Compression of 3D Gaussian Splatting with Hyperparameter Searching",
+      "authors": "Shuzhao Xie, Junchen Ge, Weixiang Zhang, Jiahang Liu, Chen Tang, Yunpeng Bai, Shijia Ge, Jingyan Jiang, Yuzhi Huang, Fengnian Yang, Cong Zhang, Xiaoyi Fan, Zhi Wang",
+      "date": "2026-04-29",
+      "pdf": "https://arxiv.org/pdf/2604.26799v1",
+      "score": "6.0",
+      "evidence": "通过训练后压缩加速渲染",
+      "tldr": "针对3D高斯泼溅（3DGS）存储开销巨大的问题，本文提出MesonGS++，一种感知尺寸的训练后压缩编解码器。该方法集成了重要性剪枝、八叉树几何编码、属性变换及混合精度量化等技术，并通过离散采样和整数线性规划自动优化超参数以满足特定存储预算。实验证明其在保持渲染质量的同时实现了超过34倍的压缩率，性能优于现有训练后压缩方法。",
+      "tags": "query:q7",
+      "abstract_en": "3D Gaussian Splatting (3DGS) achieves high-quality novel view synthesis with real-time rendering, but its storage cost remains prohibitive for practical deployment. Existing post-training compression methods still rely on many coupled hyperparameters across pruning, transformation, quantization, and entropy coding, making it difficult to control the final compressed size and fully exploit the rate-distortion trade-off. We propose MesonGS++, a size-aware post-training codec for 3D Gaussian compression. On the codec side, MesonGS++ combines joint importance-based pruning, octree geometry coding, attribute transformation, selective vector quantization for higher-degree spherical harmonics, and group-wise mixed-precision quantization with entropy coding. On the configuration side, it treats the reserve ratio and bit-width allocation as the dominant rate-distortion knobs and jointly optimizes them under a target storage budget via discrete sampling and 0--1 integer linear programming. We further propose a linear size estimator and a CUDA parallel quantization operator to accelerate the hyperparameter searching process. Extensive experiments show that MesonGS++ achieves over 34$\\times$ compression while preserving rendering fidelity, outperforming state-of-the-art post-training methods and accurately meeting target size budgets. Remarkably, without any training, MesonGS++ can even surpass the PSNR of vanilla 3DGS at a 20$\\times$ compression rate on the Stump scene. Our code is available at https://github.com/mmlab-sigs/mesongs_plus",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/30/2604.26920v1-color-encoded-illumination-for-high-speed-volumetric-scene-reconstruction",
+      "section": "quick",
+      "title_en": "Color-Encoded Illumination for High-Speed Volumetric Scene Reconstruction",
+      "authors": "David Novikov, Eilon Vaknin, Narek Tumanyan, Mark Sheinin",
+      "date": "2026-04-29",
+      "pdf": "https://arxiv.org/pdf/2604.26920v1",
+      "score": "6.0",
+      "evidence": "体积场景重建与渲染",
+      "tldr": "针对传统相机受限于低帧率而无法捕捉高速动态场景的问题，本文提出一种利用颜色编码照明的体积场景重建方法。该方法通过快速顺序的彩色光脉冲将高速时间信息编码到低速相机的图像中，并结合改进的动态高斯泼溅技术进行解码。这种方法无需修改相机硬件即可实现多视角高速体积重建，为捕捉快速运动场景提供了高效且低成本的解决方案。",
+      "tags": "query:q1",
+      "abstract_en": "The task of capturing and rendering 3D dynamic scenes from 2D images has become increasingly popular in recent years. However, most conventional cameras are bandwidth-limited to 30-60 FPS, restricting these methods to static or slowly evolving scenes. While overcoming bandwidth limitations is difficult for general scenes, recent years have seen a flurry of computational imaging methods that yield high-speed videos using conventional cameras for specific applications (e.g., motion capture and particle image velocimetry). However, most of these methods require modifications to a camera's optics or the addition of mechanically moving components, limiting them to a single-view high-speed capture. Consequently, these methods cannot be readily used to capture a 3D representation of rapid scene motion. In this paper, we propose a novel method to capture and reconstruct a volumetric representation of a high-speed scene using only unaugmented low-speed cameras. Instead of modifying the hardware or optics of each individual camera, we encode high-speed scene dynamics by illuminating the scene with a rapid, sequential color-coded sequence. This results in simultaneous multi-view capture of the scene, where high-speed temporal information is encoded in the spatial intensity and color variations of the captured images. To construct a high-speed volumetric representation of the dynamic scene, we develop a novel dynamic Gaussian Splatting-based approach that decodes the temporal information from the images. We evaluate our approach on simulated scenes and real-world experiments using a multi-camera imaging setup, showing first-of-a-kind high-speed volumetric scene reconstructions.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

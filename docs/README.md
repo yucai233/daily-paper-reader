@@ -6,34 +6,35 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-29
-- 运行时间：2026-04-29 20:31:50 UTC
+- 最新运行日期：2026-04-30
+- 运行时间：2026-04-30 20:16:46 UTC
 - 运行状态：成功
 - 本次总论文数：4
-- 精读区：1
-- 速读区：3
+- 精读区：0
+- 速读区：4
 
 ### 今日简报（AI）
-今日聚焦 3D 资产的光路传输与实时渲染，深度解析了 8D 神经资产分布学习及高斯泼溅的泛化应用。
-重点推荐 8DNA 框架对复杂光路传输的革新，并关注 3DGS 在语义编码与人体建模中的实时通信潜力。
-建议开发者关注实时微分渲染与语义一致性的结合，探索沉浸式视频技术的落地新路径。
-- 详情：[/202604/29/README](/202604/29/README)
+今日速览 3D 场景语义分解与高斯泼溅压缩等 4 项前沿成果。
+重点关注 Semantic Foam 实现的空间语义统一建模，以及 MesonGS++ 带来的 3DGS 后处理压缩新方案。
+建议关注语义信息与三维重建的深度融合，探索更轻量、智能的场景表达方式。
+- 详情：[/202604/30/README](/202604/30/README)
 
 ### 精读区论文标签
-1. [8DNA: 8D Neural Asset Light Transport by Distribution Learning](/202604/29/2604.25129v1-8dna-8d-neural-asset-light-transport-by-distribution-learning)  
-   标签：评分：8.0/10、query:q4
-   evidence：包含次表面散射的光线传输神经表示
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Power Foam: Unifying Real-Time Differentiable Ray Tracing and Rasterization](/202604/29/2604.24994v1-power-foam-unifying-real-time-differentiable-ray-tracing-and-rasterization)  
+1. [Semantic Foam: Unifying Spatial and Semantic Scene Decomposition](/202604/30/2604.26262v1-semantic-foam-unifying-spatial-and-semantic-scene-decomposition)  
    标签：评分：7.0/10、query:q1
-   evidence：可微分3D表示与用于光线遍历的体积划分
-2. [Generalizable 3D Gaussian Splatting enabled Semantic Coding for Real-Time Immersive Video Communications](/202604/29/2604.25330v1-generalizable-3d-gaussian-splatting-enabled-semantic-coding-for-real-time-immersive-video-communications)  
+   evidence：用于神经场景重建的体积Voronoi网格
+2. [Physics-Informed Temporal U-Net for High-Fidelity Fluid Interpolation](/202604/30/2604.23372v1-physics-informed-temporal-u-net-for-high-fidelity-fluid-interpolation)  
+   标签：评分：6.0/10、query:q5
+   evidence：物理启发的深度学习用于流体动力学和体积插值
+3. [MesonGS++: Post-training Compression of 3D Gaussian Splatting with Hyperparameter Searching](/202604/30/2604.26799v1-mesongs-post-training-compression-of-3d-gaussian-splatting-with-hyperparameter-searching)  
+   标签：评分：6.0/10、query:q7
+   evidence：通过训练后压缩加速渲染
+4. [Color-Encoded Illumination for High-Speed Volumetric Scene Reconstruction](/202604/30/2604.26920v1-color-encoded-illumination-for-high-speed-volumetric-scene-reconstruction)  
    标签：评分：6.0/10、query:q1
-   evidence：用于实时3D重建的神经渲染
-3. [Generalizable Human Gaussian Splatting via Multi-view Semantic Consistency](/202604/29/2604.25466v1-generalizable-human-gaussian-splatting-via-multi-view-semantic-consistency)  
-   标签：评分：6.0/10、query:q1
-   evidence：使用高斯泼溅进行人体神经体积渲染
+   evidence：体积场景重建与渲染
 
 
 <div class="dpr-home-promo-card">

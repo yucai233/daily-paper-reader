@@ -1,0 +1,184 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-30T20:16:30.324746+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.26262v1",
+      "title": "Semantic Foam: Unifying Spatial and Semantic Scene Decomposition",
+      "abstract": "Modern scene reconstruction methods, such as 3D Gaussian Splatting, enable photo-realistic novel view synthesis at real-time speeds. However, their adoption in interactive graphics applications remains limited due to the difficulty of interacting with these representations compared to traditional, human-authored 3D assets. While prior work has attempted to impose semantic decomposition on these models, significant challenges remain in segmentation quality and cross-view consistency.To address these limitations, we introduce Semantic Foam, which extends the recently proposed Radiant Foam representation to semantic decomposition tasks. Our approach leverages the inherent spatial structure of Radiant Foam's volumetric Voronoi mesh and augments it with an explicit semantic feature field defined at the cell level. This design enables direct spatial regularization, improving consistency across views and mitigating artifacts caused by occlusion and inconsistent supervision, which are common issues in point-based representations.Experimental results demonstrate that our method achieves superior object-level segmentation performance compared to state-of-the-art approaches such as Gaussian Grouping and SAGA.Project page: http://semanticfoam.github.io/",
+      "authors": [
+        "Amr Sharafeldin",
+        "Shrisudhan Govindarajan",
+        "Thomas Walker",
+        "Aryan Mikaeili",
+        "Daniel Rebain",
+        "Kwang Moo Yi",
+        "Andrea Tagliasacchi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-29T03:40:13+00:00",
+      "link": "https://arxiv.org/pdf/2604.26262v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "volumetric Voronoi mesh for neural scene reconstruction",
+      "llm_evidence_cn": "用于神经场景重建的体积Voronoi网格",
+      "llm_evidence": "用于神经场景重建的体积Voronoi网格",
+      "canonical_evidence": "用于神经场景重建的体积Voronoi网格",
+      "llm_tldr_en": "Introduces Semantic Foam, leveraging volumetric Voronoi structures for spatial and semantic scene decomposition.",
+      "llm_tldr_cn": "引入Semantic Foam，利用体积Voronoi结构进行空间和语义场景分解。",
+      "llm_tldr": "引入Semantic Foam，利用体积Voronoi结构进行空间和语义场景分解。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.23372v1",
+      "title": "Physics-Informed Temporal U-Net for High-Fidelity Fluid Interpolation",
+      "abstract": "Reconstructing high-fidelity fluid dynamics from sparse temporal observations is quite challenging, mainly due to the chaotic and non-linear nature of fluid transport. Standard deep learning-based interpolation methods often tend to regress to the mean, which results in spatial blurring and temporal strobing, especially noticeable around the observed anchor frames where transitions become discontinuous. In this work, we propose a novel Temporal U-Net architecture that integrates a VGG-based perceptual loss along with a Physics-Informed Bridge to overcome these issues. By introducing time-weighted feature blending and enforcing a parabolic boundary condition defined by t(1 - t), the model ensures smooth transitions while also maintaining perfect consistency at the endpoints. Experimental results on multi-channel RGB fluid data show that our method clearly outperforms standard models, both in terms of structural fidelity and texture preservation. In particular, the model achieves a Mean Absolute Error of 0.015, compared to 0.085 for a standard L1 baseline. Further Spatial Power Spectral Density (PSD) analysis reveals that the model is able to retain high-frequency turbulent details that are usually lost in deterministic reconstructions.",
+      "authors": [
+        "Eshwar R. A.",
+        "Nevin Mathew Thomas",
+        "Nehal G",
+        "Farida M. Begam"
+      ],
+      "primary_category": "physics.flu-dyn",
+      "categories": [
+        "physics.flu-dyn",
+        "cs.CV",
+        "cs.LG",
+        "math.DS",
+        "nlin.CD",
+        "physics.data-an"
+      ],
+      "published": "2026-04-25T16:36:52+00:00",
+      "link": "https://arxiv.org/pdf/2604.23372v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Physics-informed deep learning for fluid dynamics and volumetric interpolation",
+      "llm_evidence_cn": "物理启发的深度学习用于流体动力学和体积插值",
+      "llm_evidence": "物理启发的深度学习用于流体动力学和体积插值",
+      "canonical_evidence": "物理启发的深度学习用于流体动力学和体积插值",
+      "llm_tldr_en": "Integrates physics-informed bridges into U-Nets for high-fidelity fluid transport and interpolation.",
+      "llm_tldr_cn": "将物理启发机制集成到U-Net中，用于高保真流体输运和插值。",
+      "llm_tldr": "将物理启发机制集成到U-Net中，用于高保真流体输运和插值。",
+      "llm_tags": [
+        "query:q5"
+      ],
+      "matched_query_tag": "query:q5",
+      "matched_query_text": "deep learning methods for volumetric cloud rendering and simulation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.26799v1",
+      "title": "MesonGS++: Post-training Compression of 3D Gaussian Splatting with Hyperparameter Searching",
+      "abstract": "3D Gaussian Splatting (3DGS) achieves high-quality novel view synthesis with real-time rendering, but its storage cost remains prohibitive for practical deployment. Existing post-training compression methods still rely on many coupled hyperparameters across pruning, transformation, quantization, and entropy coding, making it difficult to control the final compressed size and fully exploit the rate-distortion trade-off. We propose MesonGS++, a size-aware post-training codec for 3D Gaussian compression. On the codec side, MesonGS++ combines joint importance-based pruning, octree geometry coding, attribute transformation, selective vector quantization for higher-degree spherical harmonics, and group-wise mixed-precision quantization with entropy coding. On the configuration side, it treats the reserve ratio and bit-width allocation as the dominant rate-distortion knobs and jointly optimizes them under a target storage budget via discrete sampling and 0--1 integer linear programming. We further propose a linear size estimator and a CUDA parallel quantization operator to accelerate the hyperparameter searching process. Extensive experiments show that MesonGS++ achieves over 34$\\times$ compression while preserving rendering fidelity, outperforming state-of-the-art post-training methods and accurately meeting target size budgets. Remarkably, without any training, MesonGS++ can even surpass the PSNR of vanilla 3DGS at a 20$\\times$ compression rate on the Stump scene. Our code is available at https://github.com/mmlab-sigs/mesongs_plus",
+      "authors": [
+        "Shuzhao Xie",
+        "Junchen Ge",
+        "Weixiang Zhang",
+        "Jiahang Liu",
+        "Chen Tang",
+        "Yunpeng Bai",
+        "Shijia Ge",
+        "Jingyan Jiang",
+        "Yuzhi Huang",
+        "Fengnian Yang",
+        "Cong Zhang",
+        "Xiaoyi Fan",
+        "Zhi Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR",
+        "cs.MM"
+      ],
+      "published": "2026-04-29T15:30:06+00:00",
+      "link": "https://arxiv.org/pdf/2604.26799v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "accelerating rendering through post-training compression",
+      "llm_evidence_cn": "通过训练后压缩加速渲染",
+      "llm_evidence": "通过训练后压缩加速渲染",
+      "canonical_evidence": "通过训练后压缩加速渲染",
+      "llm_tldr_en": "Introduces a size-aware compression codec for 3D Gaussian Splatting to reduce storage and improve efficiency.",
+      "llm_tldr_cn": "引入了一种尺寸感知的3D高斯压缩编解码器，以减少存储并提高效率。",
+      "llm_tldr": "引入了一种尺寸感知的3D高斯压缩编解码器，以减少存储并提高效率。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.26920v1",
+      "title": "Color-Encoded Illumination for High-Speed Volumetric Scene Reconstruction",
+      "abstract": "The task of capturing and rendering 3D dynamic scenes from 2D images has become increasingly popular in recent years. However, most conventional cameras are bandwidth-limited to 30-60 FPS, restricting these methods to static or slowly evolving scenes. While overcoming bandwidth limitations is difficult for general scenes, recent years have seen a flurry of computational imaging methods that yield high-speed videos using conventional cameras for specific applications (e.g., motion capture and particle image velocimetry). However, most of these methods require modifications to a camera's optics or the addition of mechanically moving components, limiting them to a single-view high-speed capture. Consequently, these methods cannot be readily used to capture a 3D representation of rapid scene motion. In this paper, we propose a novel method to capture and reconstruct a volumetric representation of a high-speed scene using only unaugmented low-speed cameras. Instead of modifying the hardware or optics of each individual camera, we encode high-speed scene dynamics by illuminating the scene with a rapid, sequential color-coded sequence. This results in simultaneous multi-view capture of the scene, where high-speed temporal information is encoded in the spatial intensity and color variations of the captured images. To construct a high-speed volumetric representation of the dynamic scene, we develop a novel dynamic Gaussian Splatting-based approach that decodes the temporal information from the images. We evaluate our approach on simulated scenes and real-world experiments using a multi-camera imaging setup, showing first-of-a-kind high-speed volumetric scene reconstructions.",
+      "authors": [
+        "David Novikov",
+        "Eilon Vaknin",
+        "Narek Tumanyan",
+        "Mark Sheinin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-29T17:38:11+00:00",
+      "link": "https://arxiv.org/pdf/2604.26920v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "volumetric scene reconstruction and rendering",
+      "llm_evidence_cn": "体积场景重建与渲染",
+      "llm_evidence": "体积场景重建与渲染",
+      "canonical_evidence": "体积场景重建与渲染",
+      "llm_tldr_en": "Uses color-encoded illumination for high-speed volumetric scene capture and reconstruction.",
+      "llm_tldr_cn": "利用颜色编码照明实现高速体积场景的捕捉与重建。",
+      "llm_tldr": "利用颜色编码照明实现高速体积场景的捕捉与重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
