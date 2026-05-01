@@ -1,0 +1,284 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-01T20:29:38.557798+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.27422v1",
+      "title": "Sparse-View 3D Gaussian Splatting in the Wild",
+      "abstract": "We propose a 3D novel sparse-view synthesis framework for unconstrained real-world scenarios that contain distractors. Unlike existing methods that primarily perform novel-view synthesis from a sparse set of constrained images without transient elements or leverage unconstrained dense image collections to enhance 3D representation in real-world scenarios, our method not only effectively tackles sparse unconstrained image collections, but also shows high-quality 3D rendering results. To do this, we introduce reference-guided view refinement with a diffusion model using a transient mask and a reference image to enhance the 3D representation and mitigate artifacts in rendered views. Furthermore, we address sparse regions in the Gaussian field via pseudo-view generation along with a sparsity-aware Gaussian replication strategy to amplify Gaussians in the sparse regions. Extensive experiments on publicly available datasets demonstrate that our methodology consistently outperforms existing methods (e.g., PSNR - 17.2%, SSIM - 10.8%, LPIPS - 4.0%) and provides high-fidelity 3D rendering results. This advancement paves the way for realizing unconstrained real-world scenarios without labor-intensive data acquisition. Our project page is available at $\\href{https://robotic-vision-lab.github.io/SaveWildGS/}{here}$",
+      "authors": [
+        "Wongi Park",
+        "Jordan A. James",
+        "Myeongseok Nam",
+        "Minjae Lee",
+        "Soomok Lee",
+        "Sang-Hyun Lee",
+        "William J. Beksi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-30T04:53:09+00:00",
+      "link": "https://arxiv.org/pdf/2604.27422v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "sparse-view 3D Gaussian Splatting for high-quality rendering",
+      "llm_evidence_cn": "用于高质量渲染的稀疏视图3D高斯泼溅",
+      "llm_evidence": "用于高质量渲染的稀疏视图3D高斯泼溅",
+      "canonical_evidence": "用于高质量渲染的稀疏视图3D高斯泼溅",
+      "llm_tldr_en": "A framework for sparse-view synthesis in unconstrained scenarios using 3D Gaussian Splatting.",
+      "llm_tldr_cn": "一种在无约束场景下使用3D高斯泼溅进行稀疏视图合成的框架。",
+      "llm_tldr": "一种在无约束场景下使用3D高斯泼溅进行稀疏视图合成的框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.23310v1",
+      "title": "RadTwin: Generalizable Wireless Digital Twin for Dynamic Environments",
+      "abstract": "Precisely modeling radio propagation in dynamic wireless environments is fundamental to the realization of wireless digital twins. Traditional ray tracing methods rely on accurate 3D models with detailed environment parameters, while recent neural radiance field approaches learn representations tied to specific static scenes, requiring retraining when environments change. In this paper, we propose RadTwin, a generalizable wireless digital twin framework that explicitly conditions on scene geometry, enabling adaptation to dynamic environments without retraining. RadTwin comprises three key components: 1) a scenario representation network that extracts high-level latent scene features from point clouds, 2) an electromagnetic ray tracing module that computes physics-informed sparse attention masks identifying voxels that physically contribute signals toward each query direction, and 3) a neural propagation decoder that aggregates relevant scene features through masked cross-attention to learn how radio propagation behaves within the given scene geometry. We evaluate RadTwin on a customized dataset of indoor scenes with varying furniture arrangements. Experimental results show that RadTwin achieves 31.6% higher SSIM (0.846 vs. 0.643) and 91.96% lower LPIPS (0.023 vs. 0.286) compared to NeRF2. RadTwin further demonstrates superior cross-scale performance and high generalization and data efficiency, representing a significant advancement toward practical digital network twins for dynamic wireless environments.",
+      "authors": [
+        "Yuru Zhang",
+        "Ming Zhao",
+        "Qiang Liu",
+        "Ahmed Alkhateeb",
+        "Abhishek K. Agrawal",
+        "Qi Qu"
+      ],
+      "primary_category": "cs.NI",
+      "categories": [
+        "cs.NI"
+      ],
+      "published": "2026-04-25T13:54:02+00:00",
+      "link": "https://arxiv.org/pdf/2604.23310v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "neural radiance field approaches for scene representation",
+      "llm_evidence_cn": "用于场景表示的神经辐射场方法",
+      "llm_evidence": "用于场景表示的神经辐射场方法",
+      "canonical_evidence": "用于场景表示的神经辐射场方法",
+      "llm_tldr_en": "RadTwin uses neural representations and ray tracing to model radio propagation in dynamic environments.",
+      "llm_tldr_cn": "RadTwin利用神经表示和光线追踪来模拟动态环境中的无线电传播。",
+      "llm_tldr": "RadTwin利用神经表示和光线追踪来模拟动态环境中的无线电传播。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.27437v1",
+      "title": "Softmax-GS: Generalized Gaussians Learning When to Blend or Bound",
+      "abstract": "3D Gaussian Splatting (3D GS) is widely adopted for novel view synthesis due to its high training and rendering efficiency. However, its efficiency relies on the key assumption that Gaussians do not overlap in the 3D space, which leads to noticeable artifacts and view inconsistencies. In addition, the inherently diffuse boundaries of Gaussians hinder accurate reconstruction of sharp object edges. We propose Softmax-GS, a unified solution that addresses both the view-inconsistency and the diffuse-boundary problem by enforcing a softmax-based competition in overlapping regions between two Gaussians. With learnable parameters controlling the strength of the competition, it enables a continuous spectrum from smooth color blending to crisp, well-defined boundaries. Our formulation explicitly preserves order invariance for any two overlapping Gaussians and ensures that the output transmittance remains unchanged irrespective of the extent of overlapping, preventing undesirable discontinuities in the rendered output. Ablation experiments on simple geometries demonstrate the effectiveness of each component of Softmax-GS, and evaluations on real-world benchmarks show that it achieves state-of-the-art performance, improving both reconstruction quality and parameter efficiency.",
+      "authors": [
+        "Chen Ziwen",
+        "Peng Wang",
+        "Hao Tan",
+        "Zexiang Xu",
+        "Li Fuxin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-30T05:23:05+00:00",
+      "link": "https://arxiv.org/pdf/2604.27437v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "generalized Gaussians for novel view synthesis and blending",
+      "llm_evidence_cn": "用于新视角合成和混合的广义高斯方法",
+      "llm_evidence": "用于新视角合成和混合的广义高斯方法",
+      "canonical_evidence": "用于新视角合成和混合的广义高斯方法",
+      "llm_tldr_en": "Introduces a softmax-based competition to improve blending and boundaries in Gaussian Splatting.",
+      "llm_tldr_cn": "引入基于Softmax的竞争机制，优化高斯泼溅的颜色混合与边界重建。",
+      "llm_tldr": "引入基于Softmax的竞争机制，优化高斯泼溅的颜色混合与边界重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.25178v1",
+      "title": "Lightweight Real-Time Rendering Parameter Optimization via XGBoost-Driven Lookup Tables",
+      "abstract": "Achieving a desirable balance between rendering quality and real-time performance is a long-standing challenge in modern game and rendering engines, particularly on resource-constrained mobile devices such as laptops, tablets, and smartphones. Existing approaches to automatic rendering parameter optimization either depend on exhaustive per-scene pre-computation that spans several days, suffer from the prohibitive inference overhead of neural networks that prevents per-frame adaptation, or lack generalizability across heterogeneous hardware and diverse scenes. In this paper, we propose \\textbf{LUT-Opt}, a lightweight, general-purpose framework for adaptive per-frame rendering parameter optimization. Our method decomposes the joint optimization of rendering time and image quality into a tractable two-stage pipeline. In the offline stage, we train a pair of XGBoost regressors to predict rendering time and image quality from rendering parameters, hardware state, and scene complexity descriptors. The trained ensemble models are then distilled into compact lookup tables (LUTs) through systematic discretization and a two-phase linear search that first constrains rendering time and subsequently maximizes structural similarity (SSIM). During runtime, the pre-computed LUT is queried every frame in sub-millisecond time, enabling truly adaptive parameter selection with negligible computational overhead. We validate LUT-Opt on two representative rendering techniques -- subsurface scattering (SSS) and hybrid-pipeline ambient occlusion (AO) -- implemented within Unreal Engine 5. Extensive experiments across multiple scenes and GPU configurations demonstrate that LUT-Opt reduces subsurface scattering rendering time by approximately 40\\% and ambient occlusion rendering time by roughly 70\\%, while incurring only about 2\\% increase in image quality error, with per-frame inference latency below 0.1\\ ms.",
+      "authors": [
+        "Baijun Tan",
+        "Francesco Moretti"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-28T03:37:24+00:00",
+      "link": "https://arxiv.org/pdf/2604.25178v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "accelerating rendering with lightweight parameter optimization",
+      "llm_evidence_cn": "通过轻量级参数优化加速渲染",
+      "llm_evidence": "通过轻量级参数优化加速渲染",
+      "canonical_evidence": "通过轻量级参数优化加速渲染",
+      "llm_tldr_en": "LUT-Opt provides a lightweight framework for real-time rendering parameter optimization on mobile devices.",
+      "llm_tldr_cn": "LUT-Opt提供了一个用于移动设备实时渲染参数优化的轻量级框架。",
+      "llm_tldr": "LUT-Opt提供了一个用于移动设备实时渲染参数优化的轻量级框架。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.27504v1",
+      "title": "REVIVE 3D: Refinement via Encoded Voluminous Inflated prior for Volume Enhancement",
+      "abstract": "Recent generative models have shown strong performance in generating diverse 3D assets from 2D images, a fundamental research topic in computer vision and graphics. However, these models still struggle to generate voluminous 3D assets when the input is a flat image that provides limited 3D cues. We introduce REVIVE 3D, a two-stage, plug-and-play pipeline for generating voluminous 3D assets from flat images. In Stage 1, we construct an Inflated Prior by inflating the foreground silhouette to recover global volume and superimposing part-aware details to capture local structure. In Stage 2, 3D Latent Refinement injects Gaussian noise into the Inflated Prior's latent and then denoises it, using the prior's geometric cues to leverage the backbone's pretrained 3D knowledge. Furthermore, our framework supports image-conditioned 3D editing. To quantify volume and surface flatness, we propose Compactness and Normal Anisotropy. We validate Compactness and Normal Anisotropy through a user study, showing that these metrics align with human perception of volume and quality. We show that REVIVE 3D achieves state-of-the-art performance on a challenging flat image dataset, based on extensive qualitative and quantitative evaluations.",
+      "authors": [
+        "Hankyeol Lee",
+        "Wooyeol Baek",
+        "Seongdo Kim",
+        "Jongyoo Kim"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-30T06:54:35+00:00",
+      "link": "https://arxiv.org/pdf/2604.27504v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "generating voluminous 3D assets and volume enhancement",
+      "llm_evidence_cn": "生成体积3D资产与体积增强",
+      "llm_evidence": "生成体积3D资产与体积增强",
+      "canonical_evidence": "生成体积3D资产与体积增强",
+      "llm_tldr_en": "A two-stage pipeline for generating voluminous 3D assets from flat images using inflated priors and latent refinement.",
+      "llm_tldr_cn": "一种通过膨胀先验和潜空间细化从平面图像生成体积3D资产的两阶段流水线。",
+      "llm_tldr": "一种通过膨胀先验和潜空间细化从平面图像生成体积3D资产的两阶段流水线。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.28016v1",
+      "title": "Faster 3D Gaussian Splatting Convergence via Structure-Aware Densification",
+      "abstract": "3D Gaussian Splatting has emerged as a powerful scene representation for real-time novel-view synthesis. However, its standard adaptive density control relies on screen-space positional gradients, which do not distinguish between geometric misplacement and frequency aliasing, often leading to either over-blurred high-frequency textures or inefficient over-densification. We present a structure-aware densification framework. Our key insight is that the decision to subdivide a Gaussian should be driven by an explicit comparison between its projected screen-space extent and the local structure of the texture it seeks to represent. We introduce a multi-scale frequency analysis combining structure tensors with Laplacian scale space analysis to estimate the dominant frequency at each pixel, enabling robust supervision across varying texture scales. Based on this analysis, we define $η$, a per-Gaussian, per-axis frequency violation metric that indicates when a primitive may be under-resolving local texture details. Unlike methods that perform isotropic splitting (e.g., splitting each Gaussian into two smaller ones with uniform shape), our approach performs anisotropic splitting. For each axis with high $η$, we compute a split factor to better resolve the local frequency content. We further introduce a multiview consistency criterion that aggregates $η$ observations across multiple views. By performing densification early and faster, we skip the lengthy iterative densification phases required by baseline methods and achieve significantly faster convergence. Experiments on standard benchmarks demonstrate that our method also achieves superior reconstruction quality, particularly in high-frequency regions.",
+      "authors": [
+        "Linjie Lyu",
+        "Ayush Tewari",
+        "Jianchun Chen",
+        "Thomas Leimkühler",
+        "Christian Theobalt"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR",
+        "cs.LG"
+      ],
+      "published": "2026-04-30T15:37:20+00:00",
+      "link": "https://arxiv.org/pdf/2604.28016v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "accelerating 3D Gaussian Splatting convergence and rendering",
+      "llm_evidence_cn": "加速3D高斯泼溅的收敛与渲染",
+      "llm_evidence": "加速3D高斯泼溅的收敛与渲染",
+      "canonical_evidence": "加速3D高斯泼溅的收敛与渲染",
+      "llm_tldr_en": "Improves 3D Gaussian Splatting efficiency through structure-aware densification.",
+      "llm_tldr_cn": "通过结构感知加密技术提高3D高斯泼溅的训练效率和渲染质量。",
+      "llm_tldr": "通过结构感知加密技术提高3D高斯泼溅的训练效率和渲染质量。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.28193v1",
+      "title": "Generalizable Sparse-View 3D Reconstruction from Unconstrained Images",
+      "abstract": "Reconstructing 3D scenes from sparse, unposed images remains challenging under real-world conditions with varying illumination and transient occlusions. Existing methods rely on scene-specific optimization using appearance embeddings or dynamic masks, which requires extensive per-scene training and fails under sparse views. Moreover, evaluations on limited scenes raise questions about generalization. We present GenWildSplat, a feed-forward framework for sparse-view outdoor reconstruction that requires no per-scene optimization. Given unposed internet images, GenWildSplat predicts depth, camera parameters, and 3D Gaussians in a canonical space using learned geometric priors. An appearance adapter modulates appearance for target lighting conditions, while semantic segmentation handles transient objects. Through curriculum learning on synthetic and real data, GenWildSplat generalizes across diverse illumination and occlusion patterns. Evaluations on PhotoTourism and MegaScenes benchmark demonstrate state-of-the-art feed-forward rendering quality, achieving real-time inference without test-time optimization",
+      "authors": [
+        "Vinayak Gupta",
+        "Chih-Hao Lin",
+        "Shenlong Wang",
+        "Anand Bhattad",
+        "Jia-Bin Huang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-30T17:59:55+00:00",
+      "link": "https://arxiv.org/pdf/2604.28193v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "feed-forward framework for sparse-view 3D reconstruction and rendering",
+      "llm_evidence_cn": "用于稀疏视图3D重建和渲染的前馈框架",
+      "llm_evidence": "用于稀疏视图3D重建和渲染的前馈框架",
+      "canonical_evidence": "用于稀疏视图3D重建和渲染的前馈框架",
+      "llm_tldr_en": "Presents GenWildSplat for generalizable sparse-view outdoor reconstruction without per-scene optimization.",
+      "llm_tldr_cn": "提出了GenWildSplat，用于无需逐场景优化的可泛化稀疏视图室外重建。",
+      "llm_tldr": "提出了GenWildSplat，用于无需逐场景优化的可泛化稀疏视图室外重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

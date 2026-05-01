@@ -1,0 +1,623 @@
+Title: RadTwin: Generalizable Wireless Digital Twin for Dynamic Environments
+
+URL Source: https://arxiv.org/pdf/2604.23310v1
+
+Published Time: Tue, 28 Apr 2026 00:36:30 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+# RadTwin : Generalizable Wireless Digital Twin for Dynamic Environments 
+
+Yuru Zhang ∗, Ming Zhao ∗, Qiang Liu ∗, Ahmed Alkhateeb †, Abhishek K. Agrawal ‡, Qi Qu ‡∗ University of Nebraska-Lincoln, † Arizona State University, ‡ Meta Platforms Inc.,  
+
+> ∗
+
+{yzhang176, mzhao7, qiang.liu }@nebraska.edu, † alkhateeb@asu.edu, ‡ {abhishekag, qqu }@meta.com 
+
+Abstract —Precisely modeling radio propagation in dynamic wireless environments is fundamental to the realization of wireless digital twins. Traditional ray tracing methods rely on accurate 3D models with detailed environment parameters, while recent neural radiance field approaches learn representations tied to specific static scenes, requiring retraining when environments change. In this paper, we propose RadTwin, a generalizable wireless digital twin framework that explicitly conditions on scene geometry, enabling adaptation to dynamic environments without retraining. RadTwin comprises three key components: 1) a scenario representation network that extracts high-level latent scene features from point clouds, 2) an electromagnetic ray tracing module that computes physics-informed sparse attention masks identifying voxels that physically contribute signals toward each query direction, and 3) a neural propagation decoder that aggregates relevant scene features through masked cross-attention to learn how radio propagation behaves within the given scene geometry. We evaluate RadTwin on a customized dataset of indoor scenes with varying furniture arrangements. Experimental results show that RadTwin achieves 31.6% higher SSIM (0.846 vs. 0.643) and 91.96% lower LPIPS (0.023 vs. 0.286) compared to NeRF 2. RadTwin further demonstrates superior cross-scale performance and high generalization and data effi-ciency, representing a significant advancement toward practical digital network twins for dynamic wireless environments. 
+
+Index Terms —Wireless Digital Twin, Wireless Channel Mod-eling, Machine Learning 
+
+I. I NTRODUCTION 
+
+Digital network twin (DNT) has emerged as a transformative paradigm for next-generation wireless systems [1], creating virtual replicas of physical radio environments that can be queried for channel prediction and network optimization [2], [3]. An effective DNT must satisfy three essential attributes: fidelity, accurately replicating real-world propagation char-acteristics; synchronicity, tracking environmental changes in a timely manner; and scalability, efficiently adapting to di-verse deployment scenarios without prohibitive overhead [4]. These attributes enable a wide range of applications including coverage optimization, beam tracking, interference manage-ment, and predictive resource allocation in 5G-and-beyond networks [5], [6], [7]. At the core of DNT lies accurate wire-less channel modeling, which captures how signals propagate through the physical environment. Traditional wireless channel modeling relies on determin-istic ray tracing methods that simulate electromagnetic (EM) wave propagation by tracing ray paths and computing interac-tions with environmental obstacles [8]. As shown in Fig. 1(a), Radio Frequency (RF) signals interact with obstacles in the scene through complex physical phenomena including reflec-tion, scattering, diffraction, and absorption, making accurate EM ray tracing computationally prohibitive. Moreover, ray Reflection   
+
+> Scattering
+> TX
+> Diffraction
+> RX
+> Absorption
+> (a) (b)
+> TX
+> RX
+> Fig. 1: Impact of dynamic scene changes on radio propagation. (a) RF radiance field showing multipath effects (e.g., reflection, scattering, diffraction, and absorption) caused by obstacles. (b) Indoor environment with furniture rearrangement, where the office desk moves along the indicated trajectory. Object movement induces variations in the radiance field.
+
+tracing requires highly accurate 3D scene models with detailed EM properties (e.g., material permittivity and conductivity) [9] for each obstacle. This dependency on precise geometric and material specifications makes ray tracing impractical beyond simulation. As shown in Fig. 1(b), when furniture is re-arranged, the propagation paths between TX and RX are changed, which causes significant variations in the radiance field. This necessitates 3D model reconstruction and material property re-calibration, which demands substantial manual effort and prevents timely channel state updates essential for real-time wireless applications. Recent advances in neural radiance fields (NeRF) [10] have inspired learning-based channel models that encode propaga-tion characteristics into neural network weights [11], [12]. These methods represent scenes as continuous volumetric functions, where a neural network learns to predict signal properties at arbitrary spatial locations after training with sparse measurements. NeRF-based approaches achieve impres-sive prediction accuracy within trained scenes and offer faster inference than ray tracing. However, they share a fundamental limitation: the scene geometry is encoded implicitly within network parameters, necessitating complete model retraining whenever the environment changes. This per-scene training paradigm conflicts with the synchronicity requirement of DNTs, as indoor environments are inherently dynamic with frequent furniture rearrangements and object movements. In this paper, we propose RadTwin , a novel digital radio twin framework designed for wireless channel prediction in dynamic scenes. Our key insight is that explicitly conditioning on scene geometry, rather than encoding it implicitly, enables rapid adaptation to environmental changes without retraining. We leverage point clouds as the geometric representation, which can be efficiently captured and updated through Li-DAR sensors or cameras. RadTwin processes geometric in-put through a scenario representation network that extracts 
+
+> arXiv:2604.23310v1 [cs.NI] 25 Apr 2026
+
+hierarchical voxel features, computes physics-informed sparse attention masks via Line-of-Sight (LOS) visibility, and aggre-gates relevant features through a Transformer-based decoder to predict spatial spectrum at arbitrary positions. This design explicitly separates scene representation from propagation learning, enabling a one-time trained model to generalize across diverse indoor configurations. We evaluate RadTwin on 30 indoor scenes with varying furniture arrangements generated using the Sionna RT sim-ulator. RadTwin achieves superior spatial spectrum predic-tion accuracy on held-out test scenes, with a median SSIM of 0.846 and LPIPS of 0.023, substantially outperforming NeRF 2 (SSIM 0.643, LPIPS 0.286) and standard multi-layer perceptron (MLP) baselines. The results validate that explicit geometric conditioning enables effective adaptation to scenario changes, representing a significant step toward practical wire-less digital twins for dynamic environments. Overall, we propose RadTwin as a novel generalizable DNT framework for dynamic wireless environments. The main contributions are summarized as follows:  
+
+> •
+
+We design a new neural network architecture that explic-itly conditions on scene geometry, enabling generalization to dynamic environment configurations without scene-specific retraining.  
+
+> •
+
+We design a physics-informed sparse attention mecha-nism, which guides the model to focus on geometrically relevant regions, improving both prediction accuracy and computational efficiency.  
+
+> •
+
+We evaluate RadTwin with a customized dataset of 30 in-door dynamic scenes, and the results demonstrate superior prediction performance to state-of-the-art solutions. II. F UNDAMENTALS OF RADIO RADIANCE FIELD 
+
+In this section, we introduce the fundamental concepts of wireless channel modeling and radio radiance fields. 
+
+A. Wireless Channel Model 
+
+A wireless communication system consists of a transmitter (TX) that generates and modulates a signal, which propagates through the wireless channel to a receiver (RX). The transmit-ted signal can be represented as a complex number X = Ae jψ ,where A and ψ denote the amplitude and phase, respectively. In the simplest case of a single propagation path, the received signal undergoes amplitude attenuation and phase rotation: 
+
+Y = X · ∆A e j∆ψ = A · ∆A e j(ψ+∆ ψ), (1) where ∆A and ∆ψ denote the amplitude attenuation and phase rotation incurred during propagation. In real-world environments, EM waves undergo complex interactions with obstacles, including reflection, diffraction, refraction, and scattering. Consequently, multiple signal copies arrive at the RX via different propagation paths. The received signal can be modeled as a superposition of M multipath components: 
+
+Y = A 
+
+> M−1
+
+X
+
+> m=0
+
+∆Am ej(ψ+∆ ψm), (2) where ∆Am and ∆ψm denote the amplitude attenuation and phase shift of the m-th path, respectively. Y              
+
+> X
+> Z
+> 0°
+> 180 °
+> 90°30°60°120 °
+> 150 °
+> 90°
+> 𝜃
+> 𝜑
+> LOS Signal
+> X
+> Y
+> Z
+> NLOS Signal
+> 0°180 °
+> 90°
+> NLOS
+> LOS
+> 90 °
+> 180 °
+> 270 °
+> 0°
+> 180 °
+> 0°
+> (a) Azimuth & Elevation Y
+> X
+> Z
+> 0°
+> 180 °
+> 90°30°60°120 °
+> 150 °
+> 90°
+> 𝜃
+> 𝜑
+> LOS Signal
+> X
+> Y
+> Z
+> NLOS Signal
+> 0°180 °
+> 90°
+> NLOS
+> LOS
+> 90 °
+> 180 °
+> 270 °
+> 0°
+> 180 °
+> 0°(b) 3D Spatial Spectrum Y
+> X
+> Z
+> 0°
+> 180 °
+> 90°30°60°120 °
+> 150 °
+> 90°
+> 𝜃
+> 𝜑
+> LOS Signal
+> X
+> Y
+> Z
+> NLOS Signal
+> 0°180 °
+> 90°
+> NLOS
+> LOS
+> 90 °
+> 180 °
+> 270 °
+> 0°
+> 180 °
+> 0°(c) 2D Projection
+> Fig. 2: Illustration of spatial spectrum.
+
+When the RX employs a directional antenna, it can selec-tively receive signals from a specific direction d = ( θ, φ ),where θ ∈ [0 ◦, 360 ◦) denotes the azimuth angle and φ ∈
+
+[0 ◦, 180 ◦] denotes the elevation angle, as shown in Fig. 2(a). We denote the received signal from direction d as Y (θ, φ ).By measuring the received power across all angular directions, we obtain the spatial spectrum Ψ( θ, φ ), which quantifies the power distribution over the angular domain: 
+
+Ψ( θ, φ ) = |Y (θ, φ )|2 . (3) The spatial spectrum can be viewed as a 2D heatmap showing the power distribution across N angular directions. With one-degree resolution where θ ∈ { 0◦, 1◦, . . . , 359 ◦} and 
+
+φ ∈ { 0◦, 1◦, . . . , 180 ◦}, we have N = 360 × 181 directions, and the spatial spectrum forms a matrix: 
+
+Ψ = 
+
+
+
+Ψ(0 ◦, 0◦) Ψ(1 ◦, 0◦) · · · Ψ(359 ◦, 0◦)Ψ(0 ◦, 1◦) Ψ(1 ◦, 1◦) · · · Ψ(359 ◦, 1◦)
+
+... ... . . . ...
+
+Ψ(0 ◦, 180 ◦) Ψ(1 ◦, 180 ◦) · · · Ψ(359 ◦, 180 ◦)
+
+ .
+
+(4) This spatial spectrum matrix comprehensively characterizes the multipath propagation environment, revealing dominant propagation paths and their angular distributions. The path loss 
+
+L(θ, φ ) in decibels for each direction can be derived as: 
+
+L(θ, φ ) = −10 log 10 (Ψ( θ, φ )) [dB] . (5) Fig. 2(b) shows the spatial spectrum in 3D, while Fig. 2(c) illustrates the corresponding 2D projection on the X-Y plane. 
+
+B. Radio Radiance Field 
+
+In this subsection, we introduce the concept of radio radiance field (RRF), which provides the theoretical foundation for existing neural channel modeling approaches. The RRF provides a continuous representation of EM wave propagation in a given environment. Analogous to the optical radiance field in computer vision, which maps a 3D position and viewing direction to color and density, the RRF characterizes the wireless channel as a function of TX and RX configurations. Unlike the EM field where almost all spatial points possess a well-defined field vector, the RRF describes radiance only at object surfaces where EM waves undergo interactions such as reflection, diffraction, and scattering. A practical RRF representation requires modeling both scene geometry and the radiance function. The geometry is characterized by a density field α(Px), where Px ∈ R3 denotes a continuous 3D position. This density takes high values for solid objects, low values for translucent materials, and zero for free space. The radiance function c(Px, d ) describes the signal emitted from position Px toward direction d = ( θ, φ ).3D Physical Scenario                 
+
+> Point Cloud of the Scene
+> Point cloud acquired with
+> LiDAR/depth cameras
+> Voxel Partition ( DxHxW)
+> Voxel -wise
+> Feature
+> Global
+> Feature
+> Feature Concatenation
+> Scenario Representation Network
+> Electromagnetic Ray Tracing Module
+> LOS voxel
+> map
+> Attention Mask
+> Neural Propagation Decoder
+> Transformer Decoder
+> RX Query
+> PRX (𝑥 ,𝑦 ,𝑧 ) and d(𝜃 ,𝜑 )
+> RX Position
+> (PRX )
+> RX Direction
+> (d)
+> Fully Connected Layer
+> … … …
+> Output
+> Spatial Spectrum
+> Position Encoding Fig. 3: An overview of the RadTwin framework. RadTwin consists of three main components. The point cloud of a 3D scene is first processed by the scenario representation network, which partitions space into a voxel grid and extracts voxel-wise and global features. Given an RX query, the electromagnetic ray tracing module computes LOS voxel maps to generate sparse attention masks. Finally, the neural propagation decoder aggregates relevant voxel features through a Transformer decoder with masked cross-attention to synthesize the spatial spectrum.
+
+For a given TX at position PTX ∈ R3, the complete RRF can be expressed as: 
+
+R(PTX ) = {c(Px, d ), α (Px)}. (6) NeRF 2 [11] pioneered the application of neural radiance fields to wireless channel modeling by parameterizing the RRF using MLPs. It treats each voxel at position Px as a virtual retransmitter that combines and retransmits signals received from all possible paths. The neural network learns to predict the radiance field f as: 
+
+fΘ : ( PTX , P x, d ) ⇒ (δ(Px), S(Px, d )) , (7) where δ(Px) represents the attenuation coefficient determined by material properties, and S(Px, d ) is the directional signal retransmitted toward direction d. The final received signal is obtained by integrating contributions from all voxels along each ray using volume rendering. While this approach demon-strates the feasibility of neural representations for wireless channels, it requires per-scene training as the scene geometry is implicitly encoded within the network parameters Θ.III. R AD TWIN OVERVIEW 
+
+In this section, we introduce the RadTwin, a novel wireless digital twin framework designed for generalizable radio prop-agation modeling in dynamic environments. Unlike existing approaches that require per-scene training, RadTwin learns scene-agnostic propagation patterns from explicit geometric representations, enabling generalization to dynamic scenarios. 
+
+Problem. We consider a wireless communication scenario where a TX is deployed at a fixed position and an RX is located at position PRX ∈ R3 within the environment. For each RX position, we query the received signal along a specific direction d = ( θ, φ ), where θ and φ denote the azimuth and elevation angles, respectively. Due to multipath propagation, the signal received from a given direction is the superposition of multiple paths that undergo reflection, diffraction, and scattering from surrounding obstacles. The environment geometry, denoted as E, encompasses all objects such as walls, floors, and furniture, whose spatial configuration significantly influences the radio propagation characteristics. Given the environment geometry E and RX query (PRX , d ),RadTwin predicts the channel metric S (e.g., RSRP and RSSI) along all propagation paths arriving from direction d. The learned model generalizes across different environment config-urations without scene-specific retraining. This is formulated as fΘ : ( E, P RX , d ) ⇒ S, where Θ represents the learnable parameters of the network. Overall, the model is trained to minimize the mean squared error between predicted and ground-truth channel metrics using the following loss function: 
+
+L = 1
+
+|D| 
+
+> |D|
+
+X
+
+> i=1
+
+ ˆSi − Si
+
+2
+
+, (8) where D = {(Ei, P RX ,i , d i, S i)}|D|  
+
+> i=1
+
+denotes the training dataset comprising samples from multiple scenes, and ˆSi =
+
+fΘ(Ei, P RX ,i , d i) is the predicted channel metric. 
+
+Overview. As shown in Fig. 3, given the 3D environment geometry and an RX query specifying position and direction, RadTwin predicts the corresponding signal. The framework is built upon a key insight: wireless signal propagation is fundamentally governed by the geometric structure of the environment, particularly the spatial arrangement of obstacles along the propagation path. Hence, we architect RadTwin with three key components:  
+
+> •
+
+Scenario Representation Network : This module trans-forms raw environment geometry into a structured voxel-based representation. The network extracts both local ge-ometric features capturing fine-grained obstacle properties and global contextual features encoding the overall spatial layout through 3D convolutions.  
+
+> •
+
+Electromagnetic Ray Tracing Module : This module iden-tifies geometrically relevant regions for each query direction based on physical propagation principles. We compute the intersections between the query rays and the voxel grid using ray-box intersection tests, producing sparse LOS voxel indices that encode propagation constraints.  
+
+> •
+
+Neural Propagation Decoder : This module synthesizes signal predictions by aggregating information from relevant voxels. A Transformer decoder takes the RX query and attends to voxel features through cross-attention, constrained by the LOS masks. This physics-informed attention mecha-nism guides the model toward physically meaningful feature aggregation. The RadTwin framework introduces a novel approach to neural radio propagation modeling that achieves generalization across diverse environment configurations. The key innovation of RadTwin lies in its explicit geometric conditioning. Unlike implicit neural radiance fields that encode scene geometry within network weights, RadTwin treats the environment as an explicit input. This design yields two benefits: generalization across scenes, where a one-time trained model applies to dynamic configurations without retraining; and interpretabil-ity, where LOS-based attention reveals which spatial regions influence each prediction. Together, these components form an end-to-end differentiable pipeline that learns generalizable propagation patterns for dynamic environments. IV. R AD TWIN ARCHITECTURE 
+
+In this section, we present the detailed architecture of RadTwin’s three core components. 
+
+A. Scenario Representation Network 
+
+The scenario representation network provides a compact and learnable encoding of environment geometry, serving as the foundation for generalizing across diverse scene configura-tions. The choice of 3D geometry representation is criti-cal for neural network-based radio propagation modeling. Mesh representations, composed of vertices, edges, and faces, are widely used in computational science and engineering. However, they are costly to acquire, requiring dedicated 3D modeling or reconstruction pipelines, and their use in deep learning is limited due to non-differentiable triangle face indices. Although differentiable mesh processing [13] and mesh-based generalizable channel modeling [14] have been explored, these approaches remain computationally expensive and difficult to maintain in dynamic environments. In contrast, we adopt point clouds as our scene represen-tation due to their low acquisition cost, wide availability, and scalability. Point clouds have been widely adopted in neural network-based research, with applications in 3D surface recon-struction [15], [16], geometry denoising [17], [18], [19], and shape completion [20], [21]. Exploiting the differentiability of point clouds, we employ the VoxelNet [22] architecture for ge-ometry encoding, which was originally proposed for LiDAR-based 3D object detection and demonstrates effectiveness in learning discriminative features from sparse and irregular point distributions. The network architecture is shown in Fig. 4. Given a point cloud encompassing a 3D space with dimensions D × H × W
+
+along the Z, Y, X axes, we partition the space into voxels of size vD × vH × vW . The resulting voxel grid has dimensions 
+
+D′ × H′ × W ′, where D′ = D/v D , H′ = H/v H , and W ′ =
+
+W/v W . Points are grouped according to the voxel in which they reside. Due to the sparse distribution of scene geometry, many voxels remain empty. We retain only non-empty voxels containing at least T points to filter out noise and outliers. Each valid voxel is represented by its center coordinates Ck =(cx, c y , c z ) ∈ R3, yielding K occupied voxels {Ck}Kk=1 .The voxel centers are transformed through positional en-coding before feature extraction. In radio propagation, re-ceived signal strength exhibits rapid spatial variations due to multipath interference and small-scale fading, where phase differences of merely half a wavelength can cause significant power fluctuations. Standard neural networks with smooth activation functions struggle to capture such high-frequency variations. Positional encoding addresses this limitation by mapping coordinates into a higher-dimensional space using sinusoidal functions at multiple frequencies:         
+
+> γ(P) =
+> h
+> sin(2 0πP ),cos(2 0πP ), . . . , sin(2 L−1πP ),cos(2 L−1πP )
+> i
+> ,
+> (9)
+
+where P denotes the input coordinate and L controls the num-ber of frequency bands. This encoding enables the network to learn fine-grained spatial dependencies. The encoded voxel centers γ(Ck) are processed by a fully connected network to extract local features fk ∈ Rdl for each voxel. To capture global scene context, we place local features at their corresponding grid positions to construct a dense feature tensor and apply 3D convolutional layers that aggregate in-formation across the entire spatial extent. These convolutional layers progressively expand the receptive field, incorporating contextual information from neighboring voxels. The resulting global feature ˜f ∈ Rdg encodes the overall scene structure. Finally, local and global features are concatenated to form the voxel-wise output representation: 
+
+f out  
+
+> k
+
+= [ fk; ˜f ] ∈ Rdl+dg , k = 1 , . . . , K. (10) By processing only non-empty voxels and representing features as sparse tensors, the network achieves computational efficiency while preserving geometric structure essential for radio propagation prediction. 
+
+B. Electromagnetic Ray Tracing 
+
+The electromagnetic ray tracing module establishes the phys-ical relationship between RX queries and scene geometry by computing LOS visibility, as shown in Fig. 5. In radio propaga-tion, signals received from a particular direction predominantly originate from surfaces visible along that direction, and these surfaces represent the final interaction points of potentially complex multipath trajectories. Encoding this physical prior into the neural network architecture improves both prediction accuracy and model interpretability. For each receiver position PRX , we precompute a LOS voxel map that identifies which voxel is directly visible from each reception direction. The spherical domain is discretized into a grid of Nθ × Nφ directions. For each direction dij = ( θi, φ j )
+
+where i ∈ [1 , N θ ] and j ∈ [1 , N φ], we convert the spherical coordinates to a unit direction vector: ⃗dij = (sin θi cos φj , sin θi sin φj , cos θi). (11) We then cast a ray from PRX along ⃗ dij and determine its intersection with scene voxels using the axis-aligned bounding box (AABB) slab method [23]. For a voxel with bounding box 
+
+[bmin , b max ], we compute the ray entry and exit distances along Voxel -wise     
+
+> Input
+> 1…k
+> Fully Connected  Neural  Net
+> 1…k
+> Voxel -wise
+> Feature
+> Voxel -wise Concatenate
+> Convolutional
+> Layers
+> Globally
+> Aggregated
+> Feature
+> Voxel -wise
+> Concatenated
+> Feature
+> ①②
+> ③④
+> ①②
+> ③④
+> Position
+> Encoding
+
+Fig. 4: Architecture of Scenario Representation Network. The input point cloud is first partitioned into a voxel grid, where each non-empty voxel is represented by its center coordinates. After positional encoding, a fully connected network extracts voxel-wise local features. These features are then processed by 3D convolutional layers to obtain a globally aggregated feature, which is concatenated with local features to form the final voxel-wise representation. RX       
+
+> 𝑃 RX (𝑥 ,𝑦 ,𝑧 )
+> Direction 𝑑 (𝜃 ,𝜑 )
+> Ψ
+> RX
+> Ray cast from RX
+> AABB Intersection
+> Test
+> tenter
+> texit
+> LOS Voxel Map
+> LOS NLOS
+> Sparse Attention Mask 𝑀
+> [1,1,0,0,1,0,…,1,0,1,1]
+
+Fig. 5: Architecture of Electromagnetic Ray Tracing Module. Given an RX position PRX and query direction d, rays are cast across a discretized spherical grid. For each ray, the AABB intersection test identifies the nearest voxel. The LOS voxels within the angular window centered at d are aggregated to form sparse attention masks. 
+
+each axis α ∈ { x, y, z }:
+
+tα 
+
+> 1
+
+= ( bmin  
+
+> α
+
+− pα)/d α, tα 
+
+> 2
+
+= ( bmax  
+
+> α
+
+− pα)/d α, (12) where pα and dα denote the RX position and ray direction components along axis α. The overall entry and exit distances are: 
+
+tenter = max  
+
+> α
+
+min( tα 
+
+> 1
+
+, t α 
+
+> 2
+
+), texit = min  
+
+> α
+
+max( tα 
+
+> 1
+
+, t α 
+
+> 2
+
+). (13) A valid intersection occurs when tenter < t exit and texit > 0.Among all valid intersections, we record the voxel with the smallest tenter as the LOS voxel for direction (θi, φ j ).Since the RX query corresponds to a finite angular region rather than an infinitesimal direction, we aggregate LOS voxels within an angular window centered at the query direction 
+
+(θ, φ ):
+
+VLOS (θ, φ ) = [ 
+
+> θi∈[θ−∆θ,θ +∆ θ]
+> φj∈[φ−∆φ,φ +∆ φ]
+
+Vhit (θi, φ j ), (14) where Vhit (θi, φ j ) denotes the LOS voxel for direction 
+
+(θi, φ j ), and ∆θ, ∆φ define the angular window size. This aggregation captures the fact that received signals integrate contributions from a range of angles. The LOS voxel sets are encoded as sparse attention masks for the neural decoder. For each query, we construct a binary mask M ∈ { 0, 1}K over all K scene voxels: 
+
+Mk =
+
+(
+
+0, if voxel k ∈ V LOS (θ, φ ),
+
+1, otherwise . (15) To bound computational cost, we retain at most Nmax LOS voxels per query. This sparse masking mechanism serves two purposes: (1) it enforces a physical constraint ensuring predic-tions are influenced only by geometrically relevant voxels; and (2) it reduces attention complexity from O(K) to O(Nmax ),enabling efficient processing of large scenes. 
+
+C. Neural Propagation Decoder 
+
+The neural propagation decoder aggregates voxel features under the guidance of LOS masks to predict the received channel metric. The RX query encodes both the spatial position PRX = (x, y, z ) and the reception direction ⃗ d =(sin θ cos φ, sin θ sin φ, cos θ), represented as a Cartesian unit vector. Both components are independently transformed using positional encoding γ(·) defined in Eq. 9, concatenated, and linearly projected to form the query embedding: 
+
+qRX = FFC 
+
+h 
+
+γ(PRX ); γ(⃗ d)
+
+i 
+
+∈ Rde . (16) The decoder employs a Transformer architecture where qRX 
+
+serves as the query and voxel features {f out  
+
+> k
+
+}Kk=1 serve as keys and values. Masked cross-attention is computed as: Attention (Q, K, V, M ′) = softmax 
+
+ QK ⊤
+
+√dk
+
++ M ′
+
+
+
+V, (17) where Q = WQqRX , K = WK F , V = WV F with F =[f out  
+
+> 1
+
+, . . . , f out  
+
+> K
+
+]⊤ ∈ RK×(dl+dg ), dk is the key dimension, and 
+
+M ′ is derived from the binary mask M (Eq. 15) by setting masked positions to −∞ , so that non-LOS voxels receive zero attention weight after softmax. The Transformer decoder consists of Nlayer layers with multi-head cross-attention, feed-forward sub-layers, residual connections, and layer normaliza-tion: 
+
+h = FTransformerDecoder 
+
+ qRX , {f out  
+
+> k
+
+}Kk=1 , M ′ ∈ Rde . (18) The output h is transformed through a fully connected layer with ReLU activation and clamped to ensure physically plau-sible predictions: 
+
+ˆS = min ( ReLU (FFC (h)) , S max ) , (19) where ˆS denotes the predicted channel metric from direction d,and Smax is the upper bound corresponding to the transmitted power. V. R AD TWIN IMPLEMENTATION 
+
+In this section, we describe the implementation of RadTwin, including dataset collection and model configuration. 
+
+A. Dataset Collection 
+
+We construct a dataset using Blender 3.0 to evaluate the generalization of RadTwin. The dataset spans three scene sizes: small ( 6 × 4 × 2.5 m3), medium ( 12 × 10 × 2.5 m3), and large ( 30 × 18 × 2.5 m3). For each size, we generate 30 indoor office scenes with identical room dimensions but (a)                      
+
+> (b)
+> (c)
+> x
+> y
+> z
+> xy
+> z
+> z
+> x
+> y
+> TX
+> TX Fig. 6: Indoor office scene for dataset generation (small size). (a) Exterior view. (b) Interior 3D view with ceiling removed. (c) Top view. 050 100 150 200 250 300 350
+> Direction Index
+> 60
+> 80
+> 100
+> 120
+> 140
+> 160
+> 180
+> 200
+> Path Loss (dB)
+> Scene 1
+> Scene 2
+> Max Deviation
+> Fig. 7: Path loss variation across directions for two small scenes. 12345678910 11 12
+> Scene Index
+> 50
+> 75
+> 100
+> 125
+> 150
+> 175
+> 200
+> Path Loss (dB)
+> Fig. 8: Path loss distribution across 12 small scenes at a fixed RX.
+
+varying furniture arrangements, where tables, chairs, shelves, and other objects are positioned differently across scenes to simulate real-world environments where object layouts change over time. As shown in Fig. 6, we illustrate a small scene as an example. For each scene, we sample points uniformly on surfaces of objects (e.g., walls, floors, ceilings, and furniture) to form the point cloud, with the number of points scaling with scene size (e.g., 25,000 for small scenes). The wireless channel data is generated using Sionna v0.12.0, an open-source ray tracing library. The TX is equipped with an omnidirectional antenna at a fixed position across all scenes, as indicated in Fig. 6(b). For each scene, we randomly sample 1,000 RX positions within the room volume and compute path loss for all reception directions in 10 ◦ increments, covering 
+
+θ ∈ [0 ◦, 350 ◦] and φ ∈ [0 ◦, 180 ◦], yielding 36 × 19 = 684 
+
+directions per RX. The simulation operates at 3.5 GHz with reflection, refraction, and diffraction enabled. To quantify the impact of scene variations on radio prop-agation, we analyze path loss distributions across different configurations using the small scenes. Fig. 7 compares direc-tional path loss at a fixed RX position between two scenes differing only by the displacement of a single bookshelf by 3.5 m, shown in orange in Fig. 6. Despite this minor geometric change, certain directions exhibit path loss deviations ex-ceeding 99 dB, demonstrating the extreme sensitivity of radio propagation to object placement. This is because even small geometric modifications can block or create new propagation paths, fundamentally altering the multipath structure. Fig. 8 shows path loss distributions across 12 scenes with varying layouts, where the median and interquartile ranges differ sig-nificantly, confirming that layout changes substantially affect channel characteristics. For each scene size, the dataset is split at the scene level: 24 scenes (80%) for training and 6 scenes (20%) for testing. This ensures that test scenes contain furniture configurations not seen during training, providing rigorous evaluation of generalization to dynamic environments. 
+
+B. Model Configuration 
+
+The voxel grid partitions the 3D scene into discrete volumetric cells with a constant voxel size of 0.5 × 0.5 × 0.5 m3, resulting in grid dimensions that scale with scene size (e.g., 12 × 8 × 5
+
+for small scenes). This resolution balances spatial granularity with computational efficiency. The maximum number of LOS voxels per query is set to Nmax = 16 to bound memory consumption while preserving the most relevant geometric information. The RadTwin model is implemented in PyTorch. The sce-nario representation network extracts a 32-dimensional local feature for each voxel through a fully connected layer, and a 16-dimensional global feature through 3D convolutional layers with channel dimensions progressively increasing from 64 to 256 to 768. Local and global features are concatenated to form the 48-dimensional voxel representation. The neural propagation decoder consists of 3 Transformer decoder layers with single-head attention, a hidden dimension of 128, and a dropout rate of 0.1. We train the model on an NVIDIA RTX PRO 6000 GPU with 96GB memory using a batch size of 4,096 samples for 30 epochs. We employ the Adam optimizer with lr=0.001 and a step scheduler that reduces the learning rate by a factor of 0.8 every 3 epochs. To ensure memory efficiency, we adopt a scene-aware batch sampler that groups samples from the same scene, allowing voxel features to be computed once and shared across all samples in the batch. VI. P ERFORMANCE EVALUATION 
+
+In this section, we evaluate RadTwin with state-of-the-art methods on our dataset of dynamic indoor environments. 
+
+A. Comparison Methods 
+
+We compare RadTwin with the following baseline methods:  
+
+> •
+
+Ground Truth : The ground truth spatial spectrum is obtained from Sionna RT simulations. The visualization is generated by converting signal measurements from matrix to polar coordinates.  
+
+> •
+
+NeRF 2 [11]: NeRF 2 is a neural radiance field-based method for spatial spectrum synthesis. Similar to our work, NeRF 2 can synthesize spatial spectra at arbitrary positions after training on a given scene. To match our experimental setup with a fixed transmitter, we modify its implementation to predict spatial spectra at arbitrary RX positions.  
+
+> •
+
+MLP : A baseline multi-layer perceptron that directly maps RX position and direction to path loss without explicit geometric reasoning. The MLP consists of four fully connected layers with ReLU activations. P1  P2  P3  P4  P5  P6  P7  P8              
+
+> Groundtruth NeRF 2RadTwin
+> Test Scene 1 Test Scene 2 Fig. 9: Synthesis of spatial spectrums. Results at eight RX positions across two test scenes. RadTwin accurately captures both dominant propagation paths and fine-grained multipath structures, while NeRF 2exhibits noticeable discrepancies in detailed patterns. 0.0 0.2 0.4 0.6 0.8
+> SSIM
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> CDF
+> RadTwin
+> MLP
+> NeRF 2
+> Fig. 10: CDF of SSIM values for spatial spectrum synthesis. 0.0 0.2 0.4 0.6 0.8
+> LPIPS
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> CDF
+> RadTwin
+> MLP
+> NeRF 2
+> Fig. 11: CDF of LPIPS values for spatial spectrum synthesis.
+
+B. Spatial Spectrum Synthesis 
+
+Fig. 9 shows a comparison of spatial spectrum synthesis results at eight RX positions across two test scenes. Visually, RadTwin produces spatial spectra that closely match the ground truth, accurately capturing both dominant propagation paths and fine-grained multipath structures. In contrast, NeRF 2 captures the general pattern but exhibits noticeable discrepancies in de-tailed structure, particularly in regions with complex multipath interference. To quantitatively evaluate synthesis quality, we employ the Structural Similarity Index (SSIM) and Learned Perceptual Image Patch Similarity (LPIPS). SSIM measures structural similarity between two images, with higher values indicating greater similarity. LPIPS evaluates perceptual similarity using deep features, where lower values indicate better quality. We synthesize spatial spectra at 1,000 RX positions across test scenes and compute both metrics for each method. Fig. 10 shows the cumulative distribution function (CDF) of SSIM values. RadTwin achieves a median SSIM of 0.846 and a 90th percentile of 0.867, significantly outperforming NeRF 2
+
+(median 0.643, 90th percentile 0.694). MLP fails entirely with a median SSIM near zero, indicating its inability to synthesize meaningful spatial spectra. Fig. 11 shows the CDF of LPIPS values, where RadTwin achieves a median of 0.023 and 90th percentile of 0.032, substantially better than NeRF 2
+
+(median 0.286, 90th percentile 0.356). MLP exhibits the worst perceptual quality with a median LPIPS of 0.767. The performance gap can be attributed to fundamental dif-ferences in scene representation. MLP lacks explicit geometric            
+
+> TABLE I: Computational Time Comparison Method Training Time (per scene) Adaptation (new scene) Inference (per sample) RadTwin –0 s 0.61 ms NeRF 27.8 min 7.8 min 8.5 ms MLP 4.03 min 4.03 min 0.07 ms
+
+reasoning and relies solely on coordinate-based mapping, mak-ing it unable to generalize to different scene configurations. NeRF 2 incorporates ray-based volume rendering but encodes scene geometry implicitly within network weights, limiting its adaptability to new environments. In contrast, RadTwin explicitly conditions on scene geometry through point cloud input, enabling effective generalization to different furniture arrangements. Furthermore, the physics-informed sparse atten-tion mechanism guides the model to focus on geometrically relevant voxels, improving both accuracy and interpretability. Table I compares the computational time of all methods. RadTwin requires 88.8 minutes to train a single model cov-ering all 24 scenarios, while NeRF 2 and MLP require per-scene training, totaling 187.2 minutes and 96.7 minutes re-spectively across 24 scenes. More importantly, when adapting to a dynamic scene, NeRF 2 and MLP must train dedicated models from scratch, requiring 7.8 and 4.03 minutes respec-tively, whereas RadTwin requires no additional training. For inference, NeRF 2 requires 8.5 ms per sample due to the computational overhead of volume rendering along each ray, RadTwin achieves 0.61 ms through its efficient Transformer-based architecture, and MLP is the fastest at 0.07 ms owing to its simple structure. 
+
+C. Impact of Training Data Granularity 
+
+We investigate how training data volume affects prediction performance by varying the number of RX positions used for training. For each of the 24 training scenes, we sample 1,000 RX positions but use only a subset for training, ranging from 50 to 1,000. All models are evaluated on 6 test scenes using all 1,000 RX positions per scene. Fig. 12 shows the NMSE distribution across different train-ing data sizes. RadTwin demonstrates consistent improvement as training data increases, with mean NMSE improving from 50  
+
+> 100
+> 200
+> 300
+> 400
+> 500
+> 600
+> 700
+> 800
+> 900
+> 1000
+> Training Dataset Size (Number of RXs)
+> −30
+> −20
+> −10
+> 0
+> NMSE Loss (dB) Fig. 12: NMSE distribution under varying training data sizes.
+
+−8.98 dB at 50 RX positions to −12 .64 dB at 1,000 RX positions. The improvement is most pronounced below 400 RXs, where mean NMSE drops by 3.17 dB (from −8.98 dB to −12 .15 dB). Beyond 600 RXs, performance gains saturate, with mean NMSE remaining around −12 .5 dB. This satura-tion suggests that approximately 600 RXs per scene provide sufficient spatial coverage for small scenes, and additional measurements yield diminishing returns. These results indicate that RadTwin can achieve high data efficiency and maintain strong generalization performance even with relatively limited training coverage. 
+
+D. Scalability to Different Scene Sizes 
+
+We evaluate RadTwin’s scalability across the three scene sizes described in Section V-A. All three sizes use 400 RXs for training. The voxel size is kept constant at 0.5 × 0.5 × 0.5 m3,resulting in increasing numbers of voxels for larger scenes. Fig. 13 shows the SNR CDF curves for each scene size. The small scene achieves the highest median SNR of 11.36 dB due to its simpler propagation environment with fewer multipath components. As scene size increases, the propagation envi-ronment becomes more complex with longer path lengths and more potential reflectors. The performance gap also reflects the decreasing spatial density of training samples, as the same 400 RXs provide denser coverage for smaller scenes but become increasingly sparse for larger environments. Never-theless, RadTwin maintains robust performance with median SNR of 10.79 dB for the medium scene and 10.12 dB for the large scene, showing that our voxel-based representation and physics-informed attention mechanism scale effectively to larger indoor environments even with relatively sparse training coverage. 
+
+E. Generalization to Dynamic Scene Variations 
+
+A key capability of RadTwin is adapting to dynamic scene configurations without retraining. To evaluate this, we generate 30 scene snapshots by progressively moving furniture from one configuration to another, simulating continuous environ-mental changes. We vary training set diversity by controlling the sampling step: step = 1 uses all 24 scenes, step = 2 uses 12 scenes, step = 4 uses 6 scenes, step = 8 uses 3 scenes, and step = 24 uses only 1 scene at the extremes. All models are tested on 6 test scenes. Fig. 14 shows the SNR CDF under different training set diversities. RadTwin maintains strong performance even with limited training coverage. Using all 30 scenes achieves a median SNR of 11.36 dB, while step = 4 with only 8 training scenes still achieves 10.63 dB. Even step = 8 with 4 training 0 10 20 30           
+
+> SNR (dB)
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> CDF
+> Small
+> Medium
+> Large
+> Fig. 13: SNR distribution across different scene sizes. −5 0510 15 20 25 30 35
+> SNR (dB)
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> CDF
+> step=1
+> step=2
+> step=4
+> step=8
+> step=24
+> Fig. 14: SNR distribution under varying training set diversity.
+
+scenes maintains a median SNR of 9.85 dB. Performance degrades more noticeably at step = 24 with only 2 training scenes, achieving a median SNR of 7.07 dB. These results demonstrate that RadTwin’s explicit geometric conditioning enables effective interpolation to intermediate furniture po-sitions not present in the training set, which is critical for practical deployment in dynamic indoor environments. VII. R ELATED WORK 
+
+Simulator-based Approaches. Traditional wireless channel modeling relies on either statistical or deterministic methods. Statistical models characterize fading and shadowing using probability distributions [24], while empirical models such as Okumura-Hata [25] and COST action models [26] derive path loss formulas from extensive measurement campaigns. Standardized geometry-based stochastic models from 3GPP and ITU provide parameterized multipath clustering models for system-level simulations [27], [28]. However, these ap-proaches fail to capture site-specific propagation characteris-tics as they approximate path loss as radially symmetric func-tions of distance. Deterministic ray tracing methods simulate physical wave propagation by tracing ray paths and computing interactions with environmental obstacles [8]. Modern tools such as Sionna RT [29] provide accurate channel predic-tions by modeling reflection, diffraction, and scattering and further support differentiable ray tracing for gradient-based optimization of material properties and antenna configurations. However, ray tracing suffers from prohibitive computational complexity and requires precise 3D models with detailed ma-terial properties (e.g., permittivity and conductivity), making it impractical for real-time applications in dynamic environments where scene geometry frequently changes. 
+
+Neural Network-based Approaches. Recent deep learning methods have shown promise in wireless channel modeling by learning complex propagation patterns directly from data. RadioUNet [30] demonstrates the effectiveness of CNNs for predicting radio maps from 2D urban environment repre-sentations, achieving fast inference through the U-Net ar-chitecture. However, CNNs struggle to capture long-range spatial dependencies and are limited to 2D representations without modeling 3D furniture-level variations. Inspired by NeRF [10], several works extend the concept to wireless chan-nels. NeRF 2 [11] pioneered neural RF radiance fields for spa-tial spectrum synthesis by representing the scene as a continu-ous volumetric function learned through MLPs. NeWRF [12] extends this framework for channel prediction from sparse measurements by incorporating wireless propagation physics. WRF-GS [31] and RF-3DGS [32] adapt 3D Gaussian splat-ting for faster rendering, achieving millisecond-level inference while maintaining competitive accuracy. However, these meth-ods encode scene geometry implicitly within network weights, necessitating complete model retraining whenever the scenario changes. The learnable wireless digital twin framework [14] represents a notable step toward generalizability by combining geometric ray tracing with neural modules to learn EM proper-ties and interaction behaviors of objects. However, it requires accurate 3D mesh models as input, which are costly to obtain and difficult to maintain in dynamic settings. VIII. C ONCLUSION 
+
+In this paper, we presented RadTwin, a generalizable DNT framework for wireless channel prediction in dynamic indoor environments. RadTwin achieves explicit geometric condition-ing through point cloud-based voxel representation, physics-informed sparse attention via electromagnetic ray tracing, and spatial spectrum prediction through masked cross-attention ag-gregation. Extensive experiments on 30 indoor scenes demon-strate that RadTwin substantially outperforms state-of-the-art methods with 31.6% higher SSIM and 91.96% lower LPIPS, while maintaining robust cross-scale performance and effective adaptation to dynamic configurations without retraining. ACKNOWLEDGEMENT 
+
+This work is partially supported by the US National Science Foundation under Grant No. 2321699 and No. 2333164. We appreciate the hardware support from the NVIDIA Academic Grant Award. REFERENCES [1] L. U. Khan, Z. Han, W. Saad, E. Hossain, M. Guizani, and C. S. Hong, “Digital twin of wireless systems: Overview, taxonomy, challenges, and opportunities,” IEEE Communications Surveys & Tutorials , vol. 24, no. 4, pp. 2230–2254, 2022. [2] Y. Wu, K. Zhang, and Y. Zhang, “Digital twin networks: A survey,” IEEE Internet of Things Journal , vol. 8, no. 18, pp. 13 789–13 804, 2021. [3] R. Poorzare, D. N. Kanellopoulos, V. K. Sharma, P. Dalapati, and O. P. Waldhorst, “Network digital twin towards networking, telecommunica-tions, and traffic engineering: A survey,” IEEE Access , 2025. [4] P. Almasan, M. Ferriol-Galm´ es, J. Paillisse, J. Su´ arez-Varela, D. Perino, D. L´ opez, A. A. P. Perales, P. Harvey, L. Ciavaglia, L. Wong et al. ,“Network digital twin: Context, enabling technologies, and opportuni-ties,” IEEE Communications Magazine , vol. 60, no. 11, pp. 22–27, 2022. [5] H. Tran-Dang and D.-S. Kim, “Digital twin-empowered intelligent computation offloading for edge computing in the era of 5g and beyond: A state-of-the-art survey,” ICT Express , 2025. [6] H. Liu, W. Su, T. Li, W. Huang, and Y. Li, “Digital twin enhanced multi-agent reinforcement learning for large-scale mobile network coverage optimization,” ACM Transactions on Knowledge Discovery from Data ,vol. 19, no. 1, pp. 1–23, 2024. [7] H. Wang, J. Zhang, G. Nie, L. Yu, Z. Yuan, T. Li, J. Wang, and G. Liu, “Digital twin channel for 6g: Concepts, architectures and potential applications,” IEEE Communications Magazine , 2024. [8] Z. Yun and M. F. Iskander, “Ray tracing for radio propagation modeling: Principles and applications,” IEEE access , vol. 3, pp. 1089–1100, 2015. [9] Z. An, L. Shangguan, J. Kaewell, P. Pietraski, and K. Jamieson, “Radiotwin: A digital building material twin for wideband, cross-link, cross-band wireless channel prediction,” in 2025 IEEE International Symposium on Dynamic Spectrum Access Networks (DySPAN) . IEEE, 2025, pp. 1–10. [10] B. Mildenhall, P. P. Srinivasan, M. Tancik, J. T. Barron, R. Ramamoorthi, and R. Ng, “Nerf: Representing scenes as neural radiance fields for view synthesis,” Communications of the ACM , vol. 65, no. 1, pp. 99–106, 2021. [11] X. Zhao, Z. An, Q. Pan, and L. Yang, “Nerf2: Neural radio-frequency radiance fields,” in Proceedings of the 29th Annual International Con-ference on Mobile Computing and Networking , 2023, pp. 1–15. [12] H. Lu, C. Vattheuer, B. Mirzasoleiman, and O. Abari, “Newrf: A deep learning framework for wireless radiation field reconstruction and channel prediction,” arXiv preprint arXiv:2403.03241 , 2024. [13] T.-M. Li, M. Aittala, F. Durand, and J. Lehtinen, “Differentiable monte carlo ray tracing through edge sampling,” ACM Transactions on Graph-ics (TOG) , vol. 37, no. 6, pp. 1–11, 2018. [14] S. Jiang, Q. Qu, X. Pan, A. Agrawal, R. Newcombe, and A. Alkhateeb, “Learnable wireless digital twins: Reconstructing electromagnetic field with neural representations,” IEEE Open Journal of the Communications Society , 2025. [15] J. J. Park, P. Florence, J. Straub, R. Newcombe, and S. Lovegrove, “Deepsdf: Learning continuous signed distance functions for shape rep-resentation,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 2019, pp. 165–174. [16] J. Choe, B. Joung, F. Rameau, J. Park, and I. S. Kweon, “Deep point cloud reconstruction,” arXiv preprint arXiv:2111.11704 , 2021. [17] R. Roveri, A. C. ¨Oztireli, I. Pandele, and M. Gross, “Pointpronets: Consolidation of point clouds with convolutional neural networks,” in 
+
+Computer Graphics Forum , vol. 37, no. 2. Wiley Online Library, 2018, pp. 87–99. [18] M.-J. Rakotosaona, V. La Barbera, P. Guerrero, N. J. Mitra, and M. Ovsjanikov, “Pointcleannet: Learning to denoise and remove outliers from dense point clouds,” in Computer graphics forum , vol. 39, no. 1. Wiley Online Library, 2020, pp. 185–203. [19] S. Luo and W. Hu, “Score-based point cloud denoising,” in Proceedings of the IEEE/CVF international conference on computer vision , 2021, pp. 4583–4592. [20] X. Wen, P. Xiang, Z. Han, Y.-P. Cao, P. Wan, W. Zheng, and Y.-S. Liu, “Pmp-net: Point cloud completion by learning multi-step point moving paths,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 2021, pp. 7443–7452. [21] P. Xiang, X. Wen, Y.-S. Liu, Y.-P. Cao, P. Wan, W. Zheng, and Z. Han, “Snowflakenet: Point cloud completion by snowflake point deconvolution with skip-transformer,” in Proceedings of the IEEE/CVF international conference on computer vision , 2021, pp. 5499–5509. [22] Y. Zhou and O. Tuzel, “Voxelnet: End-to-end learning for point cloud based 3d object detection,” in Proceedings of the IEEE conference on computer vision and pattern recognition , 2018, pp. 4490–4499. [23] A. Williams, S. Barrus, R. K. Morley, and P. Shirley, “An efficient and robust ray-box intersection algorithm,” in ACM SIGGRAPH 2005 Courses , 2005, pp. 9–es. [24] T. K. Sarkar, Z. Ji, K. Kim, A. Medouri, and M. Salazar-Palma, “A survey of various propagation models for mobile communication,” IEEE Antennas and propagation Magazine , vol. 45, no. 3, pp. 51–82, 2003. [25] M. Hata, “Empirical formula for propagation loss in land mobile radio services,” IEEE transactions on Vehicular Technology , vol. 29, no. 3, pp. 317–325, 2013. [26] L. Liu, C. Oestges, J. Poutanen, K. Haneda, P. Vainikainen, F. Quitin, F. Tufvesson, and P. De Doncker, “The cost 2100 mimo channel model,” 
+
+IEEE Wireless Communications , vol. 19, no. 6, pp. 92–99, 2012. [27] Q. Zhu, C.-X. Wang, B. Hua, K. Mao, S. Jiang, and M. Yao, “3gpp tr 38.901 channel model,” in the wiley 5G Ref: the essential 5G reference online . Wiley Press, 2021, pp. 1–35. [28] M. Series, “Guidelines for evaluation of radio interface technologies for imt-advanced,” Report ITU , vol. 638, no. 31, 2009. [29] J. Hoydis, F. A¨ ıt Aoudia, S. Cammerer, M. Nimier-David, N. Binder, G. Marcus, and A. Keller, “Sionna rt: Differentiable ray tracing for radio propagation modeling,” in 2023 IEEE Globecom Workshops (GC Wkshps) . IEEE, 2023, pp. 317–321. [30] R. Levie, C ¸ . Yapar, G. Kutyniok, and G. Caire, “Radiounet: Fast radio map estimation with convolutional neural networks,” IEEE Transactions on Wireless Communications , vol. 20, no. 6, pp. 4001–4015, 2021. [31] C. Wen, J. Tong, Y. Hu, Z. Lin, and J. Zhang, “Neural representation for wireless radiation field reconstruction: A 3d gaussian splatting approach,” IEEE Transactions on Wireless Communications , 2025. [32] L. Zhang, H. Sun, S. Berweger, C. Gentile, and R. Q. Hu, “Rf-3dgs: Wireless channel modeling with radio radiance field and 3d gaussian splatting,” arXiv preprint arXiv:2411.19420 , 2024.

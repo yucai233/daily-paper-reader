@@ -6,35 +6,44 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-30
-- 运行时间：2026-04-30 20:16:46 UTC
+- 最新运行日期：2026-05-01
+- 运行时间：2026-05-01 20:30:34 UTC
 - 运行状态：成功
-- 本次总论文数：4
+- 本次总论文数：7
 - 精读区：0
-- 速读区：4
+- 速读区：7
 
 ### 今日简报（AI）
-今日速览 3D 场景语义分解与高斯泼溅压缩等 4 项前沿成果。
-重点关注 Semantic Foam 实现的空间语义统一建模，以及 MesonGS++ 带来的 3DGS 后处理压缩新方案。
-建议关注语义信息与三维重建的深度融合，探索更轻量、智能的场景表达方式。
-- 详情：[/202604/30/README](/202604/30/README)
+- 今日共生成 7 篇推荐（精读 0 篇，速读 7 篇）
+- 速读：《Sparse-View 3D Gaussian Splatting in the Wild》（7.0/10）, 《Softmax-GS: Generalized Gaussians Learning When to Blend or Bound》（7.0/10）, 《REVIVE 3D: Refinement via Encoded Voluminous Inflated prior for Volume Enhancement》（7.0/10）
+- 这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。
+- 详情：[/202605/01/README](/202605/01/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Semantic Foam: Unifying Spatial and Semantic Scene Decomposition](/202604/30/2604.26262v1-semantic-foam-unifying-spatial-and-semantic-scene-decomposition)  
+1. [Sparse-View 3D Gaussian Splatting in the Wild](/202605/01/2604.27422v1-sparse-view-3d-gaussian-splatting-in-the-wild)  
    标签：评分：7.0/10、query:q1
-   evidence：用于神经场景重建的体积Voronoi网格
-2. [Physics-Informed Temporal U-Net for High-Fidelity Fluid Interpolation](/202604/30/2604.23372v1-physics-informed-temporal-u-net-for-high-fidelity-fluid-interpolation)  
-   标签：评分：6.0/10、query:q5
-   evidence：物理启发的深度学习用于流体动力学和体积插值
-3. [MesonGS++: Post-training Compression of 3D Gaussian Splatting with Hyperparameter Searching](/202604/30/2604.26799v1-mesongs-post-training-compression-of-3d-gaussian-splatting-with-hyperparameter-searching)  
-   标签：评分：6.0/10、query:q7
-   evidence：通过训练后压缩加速渲染
-4. [Color-Encoded Illumination for High-Speed Volumetric Scene Reconstruction](/202604/30/2604.26920v1-color-encoded-illumination-for-high-speed-volumetric-scene-reconstruction)  
+   evidence：用于高质量渲染的稀疏视图3D高斯泼溅
+2. [Softmax-GS: Generalized Gaussians Learning When to Blend or Bound](/202605/01/2604.27437v1-softmax-gs-generalized-gaussians-learning-when-to-blend-or-bound)  
+   标签：评分：7.0/10、query:q1
+   evidence：用于新视角合成和混合的广义高斯方法
+3. [REVIVE 3D: Refinement via Encoded Voluminous Inflated prior for Volume Enhancement](/202605/01/2604.27504v1-revive-3d-refinement-via-encoded-voluminous-inflated-prior-for-volume-enhancement)  
+   标签：评分：7.0/10、query:profile-1
+   evidence：生成体积3D资产与体积增强
+4. [Faster 3D Gaussian Splatting Convergence via Structure-Aware Densification](/202605/01/2604.28016v1-faster-3d-gaussian-splatting-convergence-via-structure-aware-densification)  
+   标签：评分：7.0/10、query:q1
+   evidence：加速3D高斯泼溅的收敛与渲染
+5. [Generalizable Sparse-View 3D Reconstruction from Unconstrained Images](/202605/01/2604.28193v1-generalizable-sparse-view-3d-reconstruction-from-unconstrained-images)  
+   标签：评分：7.0/10、query:q1
+   evidence：用于稀疏视图3D重建和渲染的前馈框架
+6. [RadTwin: Generalizable Wireless Digital Twin for Dynamic Environments](/202605/01/2604.23310v1-radtwin-generalizable-wireless-digital-twin-for-dynamic-environments)  
    标签：评分：6.0/10、query:q1
-   evidence：体积场景重建与渲染
+   evidence：用于场景表示的神经辐射场方法
+7. [Lightweight Real-Time Rendering Parameter Optimization via XGBoost-Driven Lookup Tables](/202605/01/2604.25178v1-lightweight-real-time-rendering-parameter-optimization-via-xgboost-driven-lookup-tables)  
+   标签：评分：6.0/10、query:q7
+   evidence：通过轻量级参数优化加速渲染
 
 
 <div class="dpr-home-promo-card">
