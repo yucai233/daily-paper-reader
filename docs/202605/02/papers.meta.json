@@ -1,0 +1,37 @@
+{
+  "label": "2026-05-02",
+  "date": "2026-05-02",
+  "generated_at": "2026-05-02T20:16:06",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202605/02/2604.24081v1-neural-enhancement-of-analytical-appearance-models",
+      "section": "quick",
+      "title_en": "Neural Enhancement of Analytical Appearance Models",
+      "authors": "Xuanzhe Shen, Xiaohe Ma, Kun Zhou, Hongzhi Wu",
+      "date": "2026-04-27",
+      "pdf": "https://arxiv.org/pdf/2604.24081v1",
+      "score": "6.0",
+      "evidence": "用于渲染的解析外观模型的神经增强",
+      "tldr": "针对传统分析型外观模型精度不足及神经模型开销大的问题，本文提出一种“神经增强”框架。该方法通过在分析模型的计算图中识别并用小型多层感知机（MLP）替换关键节点或算子，结合了物理模型的结构优势与神经网络的表达能力。利用超立方体搜索实现自动化的可微分节点选择，在保持模型紧凑高效的同时，显著提升了对实测反射率和双向纹理函数的拟合精度，且完全兼容现有渲染管线。",
+      "tags": "query:profile-1",
+      "abstract_en": "Traditional analytical reflectance models, while compact and interpretable, lack the capacity to accurately represent physical measurements. Recent neural models, which closely fit input data, are less generalizable and often more expensive to store and evaluate. To combine the strengths and overcome the limitations of these two classes of models, we present neural enhancement, a novel framework to boost an input analytical appearance model, by identifying and replacing its key computational nodes/operators with small-scale multi-layer perceptrons. This allows us to leverage the computational graph structure of the original model, while improving its expressiveness at a modest cost. To make the enhancement computationally tractable, we propose a hypercube-based search to automatically and efficiently identify the node(s) and/or operator(s) to be replaced towards maximal gain in a differentiable fashion. We enhance a number of common analytical BRDF models. The results are, at once accurate, compact and efficient, and compare favorably with state-of-the-art work on fitting measured reflectance and bidirectional texture functions. Finally, our models are fully compatible with any standard rasterization or ray-tracing pipeline.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/02/2604.28122v1-beyond-gaussian-bottlenecks-topologically-aligned-encoding-of-vision-transformer-feature-spaces",
+      "section": "quick",
+      "title_en": "Beyond Gaussian Bottlenecks: Topologically Aligned Encoding of Vision-Transformer Feature Spaces",
+      "authors": "Andrew Bond, Ilkin Umut Melanlioglu, Erkut Erdem, Aykut Erdem",
+      "date": "2026-04-30",
+      "pdf": "https://arxiv.org/pdf/2604.28122v1",
+      "score": "6.0",
+      "evidence": "用于表示3D状态和几何的潜空间学习框架",
+      "tldr": "针对现代视觉世界模型在保持3D几何和物理一致性方面的不足，本文提出S$^2$VAE框架。该方法不再仅建模外观，而是通过压缩和表示场景的潜在3D状态（如相机运动、深度和点云结构）来学习几何优先的潜在表示。核心创新在于引入幂球面（Power Spherical）分布代替传统的Gaussian瓶颈，在强压缩下更好地保留方向和几何语义，显著提升了深度估计和位姿恢复等任务的性能。",
+      "tags": "query:profile-1",
+      "abstract_en": "Modern visual world modeling systems increasingly rely on high-capacity architectures and large-scale data to produce plausible motion, yet they often fail to preserve underlying 3D geometry or physically consistent camera dynamics. A key limitation lies not only in model capacity, but in the latent representations used to encode geometric structure. We propose S$^2$VAE, a geometry-first latent learning framework that focuses on compressing and representing the latent 3D state of a scene, including camera motion, depth, and point-level structure, rather than modeling appearance alone. Building on representations from a Visual Geometry Grounded Transformer (VGGT), we introduce a novel type of variational autoencoder using a product of Power Spherical latent distributions, explicitly enforcing hyperspherical structure in the bottleneck to preserve directional and geometric semantics under strong compression. Across depth estimation, camera pose recovery, and point cloud reconstruction, we show that geometry-aligned hyperspherical latents consistently outperform conventional Gaussian bottlenecks, particularly in high-compression regimes. Our results highlight latent geometry as a first-class design choice for physically grounded visual and world models.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

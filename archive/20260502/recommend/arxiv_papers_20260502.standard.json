@@ -1,0 +1,92 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-02T20:15:42.413021+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.24081v1",
+      "title": "Neural Enhancement of Analytical Appearance Models",
+      "abstract": "Traditional analytical reflectance models, while compact and interpretable, lack the capacity to accurately represent physical measurements. Recent neural models, which closely fit input data, are less generalizable and often more expensive to store and evaluate. To combine the strengths and overcome the limitations of these two classes of models, we present neural enhancement, a novel framework to boost an input analytical appearance model, by identifying and replacing its key computational nodes/operators with small-scale multi-layer perceptrons. This allows us to leverage the computational graph structure of the original model, while improving its expressiveness at a modest cost. To make the enhancement computationally tractable, we propose a hypercube-based search to automatically and efficiently identify the node(s) and/or operator(s) to be replaced towards maximal gain in a differentiable fashion. We enhance a number of common analytical BRDF models. The results are, at once accurate, compact and efficient, and compare favorably with state-of-the-art work on fitting measured reflectance and bidirectional texture functions. Finally, our models are fully compatible with any standard rasterization or ray-tracing pipeline.",
+      "authors": [
+        "Xuanzhe Shen",
+        "Xiaohe Ma",
+        "Kun Zhou",
+        "Hongzhi Wu"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR"
+      ],
+      "published": "2026-04-27T06:02:44+00:00",
+      "link": "https://arxiv.org/pdf/2604.24081v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "neural enhancement of analytical appearance models for rendering",
+      "llm_evidence_cn": "用于渲染的解析外观模型的神经增强",
+      "llm_evidence": "用于渲染的解析外观模型的神经增强",
+      "canonical_evidence": "用于渲染的解析外观模型的神经增强",
+      "llm_tldr_en": "Enhances analytical reflectance models using MLPs to improve expressiveness and accuracy in rendering.",
+      "llm_tldr_cn": "使用 MLP 增强解析反射模型，以提高渲染中的表现力和准确性。",
+      "llm_tldr": "使用 MLP 增强解析反射模型，以提高渲染中的表现力和准确性。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.28122v1",
+      "title": "Beyond Gaussian Bottlenecks: Topologically Aligned Encoding of Vision-Transformer Feature Spaces",
+      "abstract": "Modern visual world modeling systems increasingly rely on high-capacity architectures and large-scale data to produce plausible motion, yet they often fail to preserve underlying 3D geometry or physically consistent camera dynamics. A key limitation lies not only in model capacity, but in the latent representations used to encode geometric structure. We propose S$^2$VAE, a geometry-first latent learning framework that focuses on compressing and representing the latent 3D state of a scene, including camera motion, depth, and point-level structure, rather than modeling appearance alone. Building on representations from a Visual Geometry Grounded Transformer (VGGT), we introduce a novel type of variational autoencoder using a product of Power Spherical latent distributions, explicitly enforcing hyperspherical structure in the bottleneck to preserve directional and geometric semantics under strong compression. Across depth estimation, camera pose recovery, and point cloud reconstruction, we show that geometry-aligned hyperspherical latents consistently outperform conventional Gaussian bottlenecks, particularly in high-compression regimes. Our results highlight latent geometry as a first-class design choice for physically grounded visual and world models.",
+      "authors": [
+        "Andrew Bond",
+        "Ilkin Umut Melanlioglu",
+        "Erkut Erdem",
+        "Aykut Erdem"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-04-30T17:12:31+00:00",
+      "link": "https://arxiv.org/pdf/2604.28122v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "latent learning framework for representing 3D state and geometry",
+      "llm_evidence_cn": "用于表示3D状态和几何的潜空间学习框架",
+      "llm_evidence": "用于表示3D状态和几何的潜空间学习框架",
+      "canonical_evidence": "用于表示3D状态和几何的潜空间学习框架",
+      "llm_tldr_en": "Proposes S2VAE to encode geometric structure and 3D scene states beyond simple appearance.",
+      "llm_tldr_cn": "提出S2VAE，用于编码几何结构和3D场景状态，而非仅建模外观。",
+      "llm_tldr": "提出S2VAE，用于编码几何结构和3D场景状态，而非仅建模外观。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
