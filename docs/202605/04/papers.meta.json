@@ -1,0 +1,51 @@
+{
+  "label": "2026-05-04",
+  "date": "2026-05-04",
+  "generated_at": "2026-05-04T20:31:23",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202605/04/2604.26262v2-semantic-foam-unifying-spatial-and-semantic-scene-decomposition",
+      "section": "deep",
+      "title_en": "Semantic Foam: Unifying Spatial and Semantic Scene Decomposition",
+      "authors": "Amr Sharafeldin, Shrisudhan Govindarajan, Thomas Walker, Aryan Mikaeili, Daniel Rebain, Kwang Moo Yi, Andrea Tagliasacchi",
+      "date": "2026-04-29",
+      "pdf": "https://arxiv.org/pdf/2604.26262v2",
+      "score": "8.0",
+      "evidence": "空间体积分解与辐射泡沫表示",
+      "tldr": "针对3D高斯泼溅等现代场景重建方法难以交互和语义分割质量不佳的问题，本文提出Semantic Foam。该方法将Radiant Foam的Voronoi网格空间分解与单元级显式语义特征场相结合，通过显式结构实现空间正则化，有效解决了遮挡和多视图监督不一致导致的伪影。实验证明其在物体级分割性能上优于Gaussian Grouping和SAGA等前沿方法，为交互式图形应用提供了更优的场景表示。",
+      "tags": "query:q1",
+      "abstract_en": "Modern scene reconstruction methods, such as 3D Gaussian Splatting, deliver photo-realistic novel view synthesis at real-time speeds, yet their adoption in interactive graphics applications has been limited. A major bottleneck is the difficulty of interacting with these representations compared to traditional, human-authored 3D assets. While previous research has attempted to impose semantic decomposition on these models, significant challenges remain regarding segmentation quality and consistency. To address this, we introduce Semantic Foam, extending the recently proposed Radiant Foam representations to semantic decomposition tasks. Our approach integrates the natural spatial volumetric decomposition of Radiant Foam's Voronoi mesh with an explicit semantic feature field parameterized at the cell level. This explicit structure enables direct spatial regularization, which prevents artifacts caused by occlusion or inconsistent supervision across views - common pitfalls for other point-based representations. Experimental results show that our method achieves superior object-level segmentation performance compared to state-of-the-art methods like Gaussian Grouping and SAGA.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/04/2604.26740v1-learning-sparse-brdf-measurement-samples-from-image",
+      "section": "quick",
+      "title_en": "Learning Sparse BRDF Measurement Samples from Image",
+      "authors": "Wen Cao",
+      "date": "2026-04-29",
+      "pdf": "https://arxiv.org/pdf/2604.26740v1",
+      "score": "6.0",
+      "evidence": "用于逼真渲染的可微分渲染器和学习反射先验",
+      "tldr": "本研究针对高精度双向反射分布函数（BRDF）采集成本高、速度慢的问题，提出了一种学习稀疏测量样本的方法。该方法结合了集合编码器、预训练的超网络重构器和可微分渲染器，通过优化测量位置来最大化重构质量。在MERL数据集上的实验表明，该方法在极低采样预算（如8或16个样本）下优于现有的神经重构基准，有效提升了基于先验知识的材质外观恢复效率。",
+      "tags": "query:q1",
+      "abstract_en": "Accurate BRDF acquisition is important for realistic rendering, but dense gonioreflectometer measurements are slow and expensive. We study how to select a small number of BRDF measurements that are most useful for reconstructing material appearance under a learned reflectance prior. Our method combines a set encoder for sparse coordinate-value observations, a pretrained hypernetwork-based BRDF reconstructor, and a differentiable renderer. During sampler training, the reconstructor is kept fixed and gradients from BRDF-space and rendered-image losses are used to optimize measurement locations. This separates sample selection from prior fitting and encourages the sampler to choose directions that are informative under the learned material distribution. Experiments on the MERL dataset show that the proposed sampler improves low-budget reconstruction quality at 8 and 16 measurements compared with neural reconstruction baselines, while PCA-based methods remain strong at larger budgets. We further analyze the effect of image-space supervision, co-optimization, and image-only latent fitting for unseen materials.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/04/2605.00052v1-two-view-accumulation-as-the-primary-training-lever-for-hybrid-capture-gaussian-splatting-a-variance-decomposition-view-of-when-gradient-surgery-helps",
+      "section": "quick",
+      "title_en": "Two-View Accumulation as the Primary Training Lever for Hybrid-Capture Gaussian Splatting: A Variance-Decomposition View of When Gradient Surgery Helps",
+      "authors": "Sungjun Cho",
+      "date": "2026-04-29",
+      "pdf": "https://arxiv.org/pdf/2605.00052v1",
+      "score": "6.0",
+      "evidence": "高斯泼溅体渲染的优化技术",
+      "tldr": "针对混合采集（如无人机航拍与地面视角结合）中3D高斯泼溅（3DGS）对少数视角拟合不足的问题，本文发现简单的“每步渲染两个视角”是提升性能的关键。通过对比多种复杂的梯度修正方法，研究表明增加单步视角数量带来的方差减半效应远超复杂的配对策略。该方法在多个基准上提升了1-3 dB，并适用于多种3DGS变体。",
+      "tags": "query:q1",
+      "abstract_en": "Hybrid-capture novel view synthesis combines images at substantially different camera distances (e.g., aerial drone and ground-level views). Standard 3D Gaussian Splatting (3DGS), trained for 30K iterations with one rendered view per optimizer step, under-fits the minority regime by 1-3 dB on five hybrid-capture benchmarks. We isolate the lever that closes this gap.   Among compute-matched alternatives -- vanilla 60K iterations, magnitude corrections (GradNorm), direction-aware near/far gradient surgery, projective preconditioning, confidence-gated sample-level surgery, and a random two-view-per-step control -- the simplest structural change wins: rendering two views per optimizer step. The pairing rule (geometry-defined near/far, random, or active loss-disparity) does not change PSNR beyond seed variance on any of the five scenes; the structural change of having two views per step does.   We propose a variance-decomposition framework that predicts and explains this finding: under bimodal camera regimes, between-regime gradient variance turns out to be small relative to within-regime variance in 3DGS, so structured and random pairings are variance-equivalent in expectation, and the variance halving from two-view accumulation itself is the dominant effect. We verify the framework on five scenes whose camera-altitude bimodality coefficients span [0.55, 1.00], and we report the negative result that direction-aware projection, magnitude correction, confidence gating, and an active loss-disparity pairing all fall within seed variance of random two-view pairing. The two-view structural lever transfers cleanly to the Scaffold-GS and Pixel-GS backbones.   We position this work as an honest characterization of which training-side axes do and do not move PSNR for hybrid-capture 3DGS, together with the framework that explains why.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

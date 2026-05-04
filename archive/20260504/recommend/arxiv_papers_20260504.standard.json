@@ -1,0 +1,126 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-04T20:30:01.644535+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2604.26262v2",
+      "title": "Semantic Foam: Unifying Spatial and Semantic Scene Decomposition",
+      "abstract": "Modern scene reconstruction methods, such as 3D Gaussian Splatting, deliver photo-realistic novel view synthesis at real-time speeds, yet their adoption in interactive graphics applications has been limited. A major bottleneck is the difficulty of interacting with these representations compared to traditional, human-authored 3D assets. While previous research has attempted to impose semantic decomposition on these models, significant challenges remain regarding segmentation quality and consistency. To address this, we introduce Semantic Foam, extending the recently proposed Radiant Foam representations to semantic decomposition tasks. Our approach integrates the natural spatial volumetric decomposition of Radiant Foam's Voronoi mesh with an explicit semantic feature field parameterized at the cell level. This explicit structure enables direct spatial regularization, which prevents artifacts caused by occlusion or inconsistent supervision across views - common pitfalls for other point-based representations. Experimental results show that our method achieves superior object-level segmentation performance compared to state-of-the-art methods like Gaussian Grouping and SAGA.",
+      "authors": [
+        "Amr Sharafeldin",
+        "Shrisudhan Govindarajan",
+        "Thomas Walker",
+        "Aryan Mikaeili",
+        "Daniel Rebain",
+        "Kwang Moo Yi",
+        "Andrea Tagliasacchi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-29T03:40:13+00:00",
+      "link": "https://arxiv.org/pdf/2604.26262v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "spatial volumetric decomposition and Radiant Foam representations",
+      "llm_evidence_cn": "空间体积分解与辐射泡沫表示",
+      "llm_evidence": "空间体积分解与辐射泡沫表示",
+      "canonical_evidence": "空间体积分解与辐射泡沫表示",
+      "llm_tldr_en": "Introduces Semantic Foam for spatial and semantic scene decomposition in volumetric rendering.",
+      "llm_tldr_cn": "引入Semantic Foam，在体积渲染中实现空间和语义场景分解。",
+      "llm_tldr": "引入Semantic Foam，在体积渲染中实现空间和语义场景分解。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2604.26740v1",
+      "title": "Learning Sparse BRDF Measurement Samples from Image",
+      "abstract": "Accurate BRDF acquisition is important for realistic rendering, but dense gonioreflectometer measurements are slow and expensive. We study how to select a small number of BRDF measurements that are most useful for reconstructing material appearance under a learned reflectance prior. Our method combines a set encoder for sparse coordinate-value observations, a pretrained hypernetwork-based BRDF reconstructor, and a differentiable renderer. During sampler training, the reconstructor is kept fixed and gradients from BRDF-space and rendered-image losses are used to optimize measurement locations. This separates sample selection from prior fitting and encourages the sampler to choose directions that are informative under the learned material distribution. Experiments on the MERL dataset show that the proposed sampler improves low-budget reconstruction quality at 8 and 16 measurements compared with neural reconstruction baselines, while PCA-based methods remain strong at larger budgets. We further analyze the effect of image-space supervision, co-optimization, and image-only latent fitting for unseen materials.",
+      "authors": [
+        "Wen Cao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-04-29T14:39:23+00:00",
+      "link": "https://arxiv.org/pdf/2604.26740v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "differentiable renderer and learned reflectance prior for realistic rendering",
+      "llm_evidence_cn": "用于逼真渲染的可微分渲染器和学习反射先验",
+      "llm_evidence": "用于逼真渲染的可微分渲染器和学习反射先验",
+      "canonical_evidence": "用于逼真渲染的可微分渲染器和学习反射先验",
+      "llm_tldr_en": "Optimizes BRDF measurement sampling using a hypernetwork-based reconstructor and differentiable rendering.",
+      "llm_tldr_cn": "利用基于超网络的BRDF重建器和可微分渲染优化BRDF测量采样。",
+      "llm_tldr": "利用基于超网络的BRDF重建器和可微分渲染优化BRDF测量采样。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.00052v1",
+      "title": "Two-View Accumulation as the Primary Training Lever for Hybrid-Capture Gaussian Splatting: A Variance-Decomposition View of When Gradient Surgery Helps",
+      "abstract": "Hybrid-capture novel view synthesis combines images at substantially different camera distances (e.g., aerial drone and ground-level views). Standard 3D Gaussian Splatting (3DGS), trained for 30K iterations with one rendered view per optimizer step, under-fits the minority regime by 1-3 dB on five hybrid-capture benchmarks. We isolate the lever that closes this gap.   Among compute-matched alternatives -- vanilla 60K iterations, magnitude corrections (GradNorm), direction-aware near/far gradient surgery, projective preconditioning, confidence-gated sample-level surgery, and a random two-view-per-step control -- the simplest structural change wins: rendering two views per optimizer step. The pairing rule (geometry-defined near/far, random, or active loss-disparity) does not change PSNR beyond seed variance on any of the five scenes; the structural change of having two views per step does.   We propose a variance-decomposition framework that predicts and explains this finding: under bimodal camera regimes, between-regime gradient variance turns out to be small relative to within-regime variance in 3DGS, so structured and random pairings are variance-equivalent in expectation, and the variance halving from two-view accumulation itself is the dominant effect. We verify the framework on five scenes whose camera-altitude bimodality coefficients span [0.55, 1.00], and we report the negative result that direction-aware projection, magnitude correction, confidence gating, and an active loss-disparity pairing all fall within seed variance of random two-view pairing. The two-view structural lever transfers cleanly to the Scaffold-GS and Pixel-GS backbones.   We position this work as an honest characterization of which training-side axes do and do not move PSNR for hybrid-capture 3DGS, together with the framework that explains why.",
+      "authors": [
+        "Sungjun Cho"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-29T17:45:51+00:00",
+      "link": "https://arxiv.org/pdf/2605.00052v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "optimization techniques for Gaussian Splatting volume rendering",
+      "llm_evidence_cn": "高斯泼溅体渲染的优化技术",
+      "llm_evidence": "高斯泼溅体渲染的优化技术",
+      "canonical_evidence": "高斯泼溅体渲染的优化技术",
+      "llm_tldr_en": "Improves hybrid-capture Gaussian Splatting training using a two-view accumulation strategy.",
+      "llm_tldr_cn": "通过双视图累积策略改进了混合捕获高斯泼溅的训练效果。",
+      "llm_tldr": "通过双视图累积策略改进了混合捕获高斯泼溅的训练效果。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

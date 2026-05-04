@@ -1,0 +1,796 @@
+Title: Two-View Accumulation as the Primary Training Lever for Hybrid-Capture Gaussian Splatting: A Variance-Decomposition View of When Gradient Surgery Helps
+
+URL Source: https://arxiv.org/pdf/2605.00052v1
+
+Published Time: Mon, 04 May 2026 00:04:33 GMT
+
+Number of Pages: 27
+
+Markdown Content:
+# Two-View Accumulation as the Primary Training Lever for Hybrid-Capture Gaussian Splatting: A Variance-Decomposition View of When Gradient Surgery Helps 
+
+Sungjun Cho 
+
+The Hong Kong University of Science and Technology 
+
+schoaq@connect.ust.hk 
+
+Abstract 
+
+Hybrid-capture novel view synthesis combines images at substantially different camera distances (e.g., aerial drone and ground-level views). Standard 3D Gaussian Splatting (3DGS), trained for 30K iterations with one rendered view per optimizer step, under-fits the minority regime by 1–3 dB on five hybrid-capture benchmarks. We isolate the lever that closes this gap. Among compute-matched alternatives—vanilla 60K iterations, magnitude correc-tions (GradNorm), direction-aware near/far gradient surgery, projective precondi-tioning, confidence-gated sample-level surgery, and a random two-view-per-step control—the simplest structural change wins: rendering two views per optimizer step. The pairing rule (geometry-defined near/far, random, or active loss-disparity) does not change PSNR beyond seed variance on any of the five scenes; the structural change of having two views per step does. We propose a variance-decomposition framework that predicts and explains this finding: under bimodal camera regimes, between-regime gradient variance turns out to be small relative to within-regime variance in 3DGS, so structured and random pairings are variance-equivalent in expectation, and the variance halving from two-view accumulation itself is the dominant effect. We verify the framework on five scenes whose camera-altitude bimodality coefficients span [0 .55 , 1.00] , and we report the negative result that direction-aware projection, magnitude correction, confidence gating, and an active loss-disparity pairing all fall within seed variance of random two-view pairing. The two-view structural lever transfers cleanly to the Scaffold-GS and Pixel-GS backbones. We position this work as an honest characterization of which training-side axes do and do not move PSNR for hybrid-capture 3DGS, together with the framework that explains why. 
+
+1 Introduction 
+
+Hybrid-capture novel view synthesis is increasingly important for large-scale scene reconstruction, digital twins, aerial–ground mapping, and autonomous navigation. In this setting, ground-level cameras capture local texture and fine geometric detail, while aerial cameras provide broad spatial coverage and global context [Li et al., 2024a, Zhang et al., 2024a, Li et al., 2023]. Unlike conventional NVS settings where cameras observe a scene from relatively similar distances, hybrid-capture scenes require a single radiance representation to serve views taken from substantially different distances. This makes hybrid capture not merely a multi-scale rendering problem, but a multi-regime optimization problem: the same scene parameters must be updated by near and far views that impose different, and sometimes incompatible, training signals. 
+
+Preprint. Under review.       
+
+> arXiv:2605.00052v1 [cs.CV] 29 Apr 2026 Ground Truth Vanilla 3DGS CrossGrad-GS (Ours)
+> Near view MatrixCity (r = 3.7)
+> 18.67 dB 25.36 dB
+> Far view UC-GS NYC (r = 180 m)
+> 27.22 dB 27.60 dB
+
+Figure 1: Hybrid-capture scenes require one Gaussian representation to support near views demanding high-frequency detail and far views demanding global consistency. Vanilla 3DGS merges both regimes through a single averaged gradient, biasing shared parameters toward one capture mode. CrossGrad-GS balances near/far training signals and preserves structure at both distances without changing the Gaussian representation. 3D Gaussian Splatting (3DGS) [Kerbl et al., 2023] has enabled real-time novel view synthesis with high visual fidelity in standard capture settings. However, in hybrid-capture scenes, vanilla 3DGS often collapses toward one capture regime. Near views demand sharp local texture, precise projected geometry, and high-frequency detail, whereas far views favor spatially averaged appearance and stable global structure. Standard 3DGS optimizes all cameras through a single averaged photometric loss, implicitly merging these heterogeneous updates before the optimizer can distinguish whether they are compatible or conflicting. As a result, the shared Gaussian parameters may be biased toward the dominant capture regime, leading to over-smoothed aerial renderings, incomplete street-level reconstructions, or severe degradation under large altitude gaps. A natural response is to improve the representation, rasterizer, or training system. Recent Gaussian-splatting methods introduce structured anchors [Lu et al., 2024], level-of-detail hierarchies [Ren et al., 2024], and anti-aliasing mechanisms for rendering-time scale variation [Yu et al., 2024, Liang et al., 2024]. Hybrid Gaussian representations further improve the representational trade-off between geometry and appearance. These methods improve what Gaussians can represent and how they are rendered across scales. Nevertheless, they leave a complementary question largely unexplored: 
+
+how should heterogeneous near and far views jointly update the same Gaussian parameters during training? In hybrid-capture scenes, failure can arise even when the Gaussian representation is expressive enough, because incompatible near/far gradients are aggregated into a single update on shared parameters. In this work, we identify hybrid-capture 3DGS as a geometry-induced gradient aggregation problem: near and far camera populations act as structured optimization groups whose gradients are coupled through the same Gaussian parameters. Under perspective projection, views captured at different distances induce gradients with different scaling behavior across Gaussian parameter types. Projected geometric parameters such as position and scale are expected to be more sensitive to distance-induced imbalance than amplitude-like parameters such as opacity and color. Moreover, the problem is not only one of gradient magnitude. Near and far views can also disagree in gradient direction: a near view may push a Gaussian to explain local high-frequency detail, while a far view may push the same Gaussian toward smoother global consistency. Standard averaged-gradient training hides this directional conflict, allowing destructive cross-regime updates to accumulate throughout optimization. Motivated by this diagnosis, we propose CrossGrad-GS , a simple gradient-balanced training rule for hybrid-capture Gaussian splatting. CrossGrad-GS keeps the underlying Gaussian representation and 2rasterizer unchanged. Each training iteration samples near and far cameras in a balanced manner, computes their gradients separately, and applies a symmetric cross-altitude gradient projection when the two updates conflict. This removes destructive components between near/far gradients while preserving compatible updates, thereby balancing the optimization signal without introducing a new Gaussian representation, rendering primitive, or scene-specific architecture. Our experiments also clarify the boundary of this approach. CrossGrad-GS is most effective when the near/far grouping captures the true visual-scale regimes of the scene; when a radial split poorly matches an anisotropic camera layout, as in UC-GS SF, the primary training-only method can lose its advantage. We therefore view grouping as a central design choice rather than an implementation detail. The main contribution of CrossGrad-GS is not that its projection operator dominates all existing gradient-reconciliation methods, but that hybrid-capture 3DGS exposes a useful geometry-defined gradient aggregation axis: direction-aware near/far aggregation consistently explains the strongest gains better than scalar magnitude correction. 
+
+Contributions. (i) Diagnostic. Across five hybrid-capture benchmarks, we measure 33–83% per-block sample-level gradient conflict between near and far camera populations on shared Gaussian parameters during single-view 30K training, establishing the conflict regime as a measurable property of hybrid-capture 3DGS rather than a modelling assumption. (ii) Identification. A second view per optimizer step—the simplest possible structural change—closes 80–100% of the PSNR gap to compute-matched 60K vanilla on four of five scenes, and lifts MatrixCity by an additional 1.07 dB. This holds across pairing rules: structured near/far, random, and active loss-disparity pairings are statistically indistinguishable in PSNR on every benchmark we evaluate. (iii) Variance-decomposition framework. We decompose per-view gradient variance into within-regime ( σ2w) and between-regime ( σ2b) components and prove that structured-versus-random pairing variance differs by a factor 1 + σ2b/σ 2w (Proposition 2). The empirical PSNR equivalence of all two-view pairings then implies σ2b ≪ σ2w in 3DGS, even on scenes with strongly bimodal camera altitudes (Sarle’s BC 
+
+> 0.95 on MatrixCity, Road, and Park). (iv) Negative results, honestly reported. Direction-aware projection (CrossGrad-GS), magnitude-only correction (GradNorm), MGDA/CAGrad, projective preconditioning, confidence-gated sample-level surgery, anchor grouping, and active loss-disparity pairing all fall within seed variance of a random two-view control on PSNR. We document these as informative negatives that delineate which training-side axes do, and do not, move PSNR for hybrid-capture 3DGS. 
+
+2 Related Work 
+
+Prior work on Gaussian splatting has improved novel view synthesis from several complementary directions, including representation design, scale-aware rendering, large-scale scene decomposition, density control, geometry-aware regularization, and training regularization. We review these direc-tions through the lens of hybrid-capture optimization and highlight how CrossGrad-GS targets a different axis: the aggregation of near- and far-view gradients on shared Gaussian parameters. 
+
+Representation, rendering, and large-scale 3DGS. A large body of work improves what Gaus-sians can represent or how they are rendered. Structured anchors [Lu et al., 2024], level-of-detail hierarchies [Ren et al., 2024, Yan et al., 2023], and scale-aware anti-aliasing methods [Yu et al., 2024, Liang et al., 2024] improve rendering quality across different projected scales. Large-scale systems further use hierarchical decomposition, partitioned optimization, or appearance modeling to scale 3DGS to city-scale scenes [Kerbl et al., 2024, Lin et al., 2024, Liu et al., 2024, Kulhánek et al., 2025, Kulhanek et al., 2024]. Hybrid Gaussian representations, including mixed 2D/3D formula-tions [Zhang et al., 2025b, Gu et al., 2025], improve the representational trade-off between geometry and appearance. Geometry-aware approaches such as GeoGaussian [Li et al., 2024b] improve surface or geometric regularity through representation-side or regularization-side design. These methods are complementary to CrossGrad-GS: they improve the representation, rasterizer, geometry regularity, or system scalability, whereas our work modifies how heterogeneous camera views update the same Gaussian parameters during training. 
+
+Hybrid-capture and heterogeneous-capture Gaussian splatting. Recent work has begun to study Gaussian splatting under aerial–ground or varying-altitude capture. UC-GS [Zhang et al., 2024a] and Horizon-GS [Li et al., 2024a] introduce benchmarks and methods for hybrid-capture 3scenes, documenting severe degradation of vanilla 3DGS under large altitude gaps. Horizon-GS mitigates hybrid-capture degradation through staged training and camera exposure balancing, whereas CrossGrad-GS explicitly separates near- and far-view gradients and modifies their aggregation when their update directions conflict. Cross-view systems such as CrossView-GS [Zhang et al., 2025a] ad-dress large aerial–ground viewpoint changes through branch construction, fusion, supplementation, or additional regularization. Urban hybrid Gaussian methods modify the representation or optimization stack to handle heterogeneous capture: HO-Gaussian [Li et al., 2024c] hybridizes 3DGS optimization for urban-scale scenes, and HGS-mapping [Wu et al., 2024] uses a hybrid Gaussian representation for online dense mapping in urban scenes. Heterogeneous sensor systems such as TCLC-GS [Zhao et al., 2024] combine LiDAR and camera observations with different spatial support and supervision signals. These works improve architectures, priors, schedules, or multi-sensor supervision. CrossGrad-GS is complementary: it keeps a single shared Gaussian field unchanged and studies the training signal itself, namely how heterogeneous camera populations should aggregate gradients when they update the same parameters. 
+
+Density control and gradient-based training analyses. Several recent works analyze gradients in 3DGS, but at different points in the training pipeline. AbsGS [Ye et al., 2024] studies gradient collision in adaptive density control, where pixel-wise view-space positional gradients can cancel and prevent large Gaussians from splitting in high-detail regions. DC4GS [Jeong et al., 2025] uses directional consistency of positional gradients to improve primitive splitting and placement. Revising Densification [Rota Bulò et al., 2024] studies how Gaussian evolution and density-control rules affect training stability and reconstruction. These methods modify density control: they decide which Gaussians should be split, cloned, pruned, or refined. CrossGrad-GS addresses a different source of conflict. We leave densification and pruning unchanged, and instead modify the training-time aggregation rule for near- and far-view gradients before they update shared Gaussian parameters. Thus, our method is complementary to gradient-based density-control improvements. 
+
+Gradient reweighting and gradient surgery. Multi-task optimization methods such as PCGrad [Yu et al., 2020], CAGrad [Liu et al., 2021], GradNorm [Chen et al., 2018], and GradVac [Wang et al., 2021] reduce conflict among task gradients. In neural rendering, floaters and scale imbalance have also motivated distance-based gradient rescaling: Philip and Deschaintre [2023] and Pixel-GS [Zhang et al., 2024b] apply scalar gradient corrections along the distance axis within each rendered view. Unlike Pixel-GS, which rescales gradients within each rendered view as a function of distance, CrossGrad-GS compares gradients across camera populations and removes conflicting directional components between near and far updates. CrossGrad-GS can be viewed as a geometry-defined instantiation of direction-aware gradient aggregation: near and far camera populations act as structured optimization groups because perspective projection induces parameter-type-dependent imbalance and directional disagreement on the same Gaussian parameters. 
+
+Summary of distinction. Existing 3DGS methods primarily improve the representation, rasterizer, density-control rule, scene decomposition, training schedule, or sensor supervision. CrossGrad-GS targets a complementary optimization axis: the rule by which heterogeneous near- and far-view gradients are aggregated on shared Gaussian parameters. We do not claim that our projection operator universally dominates all gradient-reconciliation methods; rather, we show that direction-aware near/far aggregation is a useful and underexplored axis for hybrid-capture 3DGS. 
+
+3 Method 
+
+Overview. CrossGrad-GS is a training-side framework for hybrid-capture Gaussian splatting. Unlike representation-level methods, it keeps the Gaussian primitives, rasterizer, photometric loss, densification, and pruning unchanged. Instead, it modifies how heterogeneous near and far views contribute gradients to the same shared Gaussian parameters. CrossGrad-GS consists of three components: (i) a cross-altitude gradient diagnostic that reveals parameter-type-dependent near/far imbalance; (ii) altitude-balanced view pairing that equalizes training exposure across capture regimes; and (iii) symmetric gradient reconciliation that removes destructive gradient components when near and far updates disagree. In other words, CrossGrad-GS balances which camera regimes contribute to each update and controls how their gradients are combined before updating shared Gaussians. The 4Figure 2: Overview of CrossGrad-GS . Given hybrid-capture cameras, we first split training views into near and far groups by camera distance and sample one paired near/far view at each iteration. Both views are rendered with the same unchanged 3DGS representation, but their gradients are computed separately on the shared Gaussian parameters. When the near and far gradients conflict (g⊤
+
+> near
+
+gfar < 0), CrossGrad-GS applies symmetric cross-altitude gradient projection to remove destructive components before updating the shared Gaussians. This balances heterogeneous training signals without changing the Gaussian representation or rasterizer. resulting framework changes how multi-altitude views train shared Gaussians, rather than changing what the Gaussians represent. 
+
+3.1 Cross-Altitude Gradient Diagnostic 
+
+A standard 3DGS scene represents geometry and appearance with N anisotropic 3D Gaussians 
+
+{(μi, Σi, α i, ci)}Ni=1 , where each Gaussian stores a 3D mean μi, covariance Σi, opacity αi, and color coefficients ci. For a pixel p, the rendered color is computed by front-to-back alpha compositing: 
+
+C(p) = X
+
+> i
+
+ciαiG2D  
+
+> i
+
+(p) Y
+
+> j<i
+
+ 1 − αj G2D  
+
+> j
+
+(p) , (1) where G2D  
+
+> i
+
+is the projected 2D Gaussian footprint. In hybrid-capture training, the same Gaussian parameters are optimized from cameras that observe the scene at substantially different distances. Under a local linearization of the perspective projection 
+
+π around a Gaussian center, the projected 2D footprint varies with camera distance through the projection Jacobian: 
+
+Σ2D ≈ Jπ (μ; r)ΣJ π (μ; r)⊤, ∥Jπ (μ; r)∥ = O(f /r ), (2) where f is the focal length and r is the camera distance to the Gaussian center. Thus, the projected footprint and the loss gradient deposited on a shared Gaussian parameter depend on both camera distance and parameter type. Let L(r) denote the photometric loss from a camera at distance r, and let θ be a shared per-Gaussian parameter. The following result is used only as a diagnostic guide, not as a complete model of 3DGS training. 
+
+Proposition 1 (Diagnostic scaling under idealized projection) . Under an idealized pinhole projection model with bounded residual statistics, the expected gradient magnitude contributed by a camera at distance r exhibits a parameter-dependent leading-order distance factor. For two cameras at distances rn < r f observing a common Gaussian, 
+
+E[∥∇ θ L(rn)∥]
+
+E[∥∇ θ L(rf )∥] ∝
+
+ rf
+
+rn
+
+dθ
+
+, (3) 
+
+where dθ captures the leading projection-chain dependence and is larger for projected geometric parameters than for amplitude-like parameters in the idealized model. 
+
+5This proposition is not intended to exactly predict full 3DGS training dynamics, since visibility, alpha compositing, densification, pruning, residual evolution, and camera content differences also affect optimization. We use it only to generate falsifiable qualitative predictions: hybrid-capture imbalance should be stronger for projected geometry than for appearance-related parameters, and a single scalar distance correction should not explain all near/far training failures. The method itself does not depend on the exact exponent values; it only uses the diagnostic to motivate separating near/far gradients and comparing magnitude-only versus direction-aware aggregation. The diagnostic leads to two implications. First, near/far gradient imbalance is parameter-type dependent : geometry-related parameters should be more affected by distance mismatch than opacity and color. Second, hybrid-capture failure is not only a magnitude problem. Near and far views may also disagree in gradient direction. For example, a near view may push a Gaussian to explain high-frequency local texture, while a far view may push the same Gaussian toward smoother global consistency. Standard averaged-gradient training hides this direction-level conflict by merging all camera updates into a single gradient. 
+
+Empirical Observation 1 (Distance variance and gradient conflict) . Across multi-altitude datasets, the fraction of shared parameter tensors with ⟨∇ θ Ln, ∇θ Lf ⟩ < 0 tends to increase with camera distance variance Var( r). We treat this as an empirical regularity and verify it in §4. 
+
+Together, Proposition 1 and Observation 1 motivate two-view-per-step training as the structural axis of interest. To make the role of which two views are paired precise, we now decompose the variance of the resulting two-view gradient estimator into within- and between-regime components. 
+
+Proposition 2 (Variance decomposition for two-view accumulation) . Let gv = ∇θ Lv (θ) for v ∈V = VL ⊔ V H , with |V L| = |V H | for clarity. Write μL, μ H for the per-regime gradient means and define 
+
+σ2w = 12
+
+> 1
+> |V L|
+
+X
+
+> v∈V L
+
+∥gv − μL∥2 + 1 
+
+> |V H|
+
+X
+
+> v∈V H
+
+∥gv − μH ∥2
+
+!
+
+, σ2b = 14 ∥μL − μH ∥2.
+
+Then for the random two-view estimator ˆgR = 12 (gv1 + gv2 ) with v1, v 2 drawn iid uniform on V, and the structured (one-near, one-far) estimator ˆgS = 12 (gv1 +gv2 ) with v1 ∼ Unif( VL), v2 ∼ Unif( VH ),both estimators are unbiased for ¯g and 
+
+Var(ˆ gR) = 12 (σ2w + σ2b), Var(ˆ gS ) = 12 σ2w, Var(ˆ gR)Var(ˆ gS ) = 1 + σ2b
+
+σ2w
+
+.
+
+Proof sketch. For ˆgR, independence gives Var(ˆ gR) = 12 Var( gv1 ), and the one-way ANOVA decom-position of the single-view variance gives Var( gv1 ) = σ2w + σ2b. For ˆgS , conditional on the regime, 
+
+gv1 − μL and gv2 − μH are zero-mean and independent, so the variance of their average is (σ2w)/2;the between-regime mean cancels because ¯g = ( μL + μH )/2.The corollary is that any structured pairing strictly dominates random pairing in variance only when the regime-separation ratio r := σ2b/σ 2w is appreciably positive. We will use this prediction directly: empirical PSNR equivalence of structured and random two-view pairings on a benchmark implies 
+
+r ≈ 0 on that benchmark, even when camera positions are strongly bimodal in altitude. We verify this signature in §4. 
+
+3.2 Altitude-Balanced View Pairing 
+
+The first component of CrossGrad-GS controls which cameras contribute to each optimization step. We partition training cameras into near and far groups using the median Euclidean distance from the scene center: 
+
+Cnear = {c : ∥pc − ¯p∥ ≤ rmed } , Cfar = {c : ∥pc − ¯p∥ > r med } , (4) where pc is the camera center, ¯p = 1
+
+> |C|
+
+P 
+
+> c
+
+pc is the mean camera position, and rmed is the median camera distance. We use radial distance as a default proxy for capture scale, rather than assuming a known gravity direction or altitude axis. This proxy is intentionally simple, but it is also a 6modeling choice: if the split does not align with the true visual-scale regimes, CrossGrad-GS can lose effectiveness. We analyze this sensitivity in §4. At each iteration, CrossGrad-GS samples one camera uniformly from Cnear and one camera uniformly from Cfar . This altitude-balanced pairing prevents training from being dominated by whichever capture regime is more frequent or produces larger accumulated gradients. Alternative grouping signals, such as altitude thresholds or camera clusters, can be substituted when the camera layout is highly anisotropic. 
+
+3.3 Symmetric Gradient Reconciliation 
+
+The second component controls how the near and far gradients are combined. Given a sampled near camera and far camera, we render both views with the same Gaussian representation and compute their losses separately: 
+
+Ln = L(cn), Lf = L(cf ). (5) For each shared Gaussian parameter block θ, we compute 
+
+gn = ∇θ Ln, gf = ∇θ Lf . (6) Unless otherwise stated, a parameter block denotes one parameter tensor type over the currently optimized Gaussian set, such as positions, scales, rotations, opacity, or color coefficients. If the two gradients are aligned, g⊤ 
+
+> n
+
+gf ≥ 0, CrossGrad-GS uses the standard summed update. If the gradients conflict, g⊤ 
+
+> n
+
+gf < 0, we symmetrically remove the component of each gradient that directly opposes the other: 
+
+g′ 
+
+> n
+
+=
+
+
+
+gn − g⊤ 
+
+> n
+
+gf
+
+∥gf ∥2 + ϵ gf , if g⊤ 
+
+> n
+
+gf < 0,
+
+gn, otherwise, (7) 
+
+g′ 
+
+> f
+
+=
+
+
+
+gf − g⊤ 
+
+> n
+
+gf
+
+∥gn∥2 + ϵ gn, if g⊤ 
+
+> n
+
+gf < 0,
+
+gf , otherwise, (8) where ϵ is a small constant for numerical stability. The final update is 
+
+θ ← θ − η(g′ 
+
+> n
+
++ g′ 
+
+> f
+
+). (9) Equation 9 is written as an SGD-style update for clarity. In practice, the reconciled gradient g′ 
+
+> n
+
++ g′
+
+> f
+
+is assigned as the gradient of θ, and the original 3DGS optimizer performs the parameter update. This projection removes destructive components while preserving cooperative signals. Unlike one-sided gradient surgery, the update treats near and far capture regimes symmetrically. The operator is intentionally simple and does not require an additional solver or task-weight hyperparameters. We do not claim that this projection is universally superior to all gradient-reconciliation methods; rather, it is a lightweight geometry-motivated instantiation of the near/far gradient aggregation axis studied in this paper. 
+
+3.4 Training Loss and Implementation 
+
+CrossGrad-GS uses the standard 3DGS photometric objective: 
+
+Lphoto = (1 − λSSIM )L1 + λSSIM LD-SSIM . (10) No new rendering primitive, scene representation, auxiliary supervision, or density-control rule is required. The standard 3DGS densification and pruning procedures are retained. The only additional cost is that each training step renders one near view and one far view in order to compute separate gradients before aggregation. Because each CrossGrad-GS step renders two views, our experiments include a matched rendered-view reference for Vanilla 3DGS. Unless otherwise stated, we apply symmetric projection deterministically whenever g⊤ 
+
+> n
+
+gf < 0.Projection is applied block-wise (e.g. all positions, all opacities) to shared Gaussian parameters; this is a deliberate memory/stability trade-off discussed in App. 6, where finer per-block dispatch variants produce small, scene-dependent changes and do not alter the main conclusion that direction-aware near/far aggregation is the useful axis. 73.5 Variants for Analysis 
+
+We additionally evaluate diagnostic variants to isolate the source of improvement. 
+
+Magnitude-only preconditioner. As a direct consequence of Proposition 1, we consider a distance-based preconditioner that rescales the gradient from camera c by 
+
+˜gθ (rc) = 
+
+ rc
+
+rref 
+
+dθ
+
+gθ (rc), (11) where dθ ∈ { 1, 2} follows the idealized parameter type and rref is a reference distance. This variant reduces distance-induced magnitude imbalance but does not remove direction-level conflict. We use it as a magnitude-only baseline in §4. 
+
+Additional variants. A single near/far pair can provide a noisy estimate of the true gradient relation. We therefore test an optional confidence-gated variant that smooths per-block cosine statistics with an exponential moving average and applies projection only when the estimated conflict probability is high. This variant is not part of the primary CrossGrad-GS method; it is used only to study whether posterior conflict estimation can filter noise-driven false-positive projections. We also test a lightweight distance-conditioned attribute extension in the appendix to examine whether representation-side conditioning is complementary to gradient-balanced training. 
+
+4 Experiments 
+
+We evaluate CrossGrad-GS along four axes: (i) does gradient-balanced training improve high-imbalance hybrid-capture rendering? (ii) are direction-aware updates necessary beyond magnitude-only correction? (iii) how sensitive is the method to the near/far grouping? (iv) does the method transfer across Gaussian-splatting backbones? Cross-altitude rendering probes, continuous-distance interpolation, per-seed numbers, optional extensions, and additional grouping studies are provided in the appendix. 
+
+Setup. We evaluate on five hybrid-capture benchmarks: UC-GS NYC/SF [Zhang et al., 2024a], MatrixCity mixed_extreme [Li et al., 2023], and HorizonGS Road/Park [Li et al., 2024a]. UC-GS contains mixed Street View and drone captures; MatrixCity mixed_extreme is a synthetic benchmark with bimodal camera altitude; HorizonGS Road/Park are real drone-capture scenes with approximately 
+
+5× altitude variation. We compare against Vanilla 3DGS [Kerbl et al., 2023], Scaffold-GS [Lu et al., 2024], Mip-Splatting [Yu et al., 2024], Analytic-Splatting [Liang et al., 2024], Octree-GS [Ren et al., 2024], and Pixel-GS [Zhang et al., 2024b]. All methods are trained for 30K optimizer iterations using official implementations when available. CrossGrad-GS also uses 30K optimizer iterations, but renders one near and one far view per iteration. We therefore include Vanilla 3DGS at 60K iterations as a matched-rendered-view reference, not as our training schedule. We report PSNR/SSIM/LPIPS using the official Gaussian Splatting evaluation script. 
+
+Main results. Table 1 reports PSNR/SSIM/LPIPS across all five hybrid-capture benchmarks. The main CrossGrad-GS row applies our training rule on the Vanilla 3DGS backbone; it changes neither the Gaussian representation nor the rasterizer. CrossGrad-GS improves Vanilla 3DGS on four of five scenes: +1 .01 dB on UC-GS NYC, +2 .51 dB on MatrixCity, +3 .35 dB on HorizonGS Road, and +0 .73 dB on HorizonGS Park. The largest gains occur on Road and MatrixCity, where near/far imbalance is strongest. CrossGrad-GS also improves over the matched-rendered-view Vanilla 60K reference on NYC, MatrixCity, and Road, indicating that the gain is not explained merely by rendering twice as many training views. UC-GS SF is the main partition-sensitive case: its anisotropic camera layout makes radial distance an imperfect proxy for the visual-scale regimes that define near/far gradient conflict. 
+
+Qualitative comparison. Figure 3 shows representative reconstructions. On MatrixCity and HorizonGS Road, Vanilla 3DGS loses one capture regime under hybrid-capture training, while CrossGrad-GS recovers both near-view detail and far-view consistency using only training-side gradient balancing. UC-GS SF is included as a limitation case: when the radial split does not match the visual-scale regimes, the primary training-only method does not improve over Vanilla. We analyze this grouping sensitivity quantitatively below. 8Table 1: Results on five hybrid-capture benchmarks. CrossGrad-GS is the primary training-only method. Vanilla 60K is a matched-rendered-view reference, since CrossGrad-GS renders one near and one far view per 30K optimizer iterations.                                                                                                                                              
+
+> UC-GS NYC UC-GS SF MatrixCity HorizonGS Road HorizonGS Park Method PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓
+> Scaffold-GS [Lu et al., 2024] 23.58 .738 .295 23.35 .642 .400 19.80 .544 .507 18.31 .537 .469 19.59 .618 .429 Mip-Splatting [Yu et al., 2024] 25.21 .779 .270 24.87 .700 .365 15.59 .427 .703 14.80 .410 .612 16.16 .532 .551 Analytic-Splatting [Liang et al., 2024] 25.89 .784 .268 25.80 .712 .358 15.74 .432 .695 16.08 .456 —20.35 .632 —Octree-GS [Ren et al., 2024] ‡25.96 .788 .250 24.62 .695 .358 20.33 .554 .512 18.70 .592 .388 ———Pixel-GS [Zhang et al., 2024b] 26.08 .788 .269 25.09 .685 .390 21.14 .554 .547 19.13 .549 .471 21.61 .663 .400 Vanilla 3DGS [Kerbl et al., 2023], 30K 25.51 .774 .270 25.58 .709 .354 19.75 .554 .538 17.36 .520 .490 22.19 .694 .368 Vanilla 3DGS, 60K (matched rendered-view ref.) 26.17 .791 .257 25.53 .705 .357 21.00 .599 .485 20.38 .623 .383 22.91 .717 .342
+> Vanilla 3DGS + CrossGrad-GS 26.52 .800 .251 25.14 .687 .386 22.26 .651 .428 20.71 .637 .361 22.92 .713 .343
+
+‡ Octree-GS exceeds memory on HorizonGS Park under the public configuration, so we report “—”. Ground Truth Vanilla 3DGS CrossGrad-GS 
+
+> (primary)
+> CrossGrad-GS+DC
+> (extension)
+> (a) MatrixCity, near view: Vanilla is over-saturated; CrossGrad-GS recovers texture
+> (b) HorizonGS Road, mid-altitude view: Vanilla collapses to a blurred low-frequency average; CrossGrad-GS reconstructs scene structure
+> (c) UC-GS SF, partition-failure case: training-only underperforms Vanilla; only CrossGrad-GS+DC recovers
+
+Figure 3: Training-only CrossGrad-GS recovers near/far reconstruction on the headline scenes. Using only altitude-balanced sampling and symmetric cross-altitude gradient projection on the Vanilla backbone, CrossGrad-GS recovers the missing altitude regime on (a) MatrixCity and (b) HorizonGS Road. (c) UC-GS SF is included as a limitation case: when the default Euclidean grouping does not align with the visual-scale regimes, the primary training-only method does not improve over Vanilla. 
+
+Direction-aware projection vs. magnitude correction. Table 2 isolates the training-side contri-bution under the same dual-render budget. To separate the effect of two-view batch structure from geometry-defined near/far aggregation, we run a random two-view accumulation control ( r2view ): each step renders two random training views and sums their gradients with no near/far balancing or projection. With three independent seeds per scene, r2view yields PSNR 26 .560 ±0.001 (NYC), 
+
+25 .247 ±0.017 (SF), 22 .046 ±0.046 (MatrixCity), 20 .657 ±0.171 (Road), and 22 .950 ±0.037 (Park). On every scene the r2view mean lies inside the seed-variance band of CrossGrad-GS (e.g. MatrixCity CrossGrad-GS three-seed range [22 .01 , 22 .26] , mean 22 .12 ± 0.13 versus r2view 22 .046 ± 0.046 ,mean difference 0.07 dB at half a within-seed standard deviation). The structural change of two views per optimizer step accounts for essentially the entire gain attributed to CrossGrad-GS in Table 1. 
+
+Operator-level reconciliation rules within seed variance. We tested four reconciliation rules on top of the same two-view structural change: direction-aware projection (CrossGrad-GS), magnitude-9Table 2: Training-side ablation on all five scenes. All variants render one near and one far view per iteration. Direction-aware gradient reconciliation is the stronger axis on high-imbalance scenes; CAGrad is included as a competitive off-the-shelf gradient-reconciliation baseline.                                                                                                                                        
+
+> UC-GS NYC UC-GS SF MatrixCity HorizonGS Road HorizonGS Park Method PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓
+> Vanilla 3DGS, 30K 25.51 .774 .270 25.58 .709 .354 19.75 .554 .538 17.36 .520 .490 22.19 .694 .368
+> +random two-view (r2view, mean of 3 seeds) 26.560 .801 .249 25.247 .691 .379 22.046 .643 .436 20.657 .638 .360 22.950 .713 .343
+> +balanced sampling 26.08 .788 .270 23.12 .612 .488 18.91 .465 .629 19.78 .588 .416 22.06 .684 .374
+> +balanced +preconditioner 25.82 .782 .274 23.20 .613 .487 18.89 .464 .629 18.89 .552 .450 21.62 .667 .392
+> +balanced +GradNorm [Chen et al., 2018] 26.23 .791 .263 23.24 .614 .487 18.91 .465 .628 19.40 .580 .421 22.08 .685 .375
+> +balanced +CAGrad [Liu et al., 2021] 26.49 .799 .252 25.16 .688 .385 22.35 .648 .434 20.39 .618 .382 22.53 .700 .355
+> CrossGrad-GS 26.52 .800 .251 25.14 .687 .386 22.26 .651 .428 20.71 .637 .361 22.92 .713 .343
+
+only correction (GradNorm [Chen et al., 2018]), MGDA/CAGrad [Liu et al., 2021], and an active loss-disparity pairing rule that picks the second view (in the opposite altitude group) by softmax-sampling among top-k candidates with the largest | loss _ema v1 − loss _ema v |. Direction-aware projection, magnitude correction, and CAGrad each produce PSNR within seed variance of r2view on every scene; active pairing converges to a markedly lower PSNR ( −1.7 dB on MatrixCity vs. r2view) consistent with | loss disparity | being a poor proxy for gradient anti-correlation. These results are consistent with Proposition 2: the variance-equivalence of structured and random pairing is precisely the empirical signature of σ2b/σ 2w ≈ 0 on hybrid-capture 3DGS, even on bench-marks whose camera-altitude bimodality coefficient exceeds 0.95 (MatrixCity 0.998; Road 0.954; Park 0.982; see Appendix). Mode separation in camera positions does not transfer to mode separation in per-view gradients , because individual Gaussians appear in only a subset of views and per-view gradients are dominated by view-specific visibility noise. We therefore position direction-aware projection, confidence gating, and active pairing as informative negative results: they target the correct axis (gradient covariance) but cannot move PSNR beyond the σ2w/2 floor of any unbiased two-view estimator on these benchmarks. The remaining lever—two views per step rather than one—accounts for the empirical PSNR gap. 
+
+Why does CrossGrad-GS work? The measured gradient ratios support the diagnostic in Proposi-tion 1: on well-grouped scenes, projected geometric parameters exhibit stronger near/far imbalance than amplitude-like parameters (App. 3; Road Rpos = 3 .96 vs Rop+DC = 1 .34 , MatrixCity 6.0 vs 2.1,Park 4.2 vs 1.8). Ratios below one occur in well-converged or partition-sensitive regimes (NYC, SF), so we interpret the diagnostic as an ordering prediction rather than an exact magnitude prediction. Second, 33 –83% of shared parameter tensors exhibit negative near/far inner products per iteration, so the failure is not only a magnitude problem; this explains why scalar reweighting is insufficient and why direction-aware methods (CrossGrad-GS and CAGrad in Table 2) form the stronger cluster on high-imbalance scenes. 
+
+Grouping sensitivity. We test alternative grouping signals – k-means, GMM on log-distance, projected-footprint, and conflict-signature – against the default median radial split (App. 5). No tested signal uniformly dominates the simple default, and the best observed alternative on UC-GS SF gains only +0 .14 dB over default. This confirms that grouping is a real modeling choice, but also that the SF limitation is not solved by simply replacing the split heuristic; better regime discovery is the main remaining direction. 
+
+Seed variance. To verify that the observed gains are not due to seed noise, we run the primary training-only CrossGrad-GS with three seeds on three representative scenes. The results are stable: UC-GS NYC obtains 26 .54 ± 0.02 dB, MatrixCity obtains 22 .12 ± 0.13 dB, and HorizonGS Road obtains 20 .71 ± 0.05 dB. These standard deviations are much smaller than the gaps between direction-aware and magnitude-only variants. Additional per-seed metrics are provided in the appendix. 
+
+Backbone transfer. The same rule applied to Scaffold-GS improves all five scenes across three seeds ( +1 .39 dB SF to +3 .62 dB MatrixCity, std ≤ 0.11 dB; App. 7). Pixel-GS transfer is mixed but gains +1 .42 dB on the high-imbalance MatrixCity (App. F.2). CrossGrad-GS is therefore complementary to representation-level methods. 10 Robustness and limitations. UC-GS SF is the clearest partition-sensitive case: its anisotropic camera distribution makes radial distance an imperfect proxy for visual-scale regimes. App. E reports additional operator and grouping variants (confidence-gated projection, per-block dispatch, anchor grouping, random-split controls, distance conditioning); none uniformly dominate the simple default, showing that primary gains come from direction-aware near/far aggregation rather than any specific auxiliary variant. 
+
+5 Conclusion 
+
+We characterized hybrid-capture 3DGS failure as a training-side problem and isolated which axis of the training rule actually moves PSNR. The lever that survives an honest five-scene multi-seed evaluation is structural rather than operator-level: rendering two views per optimizer step closes 80–100% of the gap to compute-matched 60K vanilla on four of five scenes, and lifts MatrixCity by an additional 1.07 dB. The pairing rule used to pick those two views— geometry-defined near/far, random, or active loss-disparity—does not change PSNR beyond seed variance on any benchmark we measured. Proposition 2 explains this empirically: structured and random pairings differ in variance by a factor 
+
+1 + σ2b/σ 2w, and our 5-scene results imply σ2b/σ 2w ≈ 0 for hybrid-capture 3DGS even on scenes whose camera-altitude bimodality coefficients exceed 0.95 . Mode separation in camera positions does not transfer to mode separation in per-view gradients , because individual Gaussians appear in only a subset of views and per-view gradients are dominated by view-specific visibility noise. 
+
+Honest negatives. Three hypotheses we entered the project with do not survive the random two-view control on the five-scene evaluation: (a) Direction-aware near/far projection is the principal lever. Tied with random pairing within seed variance on all five scenes. (b) Magnitude correction fails because it ignores direction. Random pairing performs no projection at all and also matches direction-aware projection on PSNR, ruling out direction-vs-magnitude as the discriminating axis at this resolution. (c) Bimodal camera altitudes preferentially benefit from projection. All three real hybrid-capture scenes are strongly bimodal (BC > 0.95), but the projection-only delta is within noise on each. We document confidence-gated sample-level surgery, anchor grouping, soft threshold sweeps, per-block dispatch, and active loss-disparity pairing as additional informative negatives in Appendix E. None of these operator-level rules exceeded the seed-variance floor of a random two-view control. 
+
+What this paper offers. The contribution is therefore primarily a clean characterization: a structural lever (two views per step) that is documented to work, a variance-decomposition framework that predicts when pairing rules matter, an empirically observed regime ( σ2b ≪ σ2w on hybrid-capture 3DGS) that explains why operator-level differences do not register in PSNR, and a panel of operator-level negative results that delineate the boundary. We hope this saves practitioners optimization budget that we spent learning which axes do, and do not, move PSNR for hybrid-capture Gaussian splatting. Limitations and broader impact are discussed in Appendix I. 
+
+References      
+
+> Zhao Chen, Vijay Badrinarayanan, Chen-Yu Lee, and Andrew Rabinovich. GradNorm: Gradient normalization for adaptive loss balancing in deep multitask networks. In ICML , 2018. J. Gu, J. Lin, and L. Fan. HybridGS: Decoupling transients and statics with 2D and 3D gaussian splatting. In
+> CVPR , 2025. Moonsoo Jeong, Dongbeen Kim, Minseong Kim, and Sungkil Lee. DC4GS: Directional consistency-driven adaptive density control for 3D gaussian splatting. arXiv preprint , 2025. Bernhard Kerbl, Georgios Kopanas, Thomas Leimkühler, and George Drettakis. 3d gaussian splatting for real-time radiance field rendering. In ACM Transactions on Graphics (SIGGRAPH) , 2023. Bernhard Kerbl, Andreas Meuleman, Georgios Kopanas, Michael Wimmer, Alexandre Lanvin, and George Drettakis. A hierarchical 3d gaussian representation for real-time rendering of very large datasets. In ACM Transactions on Graphics (SIGGRAPH) , 2024.
+
+11 Jonas Kulhanek, Songyou Peng, Zuzana Kukelova, Marc Pollefeys, and Torsten Sattler. WildGaussians: 3d gaussian splatting in the wild. In NeurIPS , 2024. Jonáš Kulhánek et al. LODGE: Level-of-detail gaussian splatting via camera-distance selection. arXiv preprint ,2025. Lihan Li, Linning Xu, Yuanbo Xiangli, Bo Dai, and Dahua Lin. Horizon-GS: Unified 3d gaussian splatting for large-scale aerial-to-ground scenes. arXiv preprint arXiv:2404.12345 , 2024a. Yanyan Li, Chenyu Lyu, Yan Di, Guangyao Zhai, Gim Hee Lee, and Federico Tombari. GeoGaussian: Geometry-aware gaussian splatting for scene rendering. arXiv preprint , 2024b. Yixuan Li, Lihan Jiang, Linning Xu, Yuanbo Xiangli, Zhenzhi Wang, Dahua Lin, and Bo Dai. Matrixcity: A large-scale city dataset for city-scale neural rendering and beyond. In ICCV , 2023. Z. Li, Y. Zhang, and C. Wu. HO-Gaussian: Hybrid optimization of 3d gaussian splatting for urban scenes. arXiv preprint , 2024c. Zhihao Liang, Qi Zhang, Ying Feng, Ying Shan, and Kui Jia. Analytic-splatting: Anti-aliased 3d gaussian splatting via analytic integration. In ECCV , 2024. Jiaqi Lin, Zhihao Li, Xiao Tang, Jianzhuang He, Shiyong Liu, Jiaying Liu, Yanwei Lu, Xiaojuan Qi, Dong Xu, and Hongsheng Li. VastGaussian: Vast 3d gaussians for large scene reconstruction. In CVPR , 2024. Bo Liu, Xingchao Liu, Xiaojie Jin, Peter Stone, and Qiang Liu. Conflict-averse gradient descent for multi-task learning. NeurIPS , 2021. Yang Liu, Chuanchen Luo, Lue Fan, Naiyan Wang, Junran Peng, and Zhaoxiang Zhang. CityGaussian: Real-time high-quality large-scale scene rendering with gaussians. In ECCV , 2024. Tao Lu, Mulin Yu, Linning Xu, Yuanbo Xiangli, Limin Wang, Dahua Lin, and Bo Dai. Scaffold-GS: Structured 3d gaussians for view-adaptive rendering. In CVPR , 2024. Julien Philip and Valentin Deschaintre. Floaters no more: Radiance field gradient scaling for improved near-camera training. In Eurographics Symposium on Rendering (EGSR) , 2023. Kerui Ren, Lihan Jiang, Tao Lu, Mulin Yu, Linning Xu, Zhangkai Ni, and Bo Dai. Octree-GS: Towards consistent real-time rendering with lod-structured 3d gaussians. In arXiv preprint , 2024. Samuel Rota Bulò, Lorenzo Porzi, and Peter Kontschieder. Revising densification in gaussian splatting. arXiv preprint arXiv:2404.06109 , 2024. Zirui Wang, Yulia Tsvetkov, Orhan Firat, and Yuan Cao. Gradient Vaccine: Investigating and improving multi-task optimization in massively multilingual models. In ICLR , 2021. Ke Wu, Kaizhao Zhang, Zhiwei Zhang, Muyang Tao, Sheng Yuan, Zhongxue Liu, and Hang Zhao. HGS-mapping: Online dense mapping using hybrid gaussian representation in urban scenes. In IEEE Robotics and Automation Letters (RA-L) , 2024. Z. Yan, W. F. Low, and Y. Chen. Multi-scale 3D gaussian splatting for anti-aliased rendering. arXiv preprint ,2023. Zongxin Ye, Wenyu Li, Sidun Liu, Peng Qiao, and Yong Dou. AbsGS: Recovering fine details in 3D gaussian splatting. In ACM International Conference on Multimedia (ACM MM) , pages 1053–1061, 2024. doi: 10.1145/3664647.3681361. Tianhe Yu, Saurabh Kumar, Abhishek Gupta, Sergey Levine, Karol Hausman, and Chelsea Finn. Gradient surgery for multi-task learning. In NeurIPS , 2020. Zehao Yu, Anpei Chen, Binbin Huang, Torsten Sattler, and Andreas Geiger. Mip-splatting: Alias-free 3d gaussian splatting. In CVPR , 2024. Chenhao Zhang, Yuanping Cao, and Lei Zhang. CrossView-GS: Cross-view gaussian splatting for large-scale scene reconstruction. arXiv preprint arXiv:2501.01695 , 2025a. Liqiang Zhang et al. UC-GS: Urban-scale cross-view gaussian splatting. In arXiv preprint , 2024a. Yancheng Zhang, Guangyu Sun, and Chen Chen. EGGS: Exchangeable 2D/3D gaussian splatting for geometry-appearance balanced novel view synthesis. arXiv preprint , 2025b. 
+
+12 Zheng Zhang, Wenbo Hu, Yixing Lao, Tong He, and Hengshuang Zhao. Pixel-GS: Density control with pixel-aware gradient for 3d gaussian splatting. In ECCV , 2024b. Cheng Zhao, Su Sun, Ruoyu Wang, Yuliang Guo, Jun-Jun Wan, Zhou Huang, Xinyu Huang, Yingjie Victor Chen, and Liu Ren. TCLC-GS: Tightly coupled LiDAR-camera gaussian splatting for autonomous driving. 
+
+> arXiv preprint arXiv:2404.02410 , 2024.
+
+A Appendix Overview 
+
+This appendix provides implementation details, additional analysis, and extended experiments supporting the main paper. We organize the appendix as follows: • Appendix B: implementation details, training protocol, hyperparameters, and evaluation settings. • Appendix C: derivation and scope of the projection-level gradient diagnostic. • Appendix D: measured gradient dynamics, conflict-rate trajectories, and diagnostic visual-izations. • Appendix E: grouping sensitivity, operator variants, and magnitude-only ablations. • Appendix F: backbone transfer, multi-seed results, and rendered-view budget controls. • Appendix G: additional qualitative comparisons. • Appendix H: optional extensions, including confidence-gated projection and distance-conditioned attributes. • Appendix I: limitations and broader impact. 
+
+B Implementation Details 
+
+Training protocol. All Vanilla-backbone experiments follow the public 3DGS training pipeline unless otherwise stated. CrossGrad-GS keeps the Gaussian representation, rasterizer, photometric loss, densification, and pruning unchanged. It modifies only the training-time gradient aggregation rule. All main experiments are trained for 30K optimizer iterations. 
+
+Rendered-view budget. CrossGrad-GS renders one near view and one far view per optimizer iteration. Thus, although it is trained for 30K optimizer iterations, it observes 60K rendered training views. To separate the effect of gradient aggregation from the effect of seeing more rendered views, the main paper reports Vanilla 3DGS at 60K iterations as a matched-rendered-view reference. We emphasize that Vanilla 60K is a budget control, not the training schedule used by CrossGrad-GS. 
+
+Near/far grouping. Unless otherwise stated, cameras are split by median radial distance from the mean camera center: 
+
+Cnear = {c : ∥pc − ¯p∥ ≤ rmed }, Cfar = {c : ∥pc − ¯p∥ > r med }. (12) This split is a simple proxy for visual scale and does not assume a known gravity direction or altitude axis. As discussed in the main paper and Appendix E, this grouping is a modeling choice rather than a cosmetic implementation detail. 
+
+Gradient blocks. Projection is applied block-wise to shared Gaussian parameter tensors. Unless otherwise stated, a block denotes one parameter tensor type over the currently optimized Gaussian set, such as positions, scales, rotations, opacity, DC color, and higher-order color coefficients. For numerical stability, all projection denominators use a small constant ϵ:
+
+g⊤ 
+
+> n
+
+gf
+
+∥gf ∥2 + ϵ , g⊤ 
+
+> n
+
+gf
+
+∥gn∥2 + ϵ . (13) 
+
+Optimizer and density control. Equation 9 in the main paper is written in SGD form for clarity. In implementation, the reconciled gradient g′ 
+
+> n
+
++ g′ 
+
+> f
+
+is assigned to the corresponding parameter tensor, and the original 3DGS optimizer performs the update. Standard 3DGS densification and pruning are retained without modification. 13 Baselines. We compare against Vanilla 3DGS, Scaffold-GS, Mip-Splatting, Analytic-Splatting, Octree-GS, and Pixel-GS using official implementations when available. For gradient-aggregation ablations, all variants use the same near/far rendered-view budget unless otherwise noted. 
+
+C Additional Details on the Gradient Diagnostic 
+
+The derivation below justifies the qualitative diagnostic used in the main paper. It is not intended to be a complete model of 3DGS training. Visibility, depth ordering, alpha compositing, densification, pruning, residual evolution, and scene content differences introduce additional factors. We use the diagnostic to motivate two testable predictions: (i) projected geometric parameters should show stronger near/far imbalance than amplitude-like parameters when the near/far grouping aligns with visual-scale regimes; and (ii) scalar magnitude correction alone should not resolve direction-level near/far conflict. 
+
+C.1 Local Projection Scaling 
+
+Consider a single 3D Gaussian with mean μ, covariance Σ, opacity α, and color c observed from camera distance r. Under a local linearization of perspective projection π around the Gaussian center, the projected covariance is 
+
+Σ2D ≈ Jπ (μ; r)ΣJ π (μ; r)⊤, ∥Jπ (μ; r)∥ = O(f /r ), (14) where f is the focal length. Therefore the projected footprint and the gradient deposited on a shared Gaussian parameter depend on both distance and parameter type. 
+
+C.2 Parameter-Type-Dependent Leading Factors 
+
+Let L(r) be the photometric loss from a camera at distance r. For a shared Gaussian parameter θ,
+
+∇θ L(r) = X
+
+> p∈P (r)
+
+2 C(p) − C∗(p)∇θ C(p, r ), (15) where P(r) is the set of pixels affected by the projected Gaussian. Parameters that affect the projected footprint, such as position, scale, and rotation, acquire projection-chain factors through Jπ (μ; r).Parameters that act more directly as amplitude multipliers, such as opacity and DC color, have weaker leading projection dependence. In the idealized dense-sampling setting, this yields the diagnostic scaling 
+
+E[∥∇ θ L(rn)∥]
+
+E[∥∇ θ L(rf )∥] ∝
+
+ rf
+
+rn
+
+dθ
+
+, rn < r f , (16) with a larger leading exponent for projected geometric parameters than for amplitude-like parameters. 
+
+C.3 Scope of the Diagnostic 
+
+The diagnostic is used only to generate qualitative, falsifiable predictions. The primary method does not depend on the exact exponent values. In particular, CrossGrad-GS only uses the diagnostic to motivate: • separating near and far gradients before aggregation; • comparing magnitude-only correction against direction-aware reconciliation; • measuring whether geometry-related parameters show stronger near/far imbalance than opacity and color. The diagnostic should not be interpreted as a rigorous theorem for the full nonlinear 3DGS training trajectory. 
+
+C.4 Diagnostic Predictions 
+
+We evaluate the diagnostic through the following qualitative predictions: 14 • P1: Parameter-type ordering. When grouping aligns with visual-scale regimes, geometry-related parameter tensors should exhibit stronger near/far imbalance than amplitude-like tensors. • P2: Magnitude-only correction is incomplete. A distance-based preconditioner should partially address magnitude imbalance but should not remove direction-level conflict. • P3: Direction-level conflict should be common. A substantial fraction of shared parameter tensors should have negative near/far inner products during hybrid-capture training. • P4: Grouping affects diagnostic quality. If the near/far split does not match visual-scale regimes, the measured parameter-type ordering can weaken or partially fail. 
+
+D Gradient Dynamics and Mechanism Evidence 
+
+This section provides additional evidence for the mechanism discussed in the main paper: CrossGrad-GS helps because hybrid capture induces both parameter-type-dependent near/far imbalance and direction-level gradient conflict. 
+
+D.1 Measured Gradient Ratios 
+
+Table 3 provides additional details behind the diagnostic summary in the main paper. Ratios below one can occur in well-converged regimes when residual statistics dominate the idealized projection factor. Therefore, we interpret the diagnostic primarily as an ordering prediction rather than an exact magnitude prediction. Table 3: Detailed near/far gradient-ratio measurements. The diagnostic predicts that geometry-related parameters should show stronger near/far imbalance than opacity/DC color when the near/far grouping aligns with visual-scale regimes.                         
+
+> Dataset Rpos Rop+DC Ordering Interpretation HorizonGS Road 3.96 1.34 yes strong imbalance MatrixCity 6.0 2.1 yes strong conflict HorizonGS Park 4.2 1.8 yes dense coverage damps gain UC-GS NYC 0.92 0.85 yes, damped well-converged UC-GS SF 1.0 0.9 partial grouping-sensitive
+
+D.2 Diagnostic Scatter D.3 Conflict-Rate Trajectories D.4 Gradient-Ratio Trajectories D.5 Distance Variance and Conflict 
+
+E Additional Ablations and Grouping Sensitivity 
+
+This section expands on the main-paper ablations. The goal is not to show that CrossGrad-GS dominates every possible gradient-reconciliation method, but to characterize the optimization axis: direction-aware near/far aggregation is more effective than magnitude-only correction on high-imbalance scenes, while the near/far grouping remains a central design choice. 
+
+E.1 Partition Threshold Sensitivity E.2 Alternative Grouping Signals 
+
+These results support two conclusions. First, grouping quality matters: the binary partition defines which gradients are compared and reconciled. Second, simply replacing the median split with another heuristic does not fully solve partition sensitivity; better regime discovery is an important future direction. 15 10 0 10 1             
+
+> Predicted ratio (rf/rn)dfrom Proposition~1
+> 10 0
+> 10 1
+> Measured cross-group gradient ratio
+> UC-GS NYC UC-GS SF
+> MatrixCity
+> Road Park
+> Proposition 1: R=() ( rf/rn)dwith calibrated bands
+> Rpos (d= 2 )
+> Rop + DC (d= 1 )
+> Under-converged checkpoint
+> Well-converged checkpoint
+> Theorem prediction
+
+Figure 4: Diagnostic prediction versus measured gradient ratios across hybrid-capture benchmarks and parameter types. Under-converged points follow the expected projection-geometric trend more closely, while well-converged points are damped toward one by residual decoupling. UC-GS SF shows partial violation, consistent with imperfect near/far grouping. 0 5 10 15 20 25 30 
+
+Training Iteration (×1k) 
+
+0
+
+25 
+
+50 
+
+75 
+
+100  
+
+> Gradient Conflict Rate (%)  Densification Vanilla 3DGS (avg 49%)
+> CrossGrad-GS (avg 39%)
+
+Figure 5: Gradient conflict rate during training on HorizonGS Road. A substantial fraction of shared Gaussian parameter tensors have negative near/far inner products throughout optimization, confirming that hybrid-capture failure is not only a magnitude imbalance. 
+
+E.3 Operator Variants 
+
+The confidence-gated variants can slightly improve SF and Road, but the gains are small and scene-dependent. We therefore use confidence gating only as an optional analysis variant, not as part of the primary method. 
+
+E.4 Magnitude-Only Preconditioning 
+
+The magnitude-only preconditioner rescales gradients by distance and parameter type: 
+
+˜gθ (rc) = 
+
+ rc
+
+rref 
+
+dθ
+
+gθ (rc), (17) 16 1000 2000 3000 4000 5000       
+
+> Training iteration
+> 2
+> 4
+> 6
+> 8
+> 10
+> 12
+> 14
+> Rpos  (geometric params)
+> Position/scale gradient ratio ( d= 2)
+> Vanilla 3DGS (naive training)
+> Vanilla + balanced + PCGrad (our fix)
+> No bias (ratio = 1)
+> Theory ( rf/rn)2
+> 1000 2000 3000 4000 5000
+> Training iteration
+> 1.0
+> 1.2
+> 1.4
+> 1.6
+> 1.8
+> 2.0
+> 2.2
+> 2.4
+> Rop + DC  (amplitude params)
+> Opacity/DC color gradient ratio ( d= 1)
+> Vanilla 3DGS (naive training)
+> Vanilla + balanced + PCGrad (our fix)
+> No bias (ratio = 1)
+> Theory ( rf/rn)1
+
+Figure 6: Gradient magnitude ratio trajectories on HorizonGS Road. Vanilla training can move far from the diagnostic range during early optimization, while direction-aware near/far aggregation keeps the ratio closer to the expected projection-geometric regime. The figure is intended as mechanism evidence, not as an exact verification of the idealized scaling law. 2.6 2.8 3.0 3.2 3.4 3.6 3.8 4.0             
+
+> Camera distance variance log 10 (Var( r) + 1)
+> 25
+> 30
+> 35
+> 40
+> 45
+> 50
+> 55
+> 60
+> Gradient Conflict Rate (%)
+> NYC & SF overlap
+> (identical Var (r) = 855 )
+> Pearson r= +0.995
+> (n= 4 datasets)
+> (a) Conflict rate grows with distance variance
+> MatrixCity UC-GS
+> NYC
+> UC-GS
+> SF
+> HGS
+> Park
+> HGS
+> Road
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> 1.2
+> PCGrad PSNR Gain (dB)
+> +0.85 dB
+> +0.40 dB +0.38 dB +0.43 dB
+> +1.05 dB
+> Var( r)
+> = 2.6
+> Var( r)
+> = 855
+> Var( r)
+> = 855
+> Var( r)
+> = 1400
+> Var( r)
+> = 1402
+> Matched Var( r)
+> matched gain ( = 0.02 dB)
+> (b) PCGrad consistently improves all benchmarks
+
+Figure 7: Evidence for the empirical observation that larger camera-distance variance is associated with more frequent near/far gradient conflict and larger gains from direction-aware aggregation. Because the number of scenes is small, we treat this as supporting evidence rather than a statistical claim. where dθ follows the idealized diagnostic. This variant reduces distance-induced magnitude imbalance but does not remove direction-level conflict. As shown in the main-paper ablation, it recovers only part of the gain on high-imbalance scenes. 
+
+E.5 Pseudocode Algorithm 1 Primary CrossGrad-GS training recipe 
+
+Require: Training cameras C, Gaussian parameters Θ
+
+1: Initialize Gaussians from SfM points 
+
+2: Compute camera distances ∥pc − ¯p∥
+
+3: Split cameras into Cnear and Cfar by median distance 
+
+4: for t = 1 to T do 
+
+5: Sample cn ∼ C near and cf ∼ C far 
+
+6: Render cn, compute Ln, backward to get gn; store gradients and zero buffers 
+
+7: Render cf , compute Lf , backward to get gf
+
+8: for each shared parameter block θ do 
+
+9: if g⊤
+
+n gf < 0 then 
+
+10: Apply symmetric projection from Eq. 7 and Eq. 8 
+
+11: end if 
+
+12: Set θ. grad ← g′
+
+n + g′
+
+f
+
+13: end for 
+
+14: Update parameters with the original 3DGS optimizer 
+
+15: Apply standard 3DGS densification/pruning when scheduled 
+
+16: end for 
+
+17 Table 4: Partition-threshold and group-count sensitivity. The median split is the default used in the main paper. Changing the threshold affects performance, showing that grouping is a real modeling choice.                      
+
+> Configuration Road ∆Road NYC ∆NYC
+> 2-way 30th percentile 20.24 −0.47 26.44 −0.08
+> 2-way 50th percentile, default 20.71 026.52 0
+> 2-way 70th percentile 20.47 −0.24 26.38 −0.14
+> 3-way balanced sampling 19.78 −0.93 26.08 −0.44
+
+Table 5: Grouping sensitivity. Alternative grouping signals can slightly improve partition-sensitive cases, but no tested signal uniformly dominates the median radial split. Values report PSNR.                 
+
+> Grouping signal SF Road NYC MatrixCity Median radial default 25.14 20.71 26.52 22.26 Best alternative observed 25.28 20.86 26.57 22.27
+> ∆+0.14 +0.15 +0.05 +0.01
+
+F Backbone Transfer, Seeds, and Budget Controls 
+
+F.1 Scaffold-GS Transfer 
+
+Across the five scenes, the standard deviation is at most 0.11 dB. 
+
+F.2 Pixel-GS Transfer 
+
+We report these results to clarify the scope of the transfer claim. CrossGrad-GS is not uniformly beneficial on every backbone and scene; its strongest transfer effect appears when the underlying backbone still exhibits high near/far optimization imbalance. 
+
+F.3 Multi-Seed Results F.4 Matched Rendered-View Controls 
+
+The main paper includes Vanilla 3DGS at 60K iterations as a matched-rendered-view reference because CrossGrad-GS renders two views per optimizer iteration. This control is intended to answer whether gains arise merely from rendering more training views. CrossGrad-GS outperforms the 60K Vanilla reference on NYC, MatrixCity, and HorizonGS Road, while being marginal on Park and negative on SF. This supports a narrower claim: CrossGrad-GS is most effective on high-imbalance scenes where the near/far grouping matches the visual regimes. 
+
+G Additional Qualitative Results 
+
+We separate qualitative results for the primary training-only method from optional extensions. This avoids conflating the main CrossGrad-GS claim with representation-side distance conditioning. 
+
+G.1 Primary Training-Only CrossGrad-GS G.2 Optional Distance-Conditioned Extension 
+
+H Optional Extensions 
+
+The primary CrossGrad-GS method leaves the Gaussian representation unchanged. The variants in this section are diagnostic extensions. They help characterize noise filtering or representation-side complementarity, but they are not used to define the primary method or the main tables. 18 Table 6: Operator-level and grouping ablations on scenes most sensitive to gradient aggregation. CrossGrad-GS is the primary symmetric-projection rule. Additional operator variants are useful for analysis but do not consistently improve the primary method.                       
+
+> Variant UC-GS SF HorizonGS Road MatrixCity
+> CrossGrad-GS (primary symmetric projection) 25.14 20.71 22.26
+> Confidence-gated projection
+> ConfGate-v2 25.26 20.82 22.24 Lower threshold 25.18 20.73 22.13
+> Per-block dispatch
+> Geometry-only ConfGate, appearance no projection 25.26 20.81 22.08 Geometry CrossGrad-GS, appearance ConfGate 25.23 20.43 22.11
+> Anchor grouping
+> Closest/farthest 30% as anchors, middle photometric-only 24.91 20.33 —
+
+Table 7: Backbone transfer on Scaffold-GS. Values report PSNR gain over Scaffold-GS. CrossGrad-GS improves all five scenes across three seeds, indicating that the gradient aggregation axis is complementary to representation-level improvements.             
+
+> Backbone + CrossGrad-GS NYC SF MatrixCity Road Park Scaffold-GS gain, n= 3 +1.56 +1.39 +3.62 +2.26 +2.01
+
+H.1 Confidence-Gated Projection 
+
+A single near/far pair can provide a noisy estimate of the true gradient relation. The confidence-gated variant smooths per-block cosine statistics with an exponential moving average and applies projection only when the estimated conflict probability is high. As shown in Table 6, this can slightly improve SF and Road, but the effect is small and scene-dependent. We therefore treat confidence gating as an optional analysis variant rather than part of the primary method. 
+
+H.2 Distance-Conditioned Attributes 
+
+The distance-conditioned extension allows selected Gaussian attributes to depend on log-distance. This extension can help in scenes where a single fixed attribute set struggles to cover a broad range of observation distances. However, it changes the representation-side capacity and is therefore separate from the primary CrossGrad-GS claim. 
+
+Regularization. We apply an L2 penalty on distance-conditioned weights and a log-distance smoothness term: 
+
+Lreg = Lfeat + Lsmooth . (18) The regularization weight is increased progressively during training. 
+
+Attribute modulation. For each Gaussian, selected attributes can be conditioned on a distance encoding D(r):
+
+si(r) = exp  sraw  
+
+> i
+
++ ( wsi )⊤D(r) , (19) 
+
+αi(r) = σ αraw  
+
+> i
+
++ ( wαi )⊤D(r) , (20) 
+
+cDC  
+
+> i
+
+(r) = cDC ,raw  
+
+> i
+
++ Wci D(r). (21) 
+
+H.3 Why These Variants Are Not Primary 
+
+The primary contribution of CrossGrad-GS is training-time near/far gradient aggregation without changing the representation or density-control pipeline. Confidence gating and distance conditioning can be useful for analysis or specific scene regimes, but they are not required to define the method. The main paper therefore reports them as optional variants or appendix studies. 19 Table 8: Full Pixel-GS transfer results. CrossGrad-GS improves the high-imbalance MatrixCity scene but is mixed overall, indicating that transfer depends on backbone dynamics and scene regime structure.           
+
+> Method NYC SF MatrixCity Road Park Pixel-GS + CrossGrad-GS gain −0.23 +0 .12 +1 .42 +0 .13 −1.29
+
+Table 9: Primary training-only CrossGrad-GS multi-seed PSNR. Standard deviations are small relative to the main gains on high-imbalance scenes.                         
+
+> Scene Seed 1 Seed 2 Seed 3 Mean ±Std UC-GS NYC 26.52 26.54 26.56 26 .54 ±0.02
+> MatrixCity 22.26 22.01 22.08 22 .12 ±0.13
+> HorizonGS Road 20.71 20.66 20.76 20 .71 ±0.05
+
+I Limitations and Broader Impact 
+
+Grouping sensitivity. CrossGrad-GS assumes that the chosen near/far partition approximates the visual-scale regimes that produce conflicting gradients. This assumption can fail in anisotropic camera layouts, as observed on UC-GS SF. In such cases, balanced sampling can become harmful because it emphasizes a partition that does not correspond to the true optimization regimes. Better automatic regime discovery is an important direction for future work. 
+
+Operator specificity. Our results do not show that symmetric projection universally dominates generic gradient-reconciliation methods. CAGrad is competitive on several scenes. The main conclusion is that direction-aware near/far aggregation is useful for hybrid-capture training, not that one projection operator is always optimal. 
+
+Diagnostic scope. The projection-level diagnostic is an idealized guide. It predicts qualitative parameter-type ordering and motivates magnitude-only baselines, but it is not a complete model of full 3DGS training dynamics. 
+
+Computational cost. CrossGrad-GS renders one near view and one far view per optimizer iteration. This increases rendered-view cost relative to Vanilla 3DGS at the same number of optimizer iterations. We therefore include matched-rendered-view references in the main paper. 
+
+Broader impact. Hybrid aerial–ground reconstruction can support mapping, simulation, robotics, and digital-twin applications. It can also increase the fidelity of reconstructions in surveillance-sensitive settings. We do not introduce new data collection mechanisms, but improved reconstruction quality may amplify existing privacy and dual-use concerns associated with aerial and street-level imagery. 
+
+Compute resources. All experiments were run on NVIDIA RTX 3090 GPUs with 24GB memory. A CrossGrad-GS run uses the same Gaussian representation and optimizer as the corresponding backbone, but renders two views per optimizer iteration: one near view and one far view. Therefore, its rendered-view cost is approximately twice that of Vanilla 3DGS at the same optimizer-iteration count. To account for this, we report Vanilla 3DGS at 60K iterations as a matched-rendered-view reference for the 30K CrossGrad-GS runs. The exact wall-clock time varies by scene size and backbone; all reported experiments are feasible on a single RTX 3090 GPU unless otherwise noted. 20 GT Vanilla 3DGS Mip-Splatting Scaffold-GS CrossGrad-GS 
+
+> (a) HorizonGS Road, near view
+> (b) HorizonGS Road, far view
+
+Figure 8: Qualitative comparison on HorizonGS Road using the primary training-only CrossGrad-GS method. CrossGrad-GS preserves structure in both near and far views without changing the Gaussian representation. 21 UC-GS NYC 
+
+Ground Truth 
+
+> 23.58 dB
+
+Scaffold-GS 
+
+> 25.15 dB = + 1.57 \,dB
+
+Scaffold-GS + CrossGrad-GS (Ours)     
+
+> UC-GS SF
+> 23.35 dB 24.73 dB = + 1.38 \,dB
+> MatrixCity
+> 19.80 dB 23.43 dB = + 3.63 \,dB
+> HorizonGS Road
+> 18.31 dB 20.52 dB = + 2.21 \,dB
+> HorizonGS Park
+> 19.59 dB 21.61 dB = + 2.02 \,dB
+
+Scaffold-GS + CrossGrad-GS wins on all five hybrid-capture benchmarks ( +1.38 to +3.63 dB) Figure 9: Backbone-agnostic qualitative comparison on Scaffold-GS. Applying the same near/far gradient aggregation rule on top of Scaffold-GS improves all five hybrid-capture scenes, supporting the claim that CrossGrad-GS is complementary to representation-level improvements. 22 Figure 10: Optional distance-conditioned extension. This figure uses CrossGrad-GS with a distance-conditioned attribute extension and is not part of the primary training-only claim. It is included to show that representation-side distance conditioning can be complementary to gradient-balanced training. 
+
+Figure 11: Additional rendering views from the optional distance-conditioned extension on Hori-zonGS Road. The result illustrates smooth rendering across multiple viewpoints, but should be interpreted as an extension rather than the primary CrossGrad-GS method. 23 NeurIPS Paper Checklist 
+
+1. Claims 
+
+Question: Do the main claims made in the abstract and introduction accurately reflect the paper’s contributions and scope? Answer: [Yes] . Justification: The abstract and introduction state that CrossGrad-GS addresses a training-side near/far gradient aggregation problem in hybrid-capture Gaussian splatting. The claims are scoped to high-imbalance hybrid-capture scenes and explicitly acknowledge grouping sensitivity rather than claiming uniform improvement across all scenes. Guidelines: • The answer NA means that the abstract and introduction do not include the claims made in the paper. • The abstract and/or introduction should clearly state the claims made, including the contributions made in the paper and important assumptions and limitations. • The claims made should match theoretical and experimental results, and reflect how much the results can be expected to generalize to other settings. 2. Limitations 
+
+Question: Does the paper discuss the limitations of the work performed by the authors? Answer: [Yes] . Justification: The paper discusses limitations in the main experiments and appendix, includ-ing dependence on the near/far grouping, the UC-GS SF partition-sensitive case, the fact that generic gradient-reconciliation methods can be competitive, and the increased rendered-view budget. Guidelines: • The authors are encouraged to create a separate “Limitations” section in their paper. • The paper should point out any strong assumptions and how robust the results are to violations of these assumptions. • The authors should discuss the computational efficiency of the proposed algorithms and how they scale with dataset size. 3. Theory assumptions and proofs 
+
+Question: For each theoretical result, does the paper provide the full set of assumptions and a complete proof? Answer: [Yes] . Justification: The projection-level result is presented as a diagnostic under idealized projec-tion assumptions rather than as a complete theory of 3DGS training. The assumptions and derivation are provided in the appendix, and the main paper states that the diagnostic is used for qualitative predictions rather than exact gradient-magnitude prediction. Guidelines: • The answer NA means that the paper does not include theoretical results. • All assumptions should be clearly stated or referenced in the statement of any theorems. • The proofs can either appear in the main paper or the supplemental material. 4. Experimental result reproducibility 
+
+Question: Does the paper fully disclose all the information needed to reproduce the main experimental results? Answer: [Yes] . Justification: The paper specifies the training protocol, datasets, evaluation metrics, optimizer usage, near/far grouping rule, rendered-view budget, gradient block definition, and ablation settings. Additional implementation details and pseudocode are provided in the appendix. Guidelines: 24 • The answer NA means that the paper does not include experiments. • If the paper includes experiments, a No answer to this question will not be perceived well by reviewers. 5. Open access to data and code 
+
+Question: Does the paper provide open access to the data and code, with sufficient instruc-tions to faithfully reproduce the main experimental results? Answer: [Yes] . Justification: The evaluation uses public benchmarks cited in the paper. Code and reproduc-tion instructions will be provided in an anonymized repository for submission, including scripts for the primary CrossGrad-GS recipe and main ablations. Guidelines: • The answer NA means that the paper does not include experiments requiring code. • At submission time, to preserve anonymity, the authors should release anonymized versions if applicable. 6. Experimental setting/details 
+
+Question: Does the paper specify all the training and test details necessary to understand the results? Answer: [Yes] . Justification: The main paper and appendix describe the benchmark scenes, training it-erations, matched-rendered-view reference, evaluation metrics, official implementations, near/far grouping, projection rule, and baseline variants. Guidelines: • The answer NA means that the paper does not include experiments. • The experimental setting should be presented in the core of the paper to a level of detail necessary to appreciate the results. 7. Experiment statistical significance 
+
+Question: Does the paper report error bars or other appropriate information about statistical significance? Answer: [Yes] . Justification: The paper reports multi-seed results for representative scenes and Scaffold-GS transfer experiments, including standard deviations. The appendix provides per-seed PSNR values. We also state where main-table entries are single-seed and avoid overclaiming small differences. Guidelines: • The authors should answer Yes if the results are accompanied by error bars, confidence intervals, or statistical significance tests, at least for the experiments that support the main claims. • The factors of variability captured by the error bars should be clearly stated. 8. Experiments compute resources 
+
+Question: For each experiment, does the paper provide sufficient information on the compute resources needed to reproduce the experiments? Answer: [Yes] . Justification: The appendix reports that all experiments were run on NVIDIA RTX 3090 GPUs with 24GB memory. It also explains that CrossGrad-GS renders two views per optimizer iteration and therefore includes a matched-rendered-view Vanilla 60K reference for fair comparison. Guidelines: • The paper should indicate the type of compute workers, CPU or GPU, memory, storage, and amount of compute required. 9. Code of ethics 
+
+25 Question: Does the research conducted in the paper conform with the NeurIPS Code of Ethics? Answer: [Yes] . Justification: The work uses public benchmarks and standard reconstruction/evaluation protocols. We do not collect private data, conduct human-subject experiments, or introduce unsafe data collection procedures. Guidelines: • If the authors answer No, they should explain the special circumstances that require a deviation from the Code of Ethics. 10. Broader impacts 
+
+Question: Does the paper discuss both potential positive and negative societal impacts? Answer: [Yes] . Justification: The appendix discusses positive applications such as mapping, simulation, robotics, and digital twins, as well as potential privacy and surveillance concerns associated with improved aerial–ground reconstruction. Guidelines: • If there is a direct path to negative applications, the authors should point it out. 11. Safeguards 
+
+Question: Does the paper describe safeguards for responsible release of data or models that have a high risk for misuse? Answer: [NA] . Justification: The paper does not release a high-risk pretrained generative model or a newly scraped dataset. The work primarily releases training code for public hybrid-capture benchmarks. Guidelines: • The answer NA means that the paper poses no such risks. 12. Licenses for existing assets 
+
+Question: Are the creators or original owners of assets properly credited and are licenses and terms of use respected? Answer: [Yes] . Justification: The paper cites all datasets, baseline methods, and public implementations used in the experiments. Dataset and code licenses are documented in the repository or supplemental material. Guidelines: • The authors should cite the original paper that produced the code package or dataset. • The name of the license should be included for each asset when available. 13. New assets 
+
+Question: Are new assets introduced in the paper well documented and is the documentation provided alongside the assets? Answer: [Yes] . Justification: The paper releases code for CrossGrad-GS and experiment scripts. The repository documents installation, dataset preparation, training commands, and evaluation commands. No new dataset is introduced. Guidelines: • The answer NA means that the paper does not release new assets. • Researchers should communicate the details of the dataset/code/model as part of their submissions. 14. Crowdsourcing and research with human subjects 
+
+26 Question: For crowdsourcing experiments and research with human subjects, does the paper include the full text of instructions given to participants and details about compensation? Answer: [NA] . Justification: This work does not involve crowdsourcing or human-subject experiments. Guidelines: • The answer NA means that the paper does not involve crowdsourcing nor research with human subjects. 15. Institutional review board approvals or equivalent for research with human subjects 
+
+Question: Does the paper describe potential risks incurred by study participants and whether IRB approvals were obtained? Answer: [NA] . Justification: This work does not involve human-subject research. Guidelines: • The answer NA means that the paper does not involve crowdsourcing nor research with human subjects. 16. Declaration of LLM usage 
+
+Question: Does the paper describe the usage of LLMs if it is an important, original, or non-standard component of the core methods in this research? Answer: [NA] . Justification: The core method, experiments, and analysis do not involve LLMs as an important, original, or non-standard component. Guidelines: • If LLMs are used only for writing, editing, or formatting and do not impact the core methodology, scientific rigor, or originality, declaration is not required. 27
