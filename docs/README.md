@@ -6,31 +6,32 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-04
-- 运行时间：2026-05-04 20:31:14 UTC
+- 最新运行日期：2026-05-05
+- 运行时间：2026-05-05 20:33:28 UTC
 - 运行状态：成功
 - 本次总论文数：3
-- 精读区：1
-- 速读区：2
+- 精读区：0
+- 速读区：3
 
 ### 今日简报（AI）
-今日深入探讨三维场景的空间与语义统一分解，并兼顾 BRDF 测量与 Gaussian Splatting 的训练优化。
-重点推荐 Semantic Foam 框架对场景解析的创新统一建模，同时关注方差分解视角下提升混合采集渲染质量的梯度策略。
-建议优先研读语义空间融合的架构思路，并探索在高精度建模中平衡材质表现与训练效率的实践方案。
-- 详情：[/202605/04/README](/202605/04/README)
+今日重点探索 3D 高斯泼溅（3DGS）的极致压缩方案与跨维度点云补全技术。
+GETA-3DGS 实现了 3DGS 的自动联合剪枝与量化，SplAttN 则通过软泼溅与注意力机制强化了 2D-3D 特征融合。
+推荐关注 3D 场景表征的轻量化部署，以及稀疏表示在特定领域（如血管建模）的最新进展。
+- 详情：[/202605/05/README](/202605/05/README)
 
 ### 精读区论文标签
-1. [Semantic Foam: Unifying Spatial and Semantic Scene Decomposition](/202605/04/2604.26262v2-semantic-foam-unifying-spatial-and-semantic-scene-decomposition)  
-   标签：评分：8.0/10、query:q1
-   evidence：空间体积分解与辐射泡沫表示
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Learning Sparse BRDF Measurement Samples from Image](/202605/04/2604.26740v1-learning-sparse-brdf-measurement-samples-from-image)  
+1. [GETA-3DGS: Automatic Joint Structured Pruning and Quantization for 3D Gaussian Splatting](/202605/05/2605.02086v1-geta-3dgs-automatic-joint-structured-pruning-and-quantization-for-3d-gaussian-splatting)  
+   标签：评分：7.0/10、query:q1
+   evidence：针对体积化3D高斯泼溅的压缩与剪枝技术
+2. [Sparse Representation Learning for Vessels](/202605/05/2605.01382v1-sparse-representation-learning-for-vessels)  
    标签：评分：6.0/10、query:q1
-   evidence：用于逼真渲染的可微分渲染器和学习反射先验
-2. [Two-View Accumulation as the Primary Training Lever for Hybrid-Capture Gaussian Splatting: A Variance-Decomposition View of When Gradient Surgery Helps](/202605/04/2605.00052v1-two-view-accumulation-as-the-primary-training-lever-for-hybrid-capture-gaussian-splatting-a-variance-decomposition-view-of-when-gradient-surgery-helps)  
+   evidence：使用稀疏卷积的体积表示
+3. [SplAttN: Bridging 2D and 3D with Gaussian Soft Splatting and Attention for Point Cloud Completion](/202605/05/2605.01466v1-splattn-bridging-2d-and-3d-with-gaussian-soft-splatting-and-attention-for-point-cloud-completion)  
    标签：评分：6.0/10、query:q1
-   evidence：高斯泼溅体渲染的优化技术
+   evidence：用于连续密度估计的可微分高斯泼溅技术
 
 
 <div class="dpr-home-promo-card">

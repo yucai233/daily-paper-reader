@@ -1,0 +1,51 @@
+{
+  "label": "2026-05-05",
+  "date": "2026-05-05",
+  "generated_at": "2026-05-05T20:33:36",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202605/05/2605.02086v1-geta-3dgs-automatic-joint-structured-pruning-and-quantization-for-3d-gaussian-splatting",
+      "section": "quick",
+      "title_en": "GETA-3DGS: Automatic Joint Structured Pruning and Quantization for 3D Gaussian Splatting",
+      "authors": "Baobing Zhang, Wanxin Sui",
+      "date": "2026-05-03",
+      "pdf": "https://arxiv.org/pdf/2605.02086v1",
+      "score": "7.0",
+      "evidence": "针对体积化3D高斯泼溅的压缩与剪枝技术",
+      "tldr": "针对3D高斯泼溅（3DGS）模型体积庞大、难以在移动端部署的问题，本文提出了GETA-3DGS，这是首个端到端的自动联合结构化剪枝与量化框架。该方法通过构建感知量化的依赖图、融合渲染权重的显著性评分以及异构混合精度分配，实现了在无需手动调整阈值的情况下，对3DGS属性进行协同优化。实验表明，该方法在保持高质量渲染的同时，能将存储空间减少约5倍，且与现有熵编码方法兼容。",
+      "tags": "query:q1",
+      "abstract_en": "3D Gaussian splatting (3DGS) is a state-of-the-art representation for real-time photorealistic novel-view synthesis, yet a single high-fidelity scene typically occupies hundreds of megabytes to several gigabytes, exceeding the budgets of mobile, immersive, and volumetric video platforms. Existing 3DGS compression methods (e.g., HAC++, FlexGaussian, LP-3DGS) treat pruning, quantization, and entropy coding as separate stages and rely on hand-tuned heuristics (opacity thresholds, fixed bit-widths, SH truncation), limiting cross-scene generalization and preventing users from specifying a target rate or quality budget. We propose GETA-3DGS, to our knowledge the first end-to-end automatic joint structured pruning and quantization framework for 3DGS. Building on GETA for joint pruning-quantization of deep networks, we contribute: (i) a 3DGS-aware quantization-aware dependency graph (QADG) treating each Gaussian primitive as a group with five attribute sub-nodes and degree-aware SH sub-nodes; (ii) a render-aware saliency fusing transmittance-weighted contribution, screen-space gradient, and pixel coverage into a Gaussian-level importance score; and (iii) a heterogeneous per-attribute mixed-precision scheme co-optimized with structural sparsity under a projected partial saliency-guided (PPSG) descent guarantee. On Mip-NeRF 360, Tanks and Temples, and Deep Blending, GETA-3DGS operates directly on raw Gaussian primitives rather than a post-hoc anchor representation, delivering ~5x storage reduction over Vanilla 3DGS with no per-scene thresholds. Bit-width policy is the dominant rate-distortion lever: a uniform 6-bit cap costs up to -6.74 dB on view-dependent scenes versus our heterogeneous allocation, matching an information-theoretic reverse-water-filling analysis we develop. GETA-3DGS is complementary to existing codecs: entropy coding (HAC++, CompGS) is downstream, so the two can be composed.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/05/2605.01382v1-sparse-representation-learning-for-vessels",
+      "section": "quick",
+      "title_en": "Sparse Representation Learning for Vessels",
+      "authors": "Chinmay Prabhakar, Bastian Wittmann, Paul Büschl, Hongwei Bran Li, Bjoern Menze, Suprosanna Shit",
+      "date": "2026-05-02",
+      "pdf": "https://arxiv.org/pdf/2605.01382v1",
+      "score": "6.0",
+      "evidence": "使用稀疏卷积的体积表示",
+      "tldr": "针对临床分辨率下全器官血管网络分析的计算挑战，本文提出 VAEsselSparse 模型。该模型利用 3D 血管结构的固有稀疏性，结合稀疏卷积和注意力机制，实现了 512 倍的空间压缩率。它不仅在重建性能上优于密集模型，其潜空间还保留了关键临床特征，可用于疾病分类和血管合成，为大规模血管分析提供了高效的表示学习方案。",
+      "tags": "query:q1",
+      "abstract_en": "Analyzing human vasculature and vessel-like, tubular structures, such as airways, is crucial for disease diagnosis and treatment. Current methods often rely on small sub-regions or simplified tree-like structures, rendering analysis of entire organ-level networks at clinical resolution computationally challenging. To this end, we propose VAEsselSparse, an efficient encoder-decoder model to obtain a meaningful yet compact representation of the entire organ-level vascular network at sub-millimeter resolution. VAEsselSparse leverages the inherent sparsity of 3D vascular structures via sparse convolutions and attention mechanisms, achieving substantial spatial compression rates of 8 x 8 x 8. We demonstrate superior reconstruction performance compared to dense counterparts and previous methods. Importantly, the resulting latent space retains clinically relevant discriminative features readily usable for classification tasks, such as aneurysm/stenosis or subvariants of the circle of Willis. Moreover, the compact latent space of VAEsselSparse serves as an effective representation for learning vessel-specific priors through generative models, enabling the synthesis of realistic vasculature.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/05/2605.01466v1-splattn-bridging-2d-and-3d-with-gaussian-soft-splatting-and-attention-for-point-cloud-completion",
+      "section": "quick",
+      "title_en": "SplAttN: Bridging 2D and 3D with Gaussian Soft Splatting and Attention for Point Cloud Completion",
+      "authors": "Zhaoyang Li, Zhichao You, Tianrui Li",
+      "date": "2026-05-02",
+      "pdf": "https://arxiv.org/pdf/2605.01466v1",
+      "score": "6.0",
+      "evidence": "用于连续密度估计的可微分高斯泼溅技术",
+      "tldr": "针对多模态点云补全中硬投影导致的“跨模态熵坍缩”问题，本文提出SplAttN。该方法利用可微分高斯泼溅（Gaussian Splatting）替代传统硬投影，将稀疏点云转化为密集的图像平面表示，从而增强视觉先验的传播。实验证明SplAttN在多个数据集上达到SOTA，并在KITTI基准测试中展现出对视觉线索的强鲁棒性和有效的跨模态连接。",
+      "tags": "query:q1",
+      "abstract_en": "Although multi-modal learning has advanced point cloud completion, the theoretical mechanisms remain unclear. Recent works attribute success to the connection between modalities, yet we identify that standard hard projection severs this connection: projecting a sparse point cloud onto the image plane yields an extremely sparse support, which hinders visual prior propagation, a failure mode we term Cross-Modal Entropy Collapse. To address this practical limitation, we propose SplAttN, which replaces hard projection with Differentiable Gaussian Splatting to produce a dense, continuous image-plane representation. By reformulating projection as continuous density estimation, SplAttN avoids collapsed sparse support, facilitates gradient flow, and improves cross-modal connection learnability. Extensive experiments show that SplAttN achieves state-of-the-art performance on PCN and ShapeNet-55/34. Crucially, we utilize the real-world KITTI benchmark as a stress test for multi-modal reliance. Counter-factual evaluation reveals that while baselines degenerate into unimodal template retrievers insensitive to visual removal, SplAttN maintains a robust dependency on visual cues, validating that our method establishes an effective cross-modal connection. Code is available at https://github.com/zay002/SplAttN.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,132 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-05T20:33:08.413127+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2605.02086v1",
+      "title": "GETA-3DGS: Automatic Joint Structured Pruning and Quantization for 3D Gaussian Splatting",
+      "abstract": "3D Gaussian splatting (3DGS) is a state-of-the-art representation for real-time photorealistic novel-view synthesis, yet a single high-fidelity scene typically occupies hundreds of megabytes to several gigabytes, exceeding the budgets of mobile, immersive, and volumetric video platforms. Existing 3DGS compression methods (e.g., HAC++, FlexGaussian, LP-3DGS) treat pruning, quantization, and entropy coding as separate stages and rely on hand-tuned heuristics (opacity thresholds, fixed bit-widths, SH truncation), limiting cross-scene generalization and preventing users from specifying a target rate or quality budget. We propose GETA-3DGS, to our knowledge the first end-to-end automatic joint structured pruning and quantization framework for 3DGS. Building on GETA for joint pruning-quantization of deep networks, we contribute: (i) a 3DGS-aware quantization-aware dependency graph (QADG) treating each Gaussian primitive as a group with five attribute sub-nodes and degree-aware SH sub-nodes; (ii) a render-aware saliency fusing transmittance-weighted contribution, screen-space gradient, and pixel coverage into a Gaussian-level importance score; and (iii) a heterogeneous per-attribute mixed-precision scheme co-optimized with structural sparsity under a projected partial saliency-guided (PPSG) descent guarantee. On Mip-NeRF 360, Tanks and Temples, and Deep Blending, GETA-3DGS operates directly on raw Gaussian primitives rather than a post-hoc anchor representation, delivering ~5x storage reduction over Vanilla 3DGS with no per-scene thresholds. Bit-width policy is the dominant rate-distortion lever: a uniform 6-bit cap costs up to -6.74 dB on view-dependent scenes versus our heterogeneous allocation, matching an information-theoretic reverse-water-filling analysis we develop. GETA-3DGS is complementary to existing codecs: entropy coding (HAC++, CompGS) is downstream, so the two can be composed.",
+      "authors": [
+        "Baobing Zhang",
+        "Wanxin Sui"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.GR",
+        "eess.IV"
+      ],
+      "published": "2026-05-03T23:12:14+00:00",
+      "link": "https://arxiv.org/pdf/2605.02086v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "compression and pruning for volumetric 3D Gaussian Splatting",
+      "llm_evidence_cn": "针对体积化3D高斯泼溅的压缩与剪枝技术",
+      "llm_evidence": "针对体积化3D高斯泼溅的压缩与剪枝技术",
+      "canonical_evidence": "针对体积化3D高斯泼溅的压缩与剪枝技术",
+      "llm_tldr_en": "Proposes an end-to-end framework for pruning and quantizing 3D Gaussian Splatting to reduce storage costs.",
+      "llm_tldr_cn": "提出一种端到端的3D高斯泼溅剪枝与量化框架，旨在降低存储开销并保持渲染质量。",
+      "llm_tldr": "提出一种端到端的3D高斯泼溅剪枝与量化框架，旨在降低存储开销并保持渲染质量。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.01382v1",
+      "title": "Sparse Representation Learning for Vessels",
+      "abstract": "Analyzing human vasculature and vessel-like, tubular structures, such as airways, is crucial for disease diagnosis and treatment. Current methods often rely on small sub-regions or simplified tree-like structures, rendering analysis of entire organ-level networks at clinical resolution computationally challenging. To this end, we propose VAEsselSparse, an efficient encoder-decoder model to obtain a meaningful yet compact representation of the entire organ-level vascular network at sub-millimeter resolution. VAEsselSparse leverages the inherent sparsity of 3D vascular structures via sparse convolutions and attention mechanisms, achieving substantial spatial compression rates of 8 x 8 x 8. We demonstrate superior reconstruction performance compared to dense counterparts and previous methods. Importantly, the resulting latent space retains clinically relevant discriminative features readily usable for classification tasks, such as aneurysm/stenosis or subvariants of the circle of Willis. Moreover, the compact latent space of VAEsselSparse serves as an effective representation for learning vessel-specific priors through generative models, enabling the synthesis of realistic vasculature.",
+      "authors": [
+        "Chinmay Prabhakar",
+        "Bastian Wittmann",
+        "Paul Büschl",
+        "Hongwei Bran Li",
+        "Bjoern Menze",
+        "Suprosanna Shit"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-05-02T11:10:45+00:00",
+      "link": "https://arxiv.org/pdf/2605.01382v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "volumetric representation using sparse convolutions",
+      "llm_evidence_cn": "使用稀疏卷积的体积表示",
+      "llm_evidence": "使用稀疏卷积的体积表示",
+      "canonical_evidence": "使用稀疏卷积的体积表示",
+      "llm_tldr_en": "Uses sparse convolutions to learn compact representations of 3D volumetric vascular structures.",
+      "llm_tldr_cn": "利用稀疏卷积学习3D体积血管结构的紧凑表示。",
+      "llm_tldr": "利用稀疏卷积学习3D体积血管结构的紧凑表示。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.01466v1",
+      "title": "SplAttN: Bridging 2D and 3D with Gaussian Soft Splatting and Attention for Point Cloud Completion",
+      "abstract": "Although multi-modal learning has advanced point cloud completion, the theoretical mechanisms remain unclear. Recent works attribute success to the connection between modalities, yet we identify that standard hard projection severs this connection: projecting a sparse point cloud onto the image plane yields an extremely sparse support, which hinders visual prior propagation, a failure mode we term Cross-Modal Entropy Collapse. To address this practical limitation, we propose SplAttN, which replaces hard projection with Differentiable Gaussian Splatting to produce a dense, continuous image-plane representation. By reformulating projection as continuous density estimation, SplAttN avoids collapsed sparse support, facilitates gradient flow, and improves cross-modal connection learnability. Extensive experiments show that SplAttN achieves state-of-the-art performance on PCN and ShapeNet-55/34. Crucially, we utilize the real-world KITTI benchmark as a stress test for multi-modal reliance. Counter-factual evaluation reveals that while baselines degenerate into unimodal template retrievers insensitive to visual removal, SplAttN maintains a robust dependency on visual cues, validating that our method establishes an effective cross-modal connection. Code is available at https://github.com/zay002/SplAttN.",
+      "authors": [
+        "Zhaoyang Li",
+        "Zhichao You",
+        "Tianrui Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-05-02T14:34:21+00:00",
+      "link": "https://arxiv.org/pdf/2605.01466v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "differentiable Gaussian splatting for continuous density estimation",
+      "llm_evidence_cn": "用于连续密度估计的可微分高斯泼溅技术",
+      "llm_evidence": "用于连续密度估计的可微分高斯泼溅技术",
+      "canonical_evidence": "用于连续密度估计的可微分高斯泼溅技术",
+      "llm_tldr_en": "Uses differentiable Gaussian splatting to bridge 2D and 3D modalities for point cloud completion.",
+      "llm_tldr_cn": "利用可微分高斯泼溅技术连接2D与3D模态，以实现更有效的点云补全。",
+      "llm_tldr": "利用可微分高斯泼溅技术连接2D与3D模态，以实现更有效的点云补全。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
