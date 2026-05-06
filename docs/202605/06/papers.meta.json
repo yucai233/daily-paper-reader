@@ -1,0 +1,51 @@
+{
+  "label": "2026-05-06",
+  "date": "2026-05-06",
+  "generated_at": "2026-05-06T20:38:02",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202605/06/2605.04035v1-large-scale-high-quality-3d-gaussian-head-reconstruction-from-multi-view-captures",
+      "section": "quick",
+      "title_en": "Large-Scale High-Quality 3D Gaussian Head Reconstruction from Multi-View Captures",
+      "authors": "Evangelos Ntavelis, Sean Wu, Mohamad Shahbazi, Fabio Maninchedda, Dmitry Kostiaev, Artem Sevastopolsky, Vittorio Megaro, Trevor Phillips, Alejandro Blumentals, Shridhar Ravikumar, Mehak Gupta, Reinhard Knothe, Jeronimo Bayer, Matthias Vestner, Simon Schaefer, Thomas Etterlin, Christian Zimmermann, Mathias Deschler, Peter Kaufmann, Stefan Brugger, Sebastian Martin, Brian Amberg, Tom Runia",
+      "date": "2026-05-05",
+      "pdf": "https://arxiv.org/pdf/2605.04035v1",
+      "score": "7.0",
+      "evidence": "前馈3D高斯重建与渲染",
+      "tldr": "本研究提出HeadsUp，一种高效的前馈式3D人头重建方法。通过编码器-解码器架构将多视图输入压缩为潜空间表示，并解码为锚定在模板上的UV参数化3D高斯点云。该方法在包含超万名受试者的大规模数据集上训练，实现了无需测试时优化的SOTA重建质量，并支持身份生成与表情动画等下游应用。",
+      "tags": "query:q1",
+      "abstract_en": "We propose HeadsUp, a scalable feed-forward method for reconstructing high-quality 3D Gaussian heads from large-scale multi-camera setups. Our method employs an efficient encoder-decoder architecture that compresses input views into a compact latent representation. This latent representation is then decoded into a set of UV-parameterized 3D Gaussians anchored to a neutral head template. This UV representation decouples the number of 3D Gaussians from the number and resolution of input images, enabling training with many high-resolution input views. We train and evaluate our model on an internal dataset with more than 10,000 subjects, which is an order of magnitude larger than existing multi-view human head datasets. HeadsUp achieves state-of-the-art reconstruction quality and generalizes to novel identities without test-time optimization. We extensively analyze the scaling behavior of our model across identities, views, and model capacity, revealing practical insights for quality-compute trade-offs. Finally, we highlight the strength of our latent space by showcasing two downstream applications: generating novel 3D identities and animating the 3D heads with expression blendshapes.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/06/2605.03359v1-mix3r-mixing-feed-forward-reconstruction-and-generative-3d-priors-for-joint-multi-view-aligned-3d-reconstruction-and-pose-estimation",
+      "section": "quick",
+      "title_en": "Mix3R: Mixing Feed-forward Reconstruction and Generative 3D Priors for Joint Multi-view Aligned 3D Reconstruction and Pose Estimation",
+      "authors": "Siyou Lin, Zhou Xue, Hongwen Zhang, Liang An, Dongping Li, Shaohui Jiao, Yebin Liu",
+      "date": "2026-05-05",
+      "pdf": "https://arxiv.org/pdf/2605.03359v1",
+      "score": "6.0",
+      "evidence": "使用稀疏体素生成的生成式3D重建",
+      "tldr": "针对稀疏视图3D重建中前馈式方法（对齐好但几何残缺）与生成式方法（几何完整但对齐差）的矛盾，本文提出Mix3R框架。通过Mixture-of-Transformers架构融合预训练的前馈重建与3D生成模型，实现两阶段生成：首先同步生成对齐的稀疏体素、点图及相机参数，随后利用重叠注意力偏置引导纹理几何生成。该方法在保持几何完整性的同时显著提升了输入对齐度与位姿估计精度。",
+      "tags": "query:q1",
+      "abstract_en": "Recent trends in sparse-view 3D reconstruction have taken two different paths: feed-forward reconstruction that predicts pixel-aligned point maps without a complete geometry, and generative 3D reconstruction that generates complete geometry but often with poor input-alignment. We present Mix3R, a novel generative 3D reconstruction method which mixes feed-forward reconstruction and 3D generation into a single framework in an aligned manner. Mix3R generates a 3D shape in two stages: a sparse voxel generation stage and a textured geometry generation stage. Unlike pure generative methods, our first-stage generation jointly produces a coarse 3D structure (sparse voxels), per-view point maps and camera parameters aligned to that 3D structure. This is made possible by introducing a Mixture-of-Transformers architecture that inserts global self-attentions to a feed-forward reconstruction model and a 3D generative model, both pretrained on large-scale data. This design effectively retains the pretrained priors but enables better 2D-3D alignment. Based on the initial aligned generations of sparse 3D voxels and point maps, we compute an overlap-based attention bias that is directly added to another pretrained textured geometry generation model, enabling it to correctly place input textures onto generated shapes in a training-free manner. Our design brings mutual benefits to both feed-forward reconstruction and 3D generation: The feed-forward branch learns to ground its predictions to a generative 3D prior, and conversely, the 3D generation branch is conditioned on geometrically informative features from the feed-forward branch. As a result, our method produces 3D shapes with better input alignment compared with pure 3D generative methods, together with camera pose estimations more accurate than previous feed-forward reconstruction methods. Our project page is at https://jsnln.github.io/mix3r/",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/06/2605.03463v1-first-shape-then-meaning-efficient-geometry-and-semantics-learning-for-indoor-reconstruction",
+      "section": "quick",
+      "title_en": "First Shape, Then Meaning: Efficient Geometry and Semantics Learning for Indoor Reconstruction",
+      "authors": "Remi Chierchia, Léo Lebrat, David Ahmedt-Aristizabal, Olivier Salvado, Clinton Fookes, Rodrigo Santa Cruz",
+      "date": "2026-05-05",
+      "pdf": "https://arxiv.org/pdf/2605.03463v1",
+      "score": "6.0",
+      "evidence": "神经表面重建与语义场",
+      "tldr": "本研究提出FSTM，一种针对室内3D重建的高效几何与语义学习方法。针对现有联合优化方法训练慢、扩展性差的问题，FSTM采用“先形状后语义”的两步走策略：先利用RGB和几何线索进行几何预热，再进行语义场估计。实验证明，该方法在Replica和ScanNet++数据集上表现优异，训练速度提升2.3倍，且能更稳健地恢复更多物体的表面几何，实现了效率与精度的双重提升。",
+      "tags": "query:q1",
+      "abstract_en": "Neural Surface Reconstruction has become a standard methodology for indoor 3D reconstruction, with Signed Distance Functions (SDFs) proving particularly effective for representing scene geometry. A variety of applications require a detailed understanding of the scene context, driving the need for object-level semantic signals. While recent methods successfully integrate semantic labels, they often inherit the slow training time and limited scalability of multi-SDF learning. In this paper, we introduce FSTM, a unified approach for learning geometry and semantics through a two-step process: a geometry warm-up using RGB inputs and geometric cues, followed by semantic field estimation. By first optimising geometry without semantic supervision, we observe substantial improvements compared to the standard joint optimisation. Rather than relying on specialised modules or complex multi-SDF designs, FSTM shows that a streamlined formulation is sufficient to achieve strong geometric and semantic reconstructions. Experiments on both synthetic and real-world indoor datasets show that our method outperforms multi-SDF approaches. It trains 2.3x faster on Replica, improves robustness to real-world imperfections on ScanNet++, and achieves higher recall by recovering the surfaces of more objects in the scene. The code will be made available at https://remichierchia.github.io/FSTM.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

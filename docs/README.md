@@ -6,32 +6,31 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-05
-- 运行时间：2026-05-05 20:33:28 UTC
+- 最新运行日期：2026-05-06
+- 运行时间：2026-05-06 20:37:47 UTC
 - 运行状态：成功
 - 本次总论文数：3
 - 精读区：0
 - 速读区：3
 
 ### 今日简报（AI）
-今日重点探索 3D 高斯泼溅（3DGS）的极致压缩方案与跨维度点云补全技术。
-GETA-3DGS 实现了 3DGS 的自动联合剪枝与量化，SplAttN 则通过软泼溅与注意力机制强化了 2D-3D 特征融合。
-推荐关注 3D 场景表征的轻量化部署，以及稀疏表示在特定领域（如血管建模）的最新进展。
-- 详情：[/202605/05/README](/202605/05/README)
+今日聚焦 3D 重建技术突破，涵盖高精度头部建模、多视图位姿估计及室内语义几何学习。
+重点推荐
+- 详情：[/202605/06/README](/202605/06/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [GETA-3DGS: Automatic Joint Structured Pruning and Quantization for 3D Gaussian Splatting](/202605/05/2605.02086v1-geta-3dgs-automatic-joint-structured-pruning-and-quantization-for-3d-gaussian-splatting)  
+1. [Large-Scale High-Quality 3D Gaussian Head Reconstruction from Multi-View Captures](/202605/06/2605.04035v1-large-scale-high-quality-3d-gaussian-head-reconstruction-from-multi-view-captures)  
    标签：评分：7.0/10、query:q1
-   evidence：针对体积化3D高斯泼溅的压缩与剪枝技术
-2. [Sparse Representation Learning for Vessels](/202605/05/2605.01382v1-sparse-representation-learning-for-vessels)  
+   evidence：前馈3D高斯重建与渲染
+2. [Mix3R: Mixing Feed-forward Reconstruction and Generative 3D Priors for Joint Multi-view Aligned 3D Reconstruction and Pose Estimation](/202605/06/2605.03359v1-mix3r-mixing-feed-forward-reconstruction-and-generative-3d-priors-for-joint-multi-view-aligned-3d-reconstruction-and-pose-estimation)  
    标签：评分：6.0/10、query:q1
-   evidence：使用稀疏卷积的体积表示
-3. [SplAttN: Bridging 2D and 3D with Gaussian Soft Splatting and Attention for Point Cloud Completion](/202605/05/2605.01466v1-splattn-bridging-2d-and-3d-with-gaussian-soft-splatting-and-attention-for-point-cloud-completion)  
+   evidence：使用稀疏体素生成的生成式3D重建
+3. [First Shape, Then Meaning: Efficient Geometry and Semantics Learning for Indoor Reconstruction](/202605/06/2605.03463v1-first-shape-then-meaning-efficient-geometry-and-semantics-learning-for-indoor-reconstruction)  
    标签：评分：6.0/10、query:q1
-   evidence：用于连续密度估计的可微分高斯泼溅技术
+   evidence：神经表面重建与语义场
 
 
 <div class="dpr-home-promo-card">
