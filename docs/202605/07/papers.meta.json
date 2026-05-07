@@ -1,0 +1,65 @@
+{
+  "label": "2026-05-07",
+  "date": "2026-05-07",
+  "generated_at": "2026-05-07T20:36:04",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202605/07/2605.03837v1-conditions-for-well-posed-color-recovery-in-scattering-media",
+      "section": "quick",
+      "title_en": "Conditions for well-posed color recovery in scattering media",
+      "authors": "Grigory Solomatov, Derya Akkaynak",
+      "date": "2026-05-05",
+      "pdf": "https://arxiv.org/pdf/2605.03837v1",
+      "score": "7.0",
+      "evidence": "散射介质中的颜色恢复与逆问题",
+      "tldr": "本研究探讨了散射介质中场景颜色恢复这一基础逆问题。由于光谱信号投影和未知介质参数，该问题本质上是病态的。作者提出了使颜色恢复变为适定问题的充分条件，指出仅靠传感器改进无法解决失真。通过识别图像中自然存在的跨像素关系（即“恢复模式”），证明了在理想高光谱相机下，这些模式能确保解的唯一性。这一成果为开发基于第一性原理的视觉算法提供了理论支撑，实现了散射环境下的定量图像分析。",
+      "tags": "query:q4",
+      "abstract_en": "Recovering scene color from images captured in scattering media is a fundamental inverse problem in optical imaging. Yet the problem is intrinsically ill-posed as multiple solutions can explain the same observation, and prediction error cannot be controlled without understanding the space of candidate solutions. Here, we present sufficient conditions under which color recovery in a scattering medium becomes well-posed. Observing that ill-posedness stems from (i) projection of spectral signals onto pixel intensities, and (ii) unknown medium parameters, we demonstrate that sensor improvements alone cannot resolve medium-induced distortions without additional constraints. We identify recovery patterns, cross-pixel relationships that naturally occur in images, and prove, for an ideal hyperspectral camera, that they restrict the solution to a unique candidate. This opens the door to a new class of vision algorithms grounded in first principles, enabling quantitative analysis of images in scattering environments.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/07/2605.04509v1-coherentraster-efficient-3d-gaussian-splatting-for-light-field-displays",
+      "section": "quick",
+      "title_en": "CoherentRaster: Efficient 3D Gaussian Splatting for Light Field Displays",
+      "authors": "Gyujin Sim, Seungjoo Shin, Hosung Jeon, Gwangsoon Lee, Hyon-Gon Choo, Sunghyun Cho",
+      "date": "2026-05-06",
+      "pdf": "https://arxiv.org/pdf/2605.04509v1",
+      "score": "7.0",
+      "evidence": "用于光场显示的高效3D高斯泼溅",
+      "tldr": "针对光场显示器（LFD）多视图渲染计算开销大的问题，本文提出CoherentRaster框架。该方法基于3D高斯泼溅（3DGS），通过跨视图相干属性复用减少冗余计算，并利用视图相干重映射解决交错子像素布局导致的GPU效率低下问题。该框架在消费级硬件上实现了实时、高质量的光场合成，显著提升了渲染效率。",
+      "tags": "query:q7",
+      "abstract_en": "Light field displays (LFDs) require rendering an interlaced image that encodes many view-dependent observations. This multi-view requirement introduces substantial computational overhead, making real-time rendering difficult to achieve. While 3D Gaussian Splatting (3DGS) is efficient for single-view rendering on 2D displays, directly extending it to LFDs is computationally expensive. Moreover, prior accelerations either suffer from GPU inefficiency under spatially incoherent subpixel layouts or rely on computationally heavy multi-plane intermediates. In this paper, we propose CoherentRaster, a 3DGS-based light field rendering framework that performs subpixel-level rasterization. Our method employs Cross-view Coherent Attribute Reuse to eliminate redundant computation across neighboring viewpoints and applies View-coherent Remapping to restore warp-level memory efficiency degraded by the interlaced subpixel layout. Together, CoherentRaster provides an efficient pipeline for real-time, high-quality light field synthesis on consumer-grade hardware.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/07/2605.04527v1-velox-learning-representations-of-4d-geometry-and-appearance",
+      "section": "quick",
+      "title_en": "Velox: Learning Representations of 4D Geometry and Appearance",
+      "authors": "Anagh Malik, Dorian Chan, Xiaoming Zhao, David B. Lindell, Oncel Tuzel, Jen-Hao Rick Chang",
+      "date": "2026-05-06",
+      "pdf": "https://arxiv.org/pdf/2605.04527v1",
+      "score": "7.0",
+      "evidence": "用于3D外观和4D几何表示的高斯解码器",
+      "tldr": "Velox是一个学习4D物体几何与外观潜表示的框架。它通过编码器将非结构化动态彩色点云压缩为动态形状标记，并利用4D表面解码器和高斯解码器分别建模几何演变和外观特征。该表示具有描述性强、压缩率高且易于获取的特点，在视频生成4D、3D跟踪和布料模拟等任务中表现出色，为动态场景建模提供了高效的通用方案。",
+      "tags": "query:q1",
+      "abstract_en": "We introduce a framework for learning latent representations of 4D objects which are descriptive, faithfully capturing object geometry and appearance; compressive, aiding in downstream efficiency; and accessible, requiring minimal input, i.e., an unstructured dynamic point cloud, to construct. Specifically, Velox trains an encoder to compress spatiotemporal color point clouds into a set of dynamic shape tokens. These tokens are supervised using two complementary decoders: a 4D surface decoder, which models the time-varying surface distribution capturing the geometry; and a Gaussian decoder, which maps the tokens to 3D Gaussians, helping learn appearance. To demonstrate the utility of our representation, we evaluate it across three downstream tasks -- video-to-4D generation, 3D tracking, and cloth simulation via image-to-4D generation -- and observe strong performances in all settings.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/07/2605.04506v1-ilov3splat-instance-level-open-vocabulary-3d-scene-understanding-in-gaussian-splatting",
+      "section": "quick",
+      "title_en": "Ilov3Splat: Instance-Level Open-Vocabulary 3D Scene Understanding in Gaussian Splatting",
+      "authors": "Binh Long Nguyen, Kien Nguyen, Sridha Sridharan, Clinton Fookes, Peyman Moghadam",
+      "date": "2026-05-06",
+      "pdf": "https://arxiv.org/pdf/2605.04506v1",
+      "score": "6.0",
+      "evidence": "基于3D高斯泼溅的3D场景理解",
+      "tldr": "Ilov3Splat是一个基于3D高斯泼溅（3D-GS）的实例级开放词汇3D场景理解框架。针对现有方法在跨视图一致性和实例推理方面的不足，该方法通过多分辨率哈希编码CLIP特征和基于SAM掩码的对比学习，构建了视图一致的语义与实例特征场。通过两阶段3D聚类，实现了无需类别监督的自然语言物体检索与分割，在物体选择和实例分割任务上均优于现有方法。",
+      "tags": "query:q1",
+      "abstract_en": "We introduce Ilov3Splat, a novel framework for instance-level open-vocabulary 3D scene understanding built on 3D Gaussian Splatting (3D-GS). Most prior work depends on 2D rendering-based matching or point-level semantic association, which undermines cross-view consistency, lacks coherent instance-level reasoning, and limits precision in downstream 3D tasks. To address these limitations, our method jointly optimizes scene geometry and semantic representations by augmenting Gaussian splats with view-consistent feature fields. Specifically, we leverage multi-resolution hash embedding to efficiently encode language-aligned CLIP features, enabling dense and coherent language grounding in 3D space. We further train an instance feature field using contrastive loss over SAM masks, supporting fine-grained object distinction across views. At inference time, CLIP-encoded queries are matched against the learned features, followed by two-stage 3D clustering to retrieve relevant Gaussian groups. This enables our framework to identify arbitrary objects in 3D scenes based on natural language descriptions, without requiring category supervision or manual annotations. Experiments on standard benchmarks demonstrate that Ilov3Splat outperforms prior open-vocabulary 3D-GS methods in both object selection and instance segmentation, offering a flexible and accurate solution for language-driven 3D scene understanding. Project page: https://csiro-robotics.github.io/Ilov3Splat.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

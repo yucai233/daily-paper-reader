@@ -1,0 +1,169 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-07T20:35:37.331065+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2605.03837v1",
+      "title": "Conditions for well-posed color recovery in scattering media",
+      "abstract": "Recovering scene color from images captured in scattering media is a fundamental inverse problem in optical imaging. Yet the problem is intrinsically ill-posed as multiple solutions can explain the same observation, and prediction error cannot be controlled without understanding the space of candidate solutions. Here, we present sufficient conditions under which color recovery in a scattering medium becomes well-posed. Observing that ill-posedness stems from (i) projection of spectral signals onto pixel intensities, and (ii) unknown medium parameters, we demonstrate that sensor improvements alone cannot resolve medium-induced distortions without additional constraints. We identify recovery patterns, cross-pixel relationships that naturally occur in images, and prove, for an ideal hyperspectral camera, that they restrict the solution to a unique candidate. This opens the door to a new class of vision algorithms grounded in first principles, enabling quantitative analysis of images in scattering environments.",
+      "authors": [
+        "Grigory Solomatov",
+        "Derya Akkaynak"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-05T15:04:22+00:00",
+      "link": "https://arxiv.org/pdf/2605.03837v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "color recovery and inverse problems in scattering media",
+      "llm_evidence_cn": "散射介质中的颜色恢复与逆问题",
+      "llm_evidence": "散射介质中的颜色恢复与逆问题",
+      "canonical_evidence": "散射介质中的颜色恢复与逆问题",
+      "llm_tldr_en": "Analyzes conditions for well-posed color recovery in scattering media, relevant to volumetric light transport.",
+      "llm_tldr_cn": "分析了散射介质中颜色恢复的适定性条件，与体积光线传输相关。",
+      "llm_tldr": "分析了散射介质中颜色恢复的适定性条件，与体积光线传输相关。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "deep learning for multiple scattering in volumes",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.04506v1",
+      "title": "Ilov3Splat: Instance-Level Open-Vocabulary 3D Scene Understanding in Gaussian Splatting",
+      "abstract": "We introduce Ilov3Splat, a novel framework for instance-level open-vocabulary 3D scene understanding built on 3D Gaussian Splatting (3D-GS). Most prior work depends on 2D rendering-based matching or point-level semantic association, which undermines cross-view consistency, lacks coherent instance-level reasoning, and limits precision in downstream 3D tasks. To address these limitations, our method jointly optimizes scene geometry and semantic representations by augmenting Gaussian splats with view-consistent feature fields. Specifically, we leverage multi-resolution hash embedding to efficiently encode language-aligned CLIP features, enabling dense and coherent language grounding in 3D space. We further train an instance feature field using contrastive loss over SAM masks, supporting fine-grained object distinction across views. At inference time, CLIP-encoded queries are matched against the learned features, followed by two-stage 3D clustering to retrieve relevant Gaussian groups. This enables our framework to identify arbitrary objects in 3D scenes based on natural language descriptions, without requiring category supervision or manual annotations. Experiments on standard benchmarks demonstrate that Ilov3Splat outperforms prior open-vocabulary 3D-GS methods in both object selection and instance segmentation, offering a flexible and accurate solution for language-driven 3D scene understanding. Project page: https://csiro-robotics.github.io/Ilov3Splat.",
+      "authors": [
+        "Binh Long Nguyen",
+        "Kien Nguyen",
+        "Sridha Sridharan",
+        "Clinton Fookes",
+        "Peyman Moghadam"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-05-06T05:23:41+00:00",
+      "link": "https://arxiv.org/pdf/2605.04506v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "3D scene understanding built on 3D Gaussian Splatting",
+      "llm_evidence_cn": "基于3D高斯泼溅的3D场景理解",
+      "llm_evidence": "基于3D高斯泼溅的3D场景理解",
+      "canonical_evidence": "基于3D高斯泼溅的3D场景理解",
+      "llm_tldr_en": "Integrates language-aligned CLIP features into 3D Gaussian Splatting for open-vocabulary scene understanding.",
+      "llm_tldr_cn": "将CLIP特征集成到3D高斯泼溅中，实现开放词汇的场景理解。",
+      "llm_tldr": "将CLIP特征集成到3D高斯泼溅中，实现开放词汇的场景理解。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.04509v1",
+      "title": "CoherentRaster: Efficient 3D Gaussian Splatting for Light Field Displays",
+      "abstract": "Light field displays (LFDs) require rendering an interlaced image that encodes many view-dependent observations. This multi-view requirement introduces substantial computational overhead, making real-time rendering difficult to achieve. While 3D Gaussian Splatting (3DGS) is efficient for single-view rendering on 2D displays, directly extending it to LFDs is computationally expensive. Moreover, prior accelerations either suffer from GPU inefficiency under spatially incoherent subpixel layouts or rely on computationally heavy multi-plane intermediates. In this paper, we propose CoherentRaster, a 3DGS-based light field rendering framework that performs subpixel-level rasterization. Our method employs Cross-view Coherent Attribute Reuse to eliminate redundant computation across neighboring viewpoints and applies View-coherent Remapping to restore warp-level memory efficiency degraded by the interlaced subpixel layout. Together, CoherentRaster provides an efficient pipeline for real-time, high-quality light field synthesis on consumer-grade hardware.",
+      "authors": [
+        "Gyujin Sim",
+        "Seungjoo Shin",
+        "Hosung Jeon",
+        "Gwangsoon Lee",
+        "Hyon-Gon Choo",
+        "Sunghyun Cho"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR"
+      ],
+      "published": "2026-05-06T05:26:25+00:00",
+      "link": "https://arxiv.org/pdf/2605.04509v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "efficient 3D Gaussian Splatting for light field displays",
+      "llm_evidence_cn": "用于光场显示的高效3D高斯泼溅",
+      "llm_evidence": "用于光场显示的高效3D高斯泼溅",
+      "canonical_evidence": "用于光场显示的高效3D高斯泼溅",
+      "llm_tldr_en": "Proposes CoherentRaster to accelerate 3D Gaussian Splatting for multi-view light field displays.",
+      "llm_tldr_cn": "提出了CoherentRaster，为多视图光场显示加速3D高斯泼溅渲染。",
+      "llm_tldr": "提出了CoherentRaster，为多视图光场显示加速3D高斯泼溅渲染。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.04527v1",
+      "title": "Velox: Learning Representations of 4D Geometry and Appearance",
+      "abstract": "We introduce a framework for learning latent representations of 4D objects which are descriptive, faithfully capturing object geometry and appearance; compressive, aiding in downstream efficiency; and accessible, requiring minimal input, i.e., an unstructured dynamic point cloud, to construct. Specifically, Velox trains an encoder to compress spatiotemporal color point clouds into a set of dynamic shape tokens. These tokens are supervised using two complementary decoders: a 4D surface decoder, which models the time-varying surface distribution capturing the geometry; and a Gaussian decoder, which maps the tokens to 3D Gaussians, helping learn appearance. To demonstrate the utility of our representation, we evaluate it across three downstream tasks -- video-to-4D generation, 3D tracking, and cloth simulation via image-to-4D generation -- and observe strong performances in all settings.",
+      "authors": [
+        "Anagh Malik",
+        "Dorian Chan",
+        "Xiaoming Zhao",
+        "David B. Lindell",
+        "Oncel Tuzel",
+        "Jen-Hao Rick Chang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-06T06:12:19+00:00",
+      "link": "https://arxiv.org/pdf/2605.04527v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Gaussian decoder for 3D appearance and 4D geometry representation",
+      "llm_evidence_cn": "用于3D外观和4D几何表示的高斯解码器",
+      "llm_evidence": "用于3D外观和4D几何表示的高斯解码器",
+      "canonical_evidence": "用于3D外观和4D几何表示的高斯解码器",
+      "llm_tldr_en": "Velox learns 4D representations by mapping tokens to 3D Gaussians for efficient geometry and appearance capture.",
+      "llm_tldr_cn": "Velox通过将令牌映射到3D高斯来学习4D表示，从而高效捕捉几何和外观。",
+      "llm_tldr": "Velox通过将令牌映射到3D高斯来学习4D表示，从而高效捕捉几何和外观。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
