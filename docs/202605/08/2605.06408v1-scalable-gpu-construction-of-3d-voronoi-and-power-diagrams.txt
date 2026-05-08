@@ -1,0 +1,579 @@
+Title: Scalable GPU Construction of 3D Voronoi and Power Diagrams
+
+URL Source: https://arxiv.org/pdf/2605.06408v1
+
+Published Time: Fri, 08 May 2026 01:43:59 GMT
+
+Number of Pages: 14
+
+Markdown Content:
+# Scalable GPU Construction of 3D Voronoi and Power Diagrams 
+
+# BERNARDO TAVEIRA ∗, Zenseact, Sweden and Chalmers University of Technology, Sweden 
+
+# CARL LINDSTRÖM ∗, Zenseact, Sweden and Chalmers University of Technology, Sweden 
+
+# MARYAM FATEMI, Zenseact, Sweden 
+
+# LARS HAMMARSTRAND, Chalmers University of Technology, Sweden 
+
+# FREDRIK KAHL, Chalmers University of Technology, Sweden Voronoi Volumetric Render 10 3 10 4            
+
+> Training Time (s)
+> 0.150
+> 0.175
+> 0.200
+> 0.225
+> 0.250
+> 0.275
+> 0.300
+> 0.325
+> LPIPS
+> 2.5 5.0 7.5 10.0 12.5 15.0 17.5 20.0
+> Number of Points (Millions)
+> 0
+> 100
+> 200
+> 300
+> Train Time (min)
+> 77.5m 111.6m 138.1m
+> 189.4m 212.2m
+> 261.7m 292.1m 330.8m
+> 4.0M
+> 6.0M
+> 8.0M
+> 10.0M
+> 12.0M
+> 14.0M
+> 16.0M
+> 18.0M
+> 20.0M
+> Number of Points
+
+Fig. 1. Scalability and perceptual quality. Our efficient construction of 3D Voronoi diagrams enables mesh-based neural rendering to scale to 20 million cells, and reveals a strong correlation between model capacity and perceptual quality. We apply our method to the Radiant Foam [Govindarajan et al . 2025] on the challenging “Garden” scene from the mip-NeRF 360 dataset [Barron et al . 2022]. (Left) The bottom plot shows that total training time (wall-clock, including all optimization steps) increases approximately linearly with the point-count limit. The top plot tracks the evolution of the LPIPS perceptual error across multiple training runs with different point budgets, demonstrating how higher point capacities allow for better visual convergence during training. 
+
+(Right) A split view of the rendered image and a 2D slice of the Voronoi mesh, color-coded to reflect cell size, highlights the massive and highly varying cell density required to model this scene. 
+
+Voronoi diagrams, and their more general weighted counterpart, power diagrams, are fundamental geometric constructs with wide-ranging applica-tions in biology, physics simulation, and computer graphics. Recently, they have gained renewed attention in mesh-based neural rendering. Despite being extensively studied, the construction of 3D Voronoi diagrams for large-scale point sets remains computationally expensive, limiting their adoption in large-scale applications. Existing CPU-based approaches typically rely on 
+
+> ∗
+
+Both authors contributed equally to the paper. Authors’ Contact Information: Bernardo Taveira, Zenseact, Sweden and Chalmers University of Technology, Sweden, bernardo.taveira@chalmers.se; Carl Lindström, Zenseact, Sweden and Chalmers University of Technology, Sweden, carl.lindstrom@ chalmers.se; Maryam Fatemi, Zenseact, Sweden, maryam.fatemi@zenseact.com; Lars Hammarstrand, Chalmers University of Technology, Sweden, lars.hammarstrand@ chalmers.se; Fredrik Kahl, Chalmers University of Technology, Sweden, fredrik.kahl@ chalmers.se. 
+
+This work is licensed under a Creative Commons Attribution 4.0 International License. 
+
+SIGGRAPH Conference Papers ’26, Los Angeles, CA, USA 
+
+© 2026 Copyright held by the owner/author(s). ACM ISBN 979-8-4007-2554-8/2026/07 https://doi.org/10.1145/3799902.3811229 
+
+computing its dual, the Delaunay tetrahedralization, but are prohibitively slow for large diagrams, while GPU-based methods either struggle to scale efficiently to large point sets or assume homogeneous point distributions. The weighted case, power diagrams, is even less explored in this context. Ex-isting approaches are typically tailored to the application at hand, assuming homogeneous point distributions and small weight variations, making them unsuitable for general use in more complex heterogeneous data. In this paper, we present a highly parallelizable GPU algorithm for the fast construction of large-scale 3D Voronoi and power diagrams. Our approach constructs each convex cell from a weighted 3D point by progressively clipping an initial cell volume against bisecting planes induced by candi-date neighboring points. To efficiently identify candidate neighbors under arbitrary spatial distributions, we introduce a culling criterion based on di-rectional geometric bounds of the evolving cell, combined with a hierarchical best-first traversal of bounding volumes. We achieve performance on par with state-of-the-art Delaunay tetrahe-dralization methods on small and moderate problem sizes, while exhibiting robust scalability to large point sets and diverse spatial distributions. More-over, our method naturally generalizes to power diagrams without additional assumptions. To facilitate reproducibility and future research, we release our source code, see https://research.zenseact.com/publications/paragram. 
+
+SIGGRAPH Conference Papers ’26, July 19–23, 2026, Los Angeles, CA, USA.         
+
+> arXiv:2605.06408v1 [cs.CG] 7 May 2026 2•Taveira, Lindström, et al.
+> CCS Concepts: •Computing methodologies →Massively parallel algo-rithms .Additional Key Words and Phrases: Computational Geometry, Power Dia-grams, Weighted Delaunay Triangulation, Voronoi, GPU Algorithms, Neural Rendering, Spatial Acceleration Structures
+> ACM Reference Format:
+> Bernardo Taveira, Carl Lindström, Maryam Fatemi, Lars Hammarstrand, and Fredrik Kahl. 2026. Scalable GPU Construction of 3D Voronoi and Power Diagrams. In Special Interest Group on Computer Graphics and Interactive Techniques Conference Conference Papers (SIGGRAPH Conference Papers ’26), July 19–23, 2026, Los Angeles, CA, USA. ACM, New York, NY, USA, 14 pages. https://doi.org/10.1145/3799902.3811229
+
+1 Introduction 
+
+Voronoi diagrams and their dual, Delaunay triangulations, stand as pillars of computational geometry. For decades, these have been a fundamental concept to computer graphics, enabling mesh gener-ation, fluid simulation, collision detection and surface reconstruc-tion [Aurenhammer 1991; Brochu et al . 2010; Shewchuk 2002]. The generalization to weighted points—known as power diagrams and weighted Delaunay triangulation—further extends their utility, en-abling the modeling of poly-disperse aggregates and volume pre-serving partitions. Extensive research, particularly for unweighted cases, has produced reliable and precise methods for computing these geometric structures. The advent of differentiable rendering has shifted the computa-tional demands from the rendering task into the optimization of the underlying representation. Recent mesh-based neural rendering methods like Radiant Foam [Govindarajan et al . 2025] and Radiance Meshes [Mai et al . 2025] demonstrate high quality results and valu-able applications by representing 3D space as a mutable volumetric mesh, derived from Voronoi or Delaunay topology. However, these methods introduce a constraint that geometric solvers were never designed to meet: computing diagrams of massive scale (exceeding 
+
+10 6 sites) within iterations of an optimization problem. As we show in our experiments, the mesh generation frameworks currently em-ployed face scalability and generality limitations that constrain their broader adoption. This computational bottleneck now limits the scaling of volu-metric neural rendering methods. While CPU-based solvers are well-studied and precise (e.g., [The CGAL Project 2025]), they lack the efficiency to scale. GPU alternatives remain underexplored, with existing methods exhibiting stability issues, failing to scale beyond a few million points, or relying on restrictive assumptions on the point distribution. As the compute hardware improves and neural rendering pushes towards higher resolutions, finer details and larger scenes, the inability to efficiently generate Delaunay and Voronoi meshes becomes the limiting factor on visual quality. We address this challenge by introducing a highly parallelizable, unified framework for computing 3D power diagrams, weighted De-launay, and their special cases, Voronoi and Delaunay. Our method is designed to tackle large-scale problems beyond the degree used by current applications. By decoupling cell computation into indepen-dent threads, designing a directional culling criteria and utilizing a bounding volume hierarchy tree (BVH) for rapid geometric search and traversal, our algorithm harnesses the massive parallel capabili-ties of current and future GPUs. Despite being a general-purpose algorithm, we demonstrate its potential in the context of neural rendering. By replacing the Radiant Foam Voronoi generation method with our drop-in replacement, we effectively remove the computational bottleneck. This allows us to scale the explicit representation from the previous practical limit by 5x, to over 20 million points. We show that this increased capacity alone directly results in improved reconstruction quality. 
+
+2 Related work 
+
+We review prior work on the construction of Voronoi and power diagrams, organized by algorithmic strategy, and conclude with a discussion of mesh-based neural rendering, the application driving our scalability requirements. 
+
+2.1 Voronoi and power diagram construction 
+
+The construction of Voronoi diagrams, power diagrams, and their Delaunay duals is a long-studied problem in computational geome-try. Existing solvers fall into three broad algorithmic approaches: incremental insertion, convex-hull lifting, and cell-oriented clipping. 
+
+Incremental insertion. Incremental algorithms build the diagram one site at a time, locally retriangulating the cavity of conflicting simplices. The classical Bowyer–Watson method [Bowyer 1981; Watson 1981] underpins mature CPU libraries such as CGAL [The CGAL Project 2025] and Geogram [Lévy 2025], both of which ship multi-core implementations. Parallel formulations of this approach have also been the subject of dedicated research [Chrisochoides and Nave 2003]. A carefully engineered multi-threaded implementation by Marot et al. [2019] tetrahedralizes three billion points on a single workstation in under a minute, and their HXT library [Marot and Remacle 2020] represents the current CPU state of the art. On the GPU, gDel3D [Cao et al . 2014] adapts this strategy to the massive parallelism the hardware permits, but its resource footprint limits scalability to a few million sites on consumer hardware. 
+
+Convex-hull lifting. Lifting sites onto a paraboloid in R𝑑 +1 reduces Voronoi and power diagram construction to a lower-convex-hull problem [Aurenhammer 1987]. This formulation naturally accom-modates the weighted case, and is used by the Quickhull imple-mentation QHull [Barber et al . 1996] and the Delaunay routines of SciPy [Virtanen et al . 2020], which rely on QHull internally. How-ever, the added dimension makes it uncompetitive for the large 3D point sets we target. 
+
+Cell-oriented clipping. Cell-oriented methods construct each cell independently by progressively clipping an initial convex volume against bisecting half-spaces induced by neighboring sites. This formulation was popularized by the CPU library Voro++ [Rycroft 2009], later extended to multi-threaded execution [Lu et al . 2023]. A key concept for efficient cell clipping is the radius of security criterion of Lévy and Bonneel [2013], which guarantees that the cell has been clipped by enough neighbors, allowing early termina-tion of per-cell construction. Sainlot et al. [2017] build on this idea, proposing corner validation as an alternative termination criterion. Ray et al. [2018] and the subsequent work of Basselin et al. [2021]   
+
+> SIGGRAPH Conference Papers ’26, July 19–23, 2026, Los Angeles, CA, USA. Scalable GPU Construction of 3D Voronoi and Power Diagrams •3
+
+brought the cell-oriented strategy to the GPU, targeting meshless volume integration. Their approach assumes a near-uniform distri-bution of sites. Neighbor search is driven by a 𝑘 -nearest-neighbor heuristic and terminates at a fixed multiple of the current cell radius. These assumptions break down in the heterogeneous and weighted settings we target, where local density, and thus the required search radius, varies by orders of magnitude across the domain. Our method builds on Basselin et al. [2021]. We preserve the per-cell independence that makes this formulation well suited to massive parallelism, and replace the isotropic radius criterion with a directional culling criterion derived from the evolving axis-aligned bounds of each cell, combined with a hierarchical best-first traversal over a BVH augmented for power-distance queries. Together, these components enable a GPU-native construction that scales to tens of millions of sites under arbitrary spatial and weight distributions. 
+
+2.2 Mesh-based view synthesis 
+
+Research on novel view synthesis was significantly accelerated by Neural Radiance Fields (NeRF) [Mildenhall et al . 2021], which rep-resents scenes as continuous volumetric radiance fields optimized via differentiable volume rendering. Subsequent work has focused on improving rendering efficiency by adopting explicit scene repre-sentations and point-based rasterization, most notably through 3D Gaussian Splatting (3DGS) [Kerbl et al. 2023]. Given the foundational role of meshes in computer graphics, several approaches have explored the use of meshes for both NeRF-style implicit fields [Wang et al . 2021; Yariv et al . 2021, 2023] and 3DGS-style explicit representations [Choi et al . 2024; Gao et al . 2024; Lin et al . 2024]. More recent work has investigated differentiable, mesh-based scene representations that explicitly discretize space. Radiant Foam [Govindarajan et al . 2025] represents scenes as an optimizable 3D Voronoi diagram. To support accurate ray-tracing, it requires frequent updates of cell adjacencies during training via Delaunay triangulation. Similarly, Radiance Meshes [Mai et al . 2025] partitions space into tetrahedral cells derived from gDel3D’s [Cao et al. 2014] Delaunay tetrahedralization. These methods typically initialize cell sites using structure-from-motion [Schönberger and Frahm 2016], then optimize their positions via gradient descent on photometric reconstruction losses, a process requiring up to 20k optimization steps. Heuristics are also employed to densify and prune the representation throughout training. While these approaches enable explicit control over scene dis-cretization, they critically depend on efficient triangulation algo-rithms, as connectivity must be updated frequently during opti-mization. Moreover, visual fidelity scales with the number of sites, motivating the need for larger geometric meshes and scalable con-struction methods. 
+
+3 Preliminaries 
+
+To understand our method, we begin by formally defining the geo-metric structures that underlie it. Let 𝑃 = {𝑝 1, . . . , 𝑝 𝑛 } ⊂ R𝑑 be a set of 𝑛 points, each with an associated scalar weight 𝑤 𝑖 ∈ R. The 
+
+power diagram of 𝑃 partitions space into convex cells according to the power distance, where each cell site 𝑝 𝑖 is 
+
+𝐶 𝑖 = {𝑥 ∈ R𝑑 | ∥ 𝑥 − 𝑝 𝑖 ∥2 − 𝑤 𝑖 ≤ ∥ 𝑥 − 𝑝 𝑗 ∥2 − 𝑤 𝑗 , ∀𝑗 ≠ 𝑖 }. (1) When all weights are equal, the problem is reduced to the standard Voronoi diagram, which partitions space by nearest neighbors. The sites 𝑝 𝑖 and 𝑝 𝑗 are considered adjacent if their cells share a polygonal face. The resulting adjacency graph defines the connectivity of the dual regular (weighted) Delaunay triangulation. Equation 1 reveals a key property for parallel construction. Each power cell 𝐶 𝑖 is computationally independent, defined solely by the intersection of half-spaces derived from its neighbors. This indepen-dence implies that the construction of the power diagram of 𝑃 can be decomposed into 𝑛 local clipping tasks. However, computational efficiency depends on identifying relevant neighbors from the large set 𝑃 that contribute to the cell boundary. 
+
+4 Method 
+
+Given the set of weighted points 𝑃 , our goal is to compute the power diagram where each point’s cell is given by Eq. 1 and forms a convex polyhedron defined by the intersection of half-spaces induced by bisecting planes with neighboring cells. Note that the special case of equal weights reduces to the Voronoi diagram and its dual, the Delaunay triangulation. To this end, we present a new GPU-accelerated algorithm for computing 3D power diagrams at scale. Our method combines three key components: (1) a convex cell clipping algorithm to construct individual dia-gram cells (Sec. 4.1), (2) a directional culling criterion that efficiently identifies rele-vant neighbor sites (Sec. 4.2), and (3) a hierarchical spatial data structure that enables rapid neigh-bor queries (Sec. 4.3). Our key technical innovation efficiently discards large volumes of irrelevant neighbor sites using tight geometric bounds and a hierarchical data structure, while guaranteeing correctness. 
+
+4.1 Convex cell clipping 
+
+The core of our algorithm lies in computing each cell independently as the intersection of a set of half-spaces, following [Basselin et al .2021]. In a power diagram, the half-spaces of a cell are defined by the bisection planes between a site and its neighbors. Consequently, given the adjacency of a site, the corresponding convex polyhedron can be constructed directly via half-plane intersection. Naively, if a cell is iteratively clipped by all bisecting planes induced by other sites in the point set, and the sites whose planes contribute to the final boundary are recorded, the resulting convex polyhedron and its adjacency are recovered. The clipping procedure follows [Basselin et al . 2021]. For each candidate neighbor, the vertices lying outside the corresponding half-space are removed. The intersection between the bisecting plane and the current convex cell is then computed, producing a polygonal boundary whose vertices are added to the cell. If the bisecting plane lies entirely outside the current cell, the intersection is empty and the cell remains unchanged. See the supplementary   
+
+> SIGGRAPH Conference Papers ’26, July 19–23, 2026, Los Angeles, CA, USA. 4•Taveira, Lindström, et al.
+> (a) Convex cell clipping by a bisecting plane. The blue site induces a plane that intersects the current cell (orange) and therefore must be considered dur-ing clipping.
+> (b) Isotropic culling using the maximum cell radius. All sites within the global radius are retained as candidates (red), including many whose bisecting planes cannot intersect the cell.
+> (c) Directional culling using AABB-based geometric bounds yields a significantly tighter candidate set (red). Fig. 2. Effect of geometric bounds on neighbor culling during convex cell construction. The current cell is shown in orange, with previously accepted neighbor sites highlighted. (a) A site whose bisecting plane intersects the cell (blue) must be selected in the candidate set for cell clipping. (b) An isotropic bound based on the maximum cell radius correctly includes the site, but also admits many irrelevant candidates. (c) Directional geometric bounds derived from an AABB of the cell provide a tighter criterion, reducing the number of unnecessary neighbors while preserving correctness.
+
+material for a detailed description. Fig.2(a) demonstrates the comple-mentary case where a non-empty intersection triggers clipping. To achieve optimal performance, clipping should begin with neighbors that are most likely to contribute to the final cell. Early reduction of the cell volume increases the likelihood that subsequent clipping operations result in no modification and can be skipped. 
+
+4.2 Geometric bounds and culling criteria 
+
+The brute-force cell sculpting procedure described in Sec. 4.1 guar-antees the correct diagram construction, but becomes prohibitively expensive for large point sets if all points are treated as potential neighbors. As the cell is progressively clipped, however, many neigh-bors can be rejected early if their bisecting planes are too distant to intersect the current cell. Since exact intersection tests are costly, we instead rely on conservative geometric bounds. For a site 𝑝 𝑖 ∈ R3 with weight 𝑤 𝑖 ∈ R and a candidate neighbor 
+
+𝑝 𝑗 ∈ R3 with weight 𝑤 𝑗 ∈ R, the (power) distance from 𝑝 𝑖 to their bisecting plane is 
+
+𝑑 𝑖 𝑗 = || 𝑝 𝑖 − 𝑝 𝑗 || 2 + 𝑤 𝑖 − 𝑤 𝑗 
+
+2|| 𝑝 𝑖 − 𝑝 𝑗 || . (2) Given a geometric bound 𝑟 𝑖 on the extent of the cell 𝐶 𝑖 , the candidate neighbor 𝐶 𝑗 can be safely discarded if 𝑑 𝑖 𝑗 > 𝑟 𝑖 . Provided that 𝑟 𝑖 
+
+upper-bounds the distance to all vertices relevant to that neighbor, this criterion preserves correctness. 
+
+4.2.1 Directional culling. Prior work [Basselin et al . 2021] employs an isotropic bound defined as the maximum distance from the cell site to any current cell vertex, see Fig.2(b). While effective for roughly uniform point distributions, this bound becomes overly con-servative for more complex configurations, when the cell’s spatial extent varies significantly across directions. We address this limitation with a directional geometric bound 
+
+that depends on the relative position of the candidate neighbor. The key observation is that a bisecting plane can only intersect a subset of the cell faces depending on the direction vector 𝑝 𝑗 − 𝑝 𝑖 .By restricting the bound based on those faces, we obtain a tighter and more informative culling criterion. Specifically, we define a directional cell radius using the distances from the cell site to the corners of an axis-aligned bounding box (AABB) enclosing the current cell vertices, Fig.2(c). The appropriate bound for a candidate neighbor is determined by identifying the octant of space in which the neighbor 𝑝 𝑗 lies relative to the cell site 
+
+𝑝 𝑖 . This octant uniquely determines which subset of AABB corners can possibly intersect with the corresponding bisecting plane. The directional radius is the maximum distance to these corners, giving a conservative upper bound on the cell’s extent toward the candidate neighbor. This significantly reduces unnecessary clipping while retaining the efficiency of a max over a small, fixed set. 
+
+4.2.2 Bounding-volume culling. Evaluating the directional culling criterion for every individual site can still be inefficient for large point sets. Prior work [Basselin et al . 2021] mitigates this by itera-tively querying the 𝑘 nearest neighbors in a growing search radius, which works well for homogeneous point distributions and small weight differences between cells. In contrast, we make no assump-tions on point distributions, and instead formulate a general strategy for discarding entire volumes of candidates. We extend directional geometric bounds to spatial groups of candidates by testing entire axis-aligned bounding volumes at once. Specifically, we determine whether any point 𝑝 𝑗 within a volume 
+
+𝐵 = [ 𝑏 𝑚𝑖𝑛 , 𝑏 𝑚𝑎𝑥 ], where 𝑏 𝑚𝑖𝑛 , 𝑏 𝑚𝑎𝑥 ∈ R3, could clip the current cell defined by 𝑝 𝑖 . Since we assume no symmetry, size, or placement of the volume, the test naturally supports directional discarding and applies to arbitrary spatial partitions.   
+
+> SIGGRAPH Conference Papers ’26, July 19–23, 2026, Los Angeles, CA, USA. Scalable GPU Construction of 3D Voronoi and Power Diagrams •5
+
+Each volume 𝐵 is associated with the maximum weight 𝑤 𝑚𝑎𝑥 =
+
+max 𝑗 𝑤 𝑗 of any site it contains. This represents a worst case, as higher weights induce bisecting planes closer to the cell site. We conservatively assume the closest potential candidate lies on the surface of 𝐵 at the location minimizing its distance to 𝑝 𝑖 , giving a lower bound on all bisecting-plane distances 𝑑 𝑖 𝑗 for points 𝑝 𝑗 in 𝐵 .Because 𝐵 may span multiple octants relative to 𝑝 𝑖 , we compute the directional radius for each occupied octant and take their maxi-mum as a conservative bound. This upper-bounds the cell extent in all directions from which a candidate in 𝐵 could affect it. Finally, we compare the bisecting-plane distance induced by the closest possible site on the boundary of 𝐵 , using the maximum weight 𝑤 𝑚𝑎𝑥 , against the upper-bound 𝑟 𝑖 . If 𝑑 is the distance between the closest possible boundary point of 𝐵 and 𝑝 𝑖 , then 
+
+𝑑 𝑖 𝑗 = || 𝑝 𝑖 − 𝑝 𝑗 || 
+
+2 + 𝑤 𝑖 − 𝑤 𝑗 
+
+2|| 𝑝 𝑖 − 𝑝 𝑗 || ≥ 𝑑 /2 + 𝑤 𝑖 − 𝑤 𝑚𝑎𝑥 
+
+2𝑑 
+
+provided 𝑤 𝑖 ≤ 𝑤 𝑚𝑎𝑥 , and otherwise, 𝑑 𝑖 𝑗 ≥ 𝑑 /2 is a valid lower bound. If this lower bound on 𝑑 𝑖 𝑗 exceeds 𝑟 𝑖 , no candidate in 𝐵 can clip the current cell, and the entire volume is discarded. 
+
+4.3 Hierarchical neighbor search 
+
+Efficiently identifying the subset of sites that define the cell bound-ary requires a spatial acceleration structure that supports rapid culling of distant candidates. Furthermore, the amount of clips re-quired to reach the final cell polyhedra is highly dependent on the order in which planes are processed. Processing the nearest neigh-bors first can rapidly shrink the cell, tightening the bounding box and allowing us to discard large portions of the search space early. To partition the sites, we employ a bounding volume hierarchy (BVH). This structure inherently supports hierarchical, multi-scale culling: a single test at a high-level node can discard vast regions containing millions of sites, while deeper traversals allow precise culling of smaller subsets. This spatial adaptivity is crucial for dis-tributions of drastically varying densities, where uniform grids or voxelization approaches [Basselin et al . 2021] struggle to balance skipping large empty volumes with processing high-density clusters. To support power diagrams, we augment each BVH node to not only store its volumetric bounds but also the maximum weight of any site in its subtree, enabling the culling test in Sec. 4.2.2. Standard BVH traversals usually employ a depth-first search (DFS) using a LIFO (last-in-first-out) stack. However, DFS does not ensure that nodes are visited in order of proximity, leading to wasted cell clipping operations against distant sites that are later occluded and discarded as adjacent. Instead, we employ a best-first search, using a local priority queue ordered by distance. This approach prioritizes proximity, ensuring that we clip the most restrictive planes early in the process, rapidly shrinking the cell. During the traversal and clipping process we maintain and update an axis-aligned bounding box (AABB) of the current partially clipped cell. As described in Sec. 4.2, this bounding box is used to determine if any point within a volume could potentially clip the cell bounding box. The same signed distance function is employed to pick the closest of the node’s children. By using this signed function instead of the euclidean distance to the site seed, we prioritize the neighbors most likely to induce a cut on the current bounding volume. The 
+
+ALGORITHM 1: Best-First Cell Neighbor Traversal 
+
+Input : BVH tree T, Seed point 𝑃 , Initial Radii 𝑅  
+
+> 1
+
+𝑠𝑡𝑎𝑐𝑘 ← ∅  
+
+> 2
+
+𝑛𝑜𝑑𝑒 ← T .𝑟𝑜𝑜𝑡  
+
+> 3
+
+while true do 
+
+// Traverse down until a leaf or dead-end is reached  
+
+> 4
+
+while not IsLeaf( 𝑛𝑜𝑑𝑒 ) do  
+
+> 5
+
+𝑛 0, 𝑛 1 ← 𝑛𝑜𝑑𝑒.𝑐ℎ𝑖𝑙𝑑𝑟𝑒𝑛  
+
+> 6
+
+𝑟 0 ← ComputeDirectionalRadius (𝑅, 𝑃, 𝑛 0 .𝑏𝑜𝑢𝑛𝑑𝑠 )2 
+
+> 7
+
+𝑟 1 ← ComputeDirectionalRadius (𝑅, 𝑃, 𝑛 1 .𝑏𝑜𝑢𝑛𝑑𝑠 )2 
+
+> 8
+
+𝑑 0 ← NodeSqrDist (𝑛 0 ); 𝑑 1 ← NodeSqrDist (𝑛 1 ) 
+
+> 9
+
+𝛿 0 ← 𝑑 0 − 𝑟 0; 𝛿 1 ← 𝑑 1 − 𝑟 1 
+
+> 10
+
+if min (𝛿 0, 𝛿 1 ) > 0 then  
+
+> 11
+
+𝑛𝑜𝑑𝑒 ← NULL // Both children too far  
+
+> 12
+
+break 
+
+// Traverse near child, push far child if potentially valid  
+
+> 13
+
+if 𝛿 0 < 𝛿 1 then  
+
+> 14
+
+𝑛𝑜𝑑𝑒 ← 𝑛 0; 𝑓 𝑎𝑟 ← { 𝑛 1, 𝑑 1 }; 𝛿 𝑓 𝑎𝑟 ← 𝛿 1 
+
+> 15
+
+else  
+
+> 16
+
+𝑛𝑜𝑑𝑒 ← 𝑛 1; 𝑓 𝑎𝑟 ← { 𝑛 0, 𝑑 0 }; 𝛿 𝑓 𝑎𝑟 ← 𝛿 0 
+
+> 17
+
+if 𝛿 𝑓 𝑎𝑟 ≤ 0 then  
+
+> 18
+
+𝑠𝑡𝑎𝑐𝑘. Push (𝑓 𝑎𝑟 ) 
+
+> 19
+
+if 𝑛𝑜𝑑𝑒 ≠ NULL then 
+
+// We reached a valid leaf  
+
+> 20
+
+𝑅 ← ProcessLeaf (𝑛𝑜𝑑𝑒.𝑝𝑟𝑖𝑚𝑠, 𝑅 )
+
+// Backtrack: Pop next candidate  
+
+> 21
+
+while true do  
+
+> 22
+
+if 𝑠𝑡𝑎𝑐𝑘 is empty then  
+
+> 23
+
+return  
+
+> 24
+
+{𝑖𝑑𝑥, 𝑑𝑖𝑠𝑡 } ← 𝑠𝑡𝑎𝑐𝑘. Pop ()  
+
+> 25
+
+𝑟 𝑛𝑒𝑤 ←
+
+ComputeDirectionalRadius (𝑅, 𝑃, T [ 𝑖𝑑𝑥 ].𝑏𝑜𝑢𝑛𝑑𝑠 )2
+
+// Check if node is still valid with potentially shrunk 𝑅  
+
+> 26
+
+if 𝑑𝑖𝑠𝑡 − 𝑟 𝑛𝑒𝑤 ≤ 0 then  
+
+> 27
+
+𝑛𝑜𝑑𝑒 ← T [ 𝑖𝑑𝑥 ] 
+
+> 28
+
+break // Resume traversal 
+
+signed distance metric effectively measures how deep a candidate site can potentially penetrates the current validity region of the cell. By prioritizing based on this penetration depth, we ensure that the algorithm processes the nodes most likely to clip the cell in a significant manner. This strategy maximizes the rate of volume reduction, as the most intrusive planes are clipped immediately. Pseudo-code of this best-first neighbor traversal is provided in Alg. 1. 
+
+5 Experiments 
+
+We evaluate our method across synthetic datasets and a real-world neural rendering application to demonstrate both computational efficiency and practical applicability. Our experiments are designed to evaluate our method’s performance across different spatial dis-tributions, how it scales with an increasing number of points, and   
+
+> SIGGRAPH Conference Papers ’26, July 19–23, 2026, Los Angeles, CA, USA. 6•Taveira, Lindström, et al.
+
+its effectiveness in existing applications. We describe the datasets used for our experiments in Sec. 5.1, and present the corresponding results in Sec. 5.2. Finally, we demonstrate how our method can scale up neural rendering applications in Sec. 5.3. 
+
+5.1 Datasets 
+
+Synthetic test cases. To evaluate the computational efficiency of our method across different point set distributions, we generate three synthetic test configurations. All configurations sample points within the domain Ω = [− 10 , 10 ]3. The first configuration samples points uniformly: 
+
+𝑝 𝑖 ∼ U ( Ω). (3) This represents generic spatial distributions with no inherent struc-ture but varying density. The second configuration samples points from multiple Gaussian clusters to simulate scenarios with local density variations and large empty regions. We first sample 𝐾 cluster centers uniformly in Ω,then distribute points evenly among clusters: 
+
+𝑐 𝑗 ∼ U ( Ω), 𝑝 𝑖 ∼ N ( 𝑐 𝑗 , 𝜎 2I), (4) where 𝜎 = 0.1 and points are clamped to Ω. We evaluate with 
+
+𝐾 ∈ { 5, 10 } clusters. In the third test configuration, we sample points with a linear density gradient along the x-axis using inverse transform sampling: 
+
+𝑝 (𝑥 ) ∝ ( 𝑥 − 𝑎 ), 𝑥 ∈ [ 𝑎, 𝑏 ] (5) 
+
+⇒ 𝑥 = 𝑎 + ( 𝑏 − 𝑎 )√𝑢, 𝑢 ∼ U ( 0, 1) (6) 
+
+𝑦, 𝑧 ∼ U ( 𝑎, 𝑏 ) (7) where [𝑎, 𝑏 ] = [− 10 , 10 ]. This configuration produces higher point density at 𝑥 = 10 and lower density at 𝑥 = −10 .For each synthetic test configuration, we evaluate performance with point counts ranging from 0.1M to 15 M, spanning from mod-erate to large-scale problems. Fig. 3 shows a visualization of the synthetic test cases. 
+
+Real-world test cases. To evaluate our method on realistic point distributions that arise in practical applications, we use trained checkpoints from Radiant Foam [Govindarajan et al . 2025], a neural rendering model that uses 3D Voronoi diagrams as its differentiable scene representation. We obtain publicly available checkpoints from the original paper, trained on seven scenes from the Mip-NeRF 360 dataset [Barron et al . 2022] and two scenes from the Deep Blending dataset [Hedman et al . 2018]. Each checkpoint contains the seed point positions of the final Voronoi diagram configuration after op-timization convergence. These checkpoints provide representative examples of moderately large point sets (ranging from 2M to 4.2M sites, depending on the scene) with complex spatial distributions that emerge from volumetric rendering optimization. These test cases exhibit realistic patterns of local clustering, empty space, and varying density that reflect the underlying scene geometry. Fig. 7 shows a visualization of the real-world test cases. 
+
+Power diagrams. To validate that our method remains efficient for the more general case of weighted Voronoi diagrams (i.e., power diagrams), we evaluate on both the synthetic and real-world test cases with weighted point sets. We sample weights from a Gaussian distribution: 
+
+𝑤 𝑖 ∼ N ( 0, ( 𝑑 2
+
+> nn
+
+3 )2) (8) where 𝑑 nn is the median nearest-neighbor distance in the point set. We use identical point positions as in the unweighted experiments to isolate the impact of weights on performance. 
+
+5.2 Results 
+
+We evaluate our algorithm on the datasets presented in Sec. 5.1, measuring computational efficiency on both consumer-grade GPUs (NVIDIA RTX 5090) and enterprise GPUs (NVIDIA H200). We com-pare against two GPU-based algorithms for 3D Delaunay trian-gulation, gDel3D [Cao et al . 2014] and the implementation from Radiant Foam [Govindarajan et al . 2025]. Further, we include our own CUDA implementation of [Basselin et al . 2021], adapted to facilitate explicit mesh construction. Additionally, we evaluate CPU-based implementations from SciPy [Virtanen et al . 2020], CGAL [The CGAL Project 2025], Geogram [Lévy 2025], Voro++ [Rycroft 2009] and HXT GmSH [Marot and Remacle 2020]. For CPU methods, we use 16 CPU cores from an AMD Epyc 9534. We run three warm-up iterations followed by ten timed runs from which we compute the average runtime. We impose a 300-second timeout limit. All reported timing results are end-to-end; no preprocessing or preallocation is excluded. 
+
+Computational efficiency. For the synthetic test cases, we evaluate point counts of 0.1M, 0.5M, 1M, 2M, 5M, 10 M, and 15 M, presenting results in Fig. 3. Detailed numerical results for Fig. 3 are provided in the supplementary material. We also measure runtime on the trained checkpoints from Radiant Foam (described in Sec. 5.1) and present results in Tab. 1. Finally, we show aggregated results of the best performing methods in Fig. 5. As illustrated in Fig. 5, our algorithm is competitive across all point distributions and scales. Notably, it is the fastest across all point sizes for both the Poisson-distributed cases (density gradient and white noise) and the real-world scenes, and the fastest overall for large point sets ( ≥5M). Among the GPU-baselines, gDel3D achieves the best efficiency on the small clustered point sets, but exhausts memory for larger scenes even on enterprise hardware. On real-world scenes it is on average ∼ 55% slower than our method on the H200 and ∼ 137% slower on the 5090. Our implementation of [Bas-selin et al . 2021] scales to large point sets on Poisson-distributed data, but fails to complete any other test cases due to the limitations of KNN-based search on irregular distributions. HXT is the best-performing CPU-baseline, closely followed by Geogram. HXT per-forms very close to our method on the clustered data and scales well to larger point sets, but is on average ∼ 55% slower than our method (H200) on the Poisson-distributed data and ∼ 129% slower on real-world scenes. Overall, our method outperforms both CPU and GPU baselines on both real-world scenes and Poisson-distributed data across all point set sizes, while remaining competitive on the clus-tered data, particularly for large point sets. Further details on pre-cision and timing breakdown of our method are provided in the supplementary material. 
+
+> SIGGRAPH Conference Papers ’26, July 19–23, 2026, Los Angeles, CA, USA.
+
+Scalable GPU Construction of 3D Voronoi and Power Diagrams • 7
+
+Table 1. Voronoi diagram creation/Delaunay triangulation . Runtime results (in seconds) on point sets obtained from Radiant Foam check-points trained on the Mip-NeRF 360 dataset. Color coding denotes fastest ,second fastest , and third fastest .                                                                                                                                               
+
+> bicycle bonsai counter drjohnson garden kitchen playroom room stump 4.2M 2.0M 2.0M 2.8M 4.1M 2.0M 3.2M 1.9M 4.2M CPU SciPy 279.710 121.480 127.273 187.908 260.904 133.174 207.022 119.729 268.345 Voro++ ---------CGAL 20.445 9.591 9.366 13.522 19.205 9.781 15.016 8.877 19.559 CGAL Parallel 26.986 18.900 97.873 21.249 20.066 57.639 49.721 40.528 40.466 Geogram 1.593 0.826 0.859 1.244 1.732 0.865 1.370 0.812 1.560 HXT GmSH 1.243 0.730 0.720 0.928 1.299 0.821 0.980 0.675 1.375 5090  Basselin* ---------RF Del 124.929 25.299 24.980 24.201 40.413 24.762 93.342 16.889 44.777 gDel3D 1.204 0.570 0.592 0.826 1.168 0.604 0.931 0.542 1.197 Ours 0.570 0.245 0.248 0.331 0.496 0.235 0.359 0.240 0.491 H200  Basselin* ---------RF Del 250.688 22.501 24.800 25.142 39.551 25.851 122.038 18.020 43.680 gDel3D 0.893 0.428 0.444 0.620 0.862 0.462 0.678 0.424 0.896 Ours 0.684 0.298 0.256 0.355 0.574 0.297 0.371 0.293 0.564
+
+Generalization to power diagrams. As our method generalizes to power diagrams, we validate performance on the weighted ver-sion of our datasets, comparing against CPU-based algorithms for Regular Delaunay triangulation from SciPy, CGAL and Geogram. We also include results from our implementation of [Basselin et al .2021] on the white noise and density gradient cases; however, their KNN-based search cannot produce valid results for the remaining distributions. Neither HXT, gDel3D nor the Radiant Foam imple-mentation supports the weighted case. We present results from the synthetic data in Fig. 4 and real-world data in Tab. 2. The results demonstrate that our method generalizes well to the weighted case across all datasets, achieving similar runtimes and scaling behavior as for the unweighted case. We provide further results on how our method scales with varying weight distributions in the supplemen-tary material. 
+
+5.3 Scaling mesh-based neural rendering 
+
+To demonstrate the practical benefits of efficient diagram construc-tion at scale, we study the scaling behavior of a recent mesh-based neural rendering model, Radiant Foam [Govindarajan et al . 2025]. Radiant Foam represents scenes using differentiable 3D Voronoi diagrams and therefore requires frequent updates of cell adjacencies via Delaunay triangulation as the sites move during optimization. While the authors show that reconstruction quality improves con-sistently with an increasing number of points, indicating that higher geometric resolution leads to better reconstructions, their evaluation is limited to 2M points. In this context, the Voronoi diagram serves as a scene’s spatial discretization. Each cell stores learnt parameters for density and ap-pearance effects. Volumetric rendering is performed by casting rays through the diagram and accumulating the per-cell contributions, producing a final color for the pixel. During training, site positions and each site’s attributes are optimized via gradient descent, which demands the mesh to be recomputed exhaustively, to reflect the changing geometry. The repeated reconstruction of the mesh is the computational bottleneck of scaling our method addresses. While 
+
+Table 2. Power diagram creation/regular Delaunay triangulation . Run-time results (in seconds) on point sets obtained from Radiant Foam check-points trained on the Mip-NeRF 360 dataset. Color coding denotes fastest ,second fastest , and third fastest .                                                                                         
+
+> bicycle bonsai counter drjohnson garden kitchen playroom room stump 4.2M 2.0M 2.0M 2.8M 4.1M 2.0M 3.2M 1.9M 4.2M CPU  SciPy 212.538 94.919 117.140 174.597 230.981 124.567 188.740 110.533 214.884 CGAL 16.000 7.754 8.606 12.016 17.151 8.931 13.742 8.033 16.669 CGAL Parallel -110.926 141.335 49.209 269.222 118.085 174.701 63.181 154.698 Geogram 2.939 1.368 1.444 1.776 2.670 1.379 2.666 1.321 3.206 5090  Basselin* ---------Ours 1.134 0.319 0.266 0.346 0.613 0.248 0.385 0.264 0.836 H200  Basselin* ---------Ours 1.697 0.827 0.414 0.419 1.038 0.465 0.462 0.344 1.280
+
+Radiant Foam uses incremental updates when possible, we bench-mark full reconstruction for a controlled comparison. To enable Radiant Foam to scale beyond this regime, we replace their Delaunay triangulation step with our algorithm and retrain the model on scenes from the Mip-NeRF 360 dataset. We vary the final number of Voronoi sites from 3M to 17M, making no other changes to the method, training procedure, learning rate, or hyper-parameters. Fig. 1 reports the training time of Radiant Foam as a function of the number of points, along with LPIPS [Zhang et al . 2018] scores measured on the validation set as a function of training time for dif-ferent final resolutions. The results highlight two key observations. First, mesh-based neural rendering models exhibit familiar scaling behavior, with reconstruction quality improving as the number of geometric primitives increases. Second, our approach enables such scaling with near-linear complexity, making large-scale Voronoi-based scene representations practically feasible. 
+
+6 Conclusion 
+
+We presented a GPU-based algorithm for efficiently and robustly constructing 3D Voronoi and power diagrams that supports large-scale point sets with complex spatial distributions while remaining competitive with state-of-the-art methods on small to moderate problem sizes. Our approach is based on convex cell clipping, which naturally maps to massively parallel GPU execution. Combined with a culling criterion based on directional geometric bounds and a hierarchical best-first search strategy, this design yields an efficient and general algorithm that scales robustly with the number of points and across diverse spatial distributions. We evaluated our method on both synthetic and real-world datasets, demonstrating performance comparable to or exceeding prior work on Delaunay triangulation across a wide range of distributions and scales. In several scenarios, our method achieves the best reported performance and naturally extends to the weighted case of power diagram construction. Finally, we demonstrated the practical impact of our approach in the context of large-scale mesh-based neural rendering, where efficient and scalable construction of 3D Voronoi diagrams directly translates into improved reconstruction quality. These results un-derscore the importance of scalable Voronoi and power diagram 
+
+SIGGRAPH Conference Papers ’26, July 19–23, 2026, Los Angeles, CA, USA. 8 • Taveira, Lindström, et al. 
+
+algorithms as foundational tools for emerging large-scale graphics and vision applications. In summary, we introduced a scalable and general method for 3D Voronoi and power diagram construction that matches or exceeds prior Delaunay-based approaches and enables efficient processing of substantially larger point sets. 
+
+Limitations and Future Work. Our current implementation targets single-GPU execution and static point sets, and its scalability is ultimately bounded by available device memory rather than com-putation. Supporting incremental updates to diagrams, multi-GPU execution, and distributed construction remains an important direc-tion for future work. In addition, our method relies on floating-point arithmetic and does not target the exact geometric guarantees of CPU-based libraries. Finally, further study of extreme weight dis-tributions could provide additional insight into the limits of our culling strategies. 
+
+Acknowledgments 
+
+This work was partially supported by the Wallenberg AI, Autonomous Systems and Software Program (WASP) funded by the Knut and Alice Wallenberg Foundation. Computational resources were pro-vided by NAISS at NSC Berzelius, partially funded by the Swedish Research Council, grant agreement no. 2022-06725. 
+
+References 
+
+Franz Aurenhammer. 1987. Power diagrams: properties, algorithms and applications. 
+
+SIAM journal on computing 16, 1 (1987), 78–96. Franz Aurenhammer. 1991. Voronoi diagrams—a survey of a fundamental geometric data structure. ACM computing surveys (CSUR) 23, 3 (1991), 345–405. C. Bradford Barber, David P. Dobkin, and Hannu Huhdanpaa. 1996. The quickhull algorithm for convex hulls. ACM Trans. Math. Softw. 22, 4 (Dec. 1996), 469–483. doi:10.1145/235815.235821 Jonathan T Barron, Ben Mildenhall, Dor Verbin, Pratul P Srinivasan, and Peter Hedman. 2022. Mip-nerf 360: Unbounded anti-aliased neural radiance fields. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition . 5470–5479. Justine Basselin, Laurent Alonso, Nicolas Ray, Dmitry Sokolov, Sylvain Lefebvre, and Bruno Lévy. 2021. Restricted Power Diagrams on the GPU. Computer Graphics Forum (2021). doi:10.1111/cgf.142610 A. Bowyer. 1981. Computing Dirichlet tessellations*. Comput. J. 24, 2 (01 1981), 162–166. arXiv:https://academic.oup.com/comjnl/article-pdf/24/2/162/967239/240162.pdf doi:10.1093/comjnl/24.2.162 Tyson Brochu, Christopher Batty, and Robert Bridson. 2010. Matching fluid simulation elements to surface geometry and topology. In ACM SIGGRAPH 2010 papers . 1–9. Thanh-Tung Cao, Ashwin Nanjappa, Mingcen Gao, and Tiow-Seng Tan. 2014. A GPU accelerated algorithm for 3D Delaunay triangulation. In Proceedings of the 18th meeting of the ACM SIGGRAPH Symposium on Interactive 3D Graphics and Games .47–54. Jaehoon Choi, Yonghan Lee, Hyungtae Lee, Heesung Kwon, and Dinesh Manocha. 2024. Meshgs: Adaptive mesh-aligned gaussian splatting for high-quality rendering. In 
+
+Proceedings of the Asian Conference on Computer Vision . 3310–3326. Nikos Chrisochoides and Démian Nave. 2003. Parallel Delaunay mesh gen-eration kernel. Internat. J. Numer. Methods Engrg. 58, 2 (2003), 161–176. arXiv:https://onlinelibrary.wiley.com/doi/pdf/10.1002/nme.765 doi:10.1002/nme.765 Lin Gao, Jie Yang, Bo-tao Zhang, Jia-mu Sun, Yu-jie Yuan, Hongbo Fu, and Yu-kun Lai. 2024. Real-time large-scale deformation of gaussian splatting. ACM Transactions on Graphics (TOG) 43, 6 (2024), 1–17. Shrisudhan Govindarajan and Daniel Rebain. 2026. radfoam. https://github.com/ theialab/radfoam. Shrisudhan Govindarajan, Daniel Rebain, Kwang Moo Yi, and Andrea Tagliasacchi. 2025. Radiant Foam: Real-Time Differentiable Ray Tracing. In Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) . 4135–4145. Peter Hedman, Julien Philip, True Price, Jan-Michael Frahm, George Drettakis, and Gabriel Brostow. 2018. Deep blending for free-viewpoint image-based rendering. 
+
+ACM Transactions on Graphics (ToG) 37, 6 (2018), 1–15. Bernhard Kerbl, Georgios Kopanas, Thomas Leimkühler, and George Drettakis. 2023. 3D Gaussian Splatting for Real-Time Radiance Field Rendering. ACM Transactions on Graphics 42, 4 (July 2023). https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/ Bruno Lévy and Nicolas Bonneel. 2013. Variational anisotropic surface meshing with Voronoi parallel linear enumeration. In Proceedings of the 21st international meshing roundtable . Springer, 349–366. Ancheng Lin, Yusheng Xiang, Paul Kennedy, and Jun Li. 2024. Direct learning of mesh and appearance via 3d gaussian splatting. arXiv preprint arXiv:2405.06945 (2024). Jiayin Lu, Emanuel A Lazar, and Chris H Rycroftz. 2023. An extension to Voro++ for multithreaded computation of Voronoi cells. Computer Physics Communications 291 (2023), 108832. Bruno Lévy. 2025. Geogram: A Programming Library with Geometric Algorithms. https://github.com/BrunoLevy/geogram. Accessed: 2025. Alexander Mai, Trevor Hedstrom, George Kopanas, Janne Kontkanen, Falko Kuester, and Jonathan T. Barron. 2025. Radiance Meshes for Volumetric Reconstruction. arXiv:2512.04076 [cs.GR] https://arxiv.org/abs/2512.04076 Célestin Marot, Jeanne Pellerin, and Jean-François Remacle. 2019. One machine, one minute, three billion tetrahedra. Internat. J. Numer. Methods Engrg. 117, 9 (2019), 967–990. Célestin Marot and Jean-François Remacle. 2020. Quality tetrahedral mesh generation with HXT. arXiv preprint arXiv:2008.08508 (2020). Ben Mildenhall, Pratul P Srinivasan, Matthew Tancik, Jonathan T Barron, Ravi Ra-mamoorthi, and Ren Ng. 2021. NeRF: Representing scenes as neural radiance fields for view synthesis. Commun. ACM 65, 1 (2021), 99–106. Ashwin Nanjappa. 2026. gDel3D. https://github.com/ashwin/gDel3D. Nicolas Ray, Dmitry Sokolov, Sylvain Lefebvre, and Bruno Lévy. 2018. Meshless voronoi on the GPU. ACM Trans. Graph. 37, 6, Article 265 (Dec. 2018), 12 pages. doi:10.1145/ 3272127.3275092 Chris Rycroft. 2009. VORO++: A three-dimensional Voronoi cell library in C++. (2009). Maxime Sainlot, Vincent Nivoliers, and Dominique Attali. 2017. Restricting Voronoi diagrams to meshes using corner validation. In Computer Graphics Forum , Vol. 36. Wiley Online Library, 81–91. Johannes Lutz Schönberger and Jan-Michael Frahm. 2016. Structure-from-Motion Revisited. In Conference on Computer Vision and Pattern Recognition (CVPR) .Jonathan Richard Shewchuk. 2002. Delaunay refinement algorithms for triangular mesh generation. Computational geometry 22, 1-3 (2002), 21–74. The CGAL Project. 2025. CGAL User and Reference Manual (6.1 ed.). CGAL Editorial Board. https://doc.cgal.org/6.1/Manual/packages.html Pauli Virtanen, Ralf Gommers, Travis E. Oliphant, Matt Haberland, Tyler Reddy, David Cournapeau, Evgeni Burovski, Pearu Peterson, Warren Weckesser, Jonathan Bright, Stéfan J. van der Walt, Matthew Brett, Joshua Wilson, K. Jarrod Millman, Nikolay Mayorov, Andrew R. J. Nelson, Eric Jones, Robert Kern, Eric Larson, C J Carey, İlhan Polat, Yu Feng, Eric W. Moore, Jake VanderPlas, Denis Laxalde, Josef Perktold, Robert Cimrman, Ian Henriksen, E. A. Quintero, Charles R. Harris, Anne M. Archibald, Antônio H. Ribeiro, Fabian Pedregosa, Paul van Mulbregt, and SciPy 1.0 Contributors. 2020. SciPy 1.0: Fundamental Algorithms for Scientific Computing in Python. Nature Methods 17 (2020), 261–272. doi:10.1038/s41592-019-0686-2 Peng Wang, Lingjie Liu, Yuan Liu, Christian Theobalt, Taku Komura, and Wenping Wang. 2021. Neus: Learning neural implicit surfaces by volume rendering for multi-view reconstruction. arXiv preprint arXiv:2106.10689 (2021). D. F. Watson. 1981. Computing the n-dimensional Delaunay tessellation with application to Voronoi polytopes*. Comput. J. 24, 2 (01 1981), 167–172. arXiv:https://academic.oup.com/comjnl/article-pdf/24/2/167/967258/240167.pdf doi:10.1093/comjnl/24.2.167 Lior Yariv, Jiatao Gu, Yoni Kasten, and Yaron Lipman. 2021. Volume rendering of neural implicit surfaces. Advances in neural information processing systems 34 (2021), 4805–4815. Lior Yariv, Peter Hedman, Christian Reiser, Dor Verbin, Pratul P Srinivasan, Richard Szeliski, Jonathan T Barron, and Ben Mildenhall. 2023. Bakedsdf: Meshing neural sdfs for real-time view synthesis. In ACM SIGGRAPH 2023 conference proceedings .1–9. Richard Zhang, Phillip Isola, Alexei A. Efros, Eli Shechtman, and Oliver Wang. 2018. The Unreasonable Effectiveness of Deep Features as a Perceptual Metric. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR) .SIGGRAPH Conference Papers ’26, July 19–23, 2026, Los Angeles, CA, USA. Scalable GPU Construction of 3D Voronoi and Power Diagrams • 9
+
+Fig. 3. Runtime results (in seconds) for Voronoi diagram creation/Delaunay triangulation on the synthetic generated point sets described in Sec. 5.1. Missing data points indicate that the method could not finish within the maximum allowed time limit of 300 seconds. 
+
+Fig. 4. Runtime results (in seconds) for power diagram creation/regular Delaunay triangulation on the weighted synthetic generated point sets described in Sec. 5.1. Missing data points indicate that the method could not finish within the maximum allowed time limit of 300 seconds. Clustered     
+
+> 1M
+> Clustered
+> 5M
+> Clustered
+> 10M
+> Clustered
+> 15M
+> Poisson
+> 15M
+> Poisson
+> 10M
+> Poisson
+> 5M
+> Poisson
+> 1M
+> 0.25
+> 0.50
+> 0.75
+> 1.00
+> Synthetic distributions
+> bicycle
+> bonsai
+> counter
+> drjohnson
+> garden kitchen
+> playroom
+> room
+> stump
+> 0.25
+> 0.50
+> 0.75
+> 1.00
+> Real-world scenes
+> Ours (H200) gDel3D (H200) Basselin (H200) Geogram HXT GmSH
+
+Fig. 5. Runtime comparison on synthetic and real-world point sets. The outer ring corresponds to the fastest method on that dataset (score = 1). A score of zero indicates that the method failed to complete a valid result. Poisson represents the average of the Poisson-distributed test cases (white noise and density gradient). Clustered represents the average of the clustered test cases. Our method consistently achieves scores near the outer ring across all distributions, while competitors degrade at higher point counts and non-uniform distributions. 
+
+SIGGRAPH Conference Papers ’26, July 19–23, 2026, Los Angeles, CA, USA. 10 • Taveira, Lindström, et al. 
+
+Fig. 6. Visualization of synthetic test cases. 
+
+Fig. 7. Images from the real-world test cases (described in Sec. 5.1), with point sets projected to illustrate the density and spatial spread of the data. The scenes span a range of indoor and outdoor environments with complex spatial distributions and point counts ranging from 2M to 4.2M. 
+
+> SIGGRAPH Conference Papers ’26, July 19–23, 2026, Los Angeles, CA, USA.
+
+Scalable GPU Construction of 3D Voronoi and Power Diagrams • 1
+
+A Implementation details 
+
+Our method is implemented directly in CUDA, enabling the low-level control necessary for hardware-level performance optimiza-tion. Power diagram construction over 𝑁 sites decomposes naturally into 𝑁 independent volume-clipping tasks, which we map one-to-one onto GPU threads. Each thread executes a sequence of clipping operations that progressively refine the Voronoi cell geometry and record the set of neighboring sites. This parallel formulation scales directly with the number of threads, but achieving peak through-put demands careful attention to memory layout and data-access patterns, which we detail in the following subsections. We pro-vide a high-level overview of our algorithm in Fig. 8 and detail its components below. 
+
+A.1 Input packing 
+
+Given 𝑁 input sites, each with position p𝑖 ∈ R3 and scalar weight 
+
+𝑤 𝑖 ∈ R, we pack both in a continuous float4 , aligning each site to a 128-bit boundary. This allows each site to be fetched with a single 
+
+LDG.128 instruction, and ensures that consecutive threads within a warp access consecutive float4 elements, enabling memory coa-lescing and maximizing effective bandwidth. 
+
+A.2 Power-augmented BVH 
+
+We build a binary BVH over the site positions using the cuBQL GPU builder, configured with leaf size ℓ set to 17 for H200 and 10 for RTX5090. The BVH is augmented with a per-node maxweight field, which stores the maximum weight in the subtree rooted at that node. This maxweight is required to perform the culling criteria described in Sec. 4.2 during the hierarchical neighbor search. 
+
+A.3 Per-thread memory 
+
+Our clipping procedure builds on the work of [Basselin et al . 2021] but has been substantially adapted to serve our goal of computing the full connectivity of the power diagram, as opposed to only evaluating volume integrals over its cells. This change, combined with the need for robust performance on highly non-homogeneous point distributions, required a fundamentally different per-thread memory strategy. Convex cell clipping is primarily memory-bound: each clipping operation fetches a neighbor position from global memory and iter-ates over vertices and bisecting planes multiple times to recompute the resulting convex cell. In [Basselin et al . 2021], intermediate per-thread data is held in shared memory. Instead, we allocate it in coalesced global memory. While shared memory offers lower la-tency, we found the resulting per-thread footprint to severely limit streaming multiprocessor (SM) occupancy, reducing overall hard-ware utilization. Coalesced global memory allows more warps to reside on each SM, yielding higher effective throughput in practice. Each thread maintains a compact representation of its convex polyhedron alongside the neighbor data needed for subsequent clip-ping steps. Bisecting planes are stored as float4 plane equations. Vertices of the polyhedron are encoded as uchar3 triples, each hold-ing the indices of the three planes whose intersection defines that vertex. We additionally cache the explicit vertex positions in global memory rather than recomputing them each time they are needed. Input: N sites pi ∈ R3, scalar weights wi ∈ R                                                                
+
+> (1) Interleave position and weight into a 4-component vector per site for coalesced GPU memory access. App. A.1
+> (2) Build Power BVH App. A.2
+> Binary bounding-volume hierarchy over all sites. Each internal node stores its subtree’s bounding box and the maximum weight
+> max wof contained sites ( Sec. 4.2.2 ). Optionally run a k-NN search to seed warm-start clipping ( App. A.6 ).
+> (3) Allocate per-thread convex cell working memory App. A.3
+> One convex polyhedron per thread, stored in a Structure-of-Arrays layout strided across warp threads for coalesced access.
+> (4) Initialize cell CiApp. B
+> Set Cito the axis-aligned bounding box of the site set (six half-space planes).
+> (5) Warm-start clipping (optional) App. A.6
+> Pre-clip Ciby the bisector halfspaces of the k-NN candidates to tighten the cell before traversal.
+> (6a) Descend BVH to a leaf Sec. 4.2, 4.3
+> Traverse from the current node toward a leaf. At each inner node, evaluate both children:
+> •Lower bound ˆdij on the bisector distance using the nearest point on the child’s bounding box and its stored
+> max w(Eq. 2).
+> •Directional radius rifrom Ci’s bounding-box corners in the octants the child occupies ( Sec. 4.2.1 ).
+> •Prune the child if ˆdij > r i.Descend to the nearer survivor; push the farther survivor onto the sorted stack. Repeat until a leaf.
+> (6b) Clip cell Ciat leaf Sec. 4.1 ,App. B
+> For each candidate pjin the leaf, apply the directional culling test ( Sec. 4.2.1 ): discard if dij > r i. For survivors, clip Ciby the bisector halfspace at distance
+> dij =∥pi−pj∥2+wi−wj
+> 2∥pi−pj∥(Eq. 2) removing exterior vertices, closing the hole, and appending the new face. Update the bounding box and riafter each clip; the cell shrinks, tightening future pruning.
+> (6c) Pop next deferred node Sec. 4.3
+> Pop the closest deferred node and re-apply the directional culling test against the current (tighter) ri. Clipping in (6b) may now make it prunable. If so, discard and pop again. Other-wise resume at step (6a) with it as the current node. Terminate when the stack is empty.
+> (7) Extract power diagram adjacency from Ci
+> For each vertex of the final polytope, record its three defining bisector-plane neighbors to form the Laguerre cell adjacency.
+> (8) Compact adjacency lists
+> Gather per-site neighbor indices into compact, flat adjacency lists.
+> Output: Power diagram adjacency (CSR format)
+> repeat
+> Preprocessing GPU kernel: one thread per site BVH Traversal Loop Postprocessing
+
+Fig. 8. High-level diagram of our algorithm. 
+
+SIGGRAPH Conference Papers ’26, July 19–23, 2026, Los Angeles, CA, USA. 2 • Taveira, Lindström, et al. 
+
+Since every vertex must be tested against each candidate bisect-ing plane, caching eliminates repeated intersection computations and substantially reduces arithmetic overhead. Storing these posi-tions is feasible due to the choice of using global memory, where the available capacity is orders of magnitude larger than in shared memory. 
+
+A.4 Garbage Collection 
+
+As the volume is progressively clipped, the fixed-size array of bisect-ing planes accumulates entries, some of which no longer contribute to the polyhedron. When the array exceeds 85% occupancy, we com-pact it by discarding fully clipped planes, reclaiming capacity for subsequent iterations without increasing total allocation. Our approach differs fundamentally from that of [Basselin et al .2021], where the shared-memory arrays are never compacted. In-stead, when an array overflows, the kernel is relaunched with larger array sizes, reattempting construction from scratch. This overflow-and-retry strategy is a primary limitation on non-uniform point distributions, where cells in dense regions may require visiting and storing far more neighbors than shared memory can accommodate, regardless of retry budget. 
+
+A.5 Best-first cell neighbor traversal 
+
+As described in Sec. 4.3, the hierarchical neighbor search maintains a per-thread stack of BVH nodes tagged with their distance to the seed site. Rather than keeping the stack sorted, new entries are simply appended and the ordering deferred to the pop operation, which performs a linear scan to locate the nearest element. Removal is then handled by copying the last stack entry into the vacated slot, avoiding any shifting. This is logically equivalent to maintaining a sorted stack but trades a small amount of extra work at pop time for significantly fewer writes at push time. 
+
+A.6 KNN warm start 
+
+Prior to BVH traversal, we optionally run a K-nearest-neighbor query ( 𝐾 = 8) on the same BVH to obtain candidate neighbors for each site. These candidates are used to pre-clip the power cell before traversal, bounding its initial search radius to approximately the power distance to the K-th nearest neighbor rather than infinity. This allows the directional pruning criterion (Sec. 4.2) to cull nodes from the very root of the tree, substantially reducing the number of nodes and leaf primitives visited per cell. This optimization is beneficial on GPUs with large L2 caches (e.g., NVIDIA Blackwell consumer GPUs such as the RTX 5090), where the KNN pass is cheap relative to the traversal savings it enables. On datacenter GPUs such as the H200, HBM bandwidth already yields highly efficient traversal, and the overhead of the additional pass is not recovered. The warm start is therefore disabled on such hardware. 
+
+B Convex cell clipping 
+
+In this section we describe the clipping procedure used in our algo-rithm. 
+
+Initialization. As outlined in Sec. A.3, each cell is represented by bisecting planes stored as half-space equations and vertex triplets holding the indices of the three half-spaces incident to that vertex.                 
+
+> Table 3. Runtime (in seconds) for power diagram construction with varying weight distributions. Weights are sampled from a normal distribution with standard deviation proportional to the median nearest-neighbor distance, scaled by the weight ratio. The empty ratio denotes the fraction of cells with no neighboring cells.
+> Weight ratio Empty ratio Runtime (s) 0.0 0.000 0.595 1e-6 0.000 0.596 1e-5 4.524e-6 0.596 1e-4 7.726e-4 0.598 1e-3 0.051 0.808 1e-2 0.250 1.469 1e-1 0.468 2.243
+
+For a given site 𝑝 𝑖 , the cell is initialized as the axis-aligned bounding box of the full point set. Candidate neighbors are then processed in order of proximity (as outlined in Secs. 4.2– 4.3), progressively clipping the cell. 
+
+Clipping by a half-space. A candidate neighbor 𝑝 𝑗 induces a new half-space ℎ defined by the bisecting plane with 𝑝 𝑖 . The clipping pro-ceeds in three steps. First, each vertex is classified by evaluating the new half-space equation. Vertices with a negative value lie outside the new half-space and are marked for removal. Second, marked vertices are removed one at a time, in an order that keeps each removed vertex adjacent to the current hole boundary. Removing vertices exposes a polygonal hole in the surface of the cell, whose boundary is maintained as a circular list of half-space indices. Each consecutive pair (𝑎, 𝑏 ) in the list represents a dangling edge lying along the intersection of face 𝑎 and face 𝑏 . Each removal extends the boundary list by one edge, via a local update to the list. Third, the new facet is created, appending the new half-space ℎ to our half-space equations. For each consecutive pair (𝑎, 𝑏 ) in the circular hole boundary list, a new vertex triplet (ℎ, 𝑎, 𝑏 ) is added, closing the hole. If no vertices are marked for removal, the bisecting plane lies outside the current cell and no clipping is performed. Finally, the bounding quantities of the cell are updated after clip-ping. 
+
+C Baseline details 
+
+We adopt the official implementation of gDel3D [Nanjappa 2026] and report results using their default double-precision setup. We also evaluated gDel3D in single precision, but found the performance difference to be negligible (median < 0.5%). For Radiant Foam [Govin-darajan and Rebain 2026], we use the official implementation, which operates in single precision. Since the method of [Basselin et al .2021] was originally designed for volume integral computation rather than explicit mesh construction, we provide our own CUDA implementation of their algorithm to enable benchmarking, also in single precision. All CPU baselines are run in double precision. 
+
+D Further results 
+
+In this section, we provide more detailed results of the runtime experiments described in Sec. 5.2. The results from the synthetic datasets are presented in Tab. 4, Tab. 5, Tab. 6, and Tab. 7 for the   
+
+> SIGGRAPH Conference Papers ’26, July 19–23, 2026, Los Angeles, CA, USA. Scalable GPU Construction of 3D Voronoi and Power Diagrams •3
+
+runs without weights, and in Tab. 8, Tab. 9, Tab. 10, and Tab. 11 for the runs with weights. Note that this is the same data as is visualized in Fig. 3 and Fig. 4. Methods with missing results failed to complete the diagram construction, either by exceeding memory limits or by not finishing within the five-minute time limit. 
+
+Table 4. Runtime results (in seconds) for Voronoi diagram creation/Delaunay triangulation on synthetic point sets created according to the clustered configuration described in Sec. 5.1, with 𝐾 = 10 . Color coding denotes fastest , second fastest , and third fastest . 
+
+10 clusters 0.1M 0.5M 1.0M 2.0M 5.0M 10.0M 15.0M CPU SciPy 6.651 29.957 61.009 - - - -Voro++ 18.298 175.822 232.045 - - - -CGAL 0.449 2.299 4.808 9.431 23.789 50.547 74.723 CGAL Parallel 9.167 19.445 11.381 92.366 61.094 118.895 91.391 Geogram 0.060 0.250 0.413 0.792 2.024 4.072 5.890 HXT GmSH 0.132 0.285 0.440 0.733 1.410 2.450 3.520 5090  Basselin* - - - - - - -RF Del 1.304 13.018 33.816 117.950 - - -gDel3D 0.056 0.148 0.284 3.120 - - -Ours 0.175 0.341 0.386 0.675 1.224 1.423 -H200  Basselin* - - - - - - -RF Del 0.917 10.136 30.805 96.942 - - -gDel3D 0.053 0.129 0.229 1.196 45.423 - -Ours 0.456 0.677 0.720 1.027 1.732 1.848 2.530 
+
+Table 5. Runtime results (in seconds) for Voronoi diagram creation/Delaunay triangulation on synthetic point sets created according to the clustered configuration described in Sec. 5.1, with 𝐾 = 5. Color coding denotes fastest , second fastest , and third fastest . 
+
+5 clusters 0.1M 0.5M 1.0M 2.0M 5.0M 10.0M 15.0M CPU SciPy 5.544 30.166 62.559 - - - -Voro++ 27.504 179.176 - - - - -CGAL 0.448 2.308 4.700 9.454 24.086 48.775 72.894 CGAL Parallel 18.486 12.434 59.192 107.589 87.969 104.733 96.761 Geogram 0.062 0.323 0.443 0.817 1.926 3.953 6.034 HXT GmSH 0.123 0.271 0.439 0.672 1.349 2.552 3.446 5090  Basselin* - - - - - - -RF Del 2.055 10.536 33.169 56.991 - - -gDel3D 0.105 0.153 0.285 0.857 1.489 - -Ours 0.148 0.295 0.352 0.548 0.747 1.479 -H200  Basselin* - - - - - - -RF Del 1.674 9.309 28.851 42.143 - - -gDel3D 0.076 0.129 0.230 0.576 1.088 - -Ours 0.255 0.639 0.598 1.104 1.258 1.914 2.194 
+
+Timing breakdown. The BVH construction in our method ac-counts for 4.8% of the total time on large point sets. The remaining 95.2% is our fused kernel, of which the vast majority of the time is spent on cell clipping operations (96.2%) and the rest is BVH traversal and culling. 
+
+Table 6. Runtime results (in seconds) for Voronoi diagram creation/Delaunay triangulation on synthetic point sets created according to the density gra-dient configuration described in Sec. 5.1. Color coding denotes fastest ,second fastest , and third fastest . 
+
+Density gradient 0.1M 0.5M 1.0M 2.0M 5.0M 10.0M 15.0M CPU SciPy 5.019 31.462 57.210 116.067 - - -Voro++ 0.226 1.155 2.349 4.817 12.298 24.897 37.839 CGAL 0.446 2.317 4.655 9.490 23.768 47.898 71.859 CGAL Parallel 0.320 0.323 0.455 1.154 2.313 4.337 6.455 Geogram 0.061 0.282 0.432 0.882 1.963 3.804 5.837 HXT GmSH 0.097 0.218 0.307 0.475 0.910 1.670 2.414 5090  Basselin* 0.054 0.200 0.387 0.728 1.810 3.602 5.574 RF Del 0.224 5.591 15.208 7.158 71.013 - -gDel3D 0.027 0.149 0.283 0.590 1.476 - -Ours 0.020 0.066 0.118 0.221 0.540 1.102 -H200  Basselin* 0.128 0.258 0.561 0.852 1.773 3.311 4.829 RF Del 0.583 14.270 38.848 18.394 177.860 94.022 182.097 gDel3D 0.038 0.131 0.226 0.449 1.075 - -Ours 0.019 0.071 0.132 0.245 0.561 1.084 1.588 
+
+Table 7. Runtime results (in seconds) for Voronoi diagram creation/Delaunay triangulation on synthetic point sets created according to the uni-form configuration described in Sec. 5.1. Color coding denotes fastest ,second fastest , and third fastest . 
+
+White noise 0.1M 0.5M 1.0M 2.0M 5.0M 10.0M 15.0M CPU SciPy 5.056 27.712 56.725 117.946 - - -Voro++ 0.258 1.246 2.518 5.138 13.239 27.031 41.136 CGAL 0.444 2.280 4.603 9.436 23.611 47.415 71.999 CGAL Parallel 0.533 0.404 1.220 0.864 2.081 4.339 6.903 Geogram 0.060 0.267 0.420 0.791 1.920 4.202 6.138 HXT GmSH 0.097 0.200 0.303 0.478 0.909 1.545 2.259 5090  Basselin* 0.032 0.186 0.355 0.676 1.755 3.608 5.598 RF Del 0.240 4.139 14.837 12.218 68.997 - -gDel3D 0.027 0.149 0.281 0.581 1.471 - -Ours 0.020 0.060 0.112 0.214 0.530 1.078 -H200  Basselin* 0.069 0.228 0.386 0.674 1.624 3.186 4.619 RF Del 0.627 11.486 42.595 20.458 188.883 99.114 207.671 gDel3D 0.036 0.128 0.225 0.442 1.086 - -Ours 0.017 0.063 0.123 0.227 0.537 1.064 1.582 
+
+Precision. We run our method using single precision. We compare the exactness of our method against the results from CGAL’s exact predicates. On average, we note a small fraction of mismatching ad-jacencies (0.1–0.2%) on real data, traced to near-coincident candidate planes. Volume rendering validation across 100k rays confirm neg-ligible differences in accumulated density (mean < 1.7e-5, median 
+
+= 0.0), with consistent results on synthetic data. 
+
+Component ablations. We ablate the two key algorithmic compo-nents of our method on a RTX 5090 and report results in Tab. 12. The first variant, isotropic culling , replaces our directional culling cri-terion (Sec. 4.2) with a single-radius bound, consistently degrading   
+
+> SIGGRAPH Conference Papers ’26, July 19–23, 2026, Los Angeles, CA, USA. 4•Taveira, Lindström, et al.
+
+Table 8. Runtime results (in seconds) for power diagram creation/regular Delaunay triangulation on weighted synthetic point sets created according to the clustered configuration described in Sec. 5.1, with 𝐾 = 10 . Color coding denotes fastest , second fastest , and third fastest . 
+
+10 clusters 0.1M 0.5M 1.0M 2.0M 5.0M 10.0M 15.0M CPU  SciPy 5.737 28.115 58.569 - - - -Voro++ CGAL 0.403 2.071 4.264 8.630 21.338 43.571 65.891 CGAL Parallel 221.661 71.534 21.930 92.072 126.464 198.626 -Geogram 0.093 0.433 0.672 1.313 4.381 8.620 10.965 5090  Basselin* - - - - - - -Ours 0.180 0.350 0.411 0.779 1.402 1.913 -H200  Basselin* - - - - - - -Ours 0.379 0.685 0.734 1.113 2.071 2.267 3.210 
+
+Table 9. Runtime results (in seconds) for power diagram creation/regular Delaunay triangulation on weighted synthetic point sets created according to the clustered configuration described in Sec. 5.1, with 𝐾 = 5. Color coding denotes fastest , second fastest , and third fastest .                                                               
+
+> 5 clusters 0.1M 0.5M 1.0M 2.0M 5.0M 10.0M 15.0M CPU  SciPy 5.355 28.861 59.658 -287.128 --CGAL 0.413 2.084 4.251 8.665 21.774 43.451 66.666 CGAL Parallel 57.310 34.397 87.747 113.751 136.586 153.878 259.233 Geogram 0.096 0.412 0.694 1.555 3.718 8.413 13.280 5090  Basselin* -------Ours 0.153 0.293 0.368 0.615 0.838 1.718 -H200  Basselin* -------Ours 0.284 0.643 0.604 1.162 1.364 2.243 2.879
+
+Table 10. Runtime results (in seconds) for power diagram creation/regular Delaunay triangulation on weighted synthetic point sets created according to the density gradient configuration described in Sec. 5.1. Color coding denotes fastest , second fastest , and third fastest . 
+
+Density gradient 0.1M 0.5M 1.0M 2.0M 5.0M 10.0M 15.0M CPU  SciPy 5.123 28.899 59.681 124.247 - - -CGAL 0.426 2.068 4.239 8.685 21.639 42.902 65.660 CGAL Parallel 3.545 1.623 1.023 3.589 4.707 10.567 14.202 Geogram 0.094 0.459 0.644 1.431 4.320 8.725 13.039 5090  Basselin* 0.114 0.268 0.437 0.793 2.001 3.998 6.258 Ours 0.017 0.071 0.128 0.243 0.609 1.242 -H200  Basselin* 0.358 0.530 0.699 1.016 2.087 3.772 5.395 Ours 0.024 0.085 0.142 0.270 0.632 1.233 1.830 
+
+performance by 1.03 –1.61 × across all datasets. The second vari-ant, depth-first traversal , replaces the best-first neighbor ordering (Sec. 4.3) with a standard depth-first BVH traversal. The impact is far more pronounced: without proximity-first ordering, the method clips against distant, non-contributing neighbors first, leading to 
+
+Table 11. Runtime results (in seconds) for power diagram creation/regular Delaunay triangulation on weighted synthetic point sets created according to the uniform configuration described in Sec. 5.1. Color coding denotes fastest , second fastest , and third fastest . 
+
+White noise 0.1M 0.5M 1.0M 2.0M 5.0M 10.0M 15.0M CPU  SciPy 5.151 28.726 59.514 124.243 - - -CGAL 0.413 2.087 4.262 8.657 21.354 42.925 64.724 CGAL Parallel 0.229 3.649 1.349 3.462 5.401 8.735 22.632 Geogram 0.098 0.427 0.692 1.454 4.384 8.712 11.003 5090  Basselin* 0.046 0.198 0.368 0.696 1.821 3.753 6.019 Ours 0.016 0.068 0.123 0.237 0.592 1.216 -H200  Basselin* 0.121 0.253 0.408 0.698 1.686 3.294 5.053 Ours 0.022 0.067 0.132 0.251 0.612 1.208 1.811 
+
+Table 12. Ablation study on the RTX 5090. We compare our full method against two variants: isotropic culling , which replaces our directional crite-rion with a single-radius bound, and depth-first traversal , which replaces best-first ordering with standard DFS. Reported values are the median slow-down factor (and range) relative to our full method.               
+
+> Clustered Poisson Real-world Isotropic culling 1.26 ×(1.03–1.52) 1.33 ×(1.25–1.44) 1.40 ×(1.34–1.61) Depth-first traversal 27.4 ×(3.96–80.3) 1.30 ×(1.13–22.8) 37.2 ×(34.8–53.1)
+
+slowdowns of up to 80 × on large clustered and real-world data. On Poisson-distributed data at small sizes the effect is mild, as the uniform density limits the penalty of suboptimal ordering. 
+
+Varying weight distributions. Additionally, we present runtime results for power diagram construction with varying weight distri-butions in Tab. 3. We run our method on the bicycle scene from the real-world test cases described in Sec. 5.1, where cell weights are sampled from a normal distribution with standard deviation propor-tional to the median nearest-neighbor distance, scaled by a weight ratio. To provide intuition on the influence of the weight magnitude, we report the empty ratio, defined as the fraction of cells with no neighboring cells. The observed increase in runtime with larger weights is expected, as larger weights inflate the power distances between cells and ultimately increase the number of candidates that must be considered.

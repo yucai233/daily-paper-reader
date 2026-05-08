@@ -1,0 +1,210 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-08T20:55:28.125977+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2605.06298v1",
+      "title": "Render, Don't Decode: Weight-Space World Models with Latent Structural Disentanglement",
+      "abstract": "Training world models on vast quantities of unlabelled videos is a critical step toward fully autonomous intelligence. However, the prevailing paradigm of encoding raw pixels into opaque latent spaces and relying on heavy decoders for reconstruction leaves these models computationally expensive and uninterpretable. We address this problem by introducing NOVA, a world modelling framework that represents the system state as the weights and biases of an auxiliary coordinate-based implicit neural representation (INR). This structured representation is analytically rendered, which eliminates the decoder bottleneck while conferring compactness, portability, and zero-shot super-resolution. Furthermore, like most latent action models, NOVA can be distilled into a context-dependent video generator via an action-matching objective. Surprisingly, without resorting to auxiliary losses or adversarial objectives, NOVA can disentangle structural scene components such as background, foreground, and inter-frame motion, enabling users to edit either content or dynamics without compromising the other. We validate our framework on several challenging datasets, achieving strong controllable forecasting while operating on a single consumer GPU at $\\sim$40M parameters. Ultimately, structured representations like INRs not only enhance our understanding of latent dynamics but also pave the way for immersive and customisable virtual experiences.",
+      "authors": [
+        "Roussel Desmond Nzoyem",
+        "Mauro Comi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-05-07T14:02:00+00:00",
+      "link": "https://arxiv.org/pdf/2605.06298v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "analytically rendered implicit neural representation",
+      "llm_evidence_cn": "解析渲染的隐式神经表示",
+      "llm_evidence": "解析渲染的隐式神经表示",
+      "canonical_evidence": "解析渲染的隐式神经表示",
+      "llm_tldr_en": "Introduces NOVA, a world model using analytically rendered INRs to eliminate decoder bottlenecks.",
+      "llm_tldr_cn": "引入NOVA，一种使用解析渲染隐式神经表示的世界模型，消除了解码器瓶颈。",
+      "llm_tldr": "引入NOVA，一种使用解析渲染隐式神经表示的世界模型，消除了解码器瓶颈。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2605.05876v1",
+      "title": "3DSS: 3D Surface Splatting for Inverse Rendering",
+      "abstract": "We present 3D Surface Splatting (3DSS), the first differentiable surface splatting renderer for physically-based inverse rendering from multi-view images. Our central insight is that the surface separation problem at the heart of surface splatting admits a direct formulation in terms of the reconstruction kernels themselves. From this foundation we derive a coverage-based compositing model whose per-layer opacity arises directly from the accumulated Elliptical Weighted Average reconstruction weight, yielding anti-aliased silhouettes and informative visibility gradients at sparsely covered edges. Combined with forward microfacet shading under co-optimized HDR environment lighting and density-aware adaptive refinement, 3DSS jointly recovers shape, spatially-varying BRDF materials, and illumination. Because the optimized representation is a set of oriented surface samples, it bridges natively to mesh-based workflows via surface reconstruction from oriented point cloud methods. We evaluate 3DSS against mesh-based, implicit, and Gaussian-splatting baselines across geometry reconstruction, novel-view synthesis, and novel-illumination relighting.",
+      "authors": [
+        "Mae Younes",
+        "Adnane Boukhayma"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.CV"
+      ],
+      "published": "2026-05-07T08:43:51+00:00",
+      "link": "https://arxiv.org/pdf/2605.05876v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "differentiable surface splatting renderer for inverse rendering",
+      "llm_evidence_cn": "用于逆向渲染的可微分表面投影渲染器",
+      "llm_evidence": "用于逆向渲染的可微分表面投影渲染器",
+      "canonical_evidence": "用于逆向渲染的可微分表面投影渲染器",
+      "llm_tldr_en": "Introduces 3D Surface Splatting for physically-based inverse rendering from multi-view images.",
+      "llm_tldr_cn": "提出了一种用于多视图图像物理逆向渲染的可微分3D表面投影技术。",
+      "llm_tldr": "提出了一种用于多视图图像物理逆向渲染的可微分3D表面投影技术。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.05155v1",
+      "title": "Aes3D: Aesthetic Assessment in 3D Gaussian Splatting",
+      "abstract": "As 3D Gaussian Splatting (3DGS) gains attention in immersive media and digital content creation, assessing the aesthetics of 3D scenes becomes important in helping creators build more visually compelling 3D content. However, existing evaluation methods for 3D scenes primarily emphasize reconstruction fidelity and perceptual realism, largely overlooking higher-level aesthetic attributes such as composition, harmony, and visual appeal. This limitation comes from two key challenges: (1) the absence of general 3DGS datasets with aesthetic annotations, and (2) the intrinsic nature of 3DGS as a low-level primitive representation, which makes it difficult to capture high-level aesthetic features. To address these challenges, we propose Aes3D, the first systematic framework for assessing the aesthetics of 3D neural rendering scenes. Aes3D includes Aesthetic3D, the first dataset dedicated to 3D scene aesthetic assessment, built on our proposed annotation strategy for 3D scene aesthetics. In addition, we present Aes3DGSNet, a lightweight model that directly predicts scene-level aesthetic scores from 3DGS representations. Notably, our model operates solely on 3D Gaussian primitives, eliminating the need for rendering multi-view images and thus reducing computational cost and hardware requirements. Through aesthetics-supervised learning on multi-view 3DGS scene representations, Aes3DGSNet effectively captures high-level aesthetic cues and accurately regresses aesthetic scores. Experimental results demonstrate that our approach achieves strong performance while maintaining a lightweight design, establishing a new benchmark for 3D scene aesthetic assessment. Code and datasets will be made available in a future version.",
+      "authors": [
+        "Chuanzhi Xu",
+        "Boyu Wei",
+        "Haoxian Zhou",
+        "Xuanhua Yin",
+        "Zihan Deng",
+        "Haodong Chen",
+        "Qiang Qu",
+        "Weidong Cai"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-05-06T17:27:09+00:00",
+      "link": "https://arxiv.org/pdf/2605.05155v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "aesthetic assessment in 3D Gaussian Splatting scenes",
+      "llm_evidence_cn": "3D高斯投影场景中的美学评估",
+      "llm_evidence": "3D高斯投影场景中的美学评估",
+      "canonical_evidence": "3D高斯投影场景中的美学评估",
+      "llm_tldr_en": "Presents a framework for aesthetic assessment of 3D scenes represented by Gaussian Splatting.",
+      "llm_tldr_cn": "提出了一种针对3D高斯投影场景的美学评估框架。",
+      "llm_tldr": "提出了一种针对3D高斯投影场景的美学评估框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.06270v1",
+      "title": "Spark3R: Asymmetric Token Reduction Makes Fast Feed-Forward 3D Reconstruction",
+      "abstract": "Feed-forward 3D reconstruction models based on Vision Transformers can directly estimate scene geometry and camera poses from a small set of input images, but scaling them to video inputs with hundreds or thousands of frames remains challenging due to the quadratic cost of global attention layers. Recent token-merging methods accelerate these models by compressing the token sequence within the global attention layers, but they apply a uniform reduction to query tokens and key-value tokens, ignoring their functionally distinct roles in 3D reconstruction. In this work, we identify a key property of feed-forward 3D reconstruction models: query tokens encode view-specific geometric requests and are sensitive to compression, while key-value tokens represent shared scene context and tolerate aggressive compression. Guided by this insight, we propose Spark3R, a training-free acceleration framework that decouples the compression of query tokens and key-value tokens by assigning distinct reduction factors, with intra-group token merging applied to query tokens and lightweight token pruning to key-value tokens. Additionally, Spark3R adaptively adjusts the key-value reduction factor across layers, further improving the quality-efficiency trade-off. As a plug-and-play framework requiring no retraining, Spark3R integrates directly into multiple pretrained feed-forward 3D reconstruction models, including VGGT, $π^3$, and Depth-Anything-3, and achieves up to $28\\times$ speedup on 1,000-frame inputs while maintaining competitive reconstruction quality.",
+      "authors": [
+        "Zecheng Tang",
+        "Jiaye Fu",
+        "Qiankun Gao",
+        "Haijie Li",
+        "Yanmin Wu",
+        "Jiaqi Zhang",
+        "Siwei Ma",
+        "Jian Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-07T13:45:37+00:00",
+      "link": "https://arxiv.org/pdf/2605.06270v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Fast feed-forward 3D reconstruction and neural rendering acceleration",
+      "llm_evidence_cn": "快速前馈3D重建与神经渲染加速",
+      "llm_evidence": "快速前馈3D重建与神经渲染加速",
+      "canonical_evidence": "快速前馈3D重建与神经渲染加速",
+      "llm_tldr_en": "Spark3R uses asymmetric token reduction to accelerate feed-forward 3D reconstruction in Vision Transformers.",
+      "llm_tldr_cn": "Spark3R通过非对称Token削减技术加速了Vision Transformer的前馈3D重建过程。",
+      "llm_tldr": "Spark3R通过非对称Token削减技术加速了Vision Transformer的前馈3D重建过程。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.06408v1",
+      "title": "Scalable GPU Construction of 3D Voronoi and Power Diagrams",
+      "abstract": "Voronoi diagrams, and their more general weighted counterpart, power diagrams, are fundamental geometric constructs with wide-ranging applications. Recently, they have gained renewed attention in mesh-based neural rendering. Despite being extensively studied, the construction of 3D Voronoi diagrams for large-scale point sets remains computationally expensive, limiting their adoption in large-scale applications. Existing CPU-based approaches typically rely on computing its dual, the Delaunay tetrahedralization, but are prohibitively slow for large diagrams, while GPU-based methods either struggle to scale efficiently to large point sets or assume homogeneous point distributions. The weighted case, power diagrams, is even less explored in this context. Existing approaches are typically tailored to the application at hand, assuming homogeneous point distributions and small weight variations, making them unsuitable for general use in more complex heterogeneous data.   In this paper, we present a highly parallelizable GPU algorithm for the fast construction of large-scale 3D Voronoi and power diagrams. Our approach constructs each convex cell from a weighted 3D point by progressively clipping an initial cell volume against bisecting planes induced by candidate neighboring points. To efficiently identify candidate neighbors under arbitrary spatial distributions, we introduce a culling criterion based on directional geometric bounds of the evolving cell, combined with a hierarchical best-first traversal of bounding volumes.   We achieve performance on par with state-of-the-art Delaunay tetrahedralization methods on small and moderate problem sizes, while exhibiting robust scalability to large point sets and diverse spatial distributions. Moreover, our method naturally generalizes to power diagrams without additional assumptions. See https://research.zenseact.com/publications/paragram .",
+      "authors": [
+        "Bernardo Taveira",
+        "Carl Lindström",
+        "Maryam Fatemi",
+        "Lars Hammarstrand",
+        "Fredrik Kahl"
+      ],
+      "primary_category": "cs.CG",
+      "categories": [
+        "cs.CG"
+      ],
+      "published": "2026-05-07T15:17:29+00:00",
+      "link": "https://arxiv.org/pdf/2605.06408v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "geometric constructs for mesh-based neural rendering",
+      "llm_evidence_cn": "用于基于网格的神经渲染的几何构造",
+      "llm_evidence": "用于基于网格的神经渲染的几何构造",
+      "canonical_evidence": "用于基于网格的神经渲染的几何构造",
+      "llm_tldr_en": "Presents a scalable GPU method for 3D Voronoi diagrams, useful for mesh-based neural rendering architectures.",
+      "llm_tldr_cn": "提出一种可扩展的GPU 3D Voronoi图构建方法，可用于基于网格的神经渲染架构。",
+      "llm_tldr": "提出一种可扩展的GPU 3D Voronoi图构建方法，可用于基于网格的神经渲染架构。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
