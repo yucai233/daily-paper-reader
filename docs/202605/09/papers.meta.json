@@ -1,0 +1,65 @@
+{
+  "label": "2026-05-09",
+  "date": "2026-05-09",
+  "generated_at": "2026-05-09T20:27:16",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202605/09/2605.04247v1-physics-guided-regime-unmixing",
+      "section": "deep",
+      "title_en": "Physics-Guided Regime Unmixing",
+      "authors": "Paula Pacheco, Pablo Granitto, Juan B. Cabral",
+      "date": "2026-05-05",
+      "pdf": "https://arxiv.org/pdf/2605.04247v1",
+      "score": "8.0",
+      "evidence": "针对多次散射的物理引导机制解混",
+      "tldr": "针对线性混合模型在处理多重散射时的局限性，以及现有非线性模型统一应用固定机制的不足，本文提出物理引导机制解混（PGRU）框架。该方法通过从物理特征中估计逐像素标量，动态激活非线性混合，并利用注意力机制融合多种非线性模型残差。实验证明，该方法在多个数据集上均优于基准模型，且具有极高的物理一致性。",
+      "tags": "query:q4",
+      "abstract_en": "The Linear Mixing Model (LMM) dominates spectral unmixing for its simplicity, but fails under multiple scattering; existing nonlinear models compensate by applying a fixed regime uniformly across entire scenes. We propose Physics-Guided Regime Unmixing (PGRU), which estimates a pixel-wise scalar $ξ_i \\in [0,1]$ from observable physical features to activate nonlinear mixing only where justified. Residuals from the Generalized Bilinear Model (GBM), the Post-Nonlinear Mixing Model (PPNM), and Hapke are combined via learned attention, yielding interpretable regime maps. Experiments on Samson, Jasper Ridge, and Urban show consistent improvements over baselines, with physical coherence $ρ> 0.90$.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/09/2605.04844v1-quadbox-accelerating-3d-gaussian-splatting-with-geometry-aware-boxes",
+      "section": "deep",
+      "title_en": "QuadBox: Accelerating 3D Gaussian Splatting with Geometry-Aware Boxes",
+      "authors": "Xinze Li, Bohan Yang, Pengxu Chen, Yiyuan Wang, Hongcheng Luo, Wentao Cheng, Weifeng Su",
+      "date": "2026-05-06",
+      "pdf": "https://arxiv.org/pdf/2605.04844v1",
+      "score": "8.0",
+      "evidence": "利用几何感知框加速 3D 高斯投影",
+      "tldr": "3D Gaussian Splatting (3DGS) 在实时视图合成中表现出色，但高斯基元与瓦片的相交计算效率仍有待提高。本文提出 QuadBox 方法，通过四个轴对齐边界框紧凑地包裹投影后的高斯分布。利用几何感知拉伸因子构建瓦片对齐的 QuadBox，并结合 QPass 单次遍历算法简化相交检测。实验表明，该方法在保持质量的同时，将 3DGS 渲染速度提升了 1.85 倍。",
+      "tags": "query:q7",
+      "abstract_en": "3D Gaussian Splatting (3DGS) has emerged as an advanced technique for real-time novel view synthesis by representing scene geometry and appearance using differentiable Gaussian primitives. However, efficiently computing precise Gaussian-tile intersections remains a critical task in the rasterization pipeline. To this end, we propose QuadBox, a method that leverages four axis-aligned bounding boxes to tightly encapsulate projected Gaussians in a discrete manner. First, we derive a geometry-aware stretching factor that enables the construction of a tile-aligned QuadBox, which covers the elliptical projection and largely excludes irrelevant tiles. Second, we introduce QPass, a single-pass tile traversal algorithm that exhaustively exploits the discrete nature of QuadBox, ensuring that the tile intersection check is performed with simple interval tests. Experiments on public datasets show that our method accelerates the rendering speed of 3DGS by 1.85$\\times$. Code is available at \\href{https://github.com/Powertony102/QuadBox}{https://github.com/Powertony102/QuadBox}.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/09/2605.05749v1-ray-aware-pointer-memory-with-adaptive-updates-for-streaming-3d-reconstruction",
+      "section": "quick",
+      "title_en": "Ray-Aware Pointer Memory with Adaptive Updates for Streaming 3D Reconstruction",
+      "authors": "Feifei Li, Qi Song, Chi Zhang, Rui Huang",
+      "date": "2026-05-07",
+      "pdf": "https://arxiv.org/pdf/2605.05749v1",
+      "score": "6.0",
+      "evidence": "用于3D重建的射线感知存储",
+      "tldr": "针对流式3D重建中外观驱动内存更新导致的冗余和几何不稳定问题，本文提出一种射线感知指针内存机制。该方法通过统一建模空间位置和视角方向，并采用自适应的“保留或替换”更新策略，实现了对观测信息的精准筛选与整合。结合位姿优化，该框架在保持高效推理的同时，显著提升了长效重建的稳定性和相机位姿精度。",
+      "tags": "query:q3",
+      "abstract_en": "Dense 3D reconstruction from continuous image streams requires both accurate geometric aggregation and stable long-term memory management. Recent feed-forward reconstruction frameworks integrate observations through persistent memory representations, yet most rely primarily on appearance-based similarity when updating memory. Such appearance-driven integration often leads to redundant accumulation of observations and unstable geometry when viewpoint changes occur. In this work, we propose a ray-aware pointer memory for streaming 3D reconstruction that explicitly models both spatial location and viewing direction within a unified memory representation. Each memory pointer stores its 3D position, associated ray direction, and feature embedding, allowing the system to reason jointly about geometric proximity and viewpoint consistency. Based on this representation, we introduce an adaptive pointer update strategy that replaces traditional fusion-based memory compression with a retain-or-replace mechanism. Instead of averaging nearby observations, the system selectively retains informative pointers while discarding redundant ones, preserving distinctive geometric structures while maintaining bounded memory growth. Furthermore, the joint reasoning over spatial distance and ray-direction discrepancy enables the system to distinguish between local redundancy, novel observations, and potential loop revisits in a unified manner. When loop candidates are detected, pose refinement is triggered to enforce global geometric consistency across the reconstruction. Extensive experiments demonstrate that the proposed ray-aware memory design significantly improves long-term reconstruction stability and camera pose accuracy while maintaining efficient streaming inference. Our approach provides a principled framework for scalable and drift-resistant online 3D reconstruction from image streams.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/09/2605.06658v1-relit-live-relight-video-by-jointly-learning-environment-video",
+      "section": "quick",
+      "title_en": "Relit-LiVE: Relight Video by Jointly Learning Environment Video",
+      "authors": "Weiqing Xiao, Hong Li, Xiuyu Yang, Houyuan Chen, Wenyi Li, Tianqi Liu, Shaocong Xu, Chongjie Ye, Hao Zhao, Beibei Wang",
+      "date": "2026-05-07",
+      "pdf": "https://arxiv.org/pdf/2605.06658v1",
+      "score": "6.0",
+      "evidence": "用于前向渲染的神经渲染器和内在场景表示",
+      "tldr": "针对现有视频重光照方法依赖不可靠的内在分解导致伪影和失真的问题，本文提出 Relit-LiVE 框架。该方法通过引入原始参考图像恢复场景细节，并采用联合预测环境视频的扩散过程，同时生成重光照视频与对齐的环境贴图。该框架无需相机位姿先验，支持动态光照和相机运动，在物理一致性和时间稳定性上显著优于现有技术，并适用于多种下游编辑任务。",
+      "tags": "query:q1",
+      "abstract_en": "Recent advances have shown that large-scale video diffusion models can be repurposed as neural renderers by first decomposing videos into intrinsic scene representations and then performing forward rendering under novel illumination. While promising, this paradigm fundamentally relies on accurate intrinsic decomposition, which remains highly unreliable for real-world videos and often leads to distorted appearances, broken materials, and accumulated temporal artifacts during relighting. In this work, we present Relit-LiVE, a novel video relighting framework that produces physically consistent, temporally stable results without requiring prior knowledge of camera pose. Our key insight is to explicitly introduce raw reference images into the rendering process, enabling the model to recover critical scene cues that are inevitably lost or corrupted in intrinsic representations. Furthermore, we propose a novel environment video prediction formulation that simultaneously generates relit videos and per-frame environment maps aligned with each camera viewpoint in a single diffusion process. This joint prediction enforces strong geometric-illumination alignment and naturally supports dynamic lighting and camera motion, significantly improving physical consistency in video relighting while easing the requirement of known per-frame camera pose. Extensive experiments demonstrate that Relit-LiVE consistently outperforms state-of-the-art video relighting and neural rendering methods across synthetic and real-world benchmarks. Beyond relighting, our framework naturally supports a wide range of downstream applications, including scene-level rendering, material editing, object insertion, and streaming video relighting. The Project is available at https://github.com/zhuxing0/Relit-LiVE.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

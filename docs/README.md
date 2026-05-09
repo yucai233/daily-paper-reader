@@ -6,37 +6,34 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-08
-- 运行时间：2026-05-08 20:56:24 UTC
+- 最新运行日期：2026-05-09
+- 运行时间：2026-05-09 20:27:07 UTC
 - 运行状态：成功
-- 本次总论文数：5
-- 精读区：1
-- 速读区：4
+- 本次总论文数：4
+- 精读区：2
+- 速读区：2
 
 ### 今日简报（AI）
-今日聚焦 3D 重建与世界模型前沿，深度解析了权重空间下的潜在结构解耦新范式。
-重点推荐“以渲染代解码”的世界模型研究，同时关注 3D Gaussian Splatting 在逆向渲染、美学评估及快速重建中的多维应用。
-建议关注非对称 Token 缩减技术，这是提升 3D 重建前馈速度并兼顾质量的关键方向。
-- 详情：[/202605/08/README](/202605/08/README)
+今日聚焦物理引导的系统解构与 3D 高斯泼溅（3DGS）的几何加速方案。
+重点关注 QuadBox 带来的 3D 渲染提速，以及物理先验在复杂动力学解构中的创新应用。
+建议关注 3DGS 性能优化及流式重建技术，以应对实时渲染与
+- 详情：[/202605/09/README](/202605/09/README)
 
 ### 精读区论文标签
-1. [Render, Don't Decode: Weight-Space World Models with Latent Structural Disentanglement](/202605/08/2605.06298v1-render-dont-decode-weight-space-world-models-with-latent-structural-disentanglement)  
-   标签：评分：8.0/10、query:q1
-   evidence：解析渲染的隐式神经表示
+1. [Physics-Guided Regime Unmixing](/202605/09/2605.04247v1-physics-guided-regime-unmixing)  
+   标签：评分：8.0/10、query:q4
+   evidence：针对多次散射的物理引导机制解混
+2. [QuadBox: Accelerating 3D Gaussian Splatting with Geometry-Aware Boxes](/202605/09/2605.04844v1-quadbox-accelerating-3d-gaussian-splatting-with-geometry-aware-boxes)  
+   标签：评分：8.0/10、query:q7
+   evidence：利用几何感知框加速 3D 高斯投影
 
 ### 速读区论文标签
-1. [3DSS: 3D Surface Splatting for Inverse Rendering](/202605/08/2605.05876v1-3dss-3d-surface-splatting-for-inverse-rendering)  
-   标签：评分：7.0/10、query:q1
-   evidence：用于逆向渲染的可微分表面投影渲染器
-2. [Spark3R: Asymmetric Token Reduction Makes Fast Feed-Forward 3D Reconstruction](/202605/08/2605.06270v1-spark3r-asymmetric-token-reduction-makes-fast-feed-forward-3d-reconstruction)  
-   标签：评分：7.0/10、query:q1
-   evidence：快速前馈3D重建与神经渲染加速
-3. [Aes3D: Aesthetic Assessment in 3D Gaussian Splatting](/202605/08/2605.05155v1-aes3d-aesthetic-assessment-in-3d-gaussian-splatting)  
+1. [Ray-Aware Pointer Memory with Adaptive Updates for Streaming 3D Reconstruction](/202605/09/2605.05749v1-ray-aware-pointer-memory-with-adaptive-updates-for-streaming-3d-reconstruction)  
+   标签：评分：6.0/10、query:q3
+   evidence：用于3D重建的射线感知存储
+2. [Relit-LiVE: Relight Video by Jointly Learning Environment Video](/202605/09/2605.06658v1-relit-live-relight-video-by-jointly-learning-environment-video)  
    标签：评分：6.0/10、query:q1
-   evidence：3D高斯投影场景中的美学评估
-4. [Scalable GPU Construction of 3D Voronoi and Power Diagrams](/202605/08/2605.06408v1-scalable-gpu-construction-of-3d-voronoi-and-power-diagrams)  
-   标签：评分：6.0/10、query:q1
-   evidence：用于基于网格的神经渲染的几何构造
+   evidence：用于前向渲染的神经渲染器和内在场景表示
 
 
 <div class="dpr-home-promo-card">

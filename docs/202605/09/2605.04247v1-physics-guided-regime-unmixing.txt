@@ -1,0 +1,116 @@
+Title: Physics-Guided Regime Unmixing
+
+URL Source: https://arxiv.org/pdf/2605.04247v1
+
+Published Time: Thu, 07 May 2026 00:09:45 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+# Physics-Guided Regime Unmixing 
+
+Paula Pacheco 1,2,3 , Pablo Granitto 4 , Juan B. Cabral 1,2,3
+
+paulapacheco@mi.unc.edu.ar  
+
+> 1
+
+GVT-CONAE, Centro Espacial Teófilo Tabanera, Argentina  
+
+> 2
+
+CONICET, Argentina  
+
+> 3
+
+FAMAF-UNC, Córdoba, Argentina  
+
+> 4
+
+CIFASIS, CONICET–UNR, Rosario, Argentina 
+
+Abstract. The Linear Mixing Model (LMM) dominates spectral unmix-ing for its simplicity, but fails under multiple scattering; existing non-linear models compensate by applying a fixed regime uniformly across entire scenes. We propose Physics-Guided Regime Unmixing (PGRU), which estimates a pixel-wise scalar ξi ∈ [0 , 1] from observable physi-cal features to activate nonlinear mixing only where justified. Residuals from the Generalized Bilinear Model (GBM), the Post-Nonlinear Mixing Model (PPNM), and Hapke are combined via learned attention, yield-ing interpretable regime maps. Experiments on Samson, Jasper Ridge, and Urban show consistent improvements over baselines, with physical coherence ρ > 0.90 .
+
+Keywords: hyperspectral unmixing, nonlinear mixing, physics-guided learning, regime selection, remote sensing 
+
+# Régimen de Desmezclado Guiado por Física 
+
+Abstract. El Modelo de Mezcla Lineal (LMM) predomina en el desmez-clado espectral por su simplicidad, pero falla ante la dispersión múltiple; los modelos no lineales existentes compensan esto aplicando un régimen fijo de manera uniforme en toda la escena. Proponemos el Physics-Guided Regime Unmixing (PGRU), que estima un escalar por píxel ξi ∈ [0 , 1] apartir de características físicas observables para activar la mezcla no lin-eal únicamente donde está justificado. Los residuos del Modelo Bilineal Generalizado (GBM), el Modelo de Mezcla Post-No Lineal (PPNM) y Hapke se combinan mediante atención aprendida, generando mapas de régimen interpretables. Los experimentos en Samson, Jasper Ridge y Ur-ban muestran mejoras consistentes frente a las líneas base, con coherencia física ρ > 0.90 .
+
+Keywords: desmezclado hiperespectral, mezcla no lineal, aprendizaje guiado por física, selección de régimen, teledetección 
+
+> arXiv:2605.04247v1 [cs.CV] 5 May 2026
+
+## 1 Introduction 
+
+Hyperspectral sensors capture surface reflectance across hundreds of contiguous spectral bands, enabling fine-grained material characterization for applications including agriculture, geology, and environmental monitoring [Bhargava et al., 2024]. Because spatial resolution is typically coarser than the scale of surface heterogeneity, each pixel contains the mixed spectral response of multiple ma-terials. Spectral unmixing recovers the pure signatures (endmembers) and their fractional contributions (abundances) from this mixture. The LMM [Keshava and Mustard, 2002] is the standard approach due to its simplicity and physical interpretability, but assumes photons interact with a single material before reaching the sensor. This assumption breaks down un-der multiple scattering, motivating nonlinear extensions such as the Gener-alized Bilinear Model (GBM) [Halimi et al., 2011], the Post-Nonlinear Mix-ing Model (PPNM) [Altmann et al., 2012], and the Hapke radiative transfer model [Hapke, 1981]. These models improve reconstruction accuracy in strongly nonlinear scenes, but apply nonlinearity uniformly across all pixels, without dis-tinguishing which pixels actually require it or why. Deep learning approaches, primarily autoencoders and convolutional net-works [Palsson et al., 2018, 2022], achieve strong reconstruction performance, but operate as black boxes and offer no physical explanation for regime selec-tion. We address this gap with PGRU, which introduces a pixel-wise regime pa-rameter ξi ∈ [0 , 1] guided by observable physical features. Unlike previous ap-proaches, PGRU does not require labels indicating whether pixels are linear or nonlinear: regime assignment emerges from the tension between reconstruction improvement and physical feature consistency. 
+
+## 2 Physics-Guided Regime Unmixing 
+
+Each pixel i is reconstructed as ˆyi = Slin ,i + ξi δnl ,i , where Slin ,i = P 
+
+> m
+
+aim em
+
+is the standard LMM component (non-negative abundances summing to one) and δnl ,i is a nonlinear residual weighted by ξi ∈ [0 , 1] . When ξi ≈ 0 the model reduces to LMM; when ξi ≈ 1 the nonlinear contribution is fully active. The residual δnl ,i = P 
+
+> k
+
+αik δik combines three physical models via learned attention weights αik obtained through a temperature-controlled softmax: GBM captures pairwise scattering between endmembers, PPNM introduces quadratic distortion over the linear mixture, and Hapke describes multiple scattering from radiative transfer theory. Entropy regularization on αik encourages concentration toward the dominant physical mechanism at each pixel. The central contribution is that ξi is guided by observable scene properties rather than driven solely by reconstruction error. 
+
+ξi = σ X
+
+> k
+
+wkFik + b
+
+!
+
+(1) where Fik are physical and geometric features of pixel i (spectral curvature, NDVI, NDVI gradient, EMP, DMP, LBP), wk are learned weights, and σ is the sigmoid. This is equivalent to a logistic regression over the feature space: the sign and magnitude of wk directly reveal which scene properties predict nonlinear behavior and in which direction, making the regime decision for any pixel a readable sum of feature contributions. To train the model, a per-pixel reconstruction gain is defined as ∆res ,i =
+
+∥yi − Slin ,i ∥ − ∥ yi − ˆyi∥, and the full objective is: 
+
+L = X
+
+> i
+
+h
+
+− tanh( ∆res ,i ) + λfeat (ξi − ξprior ,i )2 + λsp ξi∇2ξi
+
+i
+
++ λw∥w∥2 (2) The first term rewards nonlinear activation where it reduces reconstruction error, saturated by tanh for large gains. The second anchors ξi to the feature-based prior, with λfeat annealed during training. The third promotes spatial coherence of the regime map via a Laplacian regularizer. No pixel labels are used at any stage: the regime assignment emerges entirely from the interplay between reconstruction evidence and physical feature consistency. 
+
+## 3 Experiments 
+
+We evaluate PGRU on three widely used benchmark datasets [Zhu, 2017]: Sam-son (95 ×95 pixels, 156 bands, 3 endmembers: water, vegetation, soil), Jasper Ridge (100 ×100 , 198 bands, 4 endmembers: water, trees, soil, road), and Urban 
+
+(307 ×307 , 162 bands, 5 endmembers: asphalt, grass, trees, roof, soil). Reference endmembers provided with each dataset are used in all methods. Baselines are LMM (linear), GBM, and PPNM; all methods share the same abundance es-timation procedure. Reconstruction is evaluated with Spectral Angle Distance (SAD), RMSE, and relative RMSE (rRMSE). Table 1 reports reconstruction metrics across all datasets and methods. Pre-liminary experiments indicate that PGRU achieves lower reconstruction errors on all three datasets. The improvement is especially pronounced in Samson (rRMSE drops from 0.495 to 0.052) and Jasper Ridge (rRMSE from 0.347 to 0.068), with substantial gains also observed in the more complex Urban scene. Notably, the nonlinear baselines (GBM, PPNM) do not consistently outperform LMM, con-firming that applying nonlinearity uniformly can be counterproductive. PGRU avoids this by activating nonlinearity only where justified. Beyond reconstruction accuracy, we evaluate whether the regime activation maps are physically grounded. Physical coherence ρ = corr( ξ, ∆ res ) measures the correlation between the activation map and the per-pixel reconstruction gain. Values exceed 0.90 across all datasets ( ρ = 0 .93 , 0.91 , 0.92 for Samson, Jasper Ridge, and Urban respectively), confirming that PGRU activates nonlinear mix-ing in regions where reconstruction improvement is observed. The feature weight vector w reveals which physical properties predict nonlin-ear behavior in each scene. In Jasper Ridge, NDVI dominates: nonlinear activa-tion is concentrated in dense vegetation, where multiple scattering is expected, Table 1. Reconstruction metrics on three benchmark datasets. Best results in bold .                                       
+
+> Dataset Metric LMM GBM PPNM PGRU
+> Samson SAD 0.158 0.141 0.143 0.052
+> RMSE 0.121 0.141 0.132 0.013
+> rRMSE 0.495 0.578 0.540 0.052
+> Jasper Ridge SAD 0.288 0.290 0.287 0.151
+> RMSE 0.055 0.075 0.070 0.011
+> rRMSE 0.347 0.476 0.444 0.068
+> Urban SAD 0.121 0.120 0.115 0.070
+> RMSE 0.067 0.087 0.081 0.013
+> rRMSE 0.331 0.430 0.400 0.064
+> Fig. 1. Jasper Ridge: (a) nonlinearity map ξ, (b) NDVI contribution, (c) dominant feature per pixel. Nonlinear activation concentrates in vegetated areas, consistent with expected multiple-scattering behavior.
+
+and suppressed over the water body. In Urban, spectral curvature drives regime selection, reflecting structural complexity at material boundaries rather than vegetation-related interactions. This scene-adaptive behavior emerges without supervision. Beyond global feature importance, PGRU provides pixel-level explainability through spatial maps that decompose regime selection into feature contributions. Fig. 1 illustrates this behavior for Jasper Ridge. The spatial organization of these explanations suggests that the model does not arbitrarily assign regimes, but anchors them to measurable scene properties, providing direct answers to the question why is this pixel nonlinear? 
+
+## 4 Conclusion 
+
+We presented PGRU, which addresses a question often left open by prior un-mixing methods: why is this pixel nonlinear? By grounding the regime scalar ξi
+
+in observable physical features, the model produces interpretable regime maps without any labeled data. Initial results on three benchmarks suggest that se-lective, explainable nonlinearity outperforms both uniform linear and uniform nonlinear approaches. These results are preliminary and require broader vali-dation against recent deep-learning baselines. A current limitation is that the contribution of each component has not been validated in isolation: the relative importance of the physical model ensemble, the feature-guided activation of ξi,and the spatial regularization remain to be disentangled through a systematic ablation study. Future work will address this limitation alongside several exten-sions. In particular, we plan to extend PGRU to blind unmixing settings and to scenarios with ground-truth nonlinear interaction labels. We also aim to incor-porate spatial context into regime estimation, explore alternative feature sets, and evaluate the method on more complex nonlinear mixing scenarios, includ-ing comparisons with recent deep learning-based unmixing approaches. PGRU suggests that selective, interpretable nonlinearity can be a practical alternative to globally linear or globally nonlinear unmixing models.  
+
+> Acknowledgments. This work was partially supported by CONICET (Argentina). P.P. was supported by a fellowship from CONICET and CONAE. Language editing assistance was provided by AI tools. All scientific content remains the responsibility of the authors.
+
+# Bibliography 
+
+Yoann Altmann, Abderrahim Halimi, Nicolas Dobigeon, and Jean-Yves Tourneret. Supervised nonlinear spectral unmixing using a postnonlinear mix-ing model for hyperspectral imagery. IEEE Transactions on Image Processing ,21(6):3017–3025, 2012. Anuja Bhargava, Ashish Sachdeva, Kulbhushan Sharma, Mohammed H Alsharif, Peerapong Uthansakul, and Monthippa Uthansakul. Hyperspectral imaging and its applications: A review. Heliyon , 10(12), 2024. Abderrahim Halimi, Yoann Altmann, Nicolas Dobigeon, and Jean-Yves Tourneret. Nonlinear unmixing of hyperspectral images using a generalized bilinear model. IEEE Transactions on Geoscience and Remote Sensing , 49 (11):4153–4162, 2011. Bruce Hapke. Bidirectional reflectance spectroscopy: 1. theory. Journal of Geo-physical Research: Solid Earth , 86(B4):3039–3054, 1981. Nirmal Keshava and John F Mustard. Spectral unmixing. IEEE signal processing magazine , 19(1):44–57, 2002. Burkni Palsson, Jakob Sigurdsson, Johannes R Sveinsson, and Magnus O Ul-farsson. Hyperspectral unmixing using a neural network autoencoder. IEEE Access , 6:25646–25656, 2018. Burkni Palsson, Johannes R Sveinsson, and Magnus O Ulfarsson. Blind hyper-spectral unmixing using autoencoders: A critical comparison. IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing , 15: 1340–1372, 2022. Feiyun Zhu. Hyperspectral unmixing: ground truth labeling, datasets, bench-mark performances and survey. arXiv preprint arXiv:1708.05125 , 2017.
