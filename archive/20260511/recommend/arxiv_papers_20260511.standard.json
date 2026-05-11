@@ -1,0 +1,335 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-11T21:10:32.856887+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [
+    {
+      "id": "2605.07781v1",
+      "title": "Differentiable Ray Tracing with Gaussians for Unified Radio Propagation Simulation and View Synthesis",
+      "abstract": "Explicit neural representations such as 3D Gaussian Splatting (3DGS) enable high-fidelity and real-time novel view synthesis, yet optimize for alpha-composited optical appearance rather than ray-intersectable geometry. In contrast, radio-frequency (RF) digital twins require deterministic multi-bounce paths, where the geometry dictates trajectories and their associated attenuation and delay. We introduce a framework enabling differentiable RF propagation simulation directly within visually reconstructed neural scenes, allowing point-to-point path computation between arbitrary 3D locations while preserving high-quality visual rendering. Unlike conventional RF simulation pipelines that rely on manually constructed meshes, we embed Gaussian primitives into a hardware-accelerated ray tracing structure as the underlying spatial representation. By extracting physically meaningful channel impulse responses from visual-only reconstructions, we provide cross-modal evidence that neural reconstructions can serve as unified spatial representations for both electromagnetic propagation simulation and photorealistic view synthesis.",
+      "authors": [
+        "Niklas Vaara",
+        "Lam Huynh",
+        "Pekka Sangi",
+        "Miguel Bordallo López",
+        "Janne Heikkilä"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-08T14:19:28+00:00",
+      "link": "https://arxiv.org/pdf/2605.07781v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "differentiable ray tracing within visually reconstructed neural scenes",
+      "llm_evidence_cn": "在视觉重建的神经场景中进行可微分光线追踪",
+      "llm_evidence": "在视觉重建的神经场景中进行可微分光线追踪",
+      "canonical_evidence": "在视觉重建的神经场景中进行可微分光线追踪",
+      "llm_tldr_en": "Combines 3D Gaussian Splatting with differentiable ray tracing for radio propagation and view synthesis.",
+      "llm_tldr_cn": "将 3D 高斯 Splatting 与可微分光线追踪结合，用于无线电传播模拟和视图合成。",
+      "llm_tldr": "将 3D 高斯 Splatting 与可微分光线追踪结合，用于无线电传播模拟和视图合成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2605.04035v2",
+      "title": "Large-Scale High-Quality 3D Gaussian Head Reconstruction from Multi-View Captures",
+      "abstract": "We propose HeadsUp, a scalable feed-forward method for reconstructing high-quality 3D Gaussian heads from large-scale multi-camera setups. Our method employs an efficient encoder-decoder architecture that compresses input views into a compact latent representation. This latent representation is then decoded into a set of UV-parameterized 3D Gaussians anchored to a neutral head template. This UV representation decouples the number of 3D Gaussians from the number and resolution of input images, enabling training with many high-resolution input views. We train and evaluate our model on an internal dataset with more than 10,000 subjects, which is an order of magnitude larger than existing multi-view human head datasets. HeadsUp achieves state-of-the-art reconstruction quality and generalizes to novel identities without test-time optimization. We extensively analyze the scaling behavior of our model across identities, views, and model capacity, revealing practical insights for quality-compute trade-offs. Finally, we highlight the strength of our latent space by showcasing two downstream applications: generating novel 3D identities and animating the 3D heads with expression blendshapes.",
+      "authors": [
+        "Evangelos Ntavelis",
+        "Sean Wu",
+        "Mohamad Shahbazi",
+        "Fabio Maninchedda",
+        "Dmitry Kostiaev",
+        "Artem Sevastopolsky",
+        "Vittorio Megaro",
+        "Trevor Phillips",
+        "Alejandro Blumentals",
+        "Shridhar Ravikumar",
+        "Mehak Gupta",
+        "Reinhard Knothe",
+        "Jeronimo Bayer",
+        "Matthias Vestner",
+        "Simon Schaefer",
+        "Thomas Etterlin",
+        "Christian Zimmermann",
+        "Mathias Deschler",
+        "Peter Kaufmann",
+        "Stefan Brugger",
+        "Sebastian Martin",
+        "Brian Amberg",
+        "Tom Runia"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-05-05T17:55:01+00:00",
+      "link": "https://arxiv.org/pdf/2605.04035v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian reconstruction and neural rendering architecture",
+      "llm_evidence_cn": "3D高斯重建与神经渲染架构",
+      "llm_evidence": "3D高斯重建与神经渲染架构",
+      "canonical_evidence": "3D高斯重建与神经渲染架构",
+      "llm_tldr_en": "Proposes a scalable feed-forward method for high-quality 3D Gaussian head reconstruction from multi-view captures.",
+      "llm_tldr_cn": "提出一种可扩展的前馈方法，用于从多视图捕捉中重建高质量的3D高斯头部模型。",
+      "llm_tldr": "提出一种可扩展的前馈方法，用于从多视图捕捉中重建高质量的3D高斯头部模型。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.05072v1",
+      "title": "Height-Guided Projection Reparameterization for Camera-LiDAR Occupancy",
+      "abstract": "3D occupancy prediction aims to infer dense, voxel-wise scene semantics from sensor observations, where the 2D-to-3D view transformation serves as a crucial step in bridging image features and volumetric representations. Most previous methods rely on a fixed projection space, where 3D reference points are uniformly sampled along pillars. However, such sampling struggles to capture the sparsity and height variations of real-world scenes, leading to ambiguous correspondences and unreliable feature aggregation. To address these challenges, we propose HiPR, a camera-LiDAR occupancy framework with Height-Guided Projection Reparameterization. HiPR first encodes LiDAR into a BEV height map to capture the maximum height of the point cloud. HiPR then adjusts the sampling range of each pillar using the height prior, enabling adaptive reparameterization of the projection space. As a result, the projected points are redistributed into geometrically meaningful regions rather than fixed ranges. Meanwhile, we mask out the invalid parts of the height map to avoid misleading the feature aggregation. In addition, to alleviate the training instability caused by noisy LiDAR-derived heights, we introduce a training-time Progressive Height Conditioning strategy, which gradually transitions the conditioning signal from ground-truth heights to LiDAR heights. Extensive experiments demonstrate that HiPR consistently outperforms existing state-of-the-art methods while maintaining real-time inference. The code and pretrained models can be found at https://github.com/Rayn-Wu/HiPR.",
+      "authors": [
+        "Yuan Wu",
+        "Zhiqiang Yan",
+        "Jiawei Lian",
+        "Zhengxue Wang",
+        "Jian Yang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-06T16:09:13+00:00",
+      "link": "https://arxiv.org/pdf/2605.05072v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "bridging image features and volumetric representations for 3D occupancy",
+      "llm_evidence_cn": "连接图像特征与3D占据网格的体积表示",
+      "llm_evidence": "连接图像特征与3D占据网格的体积表示",
+      "canonical_evidence": "连接图像特征与3D占据网格的体积表示",
+      "llm_tldr_en": "Introduces a height-guided projection for better 2D-to-3D volumetric feature aggregation in occupancy prediction.",
+      "llm_tldr_cn": "引入高度引导投影，以在占据预测中实现更好的2D到3D体积特征聚合。",
+      "llm_tldr": "引入高度引导投影，以在占据预测中实现更好的2D到3D体积特征聚合。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.05876v2",
+      "title": "3DSS: 3D Surface Splatting for Inverse Rendering",
+      "abstract": "We present 3D Surface Splatting (3DSS), the first differentiable surface splatting renderer for physically-based inverse rendering from multi-view images. Our central insight is that the surface separation problem at the heart of surface splatting admits a direct formulation in terms of the reconstruction kernels themselves. From this foundation we derive a coverage-based compositing model whose per-layer opacity arises directly from the accumulated Elliptical Weighted Average reconstruction weight, yielding anti-aliased silhouettes and informative visibility gradients at sparsely covered edges. Combined with forward microfacet shading under co-optimized HDR environment lighting and density-aware adaptive refinement, 3DSS jointly recovers shape, spatially-varying BRDF materials, and illumination. Because the optimized representation is a set of oriented surface samples, it bridges natively to mesh-based workflows via surface reconstruction from oriented point cloud methods. We evaluate 3DSS against mesh-based, implicit, and Gaussian-splatting baselines across geometry reconstruction, novel-view synthesis, and novel-illumination relighting.",
+      "authors": [
+        "Mae Younes",
+        "Adnane Boukhayma"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.CV"
+      ],
+      "published": "2026-05-07T08:43:51+00:00",
+      "link": "https://arxiv.org/pdf/2605.05876v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "differentiable surface splatting renderer for inverse rendering",
+      "llm_evidence_cn": "用于逆向渲染的可微分表面 Splatting 渲染器",
+      "llm_evidence": "用于逆向渲染的可微分表面 Splatting 渲染器",
+      "canonical_evidence": "用于逆向渲染的可微分表面 Splatting 渲染器",
+      "llm_tldr_en": "Introduces a differentiable surface splatting renderer for recovering shape and materials from images.",
+      "llm_tldr_cn": "提出了一种可微分表面 Splatting 渲染器，用于从多视图图像中恢复形状和材质。",
+      "llm_tldr": "提出了一种可微分表面 Splatting 渲染器，用于从多视图图像中恢复形状和材质。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.07254v1",
+      "title": "High-Fidelity Surface Splatting-Based 3D Reconstruction from Multi-View Images",
+      "abstract": "Multi-view mesh reconstruction remains a core challenge in computer graphics and vision, especially for recovering high-frequency geometry from sparse observations. Recent methods such as 3D Gaussian Splatting (3DGS) and Neural Radiance Fields (NeRF) rely on post-processing for mesh extraction, thereby limiting joint optimization of geometry and appearance. Implicit Moving Least Squares (IMLS) instead enables direct conversion of point clouds into signed distance and texture fields, supporting end-to-end reconstruction and rendering. However, existing IMLS formulations use exponential kernels that struggle with high-frequency detail. We introduce a compact polynomial kernel with local support and greater flexibility, allowing better control over frequency content and improved geometric fidelity. To further enhance fine details, we incorporate stochastic regularization with Laplacian filtering. Together, these improve the preservation of high-frequency structure while maintaining stable optimization. Experiments show state-of-the-art performance in both surface reconstruction and rendering, yielding more accurate geometry and sharper visuals from multi-view data.",
+      "authors": [
+        "Nandhana Sunil",
+        "Abhirami R Iyer",
+        "Avirup Mandal"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-05-08T05:23:28+00:00",
+      "link": "https://arxiv.org/pdf/2605.07254v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "neural radiance fields and end-to-end rendering optimization",
+      "llm_evidence_cn": "神经辐射场与端到端渲染优化",
+      "llm_evidence": "神经辐射场与端到端渲染优化",
+      "canonical_evidence": "神经辐射场与端到端渲染优化",
+      "llm_tldr_en": "Introduces a polynomial kernel for IMLS to improve high-fidelity surface reconstruction and neural rendering.",
+      "llm_tldr_cn": "为IMLS引入多项式核，以改进高保真表面重建和神经渲染效果。",
+      "llm_tldr": "为IMLS引入多项式核，以改进高保真表面重建和神经渲染效果。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.06298v2",
+      "title": "Render, Don't Decode: Weight-Space World Models with Latent Structural Disentanglement",
+      "abstract": "Training world models on vast quantities of unlabelled videos is a critical step toward fully autonomous intelligence. However, the prevailing paradigm of encoding raw pixels into opaque latent spaces and relying on heavy decoders for reconstruction leaves these models computationally expensive and uninterpretable. We address this problem by introducing NOVA, a world modelling framework that represents the system state as the weights and biases of an auxiliary coordinate-based implicit neural representation (INR). This structured representation is analytically rendered, which eliminates the decoder bottleneck while conferring compactness, portability, and zero-shot super-resolution. Furthermore, like most latent action models, NOVA can be distilled into a context-dependent video generator via an action-matching objective. Surprisingly, without resorting to auxiliary losses or adversarial objectives, NOVA can disentangle structural scene components such as background, foreground, and inter-frame motion, enabling users to edit either content or dynamics without compromising the other. We validate our framework on several challenging datasets, achieving strong controllable forecasting while operating on a single consumer GPU at $\\sim$40M parameters. Ultimately, structured representations like INRs not only enhance our understanding of latent dynamics but also pave the way for immersive and customisable virtual experiences.",
+      "authors": [
+        "Roussel Desmond Nzoyem",
+        "Mauro Comi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-05-07T14:02:00+00:00",
+      "link": "https://arxiv.org/pdf/2605.06298v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "analytically rendered implicit neural representation",
+      "llm_evidence_cn": "解析渲染的隐式神经表示",
+      "llm_evidence": "解析渲染的隐式神经表示",
+      "canonical_evidence": "解析渲染的隐式神经表示",
+      "llm_tldr_en": "Introduces a world model framework using analytically rendered implicit neural representations to eliminate decoders.",
+      "llm_tldr_cn": "引入一种使用解析渲染隐式神经表示的世界模型框架，消除了解码器瓶颈。",
+      "llm_tldr": "引入一种使用解析渲染隐式神经表示的世界模型框架，消除了解码器瓶颈。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.07287v1",
+      "title": "SplatWeaver: Learning to Allocate Gaussian Primitives for Generalizable Novel View Synthesis",
+      "abstract": "Generalizable novel view synthesis aims to render unseen views from uncalibrated input images without requiring per-scene optimization. Recent feed-forward approaches based on 3D Gaussian Splatting have achieved promising efficiency and rendering quality. However, most of them assign a fixed number of Gaussians to each pixel or voxel, ignoring the spatially varying complexity of real-world scenes. Such uniform allocation often wastes Gaussian primitives in smooth regions while providing insufficient capacity for fine structures, complex geometry, and high-frequency details. This motivates us to predict region-dependent primitive cardinalities rather than impose a fixed primitive budget everywhere, enabling a more expressive yet compact 3D scene representation. Therefore, we propose SplatWeaver, a generalizable novel view synthesis framework that is able to dynamically allocate Gaussian primitives over different regions in a feed-forward manner. Specifically, SplatWeaver introduces cardinality Gaussian experts and a pixel-level routing scheme, wherein each expert specializes in producing a specific number of primitives from 0 to M, and the routing scheme coordinates these experts to adaptively determine how many Gaussian primitives should be allocated to each spatial location. Moreover, SplatWeaver incorporates a high-frequency prior with attendant guidance module and routing regularization to stabilize expert selection and promote complexity-aware allocation. By leveraging high-frequency structural cues, the routing process is encouraged to assign more Gaussian primitives to fine structures, complex geometry, and textured regions, while suppressing redundant primitives in smooth areas. Extensive experiments across diverse scenarios show that SplatWeaver consistently outperforms state-of-the-art methods, delivering more faithful novel-view renderings with fewer Gaussian primitives.",
+      "authors": [
+        "Yecong Wan",
+        "Fan Li",
+        "Mingwen Shao",
+        "Wangmeng Zuo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-08T05:51:34+00:00",
+      "link": "https://arxiv.org/pdf/2605.07287v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Gaussian Splatting for novel view synthesis and rendering",
+      "llm_evidence_cn": "用于新视角合成与渲染的高斯泼溅技术",
+      "llm_evidence": "用于新视角合成与渲染的高斯泼溅技术",
+      "canonical_evidence": "用于新视角合成与渲染的高斯泼溅技术",
+      "llm_tldr_en": "Optimizes Gaussian primitive allocation for efficient and high-quality novel view synthesis.",
+      "llm_tldr_cn": "优化高斯原语分配，以实现高效且高质量的新视角合成。",
+      "llm_tldr": "优化高斯原语分配，以实现高效且高质量的新视角合成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.07971v1",
+      "title": "DVD: Discrete Voxel Diffusion for 3D Generation and Editing",
+      "abstract": "We introduce Discrete Voxel Diffusion (DVD), a discrete diffusion framework to generate, assess, and edit sparse voxels for SLat (Structured LATent) based 3D generative pipelines. Although discrete diffusion has not generally displaced continuous diffusion in image-like generation, we show that it can be an effective first-stage prior for sparse voxel scaffolds. By treating voxel occupancy as a native discrete variable, DVD avoids continuous-to-discrete thresholding and provides a simple framework for voxel generation, uncertainty estimation, and editing. Beyond quality gains, DVD provides more interpretable generation dynamics through explicit categorical modeling. Furthermore, we leverage the predictive entropy as a robust uncertainty metric to identify ambiguous voxel regions and complicated samples, facilitating tasks such as data filtering and quality assessment. Finally, we propose a lightweight fine-tuning strategy using block-structured perturbation patterns. This approach empowers the model to inpaint and edit voxels within a single sampling round, requiring negligible auxiliary computation and no additional model evaluations.",
+      "authors": [
+        "Zhengrui Xiang",
+        "Jiaqi Wu",
+        "Fupeng Sun",
+        "Heliang Zheng",
+        "Yingzhen Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-05-08T16:32:17+00:00",
+      "link": "https://arxiv.org/pdf/2605.07971v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "discrete voxel diffusion for 3D generation and sparse voxel scaffolds",
+      "llm_evidence_cn": "用于 3D 生成的离散体素扩散与稀疏体素支架",
+      "llm_evidence": "用于 3D 生成的离散体素扩散与稀疏体素支架",
+      "canonical_evidence": "用于 3D 生成的离散体素扩散与稀疏体素支架",
+      "llm_tldr_en": "Presents a discrete diffusion framework for generating and editing sparse voxel-based 3D representations.",
+      "llm_tldr_cn": "提出一种离散扩散框架，用于生成和编辑基于稀疏体素的 3D 表示。",
+      "llm_tldr": "提出一种离散扩散框架，用于生成和编辑基于稀疏体素的 3D 表示。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
