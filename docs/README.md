@@ -6,44 +6,49 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-11
-- 运行时间：2026-05-11 21:11:49 UTC
+- 最新运行日期：2026-05-12
+- 运行时间：2026-05-12 21:23:08 UTC
 - 运行状态：成功
-- 本次总论文数：8
-- 精读区：1
-- 速读区：7
+- 本次总论文数：9
+- 精读区：3
+- 速读区：6
 
 ### 今日简报（AI）
-今日聚焦 3D 高斯散射技术，深度解析了从无线电传播模拟到高质量头部重建的 8 篇前
-- 详情：[/202605/11/README](/202605/11/README)
+今日精选 9 篇论文，深度探索低成本 NeRF 构建与动态 3D 高斯泼溅（GS）的流媒体优化技术。
+重点关注 9.0 分的低成本 NeRF 方案，以及通过颜色自适应显著提升 3D 视频传输效率的 CAGS 框架。
+建议普通读者留意 GS 在自动驾驶修复及胎儿脑部建模等垂直领域的落地潜力。
+- 详情：[/202605/12/README](/202605/12/README)
 
 ### 精读区论文标签
-1. [Differentiable Ray Tracing with Gaussians for Unified Radio Propagation Simulation and View Synthesis](/202605/11/2605.07781v1-differentiable-ray-tracing-with-gaussians-for-unified-radio-propagation-simulation-and-view-synthesis)  
+1. [Low-Cost Neural Radiance Fields](/202605/12/2605.09312v1-low-cost-neural-radiance-fields)  
+   标签：评分：9.0/10、query:q7
+   evidence：加速NeRF变体和神经辐射架构优化
+2. [CAGS: Color-Adaptive Volumetric Video Streaming with Dynamic 3D Gaussian Splatting](/202605/12/2605.09279v1-cags-color-adaptive-volumetric-video-streaming-with-dynamic-3d-gaussian-splatting)  
+   标签：评分：8.0/10、query:profile-1
+   evidence：体积视频流与3D高斯泼溅
+3. [Predicting 3D structure by latent posterior sampling](/202605/12/2605.10830v1-predicting-3d-structure-by-latent-posterior-sampling)  
    标签：评分：8.0/10、query:q1
-   evidence：在视觉重建的神经场景中进行可微分光线追踪
+   evidence：基于NeRF的表示与神经场建模
 
 ### 速读区论文标签
-1. [Large-Scale High-Quality 3D Gaussian Head Reconstruction from Multi-View Captures](/202605/11/2605.04035v2-large-scale-high-quality-3d-gaussian-head-reconstruction-from-multi-view-captures)  
+1. [ConFixGS: Learning to Fix Feedforward 3D Gaussian Splatting with Confidence-Aware Diffusion Priors in Driving Scenes](/202605/12/2605.09688v1-confixgs-learning-to-fix-feedforward-3d-gaussian-splatting-with-confidence-aware-diffusion-priors-in-driving-scenes)  
    标签：评分：7.0/10、query:q1
-   evidence：3D高斯重建与神经渲染架构
-2. [3DSS: 3D Surface Splatting for Inverse Rendering](/202605/11/2605.05876v2-3dss-3d-surface-splatting-for-inverse-rendering)  
+   evidence：前馈3D高斯泼溅与神经渲染
+2. [INFANiTE: Implicit Neural representation for high-resolution Fetal brain spatio-temporal Atlas learNing from clinical Thick-slicE MRI](/202605/12/2605.09977v1-infanite-implicit-neural-representation-for-high-resolution-fetal-brain-spatio-temporal-atlas-learning-from-clinical-thick-slice-mri)  
    标签：评分：7.0/10、query:q1
-   evidence：用于逆向渲染的可微分表面 Splatting 渲染器
-3. [Render, Don't Decode: Weight-Space World Models with Latent Structural Disentanglement](/202605/11/2605.06298v2-render-dont-decode-weight-space-world-models-with-latent-structural-disentanglement)  
+   evidence：用于体积重建的隐式神经表示
+3. [PaMoSplat: Part-Aware Motion-Guided Gaussian Splatting for Dynamic Scene Reconstruction](/202605/12/2605.10307v1-pamosplat-part-aware-motion-guided-gaussian-splatting-for-dynamic-scene-reconstruction)  
    标签：评分：7.0/10、query:q1
-   evidence：解析渲染的隐式神经表示
-4. [SplatWeaver: Learning to Allocate Gaussian Primitives for Generalizable Novel View Synthesis](/202605/11/2605.07287v1-splatweaver-learning-to-allocate-gaussian-primitives-for-generalizable-novel-view-synthesis)  
+   evidence：用于场景重建的动态高斯泼溅
+4. [DySurface: Consistent 4D Surface Reconstruction via Bridging Explicit Gaussians and Implicit Functions](/202605/12/2605.10360v1-dysurface-consistent-4d-surface-reconstruction-via-bridging-explicit-gaussians-and-implicit-functions)  
    标签：评分：7.0/10、query:q1
-   evidence：用于新视角合成与渲染的高斯泼溅技术
-5. [DVD: Discrete Voxel Diffusion for 3D Generation and Editing](/202605/11/2605.07971v1-dvd-discrete-voxel-diffusion-for-3d-generation-and-editing)  
-   标签：评分：7.0/10、query:q1
-   evidence：用于 3D 生成的离散体素扩散与稀疏体素支架
-6. [Height-Guided Projection Reparameterization for Camera-LiDAR Occupancy](/202605/11/2605.05072v1-height-guided-projection-reparameterization-for-camera-lidar-occupancy)  
+   evidence：神经辐射场与动态场景渲染
+5. [FrameTwin: Curve-Anchored Gaussian Alignment from Sparse Views for Adaptive Wireframe 3D Printing](/202605/12/2605.09362v1-frametwin-curve-anchored-gaussian-alignment-from-sparse-views-for-adaptive-wireframe-3d-printing)  
    标签：评分：6.0/10、query:q1
-   evidence：连接图像特征与3D占据网格的体积表示
-7. [High-Fidelity Surface Splatting-Based 3D Reconstruction from Multi-View Images](/202605/11/2605.07254v1-high-fidelity-surface-splatting-based-3d-reconstruction-from-multi-view-images)  
+   evidence：具有神经变形场和高斯核的可微分渲染流水线
+6. [Geometric 4D Stitching for Grounded 4D Generation](/202605/12/2605.09984v1-geometric-4d-stitching-for-grounded-4d-generation)  
    标签：评分：6.0/10、query:q1
-   evidence：神经辐射场与端到端渲染优化
+   evidence：基于辐射的表示与场景重建
 
 
 <div class="dpr-home-promo-card">

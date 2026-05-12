@@ -1,0 +1,387 @@
+Title: INFANiTE: Implicit Neural representation for high-resolution Fetal brain spatio-temporal Atlas learNing from clinical Thick-slicE MRI
+
+URL Source: https://arxiv.org/pdf/2605.09977v1
+
+Published Time: Tue, 12 May 2026 02:40:00 GMT
+
+Number of Pages: 11
+
+Markdown Content:
+# INFANiTE: Implicit Neural representation for high-resolution Fetal brain spatio-temporal Atlas learNing from clinical Thick-slicE MRI 
+
+Xiaotian Hu 1,* , Mingxuan Liu 2,* , Hongjia Yang 2,* , Juncheng Zhu 3,Yijin Li 1, Yifei Chen 2, Haoxiang Li 2, Tongxi Song 2, Zihan Li 2,Yingqi Hao 2, Ziyu Li 4, Yujin Zhang 3, Gang Ning 3, Yi Liao 3,Haibo Qu 3, and Qiyuan Tian 2, † 
+
+> 1
+
+Beihang University, Beijing, China  
+
+> 2
+
+Tsinghua University, Beijing, China  
+
+> 3
+
+Sichuan University, Chengdu, China  
+
+> 4
+
+University of Oxford, Oxford, United Kingdom 
+
+qiyuantian@tsinghua.edu.cn 
+
+Abstract. Spatio-temporal fetal brain atlases are important for charac-terizing normative neurodevelopment and identifying congenital anoma-lies. However, existing atlas construction pipelines necessitate days for slice-to-volume reconstruction (SVR) to generate high-resolution 3D brain volumes and several additional days for iterative volume registration, thereby rendering atlas construction from large-scale cohorts prohibitively impractical. We address these limitations with INFANiTE , an Implicit Neural Representation (INR) framework for high-resolution Fetal brain spatio-temporal Atlas learNing from clinical Thick-slicE MRI scans, by-passing both the costly SVR and the iterative non-rigid registration steps entirely, thereby substantially accelerating atlas construction. Extensive experiments demonstrate that INFANiTE outperforms existing baselines in subject consistency, reference fidelity, intrinsic quality and biologi-cal plausibility, even under challenging sparse-data settings. Addition-ally, INFANiTE reduces the end-to-end processing time (i.e., from raw scans to the final atlas) from days to hours compared to the tradi-tional 3D volume-based pipeline (e.g., SyGN), facilitating large-scale population-level fetal brain analysis. Our code is publicly available at: 
+
+https://github.com/hu2274898/INFANiTE 
+
+Keywords: Fetal Brain MRI · Atlas Construction · Implicit Neural Rep-resentations · Slice-to-Volume Reconstruction. 
+
+## 1 Introduction 
+
+Prenatal brain development is a critical phase with lasting implications for hu-man neurodevelopment [16,13]. Spatio-temporal atlases constructed from three-dimensional (3D) fetal brain MRI volumes support the identification of atypical 
+
+* These authors contributed equally. 
+
+Corresponding author.  
+
+> arXiv:2605.09977v1 [cs.CV] 11 May 2026 2X. Hu et al.
+
+brain patterns, providing insights into potential early signs of clinical conditions [3]. Nevertheless, persistent fetal motion and maternal respiration preclude the direct acquisition of artifact-free 3D MRI. To address the problem, traditional fetal brain atlas construction pipelines [14,12,27,29] employ fast 2D imaging se-quences (e.g., turbo spin echo, TSE) to preserve high in-plane resolution while freezing intra-shot motion. The resulting multi-planar image stacks are subse-quently reconstructed into a 3D brain volume using slice-to-volume reconstruc-tion (SVR) algorithms [28,9]. Then, atlases are constructed using SyGN [1], an iterative framework that warps individual subjects to an evolving template through non-rigid registration, with the template being refined by averaging the warped images until convergence to achieve a stable population representation. However, the heavy computational cost associated with both SVR and it-erative registration limits the scalability of atlas construction to large cohorts representing development at the population level, thereby confining most exist-ing anatomical fetal brain atlases to relatively small datasets of 20 to 90 volumes [3]. Specifically, the widely adopted SVR algorithm NiftyMIC [9] typically re-quires 40 to 60 minutes to reconstruct a single fetal brain volume, and several recent studies have reported a reconstruction success rate ranging from only 60.0% to 77.3% [17,22]. Although NeSVoR [28] accelerates the SVR process, it yields lower image quality compared to NiftyMIC and proves less clinically use-ful than the original thick-slice scans, primarily due to increased blurring and intensity artifacts [20]. Moreover, its computational demand remains consider-able. Following reconstruction, the iterative groupwise registration employed by SyGN [1] further compounds the computational burden, as the number of dense registration operations scales linearly with both the cohort size and the number of iterations required for convergence, rendering large-scale atlas construction from volumetric data prohibitively expensive. To reduce time cost, recent studies have introduced deep learning-based methods that avoid iterative groupwise registration. For instance, generative adversarial networks (GANs) have been employed to synthesize anatomical tem-plates (e.g., Atlas-GAN [7] and its variants [26]), while Implicit Neural Repre-sentations (INRs) have been utilized to learn continuous spatio-temporal atlases directly from volumetric data (e.g., CINA [5] and CINeMA [6]). Nevertheless, all of these methods still operate on high-resolution 3D volumes, meaning that the time-consuming SVR preprocessing remains an indispensable prerequisite and the overall end-to-end processing time from raw clinical scans to the final atlas remains prohibitively long. To maximize the acceleration of the fetal brain atlas construction pipeline, we propose INFANiTE , an implicit neural representation framework that learns high-resolution continuous spatio-temporal atlases directly from clinical thick-slice MRI stacks. Specifically, first, a robust slice-to-template registration strategy is proposed to align stacks acquired in arbitrary orientations into a standardized 3D coordinate frame. Second, physics-informed modeling of the slice acquisition process via a Point Spread Function (PSF) is incorporated alongside a spatially-weighted optimization objective, allowing the INR to learn sharp anatomical INFANiTE: Fetal Brain Atlas from Thick-Slice MRI 3Mean Latent Code  
+
+> Latent Code
+> Latent Code Across Age
+> Modulator
+
+PSF Free !!                 
+
+> High -Resolution Atlas
+> Coordinates
+> Registration Brain
+> Spatial Weight
+> INR
+> Monte -Carlo Points
+> Modulator
+> HR Volume PSF
+> Physics
+> Prior
+> Original Image Stack
+> Central
+> 5 Slices
+> Re -Sample
+> Orientation Recognition Network
+> Head Position
+> Reg to Template
+> Template
+> All 4Permutations
+> Maximum NMI
+> Registration
+> Brain
+> Gestational Age Masked Brain
+> Fetal -BET Brain Masks
+> Masked Brain
+
+Frozen !!           
+
+> ZkZkZkZkZkZi
+> 21 23 …33 35 weeks
+> Gaussian
+> Weights
+> Trustworthy AI
+
+(a) Slice -to -Template Registration 
+
+(b) INR Training on Thick -Slice MRI (c) High -Resolution Atlas Generation 
+
+Pretrained 
+
+Pretrained           
+
+> 𝐓
+> 𝑓 !
+> 𝐌
+> {𝑘 ∗,𝜙 ∗}
+> 𝐱 𝐤 ∼𝒩 𝐱 ,𝜎 PSF
+> $𝐈
+> 𝑊 𝐱
+> Scale 𝜸 𝒕 Shift 𝜹 𝒕
+
+Free                               
+
+> 𝐕 𝐚 𝐭 𝐥 𝐚 𝐬 𝐒 𝐚 𝐭 𝐥 𝐚 𝐬
+> 𝐕
+> 𝐌 =𝑓 !𝒞 𝐕
+> 𝒞 𝐕
+> 𝐕 ∗
+> 𝐕 ∗
+> 𝒜 𝜏
+> ℎ%
+> 𝐙 𝐢
+> 𝒰
+> 𝐕 #=𝐌 ⋅𝒰 𝐕
+> 𝐏 𝟏 ⋅𝐕 '𝐏 𝟐 ⋅𝐕 '𝐏 𝟑 ⋅𝐕 '𝐏 𝟒 ⋅𝐕 '
+> 𝜙
+> 𝐙 )𝜏 =∑𝑤 𝜏 ,𝜏 $
+> %
+> $&'𝐙 𝐢
+
+Fig. 1. Overview of the proposed framework INFANiTE . (a) Slice-to-template registra-tion, (b) INR training on thick-slice MRI, and (c) High-resolution atlas generation. 
+
+representations from sparse thick-slice observations. Third, at inference time, subject-specific latent codes are aggregated using Gaussian kernel regression, which enables the synthesis of continuous spatio-temporal atlases. 
+
+## 2 Method 
+
+INFANiTE reconstructs high-resolution anatomy from sparse clinical observa-tions, which comprises three stages (Fig. 1): (a) Slice-to-Template Regis-tration estimates rigid transformations ϕ∗ to align arbitrary thick-slice stacks 
+
+Vi into a standardized 3D coordinate frame; (b) Implicit Representation Learning jointly optimizes a coordinate-based network hψ and subject-specific latent codes Zi by minimizing the discrepancy between observed voxels and their physics-simulated projections; and (c) Atlas Generation synthesizes the atlas 
+
+A(τ ) by querying hψ with temporally aggregated latent features ¯Z(τ ).
+
+2.1 Slice-to-Template Registration 
+
+Let ΩV and ΩT denote the discrete voxel grids of the brain-masked thick-slice stack V (using Fetal-BET [10]) and the reference template T [12], respectively, where V ∈ RΩV and T ∈ RΩT . First, the head orientation of V is estimated using a pre-trained orientation recognition network [17] fθ , which takes the central slices C(V) as input and predicts a permutation matrix M. The stack is then resampled to the isotropic resolution of T via operator U, and reoriented into a 4 X. Hu et al. 
+
+canonical coordinate frame using M, yielding the standardized stack V′:
+
+V′ = M · U (V), where M = fθ (C(V)) . (1) Subsequently, combinations of 180 ◦ rotations yield a candidate set of four dis-crete orientations, P = {Pk}4
+
+> k=1
+
+. The optimal registered volume V∗ is obtained by selecting the orientation k ∈ { 1, 2, 3, 4} and rigid transformation ϕ ∈ Φrigid 
+
+that jointly maximize the Normalized Mutual Information (NMI) between the template T and the reoriented volume: 
+
+V∗ = ϕ∗(Pk∗ · V′) , {k∗, ϕ ∗} = arg max 
+
+> k, ϕ
+
+NMI( T, ϕ (Pk · V′)) . (2) 
+
+2.2 Implicit Representation Learning 
+
+Given a set of registered thick-slice stacks D = {(V∗ 
+
+> i
+
+, S∗ 
+
+> i
+
+)}Ni=1 , where S∗ 
+
+> i
+
+denotes the tissue segmentation obtained from a pre-trained trustworthy AI framework [11], each subject is parameterized via an INR that learns a continuous mapping from spatial coordinates x = ( x, y, z ) ∈ Ω ⊂ R3 to the corresponding intensity 
+
+V∗ 
+
+> i
+
+(x) ∈ R and segmentation label S∗ 
+
+> i
+
+(x) ∈ { 0, . . . , C − 1} with C classes. Following SIREN [23], we represent the implicit signal using multilayer per-ceptrons (MLPs) with periodic activation functions. The weights of the MLPs are shared across the dataset to capture global anatomical structure, while a subject-specific latent code Zi is optimized to modulate individual anatomical variability [2,6]. Let yt(x) denote the output feature of the t-th MLP layer. For any continuous coordinate x ∈ Ω, zi(x) is queried from the latent code Zi via trilinear interpolation and then used to modulate the weights of the t-th layer: 
+
+zi(x) = Interp( Zi, x), (3) 
+
+(γt, δt) = gt(zi(x)) , (4) 
+
+yt(x) = sin 
+
+
+
+ω0 · γt · (Wtyt−1(x) + bt) + δt
+
+
+
+, (5) where Zi ∈ RDz ×H′×W ′×D′
+
+is initialized as Zi ∼ N (0 , 10 −2) [18]; Interp( ·)
+
+denotes trilinear interpolation; gt(·) is a linear projection producing layer-specific scale factor γt and shift vector δt; Wt and bt are shared parameters of the t-th MLP layer; y0(x) = x; and ω0 sets the frequency scale. Finally, the output of the L-layer MLP hψ (x, zi(x)) = [ Vi(x), Si(x)] is ob-tained by a linear projection with parameters Wout and bout :
+
+hψ (x, zi(x)) = Wout 
+
+yL(x); zi(x) + bout = Vi(x), Si(x), (6) where [· ; ·] denotes concatenation along the feature dimension. 
+
+Physics-Informed PSF Modeling. Motivated by the partial volume effect, where limited spatial resolution causes each voxel to aggregate signals from neighboring tissues and results in image blurring [19,15,4,24], a point spread INFANiTE: Fetal Brain Atlas from Thick-Slice MRI 5
+
+function (PSF) is explicitly incorporated into the forward model to emulate phys-ical degradation, thereby enabling the INR to learn high-resolution anatomical representations. Let di,j (p) denote the observed intensity of pixel p in the j-th slice of stack i. This process is modeled as: 
+
+di,j (p) = 
+
+Z
+
+> R3
+
+eVi(x) κ x − G i,j (p) dx + ηi,j (p), (7) where eVi(x) represents the high-resolution intensity, κ(·) is the 3D PSF, Gi,j (·)
+
+maps a pixel to 3D space, and ηi,j denotes noise. In practice, the PSF κ(·) is well approximated by a Gaussian function [28]. Specifically, for a target query coordinate x ∈ Ω, a local cluster of K neighboring coordinates is sampled as: 
+
+xk = x + ϵk, ϵk ∼ N  0, σ 2PSF I , k = 1 , 2, . . . , K, (8) where σPSF denotes the standard deviation of the spread. The low-resolution output at any spatial coordinate is denoted as ˆhψ (x, zi(x)) = [ ˆVi(x), ˆSi(x)] , modeled as the expectation of this continuous signal over the PSF footprint: 
+
+ˆhψ (x, zi(x)) = Exk ∼N (x, σ 2PSF I)
+
+h
+
+hψ
+
+
+
+xk, Interp( Zi, xk)
+
+i 
+
+≈ 1
+
+K
+
+> K
+
+X
+
+> k=1
+
+hψ
+
+
+
+xk, Interp( Zi, xk)
+
+
+
+. (9) 
+
+Spatially-Weighted Optimization Objective. During registration, to dis-tinguish truly observed voxels provided by V from interpolated voxels introduced by resampling, an identifier map O that shares the same spatial dimensions as 
+
+V is constructed. Specifically, O assigns a unique index to each voxel location, establishing a one-to-one correspondence with brain voxels in V. The identifier map O undergoes the same transformations as V throughout registration. After alignment, the transformed O is used to localize the observed-voxel positions in the template space, which are treated as higher-confidence supervision targets during training. A spatial weighting map W (x) is defined such that W (x) = wobs 
+
+if x corresponds to a truly observed voxel and W (x) = wint otherwise, with 
+
+wobs > w int . The model parameters are optimized by minimizing the loss: 
+
+Lrec =
+
+P 
+
+> x∈B
+
+W (x) ˆVi(x) − V∗ 
+
+> i
+
+(x) 1P 
+
+> x∈B
+
+W (x) , (10) 
+
+Lseg =
+
+P 
+
+> x∈B
+
+W (x) LCE 
+
+ ˆSi(x), S∗ 
+
+> i
+
+(x)P 
+
+> x∈B
+
+W (x) , (11) 
+
+Ltotal = Lrec + λLseg , (12) where B is a mini-batch of coordinates sampled from Ω, LCE is the cross-entropy loss, ˆSi(x) ∈ RC denotes the predicted tissue probability, and λ = 1 .6 X. Hu et al. 
+
+2.3 High-Resolution Spatio-Temporal Atlas Generation 
+
+During the inference phase, the PSF simulation is disabled, allowing us to di-rectly query the learned INR for high-resolution anatomy. For spatio-temporal atlas generation at any gestational age (GA) τ , the network is modulated by an age-specific latent code ¯Z(τ ), computed via Gaussian kernel regression over the subject codes {Zi}Ni=1 with a temporal bandwidth στ :
+
+¯Z(τ ) = 
+
+> N
+
+X
+
+> i=1
+
+w(τ, τ i) Zi =
+
+PNi=1 k(τ, τ i) Zi
+
+PNi=1 k(τ, τ i) , k(τ, τ i) = e− (τ −τi)22σ2 
+
+> τ
+
+, (13) where τi denotes the GA of subject i, and w(τ, τ i) denotes the normalized kernel weight. The atlas A(τ ) at GA τ is obtained by querying the INR at each spatial coordinate x with the interpolated latent code ¯z(τ, x) = Interp( ¯Z(τ ), x):
+
+A(τ, x) = Vatlas (x), Satlas (x) = hψ
+
+ x, ¯z(τ, x). (14) 
+
+## 3 Experiments 
+
+3.1 Data Acquisition 
+
+A total of 615 clinical 2D T 2-weighted thick-slice MRI scans were acquired from 205 pregnant women with normal fetuses (GA: 21 – 36 weeks) using a TSE sequence. For atlas construction, 525 stacks from 175 subjects were used as the 
+
+Multi-Stack Dataset . Additionally, to evaluate the robustness of each method under a more challenging and clinically realistic sparse-data scenario where only a single scan per subject is available, a Single-Stack Dataset was curated by randomly selecting one scan per subject from the Multi-Stack Dataset . The remaining 90 stacks from 30 subjects served as the test dataset, for which high-resolution 3D volumes were generated using NiftyMIC [9] and segmented via a trustworthy AI framework [11] to evaluate image quality. Furthermore, to obtain the pseudo ground truth (GT) reference atlas for quantitative assessment, the scans within the Multi-Stack Dataset underwent identical reconstruction and segmentation processes and were subsequently used to train CINeMA [6]. 
+
+3.2 Evaluation Metrics 
+
+To ensure fair comparison, all baseline methods [1,6,8,7,21] utilize the same set of thick-slice stacks aligned via our slice-to-template registration stage (Section 2.1). All atlases were evaluated using three metrics about image quality on the Multi-Stack and Single-Stack datasets: (1) Subject Consistency measures how well the atlas represents the population. The generated atlas and segmentation are registered to each test subject to compute the Peak Signal to Noise Ratio (PSNR r) and Structural Similarity Index Measure (SSIM r), alongside segmen-tation metrics including Dice Coefficient (DSC), Hausdorff Distance (HD 95 ), INFANiTE: Fetal Brain Atlas from Thick-Slice MRI 7
+
+Table 1. Quantitative evaluation of different methods and ablation study. Part I re-ports image quality on both Multi-Stack and Single-Stack datasets, where subject con-sistency is measured by HD 95 (mm), ASD (mm), DSC and PSNR/SSIM against test subjects (subscript r); intrinsic quality by TCT; and reference fidelity by PSNR/SSIM against the pseudo ground-truth atlas (subscript a). Part II reports the L1 error (cm 3) between atlas-derived tissue volumes and normative developmental trajecto-ries. Part III isolates the contribution of each proposed component. TBV: Total Brain Volume; WM: White Matter; BS: Brainstem; cGM: cortical Gray Matter; dGM: deep Gray Matter; CSF: Cerebrospinal Fluid; Cereb.: Cerebellum; Vent.: Ventricles. Red: best. Blue: runner-up. 
+
+I. image quality Method HD 95 ASD DSC TCT PSNR r SSIM r PSNR a SSIM a
+
+(a) Multi-Stack Dataset 
+
+Deepali[21] 3.2413 1.1774 0.7149 0.2627 11.9634 0.3558 13.5951 0.4091 Atlas-GAN[7] 2.9080 1.0854 0.7348 0.1590 12.9860 0.4926 16.1068 0.6228 SyGN[1] 2.8669 1.0661 0.7395 0.1330 13.1003 0.4983 16.2402 0.6138 Aladdin[8] 2.6061 0.9322 0.7711 0.5650 12.8262 0.4629 15.6580 0.5674 CINeMA[6] 2.4137 0.8766 0.7849 1.0133 15.0291 0.5091 19.5325 0.7073 
+
+INFANiTE 2.3572 0.8552 0.7865 0.9702 18.4754 0.5662 22.3165 0.7854 
+
+(b) Single-Stack Dataset 
+
+Deepali[21] 3.2914 1.2065 0.7013 0.2794 12.5151 0.3692 14.1211 0.4239 Atlas-GAN[7] 3.0763 1.1366 0.7191 0.1638 14.1648 0.4958 17.1474 0.6233 SyGN[1] 3.0873 1.1406 0.7175 0.1556 13.9070 0.4821 16.7512 0.5869 Aladdin[8] 2.7356 0.9733 0.7536 0.5226 12.7240 0.4424 15.2615 0.5307 CINeMA[6] 2.7548 0.9860 0.7663 0.9308 14.2107 0.4859 18.0846 0.6507 
+
+INFANiTE 2.5394 0.9153 0.7721 0.8143 18.4786 0.5533 21.6521 0.7593 
+
+II. Biological Plausibility (Multi-Stack Dataset) Method TBV WM BS cGM dGM CSF Cereb. Vent. 
+
+Deepali[21] 17.1868 17.0883 0.1136 4.0106 2.9608 6.9662 0.2937 0.7056 Atlas-GAN[7] 18.2885 16.8882 0.1418 3.3539 2.4323 7.4958 0.3503 0.6559 SyGN[1] 10.4882 12.7053 0.2587 4.6551 1.8042 2.8200 0.3089 0.6250 Aladdin[8] 4.2071 4.2575 0.3199 5.8404 1.7586 6.8455 0.3943 1.1958 CINeMA[6] 15.3309 9.3550 0.2904 6.8382 2.6446 4.8110 0.6120 1.6866 
+
+INFANiTE 4.9467 3.7115 0.0941 5.6733 1.1852 3.0104 0.4880 1.3119 
+
+III. Ablation Study (Multi-Stack Dataset) Method HD 95 ASD DSC TCT PSNR r SSIM r PSNR a SSIM a
+
+w/o PSF 2.4366 0.8762 0.7884 1.2014 17.1436 0.4976 20.3401 0.6802 w/o Weight 2.4540 0.8775 0.7768 0.8280 18.6691 0.5620 22.0845 0.7802 Random Weight 2.4273 0.8672 0.7819 0.8527 18.6488 0.5562 21.9457 0.7740 
+
+INFANiTE 2.3572 0.8552 0.7865 0.9702 18.4754 0.5662 22.3165 0.7854 8 X. Hu et al.   
+
+> Fig. 2. (a,b) Qualitative comparison of atlas construction methods. (c) Atlas con-structed from 3D high-resolution (HR) brain volumes using CINeMA. (d) INFANiTE
+> atlas from the Multi-Stack dataset. (e) Brain tissue growth trajectories.
+
+and Average Surface Distance (ASD). (2) Reference Fidelity evaluates the de-viation from the pseudo GT, reporting PSNR a and SSIM a with respect to this reference. (3) Intrinsic Quality is quantified via TCT [25] to evaluate the con-trast between white matter (WM) and gray matter (GM). Additionally, (4) Biological Plausibility on the Multi-Stack Dataset assesses conformity to typical growth patterns by computing the L1 error (cm 3) between atlas-derived tissue volumes and normative developmental trajectories. 
+
+3.3 Results 
+
+(1) Qualitative Evaluation: INFANiTE produced visually sharper atlases with clearer cortical boundaries and more distinct internal structures on both datasets, whereas competing methods exhibited varying degrees of blurring (Fig. 2a, b). Compared with the pseudo GT atlas (Fig. 2c), INFANiTE demonstrated higher visual similarity in both global appearance and local structural patterns. Addi-tionally, the INFANiTE atlas exhibited smooth and continuous anatomical mat-uration trajectories that align significantly closer to normative references than CINeMA (Fig. 2d, e). (2) Quantitative Evaluation: INFANiTE achieved the best image quality on both datasets (Table 1 Part I). On the Multi-Stack Dataset, it attained HD 95 2.3572, ASD 0.8552, and DSC 0.7865, improving over the runner-up CINeMA by 2.3%, 2.4%, and 0.2%, respectively. It also yielded higher ref-erence fidelity with PSNR a 22.3165 and SSIM a 0.7854, corresponding to gains INFANiTE: Fetal Brain Atlas from Thick-Slice MRI 9
+
+of 14.3% and 11.0% over CINeMA. In the Single-Stack setting, INFANiTE main-tained superior performance, confirming its robustness. For biological plausibility (Table 1 Part II, Fig. 2e), INFANiTE achieved the lowest L1 errors in WM 3.7115, BS 0.0941, and dGM 1.1852, and ranked second in TBV 4.9467 and CSF 3.0104, closely matching normative growth trajectories, whereas CINeMA showed larger deviations with TBV 15.3309 and WM 9.3550. (3) Ablation Study: Removing PSF modeling degraded PSNR a from 22.3165 to 20.3401 and SSIM a from 0.7854 to 0.6802. Removing the spatially weighted objective decreased DSC from 0.7865 to 0.7768 and SSIM a from 0.7854 to 0.7802, while random weighting yielded in-termediate results with DSC 0.7819 and SSIM a 0.7740 (Table 1 Part III). 
+
+## 4 Conclusion 
+
+We presented INFANiTE , an implicit neural representation framework that con-structs high-resolution fetal brain atlases from clinical thick-slice MRI, bypassing both SVR and iterative groupwise registration, reducing end-to-end processing time from days to hours, and establishing a scalable pathway toward population-level fetal brain analysis from routinely acquired clinical scans. 
+
+## References 
+
+1. Avants, B.B., Yushkevich, P., Pluta, J., Minkoff, D., Korczykowski, M., Detre, J., Gee, J.C.: The optimal template effect in hippocampus studies of diseased populations. NeuroImage 49 (3), 2457–2466 (2010) 2. Bauer, M., Dupont, E., Brock, A., Rosenbaum, D., Schwarz, J.R., Kim, H.: Spatial functa: Scaling functa to imagenet classification and generation. arXiv preprint arXiv:2302.03130 (2023) 3. Ciceri, T., Casartelli, L., Montano, F., Conte, S., Squarcina, L., Bertoldo, A., Agar-wal, N., Brambilla, P., Peruzzo, D.: Fetal brain mri atlases and datasets: A review. NeuroImage 292 , 120603 (2024) 4. Dannecker, M., Jia, S., Stolt-Ansó, N., Girard, N., Auzias, G., Rousseau, F., Rueck-ert, D.: Fast and explicit: Slice-to-volume reconstruction via 3d gaussian primi-tives with analytic point spread function modeling. In: Medical Imaging with Deep Learning (2026) 5. Dannecker, M., Kyriakopoulou, V., Cordero-Grande, L., Price, A.N., Hajnal, J.V., Rueckert, D.: Cina: Conditional implicit neural atlas for spatio-temporal represen-tation of fetal brains. In: International Conference on Medical Image Computing and Computer-Assisted Intervention (2024) 6. Dannecker, M., Sideri-Lampretsa, V., Starck, S., Mihailov, A., Milh, M., Girard, N., Auzias, G., Rueckert, D.: Cinema: Conditional implicit neural multi-modal atlas for a spatio-temporal representation of the perinatal brain. IEEE Transactions on Medical Imaging 45 (2), 738–750 (2026) 7. Dey, N., Ren, M., Dalca, A.V., Gerig, G.: Generative adversarial registration for improved conditional deformable templates. In: Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV). pp. 3929–3941 (October 2021) 10 X. Hu et al. 8. Ding, Z., Niethammer, M.: Aladdin: Joint atlas building and diffeomorphic regis-tration learning with pairwise alignment. In: Proceedings of the IEEE/CVF Con-ference on Computer Vision and Pattern Recognition. pp. 20784–20793 (2022) 9. Ebner, M., Wang, G., Li, W., Aertsen, M., Patel, P.A., et al.: An automated framework for localization, segmentation and super-resolution reconstruction of fetal brain MRI. NeuroImage 206 , 116324 (2020) 10. Faghihpirayesh, R., Karimi, D., Erdoğmuş, D., Gholipour, A.: Fetal-bet: Brain extraction tool for fetal mri. IEEE Open Journal of Engineering in Medicine and Biology 5, 551–562 (2024) 11. Fidon, L., Aertsen, M., Kofler, F., Bink, A., David, A.L., Deprest, T., et al.: A dempster–shafer approach to trustworthy AI with application to fetal brain MRI segmentation. IEEE Transactions on Pattern Analysis and Machine Intelligence 
+
+46 (5), 3784–3795 (2024) 12. Gholipour, A., Rollins, C., Velasco-Annis, C., Ouaalam, A., Akhondi-Asl, A., Afa-can, O., Ortinau, C., Clancy, S., Limperopoulos, C., Yang, E., Estroff, J., Warfield, S.: A normative spatiotemporal mri atlas of the fetal brain for automatic segmen-tation and analysis of early brain growth. Scientific reports 7(1) (Dec 2017) 13. Hao, Y., Liu, M., Yang, H., Li, H., Bai, X., Liao, Y., Qu, H., Tian, Q.: Compre-hensive evaluation of unsupervised image enhancement for volumetric fetal brain MRI. In: Medical Imaging with Deep Learning - Short Papers (2025) 14. Khan, S., Vasung, L., Marami, B., Rollins, C., Afacan, O., Ortinau, C., Yang, E., Warfield, S., Gholipour, A.: Fetal brain growth portrayed by a spatiotemporal diffusion tensor mri atlas computed from in utero images. NeuroImage 185 , 593– 608 (Jan 2019) 15. Kuklisova-Murgasova, M., Quaghebeur, G., Rutherford, M.A., Hajnal, J.V., Schn-abel, J.A.: Reconstruction of fetal brain MRI with intensity matching and complete outlier removal. Medical Image Analysis 16 (8), 1550–1564 (2012) 16. Li, H., Liu, M., Bai, X., Liao, Y., Zheng, J., Yang, H., Li, Z., Qu, H., Tian, Q.: FetalCSR: Multi-input Attention Fusion Network for Neural ODE-based Fetal Cor-tical Surface Reconstruction. In: ICLR 2025 Workshop AI4CHL. Singapore, Sin-gapore (Apr 2025) 17. Liu, M., Liao, Y., Li, H., Zhu, J., Yang, H., Hao, Y., Qu, H., Tian, Q.: Quality-label-free fetal brain mri quality control based on image orientation recognition uncertainty. Medical Image Analysis p. 103994 (2026) 18. Park, J.J., Florence, P., Straub, J., Newcombe, R., Lovegrove, S.: Deepsdf: Learning continuous signed distance functions for shape representation. In: 2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR). pp. 165–174 (2019) 19. Rousseau, F., Glenn, O., Iordanova, B., Rodriguez-Carranza, C., Vigneron, D., Barkovich, A.J., Studholme, C.: A novel approach to high resolution fetal brain MR imaging. In: Medical Image Computing and Computer-Assisted Intervention – MICCAI 2005. pp. 548–555. Springer (2005) 20. Sanchez, T., Mihailov, A., Koob, M., Girard, N., et al.: Biometry and volumetry in multi-centric fetal brain magnetic resonance imaging: assessing the bias of super-resolution reconstruction. Pediatric Radiology 55 , 2064 – 2075 (2025) 21. Schuh, A., Qiu, H., HeartFlow Research: deepali: Image, point set, and surface reg-istration in PyTorch. Zenodo (2023). https://doi.org/10.5281/zenodo.8170161 
+
+22. Shi, W., Xu, H., Sun, C., Sun, J., Li, Y., Xu, X., Zheng, T., Zhang, Y., Wang, G., Wu, D.: AFFIRM: Affinity fusion-based framework for iteratively random motion correction of multi-slice fetal brain MRI. IEEE Transactions on Medical Imaging 
+
+42 (1), 209–219 (2023) INFANiTE: Fetal Brain Atlas from Thick-Slice MRI 11 23. Sitzmann, V., Martel, J.N., Bergman, A.W., Lindell, D.B., Wetzstein, G.: Implicit neural representations with periodic activation functions. In: Proc. NeurIPS (2020) 24. Stolt-Ansó, N., Dannecker, M., Jia, S., McGinnis, J., Rueckert, D.: NISF++: Geometrically-grounded implicit representations of 3d+time cardiac function from 2d short- and long-axis MR views. In: Medical Imaging with Deep Learning (2026) 25. Sun, Y., Wang, L., Li, G., et al.: A foundation model for enhancing magnetic resonance images and downstream segmentation, registration and diagnostic tasks. Nature Biomedical Engineering 9, 521–538 (2025) 26. Tang, K., Dong, X., Wu, Z., Ma, L., Hung, S.C., Zhang, H., Lin, W., Li, G.: Surface-guided construction of 4d volumetric atlases of fetal brains. In: Interna-tional Workshop on Machine Learning in Medical Imaging. pp. 266–276. Springer (2025) 27. Wu, J., Sun, T., Yu, B., Li, Z., Wu, Q., Wang, Y., Qian, Z., Zhang, Y., Jiang, L., Wei, H.: Age-specific structural fetal brain atlases construction and cortical development quantification for chinese population. Neuroimage 241 , 118412 (2021) 28. Xu, J., Moyer, D., Gagoski, B., Iglesias, J.E., Grant, P.E., Golland, P., Adalsteins-son, E.: Nesvor: Implicit neural representation for slice-to-volume reconstruction in MRI. IEEE Transactions on Medical Imaging 42 (6), 1707–1719 (2023) 29. Xu, X., Sun, C., Sun, J., Shi, W., Shen, Y., Zhao, R., Luo, W., Li, M., Wang, G., Wu, D.: Spatiotemporal atlas of the fetal brain depicts cortical developmental gradient. Journal of Neuroscience 42 (50), 9435–9449 (2022)
