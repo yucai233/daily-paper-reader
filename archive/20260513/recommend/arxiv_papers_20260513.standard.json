@@ -1,0 +1,363 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-13T20:48:18.833636+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 8,
+    "quick_skim_target": 11,
+    "quick_selected": 8
+  },
+  "deep_dive": [
+    {
+      "id": "2605.11968v1",
+      "title": "Assessment of cloud and associated radiation fields from a GAN stochastic cloud subcolumn generator",
+      "abstract": "Modern Earth System Models (ESMs) operate on horizontal scales far larger than typical cloud features, requiring stochastic subcolumn generators to represent subgrid horizontal and vertical cloud variability. Traditional physically-based generators often rely on analytical cloud overlap paradigms, such as exponential-random decorrelation, which can struggle to capture the complex, anti-correlated behavior of non-contiguous cloud layers. In this study, we introduce a novel two-stage machine learning subcolumn generator for the GEOS atmospheric model, utilizing a Conditional Variational Autoencoder combined with a Generative Adversarial Network (CVAE-GAN) and a U-Net architecture. Trained on a merged CloudSat-CALIPSO height-resolved cloud optical depth dataset, the ML generator creates 56 stochastic subcolumns representing cloud occurrence and optical depth profiles. Evaluated against the established Räisänen, the ML approach accurately reproduces bimodal cloud overlap distributions, significantly reduces biases in grid-mean statistics, and halves the root-mean-square error in ISCCP-style cloud-top pressure and optical thickness joint histograms. The improvements brought by our deep generative models translate into more accurate offline radiative transfer calculations, reducing the global-mean shortwave top-of-atmosphere cloud radiative effect bias by a factor of three. Provided that the generator can be accelerated on CPUs, this offers a practical pathway to reduce structural errors at the cloud-radiation interface.",
+      "authors": [
+        "Dongmin Lee",
+        "Lazaros Oreopoulos",
+        "Nayeong Cho",
+        "Daeho Jin"
+      ],
+      "primary_category": "physics.ao-ph",
+      "categories": [
+        "physics.ao-ph",
+        "cs.LG"
+      ],
+      "published": "2026-05-12T11:19:57+00:00",
+      "link": "https://arxiv.org/pdf/2605.11968v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "GAN and CVAE for stochastic cloud subcolumn generation and simulation",
+      "llm_evidence_cn": "用于随机云子柱生成与模拟的GAN和CVAE方法",
+      "llm_evidence": "用于随机云子柱生成与模拟的GAN和CVAE方法",
+      "canonical_evidence": "用于随机云子柱生成与模拟的GAN和CVAE方法",
+      "llm_tldr_en": "Uses deep learning to generate subgrid cloud variability for atmospheric models and radiation field assessment.",
+      "llm_tldr_cn": "利用深度学习为大气模型生成子网格云变率，并进行辐射场评估。",
+      "llm_tldr": "利用深度学习为大气模型生成子网格云变率，并进行辐射场评估。",
+      "llm_tags": [
+        "query:q5"
+      ],
+      "matched_query_tag": "query:q5",
+      "matched_query_text": "deep learning methods for volumetric cloud rendering and simulation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2605.10360v2",
+      "title": "DySurface: Consistent 4D Surface Reconstruction via Bridging Explicit Gaussians and Implicit Functions",
+      "abstract": "While novel view synthesis (NVS) for dynamic scenes has seen significant progress, reconstructing temporally consistent geometric surfaces remains a challenge. Neural Radiance Fields (NeRF) and 3D Gaussian Splatting (3DGS) offer powerful dynamic scene rendering capabilities; however, relying solely on photometric optimization often leads to geometric ambiguities. This results in discontinuous surfaces, severe artifacts, and broken surfaces over time. To address these limitations, we present DySurface, a novel framework that bridges the effectiveness of explicit Gaussians with the geometric fidelity of implicit Signed Distance Functions (SDFs) in dynamic scenes. Our approach tackles the structural discrepancy between the forward deformation of 3DGS ($canonical \\rightarrow dynamic$) and the backward deformation required for volumetric SDF rendering ($dynamic \\rightarrow canonical$). Specifically, we propose the VoxGS-DSDF branch that leverages deformed Gaussians to construct a dynamic sparse voxel grid, providing explicit geometric guidance to the implicit SDF field. This explicit anchoring effectively regularizes the volumetric rendering process, significantly improving surface reconstruction quality, with watertight boundaries and detailed representations. Quantitative and qualitative experiments demonstrate that DySurface significantly outperforms state-of-the-art baselines in geometric accuracy metrics while maintaining competitive rendering performance.",
+      "authors": [
+        "Minje Kim",
+        "Younghyun Noh",
+        "Jaesoon Kim",
+        "Tae-Kyun Kim"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-11T11:05:17+00:00",
+      "link": "https://arxiv.org/pdf/2605.10360v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural radiance fields and dynamic scene rendering",
+      "llm_evidence_cn": "神经辐射场与动态场景渲染",
+      "llm_evidence": "神经辐射场与动态场景渲染",
+      "canonical_evidence": "神经辐射场与动态场景渲染",
+      "llm_tldr_en": "Bridges explicit Gaussians and implicit SDFs for consistent 4D surface reconstruction and rendering.",
+      "llm_tldr_cn": "结合显式高斯与隐式 SDF，实现一致的 4D 表面重建与渲染。",
+      "llm_tldr": "结合显式高斯与隐式 SDF，实现一致的 4D 表面重建与渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.08635v1",
+      "title": "Kinematics-Driven Gaussian Shape Deformation for Blurry Monocular Dynamic Scenes",
+      "abstract": "Reconstructing dynamic 3D scenes from blurry monocular videos is challenging as motion-induced blur entangles object motion and geometry, hindering geometric consistency. We present Kinematics-GS, a kinematics-aware framework that models blur as motion-aligned deformation and introduces a kinematic prior to reparameterize Gaussian shapes along motion trajectories, thereby mitigating degenerate shape collapse without auxiliary motion supervision. To stabilize optimization, we decompose scenes into dynamic and static components using temporal deformation variance and employ a coarse-to-fine deformation strategy to capture both global motion and fine-grained details. We also introduce a challenging real-world dataset of deformable and elastic objects exhibiting non-rigid motion with spatially non-uniform motion blur that obscures geometric cues. Extensive experiments on real-world benchmarks with realistic motion blur demonstrate that Kinematics-GS outperforms prior methods by a clear margin in monocular dynamic scene reconstruction, highlighting its effectiveness in handling complex and non-rigid motion scenarios.",
+      "authors": [
+        "Yeon-Ji Song",
+        "Kiyoung Kwon",
+        "Junoh Lee",
+        "Jin-Hwa Kim",
+        "Byoung-Tak Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-09T03:01:17+00:00",
+      "link": "https://arxiv.org/pdf/2605.08635v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Gaussian shape deformation for dynamic scene reconstruction",
+      "llm_evidence_cn": "用于动态场景重建的高斯形状变形",
+      "llm_evidence": "用于动态场景重建的高斯形状变形",
+      "canonical_evidence": "用于动态场景重建的高斯形状变形",
+      "llm_tldr_en": "Uses kinematics-aware Gaussian splatting to reconstruct dynamic scenes from blurry videos.",
+      "llm_tldr_cn": "利用运动感知的高斯泼溅技术从模糊视频中重建动态场景。",
+      "llm_tldr": "利用运动感知的高斯泼溅技术从模糊视频中重建动态场景。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.11424v1",
+      "title": "VidSplat: Gaussian Splatting Reconstruction with Geometry-Guided Video Diffusion Priors",
+      "abstract": "Gaussian Splatting has achieved remarkable progress in multi-view surface reconstruction, yet it exhibits notable degradation when only few views are available. Although recent efforts alleviate this issue by enhancing multi-view consistency to produce plausible surfaces, they struggle to infer unseen, occluded, or weakly constrained regions beyond the input coverage. To address this limitation, we present VidSplat, a training-free generative reconstruction framework that leverages powerful video diffusion priors to iteratively synthesize novel views that compensate for missing input coverage, and thereby recover complete 3D scenes from sparse inputs. Specifically, we tackle two key challenges that enable the effective integration of generation and reconstruction. First, for 3D consistent generation, we elaborate a training-free, stage-wise denoising strategy that adaptively guides the denoising direction toward the underlying geometry using the rendered RGB and mask images. Second, to enhance the reconstruction, we develop an iterative mechanism that samples camera trajectories, explores unobserved regions, synthesizes novel views, and supplements training through confidence weighted refinement. VidSplat performs robustly to sparse input and even a single image. Extensive experiments on widely used benchmarks demonstrate our superior performance in sparse-view scene reconstruction.",
+      "authors": [
+        "Jimin Tang",
+        "Wenyuan Zhang",
+        "Junsheng Zhou",
+        "Zian Huang",
+        "Kanle Shi",
+        "Shenkun Xu",
+        "Yu-Shen Liu",
+        "Zhizhong Han"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-12T02:20:31+00:00",
+      "link": "https://arxiv.org/pdf/2605.11424v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Gaussian Splatting reconstruction with diffusion priors",
+      "llm_evidence_cn": "结合扩散先验的高斯泼溅重建",
+      "llm_evidence": "结合扩散先验的高斯泼溅重建",
+      "canonical_evidence": "结合扩散先验的高斯泼溅重建",
+      "llm_tldr_en": "VidSplat uses video diffusion priors to improve Gaussian Splatting reconstruction from sparse views.",
+      "llm_tldr_cn": "VidSplat利用视频扩散先验改进了稀疏视图下的高斯泼溅重建。",
+      "llm_tldr": "VidSplat利用视频扩散先验改进了稀疏视图下的高斯泼溅重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.10567v1",
+      "title": "VeloGauss: Learning Physically Consistent Gaussian Velocity Fields from Videos",
+      "abstract": "In this paper, we aim to jointly model the geometry, appearance, and physical information of 3D scenes solely from dynamic multi-view videos, without relying on any physical priors. Existing works typically employ physical losses merely as soft constraints or integrate physical simulations into neural networks; however, these approaches often fail to effectively learn complex motion physics. Although modeling velocity fields holds the potential to capture authentic physical information, due to the lack of appropriate physical constraints, current methods are unable to correctly learn the interaction mechanisms between rigid and non-rigid particles. To address this, we propose VeloGauss, designed to learn the physical properties of complex dynamic 3D scenes without physical priors. Our method learns the velocity field for each Gaussian particle by introducing a Physics Code and a Particle Dynamics System, and ultimately incorporates Global Physical Constraints to ensure the physical consistency of the scene. Extensive experiments on four public datasets demonstrate that our method outperforms achieves state-of-the-art performance in both Novel View Interpolation and Future Frame Extrapolation tasks.",
+      "authors": [
+        "Nengbo Lu",
+        "Bin Zhao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-11T13:38:14+00:00",
+      "link": "https://arxiv.org/pdf/2605.10567v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "modeling geometry and appearance from dynamic videos using Gaussian fields",
+      "llm_evidence_cn": "利用高斯场从动态视频中建模几何与外观",
+      "llm_evidence": "利用高斯场从动态视频中建模几何与外观",
+      "canonical_evidence": "利用高斯场从动态视频中建模几何与外观",
+      "llm_tldr_en": "Learns physically consistent Gaussian velocity fields for dynamic 3D scene modeling and rendering.",
+      "llm_tldr_cn": "学习物理一致的高斯速度场，用于动态 3D 场景建模与渲染。",
+      "llm_tldr": "学习物理一致的高斯速度场，用于动态 3D 场景建模与渲染。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.11427v1",
+      "title": "PD-4DGS:Progressive Decomposition of 4D Gaussian Splatting for Bandwidth-Adaptive Dynamic Scene Streaming",
+      "abstract": "4D Gaussian Splatting (4DGS) enables high-quality dynamic novel view synthesis, yet current models remain monolithic bitstreams that clients must download in full before any frame can be rendered, causing black-screen waits of tens to hundreds of seconds on mobile bandwidth and leaving 4DGS incompatible with modern adaptive-bitrate delivery. Progressive 3DGS compression alleviates this for static scenes, but it acts only on spatial anchors and cannot partition the temporal deformation networks that dominate dynamic-scene size. We present PD-4DGS, the first framework for progressive compression and on-demand transmission of 4DGS. Hierarchical Deformation Decomposition (HDD) externalises the coarse-to-fine motion hierarchy already latent in 4DGS into three independently transmittable layers -- a static scaffold, a global deformation, and a local refinement -- so that any prefix of the bitstream is already renderable, turning a single training run into a scalable, DASH/HLS-compatible bitstream. A Gaussian-entropy attribute rate-distortion loss together with a temporal mask consistency regulariser shrink the base layer while suppressing low-bitrate flicker; a capacity-weighted rollout schedule, gated online by a learnt activation rate rho, then prevents deformation-network under-training without any per-scene hyperparameter. On the Dycheck iPhone benchmark, PD-4DGS cuts the streamed bitstream by >60% at matched rendering fidelity and reduces first-frame latency from 73--930 s to ~1.7 s on a 2 Mbps link, uniquely enabling true on-demand progressive streaming for 4DGS.",
+      "authors": [
+        "Jiachen Li",
+        "Guangzhi Han",
+        "Jin Wan",
+        "Delong Han",
+        "Yuan Gao",
+        "Min Li",
+        "Mingle Zhou",
+        "Gang Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-12T02:26:10+00:00",
+      "link": "https://arxiv.org/pdf/2605.11427v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "4D Gaussian Splatting for dynamic scene rendering",
+      "llm_evidence_cn": "用于动态场景渲染的4D高斯泼溅",
+      "llm_evidence": "用于动态场景渲染的4D高斯泼溅",
+      "canonical_evidence": "用于动态场景渲染的4D高斯泼溅",
+      "llm_tldr_en": "Proposes a progressive decomposition framework for 4D Gaussian Splatting to enable adaptive streaming.",
+      "llm_tldr_cn": "提出了一种4D高斯泼溅的渐进式分解框架，以实现自适应流式传输。",
+      "llm_tldr": "提出了一种4D高斯泼溅的渐进式分解框架，以实现自适应流式传输。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.11489v1",
+      "title": "3DGS$^3$: Joint Super Sampling and Frame Interpolation for Real-Time Large-Scale 3DGS Rendering",
+      "abstract": "3D Gaussian Splatting (3DGS) enables high-quality real-time 3D rendering but faces challenges in efficiently scaling to ultra-dense scenes and high-resolution due to computational bottlenecks that limit its use in latency-sensitive applications. Instead of optimizing the splatting pipeline itself, we propose \\textbf{3DGS$^3$}, a unified post-rendering framework that jointly performs super sampling and frame interpolation through differentiable processing of low-resolution outputs to achieve both high-resolution and high-frame-rate rendering. Our \\textbf{Gradient\\- \\-Aware Super Sampling (GASS)} module leverages the continuous differentiability of 3DGS to extract image gradients that guide a GRU-based refinement network to enable high-fidelity super sampling. Furthermore, a \\textbf{Lightweight Temporal Frame Interpolation (LTFI)} module based on a compact U-Net-like backbone fuses temporal and differentiable spatial cues from consecutive frames to synthesize temporally coherent intermediate frames. Experiments on public datasets demonstrate that 3DGS$^3$ achieves superior rendering efficiency and visual quality when compared with state-of-the-art methods and remains compatible with existing 3DGS acceleration techniques. The code will be publicly released upon acceptance.",
+      "authors": [
+        "Yibo Zhao",
+        "Fan Gao",
+        "Youcheng Cai",
+        "Ligang Liu"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.CV"
+      ],
+      "published": "2026-05-12T04:05:36+00:00",
+      "link": "https://arxiv.org/pdf/2605.11489v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "accelerating 3DGS rendering via super sampling and frame interpolation",
+      "llm_evidence_cn": "通过超采样和帧插值加速3D高斯泼溅渲染",
+      "llm_evidence": "通过超采样和帧插值加速3D高斯泼溅渲染",
+      "canonical_evidence": "通过超采样和帧插值加速3D高斯泼溅渲染",
+      "llm_tldr_en": "Proposes a post-rendering framework to accelerate high-resolution 3D Gaussian Splatting.",
+      "llm_tldr_cn": "提出了一种后渲染框架，用于加速高分辨率3D高斯泼溅渲染。",
+      "llm_tldr": "提出了一种后渲染框架，用于加速高分辨率3D高斯泼溅渲染。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.12399v1",
+      "title": "GeoQuery: Geometry-Query Diffusion for Sparse-View Reconstruction",
+      "abstract": "3D Gaussian Splatting (3DGS) has emerged as a prominent paradigm for 3D reconstruction and novel view synthesis. However, it remains vulnerable to severe artifacts when trained under sparse-view constraints. While recent methods attempt to rectify artifacts in rendered views using image diffusion models, they typically rely on multi-view self-attention to retrieve information from reference images. We observe that this mechanism often fails when the rendered novel views output by 3DGS are heavily corrupted: damaged query features lead to erroneous cross-view retrieval, resulting in inconsistent rendering refinement. To address this, we propose GeoQuery, a geometry-guided diffusion framework that integrates generative priors with explicit geometric cues via a novel Geometry-guided Cross-view Attention (GCA) mechanism. First, by leveraging predicted depth maps and camera poses, we construct a geometry-induced correspondence field to sample reference features, forming a geometry-aligned proxy query that replaces the corrupted rendering features. Furthermore, we design a new cross-view feature aggregation pipeline, in which we restrict the cross-view attention to a local window around each proxy query to effectively retrieve useful features while suppressing spurious matches. GeoQuery can be seamlessly integrated into existing diffusion-based pipelines, enabling robust reconstruction even under extreme view sparsity. Extensive experiments on sparse-view novel view synthesis and rendering artifact removal demonstrate the effectiveness of our approach.",
+      "authors": [
+        "Xiao Cao",
+        "Yuze Li",
+        "Youmin Zhang",
+        "Jiayu Song",
+        "Cheng Yan",
+        "Wen Li",
+        "Lixin Duan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-12T17:00:47+00:00",
+      "link": "https://arxiv.org/pdf/2605.12399v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting for novel view synthesis and reconstruction",
+      "llm_evidence_cn": "用于新视角合成和重建的3D高斯泼溅技术",
+      "llm_evidence": "用于新视角合成和重建的3D高斯泼溅技术",
+      "canonical_evidence": "用于新视角合成和重建的3D高斯泼溅技术",
+      "llm_tldr_en": "Proposes a geometry-guided diffusion framework to improve 3D Gaussian Splatting reconstruction from sparse views.",
+      "llm_tldr_cn": "提出一种几何引导的扩散框架，旨在改进稀疏视角下的3D高斯泼溅重建效果。",
+      "llm_tldr": "提出一种几何引导的扩散框架，旨在改进稀疏视角下的3D高斯泼溅重建效果。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.12085v1",
+      "title": "A Line--Search--Based Stochastic Gradient Method for 3D Computed Tomography",
+      "abstract": "We introduce FB-LISA, a forward-backward (FB) generalization of a recently proposed line-search-based stochastic gradient algorithm to address the imaging problem of volumetric reconstruction in Computed Tomography, a substantially high demanding problem, which involves orders of magnitude of data, a high computational burden for forward and backprojection, and memory requirements that push current GPU architectures to their limits. Our formulation employs stochastic mini-batches composed of full 2D projections, preserving the physical structure of the acquisition process while enabling significant speed-ups during early iterations. The resulting method demonstrates how concepts traditionally associated with deep learning can be repurposed to accelerate large-scale inverse problems, without relying on training data or learned priors.",
+      "authors": [
+        "Tatiana A. Bubba",
+        "Elena Morotti",
+        "Federica Porta",
+        "Valeria Ruggiero",
+        "Ilaria Trombini"
+      ],
+      "primary_category": "math.NA",
+      "categories": [
+        "math.NA"
+      ],
+      "published": "2026-05-12T13:07:35+00:00",
+      "link": "https://arxiv.org/pdf/2605.12085v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "accelerating volumetric reconstruction using deep learning concepts",
+      "llm_evidence_cn": "利用深度学习概念加速体积重建",
+      "llm_evidence": "利用深度学习概念加速体积重建",
+      "canonical_evidence": "利用深度学习概念加速体积重建",
+      "llm_tldr_en": "Adapts stochastic gradient methods from deep learning to accelerate 3D volumetric CT reconstruction.",
+      "llm_tldr_cn": "借鉴深度学习中的随机梯度方法来加速3D计算机断层扫描的体积重建。",
+      "llm_tldr": "借鉴深度学习中的随机梯度方法来加速3D计算机断层扫描的体积重建。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -1,0 +1,544 @@
+Title: A Line–Search–Based Stochastic Gradient Method for 3D Computed Tomography
+
+URL Source: https://arxiv.org/pdf/2605.12085v1
+
+Published Time: Wed, 13 May 2026 01:17:42 GMT
+
+Number of Pages: 16
+
+Markdown Content:
+# A Line–Search–Based Stochastic Gradient Method for 3D Computed Tomography 
+
+Tatiana A. Bubba ∗ Elena Morotti † Federica Porta ‡ Valeria Ruggiero §
+
+Ilaria Trombini ¶
+
+May 13, 2026 
+
+Abstract 
+
+We introduce FB–LISA, a forward–backward (FB) generalization of a recently pro-posed line–search–based stochastic gradient algorithm to address the imaging problem of volumetric reconstruction in Computed Tomography, a substantially high demanding problem, which involves orders of magnitude of data, a high computational burden for forward and backprojection, and memory requirements that push current GPU archi-tectures to their limits. Our formulation employs stochastic mini–batches composed of full 2D projections, preserving the physical structure of the acquisition process while enabling significant speed–ups during early iterations. The resulting method demon-strates how concepts traditionally associated with deep learning can be repurposed to accelerate large–scale inverse problems, without relying on training data or learned priors. 
+
+Keywords : Forward–backward methods, Image reconstruction, Optimization models, Stochastic algorithms. 
+
+# 1 Introduction 
+
+Stochastic optimization is a cornerstone of modern machine learning, enabling efficient training of large–scale models through updates based on small data subsets. By avoiding full gradient computations, stochastic methods provide a fast and memory–efficient alterna-tive, often reaching good solutions well before theoretical convergence. This trade–off makes 
+
+> ∗
+
+Department of Mathematics and Computer Science of the University of Ferrara, Ferrara, Italy (tatiana.bubba@unife.it). 
+
+> †
+
+Department of Political and Social Sciences of the University of Bologna, Bologna, Italy (elena.morotti4@unibo.it). 
+
+> ‡
+
+Department of Physics, Informatics and Mathematics of the University of Modena and Reggio Emilia, Modena, Italy (federica.porta@unimore.it). 
+
+> §
+
+Department of Mathematics and Computer Science of the University of Ferrara, Ferrara, Italy. 
+
+> ¶
+
+Department of Mathematics and Computer Science of the University of Ferrara, Ferrara, Italy (ilaria.trombini@unife.it). 
+
+1
+
+> arXiv:2605.12085v1 [math.NA] 12 May 2026
+
+them appealing for large–scale optimization problems beyond learning. Recently, stochastic optimization has gained attention in inverse problems (see, e.g., [9, 15, 29, 30, 8, 24, 14, 26]). In particular, stochastic gradient methods have shown promising results in imaging appli-cations, where large–scale operators make full updates impractical. However, most existing works focus on small–scale or 2D settings, which do not fully reflect the computational challenges of real–world imaging systems. In this work, we address 3D X–ray computed tomography (CT) [22], where reconstruction involves large–scale data and repeated appli-cations of expensive forward and backprojection operators. In this context, deterministic methods may be impractical due to time and memory constraints. To this end, we in-troduce a forward–backward (FB) stochastic gradient method, called FB–LISA, specifically designed for addressing large–scale inverse problems and built on Deep–LISA [19], a stochas-tic algorithm originally proposed for smooth finite–sum optimization. FB–LISA inherits Deep–LISA’s adaptive hyperparameter strategy, combining line–search–based learning rate estimation with a predetermined increase in mini–batch size. This removes manual tuning and improves robustness for large–scale applications. In contrast to Deep–LISA, FB–LISA is designed to handle non–smooth objective terms, enabling the use of regularizers and con-straints common in imaging. We demonstrate its effectiveness on 3D CT measured data, showing that it outperforms several state–of–the–art reconstruction methods. The remainder of this work is organised as follows. In Section 2 we introduce FB–LISA, along with our main theoretical results, and the mathematical formulation of the problem. Section 3 demonstrates the effectiveness of FB–LISA through numerical experiments on measured 3D CT data, comparing its performance with that of several analytical, deter-ministic and stochastic approaches. Section 4 summarizes our findings and discusses future research directions. Finally, the proof of our main result is reported in the Appendix A. 
+
+# 2 Method 
+
+In this section, we formalize the mathematical framework for our proposed method, FB– LISA, within the context of 3D Computed Tomography. In particular, we state the main convergence result for FB–LISA, whose proof is later provided in Appendix A. 
+
+2.1 Problem and notation 
+
+We consider the following CT reconstruction problem: argmin 
+
+> x∈Rd
+
+12 ∥Ax − b∥2 + μ∥x∥1 + ι{x≥0}, (2.1) where b ∈ Rn is the set of measured data, and A ∈ Rn×d denotes the discretized forward operator modeling the cone–beam projection, described through n = np × nθ, with nθ
+
+denoting the number of angular projections and np the number of detector cells. The unknown x ∈ Rd represents the 3D discretized volume of attenuation coefficients. The data–fidelity term 12 ∥Ax − b∥2 corresponds to a least–squares formulation, typically arising 2under an additive Gaussian noise model. The function ι{x≥0} is the indicator function of the nonnegative orthant, enforcing physical feasibility of the reconstruction. Finally, μ > 0is a regularization parameter controlling the sparsity level induced by the ℓ1 norm. The problem is convex but nonsmooth and falls within the class of composite optimiza-tion problems, for which first–order methods are well suited. Several such algorithms have been proposed for problems of the form (2.1) (see, e.g., [6, 10, 11, 12, 13]). The growing scale of modern CT systems leads to large reconstruction problems, where full–gradient evaluations become computationally expensive [7]. This motivates stochastic and incre-mental approaches, which reduce per–iteration cost by operating on data subsets [5]. In CT, this principle underlies methods such as SART [1] and ordered–subsets (OS) techniques [16, 21, 23], where the forward operator A is partitioned into nθ blocks Ai corresponding to individual projection angles. The computational advantage arises from the significantly lower cost of evaluating Aix compared to Ax .
+
+2.2 FB–LISA for 3D CT 
+
+To address the optimization problem in (2.1), we introduce FB–LISA (cf. Alghoritm 1, where FB–LISA pseudocode is reported), starting from the original Deep–LISA method [19, Algorithm 2]. This requires to generalize Deep–LISA to handle the presence of a non– smooth term in the objective function. Consider a general optimization problem of the form argmin 
+
+> x∈Rd
+
+F (x) ≡ f (x) + R(x) ≡ 1
+
+N
+
+> N
+
+X
+
+> i=1
+
+fi(x) + R(x), (2.2) where fi : Rd → R, i = 1 , . . . , N , are differentiable functions with L–Lipschitz continuous gradient and R : Rd → R is a non–smooth and convex term. In this setting, the resulting update rule and line–search inequality (see Step 2c of Algorithm 1) take the form ¯x(k) = prox αk R(x(k) − αk∇fNk (x(k))) and 
+
+fNk (¯ x(k)) ≤ fNk (x(k)) + ∇fNk (x(k))T (¯ x(k) − x(k)) + 12αk
+
+∥¯x(k) − x(k)∥2, (2.3) where prox αk R(·) represents the proximal operator related to the function αkR(·), Nk ⊂{1, . . . , N } is chosen uniformly at random and fNk = 1 
+
+> |N k|
+
+P 
+
+> i∈N k
+
+fi(x) is the corresponding sub–sampled objective function. We have the following result for FB–LISA applied to (2.2). We stress that the FB–LISA method is similar to the approach in [18]. However, the practical realization of the variance reduction, the theoretical framework and the convergence analysis (see Appendix A) are different. 
+
+Theorem 1. Given problem (2.2) , suppose that fi : Rd → R, i = 1 , . . . , N , are differen-tiable functions with L–Lipschitz continuous gradient, R : Rd → R is convex and F ≡ f +R
+
+is bounded below by Finf . Moreover, assume that αmax ≤ 12L and 
+
+3Ek[∥∇ f (x(k)) − ∇ fNk (x(k))∥2] ≤ εk where Ek[·] denotes conditional expected value with re-spect to the σ–algebra generated by x(0) , . . . , x (k) and {εk}k∈N is a positive and summable sequence. Let {x(k)}k∈N be the sequence generated by the FB–LISA method. Then, almost surely, any limit point of the sequence {x(k)}k∈N is a stationary point for problem (2). 
+
+To specifically apply FB–LISA to the CT problem in (2.1), similarly to [14, 30] for 2D tomography, the fidelity term in (2.1) can be easily expressed as a finite sum. Specifically, 12 ∥Ax − b∥2 = 12nθnθX
+
+> i=1
+
+∥Aix − bi∥2, (2.4) where Ai ∈ Rnp×d, for i = 1 , . . . , n θ, represents the CT operator associated with the i–th angle and bi ∈ Rnp denotes the corresponding projection data. The normalization factor 2nθ ensures that f (x) can be interpreted as an empirical mean over projection angles, which is consistent with stochastic sampling strategies. Next, we define the sub–sampled objective function fNk and the corresponding mini–batch selection process required in Step 2a in Algorithm 1. In contrast to the mini–batch selection strategy proposed in [14, 30], in FB– LISA the angle indices for the mini–batch Nk are randomly and uniformly drawn from the set of all possible angle indices {1, . . . , n θ}. Given a mini–batch Nk of size Nt at epoch t,we define 
+
+fNk (x) = nθ
+
+2Nt
+
+X
+
+> i∈N k
+
+∥Aix − bi∥2 = nθ
+
+2Nt
+
+∥ANk x − bNk ∥2, (2.5) where ANk denotes the restricted forward operator corresponding to the angles indexed by 
+
+Nk, and bNk ∈ RNt collects the corresponding measurements. We remark that the mini– batch size remains fixed throughout an entire epoch, corresponding to the computational cost of computing a full gradient. A further difference from the original Deep–LISA im-plementation lies in the mini–batch construction. In the CT setting, the mini–batch Nk is generated on–the–fly by uniformly sampling projection angles at each iteration, rather than using pre–defined batches via data loaders. This strategy better exploits the structure of the forward operator while avoiding preprocessing and storage of data subsets. 
+
+# 3 Numerical experiments 
+
+In this section, we compare the proposed FB–LISA approach with several deterministic and stochastic algorithms. All experiments are implemented in Matlab ® R2025b and executed on a workstation equipped with an Intel ® Xeon ® Gold 5418Y CPU with 128 GB of system RAM, and an NVIDIA RTX A1000 GPU with 8 GB of GPU memory. The code will be freely available on GitHub upon acceptance. 
+
+Dataset We consider the 3D cone–beam computed tomography (CBCT) dataset of a wal-nut in its shell, publicly available on Zenodo [25]. It consists of the projection images from the scan of a walnut over multiple view angles. The projections are binned and organized so 4Algorithm 1 FB–LISA algorithm Given T > 0, nmax > 0, x(0) ∈ Rd, 0 < N 0 < n , α0 > 0, β ∈ (0 , 1) and a positive sequence 
+
+{εk}k∈N, P 
+
+> k
+
+εk < ∞, C > 0, ˆk = 0 .
+
+For t = 1 , 2, . . . , T 
+
+Step 1. Choose the size Nt according to 
+
+Nt = min 
+
+(
+
+nmax , max 
+
+(& 
+
+Cεˆk+⌈n/N t−1⌉
+
+'
+
+, N 0
+
+)) 
+
+.
+
+Step 2. For k = ˆk, . . . , ˆk + ⌈n/N t⌉ − 1
+
+Step 2a. Choose a mini-batch Nk of size Nt.
+
+Step 2b. Compute fNk (x(k)), ∇fNk (x(k)). 
+
+Step 2c. Compute ¯x(k) = prox αk R(x(k) − αk∇fNk (x(k))) .
+
+If 
+
+fNk (¯ x(k)) ≤ fNk (x(k)) + ∇fNk (x(k))T (¯ x(k) − x(k)) + 12αk
+
+∥¯x(k) − x(k)∥2
+
+Then go to Step 2d .
+
+Else set αk ← βα k and go to Step 2c .
+
+Step 2d. Set 
+
+x(k+1) = ¯ x(k)
+
+and 
+
+αk+1 = α0.
+
+End For Step 3. ˆk = k + 1. 
+
+End For 
+
+5that the final volume is of dimensions 560 ×560 ×560. The dataset provides realistic acquisi-tion measurements that are well–suited for evaluating reconstruction methods in challenging scenarios such as sparse–view settings. As the dataset does not include a reference reconstruction, we generate the ground truth volume xGT by applying the Feldkamp–Davis–Kress (FDK) algorithm [17] to the complete set of available projection views, i.e., 720 in [0, 2 π). FDK is a standard analytical recon-struction technique for cone–beam geometry, available in most commercial CT scanners. When all projections are used, it provides a high–quality approximation of the underlying object, which therefore can be adopted as a reference for quantitative evaluation. 
+
+Similarity measures Reconstruction quality is assessed by comparing each reconstructed volume with the reference ground truth xGT using multiple quantitative metrics. Specifi-cally, we consider the relative error (RE), the peak signal–to–noise ratio (PSNR) and the structured similarity index (SSIM) [32] provided by Matlab. Finally, we also report the Haar wavelet–based perceptual similarity index (HaarPSI), proposed in [28]. All metrics are computed over the entire 3D reconstructed volume, rather than on individual slices. 
+
+Compared Methods We compare the proposed FB–LISA method, whose reconstruction will be hereafter denoted by xFB–LISA , against the deterministic and stochastic algorithms listed below. For FB–LISA we adopt the following hyperparameter configuration (the nota-tion is consistent with that of [19]): N0 = 8, α0 = 10 −3, M = 1 and εk = 0 .99 k. In addition, the step size is reinitialized at each iteration before the line–search (i.e., αk+1 = α0). The remaining hyperparameters are set as in [19]. We remark that N0 and εk were selected a priori based on the desired increase in the mini–batch size, without empirical validation. 
+
+• Feldkamp–Davis–Kress (xFDK ): it serves as a baseline due to its computational efficiency and widespread use in clinical applications. Notice that, in contrast to 
+
+xGT , this is computed using undersampled projections (see Experimental Setup be-low). 
+
+• Forward–Backward (xFB ) [11]: a first order deterministic optimization method. The step size is fixed throughout the iterations and set to α = 10 −5 and there is no line–search. 
+
+• Variable Metric Inexact Line–search (xVMILA ) [4]: a deterministic method that incorporates a variable metric and a non monotone line–search strategy enhanced by adaptive Barzilai–Borwein rules [2, 20]. The initial step size is set to α0 = 1. 
+
+• Adaptive Stochastic Primal–Dual Hybrid Gradient (xA–SPDHG ) [8]: a stochastic primal–dual gradient method. Unlike FB–LISA, it uses a fixed mini– batch size throughout the iterations, set to N = 10, and does not incorporate a batch growth strategy. The step size is controlled by a parameter s = 10 −5.6Experimental Setup We consider three experimental scenarios to evaluate the perfor-mance of the compared methods under different acquisition and noise conditions. 
+
+• Case 1: nθ = 36 uniformly spaced projection angles in [0 , 2π), without additional noise. 
+
+• Case 2: nθ = 36 uniformly spaced projection angles in [0 , 2π), with additive Gaussian noise with zero mean and 2% variance. 
+
+• Case 3: nθ = 72 uniformly spaced projection angles in [0 , 2π), with additive Gaussian noise with zero mean and 2% variance. The cone–beam geometry is chosen to match the specifications of the original walnut scan. The projection operator is implemented using the ASTRA Toolbox [31], which ensures efficient and accurate forward and backprojection operations. For these three settings, the regularization parameter is set to μ = 2 , 1, 1, respectively. As a stopping criterion, we impose a maximum time budget of 240 seconds for all methods. In addition, intermediate reconstruction quality metrics are recorded at 120 seconds in order to assess the convergence behavior. Fig. 1 show the reconstruction corresponding to the axial slice (: , :, 300) (with the re-spective reconstruction quality metrics) for all considered methods at 120 and 240 seconds, respectively, for the scenario described in Case 1. The non–iterative reconstruction xFDK 
+
+presents many streaking artifacts in the background, due to the sever undersampling of the data. This is a known limitation of FDK when applied to scarce data. For the iter-ative approaches, at 120 seconds, we observe that, concerning the deterministic methods, VMILA already provides visually acceptable reconstructions, while xFB is still far from the reference xGT , with blurred structures and missing details, especially in low–contrast re-gions. xA–SPDHG shows limited progress at this stage and remains far from the reference 
+
+xGT . Instead, xFB–LISA shows a faster initial progression toward the reference solution in terms of PSNR and SSIM, showing better structural preservation, as indicated by the lowest HaarPSI metric. Notably, the features inside the zoomed–in regions are much more defined for xFB–LISA compared to all other methods. At 240 seconds, all iterative methods converge closer to the xGT , with xFB–LISA reaching the highest PSNR (28.99), getting closest to the reference solution in terms of quantitative metrics, and maintaining competitive SSIM and HaarPSI metrics. xFB and xVMILA improve over their 120–second performance, but the reconstructed details remain less sharp than those of xFB–LISA . xA–SPDHG improves but moderately: this is perhaps due to its fixed mini–batch size which appears to limit the reconstruction quality. In contrast, xFB–LISA is able to gradually include more and more in-formation in the reconstruction process, thank to its increasing mini–batch strategy. Again, the zoomed–in elements are more clearly resolved for xFB–LISA than for the other methods. Table 1 summarizes the reconstruction metrics for all considered methods under noisy conditions for the scenario of Case 2. At 120 seconds, FB–LISA already reaches the lowest RE (0.31), indicating a faster approach toward the reference solution and highest PSNR (26.78), outperforming all other methods. FDK, as expected, shows poor performance due 7xGT xFB 
+
+> PSNR: 20.73,
+> SSIM: 0.56,
+> HaarPSI: 0.37
+> xVMILA
+> PSNR: 23.98,
+> SSIM: 0.59,
+> HaarPSI: 0.48
+> xA–SPDHG
+> PSNR: 19.17,
+> SSIM: 0.56,
+> HaarPSI: 0.28
+> xFB–LISA
+> PSNR: 27.53,
+> SSIM: 0.61,
+> HaarPSI: 0.52
+> xFDK
+> PSNR: 20.85,
+> SSIM: 0.26,
+> HaarPSI: 0.30
+> xFB
+> PSNR: 22.15,
+> SSIM: 0.57,
+> HaarPSI: 0.42
+> xVMILA
+> PSNR: 26.26,
+> SSIM: 0.61,
+> HaarPSI: 0.51
+> xA–SPDHG
+> PSNR: 22.93,
+> SSIM: 0.56,
+> HaarPSI: 0.39
+> xFB–LISA
+> PSNR: 28.99,
+> SSIM: 0.61,
+> HaarPSI: 0.56
+
+Figure 1: Reconstruction results for Case 1. The first column shows the ground truth and the FDK reconstruction, while columns 2–4 present the reconstructions of the compared methods (first row: 120 seconds; second row: 240 seconds). to the limited number of views and the noise. A–SPDHG performs better than FB initially in PSNR but still exhibits higher RE and HaarPSI error. At 240 seconds, all iterative meth-ods improve, with FB–LISA maintaining the best performance across all metrics. VMILA also reaches competitive PSNR and SSIM, while FB improves moderately but remains slightly behind. A–SPDHG benefits from additional time but again the reconstruction quality remains limited compared to that of FB–LISA. Finally, Table 2 reports the reconstruction metrics for all considered methods for the Case 3. Also in this case, we draw similar conclusions to those of the previous cases. FDK remains limited due to the sparse–view acquisition, despite the increased number of projection views. Deterministic methods FB and VMILA perform reasonably well, but FB remains slightly behind. A–SPDHG benefits from additional time to sensibly improve the reconstruction metrics, which nevertheless remain below the other methods. Overall, FB–LISA provides the best reconstruction at already 120 seconds. This is further confirmed in Fig. 2, which reports the relative error as a function of 8Table 1: Quantitative reconstruction metrics for Case 2 Run time Methods RE PSNR SSIM HaarPSI – FDK 1.31 14.25 0.03 0.24 120 secs FB 0.63 20.59 0.57 0.37 VMILA 0.41 24.30 0.59 0.46 A–SPDHG 0.62 20.71 0.53 0.27 FB–LISA 0.31 26.78 0.61 0.48 
+
+240 secs FB 0.54 21.98 0.58 0.40 VMILA 0.31 26.80 0.60 0.48 A–SPDHG 0.41 24.30 0.58 0.41 FB–LISA 0.25 28.69 0.60 0.52 
+
+Table 2: Quantitative reconstruction metrics for Case 3 Run time Methods RE PSNR SSIM HaarPSI – FDK 0.93 17.14 0.06 0.29 120 secs FB 0.53 22.01 0.61 0.45 VMILA 0.46 23.24 0.59 0.48 A–SPDHG 0.87 17.76 0.62 0.24 FB–LISA 0.31 26.88 0.63 0.49 
+
+240 secs FB 0.43 23.87 0.60 0.51 VMILA 0.25 28.54 0.63 0.53 A–SPDHG 0.53 22.07 0.58 0.37 FB–LISA 0.22 29.74 0.64 0.55 
+
+execution time (in seconds) for all compared methods. FB–LISA (yellow) consistently shows the fastest decay toward lower error values after 25 seconds, reaching a relative error below 0 .25 at 240 seconds, approaching the lowest error values among all methods. The stochastic nature of FB–LISA is maintained throughout, since the mini–batch size grows from an initial Nbatch = 8 to Nbatch = 13, never reaching the full–batch regime. VMILA (teal) exhibits competitive convergence behavior in the early iterations but slows considerably after 150 seconds, eventually dropping sharply to approximately 0 .23 only at the very end of the run. FB (light blue) steadily progresses toward the solution, although at a slower rate, stagnating around a relative error of 0 .43 at termination. A–SPDHG (olive green) shows little progress in the first 100 seconds and converges to a final error of about 0.53, the worst among the iterative methods. Finally, the FDK baseline (blue, dotted) yields a relative error of 0.93, confirming its inadequacy for severely undersampled data. 9Figure 2: Relative error vs execution time in seconds for Case 3. 
+
+# 4 Conclusions 
+
+In this letter, we designed FB–LISA, a first–order stochastic method to handle nonsmooth objectives and solve large–scale, e.g., 3D CT problems. FB–LISA relies on adaptive strate-gies for both learning rate selection (via line–search) and mini–batch size increase. Notably, the mini–batch growth can be precomputed prior to execution, ensuring compliance with the memory limitations imposed by hardware accelerators. Overall, the results across all studied cases indicate that FB–LISA achieves better metrics while converging significantly faster toward the reference solution. Future work will focus on the application of FB–LISA to other large–scale imaging inverse problems characterized by computationally expensive forward models, and proving stronger convergence results, such as the almost sure convergence of the whole sequence. 
+
+# Acknowledgments 
+
+All authors are members of the Gruppo Nazionale per il Calcolo Scientifico (GNCS) of the Istituto Nazionale di Alta Matematica “Francesco Severi” (INdAM), which is kindly acknowledged. This work was partially supported through “Bando giovani ricercatori 2025 per progetti di ricerca finanziato con contributo 5x1000 anno finanziario 2023” by the De-partment of Mathematics and Computer Science of the University of Ferrara. 10 A Convergence results 
+
+This section provides the convergence analysis of the FB–LISA method. The analysis extends [19, Lemma 2.2, Theorem 2.1]. In particular, we prove the well–definiteness of the line–search and the almost sure stationarity of the limit points. 
+
+Lemma 2. Given problem (2.2) , suppose that fi : Rd → R, i = 1 , . . . , N , are differentiable functions with L–Lipschitz continuous gradient. Then the line–search employed by the FB– LISA method is well defined and the steplength αk satisfies: 
+
+˜α = βL < α k ≤ αmax .
+
+Proof. The Lipschitz continuity of ∇f allows to apply the descent lemma [3, Lemma 5.7] and state that 
+
+fNk (¯ x(k)) ≤ fNk (x(k)) + ⟨∇ fNk (x(k)), ¯x(k) − x(k)⟩ + L
+
+2 ∥¯x(k) − x(k)∥2. (A1) As a consequence, the line–search employed by the FB–LISA method for non–smooth com-posite optimization problem is well defined. Indeed any αk ≤ 1 
+
+> L
+
+satisfies inequality (3). Let s be the guess value for the line–search at the k–th iteration. If s does not satisfy inequality (3), then there exists ℓk > 0, such that αk = sβ ℓk satisfies (3), while αk/β does not. By the descent lemma [3, Lemma 5.7], this implies that αk/β > 1 
+
+> L
+
+, and therefore 
+
+αk > βL , ∀k. 
+
+Next, we prove our main result, Theorem 1, whose statement is provided in Section 2.2. 
+
+Proof. In view of the Lipschitz continuity of ∇f , we can apply the descent lemma [3, Lemma 5.7] and state that 
+
+f (x(k+1) ) ≤ f (x(k)) + ⟨∇ f (x(k)), x (k+1) − x(k)⟩ + L
+
+2 ∥x(k+1) − x(k)∥2. (A2) From the definitions of the proximal operator of αkR and the subdifferential of R, it follows that 1
+
+αk
+
+(x(k) − x(k+1) ) − ∇ fNk (x(k)) ∈ ∂R(x(k+1) )and 
+
+R(y) ≥ R (x(k+1) ) + ⟨ 1
+
+αk
+
+(x(k) − x(k+1) ) − ∇ fNk (x(k)), y − x(k+1) ⟩, ∀y ∈ Rd. (A3) For clarity, we introduce the following notation: 
+
+Gk = 1
+
+αk
+
+(x(k) − x(k+1) ); e(k) = ∇f (x(k)) − ∇ fNk (x(k)).
+
+11 By combining (A2) and (A3) with y = x(k), we get 
+
+f (x(k+1) ) + R(x(k+1) ) ≤ f (x(k)) + R(x(k)) + ⟨e(k) + Gk, x (k+1) − x(k)⟩ + L
+
+2 ∥x(k+1) − x(k)∥2
+
+= f (x(k)) + R(x(k)) + ⟨e(k) + Gk, −αkGk⟩ + L
+
+2 α2
+
+> k
+
+∥Gk∥2
+
+= f (x(k)) + R(x(k)) − αk⟨e(k), G k⟩ − αk∥Gk∥2 + L
+
+2 α2
+
+> k
+
+∥Gk∥2
+
+≤ f (x(k)) + R(x(k)) − αk∥Gk∥2 + αk
+
+2 ∥e(k)∥2 + αk
+
+2 ∥Gk∥2++ L
+
+2 α2
+
+> k
+
+∥Gk∥2
+
+= f (x(k)) + R(x(k)) − αk
+
+2 (1 − Lα k)∥Gk∥2 + αk
+
+2 ∥e(k)∥2
+
+≤ f (x(k)) + R(x(k)) − αk
+
+4 ∥Gk∥2 + αk
+
+2 ∥e(k)∥2,
+
+(A4) where the second inequality follows from the Young’s inequality 1 and the last inequality holds in view of the assumption on αmax .Now we obtain a bound for −∥ Gk∥2 related to Gf ull k = 1
+
+> αk
+
+ x(k)−prox αk R(x(k)−αk∇f (x(k))) .Particularly, 
+
+∥Gf ull k ∥2 = ∥Gf ull k − Gk + Gk∥2 = ∥Gf ull k − Gk∥2 + ∥Gk∥2 + 2 ⟨Gk, G f ull k − Gk⟩≤ ∥ Gf ull k − Gk∥2 + ∥Gk∥2 + ∥Gk∥2 + ∥Gf ull k − Gk∥2,
+
+where the inequality follows by again invoking the Young’s inequality. As a consequence, 
+
+∥Gk∥2 ≥ 12 ∥Gf ull k ∥2 − ∥ Gf ull k − Gk∥2. (A5) By plugging (A5) into (A4) we can write 
+
+f (x(k+1) ) + R(x(k+1) ) ≤ f (x(k)) + R(x(k)) − αk
+
+8 ∥Gf ull k ∥2 + αk
+
+4 ∥Gf ull k − Gk∥2 + αk
+
+2 ∥e(k)∥2
+
+= f (x(k)) + R(x(k)) − αk
+
+8 ∥Gf ull k ∥2 + αk
+
+2 ∥e(k)∥2++ αk
+
+4
+
+1
+
+αk
+
+
+
+x(k) − prox αk R(x(k) − αk∇f (x(k))) 
+
+
+
++
+
+− 1
+
+αk
+
+s
+
+
+
+x(k) − prox αk R(x(k) − αk∇fNk (x(k))) 
+
+ 2
+
+≤ f (x(k)) + R(x(k)) − αk
+
+8 ∥Gf ull k ∥2 + αk
+
+2 ∥e(k)∥2 + αk
+
+4 ∥e(k)∥2
+
+≤ f (x(k)) + R(x(k)) − ˜α
+
+8 ∥Gf ull k ∥2 + αmax 
+
+2 ∥e(k)∥2 + αmax 
+
+4 ∥e(k)∥2
+
+> 1
+
+Young’s inequality: aT b ≤ ∥a∥2 
+
+> 2ξ
+
++ ξ∥b∥2 
+
+> 2
+
+, ∀a, b ∈ Rd, ξ > 0
+
+12 where the equality follows by the definitions of Gf ull k and Gk, the second inequality is a consequence of the non–expansivity of the proximal operator of αkR and the last inequality holds since αk ∈ [˜ α, α max ]. By applying the conditional expected value with respect to the σ–algebra generated by the iterations x(0) , . . . , x (k) to both members of the previous inequality and considering the assumption on e(k), we get 
+
+Ek
+
+h
+
+f (x(k+1) ) + R(x(k+1) )
+
+i
+
+≤ f (x(k)) + R(x(k)) − ˜α
+
+8 ∥Gf ull k ∥2 + 34 αmax εk. (A6) By applying the total expected value, rearranging the terms, summing from 0 to K and using the telescopic cancellation, it holds that 
+
+> K
+
+X
+
+> k=0
+
+E[∥Gf ull k ∥2] ≤ 8( f (x(0) ) + R(x(0) ) − Finf )˜α + 3αmax ¯ε
+
+2˜ α , (A7) where ¯ ε exists since the sequence {εk} is summable by assumption and hence 
+
+> +∞
+
+X
+
+> k=0
+
+E[∥Gf ull k ∥2] < +∞.
+
+Moreover, by dividing both terms of (A7) by K, we obtain 1
+
+K
+
+> K
+
+X
+
+> k=0
+
+E[∥Gf ull k ∥2] ≤ 8( f (x(0) ) + R(x(0) ) − Finf )˜αK + 3αmax ¯ε
+
+2˜ αK .
+
+By subtracting Finf to both members in (A6), the Robbins–Siegmund lemma [27, Lemma 11, Sec 2.2.2] allows to conclude that P∞ 
+
+> k=0
+
+∥Gf ull k ∥2 < +∞, a.s. which implies that lim  
+
+> k→∞
+
+∥Gf ull k ∥2 = lim  
+
+> k→∞
+
+∥x(k) − prox αk R(x(k) − αk∇f (x(k))) ∥2 = 0 , a.s. (A8) Let us suppose that there exists a subsequence of {x(k)} that converges almost surely to ¯ x,namely there exists K ⊆ N such that lim  
+
+> k→∞ , k ∈K
+
+x(k) = ¯ x a.s. Since αk ∈ [˜ α, α max ] for all k, the sequence {αk}k∈K is bounded. Hence, there exist a subsequence K′ ⊆ K and a scalar ¯ α ∈ [˜ α, α max ] such that lim  
+
+> k→∞ , k ∈K ′
+
+αk = ¯ α. 
+
+Moreover, by (A8), it holds that lim  
+
+> k→∞
+
+x(k) − prox αk R
+
+ x(k) − αk∇f (x(k)) = 0 a.s. 13 Therefore, along the subsequence K′,
+
+x(k) − prox αk R
+
+ x(k) − αk∇f (x(k)) → 0 a.s. By continuity of ∇f and of the proximal operator with respect to both its argument and the parameter α, we obtain lim  
+
+> k→∞ , k ∈K ′
+
+prox αk R
+
+ x(k) − αk∇f (x(k)) = prox ¯αR
+
+ ¯x − ¯α∇f (¯ x) a.s. Hence, ¯x = prox ¯αR
+
+ ¯x − ¯α∇f (¯ x) a.s. which is equivalent to 0 ∈ ∇ f (¯ x) + ∂R(¯ x).
+
+Therefore, ¯ x is a stationary point of problem (2), almost surely. 
+
+# References 
+
+[1] A. H. Andersen and A. C. Kak. Simultaneous algebraic reconstruction technique (sart): a superior implementation of the art algorithm. Ultrasonic imaging , 6(1):81–94, 1984. [2] J. Barzilai and J. M. Borwein. Two-point step size gradient methods. IMA Journal of Numerical Analysis , 8:141–148, 1988. [3] A. Beck. First-order methods in optimization . SIAM, 2017. [4] S. Bonettini, I. Loris, F. Porta, and M. Prato. Variable metric inexact line-search-based methods for nonsmooth optimization. SIAM Journal on Optimization , 26(2):891–921, 2016. [5] L. Bottou, F. E. Curtis, and J. Nocedal. Optimization methods for large-scale machine learning. SIAM Review , 60(2):223–311, 2018. [6] S. Boyd, N. Parikh, E. Chu, B. Peleato, and J. Eckstein. Distributed optimization and statistical learning via the alternating direction method of multipliers. Foundations and Trends in Machine learning , 3(1):1–22, 2011. [7] R. Cavicchioli, J. C. Hu, E. Loli Piccolomini, E. Morotti, and L. Zanni. Gpu accel-eration of a model-based iterative method for digital breast tomosynthesis. Scientific reports , 10(1):43, 2020. [8] A. Chambolle, C. Delplancke, M. J. Ehrhardt, C.-B. Sch¨ onlieb, and J. Tang. Stochastic primal–dual hybrid gradient algorithm with adaptive step sizes. Journal of Mathemat-ical Imaging and Vision , 66:294–313, 2024. 14 [9] A. Chambolle, M. J. Ehrhardt, P. Richt´ arik, and C.-B. Sch¨ onlieb. Stochastic primal-dual hybrid gradient algorithm with arbitrary sampling and imaging applications. 
+
+SIAM Journal on Optimization , 28:2783–2808, 2018. [10] A. Chambolle and T. Pock. A first-order primal-dual algorithm for convex problems with applications to imaging. Journal of Mathematical Imaging and Vision , 40(1):120– 145, 2011. [11] P. L. Combettes and V. R. Wajs. Signal recovery by proximal forward-backward split-ting. Multiscale Modeling & Simulation , 4(4):1168–1200, 2005. [12] L. Condat. A primal–dual splitting method for convex optimization involving lips-chitzian, proximable and linear composite terms. Journal of optimization theory and applications , 158(2):460–479, 2013. [13] C. Dossal, S. Hurault, and N. Papadakis. Optimization with first order algorithms. 
+
+arXiv preprint arXiv:2410.19506 , 2024. [14] M. J. Ehrhardt, ˇZ. Kereta, J. Liang, and J. Tang. A guide to stochastic optimisation for large-scale inverse problems. Inverse Problems , 41(5), 2025. [15] M. J. Ehrhardt, P. J. Markiewicz, and C.-B. Sch¨ onlieb. Faster pet reconstruction with non-smooth priors by randomization and preconditioning. Physics in Medicine & Biology , 64:225019, 2019. [16] H. Erdogan and J. A. Fessler. Ordered subsets algorithms for transmission tomography. 
+
+Phys. Med. Biol. , 44(11):2835, 1999. [17] L. A. Feldkamp, L. C. Davis, and J. W. Kress. Practical cone-beam algorithm. Journal of the Optical Society of America A , 1(6):612–619, 1984. [18] G. Franchini, F. Porta, V. Ruggiero, and I. Trombini. A line search based proximal stochastic gradient algorithm with dynamical variance reduction. Journal of Scientific Computing , 94:23, 2023. [19] G. Franchini, F. Porta, V. Ruggiero, I. Trombini, and L. Zanni. A stochastic gradient method with variance control and variable learning rate for deep learning. Journal of Computational and Applied Mathematics , 451:116083, 2024. [20] G. Frassoldati, G. Zanghirati, and L. Zanni. New adaptive stepsize selections in gra-dient methods. J. Ind. Manag. Optim. , 4(2):299–312, 2008. [21] G. T. Herman and L. B. Meyer. Algebraic reconstruction techniques can be made computationally efficient (positron emission tomography application). IEEE Trans. Med. Imag. , 12(3):600–609, 1993. [22] A. C. Kak and M. Slaney. Principles of computerized tomographic imaging . SIAM, 2001. 15 [23] D. Kim, S. Ramani, and J. A. Fessler. Combining ordered subsets and momentum for accelerated x-ray ct image reconstruction. IEEE Trans. Med. Imag. , 34(1):167–178, 2015. [24] M. Lazzaretti, Z. Kereta, C. Estatico, and L. Calatroni. Stochastic gradient descent for linear inverse problems in variable exponent lebesgue spaces. In International Con-ference on Scale Space and Variational Methods in Computer Vision , pages 457–470. Springer, 2023. [25] A. Meaney. Cone-beam computed tomography dataset of a walnut (1.1.0) [data set]. 
+
+Zenodo , 2022. [26] E. Papoutsellis, M. A. G. Duff, J. S. Jørgensen, S. Porter, C. Delplancke, G. Fardell, E. Pasca, and K. Thielemans. A modular approach to stochastic optimisation for inverse problems using the core imaging library. arXiv preprint arXiv:2603.21230 ,2026. [27] B. Polyak. Introduction to Optimization . Optimization Software, New York, 1987. [28] R. Reisenhofer, S. Bosse, G. Kutyniok, and T. Wiegand. A Haar Wavelet-Based Percep-tual Similarity Index for Image Quality Assessment. Signal Process. Image , 61:33–43, 2018. [29] J. Tang, K. Egiazarian, and M. Davies. The limitation and practical acceleration of stochastic gradient algorithms in inverse problems. In IEEE, editor, ICASSP 2019- 2019 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP) , pages 7680–7684, 2019. [30] J. Tang, K. Egiazarian, M. Golbabaee, and M. Davies. The practicality of stochas-tic optimization in imaging inverse problems. IEEE Transactions on Computational Imaging , 6:1471–1485, 2020. [31] W. Van Aarle, W. J. Palenstijn, J. Cant, E. Janssens, F. Bleichrodt, A. Dabravolski, J. De Beenhouwer, K. J. Batenburg, and J. Sijbers. Fast and flexible X-ray tomography using the ASTRA toolbox. Optics express , 24(22):25129–25147, 2016. [32] Z. Wang, A. C. Bovik, H. R. Sheikh, and E. P. Simoncelli. Image quality assessment: from error visibility to structural similarity. IEEE transactions on image processing ,13(4):600–612, 2004. 16

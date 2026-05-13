@@ -6,49 +6,49 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-12
-- 运行时间：2026-05-12 21:23:08 UTC
+- 最新运行日期：2026-05-13
+- 运行时间：2026-05-13 20:49:35 UTC
 - 运行状态：成功
 - 本次总论文数：9
-- 精读区：3
-- 速读区：6
+- 精读区：1
+- 速读区：8
 
 ### 今日简报（AI）
-今日精选 9 篇论文，深度探索低成本 NeRF 构建与动态 3D 高斯泼溅（GS）的流媒体优化技术。
-重点关注 9.0 分的低成本 NeRF 方案，以及通过颜色自适应显著提升 3D 视频传输效率的 CAGS 框架。
-建议普通读者留意 GS 在自动驾驶修复及胎儿脑部建模等垂直领域的落地潜力。
-- 详情：[/202605/12/README](/202605/12/README)
+今日聚焦 GAN 驱动的气象辐射模拟与 4D 高斯泼溅动态重建，深度解析 9 篇前沿成果。
+重点关注评分 9.0 的随机云生成器对辐射场评估的提升，以及 4DGS 在带宽自适应流传输中的最新进展。
+推荐气象科研人员探索生成式模型应用，开发者可关注动态场景重建在流媒体领域的落地潜力。
+- 详情：[/202605/13/README](/202605/13/README)
 
 ### 精读区论文标签
-1. [Low-Cost Neural Radiance Fields](/202605/12/2605.09312v1-low-cost-neural-radiance-fields)  
-   标签：评分：9.0/10、query:q7
-   evidence：加速NeRF变体和神经辐射架构优化
-2. [CAGS: Color-Adaptive Volumetric Video Streaming with Dynamic 3D Gaussian Splatting](/202605/12/2605.09279v1-cags-color-adaptive-volumetric-video-streaming-with-dynamic-3d-gaussian-splatting)  
-   标签：评分：8.0/10、query:profile-1
-   evidence：体积视频流与3D高斯泼溅
-3. [Predicting 3D structure by latent posterior sampling](/202605/12/2605.10830v1-predicting-3d-structure-by-latent-posterior-sampling)  
-   标签：评分：8.0/10、query:q1
-   evidence：基于NeRF的表示与神经场建模
+1. [Assessment of cloud and associated radiation fields from a GAN stochastic cloud subcolumn generator](/202605/13/2605.11968v1-assessment-of-cloud-and-associated-radiation-fields-from-a-gan-stochastic-cloud-subcolumn-generator)  
+   标签：评分：9.0/10、query:q5
+   evidence：用于随机云子柱生成与模拟的GAN和CVAE方法
 
 ### 速读区论文标签
-1. [ConFixGS: Learning to Fix Feedforward 3D Gaussian Splatting with Confidence-Aware Diffusion Priors in Driving Scenes](/202605/12/2605.09688v1-confixgs-learning-to-fix-feedforward-3d-gaussian-splatting-with-confidence-aware-diffusion-priors-in-driving-scenes)  
-   标签：评分：7.0/10、query:q1
-   evidence：前馈3D高斯泼溅与神经渲染
-2. [INFANiTE: Implicit Neural representation for high-resolution Fetal brain spatio-temporal Atlas learNing from clinical Thick-slicE MRI](/202605/12/2605.09977v1-infanite-implicit-neural-representation-for-high-resolution-fetal-brain-spatio-temporal-atlas-learning-from-clinical-thick-slice-mri)  
-   标签：评分：7.0/10、query:q1
-   evidence：用于体积重建的隐式神经表示
-3. [PaMoSplat: Part-Aware Motion-Guided Gaussian Splatting for Dynamic Scene Reconstruction](/202605/12/2605.10307v1-pamosplat-part-aware-motion-guided-gaussian-splatting-for-dynamic-scene-reconstruction)  
-   标签：评分：7.0/10、query:q1
-   evidence：用于场景重建的动态高斯泼溅
-4. [DySurface: Consistent 4D Surface Reconstruction via Bridging Explicit Gaussians and Implicit Functions](/202605/12/2605.10360v1-dysurface-consistent-4d-surface-reconstruction-via-bridging-explicit-gaussians-and-implicit-functions)  
+1. [DySurface: Consistent 4D Surface Reconstruction via Bridging Explicit Gaussians and Implicit Functions](/202605/13/2605.10360v2-dysurface-consistent-4d-surface-reconstruction-via-bridging-explicit-gaussians-and-implicit-functions)  
    标签：评分：7.0/10、query:q1
    evidence：神经辐射场与动态场景渲染
-5. [FrameTwin: Curve-Anchored Gaussian Alignment from Sparse Views for Adaptive Wireframe 3D Printing](/202605/12/2605.09362v1-frametwin-curve-anchored-gaussian-alignment-from-sparse-views-for-adaptive-wireframe-3d-printing)  
+2. [VidSplat: Gaussian Splatting Reconstruction with Geometry-Guided Video Diffusion Priors](/202605/13/2605.11424v1-vidsplat-gaussian-splatting-reconstruction-with-geometry-guided-video-diffusion-priors)  
+   标签：评分：7.0/10、query:q1
+   evidence：结合扩散先验的高斯泼溅重建
+3. [PD-4DGS:Progressive Decomposition of 4D Gaussian Splatting for Bandwidth-Adaptive Dynamic Scene Streaming](/202605/13/2605.11427v1-pd-4dgsprogressive-decomposition-of-4d-gaussian-splatting-for-bandwidth-adaptive-dynamic-scene-streaming)  
+   标签：评分：7.0/10、query:q1
+   evidence：用于动态场景渲染的4D高斯泼溅
+4. [GeoQuery: Geometry-Query Diffusion for Sparse-View Reconstruction](/202605/13/2605.12399v1-geoquery-geometry-query-diffusion-for-sparse-view-reconstruction)  
+   标签：评分：7.0/10、query:q1
+   evidence：用于新视角合成和重建的3D高斯泼溅技术
+5. [Kinematics-Driven Gaussian Shape Deformation for Blurry Monocular Dynamic Scenes](/202605/13/2605.08635v1-kinematics-driven-gaussian-shape-deformation-for-blurry-monocular-dynamic-scenes)  
    标签：评分：6.0/10、query:q1
-   evidence：具有神经变形场和高斯核的可微分渲染流水线
-6. [Geometric 4D Stitching for Grounded 4D Generation](/202605/12/2605.09984v1-geometric-4d-stitching-for-grounded-4d-generation)  
-   标签：评分：6.0/10、query:q1
-   evidence：基于辐射的表示与场景重建
+   evidence：用于动态场景重建的高斯形状变形
+6. [VeloGauss: Learning Physically Consistent Gaussian Velocity Fields from Videos](/202605/13/2605.10567v1-velogauss-learning-physically-consistent-gaussian-velocity-fields-from-videos)  
+   标签：评分：6.0/10、query:profile-1
+   evidence：利用高斯场从动态视频中建模几何与外观
+7. [3DGS$^3$: Joint Super Sampling and Frame Interpolation for Real-Time Large-Scale 3DGS Rendering](/202605/13/2605.11489v1-3dgs3-joint-super-sampling-and-frame-interpolation-for-real-time-large-scale-3dgs-rendering)  
+   标签：评分：6.0/10、query:q7
+   evidence：通过超采样和帧插值加速3D高斯泼溅渲染
+8. [A Line--Search--Based Stochastic Gradient Method for 3D Computed Tomography](/202605/13/2605.12085v1-a-line--search--based-stochastic-gradient-method-for-3d-computed-tomography)  
+   标签：评分：6.0/10、query:q7
+   evidence：利用深度学习概念加速体积重建
 
 
 <div class="dpr-home-promo-card">

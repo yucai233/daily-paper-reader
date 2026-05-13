@@ -1,0 +1,233 @@
+Title: VeloGauss: Learning Physically Consistent Gaussian Velocity Fields from Videos
+
+URL Source: https://arxiv.org/pdf/2605.10567v1
+
+Published Time: Tue, 12 May 2026 03:24:45 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+# VeloGauss: Learning Physically Consistent Gaussian Velocity Fields from Videos 
+
+Nengbo Lu, Bin Zhao *
+
+Guangxi Key Laboratory of Robot Intelligent Perception and Control, School of Artificial Intelligence, Guilin University of Electronic Technology, Guilin, 541004, China zhaobinnku@mail.nankai.edu.cn 
+
+Abstract —In this paper, we aim to jointly model the geometry, appearance, and physical information of 3D scenes solely from dynamic multi-view videos, without relying on any physical priors. Existing works typically employ physical losses merely as soft constraints or integrate physical simulations into neural networks; however, these approaches often fail to effectively learn complex motion physics. Although modeling velocity fields holds the potential to capture authentic physical information, due to the lack of appropriate physical constraints, current methods are unable to correctly learn the interaction mechanisms between rigid and non-rigid particles. To address this, we propose VeloGauss, designed to learn the physical properties of complex dynamic 3D scenes without physical priors. Our method learns the velocity field for each Gaussian particle by introducing a Physics Code and a Particle Dynamics System, and ultimately incorporates Global Physical Constraints to ensure the physical consistency of the scene. Extensive experiments on four public datasets demonstrate that our method outperforms achieves state-of-the-art performance in both Novel View Interpolation and Future Frame Extrapolation tasks. To adhere to the principles of Double-Blind Review, we anonymously provide the code at https://github.com/DustSettled/VeloGauss 
+
+Index Terms —3D Gaussian Splatting, Dynamic Scene Model-ing, Particle Dynamics, Future Frame Extrapolation 
+
+I. I NTRODUCTION 
+
+Modeling dynamic 3D scenes from monocular or multi-view videos remains a central pursuit in computer vision. In recent years, the emergence of Neural Radiance Fields (NeRF) [1] and 3D Gaussian Splatting (3DGS) [2] has significantly enriched the spectrum of representations available for dynamic scene reconstruction. Initially, NeRF leveraged implicit neural networks and Volumetric Rendering to enable continuous scene representation and high-fidelity novel view synthesis. Subsequently, 3DGS introduced an explicit representation based on 3D Gaussian ellipsoids. By utilizing efficient Dif-ferentiable Rasterization to replace computationally expensive ray marching, 3DGS has achieved real-time rendering speeds while maintaining photorealistic quality. However, extending this success from static to dynamic scenes still poses severe challenges. To address object motion, existing dynamic 3DGS methods typically employ Temporal Latent Codes [4], [5] to modulate Gaussian attributes or utilize continuous Explicit Deformation Fields [6]–[9] to fit scene variations. While these approaches perform remarkably 
+
+> *
+
+Corresponding author. This work was supported by NSFC under 62566017 
+
+Fig. 1: Our approach achieves superior efficiency and signifi-cantly outperforms existing methods [2], [3], both within and beyond the observed time horizon. well within the observed time horizon, achieving high-quality modeling results, they fundamentally amount to geometric overfitting of the observed data. The lack of understanding regarding underlying physical mechanisms leads to poor gen-eralization capabilities on unseen timestamps. Consequently, it becomes difficult to guarantee that motion trajectories adhere to basic physical conservation laws, thereby precluding reliable prediction of future frames, as shown in Figure 1. To understand underlying physical mechanisms and learn intrinsic physical information, existing research primarily falls into two categories. The first involves the explicit integration of physics models [10]–[12], attempting to couple 3DGS with traditional solvers such as the Material Point Method (MPM). While physically rigorous, these methods typically require laborious manual tuning of material parameters and precise ge-ometric initializations [13]. Furthermore, they struggle to infer unknown physical properties directly from raw video inputs. The second category employs Physics-Informed Neural Net-works (PINNs) [14] to integrate Partial Differential Equations (PDEs) into the learning objective [15]. However, the direct application of traditional PINNs faces numerous challenges. They are generally difficult to optimize and computationally inefficient due to the calculation of high-order derivatives. Moreover, they are prone to over-smoothing, where physical constraints conflict with visual reconstruction losses during 
+
+> arXiv:2605.10567v1 [cs.CV] 11 May 2026
+
+early training, leading to issues such as blurred boundaries. Additionally, these methods often rely on strong priors [16], [17], such as object masks, which significantly limits their generalizability to unconstrained videos. In this paper, we introduce a novel framework designed to model complex dynamic 3D scenes and parse their physical characteristics [18], [19] solely from multi-view RGB videos, without relying on any manual annotations. Among various physical attributes, we establish Velocity as the core learnable primitive. Serving as a natural bridge connecting instantaneous geometry with underlying physical mechanisms, the velocity field offers a unique dual advantage: it not only enables physically consistent Future Extrapolation [20], [21] via time integration but also allows for direct regularization by physical laws. However, accurately learning physically compliant velocity solely from RGB videos is extremely challenging, fundamen-tally because Gaussian primitives in the raw 3D space lack sufficient physical constraints [22], [23]. This difficulty is further exacerbated by complex motion discrepancies among multiple objects. Based on this insight, we propose to con-struct an independent dynamics system for every particle, encompassing both rigid and non-rigid types. Following the laws of classical mechanics, we decompose particle motion into self-centric translation, rotation, scaling, and shear. By learning this comprehensive set of dynamic parameters for each particle, we can construct a velocity field that strictly adheres to the scene’s physical rules. Furthermore, we argue that the limitations of PINNs in 3DGS applications stem not from the physical equations themselves, but from the representation and optimization strategies employed. To this end, our framework introduces a robust learning strategy that innovatively unifies Lagrangian particle tracking with Eulerian velocity fields, thereby imposing effective and robust physical constraints on dynamic scene reconstruction [8], [24], [25]. As shown in Figure 2, our framework consists of three syn-ergistic core components: 1) 3D Scene Representation Module: Built upon 3DGS, this module is responsible for efficiently representing the dynamic scene geometry and appearance details within the observed time horizon; 2) Particle Dynamics System Module: Designed to estimate a complete set of physical parameters for each input particle. Utilizing a Velocity Decomposition strategy, this module employs Multilayer Per-ceptrons (MLPs) to predict instantaneous particle motion states and derives a physically compliant velocity field in accordance with the laws of classical mechanics; 3) Physical Constraint Module: Dedicated to enforcing global physical consistency during the learning process. This is realized through an op-timized and re-engineered PINN, ensuring that the generated motion trajectories adhere to physical conservation laws. To mitigate the inaccuracy and instability of Gaussian kernel regression during early training stages, we strategically introduce an Auxiliary Deformation Field within our second module for parallel optimization. Distinct from prevailing dynamic approaches based on NeRF and 3DGS, our core innovation lies in the deep integration of a Particle Dynamics System and a Physical Constraint Module. This design en-ables the model to go beyond simple geometric fitting and truly learn the underlying physical mechanisms of the scene, achieving significant performance gains in both interpolation reconstruction and Future Frame Extrapolation. We name our method VeloGauss, which leverages 3D Gaussians as a foundation to accurately model scene geometry and appear-ance, resolves complex motion relationships by learning a microscopic particle dynamics system, and incorporates global physical constraints to optimize the entire learning process. Our main contributions are summarized as follows:  
+
+> •
+
+We propose a physics-aware general framework capable of modeling complex dynamic 3D scenes solely from RGB videos, without requiring any manual annotations or prior physical knowledge.  
+
+> •
+
+We construct a per-particle dynamics system that accu-rately characterizes the motion parameters of each parti-cle, allowing for the bottom-up derivation of a continuous and physically compliant velocity field based on classical mechanics.  
+
+> •
+
+We design a physical constraint optimization mechanism that utilizes governing equations as regularization terms. This effectively suppresses non-physical artifacts and empowers the model with reliable capabilities for future frame prediction. II. METHOD 
+
+A. Canonical 3D Representation 
+
+To effectively decouple geometry from motion, we establish a Canonical Space defined at the reference timestamp t = 0 .Unlike implicit neural representations, we adopt the explicit 3DGS as the underlying scene representation. This particle-based representation naturally aligns with our Lagrangian perspective, where each Gaussian primitive is treated as an independent physical entity. Formally, the canonical scene consists of a set of 3D Gaussian primitives G = {G1, . . . , G N }. Each particle Gi is parameterized by a set of learnable attributes: center position 
+
+μi ∈ R3 in the world coordinate system, anisotropic scaling factor si ∈ R3, rotation quaternion qi ∈ R4 representing spatial pose, opacity αi ∈ [0 , 1] , and Spherical Harmonic (SH) coefficients ci for view-dependent color modeling. To introduce rigid body dynamics constraints, we regard each Gaussian kernel as a rigid particle with non-zero volume. Its covariance matrix Σi can be expressed as 
+
+Σi = RiSiSTi RTi , (1) where Ri is the rotation matrix derived from qi, and Si is the diagonal scaling matrix derived from si.During the rendering phase, the deformed Gaussian particles are projected onto the 2D image plane via differentiable rasterization. The final pixel color C is synthesized using the standard α-blending formula 
+
+C = X
+
+> i∈N
+
+ciαii−1Y
+
+> j=1
+
+(1 − αj ), (2) Fig. 2: Taking multi-view RGB video streams as input, our method first employs a physics encoder to identify per-particle latent physics codes. Driven by these codes, the Physically-Grounded Affine Velocity Model explicitly factorizes complex hybrid dynamics into a representation spanned by 12 physical basis functions. The velocity field learning is rigorously regularized by Global Physical Consistency, while an Auxiliary Deformation Field is incorporated to capture residual high-frequency geometric details. 
+
+Fig. 3: Network framework for constructing the Gaussian velocity field by learning basic velocity components. where N denotes the set of ordered Gaussians overlapping the pixel. 
+
+B. Particle Dynamics System 
+
+This module is designed to precisely identify the phys-ical parameters governing each Gaussian primitive, thereby enabling accurate modeling of the microscopic Gaussian ve-locity field. Real-world dynamic 3D scenes exhibit immense spatiotemporal complexity, where the evolution typically man-ifests as a hybrid dynamic process characterized by the in-tertwining of rigid body motions and non-rigid deformations. Given that directly modeling such a globally coupled field is prohibitively challenging, we focus on decoupling and learning the kinematic characteristics of individual Gaussian particles. This design strategy significantly reduces optimization com-plexity, rendering the learning of physical mechanisms in complex scenes highly efficient. To effectively mitigate the complexity of learning high-dimensional velocity fields while strictly enforcing physical plausibility, we propose a Physically-Grounded Affine Veloc-ity Model , as shown in Figure 3. Distinct from conventional paradigms that utilize black-box networks to directly regress per-point displacements, we adopt a Spatiotemporal Decou-pling strategy. This approach decomposes complex dynamics into explicit spatial geometric structures and implicit temporal evolution coefficients . We formulate the instantaneous motion of any local region within the dynamic scene as a 12-degree-of-freedom affine transformation. Accordingly, the velocity field v(x, t ) is parameterized as a time-varying linear com-bination of a set of fixed physical basis functions. We define a spatial basis function bank Φ(x) = [ ϕ1(x), . . . , ϕ12 (x)] ,where x ∈ R3 denotes the particle’s canonical position. These bases comprehensively cover all degrees of freedom for 3D affine transformations. For any arbitrary spatial coordinate 
+
+x = [ x, y, z ]T , these basis functions are explicitly constructed as: 
+
+Φ(x) = [I3]
+
+|{z} 
+
+> Translation
+
+⊕
+
+ 0 z −y    
+
+> −z0xy−x0
+
+| {z }
+
+> Rotation
+
+⊕ [diag (x)] 
+
+| {z }
+
+> Stretch
+
+⊕
+
+h y 0 zx z 00 y x 
+
+i| {z }
+
+> Shear
+
+, (3) where I3 denotes the identity matrix, and ⊕ represents the column-wise concatenation operation. As shown in Figure 3, this explicit construction affords interpretability, ensuring that the learned velocity field inherently adheres to geometric con-straints, thereby preventing non-physical distortions commonly observed in unstructured implicit fields. Given that the spatial structure is explicitly parameterized by Φ(x), the problem of dynamics learning is effectively reduced to estimating the weighting coefficients of these basis functions as they evolve over time. However, complex dynamic scenes typically exhibit significant motion hetero-geneity , containing multiple objects with distinct kinematic patterns. Consequently, a single set of global coefficients is evidently insufficient to capture such spatially variant dynam-ics. To address this limitation, we introduce a latent Physics Code zi ∈ RL. Extracted via an encoder from the particle’s canonical position, this code aims to encapsulate the intrinsic physical attributes of the particle. Subsequently, we employ a lightweight coefficient prediction network Fcoef to accurately regress the time-varying dynamics weights wi(t) ∈ R12 ,conditioned on the current timestamp t and the specific physics code zi as: 
+
+wi(t) = Fcoef (t, zi). (4) Although the aforementioned Affine Velocity Model and Physics Code effectively characterize macroscopic motions ad-hering to physical laws, real-world dynamic scenes frequently exhibit complex, subtle deformations that are ill-suited for de-scription by a strictly affine model. To address this limitation, TABLE I: Quantitative evaluation of novel view interpolation and future frame extrapolation on the Dynamic Object and Dynamic Indoor Scene datasets [21].                                                                                                                                                                 
+
+> Method Dynamic Object Dataset Dynamic Indoor Scene Dataset Interpolation Extrapolation Interpolation Extrapolation PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓
+> T-NeRF [26] 13.163 0.709 0.353 13.818 0.739 0.324 24.944 0.742 0.336 22.242 0.700 0.363 D-NeRF [26] 14.158 0.697 0.352 14.660 0.737 0.312 25.380 0.746 0.300 20.791 0.692 0.369 T-NeRF PINN 15.286 0.794 0.293 16.189 0.835 0.230 26.250 0.461 0.638 23.290 0.477 0.414 HexPlane PINN [27] 27.042 0.958 0.057 21.419 0.946 0.067 25.215 0.763 0.389 23.091 0.742 0.401 NSFF [28] ------29.365 0.829 0.278 24.163 0.795 0.289 TiNeuVox [29] 27.988 0.960 0.063 19.612 0.940 0.073 29.982 0.864 0.213 21.069 0.909 0.281 NVFi [21] 29.027 0.970 0.039 27.549 0.972 0.036 30.675 0.877 0.211 29.745 0.876 0.204 DefGS [3] 37.865 0.994 0.007 19.894 0.949 0.045 30.920 0.916 0.130 21.380 0.819 0.188 DefGS nvfi 37.316 0.994 0.008 28.749 0.984 0.013 29.176 0.915 0.133 31.096 0.945 0.077 TRACE [30] ---31.597 0.987 0.009 ---34.824 0.965 0.054 FreeGave [20] 39.393 0.995 0.005 31.987 0.990 0.007 32.287 0.930 0.092 35.019 0.966 0.051 Ours 40.493 0.995 0.005 35.683 0.991 0.006 33.008 0.930 0.091 37.003 0.966 0.050
+
+Fig. 4: Qualitative comparison of rendering results against other models on the Dynamic Indoor Scene Dataset. We adopt the rendering settings from FreeGave [20]. we introduce a Residual Auxiliary Deformation Field . This module is implemented via a MLP, denoted as FMLP . It accepts three core inputs: the particle’s canonical position x(0)  
+
+> i
+
+, which provides spatial context; the time embedding γ(t), indicating the current evolutionary stage; and the Physics Code zi, which is utilized to modulate deformation patterns based on object-specific local features. Its formula is 
+
+(∆ xt, ∆qt, ∆st) = FMLP (γ(x(0)  
+
+> i
+
+), γ (t), zi). (5) TABLE II: Quantitative results for novel view interpolation and future frame extrapolation on the Dynamic Multipart dataset [30], rendered at a resolution of 960 × 540.                                                             
+
+> Dynamic Multipart Dataset Interpolation Extrapolation PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓
+> T-NeRF [26] ---10.064 0.576 0.537 D-NeRF [26] ---13.344 0.767 0.340 TiNeuVox [29] ---20.804 0.923 0.090 NVFi [21] ---25.235 0.955 0.046 DefGS [3] 28.061 0.942 0.055 20.664 0.930 0.067 DefGS nvfi ---28.455 0.979 0.017 TRACE [30] 35.134 0.893 0.017 33.481 0.990 0.007 FreeGave [20] 35.631 0.990 0.016 34.667 0.990 0.007 Ours 35.976 0.990 0.016 34.880 0.992 0.007
+
+The network directly derives three correction quantities rel-ative to the physically deduced state at the current timestamp: displacement correction ∆xt, rotation correction ∆qt, and scaling correction ∆st. Ultimately, the final state components 
+
+si(t), qi(t), and xi(t) of particle Gi at time t are obtained by superimposing the base states s* 
+
+> i
+
+(t), q* 
+
+> i
+
+(t), and x* 
+
+> i
+
+(t) derived from physical integration with their corresponding corrections 
+
+
+
+xi(t) = x∗ 
+
+> i
+
+(t) + ∆ xt(t)
+
+qi(t) = q∗ 
+
+> i
+
+(t) ⊗ ∆qt(t),
+
+si(t) = s∗ 
+
+> i
+
+(t) · exp(∆ st(t)) 
+
+(6) where x* 
+
+> i
+
+(t), q* 
+
+> i
+
+(t), and s* 
+
+> i
+
+(t) are derived from the Affine Velocity Model. This design ensures that the dominant motion strictly adheres to physical laws, while simultaneously endow-ing the model with the flexibility to capture high-frequency geometric details. 
+
+C. Global Physical Consistency 
+
+To ensure that the learned dynamics strictly adhere to the laws of fluid mechanics and maintain physical consistency in unobserved regions, we employ Global Physical Con-straints . During each training iteration, we randomly sample a batch of collocation points within the spatiotemporal region of interest. Crucially, these points are not confined to the locations of Gaussian particles but span the entire motion space, thereby ensuring the continuity of the velocity field. For each collocation point, we evaluate its velocity field v
+
+and enforce constraints on the network-predicted acceleration 
+
+a and velocity v via the transport equation as 
+
+Dv
+
+Dt = a =⇒ ∂v
+
+∂t + grad( v) · v − a = 0 , (7) 
+
+∂ρ ∂t + ∇ · (ρv) = 0 ρ=const 
+
+−−−−−−−−→ 
+
+> Incompressible
+
+∇ · v = 0 . (8) III. EXPERIMENTS 
+
+Datasets: Our method aims to extract underlying physical information from 3D dynamic videos, thereby empowering the model with Future Frame Extrapolation capabilities beyond the observed time horizon, rather than being confined to TABLE III: Quantitative results for novel view interpolation and future frame extrapolation on the NVIDIA Dynamic Scene dataset.                                                                                          
+
+> Truck Skating Interpolation Extrapolation Interpolation Extrapolation Model PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓PSNR ↑SSIM ↑LPIPS ↓
+> TiNeuVox [29] 27.230 0.846 0.229 24.887 0.848 0.209 29.377 0.889 0.202 24.224 0.878 0.220 HexPlane PINN [27] 25.494 0.768 0.337 24.991 0.768 0.325 24.447 0.867 0.225 23.955 0.868 0.232 NVFi [21] 27.276 0.840 0.235 28.269 0.855 0.220 26.999 0.848 0.227 28.654 0.896 0.208 TRACE [30] 28.316 0.834 0.090 29.252 0.923 0.067 28.198 0.905 0.096 29.409 0.941 0.073 FreeGave [20] 28.584 0.886 0.090 29.954 0.930 0.067 26.589 0.899 0.106 28.391 0.935 0.076 Ours 28.924 0.886 0.090 30.304 0.931 0.064 28.583 0.902 0.010 28.665 0.935 0.080
+
+traditional View Interpolation. To comprehensively evaluate the performance of our method across diverse scenarios, we conduct experiments on the following four datasets:1) 
+
+Dynamic Object Dataset : Consisting of 6 dynamic objects that encompass a wide range of unique motion patterns, from simple rigid body motions to complex non-rigid deformations. 2) Dynamic Indoor Scene Dataset : Comprising 4 complex indoor scenes. Each scene consists of multiple objects ex-hibiting distinct trajectories and physical properties, presenting high scene complexity. 3) NVIDIA Dynamic Scene Dataset :Containing two highly challenging real-world dynamic 3D scenes, used to verify the model’s generalization capabilities on real-world data. 4) Dynamic Multipart Dataset : Including 4 complex multi-part objects, where distinct parts exhibit diverse motion patterns. 
+
+Comparisons: To comprehensively evaluate the perfor-mance of VeloGauss, we select a representative set of methods spanning diverse technical paradigms. As the most relevant physics-aware approach, 1) NVFi [21] incorporates physical constraints but relies entirely on implicit PINN losses to learn priors, whereas we dedicate our effort to constructing a structured dynamics system specifically for explicit Gaussian particles. Within the NeRF framework, we compare against 
+
+2) D-NeRF [26], 3) T-NeRF [26], 4) TiNeuVox [29], and 5) NSFF [28]. However, these methods lack the capability for explicit particulate modeling of 3D geometry and appearance, generally falling short of 3DGS-based approaches in terms of both rendering fidelity and inference speed. Regarding 3DGS-based representations, we select 6) DefGS [3], which achieves high-quality novel view interpolation via deformation fields but inherently lacks the capacity for physical extrapolation. To bridge this gap, we construct a hybrid baseline, denoted as 7) DefGS NVFi , by integrating DefGS with the velocity field mechanism from NVFi, thereby enabling both novel view syn-thesis and extrapolation. Finally, we include 8) FreeGave [20] and 9) TRACE [30], representing the current state-of-the-art in dynamic 3D Gaussian Splatting, both of which utilize a novel framework combining auxiliary deformation fields with Gaussian velocity fields. To ensure strict fairness in comparison, we align the training settings of FreeGave exactly with those of VeloGauss. 
+
+Metrics: For the tasks of Novel View Interpolation and Future Frame Extrapolation, we report standard metrics for RGB view synthesis, including PSNR , SSIM , and LPIPS .
+
+A. Evaluation for Future Frame Extrapolation 
+
+We evaluate our method across all four datasets, covering the core tasks of Novel View Interpolation and Future Frame Extrapolation. All comparative methods are primarily evalu-ated on the two standard benchmarks: the Dynamic Object Dataset and the Dynamic Indoor Scene Dataset. 
+
+Results & Analysis: Drawing from the quantitative results in Table I , Table II and Table III , our VeloGauss achieves state-of-the-art performance across all evaluated datasets. Most notably, in the highly challenging task of Future Frame Extrap-olation, our method significantly outperforms all comparative methods, surpassing recent state-of-the-art approaches such as FreeGave and TRACE by a substantial margin. This com-pelling evidence confirms that our proposed Particle Dynamics System effectively captures underlying physical information, thereby enabling accurate future motion prediction governed by physical laws. Furthermore, we achieve superior perfor-mance compared to other methods in the Novel View Interpo-lation task. We attribute this comprehensive performance gain to the deep synergy between physical learning and the Aux-iliary Deformation Field. This mechanism allows the model to fully leverage Gaussian primitives for the precise represen-tation of complex 3D geometry and fine-grained appearance, all while maintaining physical consistency. As visualized in Figure 4, VeloGauss delivers accurate and physically plausible predictions even when confronted with complex dynamic multi-object scenes. 
+
+B. Ablation Study 
+
+We conduct the following series of ablation studies to validate the effectiveness of the individual components of our method. All ablation experiments are performed on the Dynamic Multipart dataset and the results are summarized in Table IV. 
+
+Remove Particle Dynamics System (PDS): We replace the core PDS module with a generic Multilayer Perceptron (MLP). This MLP takes the state of the previous frame as input and directly regresses an unconstrained per-point velocity field 
+
+v(x, t ).
+
+Remove Auxiliary Deformation Field (ADF): We remove the ADF module FM LP and rely solely on the velocity field integrated via RK2 to drive the motion of Gaussian particles. TABLE IV: Quantitative results of the ablation study on the Dynamic Multipart dataset. Here, ”K” denotes the number of motion patterns. 
+
+PDS ADF GPC K Extrapolation PSNR ↑ SSIM ↑ LPIPS ↓
+
+(1) ✓ ✓ 32 9.836 0.542 0.498 (2) ✓ 32 13.597 0.833 0.207 (3) ✓ 32 29.016 0.980 0.018 (4) ✓ ✓ 32 32.154 0.986 0.013 (5) ✓ ✓ 32 33.367 0.987 0.013 VeloGauss(Ours) ✓ ✓ ✓ 32 34.880 0.992 0.007 
+
+Remove Global Physical Constraints (GPC): We remove the global physical loss based on PINN optimization during the training process, retaining only the rendering reconstruction loss. IV. CONCLUSION 
+
+In this paper, we propose VeloGauss, a novel framework built upon 3DGS, designed to jointly learn the geometric structure and latent physical information of dynamic scenes solely from multi-view video inputs, without requiring any manual physical priors or annotations. The core innovation of our approach lies in the integration of a Particle Dynamics System and a Global Physical Constraint mechanism, which enables the precise learning of motion patterns for Gaussian particles. Extensive experiments across four datasets demon-strate that VeloGauss achieves superior performance in both Novel View Interpolation and Future Frame Prediction tasks. Our method offers significant reference value for enabling applications such as safe autonomous driving, precise robotic manipulation, and high-fidelity virtual reality interactions. REFERENCES [1] Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ramamoorthi, and Ren Ng, “Nerf: Representing scenes as neural radiance fields for view synthesis,” 2020. [2] Bernhard Kerbl, Georgios Kopanas, Thomas Leimk¨ uhler, and George Drettakis, “3d gaussian splatting for real-time radiance field rendering,” 2023. [3] Ziyi Yang, Xinyu Gao, Wen Zhou, Shaohui Jiao, Yuqing Zhang, and Xiaogang Jin, “Deformable 3d gaussians for high-fidelity monocular dynamic scene reconstruction,” in Proceedings of the IEEE/CVF con-ference on computer vision and pattern recognition , 2024, pp. 20331– 20341. [4] Yuanxing Duan, Fangyin Wei, Qiyu Dai, Yuhang He, Wenzheng Chen, and Baoquan Chen, “4d-rotor gaussian splatting: Towards efficient novel view synthesis for dynamic scenes,” 2024. [5] Zhan Li, Zhang Chen, Zhong Li, and Yi Xu, “Spacetime gaussian feature splatting for real-time dynamic view synthesis,” 2024. [6] Yi-Hua Huang, Yang-Tian Sun, Ziyi Yang, Xiaoyang Lyu, Yan-Pei Cao, and Xiaojuan Qi, “Sc-gs: Sparse-controlled gaussian splatting for editable dynamic scenes,” 2024. [7] Quankai Gao, Qiangeng Xu, Zhe Cao, Ben Mildenhall, Wenchao Ma, Le Chen, Danhang Tang, and Ulrich Neumann, “Gaussianflow: Splatting gaussian dynamics for 4d content creation,” 2024. [8] Guanjun Wu, Taoran Yi, Jiemin Fang, Lingxi Xie, Xiaopeng Zhang, Wei Wei, Wenyu Liu, Qi Tian, and Xinggang Wang, “4d gaussian splatting for real-time dynamic scene rendering,” 2024. [9] Yiqing Liang, Numair Khan, Zhengqin Li, Thu Nguyen-Phuoc, Douglas Lanman, James Tompkin, and Lei Xiao, “Gaufre: Gaussian deformation fields for real-time dynamic novel view synthesis,” 2025. [10] Tianyi Xie, Zeshun Zong, Yuxing Qiu, Xuan Li, Yutao Feng, Yin Yang, and Chenfanfu Jiang, “Physgaussian: Physics-integrated 3d gaussians for generative dynamics,” 2024. [11] Piotr Borycki, Weronika Smolak, Joanna Waczy´ nska, Marcin Mazur, Sławomir Tadeja, and Przemysław Spurek, “Gasp: Gaussian splatting for physic-based simulations,” 2025. [12] Takuhiro Kaneko, “Improving physics-augmented continuum neural radiance field-based geometry-agnostic system identification with la-grangian particle optimization,” 2024. [13] Binbin Huang, Zehao Yu, Anpei Chen, Andreas Geiger, and Shenghua Gao, “2d gaussian splatting for geometrically accurate radiance fields,” in Special Interest Group on Computer Graphics and Interactive Tech-niques Conference Conference Papers . July 2024, SIGGRAPH ’24, p. 1–11, ACM. [14] Mengyu Chu, Lingjie Liu, Quan Zheng, Aleksandra Franz, Hans-Peter Seidel, Christian Theobalt, and Rhaleb Zayer, “Physics informed neural fields for smoke reconstruction with sparse data,” ACM Transactions on Graphics , vol. 41, no. 4, pp. 1–14, July 2022. [15] Haoqin Hong, Ding Fan, Fubin Dou, Zhi-Li Zhou, Haoran Sun, Con-gcong Zhu, and Jingrun Chen, “Physics-informed deformable gaussian splatting: Towards unified constitutive laws for time-evolving material field,” 2025. [16] Tianyuan Zhang, Hong-Xing Yu, Rundi Wu, Brandon Y. Feng, Changxi Zheng, Noah Snavely, Jiajun Wu, and William T. Freeman, “Phys-dreamer: Physics-based interaction with 3d objects via video genera-tion,” 2024. [17] Ruijie Zhu, Yanzhe Liang, Hanzhi Chang, Jiacheng Deng, Jiahao Lu, Wenfei Yang, Tianzhu Zhang, and Yongdong Zhang, “Motiongs: Ex-ploring explicit motion guidance for deformable 3d gaussian splatting,” 2024. [18] Fangfu Liu, Hanyang Wang, Shunyu Yao, Shengjun Zhang, Jie Zhou, and Yueqi Duan, “Physics3d: Learning physical properties of 3d gaussians via video diffusion,” 2024. [19] Xinli Xu, Wenhang Ge, Dicong Qiu, ZhiFei Chen, Dongyu Yan, Zhuoyun Liu, Haoyu Zhao, Hanfeng Zhao, Shunsi Zhang, Junwei Liang, and Ying-Cong Chen, “Gaussianproperty: Integrating physical properties to 3d gaussians with lmms,” 2024. [20] Jinxi Li, Ziyang Song, Siyuan Zhou, and Bo Yang, “Freegave: 3d physics learning from dynamic videos by gaussian velocity,” in Proceedings of the Computer Vision and Pattern Recognition Conference , 2025, pp. 12433–12443. [21] Jinxi Li, Ziyang Song, and Bo Yang, “Nvfi: Neural velocity fields for 3d physics learning from dynamic videos,” Advances in Neural Information Processing Systems , vol. 36, pp. 34723–34751, 2023. [22] Yifan Mo, Youcheng Cai, and Ligang Liu, “Plug-and-play pde opti-mization for 3d gaussian splatting: Toward high-quality rendering and reconstruction,” 2025. [23] Daniel Wang, Patrick Rim, Tian Tian, Dong Lao, Alex Wong, and Ganesh Sundaramoorthi, “Ode-gs: Latent odes for dynamic scene extrapolation with 3d gaussian splatting,” 2025. [24] Renlong Wu, Zhilu Zhang, Mingyang Chen, Zifei Yan, and Wangmeng Zuo, “Deblur4dgs: 4d gaussian splatting from blurry monocular video,” 2025. [25] Xinjie Zhang, Zhening Liu, Yifan Zhang, Xingtong Ge, Dailan He, Tongda Xu, Yan Wang, Zehong Lin, Shuicheng Yan, and Jun Zhang, “Mega: Memory-efficient 4d gaussian splatting for dynamic scenes,” 2025. [26] Albert Pumarola, Enric Corona, Gerard Pons-Moll, and Francesc Moreno-Noguer, “D-nerf: Neural radiance fields for dynamic scenes,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 2021, pp. 10318–10327. [27] Ang Cao and Justin Johnson, “Hexplane: A fast representation for dynamic scenes,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2023, pp. 130–141. [28] Zhengqi Li, Simon Niklaus, Noah Snavely, and Oliver Wang, “Neural scene flow fields for space-time view synthesis of dynamic scenes,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 2021, pp. 6498–6508. [29] Jiemin Fang, Taoran Yi, Xinggang Wang, Lingxi Xie, Xiaopeng Zhang, Wenyu Liu, Matthias Nießner, and Qi Tian, “Fast dynamic radiance fields with time-aware neural voxels,” in SIGGRAPH Asia 2022 Conference Papers , 2022, pp. 1–9. [30] Jinxi Li, Ziyang Song, and Bo Yang, “Trace: Learning 3d gaussian physical dynamics from multi-view videos,” in Proceedings of the IEEE/CVF International Conference on Computer Vision , 2025, pp. 8820–8829.
