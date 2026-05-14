@@ -6,49 +6,61 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-13
-- 运行时间：2026-05-13 20:49:35 UTC
+- 最新运行日期：2026-05-14
+- 运行时间：2026-05-14 20:51:18 UTC
 - 运行状态：成功
-- 本次总论文数：9
-- 精读区：1
-- 速读区：8
+- 本次总论文数：13
+- 精读区：2
+- 速读区：11
 
 ### 今日简报（AI）
-今日聚焦 GAN 驱动的气象辐射模拟与 4D 高斯泼溅动态重建，深度解析 9 篇前沿成果。
-重点关注评分 9.0 的随机云生成器对辐射场评估的提升，以及 4DGS 在带宽自适应流传输中的最新进展。
-推荐气象科研人员探索生成式模型应用，开发者可关注动态场景重建在流媒体领域的落地潜力。
-- 详情：[/202605/13/README](/202605/13/README)
+深度探索 GAN 在气象云层模拟中的突破，并同步追踪 3D 高斯泼溅与实时重建的前沿进展。
+重点关注 GAN 在提升云辐射场模拟精度上的卓越表现，以及 Z-Order Transformer 为高效 3D 场景重建带来的性能飞跃。
+建议关注生成式 AI 如何跨界解决物理仿真难题，并持续跟进 3D 实时渲染技术的轻量化趋势。
+- 详情：[/202605/14/README](/202605/14/README)
 
 ### 精读区论文标签
-1. [Assessment of cloud and associated radiation fields from a GAN stochastic cloud subcolumn generator](/202605/13/2605.11968v1-assessment-of-cloud-and-associated-radiation-fields-from-a-gan-stochastic-cloud-subcolumn-generator)  
+1. [Assessment of cloud and associated radiation fields from a GAN stochastic cloud subcolumn generator](/202605/14/2605.11968v2-assessment-of-cloud-and-associated-radiation-fields-from-a-gan-stochastic-cloud-subcolumn-generator)  
    标签：评分：9.0/10、query:q5
-   evidence：用于随机云子柱生成与模拟的GAN和CVAE方法
+   evidence：基于GAN的随机云子列生成器，用于大气建模和辐射场
+2. [Z-Order Transformer for Feed-Forward Gaussian Splatting](/202605/14/2605.13465v1-z-order-transformer-for-feed-forward-gaussian-splatting)  
+   标签：评分：8.0/10、query:q7
+   evidence：基于Transformer的前馈高斯泼溅架构，用于加速渲染
 
 ### 速读区论文标签
-1. [DySurface: Consistent 4D Surface Reconstruction via Bridging Explicit Gaussians and Implicit Functions](/202605/13/2605.10360v2-dysurface-consistent-4d-surface-reconstruction-via-bridging-explicit-gaussians-and-implicit-functions)  
+1. [Ray-Aware Pointer Memory with Adaptive Updates for Streaming 3D Reconstruction](/202605/14/2605.05749v2-ray-aware-pointer-memory-with-adaptive-updates-for-streaming-3d-reconstruction)  
+   标签：评分：7.0/10、query:q3
+   evidence：用于流式3D重建的光线感知指针存储
+2. [3DSS: 3D Surface Splatting for Inverse Rendering](/202605/14/2605.05876v3-3dss-3d-surface-splatting-for-inverse-rendering)  
    标签：评分：7.0/10、query:q1
-   evidence：神经辐射场与动态场景渲染
-2. [VidSplat: Gaussian Splatting Reconstruction with Geometry-Guided Video Diffusion Priors](/202605/13/2605.11424v1-vidsplat-gaussian-splatting-reconstruction-with-geometry-guided-video-diffusion-priors)  
-   标签：评分：7.0/10、query:q1
-   evidence：结合扩散先验的高斯泼溅重建
-3. [PD-4DGS:Progressive Decomposition of 4D Gaussian Splatting for Bandwidth-Adaptive Dynamic Scene Streaming](/202605/13/2605.11427v1-pd-4dgsprogressive-decomposition-of-4d-gaussian-splatting-for-bandwidth-adaptive-dynamic-scene-streaming)  
-   标签：评分：7.0/10、query:q1
-   evidence：用于动态场景渲染的4D高斯泼溅
-4. [GeoQuery: Geometry-Query Diffusion for Sparse-View Reconstruction](/202605/13/2605.12399v1-geoquery-geometry-query-diffusion-for-sparse-view-reconstruction)  
-   标签：评分：7.0/10、query:q1
-   evidence：用于新视角合成和重建的3D高斯泼溅技术
-5. [Kinematics-Driven Gaussian Shape Deformation for Blurry Monocular Dynamic Scenes](/202605/13/2605.08635v1-kinematics-driven-gaussian-shape-deformation-for-blurry-monocular-dynamic-scenes)  
+   evidence：用于逆向渲染的可微分表面点云渲染
+3. [CaloArt: Large-Patch x-Prediction Diffusion Transformers for High-Granularity Calorimeter Shower Generation](/202605/14/2605.12011v1-caloart-large-patch-x-prediction-diffusion-transformers-for-high-granularity-calorimeter-shower-generation)  
+   标签：评分：7.0/10、query:q5
+   evidence：体素空间生成器与高粒度簇射模拟
+4. [Volumetric Optical Scattering Neural Networks](/202605/14/2605.13177v1-volumetric-optical-scattering-neural-networks)  
+   标签：评分：7.0/10、query:q4
+   evidence：体积光学散射与近场散射相互作用
+5. [DeepFilters: Scattering-Aware Pupil Engineering with Learned Digital Filter Reconstruction for Extended Depth of Field Microscopy](/202605/14/2605.13619v1-deepfilters-scattering-aware-pupil-engineering-with-learned-digital-filter-reconstruction-for-extended-depth-of-field-microscopy)  
+   标签：评分：7.0/10、query:q4
+   evidence：散射感知的深度光学与可微分前向模型
+6. [SoLAR: Error-Resilient Streamable Long-Horizon Free-Viewpoint Video Reconstruction with Anchor Activation and Latent Recalibration](/202605/14/2605.07346v1-solar-error-resilient-streamable-long-horizon-free-viewpoint-video-reconstruction-with-anchor-activation-and-latent-recalibration)  
    标签：评分：6.0/10、query:q1
-   evidence：用于动态场景重建的高斯形状变形
-6. [VeloGauss: Learning Physically Consistent Gaussian Velocity Fields from Videos](/202605/13/2605.10567v1-velogauss-learning-physically-consistent-gaussian-velocity-fields-from-videos)  
-   标签：评分：6.0/10、query:profile-1
-   evidence：利用高斯场从动态视频中建模几何与外观
-7. [3DGS$^3$: Joint Super Sampling and Frame Interpolation for Real-Time Large-Scale 3DGS Rendering](/202605/13/2605.11489v1-3dgs3-joint-super-sampling-and-frame-interpolation-for-real-time-large-scale-3dgs-rendering)  
+   evidence：基于动态锚点的体积视频表示
+7. [SpaceMind++: Toward Allocentric Cognitive Maps for Spatially Grounded Video MLLMs](/202605/14/2605.09449v1-spacemind-toward-allocentric-cognitive-maps-for-spatially-grounded-video-mllms)  
+   标签：评分：6.0/10、query:q1
+   evidence：视频多模态大模型中用于3D度量表示的体素化认知地图
+8. [Lite3R: A Model-Agnostic Framework for Efficient Feed-Forward 3D Reconstruction](/202605/14/2605.11354v1-lite3r-a-model-agnostic-framework-for-efficient-feed-forward-3d-reconstruction)  
    标签：评分：6.0/10、query:q7
-   evidence：通过超采样和帧插值加速3D高斯泼溅渲染
-8. [A Line--Search--Based Stochastic Gradient Method for 3D Computed Tomography](/202605/13/2605.12085v1-a-line--search--based-stochastic-gradient-method-for-3d-computed-tomography)  
+   evidence：高效前馈3D重建与注意力加速
+9. [MoCam: Unified Novel View Synthesis via Structured Denoising Dynamics](/202605/14/2605.12119v1-mocam-unified-novel-view-synthesis-via-structured-denoising-dynamics)  
+   标签：评分：6.0/10、query:q1
+   evidence：通过结构化去噪动力学进行新视角合成
+10. [Sparse Code Uplifting for Efficient 3D Language Gaussian Splatting](/202605/14/2605.13600v1-sparse-code-uplifting-for-efficient-3d-language-gaussian-splatting)  
    标签：评分：6.0/10、query:q7
-   evidence：利用深度学习概念加速体积重建
+   evidence：3D高斯泼溅的高效特征渲染
+11. [BlitzGS: City-Scale Gaussian Splatting at Lightning Speed](/202605/14/2605.13794v1-blitzgs-city-scale-gaussian-splatting-at-lightning-speed)  
+   标签：评分：6.0/10、query:q7
+   evidence：通过分布式工作负载管理加速3DGS渲染
 
 
 <div class="dpr-home-promo-card">

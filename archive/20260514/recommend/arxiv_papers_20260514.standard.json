@@ -1,0 +1,533 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-14T20:49:52.670403+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 11,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2605.11968v2",
+      "title": "Assessment of cloud and associated radiation fields from a GAN stochastic cloud subcolumn generator",
+      "abstract": "Modern Earth System Models (ESMs) operate on horizontal scales far larger than typical cloud features, requiring stochastic subcolumn generators to represent subgrid horizontal and vertical cloud variability. Traditional physically-based generators often rely on analytical cloud overlap paradigms, such as exponential-random decorrelation, which can struggle to capture the complex, anti-correlated behavior of non-contiguous cloud layers. In this study, we introduce a novel two-stage machine learning subcolumn generator for the GEOS atmospheric model, utilizing a Conditional Variational Autoencoder combined with a Generative Adversarial Network (CVAE-GAN) and a U-Net architecture. Trained on a merged CloudSat-CALIPSO height-resolved cloud optical depth dataset, the ML generator creates 56 stochastic subcolumns representing cloud occurrence and optical depth profiles. Evaluated against the established Räisänen, the ML approach accurately reproduces bimodal cloud overlap distributions, significantly reduces biases in grid-mean statistics, and halves the root-mean-square error in ISCCP-style cloud-top pressure and optical thickness joint histograms. The improvements brought by our deep generative models translate into more accurate offline radiative transfer calculations, reducing the global-mean shortwave top-of-atmosphere cloud radiative effect bias by a factor of three. Provided that the generator can be accelerated on CPUs, this offers a practical pathway to reduce structural errors at the cloud-radiation interface.",
+      "authors": [
+        "Dongmin Lee",
+        "Lazaros Oreopoulos",
+        "Nayeong Cho",
+        "Daeho Jin"
+      ],
+      "primary_category": "physics.ao-ph",
+      "categories": [
+        "physics.ao-ph",
+        "cs.LG"
+      ],
+      "published": "2026-05-12T11:19:57+00:00",
+      "link": "https://arxiv.org/pdf/2605.11968v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "GAN-based stochastic cloud subcolumn generator for atmospheric modeling and radiation fields",
+      "llm_evidence_cn": "基于GAN的随机云子列生成器，用于大气建模和辐射场",
+      "llm_evidence": "基于GAN的随机云子列生成器，用于大气建模和辐射场",
+      "canonical_evidence": "基于GAN的随机云子列生成器，用于大气建模和辐射场",
+      "llm_tldr_en": "This paper uses CVAE-GAN and U-Net to generate cloud subcolumns for Earth System Models and radiation assessment.",
+      "llm_tldr_cn": "该研究利用CVAE-GAN和U-Net为地球系统模型生成云子列并进行辐射评估。",
+      "llm_tldr": "该研究利用CVAE-GAN和U-Net为地球系统模型生成云子列并进行辐射评估。",
+      "llm_tags": [
+        "query:q5"
+      ],
+      "matched_query_tag": "query:q5",
+      "matched_query_text": "deep learning methods for volumetric cloud rendering and simulation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.13465v1",
+      "title": "Z-Order Transformer for Feed-Forward Gaussian Splatting",
+      "abstract": "Recent advances in 3D Gaussian Splatting (3DGS) have enabled significant progress in photorealistic novel view synthesis. However, traditional 3DGS relies on a slow, iterative optimization process, which limits its use in scenarios demanding real-time results. To overcome this bottleneck, recent feed-forward methods aim to predict Gaussian attributes directly from images, but they often struggle with the redundancy of Gaussian primitives and rendering quality. In this work, we introduce a transformer-based architecture specifically designed for feed-forward Gaussian Splatting. Our key insight is that spatial and semantic relationships among Gaussians can be effectively captured through a sparse attention mechanism, enabled by a Z-order strategy that organizes the unstructured Gaussian set into a spatially coherent sequence. Furthermore, we incorporate this Z-order strategy to adaptively suppress redundancy while preserving critical structural details. This allows the transformer to efficiently model context, compress Gaussian primitives, and predict Gaussian attributes in a single forward pass. Comprehensive experiments demonstrate that our method achieves fast and high-quality novel view synthesis with fewer Gaussian primitives.",
+      "authors": [
+        "Can Wang",
+        "Lei Liu",
+        "Wei Jiang",
+        "Dong Xu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-13T12:54:59+00:00",
+      "link": "https://arxiv.org/pdf/2605.13465v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "transformer-based architecture for feed-forward Gaussian Splatting to accelerate rendering",
+      "llm_evidence_cn": "基于Transformer的前馈高斯泼溅架构，用于加速渲染",
+      "llm_evidence": "基于Transformer的前馈高斯泼溅架构，用于加速渲染",
+      "canonical_evidence": "基于Transformer的前馈高斯泼溅架构，用于加速渲染",
+      "llm_tldr_en": "Introduces a Z-order transformer to predict Gaussian attributes directly, accelerating the 3DGS rendering pipeline.",
+      "llm_tldr_cn": "引入Z阶Transformer直接预测高斯属性，加速了3DGS渲染流程。",
+      "llm_tldr": "引入Z阶Transformer直接预测高斯属性，加速了3DGS渲染流程。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2605.05749v2",
+      "title": "Ray-Aware Pointer Memory with Adaptive Updates for Streaming 3D Reconstruction",
+      "abstract": "Dense 3D reconstruction from continuous image streams requires both accurate geometric aggregation and stable long-term memory management. Recent feed-forward reconstruction frameworks integrate observations through persistent memory representations, yet most rely primarily on appearance-based similarity when updating memory. Such appearance-driven integration often leads to redundant accumulation of observations and unstable geometry when viewpoint changes occur. In this work, we propose a ray-aware pointer memory for streaming 3D reconstruction that explicitly models both spatial location and viewing direction within a unified memory representation. Each memory pointer stores its 3D position, associated ray direction, and feature embedding, allowing the system to reason jointly about geometric proximity and viewpoint consistency. Based on this representation, we introduce an adaptive pointer update strategy that replaces traditional fusion-based memory compression with a retain-or-replace mechanism. Instead of averaging nearby observations, the system selectively retains informative pointers while discarding redundant ones, preserving distinctive geometric structures while maintaining bounded memory growth. Furthermore, the joint reasoning over spatial distance and ray-direction discrepancy enables the system to distinguish between local redundancy, novel observations, and potential loop revisits in a unified manner. When loop candidates are detected, pose refinement is triggered to enforce global geometric consistency across the reconstruction. Extensive experiments demonstrate that the proposed ray-aware memory design significantly improves long-term reconstruction stability and camera pose accuracy while maintaining efficient streaming inference. Our approach provides a principled framework for scalable and drift-resistant online 3D reconstruction from image streams.",
+      "authors": [
+        "Feifei Li",
+        "Qi Song",
+        "Chi Zhang",
+        "Rui Huang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-07T06:42:11+00:00",
+      "link": "https://arxiv.org/pdf/2605.05749v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "ray-aware pointer memory for streaming 3D reconstruction",
+      "llm_evidence_cn": "用于流式3D重建的光线感知指针存储",
+      "llm_evidence": "用于流式3D重建的光线感知指针存储",
+      "canonical_evidence": "用于流式3D重建的光线感知指针存储",
+      "llm_tldr_en": "Proposes a memory representation modeling spatial location and ray direction for stable 3D reconstruction.",
+      "llm_tldr_cn": "提出了一种建模空间位置和光线方向的存储表示，用于稳定的3D重建。",
+      "llm_tldr": "提出了一种建模空间位置和光线方向的存储表示，用于稳定的3D重建。",
+      "llm_tags": [
+        "query:q3"
+      ],
+      "matched_query_tag": "query:q3",
+      "matched_query_text": "neural acceleration of volume ray marching",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.07346v1",
+      "title": "SoLAR: Error-Resilient Streamable Long-Horizon Free-Viewpoint Video Reconstruction with Anchor Activation and Latent Recalibration",
+      "abstract": "Free-Viewpoint Video (FVV) has emerged as a cornerstone of next-generation immersive media systems and attracted widespread attention. Previous methods primarily focus on short video sequences and suffer from significant performance degradation when processing long-horizon free-viewpoint video (LFVV). Motivated by bit allocation theory, we analyze dynamic-anchor-based volumetric video representation within a rate-distortion optimization framework and propose \\textbf{SoLAR}, which is the first error-resilient streamable FVV framework that maintains stable reconstruction quality on long sequences without requiring group-of-pictures partitioning. We propose the Anchor Activation Dynamics (AAD), which enables dynamic anchors to model non-rigid transformations by dynamically activating informative anchors and suppressing redundant ones. Furthermore, we introduce Latent Discrepancy Aware Recalibration (LaDAR), which is a mechanism to identify discrepancies between latent representations and recalibrate the correspondences encoded in the network, effectively mitigating error propagation in LFVV without compromising real-time performance or storage compactness. Extensive experiments demonstrate that \\textbf{SoLAR} achieves state-of-the-art reconstruction performance while maintaining minimum storage overhead, which provides a new direction for LFVV reconstruction and advances the practical deployment of immersive systems. Demo free-viewpoint videos are provided in the supplementary material.",
+      "authors": [
+        "Haotian Zhang",
+        "Xu Mo",
+        "Yixin Yu",
+        "Guanhua Zhu",
+        "Jian Xue",
+        "Tongda Xu",
+        "Yan Wang",
+        "Jiaqi Zhang",
+        "Siwei Ma",
+        "Wen Gao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-08T06:48:59+00:00",
+      "link": "https://arxiv.org/pdf/2605.07346v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Dynamic-anchor-based volumetric video representation",
+      "llm_evidence_cn": "基于动态锚点的体积视频表示",
+      "llm_evidence": "基于动态锚点的体积视频表示",
+      "canonical_evidence": "基于动态锚点的体积视频表示",
+      "llm_tldr_en": "Proposes an error-resilient streamable free-viewpoint video framework using volumetric representations.",
+      "llm_tldr_cn": "提出了一种使用体积表示的具有容错能力的流式自由视角视频框架。",
+      "llm_tldr": "提出了一种使用体积表示的具有容错能力的流式自由视角视频框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.05876v3",
+      "title": "3DSS: 3D Surface Splatting for Inverse Rendering",
+      "abstract": "We present 3D Surface Splatting (3DSS), the first differentiable surface splatting renderer for physically-based inverse rendering from multi-view images. Our central insight is that the surface separation problem at the heart of surface splatting admits a direct formulation in terms of the reconstruction kernels themselves. From this foundation we derive a coverage-based compositing model whose per-layer opacity arises directly from the accumulated Elliptical Weighted Average reconstruction weight, yielding anti-aliased silhouettes and informative visibility gradients at sparsely covered edges. Combined with forward microfacet shading under co-optimized HDR environment lighting and density-aware adaptive refinement, 3DSS jointly recovers shape, spatially-varying BRDF materials, and illumination. Because the optimized representation is a set of oriented surface samples, it bridges natively to mesh-based workflows via surface reconstruction from oriented point cloud methods. We evaluate 3DSS against mesh-based, implicit, and Gaussian-splatting baselines across geometry reconstruction, novel-view synthesis, and novel-illumination relighting.",
+      "authors": [
+        "Mae Younes",
+        "Adnane Boukhayma"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.CV"
+      ],
+      "published": "2026-05-07T08:43:51+00:00",
+      "link": "https://arxiv.org/pdf/2605.05876v3",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Differentiable surface splatting for inverse rendering",
+      "llm_evidence_cn": "用于逆向渲染的可微分表面点云渲染",
+      "llm_evidence": "用于逆向渲染的可微分表面点云渲染",
+      "canonical_evidence": "用于逆向渲染的可微分表面点云渲染",
+      "llm_tldr_en": "Introduces a differentiable surface splatting renderer for physically-based inverse rendering from multi-view images.",
+      "llm_tldr_cn": "提出了一种用于多视图图像物理逆向渲染的可微分表面点云渲染器。",
+      "llm_tldr": "提出了一种用于多视图图像物理逆向渲染的可微分表面点云渲染器。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.09449v1",
+      "title": "SpaceMind++: Toward Allocentric Cognitive Maps for Spatially Grounded Video MLLMs",
+      "abstract": "Recent multimodal large language models (MLLMs) have made remarkable progress in visual understanding and language-based reasoning, yet they lack a persistent world-centered representation for spatially consistent reasoning in 3D environments. Inspired by the mammalian dual-stream system, where semantic and spatial cues are processed separately and integrated into an allocentric cognitive map, we propose SpaceMind++, a video MLLM architecture that explicitly builds a voxelized cognitive map from RGB videos. This map reorganizes fragmented egocentric observations into a shared 3D metric representation, enabling the model to preserve object permanence and spatial topology across changing viewpoints. To make this allocentric representation usable by a pretrained video MLLM without disrupting its native visual-token interface, we introduce Coordinate-Guided Deep Iterative Fusion, a new mechanism that relays map-level spatial knowledge back into the original 2D visual features. This fusion is explicitly guided by coordinate embeddings and 3D Rotary Positional Encoding, which ground semantic interactions in metric 3D space, resembling the entorhinal binding of sensory features to metric space. Extensive experiments show that SpaceMind++ achieves new state-of-the-art performance on VSI-Bench. Furthermore, it demonstrates superior out-of-distribution generalization on SPBench, SITE-Bench, and SPAR-Bench, underscoring its robustness in unseen 3D environments.",
+      "authors": [
+        "Bo Gu",
+        "Zhikang Zhang",
+        "Zizhuang Wei",
+        "Zhenyuan Chen",
+        "Lingyun Li",
+        "Zhuoyi Song"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-10T10:01:57+00:00",
+      "link": "https://arxiv.org/pdf/2605.09449v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "voxelized cognitive map for 3D metric representation in video MLLMs",
+      "llm_evidence_cn": "视频多模态大模型中用于3D度量表示的体素化认知地图",
+      "llm_evidence": "视频多模态大模型中用于3D度量表示的体素化认知地图",
+      "canonical_evidence": "视频多模态大模型中用于3D度量表示的体素化认知地图",
+      "llm_tldr_en": "SpaceMind++ builds a voxelized 3D representation from videos to enable spatially consistent reasoning in MLLMs.",
+      "llm_tldr_cn": "SpaceMind++从视频中构建体素化3D表示，使大模型具备空间一致的推理能力。",
+      "llm_tldr": "SpaceMind++从视频中构建体素化3D表示，使大模型具备空间一致的推理能力。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.12011v1",
+      "title": "CaloArt: Large-Patch x-Prediction Diffusion Transformers for High-Granularity Calorimeter Shower Generation",
+      "abstract": "High-granularity calorimeters make ML-based fast shower simulation a high-dimensional generative modeling problem, where voxel-space generators must balance physics fidelity with training and inference cost. This work studies large-patch tokenization with x-prediction, enabling efficient raw voxel generation. We propose CaloArt, a modernized DiT-style backbone with 3D positional encoding and architectural refinements, trained via conditional flow matching with decoupled prediction and loss spaces. On CaloChallenge Dataset 2, where small patch size remains affordable, v-prediction performs well, and CaloArt achieves the best FPD, strongest high-level metrics, and strongest ResNet classifier metrics. On CaloChallenge Dataset 3, the 40500-voxel grid makes large patches necessary; x-prediction improves all reported metrics over v-prediction and places CaloArt on the quality-generation-time Pareto frontier. The final CCD2 and CCD3 models both retain O(10) ms single-GPU generation time, with 9.71 and 11.14 ms per shower. These results support large-patch voxel-space diffusion transformers with x-prediction as a compute-efficient route to high-granularity calorimeter shower synthesis, reducing training and inference cost without a pretrained latent tokenizer.",
+      "authors": [
+        "Zhengkun Huang",
+        "Gongxing Sun"
+      ],
+      "primary_category": "physics.ins-det",
+      "categories": [
+        "physics.ins-det",
+        "hep-ex",
+        "hep-ph"
+      ],
+      "published": "2026-05-12T12:00:48+00:00",
+      "link": "https://arxiv.org/pdf/2605.12011v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "voxel-space generators and high-granularity shower simulation",
+      "llm_evidence_cn": "体素空间生成器与高粒度簇射模拟",
+      "llm_evidence": "体素空间生成器与高粒度簇射模拟",
+      "canonical_evidence": "体素空间生成器与高粒度簇射模拟",
+      "llm_tldr_en": "Uses diffusion transformers for efficient voxel-space generation in high-granularity calorimeter simulations.",
+      "llm_tldr_cn": "在高粒度量能器模拟中使用扩散Transformer进行高效的体素空间生成。",
+      "llm_tldr": "在高粒度量能器模拟中使用扩散Transformer进行高效的体素空间生成。",
+      "llm_tags": [
+        "query:q5"
+      ],
+      "matched_query_tag": "query:q5",
+      "matched_query_text": "deep learning methods for volumetric cloud rendering and simulation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.11354v1",
+      "title": "Lite3R: A Model-Agnostic Framework for Efficient Feed-Forward 3D Reconstruction",
+      "abstract": "Transformer-based 3D reconstruction has emerged as a powerful paradigm for recovering geometry and appearance from multi-view observations, offering strong performance across challenging visual conditions. As these models scale to larger backbones and higher-resolution inputs, improving their efficiency becomes increasingly important for practical deployment. However, modern 3D transformer pipelines face two coupled challenges: dense multi-view attention creates substantial token-mixing overhead, and low-precision execution can destabilize geometry-sensitive representations and degrade depth, pose, and 3D consistency. To address the first challenge, we propose Lite3R, a model-agnostic teacher-student framework that replaces dense attention with Sparse Linear Attention to preserve important geometric interactions while reducing attention cost. To address the second challenge, we introduce a parameter-efficient FP8-aware quantization-aware training (FP8-aware QAT) strategy with partial attention distillation, which freezes the vast majority of pretrained backbone parameters and trains only lightweight linear-branch projection layers, enabling stable low-precision deployment while retaining pretrained geometric priors. We further evaluate Lite3R on two representative backbones, VGGT and DA3-Large, over BlendedMVS and DTU64, showing that it substantially reduces latency (1.7-2.0x) and memory usage (1.9-2.4x) while preserving competitive reconstruction quality overall. These results demonstrate that Lite3R provides an effective algorithm-system co-design approach for practical transformer-based 3D reconstruction. Code: https://github.com/AIGeeksGroup/Lite3R. Website: https://aigeeksgroup.github.io/Lite3R.",
+      "authors": [
+        "Haoyu Zhang",
+        "Zeyu Zhang",
+        "Zedong Zhou",
+        "Yang Zhao",
+        "Hao Tang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-12T00:20:02+00:00",
+      "link": "https://arxiv.org/pdf/2605.11354v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "efficient feed-forward 3D reconstruction and attention acceleration",
+      "llm_evidence_cn": "高效前馈3D重建与注意力加速",
+      "llm_evidence": "高效前馈3D重建与注意力加速",
+      "canonical_evidence": "高效前馈3D重建与注意力加速",
+      "llm_tldr_en": "A teacher-student framework that accelerates 3D reconstruction by replacing dense attention with efficient modules.",
+      "llm_tldr_cn": "一种模型无关的教师-学生框架，通过优化注意力机制加速前馈3D重建效率。",
+      "llm_tldr": "一种模型无关的教师-学生框架，通过优化注意力机制加速前馈3D重建效率。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.13177v1",
+      "title": "Volumetric Optical Scattering Neural Networks",
+      "abstract": "Optical neural networks offer a route to low-latency and energy-efficient inference by encoding computation in light propagation. However, most existing implementations rely on planar photonic circuits or discretely spaced diffractive layers, restricting volumetric integration and imposing stringent alignment requirements. Here we demonstrate a volumetric optical scattering neural network (OSNN) in which densely packed weak scatterers form a three-dimensional, locally connected optical computing medium. In contrast to fully connected diffractive architectures, the OSNN uses near-field scattering interactions, described under the first-Born approximation, to compress optical interconnections into a monolithic volume. We implement this concept using resilient inverse design and two-photon nanolithography, yielding OSNN devices with a volume of ~$3.8*10^{-4}mm^{3}$ and a record-breaking neuron density of $1.0*10^{9}/mm^{3}$. Experimentally, the fabricated classifier achieves $94.8\\%$ blind-test accuracy on MNIST, while the imager performs optical compressed imaging with a $1-μm$ effective resolution and average FSIM values of $0.93$ on Fashion-MNIST and $0.91$ on VesselMNIST3D. OSNN paves the way for ultra-dense, ultra-compact, and efficient optical computing, creating a universal platform for embedded optical intelligence and promising widespread application in AI fields ranging from autonomous driving to medical diagnosis.",
+      "authors": [
+        "Xuhao Luo",
+        "Qiang Song",
+        "Weiwei Cai",
+        "Lei Chen",
+        "Enbo Yang",
+        "Hao Wang",
+        "Zhipei Sun",
+        "Yueqiang Hu",
+        "Joel K. W. Yang",
+        "Huigao Duan"
+      ],
+      "primary_category": "physics.optics",
+      "categories": [
+        "physics.optics"
+      ],
+      "published": "2026-05-13T08:38:54+00:00",
+      "link": "https://arxiv.org/pdf/2605.13177v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "volumetric optical scattering and near-field scattering interactions",
+      "llm_evidence_cn": "体积光学散射与近场散射相互作用",
+      "llm_evidence": "体积光学散射与近场散射相互作用",
+      "canonical_evidence": "体积光学散射与近场散射相互作用",
+      "llm_tldr_en": "Demonstrates a volumetric optical scattering neural network using near-field scattering for optical computing.",
+      "llm_tldr_cn": "演示了一种利用近场散射相互作用进行光学计算的体积光学散射神经网络。",
+      "llm_tldr": "演示了一种利用近场散射相互作用进行光学计算的体积光学散射神经网络。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "deep learning for multiple scattering in volumes",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.12119v1",
+      "title": "MoCam: Unified Novel View Synthesis via Structured Denoising Dynamics",
+      "abstract": "Generative novel view synthesis faces a fundamental dilemma: geometric priors provide spatial alignment but become sparse and inaccurate under view changes, while appearance priors offer visual fidelity but lack geometric correspondence. Existing methods either propagate geometric errors throughout generation or suffer from signal conflicts when fusing both statically. We introduce MoCam, which employs structured denoising dynamics to orchestrate a coordinated progression from geometry to appearance within the diffusion process.MoCam first leverages geometric priors in early stages to anchor coarse structures and tolerate their incompleteness, then switches to appearance priors in later stages to actively correct geometric errors and refine details. This design naturally unifies static and dynamic view synthesis by temporally decoupling geometric alignment and appearance refinement within the diffusion process.Experiments demonstrate that MoCam significantly outperforms prior methods, particularly when point clouds contain severe holes or distortions, achieving robust geometry-appearance disentanglement.",
+      "authors": [
+        "Haofeng Liu",
+        "Yang Zhou",
+        "Ziheng Wang",
+        "Zhengbo Xu",
+        "Zhan Peng",
+        "Jie Ma",
+        "Jun Liang",
+        "Shengfeng He",
+        "Jing Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-05-12T13:35:54+00:00",
+      "link": "https://arxiv.org/pdf/2605.12119v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "novel view synthesis via structured denoising dynamics",
+      "llm_evidence_cn": "通过结构化去噪动力学进行新视角合成",
+      "llm_evidence": "通过结构化去噪动力学进行新视角合成",
+      "canonical_evidence": "通过结构化去噪动力学进行新视角合成",
+      "llm_tldr_en": "Orchestrates geometry and appearance priors in diffusion for improved novel view synthesis.",
+      "llm_tldr_cn": "在扩散过程中协调几何和外观先验，以改进新视角合成。",
+      "llm_tldr": "在扩散过程中协调几何和外观先验，以改进新视角合成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.13619v1",
+      "title": "DeepFilters: Scattering-Aware Pupil Engineering with Learned Digital Filter Reconstruction for Extended Depth of Field Microscopy",
+      "abstract": "Extended depth of field microscopy encodes axial information into a single acquisition through engineered point spread functions, but conventional and deep optics approaches are subject to degradation in scattering tissue. We introduce DeepFilters, a scattering-aware deep optics framework that jointly optimizes a parameterized pupil filter and a digital-filter-based reconstruction network through a calibrated differentiable forward model to achieve broad generalization without retraining. Incorporating empirical scattering kernels, physics-guided regularization, and a hybrid genetic-gradient initialization strategy, DeepFilters extends the PSF from 16 micron to >400 micron in clear media and enables signal recovery beyond 120 micron deep in biological tissues, validated across fixed brain slices and sea urchin embryos.",
+      "authors": [
+        "Joseph L. Greene",
+        "Suet YIng Chan",
+        "Qilin Deng",
+        "Jeffrey Alido",
+        "Alexandra Lion",
+        "Guorong Hu",
+        "Ruipeng Guo",
+        "Tongyu Li",
+        "Kivilcim Kiliç",
+        "Ian Davison",
+        "Lei Tian"
+      ],
+      "primary_category": "physics.optics",
+      "categories": [
+        "physics.optics",
+        "cs.CV"
+      ],
+      "published": "2026-05-13T14:49:33+00:00",
+      "link": "https://arxiv.org/pdf/2605.13619v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "scattering-aware deep optics and differentiable forward model",
+      "llm_evidence_cn": "散射感知的深度光学与可微分前向模型",
+      "llm_evidence": "散射感知的深度光学与可微分前向模型",
+      "canonical_evidence": "散射感知的深度光学与可微分前向模型",
+      "llm_tldr_en": "Jointly optimizes pupil filters and reconstruction networks to handle scattering in volumetric microscopy.",
+      "llm_tldr_cn": "联合优化瞳孔滤光片和重建网络，以处理体积显微成像中的散射问题。",
+      "llm_tldr": "联合优化瞳孔滤光片和重建网络，以处理体积显微成像中的散射问题。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "deep learning for multiple scattering in volumes",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.13600v1",
+      "title": "Sparse Code Uplifting for Efficient 3D Language Gaussian Splatting",
+      "abstract": "3D Language Gaussian Splatting (3DLGS) augments 3D Gaussian Splatting with language-aligned visual features for open-vocabulary 3D scene understanding. A core challenge is efficiently associating high-dimensional vision-language embeddings with millions of 3D Gaussians while preserving efficient feature rendering for text-based querying. Existing methods either store dense features directly on Gaussians, causing high storage costs and slow rendering, or learn compact representations through expensive per-scene optimization with repeated feature rasterization. No existing method simultaneously achieves fast 3D semantic reconstruction, efficient storage, and fast rendering. We propose SCOUP (Sparse COde UPlifting), which addresses all three by decoupling language representation learning from 3D Gaussian optimization. Rather than working directly in 3D, we learn sparse codebook-based representations entirely using features associated with 2D image regions, associating each region with a sparse set of codebook coefficients. We then uplift these coefficients to 3D Gaussians with our weighted sparse aggregation using Gaussian-to-pixel associations, where each Gaussian accumulates coefficients over codebook atoms across views. Top-$K$ filtering then extracts the most dominant multi-view coefficients per Gaussian, enabling efficient storage and fast rendering. Our method achieves up to $400\\times$ training speedup while being $3\\times$ more memory efficient during training compared to the state-of-the-art in rendering speed. Across multiple benchmarks, SCOUP matches or outperforms existing methods in open-vocabulary querying accuracy.",
+      "authors": [
+        "Lovre Antonio Budimir",
+        "Yushi Guan",
+        "Steve Ryhner",
+        "Sven Lončarić",
+        "Nandita Vijaykumar"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-13T14:35:31+00:00",
+      "link": "https://arxiv.org/pdf/2605.13600v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "efficient feature rendering for 3D Gaussian Splatting",
+      "llm_evidence_cn": "3D高斯泼溅的高效特征渲染",
+      "llm_evidence": "3D高斯泼溅的高效特征渲染",
+      "canonical_evidence": "3D高斯泼溅的高效特征渲染",
+      "llm_tldr_en": "Decouples language features from geometry to achieve fast 3D semantic reconstruction and rendering.",
+      "llm_tldr_cn": "将语言特征与几何解耦，以实现快速的3D语义重建和渲染。",
+      "llm_tldr": "将语言特征与几何解耦，以实现快速的3D语义重建和渲染。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.13794v1",
+      "title": "BlitzGS: City-Scale Gaussian Splatting at Lightning Speed",
+      "abstract": "We present BlitzGS, a distributed 3DGS framework that reduces active Gaussian workload for fast city-scale reconstruction. BlitzGS manages this workload at three coupled levels. At the system level, the framework shards Gaussians across GPUs by index parity rather than spatial blocks. This approach mitigates the cross-block visibility redundancy inherent in spatial partitioning. Furthermore, it distributes each rendering step through a single cross-GPU exchange that routes projected Gaussians to their tile owners. At the model level, scheduled importance-scoring passes shrink the global Gaussian population. During these passes, the framework generates a per-Gaussian visibility weight to bias density-control updates toward contributing primitives and a per-view importance mask for the view-level renderer. At the view level, BlitzGS trims each camera's active set with a distance-based LOD gate to exclude excessively fine primitives for the current frustum and the importance-based culling mask to skip Gaussians with negligible cross-view contribution.   On large-scale benchmarks, BlitzGS matches the rendering quality of recent large-scale baselines while delivering an order-of-magnitude speedup, training city-scale scenes in tens of minutes. Our code is available at https: //github.com/AkierRaee/BlitzGS.",
+      "authors": [
+        "Zhongtao Wang",
+        "Huishan Au",
+        "Yilong Li",
+        "Mai Su",
+        "Haojie Jin",
+        "Yisong Chen",
+        "Meng Gai",
+        "Fei Zhu",
+        "Guoping Wang"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.CV"
+      ],
+      "published": "2026-05-13T17:13:59+00:00",
+      "link": "https://arxiv.org/pdf/2605.13794v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Accelerating 3DGS rendering through distributed workload management",
+      "llm_evidence_cn": "通过分布式工作负载管理加速3DGS渲染",
+      "llm_evidence": "通过分布式工作负载管理加速3DGS渲染",
+      "canonical_evidence": "通过分布式工作负载管理加速3DGS渲染",
+      "llm_tldr_en": "A distributed 3DGS framework for fast city-scale reconstruction and rendering via optimized Gaussian management.",
+      "llm_tldr_cn": "一种分布式3DGS框架，通过优化的管理实现快速城市级重建与渲染。",
+      "llm_tldr": "一种分布式3DGS框架，通过优化的管理实现快速城市级重建与渲染。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
