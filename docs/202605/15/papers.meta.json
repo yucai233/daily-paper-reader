@@ -1,0 +1,65 @@
+{
+  "label": "2026-05-15",
+  "date": "2026-05-15",
+  "generated_at": "2026-05-15T21:13:09",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202605/15/2605.08371v1-pacevggt-pre-alternating-attention-token-pruning-for-visual-geometry-transformers",
+      "section": "quick",
+      "title_en": "PaceVGGT: Pre-Alternating-Attention Token Pruning for Visual Geometry Transformers",
+      "authors": "Haotang Li, Zhenyu Qi, Shaohan Henry Wang, Kebin Peng, Zi Wang, Qing Guo, Sen He, Huanrui Yang",
+      "date": "2026-05-08",
+      "pdf": "https://arxiv.org/pdf/2605.08371v1",
+      "score": "7.0",
+      "evidence": "通过令牌剪枝加速3D任务和视觉几何Transformer",
+      "tldr": "PaceVGGT 针对视觉几何 Transformer (VGGT) 在处理长视频序列时计算开销大的问题，提出了一种在进入交替注意力 (AA) 模块前进行 Token 剪枝的框架。通过轻量级 Token 评分器预先筛选 DINO 特征，并结合自适应合并与剪枝策略，在保持 3D 重建质量的同时显著降低了推理延迟，为冻结的 VGGT 类模型提供了一种高效的加速方案。",
+      "tags": "query:q7",
+      "abstract_en": "Visual Geometry Transformer (VGGT) is a strong feed-forward model for multiple 3D tasks, but its Alternating-Attention (AA) stack scales quadratically in the total token count, making long clips expensive.   Existing token-reduction accelerators operate inside AA, leaving the patch grid that enters AA uncompressed.   We introduce PaceVGGT, a pre-AA token pruning framework that prunes DINO patch tokens before the first AA block of a frozen VGGT. PaceVGGT trains a lightweight Token Scorer that estimates per-token importance from DINO features. The scorer is first distilled against an AA-internal attention target from the unpruned backbone, then refined under downstream camera, depth, and point-map losses.   A per-frame keep budget fixes the backbone-visible sequence length, while an importance-adaptive merge/prune assignment preserves residual content from high-saliency frames under a fixed total merge budget.   A Feature-guided Restoration module reconstructs the dense spatial grid required by the prediction heads.   On ScanNet-50 and 7-Scenes, PaceVGGT remains on the reconstruction quality--latency frontier while reducing inference latency.   On ScanNet-50, it reduces latency by \\(5.1\\times\\) over unmodified VGGT at \\(N=300\\) and \\(1.47\\times\\) over LiteVGGT at \\(N=1000\\).   These results identify pre-AA pruning as a viable acceleration route for frozen VGGT-style geometry transformers.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/15/2605.14315v1-turbovggt-fast-visual-geometry-reconstruction-with-adaptive-alternating-attention",
+      "section": "quick",
+      "title_en": "TurboVGGT: Fast Visual Geometry Reconstruction with Adaptive Alternating Attention",
+      "authors": "David Huang, Guile Wu, Chengjie Huang, Bingbing Liu, Dongfeng Bai",
+      "date": "2026-05-14",
+      "pdf": "https://arxiv.org/pdf/2605.14315v1",
+      "score": "7.0",
+      "evidence": "前馈3D重建与视觉几何Transformer",
+      "tldr": "针对前馈3D重建中质量与效率难以平衡的问题，本文提出TurboVGGT。该方法采用自适应交替注意力机制，结合自适应稀疏全局注意力和帧内注意力，通过动态学习不同稀疏度的代表性特征，有效捕捉跨帧全局关系与局部细节。实验证明，TurboVGGT在保持高重建质量的同时，显著提升了多视图重建的速度，为高效3D几何重建提供了新思路。",
+      "tags": "query:q1",
+      "abstract_en": "Recent feed-forward 3D reconstruction methods, such as visual geometry transformers, have substantially advanced the traditional per-scene optimization paradigm by enabling effective multi-view reconstruction in a single forward pass. However, most existing methods struggle to achieve a balance between reconstruction quality and computational efficiency, which limits their scalability and efficiency. Although some efficient visual geometry transformers have recently emerged, they typically use the same sparsity ratio across layers and frames and lack mechanisms to adaptively learn representative tokens to capture global relationships, leading to suboptimal performance. In this work, we propose TurboVGGT, a novel approach that employs an efficient visual geometry transformer with adaptive alternating attention for fast multi-view 3D reconstruction. Specifically, TurboVGGT employs an end-to-end trainable framework with adaptive sparse global attention guided by adaptive sparsity selection to capture global relationships across frames and frame attention to aggregate local details within each frame. In the adaptive sparse global attention, TurboVGGT adaptively learns representative tokens with varying sparsity levels for global geometry modeling, considering that token importance varies across frames, attention layers operate tokens at different levels of abstraction, and global dependencies rely on structurally informative regions. Extensive experiments on multiple 3D reconstruction benchmarks demonstrate that TurboVGGT achieves fast multi-view reconstruction while maintaining competitive reconstruction quality compared with state-of-the-art methods. Project page: https://turbovggt.github.io/.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/15/2605.09644v1-attention-itself-could-retrieveretrievevggt-training-free-long-context-streaming-3d-reconstruction-via-query-key-similarity-retrieval",
+      "section": "quick",
+      "title_en": "Attention Itself Could Retrieve.RetrieveVGGT: Training-Free Long Context Streaming 3D Reconstruction via Query-Key Similarity Retrieval",
+      "authors": "Zichen Zou, Xiaosong Jia, Zuxuan Wu, Yu-Gang Jiang",
+      "date": "2026-05-10",
+      "pdf": "https://arxiv.org/pdf/2605.09644v1",
+      "score": "6.0",
+      "evidence": "通过基于检索的上下文构建加速3D重建",
+      "tldr": "针对VGGT在长序列3D重建中KV缓存线性增长导致的内存溢出问题，本文提出RetrieveVGGT。这是一个无需训练的框架，将上下文构建视为检索问题。通过利用VGGT首层注意力机制的Q-K相似度进行相关帧检索，并结合分段采样和位姿感知空间记忆，实现了在恒定内存占用下处理无限长序列，显著提升了流式重建的质量与效率。",
+      "tags": "query:q7",
+      "abstract_en": "Visual Geometry Grounded Transformer (VGGT) advances 3D reconstruction via scalable Transformer architecture, but the quadratic complexity of global attention prevents long context application. StreamVGGT enables streaming with causal attention, yet its KV cache grows linearly with frames, causing memory overflow and quality degradation. We present RetrieveVGGT, a training-free framework, which formulates context construction for VGGT as a retrieval problem. By retrieving a fixed number of relevant frames at each step, VGGT maintains a controllable memory budget, which is close to its training context length. Interestingly, we find that the similarity between current frame queries and cached history frame keys at the first global attention layer of VGGT is already a strong indicator of relevance, eliminating the need for additional learned scoring. To enhance information diversity similar to a recommender system, we propose Segment Sampling so that the retrieval spans distinct relevant segments rather than a single high-similarity region. We design a pose-aware spatial memory mechanism that organizes history frames according to their already estimated camera poses, enabling location-aware retrieval. Extensive experiments demonstrate that RetrieveVGGT achieves state-of-the-art performance, outperforming StreamVGGT, TTT3R, and InfiniteVGGT while maintaining constant memory usage regardless of sequence length. Code is available at https://github.com/zzctmd/RetrieveVGGT.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/15/2605.14135v1-panoplane-plane-aware-panoramic-completion-for-sparse-view-indoor-3d-gaussian-splatting",
+      "section": "quick",
+      "title_en": "PanoPlane: Plane-Aware Panoramic Completion for Sparse-View Indoor 3D Gaussian Splatting",
+      "authors": "Adil Qureshi, Dongki Jung, Jaehoon Choi, Dinesh Manocha",
+      "date": "2026-05-13",
+      "pdf": "https://arxiv.org/pdf/2605.14135v1",
+      "score": "6.0",
+      "evidence": "稀疏视图室内 3D 高斯泼溅",
+      "tldr": "针对室内稀疏视图的三维重建难题，本文提出PanoPlane。该方法利用360度全景补全技术重建封闭房间几何，并引入“布局锚定注意力引导”机制，在推理阶段引导扩散模型关注平面结构，将随机生成转变为基于几何的一致性外推。通过全景补全结果指导3D高斯泼溅（3DGS），在仅有3个输入视图的情况下实现高质量的新视角合成，显著提升了重建精度。",
+      "tags": "query:q1",
+      "abstract_en": "We present PanoPlane, an approach for high-fidelity sparse-view indoor novel view synthesis that reconstructs closed room geometry via panoramic scene completion. Unlike perspective-based methods that generate training views from limited fields of view, PanoPlane leverages $360^{\\circ}$ panoramic completion to condition the generative process on the full spatial layout. We propose Layout Anchored Attention Steering, a training-free mechanism that steers attention within the diffusion model's internal representation toward scene's detected planar surfaces at inference time. By directing each unobserved region's attention toward geometrically consistent observed content, our method replaces unconstrained hallucination with grounded surface extrapolation. The resulting panoramic completions provide supervision for 3D Gaussian Splatting, enabling accurate novel-view synthesis across unobserved regions from as few as three input views. Experiments on Replica, ScanNet++, and Matterport3D demonstrate state-of-the-art novel view synthesis quality across 3, 6, and 9 input views, achieving up to $+17.8\\%$ improvement in PSNR over the current state-of-the-art baseline without any training or fine-tuning of the diffusion model.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

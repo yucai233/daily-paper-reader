@@ -6,61 +6,35 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-14
-- 运行时间：2026-05-14 20:51:18 UTC
+- 最新运行日期：2026-05-15
+- 运行时间：2026-05-15 21:13:00 UTC
 - 运行状态：成功
-- 本次总论文数：13
-- 精读区：2
-- 速读区：11
+- 本次总论文数：4
+- 精读区：0
+- 速读区：4
 
 ### 今日简报（AI）
-深度探索 GAN 在气象云层模拟中的突破，并同步追踪 3D 高斯泼溅与实时重建的前沿进展。
-重点关注 GAN 在提升云辐射场模拟精度上的卓越表现，以及 Z-Order Transformer 为高效 3D 场景重建带来的性能飞跃。
-建议关注生成式 AI 如何跨界解决物理仿真难题，并持续跟进 3D 实时渲染技术的轻量化趋势。
-- 详情：[/202605/14/README](/202605/14/README)
+今日聚焦 Visual Geometry Transformers (VGGT) 的性能飞跃，深度探索 3D 几何重建的加速与长序列处理方案。
+重点推荐 PaceVGGT 与 TurboVGGT 的 Token 剪枝及自适应注意力技术，以及 RetrieveVGGT 凭借相似度检索实现的免训练流式重建。
+建议关注 3D 视觉领域中 Transformer 架构的轻量化演进，特别是如何平衡重建精度与推理效率。
+- 详情：[/202605/15/README](/202605/15/README)
 
 ### 精读区论文标签
-1. [Assessment of cloud and associated radiation fields from a GAN stochastic cloud subcolumn generator](/202605/14/2605.11968v2-assessment-of-cloud-and-associated-radiation-fields-from-a-gan-stochastic-cloud-subcolumn-generator)  
-   标签：评分：9.0/10、query:q5
-   evidence：基于GAN的随机云子列生成器，用于大气建模和辐射场
-2. [Z-Order Transformer for Feed-Forward Gaussian Splatting](/202605/14/2605.13465v1-z-order-transformer-for-feed-forward-gaussian-splatting)  
-   标签：评分：8.0/10、query:q7
-   evidence：基于Transformer的前馈高斯泼溅架构，用于加速渲染
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Ray-Aware Pointer Memory with Adaptive Updates for Streaming 3D Reconstruction](/202605/14/2605.05749v2-ray-aware-pointer-memory-with-adaptive-updates-for-streaming-3d-reconstruction)  
-   标签：评分：7.0/10、query:q3
-   evidence：用于流式3D重建的光线感知指针存储
-2. [3DSS: 3D Surface Splatting for Inverse Rendering](/202605/14/2605.05876v3-3dss-3d-surface-splatting-for-inverse-rendering)  
+1. [PaceVGGT: Pre-Alternating-Attention Token Pruning for Visual Geometry Transformers](/202605/15/2605.08371v1-pacevggt-pre-alternating-attention-token-pruning-for-visual-geometry-transformers)  
+   标签：评分：7.0/10、query:q7
+   evidence：通过令牌剪枝加速3D任务和视觉几何Transformer
+2. [TurboVGGT: Fast Visual Geometry Reconstruction with Adaptive Alternating Attention](/202605/15/2605.14315v1-turbovggt-fast-visual-geometry-reconstruction-with-adaptive-alternating-attention)  
    标签：评分：7.0/10、query:q1
-   evidence：用于逆向渲染的可微分表面点云渲染
-3. [CaloArt: Large-Patch x-Prediction Diffusion Transformers for High-Granularity Calorimeter Shower Generation](/202605/14/2605.12011v1-caloart-large-patch-x-prediction-diffusion-transformers-for-high-granularity-calorimeter-shower-generation)  
-   标签：评分：7.0/10、query:q5
-   evidence：体素空间生成器与高粒度簇射模拟
-4. [Volumetric Optical Scattering Neural Networks](/202605/14/2605.13177v1-volumetric-optical-scattering-neural-networks)  
-   标签：评分：7.0/10、query:q4
-   evidence：体积光学散射与近场散射相互作用
-5. [DeepFilters: Scattering-Aware Pupil Engineering with Learned Digital Filter Reconstruction for Extended Depth of Field Microscopy](/202605/14/2605.13619v1-deepfilters-scattering-aware-pupil-engineering-with-learned-digital-filter-reconstruction-for-extended-depth-of-field-microscopy)  
-   标签：评分：7.0/10、query:q4
-   evidence：散射感知的深度光学与可微分前向模型
-6. [SoLAR: Error-Resilient Streamable Long-Horizon Free-Viewpoint Video Reconstruction with Anchor Activation and Latent Recalibration](/202605/14/2605.07346v1-solar-error-resilient-streamable-long-horizon-free-viewpoint-video-reconstruction-with-anchor-activation-and-latent-recalibration)  
-   标签：评分：6.0/10、query:q1
-   evidence：基于动态锚点的体积视频表示
-7. [SpaceMind++: Toward Allocentric Cognitive Maps for Spatially Grounded Video MLLMs](/202605/14/2605.09449v1-spacemind-toward-allocentric-cognitive-maps-for-spatially-grounded-video-mllms)  
-   标签：评分：6.0/10、query:q1
-   evidence：视频多模态大模型中用于3D度量表示的体素化认知地图
-8. [Lite3R: A Model-Agnostic Framework for Efficient Feed-Forward 3D Reconstruction](/202605/14/2605.11354v1-lite3r-a-model-agnostic-framework-for-efficient-feed-forward-3d-reconstruction)  
+   evidence：前馈3D重建与视觉几何Transformer
+3. [Attention Itself Could Retrieve.RetrieveVGGT: Training-Free Long Context Streaming 3D Reconstruction via Query-Key Similarity Retrieval](/202605/15/2605.09644v1-attention-itself-could-retrieveretrievevggt-training-free-long-context-streaming-3d-reconstruction-via-query-key-similarity-retrieval)  
    标签：评分：6.0/10、query:q7
-   evidence：高效前馈3D重建与注意力加速
-9. [MoCam: Unified Novel View Synthesis via Structured Denoising Dynamics](/202605/14/2605.12119v1-mocam-unified-novel-view-synthesis-via-structured-denoising-dynamics)  
+   evidence：通过基于检索的上下文构建加速3D重建
+4. [PanoPlane: Plane-Aware Panoramic Completion for Sparse-View Indoor 3D Gaussian Splatting](/202605/15/2605.14135v1-panoplane-plane-aware-panoramic-completion-for-sparse-view-indoor-3d-gaussian-splatting)  
    标签：评分：6.0/10、query:q1
-   evidence：通过结构化去噪动力学进行新视角合成
-10. [Sparse Code Uplifting for Efficient 3D Language Gaussian Splatting](/202605/14/2605.13600v1-sparse-code-uplifting-for-efficient-3d-language-gaussian-splatting)  
-   标签：评分：6.0/10、query:q7
-   evidence：3D高斯泼溅的高效特征渲染
-11. [BlitzGS: City-Scale Gaussian Splatting at Lightning Speed](/202605/14/2605.13794v1-blitzgs-city-scale-gaussian-splatting-at-lightning-speed)  
-   标签：评分：6.0/10、query:q7
-   evidence：通过分布式工作负载管理加速3DGS渲染
+   evidence：稀疏视图室内 3D 高斯泼溅
 
 
 <div class="dpr-home-promo-card">
