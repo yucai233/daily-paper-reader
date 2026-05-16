@@ -6,35 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-15
-- 运行时间：2026-05-15 21:13:00 UTC
+- 最新运行日期：2026-05-16
+- 运行时间：2026-05-16 20:39:29 UTC
 - 运行状态：成功
-- 本次总论文数：4
+- 本次总论文数：1
 - 精读区：0
-- 速读区：4
+- 速读区：1
 
 ### 今日简报（AI）
-今日聚焦 Visual Geometry Transformers (VGGT) 的性能飞跃，深度探索 3D 几何重建的加速与长序列处理方案。
-重点推荐 PaceVGGT 与 TurboVGGT 的 Token 剪枝及自适应注意力技术，以及 RetrieveVGGT 凭借相似度检索实现的免训练流式重建。
-建议关注 3D 视觉领域中 Transformer 架构的轻量化演进，特别是如何平衡重建精度与推理效率。
-- 详情：[/202605/15/README](/202605/15/README)
+今日重点关注 MoCam 框架，探索如何通过结构化去噪动力学实现统一的新视角合成。
+该研究证明了利用去噪动力学能有效提升不同场景下视角生成的质量与一致性。
+推荐对 3D 视觉和扩散模型感兴趣的读者深入了解其在复杂场景重建中的应用潜力。
+- 详情：[/202605/16/README](/202605/16/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [PaceVGGT: Pre-Alternating-Attention Token Pruning for Visual Geometry Transformers](/202605/15/2605.08371v1-pacevggt-pre-alternating-attention-token-pruning-for-visual-geometry-transformers)  
-   标签：评分：7.0/10、query:q7
-   evidence：通过令牌剪枝加速3D任务和视觉几何Transformer
-2. [TurboVGGT: Fast Visual Geometry Reconstruction with Adaptive Alternating Attention](/202605/15/2605.14315v1-turbovggt-fast-visual-geometry-reconstruction-with-adaptive-alternating-attention)  
-   标签：评分：7.0/10、query:q1
-   evidence：前馈3D重建与视觉几何Transformer
-3. [Attention Itself Could Retrieve.RetrieveVGGT: Training-Free Long Context Streaming 3D Reconstruction via Query-Key Similarity Retrieval](/202605/15/2605.09644v1-attention-itself-could-retrieveretrievevggt-training-free-long-context-streaming-3d-reconstruction-via-query-key-similarity-retrieval)  
-   标签：评分：6.0/10、query:q7
-   evidence：通过基于检索的上下文构建加速3D重建
-4. [PanoPlane: Plane-Aware Panoramic Completion for Sparse-View Indoor 3D Gaussian Splatting](/202605/15/2605.14135v1-panoplane-plane-aware-panoramic-completion-for-sparse-view-indoor-3d-gaussian-splatting)  
+1. [MoCam: Unified Novel View Synthesis via Structured Denoising Dynamics](/202605/16/2605.12119v2-mocam-unified-novel-view-synthesis-via-structured-denoising-dynamics)  
    标签：评分：6.0/10、query:q1
-   evidence：稀疏视图室内 3D 高斯泼溅
+   evidence：神经新视角合成与几何外观协调
 
 
 <div class="dpr-home-promo-card">

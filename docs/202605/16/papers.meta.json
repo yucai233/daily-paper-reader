@@ -1,0 +1,23 @@
+{
+  "label": "2026-05-16",
+  "date": "2026-05-16",
+  "generated_at": "2026-05-16T20:39:36",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202605/16/2605.12119v2-mocam-unified-novel-view-synthesis-via-structured-denoising-dynamics",
+      "section": "quick",
+      "title_en": "MoCam: Unified Novel View Synthesis via Structured Denoising Dynamics",
+      "authors": "Haofeng Liu, Yang Zhou, Ziheng Wang, Zhengbo Xu, Zhan Peng, Jie Ma, Jun Liang, Shengfeng He, Jing Li",
+      "date": "2026-05-12",
+      "pdf": "https://arxiv.org/pdf/2605.12119v2",
+      "score": "6.0",
+      "evidence": "神经新视角合成与几何外观协调",
+      "tldr": "MoCam 针对新视角合成中几何先验（空间对齐但易出错）与外观先验（视觉逼真但缺乏对应）的冲突，提出了一种结构化去噪动力学方法。通过在扩散过程中将几何对齐与外观细化进行时间解耦，前期利用几何先验锚定结构，后期利用外观先验修正误差，实现了静态与动态视角合成的统一，在处理不完整点云时表现优异。",
+      "tags": "query:q1",
+      "abstract_en": "Generative novel view synthesis faces a fundamental dilemma: geometric priors provide spatial alignment but become sparse and inaccurate under view changes, while appearance priors offer visual fidelity but lack geometric correspondence. Existing methods either propagate geometric errors throughout generation or suffer from signal conflicts when fusing both statically. We introduce MoCam, which employs structured denoising dynamics to orchestrate a coordinated progression from geometry to appearance within the diffusion process. MoCam first leverages geometric priors in early stages to anchor coarse structures and tolerate their incompleteness, then switches to appearance priors in later stages to actively correct geometric errors and refine details. This design naturally unifies static and dynamic view synthesis by temporally decoupling geometric alignment and appearance refinement within the diffusion process. Experiments demonstrate that MoCam significantly outperforms prior methods, particularly when point clouds contain severe holes or distortions, achieving robust geometry-appearance disentanglement.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

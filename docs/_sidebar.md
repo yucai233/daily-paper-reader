@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-05-16 <!--dpr-date:20260516-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202605/16/2605.12119v2-mocam-unified-novel-view-synthesis-via-structured-denoising-dynamics" data-sidebar-item="{&quot;title&quot;: &quot;MoCam: Unified Novel View Synthesis via Structured Denoising Dynamics&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2605.12119v2-mocam-unified-novel-view-synthesis-via-structured-denoising-dynamics&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;q1&quot;}], &quot;evidence&quot;: &quot;神经新视角合成与几何外观协调&quot;}">MoCam: Unified Novel View Synthesis via Structured Denoising Dynamics</a>
   * 2026-05-15 <!--dpr-date:20260515-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202605/15/2605.08371v1-pacevggt-pre-alternating-attention-token-pruning-for-visual-geometry-transformers" data-sidebar-item="{&quot;title&quot;: &quot;PaceVGGT: Pre-Alternating-Attention Token Pruning for Visual Geometry Transformers&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2605.08371v1-pacevggt-pre-alternating-attention-token-pruning-for-visual-geometry-transformers&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;q7&quot;}], &quot;evidence&quot;: &quot;通过令牌剪枝加速3D任务和视觉几何Transformer&quot;}">PaceVGGT: Pre-Alternating-Attention Token Pruning for Visual Geometry Transformers</a>
