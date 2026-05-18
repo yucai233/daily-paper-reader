@@ -1,0 +1,79 @@
+{
+  "label": "2026-05-18",
+  "date": "2026-05-18",
+  "generated_at": "2026-05-18T20:38:27",
+  "count": 5,
+  "papers": [
+    {
+      "paper_id": "202605/18/2605.13073v1-harmogs-robust-3d-gaussian-splatting-in-the-wild-via-conflict-aware-gradient-harmonization",
+      "section": "quick",
+      "title_en": "HarmoGS: Robust 3D Gaussian Splatting in the Wild via Conflict-Aware Gradient Harmonization",
+      "authors": "Yulei Kang, Tianze Zhu, Jian-Fang Hu, Jianhuang Lai, Wei-Shi Zheng",
+      "date": "2026-05-13",
+      "pdf": "https://arxiv.org/pdf/2605.13073v1",
+      "score": "7.0",
+      "evidence": "用于鲁棒重建的3D高斯泼溅框架",
+      "tldr": "针对野外场景中 3D Gaussian Splatting 面临的瞬态遮挡物和光照不一致挑战，本文提出 HarmoGS 框架。该方法通过语义一致性引导掩码抑制不可靠监督，并引入冲突感知梯度协调策略，通过旋转视图梯度减少方向干扰。此外，还设计了冲突感知加密与剪枝机制。实验证明，该方法在复杂野外环境下实现了最先进的渲染质量。",
+      "tags": "query:q1",
+      "abstract_en": "In-the-wild 3D Gaussian Splatting remains challenging due to transient distractors and illumination-induced cross-view appearance inconsistencies. Existing methods mainly rely on image-level masking to suppress unreliable supervision, but masking alone cannot fully eliminate residual occlusions or resolve illumination-induced inconsistencies, both of which can introduce conflicting cross-view gradients. These unresolved conflicts may destabilize Gaussian optimization and lead to visible reconstruction artifacts. We propose a conflict-aware 3DGS framework that addresses this problem from both image-space supervision and gradient-level optimization. Semantic Consistency-Guided Masking learns pixel-wise consistency scores to adaptively refine prior masks and suppress unreliable supervision before gradient formation. A dual-view Conflict-Aware Gradient Harmonization strategy further reconciles view-specific gradients by mutually rotating them into an orthogonal configuration, reducing negative directional interference across views. We also introduce conflict-aware densification and pruning to stabilize Gaussian growth and remove persistently conflicting primitives. Extensive experiments on standard in-the-wild benchmarks demonstrate that our method achieves state-of-the-art rendering quality under complex transient distractors and cross-view inconsistencies.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/18/2605.15908v1-rapd-resolution-agnostic-pixel-diffusion-via-semantics-enriched-implicit-representations",
+      "section": "quick",
+      "title_en": "RaPD: Resolution-Agnostic Pixel Diffusion via Semantics-Enriched Implicit Representations",
+      "authors": "Yanhao Ge, Shanyan Guan, Weihao Wang, Ying Tai, Mingyu You",
+      "date": "2026-05-15",
+      "pdf": "https://arxiv.org/pdf/2605.15908v1",
+      "score": "7.0",
+      "evidence": "用于无分辨率渲染的连续神经场",
+      "tldr": "针对现有生成模型在离散网格上运行导致的分辨率受限问题，本文提出RaPD。该方法在连续神经图像场（NIF）潜空间中执行扩散过程，通过语义表示引导和坐标查询注意力渲染器，实现了生成感知的潜空间学习。RaPD允许在扩散成本固定的情况下，通过调整查询坐标生成任意分辨率的高质量图像，有效解决了重建与生成之间的鸿沟。",
+      "tags": "query:q1",
+      "abstract_en": "Natural images are continuous, yet most generative models synthesize them on discrete grids, limiting resolution-flexible generation. Continuous neural fields enable resolution-free rendering, but prior methods introduce continuity only at the decoding stage as an interpolation module, leaving the generative latent space discretized and reconstruction-oriented. We propose RaPD (Resolution-agnostic Pixel Diffusion), which performs diffusion in a continuous Neural Image Field (NIF) latent space. RaPD bridges this reconstruction-generation gap with Semantic Representation Guidance for generation-aware latent learning and a Coordinate-Queried Attention Renderer for coordinate-conditioned, scale-aware rendering. A single denoised latent can be rendered at arbitrary resolutions by changing only the query coordinates, keeping diffusion cost fixed. Experiments demonstrate superior generation quality and resolution scalability.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/18/2605.16065v1-robust-prior-guided-segmentation-for-editable-3d-gaussian-splatting",
+      "section": "quick",
+      "title_en": "Robust Prior-Guided Segmentation for Editable 3D Gaussian Splatting",
+      "authors": "Raushan Joshi, Jean-Yves Guillemaut",
+      "date": "2026-05-15",
+      "pdf": "https://arxiv.org/pdf/2605.16065v1",
+      "score": "7.0",
+      "evidence": "用于场景重建和编辑的3D高斯泼溅技术",
+      "tldr": "针对3D高斯泼溅（3D-GS）在场景编辑中存在的分割不一致和掩码粗糙问题，本文提出了一种鲁棒的先验引导分割框架。该方法利用SAM-HQ生成高质量2D掩码，并通过先验引导的标签重分配机制，将多视图一致性约束引入3D高斯点云的标签分配中。该框架实现了高精度的3D场景分割，支持实时、交互式的物体编辑（如移除、提取和变色），在保持视觉保真度的同时，显著提升了边界处理能力，为VR和机器人领域的3D场景编辑提供了有力支持。",
+      "tags": "query:q1",
+      "abstract_en": "3D Gaussian Splatting (3D-GS) enables real-time 3D scene reconstruction but lacks robust segmentation for editing tasks such as object removal, extraction, and recoloring. Existing approaches that lift 2D segmentations to the 3D domain suffer from view inconsistencies and coarse masks. In this paper, we propose a novel framework that leverages the Segment Anything Model High Quality (SAM-HQ) to generate accurate 2D masks, addressing the limitations of the standard SAM in boundary fidelity and fine-structure preservation. To achieve robust 3D segmentation of any target object in a given scene, we introduce a prior-guided label reassignment method that assigns labels to 3D Gaussians by enforcing multiview consistency with learned priors. Our approach achieves state-of-the-art segmentation accuracy and enables interactive, real-time object editing while maintaining high visual fidelity. Qualitative results demonstrate superior boundary preservation and practical utility in Virtual Reality (VR) and robotics, advancing 3D scene editing.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/18/2605.16258v1-ivgt-implicit-visual-geometry-transformer-for-neural-scene-representation",
+      "section": "quick",
+      "title_en": "IVGT: Implicit Visual Geometry Transformer for Neural Scene Representation",
+      "authors": "Yuqi Wu, Tianyu Hu, Wenzhao Zheng, Yuanhui Huang, Haowen Sun, Jie Zhou, Jiwen Lu",
+      "date": "2026-05-15",
+      "pdf": "https://arxiv.org/pdf/2605.16258v1",
+      "score": "7.0",
+      "evidence": "用于神经场景表示和空间查询的隐式视觉几何Transformer",
+      "tldr": "本研究针对从无位姿多视图图像重建3D几何与外观的挑战，提出了隐式视觉几何Transformer（IVGT）。不同于以往回归显式点图的方法，IVGT在规范坐标系中学习连续的神经场景表示，支持任意3D位置的空间查询，并通过轻量级解码器预测SDF值和颜色。该方法通过多数据集联合优化训练，实现了高质量的连续表面提取和多任务泛化，在网格重建、新视角合成及位姿估计等方面表现优异。",
+      "tags": "query:q1",
+      "abstract_en": "Reconstructing coherent 3D geometry and appearance from unposed multi-view images is a fundamental yet challenging problem in computer vision. Most existing visual geometry foundation models predict explicit geometry by regressing pixel-aligned pointmaps, often suffering from redundancy and limited geometric continuity. We propose IVGT, an Implicit Visual Geometry Transformer that implicitly models continuous and coherent geometry from pose-free multi-view images. This formulation learns a continuous neural scene representation in a canonical coordinate system and supports continuous spatial queries at any 3D positions, retrieving local features to predict signed distance (SDF) values and colors using lightweight decoders. It allows direct extraction of continuous and coherent surface geometry, enabling rendering of RGB images, depth maps, and surface normal maps from arbitrary viewpoints. We train IVGT via multi-dataset joint optimization with 2D supervision and 3D geometric regularization. IVGT demonstrates generalization across scenes and achieves strong performance on various tasks, including mesh and point cloud reconstruction, novel view synthesis, depth and surface normal estimation, and camera pose estimation.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/18/2605.13073v2-harmogs-robust-3d-gaussian-splatting-in-the-wild-via-conflict-aware-gradient-harmonization",
+      "section": "quick",
+      "title_en": "HarmoGS: Robust 3D Gaussian Splatting in the Wild via Conflict-Aware Gradient Harmonization",
+      "authors": "Yulei Kang, Tianze Zhu, Jian-Fang Hu, Jianhuang Lai, Wei-Shi Zheng",
+      "date": "2026-05-13",
+      "pdf": "https://arxiv.org/pdf/2605.13073v2",
+      "score": "6.0",
+      "evidence": "用于野外场景渲染的鲁棒3D高斯泼溅",
+      "tldr": "针对野外场景中 3D Gaussian Splatting (3DGS) 面临的瞬态遮挡和光照不一致挑战，本文提出 HarmoGS 框架。该方法通过语义一致性引导掩码抑制不可靠监督，并引入冲突感知梯度协调策略，通过旋转视图梯度减少方向干扰。此外，还设计了冲突感知加密与剪枝机制。实验证明，该方法在复杂野外环境下实现了最先进的渲染质量。",
+      "tags": "query:q1",
+      "abstract_en": "In-the-wild 3D Gaussian Splatting remains challenging due to transient distractors and illumination-induced cross-view appearance inconsistencies. Existing methods mainly rely on image-level masking to suppress unreliable supervision, but masking alone cannot fully eliminate residual occlusions or resolve illumination-induced inconsistencies, both of which can introduce conflicting cross-view gradients. These unresolved conflicts may destabilize Gaussian optimization and lead to visible reconstruction artifacts. We propose a conflict-aware 3DGS framework that addresses this problem from both image-space supervision and gradient-level optimization. Semantic Consistency-Guided Masking learns pixel-wise consistency scores to adaptively refine prior masks and suppress unreliable supervision before gradient formation. A dual-view Conflict-Aware Gradient Harmonization strategy further reconciles view-specific gradients by mutually rotating them into an orthogonal configuration, reducing negative directional interference across views. We also introduce conflict-aware densification and pruning to stabilize Gaussian growth and remove persistently conflicting primitives. Extensive experiments on standard in-the-wild benchmarks demonstrate that our method achieves state-of-the-art rendering quality under complex transient distractors and cross-view inconsistencies.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

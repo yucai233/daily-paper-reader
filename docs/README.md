@@ -6,26 +6,38 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-16
-- 运行时间：2026-05-16 20:39:29 UTC
+- 最新运行日期：2026-05-18
+- 运行时间：2026-05-18 20:38:20 UTC
 - 运行状态：成功
-- 本次总论文数：1
+- 本次总论文数：5
 - 精读区：0
-- 速读区：1
+- 速读区：5
 
 ### 今日简报（AI）
-今日重点关注 MoCam 框架，探索如何通过结构化去噪动力学实现统一的新视角合成。
-该研究证明了利用去噪动力学能有效提升不同场景下视角生成的质量与一致性。
-推荐对 3D 视觉和扩散模型感兴趣的读者深入了解其在复杂场景重建中的应用潜力。
-- 详情：[/202605/16/README](/202605/16/README)
+今日聚焦 3D 高斯泼溅（3DGS）的鲁棒性优化与跨分辨率像素扩散技术。
+重点关注通过梯度协调提升 3DGS 在复杂环境下的重建质量，以及利用隐式表示实现不受分辨率限制的图像生成。
+建议关注 3DGS 的可编辑性与语义分割结合，探索更灵活的三维场景处理方案。
+- 详情：[/202605/18/README](/202605/18/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [MoCam: Unified Novel View Synthesis via Structured Denoising Dynamics](/202605/16/2605.12119v2-mocam-unified-novel-view-synthesis-via-structured-denoising-dynamics)  
+1. [HarmoGS: Robust 3D Gaussian Splatting in the Wild via Conflict-Aware Gradient Harmonization](/202605/18/2605.13073v1-harmogs-robust-3d-gaussian-splatting-in-the-wild-via-conflict-aware-gradient-harmonization)  
+   标签：评分：7.0/10、query:q1
+   evidence：用于鲁棒重建的3D高斯泼溅框架
+2. [RaPD: Resolution-Agnostic Pixel Diffusion via Semantics-Enriched Implicit Representations](/202605/18/2605.15908v1-rapd-resolution-agnostic-pixel-diffusion-via-semantics-enriched-implicit-representations)  
+   标签：评分：7.0/10、query:q1
+   evidence：用于无分辨率渲染的连续神经场
+3. [Robust Prior-Guided Segmentation for Editable 3D Gaussian Splatting](/202605/18/2605.16065v1-robust-prior-guided-segmentation-for-editable-3d-gaussian-splatting)  
+   标签：评分：7.0/10、query:q1
+   evidence：用于场景重建和编辑的3D高斯泼溅技术
+4. [IVGT: Implicit Visual Geometry Transformer for Neural Scene Representation](/202605/18/2605.16258v1-ivgt-implicit-visual-geometry-transformer-for-neural-scene-representation)  
+   标签：评分：7.0/10、query:q1
+   evidence：用于神经场景表示和空间查询的隐式视觉几何Transformer
+5. [HarmoGS: Robust 3D Gaussian Splatting in the Wild via Conflict-Aware Gradient Harmonization](/202605/18/2605.13073v2-harmogs-robust-3d-gaussian-splatting-in-the-wild-via-conflict-aware-gradient-harmonization)  
    标签：评分：6.0/10、query:q1
-   evidence：神经新视角合成与几何外观协调
+   evidence：用于野外场景渲染的鲁棒3D高斯泼溅
 
 
 <div class="dpr-home-promo-card">

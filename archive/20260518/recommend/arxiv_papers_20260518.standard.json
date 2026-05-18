@@ -1,0 +1,210 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-18T20:37:53.032366+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2605.13073v1",
+      "title": "HarmoGS: Robust 3D Gaussian Splatting in the Wild via Conflict-Aware Gradient Harmonization",
+      "abstract": "In-the-wild 3D Gaussian Splatting remains challenging due to transient distractors and illumination-induced cross-view appearance inconsistencies. Existing methods mainly rely on image-level masking to suppress unreliable supervision, but masking alone cannot fully eliminate residual occlusions or resolve illumination-induced inconsistencies, both of which can introduce conflicting cross-view gradients. These unresolved conflicts may destabilize Gaussian optimization and lead to visible reconstruction artifacts. We propose a conflict-aware 3DGS framework that addresses this problem from both image-space supervision and gradient-level optimization. Semantic Consistency-Guided Masking learns pixel-wise consistency scores to adaptively refine prior masks and suppress unreliable supervision before gradient formation. A dual-view Conflict-Aware Gradient Harmonization strategy further reconciles view-specific gradients by mutually rotating them into an orthogonal configuration, reducing negative directional interference across views. We also introduce conflict-aware densification and pruning to stabilize Gaussian growth and remove persistently conflicting primitives. Extensive experiments on standard in-the-wild benchmarks demonstrate that our method achieves state-of-the-art rendering quality under complex transient distractors and cross-view inconsistencies.",
+      "authors": [
+        "Yulei Kang",
+        "Tianze Zhu",
+        "Jian-Fang Hu",
+        "Jianhuang Lai",
+        "Wei-Shi Zheng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-13T06:47:09+00:00",
+      "link": "https://arxiv.org/pdf/2605.13073v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting framework for robust reconstruction",
+      "llm_evidence_cn": "用于鲁棒重建的3D高斯泼溅框架",
+      "llm_evidence": "用于鲁棒重建的3D高斯泼溅框架",
+      "canonical_evidence": "用于鲁棒重建的3D高斯泼溅框架",
+      "llm_tldr_en": "Addresses illumination and distractor issues in 3D Gaussian Splatting via gradient harmonization.",
+      "llm_tldr_cn": "通过梯度协调解决3D高斯泼溅中的光照不一致和遮挡物问题。",
+      "llm_tldr": "通过梯度协调解决3D高斯泼溅中的光照不一致和遮挡物问题。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.13073v2",
+      "title": "HarmoGS: Robust 3D Gaussian Splatting in the Wild via Conflict-Aware Gradient Harmonization",
+      "abstract": "In-the-wild 3D Gaussian Splatting remains challenging due to transient distractors and illumination-induced cross-view appearance inconsistencies. Existing methods mainly rely on image-level masking to suppress unreliable supervision, but masking alone cannot fully eliminate residual occlusions or resolve illumination-induced inconsistencies, both of which can introduce conflicting cross-view gradients. These unresolved conflicts may destabilize Gaussian optimization and lead to visible reconstruction artifacts. We propose a conflict-aware 3DGS framework that addresses this problem from both image-space supervision and gradient-level optimization. Semantic Consistency-Guided Masking learns pixel-wise consistency scores to adaptively refine prior masks and suppress unreliable supervision before gradient formation. A dual-view Conflict-Aware Gradient Harmonization strategy further reconciles view-specific gradients by mutually rotating them into an orthogonal configuration, reducing negative directional interference across views. We also introduce conflict-aware densification and pruning to stabilize Gaussian growth and remove persistently conflicting primitives. Extensive experiments on standard in-the-wild benchmarks demonstrate that our method achieves state-of-the-art rendering quality under complex transient distractors and cross-view inconsistencies.",
+      "authors": [
+        "Yulei Kang",
+        "Tianze Zhu",
+        "Jian-Fang Hu",
+        "Jianhuang Lai",
+        "Wei-Shi Zheng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-13T06:47:09+00:00",
+      "link": "https://arxiv.org/pdf/2605.13073v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "robust 3D Gaussian Splatting for in-the-wild scene rendering",
+      "llm_evidence_cn": "用于野外场景渲染的鲁棒3D高斯泼溅",
+      "llm_evidence": "用于野外场景渲染的鲁棒3D高斯泼溅",
+      "canonical_evidence": "用于野外场景渲染的鲁棒3D高斯泼溅",
+      "llm_tldr_en": "Improves 3D Gaussian Splatting robustness against distractors and illumination changes in real-world scenes.",
+      "llm_tldr_cn": "增强了3D高斯泼溅在真实场景中应对干扰物和光照变化的鲁棒性。",
+      "llm_tldr": "增强了3D高斯泼溅在真实场景中应对干扰物和光照变化的鲁棒性。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.15908v1",
+      "title": "RaPD: Resolution-Agnostic Pixel Diffusion via Semantics-Enriched Implicit Representations",
+      "abstract": "Natural images are continuous, yet most generative models synthesize them on discrete grids, limiting resolution-flexible generation. Continuous neural fields enable resolution-free rendering, but prior methods introduce continuity only at the decoding stage as an interpolation module, leaving the generative latent space discretized and reconstruction-oriented. We propose RaPD (Resolution-agnostic Pixel Diffusion), which performs diffusion in a continuous Neural Image Field (NIF) latent space. RaPD bridges this reconstruction-generation gap with Semantic Representation Guidance for generation-aware latent learning and a Coordinate-Queried Attention Renderer for coordinate-conditioned, scale-aware rendering. A single denoised latent can be rendered at arbitrary resolutions by changing only the query coordinates, keeping diffusion cost fixed. Experiments demonstrate superior generation quality and resolution scalability.",
+      "authors": [
+        "Yanhao Ge",
+        "Shanyan Guan",
+        "Weihao Wang",
+        "Ying Tai",
+        "Mingyu You"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-05-15T12:45:17+00:00",
+      "link": "https://arxiv.org/pdf/2605.15908v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "continuous neural fields for resolution-free rendering",
+      "llm_evidence_cn": "用于无分辨率渲染的连续神经场",
+      "llm_evidence": "用于无分辨率渲染的连续神经场",
+      "canonical_evidence": "用于无分辨率渲染的连续神经场",
+      "llm_tldr_en": "Proposes RaPD for resolution-agnostic image generation using continuous Neural Image Fields.",
+      "llm_tldr_cn": "提出RaPD，利用连续神经图像场实现与分辨率无关的图像生成。",
+      "llm_tldr": "提出RaPD，利用连续神经图像场实现与分辨率无关的图像生成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.16065v1",
+      "title": "Robust Prior-Guided Segmentation for Editable 3D Gaussian Splatting",
+      "abstract": "3D Gaussian Splatting (3D-GS) enables real-time 3D scene reconstruction but lacks robust segmentation for editing tasks such as object removal, extraction, and recoloring. Existing approaches that lift 2D segmentations to the 3D domain suffer from view inconsistencies and coarse masks. In this paper, we propose a novel framework that leverages the Segment Anything Model High Quality (SAM-HQ) to generate accurate 2D masks, addressing the limitations of the standard SAM in boundary fidelity and fine-structure preservation. To achieve robust 3D segmentation of any target object in a given scene, we introduce a prior-guided label reassignment method that assigns labels to 3D Gaussians by enforcing multiview consistency with learned priors. Our approach achieves state-of-the-art segmentation accuracy and enables interactive, real-time object editing while maintaining high visual fidelity. Qualitative results demonstrate superior boundary preservation and practical utility in Virtual Reality (VR) and robotics, advancing 3D scene editing.",
+      "authors": [
+        "Raushan Joshi",
+        "Jean-Yves Guillemaut"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-05-15T15:29:30+00:00",
+      "link": "https://arxiv.org/pdf/2605.16065v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting for scene reconstruction and editing",
+      "llm_evidence_cn": "用于场景重建和编辑的3D高斯泼溅技术",
+      "llm_evidence": "用于场景重建和编辑的3D高斯泼溅技术",
+      "canonical_evidence": "用于场景重建和编辑的3D高斯泼溅技术",
+      "llm_tldr_en": "Enhances 3D Gaussian Splatting with robust segmentation for better scene editing and reconstruction.",
+      "llm_tldr_cn": "通过鲁棒分割增强3D高斯泼溅，以实现更好的场景编辑和重建。",
+      "llm_tldr": "通过鲁棒分割增强3D高斯泼溅，以实现更好的场景编辑和重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.16258v1",
+      "title": "IVGT: Implicit Visual Geometry Transformer for Neural Scene Representation",
+      "abstract": "Reconstructing coherent 3D geometry and appearance from unposed multi-view images is a fundamental yet challenging problem in computer vision. Most existing visual geometry foundation models predict explicit geometry by regressing pixel-aligned pointmaps, often suffering from redundancy and limited geometric continuity. We propose IVGT, an Implicit Visual Geometry Transformer that implicitly models continuous and coherent geometry from pose-free multi-view images. This formulation learns a continuous neural scene representation in a canonical coordinate system and supports continuous spatial queries at any 3D positions, retrieving local features to predict signed distance (SDF) values and colors using lightweight decoders. It allows direct extraction of continuous and coherent surface geometry, enabling rendering of RGB images, depth maps, and surface normal maps from arbitrary viewpoints. We train IVGT via multi-dataset joint optimization with 2D supervision and 3D geometric regularization. IVGT demonstrates generalization across scenes and achieves strong performance on various tasks, including mesh and point cloud reconstruction, novel view synthesis, depth and surface normal estimation, and camera pose estimation.",
+      "authors": [
+        "Yuqi Wu",
+        "Tianyu Hu",
+        "Wenzhao Zheng",
+        "Yuanhui Huang",
+        "Haowen Sun",
+        "Jie Zhou",
+        "Jiwen Lu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.RO"
+      ],
+      "published": "2026-05-15T17:59:57+00:00",
+      "link": "https://arxiv.org/pdf/2605.16258v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Implicit visual geometry transformer for neural scene representation and spatial queries",
+      "llm_evidence_cn": "用于神经场景表示和空间查询的隐式视觉几何Transformer",
+      "llm_evidence": "用于神经场景表示和空间查询的隐式视觉几何Transformer",
+      "canonical_evidence": "用于神经场景表示和空间查询的隐式视觉几何Transformer",
+      "llm_tldr_en": "Proposes an implicit transformer for continuous 3D geometry and appearance reconstruction.",
+      "llm_tldr_cn": "提出了一种用于连续3D几何和外观重建的隐式Transformer。",
+      "llm_tldr": "提出了一种用于连续3D几何和外观重建的隐式Transformer。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
