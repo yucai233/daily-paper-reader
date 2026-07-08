@@ -1,0 +1,488 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-08T21:37:04.599463+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 12,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2607.03390v1",
+      "title": "TemporalGS: Training-Free Plug-and-Play Acceleration for 3D Gaussian Splatting Rendering via Temporal Priors",
+      "abstract": "3D Gaussian Splatting (3DGS) has revolutionized novel-view synthesis with its fast and high-fidelity rendering. However, rendering at high FPS and low latency across various scenes remains a challenge, especially when large amounts of 3D Gaussian ellipsoids appear in the scene. To address this issue, we introduce TemporalGS, to the best of our knowledge, the first training-free plug-and-play algorithmic approach to accelerate 3DGS rendering without any post-training or post-processing, implemented on top of tile-based software rasterization. The key idea is that, instead of rendering frames independently as 3DGS, we leverage the temporal priors, represented by novel geometry and appearance buffers, etc., to reduce redundancy of Gaussian preprocessing, sorting, and rasterization operations of consecutive frames. Specifically, we propose two acceleration strategies: (1) temporal dynamic culling, which filters out Gaussians that contribute less to current frame rendering; (2) selective rendering, which renders only a small portion of tiles that cannot be approximated by the temporal priors. By adapting and interleaving these two strategies, TemporalGS yields a simple but effective plug-and-play solution for 3DGS rendering speed-up without any training. Extensive experiments show that TemporalGS achieves comparable or even better performance compared to existing state-of-the-art post-training or post-processing-based 3DGS rendering acceleration approaches. TemporalGS can significantly enhance the rendering speed of various 3DGS methods, achieving up to $1.48\\times$ acceleration, while maintaining competitive rendering quality. We further extend our TemporalGS to hardware rasterization-based 3DGS to show the portability of our algorithm.",
+      "authors": [
+        "Yuhongze Zhou",
+        "Zihao Yang",
+        "Xinxin Zuo",
+        "Juwei Lu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-07-03T14:46:58+00:00",
+      "link": "https://arxiv.org/pdf/2607.03390v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "accelerate 3DGS rendering via temporal priors",
+      "llm_evidence_cn": "通过时间先验加速3D高斯泼溅渲染",
+      "llm_evidence": "通过时间先验加速3D高斯泼溅渲染",
+      "canonical_evidence": "通过时间先验加速3D高斯泼溅渲染",
+      "llm_tldr_en": "TemporalGS accelerates 3D Gaussian Splatting rendering using temporal priors in a training-free manner.",
+      "llm_tldr_cn": "TemporalGS 通过时间先验以无需训练的方式加速 3D 高斯泼溅渲染。",
+      "llm_tldr": "TemporalGS 通过时间先验以无需训练的方式加速 3D 高斯泼溅渲染。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.00885v1",
+      "title": "Improving Sparse-View 3DGS Generalization via Flat Minima Optimization",
+      "abstract": "Recent advances in neural rendering have established 3D Gaussian Splatting (3DGS) as a highly efficient representation for novel view synthesis, enabling fast training and real-time rendering with strong fidelity. However, when supervision is limited to sparse input views, 3DGS tends to overfit to the observed images and generalize poorly to unseen viewpoints. We address this challenge from the perspective of flat minima (FM) optimization, which seeks solutions that remain stable under small parameter perturbations. Viewing Gaussian parameters as trainable weights, we adapt FM principles to the geometric and dynamic nature of 3DGS with a lightweight training framework. Our method regularizes optimization with controlled Gaussian perturbations that account for each Gaussian's anisotropy and the training progress, preserving fine details while improving robustness to sparse-view overfitting. To further stabilize this flat minima optimization process, we introduce periodic reinitialization, which temporarily returns non-positional parameters to their initial states for a short window. Together, these techniques integrate seamlessly into existing 3DGS pipelines without architectural changes. Experiments on LLFF and Mip-NeRF360 datasets demonstrate improved quantitative metrics and perceptual quality under sparse-view supervision, producing reconstructions that are sharper, more stable, and better generalized to novel viewpoints.",
+      "authors": [
+        "Kangmin Seo",
+        "Sangeek Hyun",
+        "MinKyu Lee",
+        "Jae-Pil Heo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-01T12:52:57+00:00",
+      "link": "https://arxiv.org/pdf/2607.00885v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural rendering and 3D Gaussian Splatting optimization",
+      "llm_evidence_cn": "神经渲染与3D高斯泼溅优化",
+      "llm_evidence": "神经渲染与3D高斯泼溅优化",
+      "canonical_evidence": "神经渲染与3D高斯泼溅优化",
+      "llm_tldr_en": "This paper improves 3DGS generalization in sparse-view settings using flat minima optimization.",
+      "llm_tldr_cn": "本文通过平坦极小值优化改进了3DGS在稀疏视角下的泛化能力。",
+      "llm_tldr": "本文通过平坦极小值优化改进了3DGS在稀疏视角下的泛化能力。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.31258v1",
+      "title": "WarpHammer: Densifying Scene Warps with 3D Object Priors for Extreme View Synthesis",
+      "abstract": "Projection-conditioned novel view synthesis (NVS) warps an explicit 3D reconstruction of the input view into the target camera and conditions a generator on the warped rendering. This works well for small viewpoint changes but degrades sharply under large orbital motion: the warp becomes sparse around the orbited object, where hidden surfaces dominate the new view and mirror-like artifacts emerge, causing the generator to lose both pixel content and the implicit camera cue carried by the warp. We introduce WarpHammer, a training-free framework that resolves this failure mode by augmenting the warped scene with an explicit 3D reconstruction of the object obtained from a native 3D generative prior (e.g., SAM3D). The reconstructed object adds missing foreground surfaces and occludes background points that should no longer be visible, restoring both appearance and camera cues without fine-tuning the base model. The same explicit object representation further unlocks a capability current NVS pipelines do not support: incorporating auxiliary views of the object from sources outside the target scene, for example, a casual snapshot of a car paired with a manufacturer studio shot of the same model. We process the reference and auxiliary images jointly with a pretrained multi-view geometry foundation model, which predicts a unified point cloud that we fuse into the 3D object reconstruction. This yields substantially more faithful geometry than single-image reconstruction, without requiring user-provided camera poses for the auxiliary views. On five benchmarks, WarpHammer produces stable novel views at viewpoint deviations where strong baselines collapse, and is the first scene-level NVS method that can naturally fuse auxiliary, pose-unknown object views from an external source.",
+      "authors": [
+        "Michael Green",
+        "Gavriel Habib",
+        "Dvir Samuel",
+        "Tal Berkovitz Shalev",
+        "Issar Tzachor",
+        "Rami Ben-Ari",
+        "Or Litany"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-30T07:33:46+00:00",
+      "link": "https://arxiv.org/pdf/2606.31258v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "novel view synthesis by warping explicit 3D reconstruction",
+      "llm_evidence_cn": "通过扭曲显式3D重建进行新视角合成",
+      "llm_evidence": "通过扭曲显式3D重建进行新视角合成",
+      "canonical_evidence": "通过扭曲显式3D重建进行新视角合成",
+      "llm_tldr_en": "WarpHammer improves extreme view synthesis by densifying scene warps with 3D object priors.",
+      "llm_tldr_cn": "WarpHammer 通过利用 3D 对象先验加密场景扭曲，改进了极端视角合成。",
+      "llm_tldr": "WarpHammer 通过利用 3D 对象先验加密场景扭曲，改进了极端视角合成。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.01202v1",
+      "title": "World from Motion: Generative Dynamic Gaussian Reconstruction from Monocular Video",
+      "abstract": "We present World from Motion, a method for generating freely renderable dynamic 3D Gaussian representations from monocular videos. Our approach conditions a video model on dense, pixel-aligned renderings that encode appearance, geometry, and 3D scene motion along both input and target camera trajectories to correct rendering artifacts and fill in missing regions from an initial reconstruction. To train this model, we construct a dataset of aligned multiview video pairs and dynamic 3DGS representations, with simulated artifacts characteristic of monocular reconstruction. At test time, we distill the model's generations, including newly observed regions and motions, back into a single consistent, high-quality dynamic 3DGS, improving both novel-view synthesis and the underlying 3D motion. Our method sets a new state of the art in 4D reconstruction and seamlessly generalizes to in-the-wild videos with large viewpoint changes and dynamic motions.",
+      "authors": [
+        "Liyuan Zhu",
+        "Shengyu Huang",
+        "Amrita Mazumdar",
+        "Tianye Li",
+        "Zan Gojcic",
+        "Gordon Wetzstein",
+        "Iro Armeni",
+        "Shalini De Mello",
+        "Alex Trevithick"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.GR"
+      ],
+      "published": "2026-07-01T17:41:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.01202v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "dynamic neural rendering and Gaussian representations",
+      "llm_evidence_cn": "动态神经渲染与高斯表示",
+      "llm_evidence": "动态神经渲染与高斯表示",
+      "canonical_evidence": "动态神经渲染与高斯表示",
+      "llm_tldr_en": "World from Motion generates dynamic 3D Gaussian representations from monocular videos.",
+      "llm_tldr_cn": "World from Motion从单目视频中生成动态3D高斯表示。",
+      "llm_tldr": "World from Motion从单目视频中生成动态3D高斯表示。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.03771v1",
+      "title": "City-Level 3D Surface Reconstruction with Viewpoint Orientation Partitioning and Scene Completion",
+      "abstract": "Multi-view 3D surface reconstruction is a longstanding challenge in computer vision. Although recent large-scale reconstruction methods based on 3D Gaussian Splatting (3DGS) achieve impressive novel-view synthesis, producing high-quality surfaces over large scenes remains difficult, due to complex geometry, long optimization, and limited memory. In this paper, we propose a novel yet simple partitioning method to efficiently and faithfully reconstruct large-scale scene surfaces. Our key insight lies in a scene partitioning method based on viewpoint orientation. This partitioning approach ensures that views with similar orientations are jointly involved for more accurate depth estimations, leading to precise surface reconstructions and balanced computation on multiple GPUs in parallel. In addition, we propose a strategy to detect and repair missing regions in the initial point cloud caused by sparse viewpoints or insufficient textures, thereby further improving the geometric quality. Extensive experiments on the GauU-Scene, MatrixCity, and UrbanScene3D datasets demonstrate that our method outperforms the state-of-the-art approaches in surface reconstruction for large-scale scenes. Project page: https://hanl2010.github.io/VOP-GS.",
+      "authors": [
+        "Liang Han",
+        "Wenyuan Zhang",
+        "Junsheng Zhou",
+        "Yu-Shen Liu",
+        "Zhizhong Han"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-04T08:44:12+00:00",
+      "link": "https://arxiv.org/pdf/2607.03771v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "accelerating large-scale reconstruction with 3D Gaussian Splatting",
+      "llm_evidence_cn": "利用 3D 高斯泼溅加速大规模重建",
+      "llm_evidence": "利用 3D 高斯泼溅加速大规模重建",
+      "canonical_evidence": "利用 3D 高斯泼溅加速大规模重建",
+      "llm_tldr_en": "Efficiently reconstructs large-scale surfaces using viewpoint orientation partitioning and Gaussian Splatting.",
+      "llm_tldr_cn": "利用视点方向划分和高斯泼溅高效重建大规模场景表面。",
+      "llm_tldr": "利用视点方向划分和高斯泼溅高效重建大规模场景表面。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.01633v1",
+      "title": "Bridging 3D Gaussians and Semantic Occupancy for Comprehensive Open-Vocabulary Scene Understanding from Unposed Images",
+      "abstract": "Comprehensive 3D scene understanding from sparse, unposed images requires a model to recover renderable geometry, open-vocabulary semantics, and free/occupied 3D space without relying on external camera calibration. Recent feed-forward Gaussian methods improve pose-free reconstruction and semantic rendering, but their Gaussian primitives are mainly optimized through image-space objectives and remain weakly constrained in unobserved regions. We propose \\textit{COVScene}, a pose-free semantic Gaussian framework that couples renderable Gaussian primitives with a dense semantic occupancy field through differentiable volumetric lifting. Instead of converting Gaussians to voxels only at evaluation time, COVScene lifts the predicted semantic Gaussians inside the training computation graph, so volumetric regularization provides gradients to Gaussian opacity, geometry, and semantic features. The framework combines a semantic-aware Geometry Transformer, multi-task Gaussian decoding, geometric foundation distillation, and occupancy entropy regularization to support novel view synthesis, open-vocabulary semantic querying, and semantic occupancy prediction within a single representation. Experiments on ScanNet and ScanNet++ show that COVScene maintains competitive rendering quality, improves open-vocabulary segmentation, and achieves stronger semantic occupancy prediction than the self-supervised baseline without direct voxel-level supervision.",
+      "authors": [
+        "Hu Zhu",
+        "Bohan Li",
+        "Xianda Guo",
+        "Yanlun Peng",
+        "Zheng Zhu",
+        "Xin Jin",
+        "Wenjun Zeng",
+        "Chang Wen Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-02T03:00:23+00:00",
+      "link": "https://arxiv.org/pdf/2607.01633v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "differentiable volumetric lifting and Gaussian primitives for scene understanding",
+      "llm_evidence_cn": "用于场景理解的可微分体积提升和高斯原语",
+      "llm_evidence": "用于场景理解的可微分体积提升和高斯原语",
+      "canonical_evidence": "用于场景理解的可微分体积提升和高斯原语",
+      "llm_tldr_en": "Couples Gaussian primitives with semantic occupancy fields through differentiable volumetric lifting.",
+      "llm_tldr_cn": "通过可微分体积提升将高斯原语与语义占据场耦合。",
+      "llm_tldr": "通过可微分体积提升将高斯原语与语义占据场耦合。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.05373v1",
+      "title": "PixWorld: Unifying 3D Scene Generation and Reconstruction in Pixel Space",
+      "abstract": "3D reconstruction and generation are commonly tackled by separate paradigms: pixel-based regression for reconstruction, and latent diffusion for generation. Recent works attempt to unify them in latent space, but with notable drawbacks: the diffusion objective is defined on latent features rather than the underlying 3D representation, and both branches suffer from information loss introduced by latent encoding, while requiring a pretrained Variational Autoencoder (VAE) or Representation Autoencoder (RAE). In this paper, we reformulate these two tasks under a unified pixel-space diffusion paradigm and introduce PixWorld, a single model that jointly addresses 3D reconstruction and generation. By supervising diffusion directly on rendered images, PixWorld removes the above limitations and aligns optimization with 3D scene fidelity. Beyond photometric and perceptual supervision that operates at the 2D image level and lacks 3D geometric awareness, we further introduce a geometry perception loss that aligns rendered views with their ground truth in the geometry-aware feature space of a pretrained 3D foundation model, providing 3D structural supervision. PixWorld consistently outperforms prior latent-space generation methods and matches state-of-the-art reconstruction methods, demonstrating the superiority of a unified pixel-space approach.",
+      "authors": [
+        "Sensen Gao",
+        "Zhaoqing Wang",
+        "Qihang Cao",
+        "Dongdong Yu",
+        "Changhu Wang",
+        "Jia-Wang Bian"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-06T17:51:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.05373v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "neural rendering and 3D scene generation in pixel space",
+      "llm_evidence_cn": "像素空间中的神经渲染与3D场景生成",
+      "llm_evidence": "像素空间中的神经渲染与3D场景生成",
+      "canonical_evidence": "像素空间中的神经渲染与3D场景生成",
+      "llm_tldr_en": "PixWorld unifies 3D reconstruction and generation using a pixel-space diffusion paradigm.",
+      "llm_tldr_cn": "PixWorld利用像素空间扩散范式统一了3D重建与生成任务。",
+      "llm_tldr": "PixWorld利用像素空间扩散范式统一了3D重建与生成任务。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.02301v1",
+      "title": "InvSplat: Inverse Feed-Forward Scene Splatting",
+      "abstract": "Inverse rendering aims to recover both 3D geometry and physically meaningful material properties from images, enabling applications such as relighting and novel view synthesis. Optimization-based methods achieve high fidelity but require costly per-scene fitting, while image-space learning-based approaches often suffer from multi-view inconsistencies and lack an explicit 3D representation for stable novel view rendering. We present a feed-forward multi-view reconstruction framework for inverse rendering that directly predicts a structured 3D Gaussian representation with intrinsic material attributes. Each Gaussian primitive is parameterized by mean, normal, opacity, rotation, scale, albedo, metallic, and roughness, enabling a disentangled and physically grounded scene representation. Our model integrates priors from a material estimation network with a multi-view 3D reconstruction backbone, allowing joint prediction of geometry and reflectance parameters in a single forward pass. Experiments on synthetic and real-world datasets demonstrate improved multi-view consistency compared to 2D baselines, accurate material recovery, and stable novel view rendering. Our representation further supports physically-based relighting and more faithful modeling of view-dependent effects compared to existing RGB-based feed-forward reconstruction methods. Our project webpage is: $\\href{https://poliik.github.io/invsplat/}{\\text{https://poliik.github.io/invsplat/}}$.",
+      "authors": [
+        "Polina Karpikova",
+        "Wenjing Bian",
+        "Haofei Xu",
+        "Hendrik Lensch",
+        "Andreas Geiger"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-02T15:18:08+00:00",
+      "link": "https://arxiv.org/pdf/2607.02301v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "feed-forward multi-view reconstruction for inverse rendering with 3D Gaussian representation",
+      "llm_evidence_cn": "基于3D高斯表示的前馈多视图重建逆向渲染",
+      "llm_evidence": "基于3D高斯表示的前馈多视图重建逆向渲染",
+      "canonical_evidence": "基于3D高斯表示的前馈多视图重建逆向渲染",
+      "llm_tldr_en": "Introduces a feed-forward framework for inverse rendering that predicts 3D Gaussian primitives with material properties.",
+      "llm_tldr_cn": "引入一种前馈逆向渲染框架，通过预测具有材质属性的3D高斯原语实现场景重建。",
+      "llm_tldr": "引入一种前馈逆向渲染框架，通过预测具有材质属性的3D高斯原语实现场景重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.02372v1",
+      "title": "Learning Spectral and Polarimetric Clues for One-to-Multimodal Novel View Synthesis",
+      "abstract": "Neural rendering techniques allow for accurate reconstruction of the geometry and color appearance of 3D scenes. Some methods have extended their use to additional imaging modalities, such as multispectral, infrared, or polarimetric data. However, all of these approaches require expensive sensors and calibrated setups to capture new multimodal frames for each new scene. We propose Spectral and Polarimetric Implicit Learned Representation (SPoILeR), a novel method to obtain multi-view consistent renderings of unconventional modalities for scenes where either only RGB frames or very few of the additional modalities are available. Thanks to a multimodal pre-training phase, the model learns the mutual correlation between different modalities. This step allows predicting accurate renderings of unconventional modalities during a fine-tuning phase supervised only by RGB images. Experimental results show that the approach can accurately render infrared, polarimetric, and multispectral frames for scenes where no input sample captured by these types of sensors is provided.",
+      "authors": [
+        "Federico Lincetto",
+        "Gianluca Agresti",
+        "Mattia Rossi",
+        "Piergiorgio Sartor",
+        "Pietro Zanuttigh"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-02T16:13:19+00:00",
+      "link": "https://arxiv.org/pdf/2607.02372v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural rendering for multi-view consistent renderings of unconventional modalities",
+      "llm_evidence_cn": "用于非常规模态多视图一致性渲染的神经渲染技术",
+      "llm_evidence": "用于非常规模态多视图一致性渲染的神经渲染技术",
+      "canonical_evidence": "用于非常规模态多视图一致性渲染的神经渲染技术",
+      "llm_tldr_en": "Proposes SPoILeR for novel view synthesis of spectral and polarimetric data using implicit learned representations.",
+      "llm_tldr_cn": "提出SPoILeR方法，利用隐式学习表征实现光谱和偏振数据的多视图合成。",
+      "llm_tldr": "提出SPoILeR方法，利用隐式学习表征实现光谱和偏振数据的多视图合成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.04256v1",
+      "title": "AdaptiveSplat:Texture Aware Controllable 3D Gaussian Allocation for Feed-Forward Reconstruction",
+      "abstract": "Current feed-forward 3D reconstruction methods predict pixel aligned Gaussian primitives, resulting in highly redundant representations. A natural solution is to prune the redundant Gaussians, but naive pruning introduces severe artifacts and often requires inference time fine-tuning, breaking the feed-forward paradigm. Based on previous works, high frequency regions require more Gaussian primitives, while low frequency regions can be represented with significantly fewer primitives. Motivated by this, we propose a novel approach to explicitly control the number of Gaussians by leveraging local texture information. Our approach achieves this through three key components: (1) texture estimation to capture spatial variation in scene detail, (2) texture-aware pruning that removes redundant Gaussians from low frequency regions, and (3) an adaptive Gaussian head that predicts the modified attributes of the retained primitives without breaking the feed-forward paradigm. Experiments on RE10K, ACID, DL3DV, Tanks and Temples, and DTU demonstrate the effectiveness of our approach, while ablation studies validate the contributions of its key components.",
+      "authors": [
+        "Badrinath Singhal",
+        "Srihari K G",
+        "Sreehari Iyer",
+        "Ankit Dhiman",
+        "Venkatesh Babu Radhakrishnan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-05T12:12:59+00:00",
+      "link": "https://arxiv.org/pdf/2607.04256v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural rendering with Gaussian primitives for 3D reconstruction",
+      "llm_evidence_cn": "使用高斯原语进行3D重建的神经渲染",
+      "llm_evidence": "使用高斯原语进行3D重建的神经渲染",
+      "canonical_evidence": "使用高斯原语进行3D重建的神经渲染",
+      "llm_tldr_en": "AdaptiveSplat controls Gaussian primitive density using texture information for efficient feed-forward reconstruction.",
+      "llm_tldr_cn": "AdaptiveSplat利用纹理信息控制高斯原语密度，实现高效的前馈重建。",
+      "llm_tldr": "AdaptiveSplat利用纹理信息控制高斯原语密度，实现高效的前馈重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.04661v1",
+      "title": "Targeted Structure Completion for Sparse-View 3D Reconstruction in Autonomous Driving",
+      "abstract": "Reconstructing 3D scene structures from sparse, low-overlap observations remains a fundamental challenge in autonomous driving. Recent state-of-the-art frameworks achieve promising results by incorporating voxel-based Gaussians, but incur substantial computational redundancy due to a uniform volumetric processing strategy. To bridge the gap between the efficiency of pixel-based Gaussian methods and the structural completeness of voxel-based Gaussian approaches, we propose FocusGS, a simple yet effective framework that shifts the paradigm from global densification to targeted structural completion. Our central insight is that structural completion should be decoupled from deterministic regions, with computation concentrated exclusively on areas exhibiting geometric ambiguity. Specifically, FocusGS addresses the localization challenge by deriving a 3D Geometric Ambiguity Manifold to accurately isolate localized areas prone to occlusion and high geometric uncertainty. To overcome the subsequent manifold completion challenge, we design a lightweight targeted structure completion module that selectively instantiates and optimizes continuous Gaussian queries strictly within this unstructured, sparse topological subspace. Extensive experiments demonstrate that FocusGS achieves a superior efficiency-quality trade-off, advancing state-of-the-art performance on driving-centric benchmarks while naturally reducing the total number of Gaussians by ~74% and decreasing rendering time by ~34%.",
+      "authors": [
+        "Guoqing Wang",
+        "Pin Tang",
+        "Xiangxuan Ren",
+        "Liping Hou",
+        "Chao Ma"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-06T04:31:45+00:00",
+      "link": "https://arxiv.org/pdf/2607.04661v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "voxel-based Gaussians for 3D reconstruction and volumetric processing",
+      "llm_evidence_cn": "用于3D重建和体积处理的基于体素的高斯方法",
+      "llm_evidence": "用于3D重建和体积处理的基于体素的高斯方法",
+      "canonical_evidence": "用于3D重建和体积处理的基于体素的高斯方法",
+      "llm_tldr_en": "FocusGS improves sparse-view 3D reconstruction efficiency by shifting from global to targeted completion.",
+      "llm_tldr_cn": "FocusGS 通过从全局补全转向目标补全，提高了稀疏视图 3D 重建的效率。",
+      "llm_tldr": "FocusGS 通过从全局补全转向目标补全，提高了稀疏视图 3D 重建的效率。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.05347v1",
+      "title": "WildSplat: Feedforward Gaussian Splatting from Unposed In-the-Wild Images",
+      "abstract": "While feedforward 3D reconstruction excels at efficient novel view synthesis, it typically falters when faced with scenes under varying illumination. To this end, we introduce WildSplat, the first feedforward 3D Gaussian Splatting framework capable of appearance-conditioned novel-view synthesis for unposed in-the-wild images. To handle inconsistent photometric conditions, we propose a dual-branch architecture that explicitly decouples geometry from appearance. The geometry branch extracts an appearance-invariant 3D structure and jointly predicts camera poses. To govern the rendering appearance, the appearance branch injects target appearance cues into the content features via a globally pre-modulated cross-attention mechanism. To further prevent feature entanglement, we introduce a joint multi-reference training strategy that stabilizes the training process. Extensive experiments show that WildSplat surpasses existing optimization-based and feedforward methods, achieving state-of-the-art performance in in-the-wild novel view synthesis and appearance editing from sparse inputs in a single forward pass.",
+      "authors": [
+        "Xiyu Zhang",
+        "Jingyu Zhuang",
+        "Hongjia Zhai",
+        "Zizheng Yan",
+        "Jinwei Chen",
+        "Guofeng Zhang",
+        "Qingnan Fan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-06T17:29:44+00:00",
+      "link": "https://arxiv.org/pdf/2607.05347v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "feedforward Gaussian Splatting framework for novel-view synthesis",
+      "llm_evidence_cn": "用于新视角合成的前馈高斯泼溅框架",
+      "llm_evidence": "用于新视角合成的前馈高斯泼溅框架",
+      "canonical_evidence": "用于新视角合成的前馈高斯泼溅框架",
+      "llm_tldr_en": "WildSplat enables feedforward Gaussian Splatting for unposed in-the-wild images with decoupled geometry.",
+      "llm_tldr_cn": "WildSplat 实现了针对无位姿野外图像的前馈高斯泼溅，并解耦了几何与外观。",
+      "llm_tldr": "WildSplat 实现了针对无位姿野外图像的前馈高斯泼溅，并解耦了几何与外观。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

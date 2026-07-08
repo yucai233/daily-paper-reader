@@ -6,64 +6,58 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-07
-- 运行时间：2026-07-07 21:35:01 UTC
+- 最新运行日期：2026-07-08
+- 运行时间：2026-07-08 21:39:58 UTC
 - 运行状态：成功
-- 本次总论文数：14
-- 精读区：3
+- 本次总论文数：12
+- 精读区：1
 - 速读区：11
 
 ### 今日简报（AI）
-今日深度解析 14 篇前沿论文，聚焦 3D Gaussian Splatting 在体积压缩与神经渲染领域的突破性进展。
-重点关注 3D 高斯表示在结构化体积压缩上的高效表现（9.0分），以及 RenderFormer++ 在物理一致性神经渲染上的可扩展性提升。
-建议关注 3DGS 向移动端优化及单目视频 4D 重建的演进趋势，探索轻量化与动态场景的落地可能。
-- 详情：[/202607/07/README](/202607/07/README)
+今日聚焦 3DGS 渲染加速与动态重建，重点解析 TemporalGS 如何通过时间先验实现即插即用的性能飞跃。
+核心突破在于无需训练的渲染加速方案，以及 3DGS 在单目视频动态生成与开放词汇场景理解中的深度融合。
+建议开发者优先关注 TemporalGS 的提速实践，并探索 3DGS 在稀疏视角下的泛化优化策略。
+- 详情：[/202607/08/README](/202607/08/README)
 
 ### 精读区论文标签
-1. [Efficient Compression of Structured and Unstructured Volumes via Learned 3D Gaussian Representation](/202607/07/2607.01164v1-efficient-compression-of-structured-and-unstructured-volumes-via-learned-3d-gaussian-representation)  
-   标签：评分：9.0/10、query:profile-1
-   evidence：用于体积数据的学习型3D高斯表示
-2. [RenderFormer++: Scalable and Physically Grounded Feed-Forward Neural Rendering](/202607/07/2606.30380v1-renderformer-scalable-and-physically-grounded-feed-forward-neural-rendering)  
-   标签：评分：8.0/10、query:q1
-   evidence：物理基础的前馈神经渲染
-3. [Neural LiDAR Bundle Adjustment](/202607/07/2607.04169v1-neural-lidar-bundle-adjustment)  
-   标签：评分：8.0/10、query:q3
-   evidence：针对联合优化的射线高效体积采样
+1. [TemporalGS: Training-Free Plug-and-Play Acceleration for 3D Gaussian Splatting Rendering via Temporal Priors](/202607/08/2607.03390v1-temporalgs-training-free-plug-and-play-acceleration-for-3d-gaussian-splatting-rendering-via-temporal-priors)  
+   标签：评分：8.0/10、query:q7
+   evidence：通过时间先验加速3D高斯泼溅渲染
 
 ### 速读区论文标签
-1. [UniTriSplat: A Unified 3D Gaussian Splatting Framework with Uniform Spherical Rasterization for Universal Cameras](/202607/07/2606.29794v1-unitrisplat-a-unified-3d-gaussian-splatting-framework-with-uniform-spherical-rasterization-for-universal-cameras)  
+1. [Improving Sparse-View 3DGS Generalization via Flat Minima Optimization](/202607/08/2607.00885v1-improving-sparse-view-3dgs-generalization-via-flat-minima-optimization)  
    标签：评分：7.0/10、query:q1
-   evidence：通过高斯泼溅进行神经体渲染
-2. [Learning Efficient 4D Gaussian Representations from Monocular Videos with Flow Splatting](/202607/07/2606.29976v1-learning-efficient-4d-gaussian-representations-from-monocular-videos-with-flow-splatting)  
+   evidence：神经渲染与3D高斯泼溅优化
+2. [World from Motion: Generative Dynamic Gaussian Reconstruction from Monocular Video](/202607/08/2607.01202v1-world-from-motion-generative-dynamic-gaussian-reconstruction-from-monocular-video)  
    标签：评分：7.0/10、query:q1
-   evidence：用于动态场景渲染的4D体积建模
-3. [Monte Carlo Energy Aggregation for Mobile 3D Gaussian Splatting](/202607/07/2606.30017v1-monte-carlo-energy-aggregation-for-mobile-3d-gaussian-splatting)  
-   标签：评分：7.0/10、query:q7
-   evidence：移动平台的实时高斯泼溅
-4. [Walking in the Implicit: Interactive World Exploration via Neural Scene Representation](/202607/07/2606.30045v1-walking-in-the-implicit-interactive-world-exploration-via-neural-scene-representation)  
+   evidence：动态神经渲染与高斯表示
+3. [Bridging 3D Gaussians and Semantic Occupancy for Comprehensive Open-Vocabulary Scene Understanding from Unposed Images](/202607/08/2607.01633v1-bridging-3d-gaussians-and-semantic-occupancy-for-comprehensive-open-vocabulary-scene-understanding-from-unposed-images)  
    标签：评分：7.0/10、query:q1
-   evidence：神经场景表示的可渲染隐式状态
-5. [FastPano3D: Feed-Forward Indoor Panoramic 3D Reconstruction from a Single Image](/202607/07/2606.30352v1-fastpano3d-feed-forward-indoor-panoramic-3d-reconstruction-from-a-single-image)  
+   evidence：用于场景理解的可微分体积提升和高斯原语
+4. [InvSplat: Inverse Feed-Forward Scene Splatting](/202607/08/2607.02301v1-invsplat-inverse-feed-forward-scene-splatting)  
    标签：评分：7.0/10、query:q1
-   evidence：生成可渲染的3D高斯表示用于场景重建
-6. [AugSplat: Radiance Field-Informed Gaussian Splatting for Sparse-View Settings](/202607/07/2606.31556v1-augsplat-radiance-field-informed-gaussian-splatting-for-sparse-view-settings)  
+   evidence：基于3D高斯表示的前馈多视图重建逆向渲染
+5. [Learning Spectral and Polarimetric Clues for One-to-Multimodal Novel View Synthesis](/202607/08/2607.02372v1-learning-spectral-and-polarimetric-clues-for-one-to-multimodal-novel-view-synthesis)  
    标签：评分：7.0/10、query:q1
-   evidence：神经辐射场与体渲染成本
-7. [Shell-Supervised Gaussian Splatting for Urban Real-to-Sim Reconstruction](/202607/07/2606.30014v1-shell-supervised-gaussian-splatting-for-urban-real-to-sim-reconstruction)  
+   evidence：用于非常规模态多视图一致性渲染的神经渲染技术
+6. [AdaptiveSplat:Texture Aware Controllable 3D Gaussian Allocation for Feed-Forward Reconstruction](/202607/08/2607.04256v1-adaptivesplattexture-aware-controllable-3d-gaussian-allocation-for-feed-forward-reconstruction)  
+   标签：评分：7.0/10、query:q1
+   evidence：使用高斯原语进行3D重建的神经渲染
+7. [Targeted Structure Completion for Sparse-View 3D Reconstruction in Autonomous Driving](/202607/08/2607.04661v1-targeted-structure-completion-for-sparse-view-3d-reconstruction-in-autonomous-driving)  
+   标签：评分：7.0/10、query:q1
+   evidence：用于3D重建和体积处理的基于体素的高斯方法
+8. [WildSplat: Feedforward Gaussian Splatting from Unposed In-the-Wild Images](/202607/08/2607.05347v1-wildsplat-feedforward-gaussian-splatting-from-unposed-in-the-wild-images)  
+   标签：评分：7.0/10、query:q1
+   evidence：用于新视角合成的前馈高斯泼溅框架
+9. [WarpHammer: Densifying Scene Warps with 3D Object Priors for Extreme View Synthesis](/202607/08/2606.31258v1-warphammer-densifying-scene-warps-with-3d-object-priors-for-extreme-view-synthesis)  
+   标签：评分：6.0/10、query:q7
+   evidence：通过扭曲显式3D重建进行新视角合成
+10. [City-Level 3D Surface Reconstruction with Viewpoint Orientation Partitioning and Scene Completion](/202607/08/2607.03771v1-city-level-3d-surface-reconstruction-with-viewpoint-orientation-partitioning-and-scene-completion)  
+   标签：评分：6.0/10、query:q7
+   evidence：利用 3D 高斯泼溅加速大规模重建
+11. [PixWorld: Unifying 3D Scene Generation and Reconstruction in Pixel Space](/202607/08/2607.05373v1-pixworld-unifying-3d-scene-generation-and-reconstruction-in-pixel-space)  
    标签：评分：6.0/10、query:q1
-   evidence：用于几何重建的高斯泼溅
-8. [Streaming Gaussian Encoding for 4D Panoptic Occupancy Tracking](/202607/07/2606.30754v1-streaming-gaussian-encoding-for-4d-panoptic-occupancy-tracking)  
-   标签：评分：6.0/10、query:q1
-   evidence：持久性体积场景表示
-9. [Learning Video Dynamics with Predictive Differentiable Rendering](/202607/07/2606.31050v1-learning-video-dynamics-with-predictive-differentiable-rendering)  
-   标签：评分：6.0/10、query:q1
-   evidence：使用2D高斯表示的可微渲染进行视频预测
-10. [PointSplat: Compact Gaussian Splatting via Human-Centric Prediction](/202607/07/2606.32036v1-pointsplat-compact-gaussian-splatting-via-human-centric-prediction)  
-   标签：评分：6.0/10、query:q1
-   evidence：用于3D人体重建的神经表示
-11. [Consistent Scene Understanding in 3D Gaussian Splatting via Multi-Cue Mask Refinement](/202607/07/2607.01708v1-consistent-scene-understanding-in-3d-gaussian-splatting-via-multi-cue-mask-refinement)  
-   标签：评分：6.0/10、query:q1
-   evidence：3D高斯泼溅特征场的优化
+   evidence：像素空间中的神经渲染与3D场景生成
 
 
 <div class="dpr-home-promo-card">
