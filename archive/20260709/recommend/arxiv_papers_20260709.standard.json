@@ -1,0 +1,438 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-09T21:55:59.146440+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 11,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.01663v1",
+      "title": "Unified Panoramic-Gaussian Representation for Monocular 4D Scene Synthesis",
+      "abstract": "4D scene synthesis from monocular videos has made significant progress in recent years. However, existing methods are typically constrained by view interpolation. As a result, they struggle to infer unseen regions beyond the observed views. In this paper, we reformulate the task as 4D scene synthesis with unseen regions, which extends beyond traditional interpolation settings. Camera-conditioned video generation enables unseen region synthesis by guiding generation along specified cameras. However, these methods lack explicit 3D priors and are optimized with random camera trajectories. This design leads to severe inconsistencies under large trajectory deviations. To address this limitation, we build a unified training and inference framework with panoramic trajectory guidance. While this design improves cross-view consistency, the panoramic representation alone fails to model dynamic content effectively. Object motion in panoramic space introduces scale and shape distortions. To address this, we propose PanoGaussian, a unified Panoramic-Gaussian representation that distills the panoramic representation into an explicit dynamic Gaussian representation to capture dynamic physical priors of the 4D scene. Experiments demonstrate that PanoGaussian achieves consistent 4D scene synthesis even under large viewpoint variations.",
+      "authors": [
+        "Yuankun Yang",
+        "Yi Wei",
+        "Wenyang Zhou",
+        "Li Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-02T03:43:06+00:00",
+      "link": "https://arxiv.org/pdf/2607.01663v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Panoramic-Gaussian representation for 4D scene synthesis",
+      "llm_evidence_cn": "用于4D场景合成的全景高斯表示",
+      "llm_evidence": "用于4D场景合成的全景高斯表示",
+      "canonical_evidence": "用于4D场景合成的全景高斯表示",
+      "llm_tldr_en": "Combines panoramic video generation with Gaussian Splatting for consistent 4D scene synthesis.",
+      "llm_tldr_cn": "将全景视频生成与高斯泼溅相结合，实现一致的4D场景合成。",
+      "llm_tldr": "将全景视频生成与高斯泼溅相结合，实现一致的4D场景合成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.02693v1",
+      "title": "Property-Constrained 3D Porous Media Reconstruction from 2D Images via Conditional Generative Adversarial Networks",
+      "abstract": "This study presents a conditional Generative Adversarial Network (cGAN) framework for generating 3D porous media volumes with controlled porosity, trained exclusively on 2D thin section images. The key innovation lies in combining property-conditioned generation with 2D-to-3D reconstruction, eliminating the need for expensive 3D training data while maintaining control over petrophysical properties. The framework employs a hybrid architecture with a 3D generator and 2D discriminator, where multi-axis slice extraction enables learning 3D-consistent structures from 2D training data. Porosity labels are extracted using an Enhanced U-Net segmentation model. The methodology was demonstrated on two carbonate samples with different lithologies: dolomite-anhydrite and pure dolomite. Results show that the framework successfully generates realistic 3D volumes capturing lithological features such as anhydrite inclusions and fine crystalline textures. Porosity control achieved an $R^2$ of 0.93, with mean absolute errors of 0.019 and 0.010 for the heterogeneous and homogeneous samples, respectively.",
+      "authors": [
+        "Ali Sadeghkhani",
+        "Brandon Bennett",
+        "Arash Rabbani"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG",
+        "physics.geo-ph"
+      ],
+      "published": "2026-07-02T18:34:18+00:00",
+      "link": "https://arxiv.org/pdf/2607.02693v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "generating 3D porous media volumes from 2D images using GANs",
+      "llm_evidence_cn": "使用GAN从2D图像生成3D多孔介质体积",
+      "llm_evidence": "使用GAN从2D图像生成3D多孔介质体积",
+      "canonical_evidence": "使用GAN从2D图像生成3D多孔介质体积",
+      "llm_tldr_en": "Reconstructs 3D porous media volumes from 2D slices using a property-constrained cGAN framework.",
+      "llm_tldr_cn": "利用属性约束的cGAN框架，从2D切片重建具有受控孔隙率的3D多孔介质体积。",
+      "llm_tldr": "利用属性约束的cGAN框架，从2D切片重建具有受控孔隙率的3D多孔介质体积。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.03819v1",
+      "title": "CGGS: Consistency-Augmented Geometric Gaussian Splatting for Ego-centric 3D Scene Generation",
+      "abstract": "Challenges remain in ego-centric 3D scene generation due to limited view overlap and the dominant influence of individual perspectives on scene interpretation. These factors hinder the creation of viewpoint-consistent and semantically aligned visual content, as well as the construction of accurate geometric structures. In this paper, we propose CGGS, a text-to-3D framework aiming to enhance 3D-content-awareness and address geometric distortions in ego-centric scene generation. Firstly, the Ego-centric Generator is proposed by fine-tuning a Multi-View Latent Diffusion Model with consistency-augmented loss to generate consistent, high-fidelity 2D content aligned with textual descriptions. Then, Layout Decorator leverages optical flow and point-track correspondence to estimate depth, therefore producing dense point clouds as coarse layouts from the ego-centric 2D priors. Building on this initialization, Geometric Refiner is proposed to enhance 3D Gaussian reconstruction via an entropy-based Mutual Information Depth Loss (MID) combined with a hierarchical optimization scheme for improving visual quality and geometric structure. Comprehensive experiments demonstrate that \\textcolor{softred}{CGGS} outperforms previous methods in generating coherent and accurate text-driven 3D scenes. Project page: https://cggs-26.github.io/cggs26/.",
+      "authors": [
+        "Zhenyu Sun",
+        "Xiaohan Zhang",
+        "Qi Liu",
+        "Huan Wang"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.AI"
+      ],
+      "published": "2026-07-04T11:06:41+00:00",
+      "link": "https://arxiv.org/pdf/2607.03819v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Consistency-Augmented Geometric Gaussian Splatting",
+      "llm_evidence_cn": "一致性增强的几何高斯泼溅",
+      "llm_evidence": "一致性增强的几何高斯泼溅",
+      "canonical_evidence": "一致性增强的几何高斯泼溅",
+      "llm_tldr_en": "Enhances ego-centric 3D scene generation using consistency-augmented Gaussian Splatting techniques.",
+      "llm_tldr_cn": "利用一致性增强的高斯泼溅技术改进自我中心视角的3D场景生成。",
+      "llm_tldr": "利用一致性增强的高斯泼溅技术改进自我中心视角的3D场景生成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.02998v2",
+      "title": "CONFLUX: A Latent Diffusion Model for 3D Chest-CT Synthesis with RL Post-Training",
+      "abstract": "Controllable generative models of 3D medical images can synthesize volumes with specified clinical attributes, but this demands samples that are simultaneously high-fidelity, natively 3D, and faithful to the requested conditioning. We present CONFLUX, a latent diffusion model for chest computed tomography (CT): a 3D variational autoencoder compresses each volume, and a rectified-flow transformer generates in the latent space. Generation is conditioned on structured radiological metadata (18 abnormality findings, sex, age, and reconstruction kernel) through adaptive layer normalization. The model leads strong volumetric baselines on tri-planar Frechet distance (FID 32.3 vs. 74.6 for MAISI) while exposing direct control over clinical attributes. To strengthen that control we add an online reinforcement-learning post-training stage (group-relative policy optimization) that rewards how reliably a classifier recovers the requested findings from each generated volume. Judged by a separate, independent classifier, post-training removes 47% of the shortfall relative to real-scan reliability. We release the model and a ~200k synthetic chest-CT dataset with conditioning metadata spanning a wide variety of clinical findings.",
+      "authors": [
+        "Max Van Puyvelde",
+        "Halil Ibrahim Gulluk",
+        "Wim Van Criekinge",
+        "Olivier Gevaert"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-07-03T06:31:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.02998v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "generative models for 3D volumetric synthesis",
+      "llm_evidence_cn": "用于3D体积合成的生成模型",
+      "llm_evidence": "用于3D体积合成的生成模型",
+      "canonical_evidence": "用于3D体积合成的生成模型",
+      "llm_tldr_en": "A latent diffusion model for high-fidelity 3D medical volume synthesis with clinical attribute control.",
+      "llm_tldr_cn": "一种用于高保真3D医学体积合成的潜在扩散模型，具有临床属性控制功能。",
+      "llm_tldr": "一种用于高保真3D医学体积合成的潜在扩散模型，具有临床属性控制功能。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.03819v2",
+      "title": "CGGS: Consistency-Augmented Geometric Gaussian Splatting for Ego-centric 3D Scene Generation",
+      "abstract": "Challenges remain in ego-centric 3D scene generation due to limited view overlap and the dominant influence of individual perspectives on scene interpretation. These factors hinder the creation of viewpoint-consistent and semantically aligned visual content, as well as the construction of accurate geometric structures. In this paper, we propose CGGS, a text-to-3D framework aiming to enhance 3D-content-awareness and address geometric distortions in ego-centric scene generation. Firstly, the Ego-centric Generator is proposed by fine-tuning a Multi-View Latent Diffusion Model with consistency-augmented loss to generate consistent, high-fidelity 2D content aligned with textual descriptions. Then, Layout Decorator leverages optical flow and point-track correspondence to estimate depth, therefore producing dense point clouds as coarse layouts from the ego-centric 2D priors. Building on this initialization, Geometric Refiner is proposed to enhance 3D Gaussian reconstruction via an entropy-based Mutual Information Depth Loss (MID) combined with a hierarchical optimization scheme for improving visual quality and geometric structure. Comprehensive experiments demonstrate that CGGS outperforms previous methods in generating coherent and accurate text-driven 3D scenes. Project page: [https://cggs-26.github.io/cggs26/](https://cggs-26.github.io/cggs26/).",
+      "authors": [
+        "Zhenyu Sun",
+        "Xiaohan Zhang",
+        "Qi Liu",
+        "Huan Wang"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.AI"
+      ],
+      "published": "2026-07-04T11:06:41+00:00",
+      "link": "https://arxiv.org/pdf/2607.03819v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D scene generation using Gaussian Splatting and diffusion models",
+      "llm_evidence_cn": "使用高斯泼溅和扩散模型进行3D场景生成",
+      "llm_evidence": "使用高斯泼溅和扩散模型进行3D场景生成",
+      "canonical_evidence": "使用高斯泼溅和扩散模型进行3D场景生成",
+      "llm_tldr_en": "Proposes a text-to-3D framework using consistency-augmented Gaussian Splatting for ego-centric scene generation.",
+      "llm_tldr_cn": "提出了一种使用一致性增强高斯泼溅的文本到3D框架，用于自我中心场景生成。",
+      "llm_tldr": "提出了一种使用一致性增强高斯泼溅的文本到3D框架，用于自我中心场景生成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.04881v1",
+      "title": "Towards Fully Dynamic Omnitrees: Moment-Conserving Anisotropic Compression With Wavelets",
+      "abstract": "Recently, omnitrees were introduced as a flexible space partitioning tree that improves upon the benefits of both octrees and k-d trees: Omnitrees' efficient encoding of anisotropic refinements holds particular interest for applications with anisotropic features and high dimensionality. These include, but are not limited to, computer graphics, databases, machine learning, and physics simulations. The present paper defines new operations on the omnitree encoding that extend its capabilities from the existing refinement to also include coarsening and therefore fully adaptive compression. It demonstrates natural integration of omnitrees with wavelets, which conserves moments of the stored function by design. For omnitrees, the wavelet coefficients can be interpreted as local refinement priorities, which can be used to guide the adaptation process. We derive algorithms for coarsening and downsplit that are guided by wavelet coefficients, and show their application to a large dataset of 3D shapes, as well as the continuous-valued density field of a cloud. The comparison to OpenVDB, a widely-used data structure for sparse volumetric data in computer graphics, enables a demonstration of the practical benefits of omnitrees even for moderately anisotropic three-dimensional data. Compared to OpenVDB, objects can be stored using up to 28x less space, and asymptotically show savings that exceed theoretical expectations. Using lossy compression, the cloud dataset can be compressed by $\\approx5\\times$ compared to OpenVDB, with negligible loss of visual quality. This demonstrates the potential of omnitrees for efficient storage and processing, and motivates further research into their applications in various domains.",
+      "authors": [
+        "Theresa Pollinger",
+        "Masado Ishii",
+        "Jens Domke"
+      ],
+      "primary_category": "cs.DS",
+      "categories": [
+        "cs.DS",
+        "cs.CG",
+        "cs.GR",
+        "math.NA"
+      ],
+      "published": "2026-07-06T10:01:26+00:00",
+      "link": "https://arxiv.org/pdf/2607.04881v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Omnitrees for efficient space partitioning and compression in graphics",
+      "llm_evidence_cn": "用于图形学中高效空间划分和压缩的Omnitrees",
+      "llm_evidence": "用于图形学中高效空间划分和压缩的Omnitrees",
+      "canonical_evidence": "用于图形学中高效空间划分和压缩的Omnitrees",
+      "llm_tldr_en": "Extends omnitrees with wavelets for adaptive compression in high-dimensional computer graphics applications.",
+      "llm_tldr_cn": "利用小波扩展了omnitrees，用于高维计算机图形应用中的自适应压缩。",
+      "llm_tldr": "利用小波扩展了omnitrees，用于高维计算机图形应用中的自适应压缩。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.05522v1",
+      "title": "Rendering-Aware Bayesian 3D Gaussian Splatting with Native Uncertainty and Adaptive Complexity Control",
+      "abstract": "3D Gaussian splatting (3DGS) is a strong representation for real-time novel-view synthesis, but its standard training pipeline relies on point estimates and hand-tuned heuristics, providing no native uncertainty or principled complexity control. This is most limiting under sparse views or fixed acquisition budgets, where a model must identify weakly supported geometry and select informative views. We introduce a rendering-aware Bayesian 3DGS framework that tracks Gaussian geometry with a Normal-Inverse-Wishart posterior over means and covariances using renderer-derived surrogate summaries. An optional Dirichlet-process extension adds a probabilistic component-usage signal, and the training schedule makes the closed-form versus approximate inference boundary explicit. Re-rendering posterior geometry samples yields native predictive uncertainty for interval calibration and active view selection. In a fixed-budget 16-to-32 active-view task, native NIW acquisition improves PSNR by +0.453 dB and LPIPS by -0.0146 over a scoring-only 3-member standard-ensemble baseline, winning 29/39 scene-seed pairs and 10/13 scene means; it also improves over PPU-style (+0.355 dB) and NIW-proxy (+0.401 dB) acquisition. NIW native intervals reduce 95% coverage error by about 17x relative to a shared proxy (0.046 vs. 0.796) and are about 10x closer to nominal coverage than a 3-member deep ensemble (0.047 vs. 0.454) at roughly one-third the training cost. As a reconstruction compatibility check, paired NIW-vs-standard analysis over 39 scene-seed runs yields +0.030 dB PSNR with 1.6% additional training time. These results position Bayesian 3DGS as a practical probabilistic scene representation for decision-facing tasks such as active view selection.",
+      "authors": [
+        "Gaoxiang Jia",
+        "Vikram Appia",
+        "Junzhou Huang",
+        "Xinlei Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-06T18:01:08+00:00",
+      "link": "https://arxiv.org/pdf/2607.05522v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Bayesian 3D Gaussian Splatting for uncertainty and complexity control",
+      "llm_evidence_cn": "用于不确定性和复杂度控制的贝叶斯3D高斯泼溅",
+      "llm_evidence": "用于不确定性和复杂度控制的贝叶斯3D高斯泼溅",
+      "canonical_evidence": "用于不确定性和复杂度控制的贝叶斯3D高斯泼溅",
+      "llm_tldr_en": "Introduces a Bayesian framework for 3DGS to provide native uncertainty and adaptive complexity control.",
+      "llm_tldr_cn": "为3DGS引入了贝叶斯框架，以提供原生不确定性和自适应复杂度控制。",
+      "llm_tldr": "为3DGS引入了贝叶斯框架，以提供原生不确定性和自适应复杂度控制。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.05765v1",
+      "title": "Image2Sim: Scaling Embodied Navigation via Generative Neural Simulator",
+      "abstract": "Embodied navigation aims to build agents that interpret multimodal goals, reason in 3D space, and reach target destinations reliably in the real world. However, progress remains constrained by the lack of scalable, high-fidelity, and physically grounded interactive environments. Although real-world scanned datasets offer visual realism, they are limited by scale. In contrast, synthetic simulators scale more easily but often exhibit large sim-to-real gaps. We introduce Image2Sim, a real-time neural simulation framework that constructs high-quality interactive environments from posed RGB-D image sequences. The central idea is to decouple 3D spatial anchoring from photorealistic observation synthesis. For scene construction, Image2Sim uses a feed-forward feature Gaussian model that lifts posed RGB-D observations into a 3D feature-Gaussian representation in a single pass. For rendering, we propose a Geometry-Aware One-Step Pixel Flow model that transforms sparse and noisy Gaussian projections into high-quality panoramic RGB-D observations. Image2Sim also serves as a fully automated embodied data engine that generates high-fidelity observations, executable actions, and diverse navigation instructions at scale. It converts large collections of videos and images into nearly 20K interactive scenes and synthesizes more than 10 million navigation training samples. Navigation models trained entirely in these neural environments achieve strong improvements on major benchmarks and transfer effectively to real-world zero-shot settings. These results suggest that scalable neural simulation can serve as a practical training substrate for embodied navigation at scale.",
+      "authors": [
+        "Zihan Wang",
+        "Seungjun Lee",
+        "Yinghao Xu",
+        "Gim Hee Lee"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-07-07T02:42:41+00:00",
+      "link": "https://arxiv.org/pdf/2607.05765v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "real-time neural simulation framework for photorealistic observation synthesis",
+      "llm_evidence_cn": "用于光影真实感观测合成的实时神经模拟框架",
+      "llm_evidence": "用于光影真实感观测合成的实时神经模拟框架",
+      "canonical_evidence": "用于光影真实感观测合成的实时神经模拟框架",
+      "llm_tldr_en": "A neural simulation framework that decouples spatial anchoring from photorealistic synthesis for navigation.",
+      "llm_tldr_cn": "一种将空间锚定与光影真实感合成解耦的神经模拟框架，用于具身导航。",
+      "llm_tldr": "一种将空间锚定与光影真实感合成解耦的神经模拟框架，用于具身导航。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.05906v1",
+      "title": "GaussFusion: Towards Multimodal 3D Gaussian Pretraining",
+      "abstract": "3D Gaussian Splatting provides an explicit representation that jointly models geometry and appearance, serving as a scalable foundation for 3D representation learning. Existing pre-training methods for Gaussian representations, such as masked Gaussian reconstruction, primarily capture local structures but offer limited semantic supervision. In this paper, we propose GaussFusion, a multimodal pre-training framework for 3D Gaussian representations. GaussFusion integrates image and text supervision into masked Gaussian modeling through cross-modal semantic alignment, enabling the Gaussian encoder to learn both visual and language-level semantic information during pre-training. To better adapt masked modeling to the non-uniform distribution of Gaussian primitives, we further propose Gaussian Salience-guided Multi-scale Hole Masking (GSHM). GSHM constructs spatially continuous masked regions based on Gaussian salience. By applying hole masks at multiple scales, GSHM encourages the encoder to capture both fine-grained local patterns and broader structural dependencies. Extensive experiments on downstream tasks demonstrate that GaussFusion improves the transferability of Gaussian representations. Notably, GaussFusion outperforms Gaussian-MAE on ModelNet40 and ScanObjectNN (PB-T50-RS) by 0.61\\% and 3.85\\%, respectively.",
+      "authors": [
+        "Zhixuan You",
+        "Jihua Zhu",
+        "Yiding Sun",
+        "Zihao Guo",
+        "Haozhe Cheng",
+        "Dongxu Zhang",
+        "Lin Chen",
+        "Hainan Luo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-07T07:01:46+00:00",
+      "link": "https://arxiv.org/pdf/2607.05906v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Multimodal pretraining for 3D Gaussian representations",
+      "llm_evidence_cn": "3D高斯表示的多模态预训练",
+      "llm_evidence": "3D高斯表示的多模态预训练",
+      "canonical_evidence": "3D高斯表示的多模态预训练",
+      "llm_tldr_en": "Introduces a multimodal pre-training framework for 3D Gaussian Splatting to learn semantic information.",
+      "llm_tldr_cn": "引入了一种用于3D高斯泼溅的多模态预训练框架，以学习语义信息。",
+      "llm_tldr": "引入了一种用于3D高斯泼溅的多模态预训练框架，以学习语义信息。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.07084v1",
+      "title": "Inverse Low-Dimensional Manifold Reconstruction Framework for Spatiotemporal Reconstruction of Compressible Physical Fields",
+      "abstract": "Compressible physical fields are widely present in the real physical world, but current artificial intelligence lacks an understanding mechanism for the non-differentiable features in compressible physical fields. Addressing the limitations of existing deep learning architectures in handling global non-differentiable features, we propose the Inverse Low-Dimensional Manifold reconstruction framework (ILDM). This framework couples the Non-differentiable Approximation Function (NAF) for capturing non-differentiable features in compressible flows with the Smooth Fluid Reconstruction (SFR) module tailored for smooth fluid regions. Extensive evaluations across 1D and 2D benchmarks, including Riemann problems and double Mach reflection, demonstrate that ILDM significantly outperforms cPINN and R-adaptive DeepONet. Specifically, ILDM achieves superior localization of non-differentiable interfaces and maintains robust super-resolution performance even with low-resolution inputs, establishing a physically consistent and scalable paradigm for data-driven fluid dynamics.",
+      "authors": [
+        "Qiang Liu",
+        "Feng Ma",
+        "Wei Zhu",
+        "Xiyu Jia",
+        "Jianmin Xue",
+        "Jun Wen",
+        "Gaojun Fu"
+      ],
+      "primary_category": "physics.comp-ph",
+      "categories": [
+        "physics.comp-ph"
+      ],
+      "published": "2026-07-08T07:15:13+00:00",
+      "link": "https://arxiv.org/pdf/2607.07084v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "reconstruction of compressible physical fields and fluid simulation",
+      "llm_evidence_cn": "可压缩物理场重建与流体模拟",
+      "llm_evidence": "可压缩物理场重建与流体模拟",
+      "canonical_evidence": "可压缩物理场重建与流体模拟",
+      "llm_tldr_en": "A framework for spatiotemporal reconstruction of compressible physical fields using deep learning.",
+      "llm_tldr_cn": "一种利用深度学习进行可压缩物理场时空重建的框架。",
+      "llm_tldr": "一种利用深度学习进行可压缩物理场时空重建的框架。",
+      "llm_tags": [
+        "query:q5"
+      ],
+      "matched_query_tag": "query:q5",
+      "matched_query_text": "deep learning methods for volumetric cloud rendering and simulation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.07129v1",
+      "title": "Compositional Motion Generation from Demonstration with Object-Centric Neural Fields",
+      "abstract": "Compositionality, by organizing complex behavior as combinations of simpler elements, enables robot learning that is scalable and data efficient. Leveraging this principle, we propose a generative learning-from-demonstration framework that enables compositional modeling of robotic behavior by connecting perception and motion through shared object-level representations. We render scenes from object-centric neural representations that integrate canonical neural fields with latent-conditioned deformations, capturing positional and geometric variations in a smooth, consistent, and interpretable way. For motion generation, a temporal mixture-of-experts (MoE) employs a gating mechanism to combine object-conditioned movement primitives over time, producing complete trajectories. This spatial-temporal compositionality maintains the data efficiency of movement primitives while grounding motion in visual structure, enabling systematic generalization across diverse scene configurations. In simulation, long-horizon manipulation tasks are successfully completed using the proposed model, which requires significantly less training data than other image-based baselines. Real-world experiments further demonstrate the method's robustness to noise, its ability to generalize at the category level through language-based segmentation models, and its capacity to operate directly on 3D scene representations.",
+      "authors": [
+        "Ahmet Ercan Tekden",
+        "Yasemin Bekiroglu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-08T08:20:24+00:00",
+      "link": "https://arxiv.org/pdf/2607.07129v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "rendering scenes from object-centric neural representations",
+      "llm_evidence_cn": "从以对象为中心的神经表示中渲染场景",
+      "llm_evidence": "从以对象为中心的神经表示中渲染场景",
+      "canonical_evidence": "从以对象为中心的神经表示中渲染场景",
+      "llm_tldr_en": "Proposes a framework for compositional robot motion using object-centric neural fields for scene rendering.",
+      "llm_tldr_cn": "提出一种利用以对象为中心的神经场进行场景渲染的组合式机器人运动生成框架。",
+      "llm_tldr": "提出一种利用以对象为中心的神经场进行场景渲染的组合式机器人运动生成框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

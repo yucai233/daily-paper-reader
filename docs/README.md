@@ -6,58 +6,56 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-08
-- 运行时间：2026-07-08 21:39:58 UTC
+- 最新运行日期：2026-07-09
+- 运行时间：2026-07-09 21:57:00 UTC
 - 运行状态：成功
-- 本次总论文数：12
-- 精读区：1
+- 本次总论文数：11
+- 精读区：0
 - 速读区：11
 
 ### 今日简报（AI）
-今日聚焦 3DGS 渲染加速与动态重建，重点解析 TemporalGS 如何通过时间先验实现即插即用的性能飞跃。
-核心突破在于无需训练的渲染加速方案，以及 3DGS 在单目视频动态生成与开放词汇场景理解中的深度融合。
-建议开发者优先关注 TemporalGS 的提速实践，并探索 3DGS 在稀疏视角下的泛化优化策略。
-- 详情：[/202607/08/README](/202607/08/README)
+今日速览 11 篇前沿论文，深度聚焦 3D/4D 场景生成与高斯泼溅（Gaussian Splatting）技术的演进。
+重点推荐单目 4D 场景合成的全景高斯表示法，以及通过几何增强提升第一视角 3D 生成一致性的新框架。
+建议读者关注高斯泼溅在动态建模与沉浸式交互中的跨界融合，把握场景重建的高效化趋势。
+- 详情：[/202607/09/README](/202607/09/README)
 
 ### 精读区论文标签
-1. [TemporalGS: Training-Free Plug-and-Play Acceleration for 3D Gaussian Splatting Rendering via Temporal Priors](/202607/08/2607.03390v1-temporalgs-training-free-plug-and-play-acceleration-for-3d-gaussian-splatting-rendering-via-temporal-priors)  
-   标签：评分：8.0/10、query:q7
-   evidence：通过时间先验加速3D高斯泼溅渲染
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Improving Sparse-View 3DGS Generalization via Flat Minima Optimization](/202607/08/2607.00885v1-improving-sparse-view-3dgs-generalization-via-flat-minima-optimization)  
+1. [Unified Panoramic-Gaussian Representation for Monocular 4D Scene Synthesis](/202607/09/2607.01663v1-unified-panoramic-gaussian-representation-for-monocular-4d-scene-synthesis)  
    标签：评分：7.0/10、query:q1
-   evidence：神经渲染与3D高斯泼溅优化
-2. [World from Motion: Generative Dynamic Gaussian Reconstruction from Monocular Video](/202607/08/2607.01202v1-world-from-motion-generative-dynamic-gaussian-reconstruction-from-monocular-video)  
+   evidence：用于4D场景合成的全景高斯表示
+2. [CGGS: Consistency-Augmented Geometric Gaussian Splatting for Ego-centric 3D Scene Generation](/202607/09/2607.03819v1-cggs-consistency-augmented-geometric-gaussian-splatting-for-ego-centric-3d-scene-generation)  
    标签：评分：7.0/10、query:q1
-   evidence：动态神经渲染与高斯表示
-3. [Bridging 3D Gaussians and Semantic Occupancy for Comprehensive Open-Vocabulary Scene Understanding from Unposed Images](/202607/08/2607.01633v1-bridging-3d-gaussians-and-semantic-occupancy-for-comprehensive-open-vocabulary-scene-understanding-from-unposed-images)  
+   evidence：一致性增强的几何高斯泼溅
+3. [CGGS: Consistency-Augmented Geometric Gaussian Splatting for Ego-centric 3D Scene Generation](/202607/09/2607.03819v2-cggs-consistency-augmented-geometric-gaussian-splatting-for-ego-centric-3d-scene-generation)  
    标签：评分：7.0/10、query:q1
-   evidence：用于场景理解的可微分体积提升和高斯原语
-4. [InvSplat: Inverse Feed-Forward Scene Splatting](/202607/08/2607.02301v1-invsplat-inverse-feed-forward-scene-splatting)  
+   evidence：使用高斯泼溅和扩散模型进行3D场景生成
+4. [Rendering-Aware Bayesian 3D Gaussian Splatting with Native Uncertainty and Adaptive Complexity Control](/202607/09/2607.05522v1-rendering-aware-bayesian-3d-gaussian-splatting-with-native-uncertainty-and-adaptive-complexity-control)  
    标签：评分：7.0/10、query:q1
-   evidence：基于3D高斯表示的前馈多视图重建逆向渲染
-5. [Learning Spectral and Polarimetric Clues for One-to-Multimodal Novel View Synthesis](/202607/08/2607.02372v1-learning-spectral-and-polarimetric-clues-for-one-to-multimodal-novel-view-synthesis)  
-   标签：评分：7.0/10、query:q1
-   evidence：用于非常规模态多视图一致性渲染的神经渲染技术
-6. [AdaptiveSplat:Texture Aware Controllable 3D Gaussian Allocation for Feed-Forward Reconstruction](/202607/08/2607.04256v1-adaptivesplattexture-aware-controllable-3d-gaussian-allocation-for-feed-forward-reconstruction)  
-   标签：评分：7.0/10、query:q1
-   evidence：使用高斯原语进行3D重建的神经渲染
-7. [Targeted Structure Completion for Sparse-View 3D Reconstruction in Autonomous Driving](/202607/08/2607.04661v1-targeted-structure-completion-for-sparse-view-3d-reconstruction-in-autonomous-driving)  
-   标签：评分：7.0/10、query:q1
-   evidence：用于3D重建和体积处理的基于体素的高斯方法
-8. [WildSplat: Feedforward Gaussian Splatting from Unposed In-the-Wild Images](/202607/08/2607.05347v1-wildsplat-feedforward-gaussian-splatting-from-unposed-in-the-wild-images)  
-   标签：评分：7.0/10、query:q1
-   evidence：用于新视角合成的前馈高斯泼溅框架
-9. [WarpHammer: Densifying Scene Warps with 3D Object Priors for Extreme View Synthesis](/202607/08/2606.31258v1-warphammer-densifying-scene-warps-with-3d-object-priors-for-extreme-view-synthesis)  
+   evidence：用于不确定性和复杂度控制的贝叶斯3D高斯泼溅
+5. [Property-Constrained 3D Porous Media Reconstruction from 2D Images via Conditional Generative Adversarial Networks](/202607/09/2607.02693v1-property-constrained-3d-porous-media-reconstruction-from-2d-images-via-conditional-generative-adversarial-networks)  
+   标签：评分：6.0/10、query:profile-1
+   evidence：使用GAN从2D图像生成3D多孔介质体积
+6. [CONFLUX: A Latent Diffusion Model for 3D Chest-CT Synthesis with RL Post-Training](/202607/09/2607.02998v2-conflux-a-latent-diffusion-model-for-3d-chest-ct-synthesis-with-rl-post-training)  
+   标签：评分：6.0/10、query:profile-1
+   evidence：用于3D体积合成的生成模型
+7. [Towards Fully Dynamic Omnitrees: Moment-Conserving Anisotropic Compression With Wavelets](/202607/09/2607.04881v1-towards-fully-dynamic-omnitrees-moment-conserving-anisotropic-compression-with-wavelets)  
    标签：评分：6.0/10、query:q7
-   evidence：通过扭曲显式3D重建进行新视角合成
-10. [City-Level 3D Surface Reconstruction with Viewpoint Orientation Partitioning and Scene Completion](/202607/08/2607.03771v1-city-level-3d-surface-reconstruction-with-viewpoint-orientation-partitioning-and-scene-completion)  
-   标签：评分：6.0/10、query:q7
-   evidence：利用 3D 高斯泼溅加速大规模重建
-11. [PixWorld: Unifying 3D Scene Generation and Reconstruction in Pixel Space](/202607/08/2607.05373v1-pixworld-unifying-3d-scene-generation-and-reconstruction-in-pixel-space)  
+   evidence：用于图形学中高效空间划分和压缩的Omnitrees
+8. [Image2Sim: Scaling Embodied Navigation via Generative Neural Simulator](/202607/09/2607.05765v1-image2sim-scaling-embodied-navigation-via-generative-neural-simulator)  
    标签：评分：6.0/10、query:q1
-   evidence：像素空间中的神经渲染与3D场景生成
+   evidence：用于光影真实感观测合成的实时神经模拟框架
+9. [GaussFusion: Towards Multimodal 3D Gaussian Pretraining](/202607/09/2607.05906v1-gaussfusion-towards-multimodal-3d-gaussian-pretraining)  
+   标签：评分：6.0/10、query:q1
+   evidence：3D高斯表示的多模态预训练
+10. [Inverse Low-Dimensional Manifold Reconstruction Framework for Spatiotemporal Reconstruction of Compressible Physical Fields](/202607/09/2607.07084v1-inverse-low-dimensional-manifold-reconstruction-framework-for-spatiotemporal-reconstruction-of-compressible-physical-fields)  
+   标签：评分：6.0/10、query:q5
+   evidence：可压缩物理场重建与流体模拟
+11. [Compositional Motion Generation from Demonstration with Object-Centric Neural Fields](/202607/09/2607.07129v1-compositional-motion-generation-from-demonstration-with-object-centric-neural-fields)  
+   标签：评分：6.0/10、query:q1
+   evidence：从以对象为中心的神经表示中渲染场景
 
 
 <div class="dpr-home-promo-card">
