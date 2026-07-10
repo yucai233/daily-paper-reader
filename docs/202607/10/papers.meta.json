@@ -1,0 +1,65 @@
+{
+  "label": "2026-07-10",
+  "date": "2026-07-10",
+  "generated_at": "2026-07-10T20:03:22",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202607/10/2607.01698v1-structure-aware-gaussian-splatting-for-large-scale-scene-reconstruction",
+      "section": "quick",
+      "title_en": "Structure-Aware Gaussian Splatting for Large-Scale Scene Reconstruction",
+      "authors": "Weiyi Xue, Fan Lu, Chi Zhang, Tianhang Wang, Sanqing Qu, Zehan Zheng, Boyuan Zheng, Junqiao Zhao, Guang Chen",
+      "date": "2026-07-02",
+      "pdf": "https://arxiv.org/pdf/2607.01698v1",
+      "score": "7.0",
+      "evidence": "用于大规模场景重建和新视角合成的高斯泼溅技术",
+      "tldr": "针对大规模场景重建中3D高斯泼溅（3DGS）因初始点云稀疏导致的高频图像监督失控和冗余问题，本文提出了一种结构感知的高斯泼溅框架SIG。该框架通过同步图像监督与高斯频率，动态调节图像分辨率和加密过程，并引入球体约束高斯以利用空间先验。实验证明，该方法在提升渲染质量的同时显著提高了效率，减少了伪影，在大规模场景重建中达到了SOTA水平。",
+      "tags": "query:q1",
+      "abstract_en": "3D Gaussian Splatting has demonstrated remarkable potential in novel view synthesis. In contrast to small-scale scenes, large-scale scenes inevitably contain sparsely observed regions with excessively sparse initial points. In this case, supervising Gaussians initialized from low-frequency sparse points with high-frequency images often induces uncontrolled densification and redundant primitives, degrading both efficiency and quality. Intuitively, this issue can be mitigated with scheduling strategies, which can be categorized into two paradigms: modulating target signal frequency via densification and modulating sampling frequency via image resolution. However, previous scheduling strategies are primarily hardcoded, failing to perceive the convergence behavior of scene frequency. To address this, we reframe the scene reconstruction problem from the perspective of signal structure recovery and propose SIG, a novel scheduler that synchronizes image supervision with Gaussian frequencies. Specifically, we derive the average sampling frequency and bandwidth of 3D representations, and then regulate the training image resolution and the Gaussian densification process based on scene frequency convergence. Furthermore, we introduce Sphere-Constrained Gaussians, which leverage the spatial prior of initialized point clouds to control Gaussian optimization. Our framework enables frequency-consistent, geometry-aware, and floater-free training, achieving state-of-the-art performance by a substantial margin in both efficiency and rendering quality in large-scale scenes. The code is available at: https://github.com/weiyixue999/Signal_Structure_Aware_Gaussian",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/10/2607.01698v2-signal-structure-aware-gaussian-splatting-for-large-scale-scene-reconstruction",
+      "section": "quick",
+      "title_en": "Signal Structure-Aware Gaussian Splatting for Large-Scale Scene Reconstruction",
+      "authors": "Weiyi Xue, Fan Lu, Chi Zhang, Tianhang Wang, Sanqing Qu, Zehan Zheng, Boyuan Zheng, Junqiao Zhao, Guang Chen",
+      "date": "2026-07-02",
+      "pdf": "https://arxiv.org/pdf/2607.01698v2",
+      "score": "7.0",
+      "evidence": "用于大规模场景重建和视角合成的高斯泼溅技术",
+      "tldr": "针对大规模场景重建中3D高斯泼溅（3DGS）因初始点云稀疏导致的高频图像监督失真问题，本文提出SIG框架。该框架从信号结构恢复视角出发，通过感知场景频率收敛情况，动态调节图像分辨率与高斯加密过程，并引入球体约束高斯以利用空间先验。实验证明，该方法在渲染质量和效率上均显著优于现有技术，有效减少了冗余原语和浮点噪声。",
+      "tags": "query:q1",
+      "abstract_en": "3D Gaussian Splatting has demonstrated remarkable potential in novel view synthesis. In contrast to small-scale scenes, large-scale scenes inevitably contain sparsely observed regions with excessively sparse initial points. In this case, supervising Gaussians initialized from low-frequency sparse points with high-frequency images often induces uncontrolled densification and redundant primitives, degrading both efficiency and quality. Intuitively, this issue can be mitigated with scheduling strategies, which can be categorized into two paradigms: modulating target signal frequency via densification and modulating sampling frequency via image resolution. However, previous scheduling strategies are primarily hardcoded, failing to perceive the convergence behavior of scene frequency. To address this, we reframe the scene reconstruction problem from the perspective of signal structure recovery and propose SIG, a novel scheduler that synchronizes image supervision with Gaussian frequencies. Specifically, we derive the average sampling frequency and bandwidth of 3D representations, and then regulate the training image resolution and the Gaussian densification process based on scene frequency convergence. Furthermore, we introduce Sphere-Constrained Gaussians, which leverage the spatial prior of initialized point clouds to control Gaussian optimization. Our framework enables frequency-consistent, geometry-aware, and floater-free training, achieving state-of-the-art performance by a substantial margin in both efficiency and rendering quality in large-scale scenes. The code is available at: https://github.com/weiyixue999/Signal_Structure_Aware_Gaussian",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/10/2607.08769v1-geometry-and-gradient-based-partitioning-for-panoramic-outdoor-reconstruction",
+      "section": "quick",
+      "title_en": "Geometry and Gradient-based Partitioning for Panoramic Outdoor Reconstruction",
+      "authors": "Weijian Chen, Weibo Yao, Yuhang Zhang, Xiaolin Tang, Guo Wang, Weijun Zhang, Xitong Gao, Yihao Chen, Hongde Qin, Lu Qi",
+      "date": "2026-07-09",
+      "pdf": "https://arxiv.org/pdf/2607.08769v1",
+      "score": "7.0",
+      "evidence": "用于包含天空建模的大规模室外场景的神经体渲染(3DGS)",
+      "tldr": "针对大规模室外场景重建中全景图像导致现有3DGS分块策略失效的问题，本文提出PanoLOG框架。该框架采用两阶段由粗到精的流程，通过几何与梯度驱动的分块策略（G2PS），利用视差不确定性和梯度重要性评分实现自适应场景划分。此外，研究者发布了首个大规模全景室外重建基准Pano360，在保证可扩展并行训练的同时实现了高质量渲染。",
+      "tags": "query:q6",
+      "abstract_en": "Scaling 3D Gaussian Splatting (3DGS) to large outdoor scenes is costly in both data acquisition and computation. Adopting panoramic images with equirectangular projection (ERP) can reduce capture effort via their full $360^{\\circ}$ field of view, yet the resulting omnipresent visibility invalidates existing partitioning strategies that rely on local camera frustums, causing block-wise optimization to degenerate into global training. Thus, we propose PanoLOG, a two-stage coarse-to-fine framework equipped with a Geometry and Gradient-based Partitioning Strategy tailored for large-scale panoramic 3DGS reconstruction. In the global coarse stage, PanoLOG leverages sky-sphere modeling and panoramic monocular depth supervision for reliable geometry, while in the refinement stage, G$^2$PS builds adaptive bounding volumes via parallax-driven uncertainty and assigns cameras via gradient-based importance scoring. Furthermore, we construct Pano360, the first benchmark on large-scale panoramic dataset for outdoor scene reconstruction. Extensive experiments demonstrate that G$^2$PS achieves state-of-the-art rendering quality while maintaining scalable, block-parallel training. Our models, training code, and dataset are publicly available.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/10/2607.08016v1-lightcrafter-pbr-conditioned-video-diffusion-refinement-for-controllable-and-consistent-relighting",
+      "section": "quick",
+      "title_en": "LightCrafter: PBR-Conditioned Video Diffusion Refinement for Controllable and Consistent Relighting",
+      "authors": "Zixin Guo, Yehonathan Litman, Yifeng He, John Miller, Chuhan Chen, Deva Ramanan",
+      "date": "2026-07-09",
+      "pdf": "https://arxiv.org/pdf/2607.08016v1",
+      "score": "6.0",
+      "evidence": "用于光线传输和全局光照效果的神经渲染器",
+      "tldr": "针对视频重照明中时间一致性与物理真实感难以兼得的问题，本文提出 LightCrafter。该方法将重照明任务转化为对 PBR 代理视频的扩散细化过程，通过将目标光照预渲染进代理视频，结合在合成与真实数据上微调的 CogVideoX 模型，实现了高精度、长时一致且具备全局光照效果的视频重照明，在多个基准测试中超越了现有技术。",
+      "tags": "query:q4",
+      "abstract_en": "Video relighting requires balancing long-form temporal consistency with a physically grounded understanding of light transport, which depends on accurate estimation of intrinsic scene properties such as materials, geometry, and illumination. Existing methods follow two paradigms: (1) reconstruct a video's photometric properties via inverse rendering and relight them to a target illumination via forward rendering, using physically-based rendering (PBR) or a neural renderer; these suffer from noisy reconstructions and struggle with hard-to-model effects such as global illumination. (2) Frame the task as generative video-to-video translation conditioned on relighting targets (a target environment map or text); this limits relighting control and temporal stability, since diffusion models struggle to translate long-form videos, and is constrained by the availability of input/relit training pairs. We propose LightCrafter, a hybrid pipeline that reformulates video relighting as video translation of a proxy video: rather than translating the input video directly to the target, we translate a PBR rendering of the input under the target illumination to the final target. This bakes illumination targets into the PBR proxy, removing the need to teach the diffusion model illumination concepts like environment maps, and enables more intricate lighting control while naturally providing long-form temporal consistency. We show PBR renders alone already outperform some prior art but struggle with effects like global illumination; to capture these, we leverage photometric priors in video generation models by post-training CogVideoX on synthetic video pairs and real-world unpaired videos. We outperform prior state-of-the-art on existing real-world relighting benchmarks and contribute a synthetic benchmark for further analysis. We will release our dataset, benchmark, metrics, and code.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

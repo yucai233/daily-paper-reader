@@ -6,56 +6,35 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-09
-- 运行时间：2026-07-09 21:57:00 UTC
+- 最新运行日期：2026-07-10
+- 运行时间：2026-07-10 20:03:14 UTC
 - 运行状态：成功
-- 本次总论文数：11
+- 本次总论文数：4
 - 精读区：0
-- 速读区：11
+- 速读区：4
 
 ### 今日简报（AI）
-今日速览 11 篇前沿论文，深度聚焦 3D/4D 场景生成与高斯泼溅（Gaussian Splatting）技术的演进。
-重点推荐单目 4D 场景合成的全景高斯表示法，以及通过几何增强提升第一视角 3D 生成一致性的新框架。
-建议读者关注高斯泼溅在动态建模与沉浸式交互中的跨界融合，把握场景重建的高效化趋势。
-- 详情：[/202607/09/README](/202607/09/README)
+今日聚焦大规模场景重建，深入探讨了结构感知与分区优化的 3D 高斯泼溅（Gaussian Splatting）前沿技术。
+研究表明，结合信号结构感知与几何梯度分区能显著提升户外全景建模的精度与效率。
+建议关注 3D 重建的读者重点研究这些针对复杂环境的结构化优化方案。
+- 详情：[/202607/10/README](/202607/10/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Unified Panoramic-Gaussian Representation for Monocular 4D Scene Synthesis](/202607/09/2607.01663v1-unified-panoramic-gaussian-representation-for-monocular-4d-scene-synthesis)  
+1. [Structure-Aware Gaussian Splatting for Large-Scale Scene Reconstruction](/202607/10/2607.01698v1-structure-aware-gaussian-splatting-for-large-scale-scene-reconstruction)  
    标签：评分：7.0/10、query:q1
-   evidence：用于4D场景合成的全景高斯表示
-2. [CGGS: Consistency-Augmented Geometric Gaussian Splatting for Ego-centric 3D Scene Generation](/202607/09/2607.03819v1-cggs-consistency-augmented-geometric-gaussian-splatting-for-ego-centric-3d-scene-generation)  
+   evidence：用于大规模场景重建和新视角合成的高斯泼溅技术
+2. [Signal Structure-Aware Gaussian Splatting for Large-Scale Scene Reconstruction](/202607/10/2607.01698v2-signal-structure-aware-gaussian-splatting-for-large-scale-scene-reconstruction)  
    标签：评分：7.0/10、query:q1
-   evidence：一致性增强的几何高斯泼溅
-3. [CGGS: Consistency-Augmented Geometric Gaussian Splatting for Ego-centric 3D Scene Generation](/202607/09/2607.03819v2-cggs-consistency-augmented-geometric-gaussian-splatting-for-ego-centric-3d-scene-generation)  
-   标签：评分：7.0/10、query:q1
-   evidence：使用高斯泼溅和扩散模型进行3D场景生成
-4. [Rendering-Aware Bayesian 3D Gaussian Splatting with Native Uncertainty and Adaptive Complexity Control](/202607/09/2607.05522v1-rendering-aware-bayesian-3d-gaussian-splatting-with-native-uncertainty-and-adaptive-complexity-control)  
-   标签：评分：7.0/10、query:q1
-   evidence：用于不确定性和复杂度控制的贝叶斯3D高斯泼溅
-5. [Property-Constrained 3D Porous Media Reconstruction from 2D Images via Conditional Generative Adversarial Networks](/202607/09/2607.02693v1-property-constrained-3d-porous-media-reconstruction-from-2d-images-via-conditional-generative-adversarial-networks)  
-   标签：评分：6.0/10、query:profile-1
-   evidence：使用GAN从2D图像生成3D多孔介质体积
-6. [CONFLUX: A Latent Diffusion Model for 3D Chest-CT Synthesis with RL Post-Training](/202607/09/2607.02998v2-conflux-a-latent-diffusion-model-for-3d-chest-ct-synthesis-with-rl-post-training)  
-   标签：评分：6.0/10、query:profile-1
-   evidence：用于3D体积合成的生成模型
-7. [Towards Fully Dynamic Omnitrees: Moment-Conserving Anisotropic Compression With Wavelets](/202607/09/2607.04881v1-towards-fully-dynamic-omnitrees-moment-conserving-anisotropic-compression-with-wavelets)  
-   标签：评分：6.0/10、query:q7
-   evidence：用于图形学中高效空间划分和压缩的Omnitrees
-8. [Image2Sim: Scaling Embodied Navigation via Generative Neural Simulator](/202607/09/2607.05765v1-image2sim-scaling-embodied-navigation-via-generative-neural-simulator)  
-   标签：评分：6.0/10、query:q1
-   evidence：用于光影真实感观测合成的实时神经模拟框架
-9. [GaussFusion: Towards Multimodal 3D Gaussian Pretraining](/202607/09/2607.05906v1-gaussfusion-towards-multimodal-3d-gaussian-pretraining)  
-   标签：评分：6.0/10、query:q1
-   evidence：3D高斯表示的多模态预训练
-10. [Inverse Low-Dimensional Manifold Reconstruction Framework for Spatiotemporal Reconstruction of Compressible Physical Fields](/202607/09/2607.07084v1-inverse-low-dimensional-manifold-reconstruction-framework-for-spatiotemporal-reconstruction-of-compressible-physical-fields)  
-   标签：评分：6.0/10、query:q5
-   evidence：可压缩物理场重建与流体模拟
-11. [Compositional Motion Generation from Demonstration with Object-Centric Neural Fields](/202607/09/2607.07129v1-compositional-motion-generation-from-demonstration-with-object-centric-neural-fields)  
-   标签：评分：6.0/10、query:q1
-   evidence：从以对象为中心的神经表示中渲染场景
+   evidence：用于大规模场景重建和视角合成的高斯泼溅技术
+3. [Geometry and Gradient-based Partitioning for Panoramic Outdoor Reconstruction](/202607/10/2607.08769v1-geometry-and-gradient-based-partitioning-for-panoramic-outdoor-reconstruction)  
+   标签：评分：7.0/10、query:q6
+   evidence：用于包含天空建模的大规模室外场景的神经体渲染(3DGS)
+4. [LightCrafter: PBR-Conditioned Video Diffusion Refinement for Controllable and Consistent Relighting](/202607/10/2607.08016v1-lightcrafter-pbr-conditioned-video-diffusion-refinement-for-controllable-and-consistent-relighting)  
+   标签：评分：6.0/10、query:q4
+   evidence：用于光线传输和全局光照效果的神经渲染器
 
 
 <div class="dpr-home-promo-card">
