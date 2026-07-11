@@ -6,35 +6,44 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-10
-- 运行时间：2026-07-10 20:03:14 UTC
+- 最新运行日期：2026-07-11
+- 运行时间：2026-07-11 20:55:55 UTC
 - 运行状态：成功
-- 本次总论文数：4
+- 本次总论文数：7
 - 精读区：0
-- 速读区：4
+- 速读区：7
 
 ### 今日简报（AI）
-今日聚焦大规模场景重建，深入探讨了结构感知与分区优化的 3D 高斯泼溅（Gaussian Splatting）前沿技术。
-研究表明，结合信号结构感知与几何梯度分区能显著提升户外全景建模的精度与效率。
-建议关注 3D 重建的读者重点研究这些针对复杂环境的结构化优化方案。
-- 详情：[/202607/10/README](/202607/10/README)
+- 今日共生成 7 篇推荐（精读 0 篇，速读 7 篇）
+- 速读：《Sparse-View Surface Reconstruction using Gaussian Splatting through High-Confidence Depth Propagation with Normal Priors》（7.0/10）, 《MACRO: Training-free Multi-plane Attention for Closeup Render Optimization》（7.0/10）, 《GUSH3R: Everyone Everywhere All at Once as Gaussians》（7.0/10）
+- 这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。
+- 详情：[/202607/11/README](/202607/11/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Structure-Aware Gaussian Splatting for Large-Scale Scene Reconstruction](/202607/10/2607.01698v1-structure-aware-gaussian-splatting-for-large-scale-scene-reconstruction)  
+1. [Sparse-View Surface Reconstruction using Gaussian Splatting through High-Confidence Depth Propagation with Normal Priors](/202607/11/2607.03765v1-sparse-view-surface-reconstruction-using-gaussian-splatting-through-high-confidence-depth-propagation-with-normal-priors)  
    标签：评分：7.0/10、query:q1
-   evidence：用于大规模场景重建和新视角合成的高斯泼溅技术
-2. [Signal Structure-Aware Gaussian Splatting for Large-Scale Scene Reconstruction](/202607/10/2607.01698v2-signal-structure-aware-gaussian-splatting-for-large-scale-scene-reconstruction)  
+   evidence：基于3D高斯泼溅的表面重建
+2. [MACRO: Training-free Multi-plane Attention for Closeup Render Optimization](/202607/11/2607.03875v1-macro-training-free-multi-plane-attention-for-closeup-render-optimization)  
+   标签：评分：7.0/10、query:q7
+   evidence：优化3D高斯泼溅的神经渲染质量
+3. [GUSH3R: Everyone Everywhere All at Once as Gaussians](/202607/11/2607.05243v1-gush3r-everyone-everywhere-all-at-once-as-gaussians)  
    标签：评分：7.0/10、query:q1
-   evidence：用于大规模场景重建和视角合成的高斯泼溅技术
-3. [Geometry and Gradient-based Partitioning for Panoramic Outdoor Reconstruction](/202607/10/2607.08769v1-geometry-and-gradient-based-partitioning-for-panoramic-outdoor-reconstruction)  
-   标签：评分：7.0/10、query:q6
-   evidence：用于包含天空建模的大规模室外场景的神经体渲染(3DGS)
-4. [LightCrafter: PBR-Conditioned Video Diffusion Refinement for Controllable and Consistent Relighting](/202607/10/2607.08016v1-lightcrafter-pbr-conditioned-video-diffusion-refinement-for-controllable-and-consistent-relighting)  
-   标签：评分：6.0/10、query:q4
-   evidence：用于光线传输和全局光照效果的神经渲染器
+   evidence：具有逼真渲染效果的动态人景重建
+4. [SAF3R: Dynamic Sparse Attention for Feed-Forward 3D Reconstruction Transformers](/202607/11/2607.03612v1-saf3r-dynamic-sparse-attention-for-feed-forward-3d-reconstruction-transformers)  
+   标签：评分：6.0/10、query:q7
+   evidence：加速前馈 3D 重建 Transformer
+5. [Semantic-Guided Progressive Object Removal with Gaussian Splatting](/202607/11/2607.04144v1-semantic-guided-progressive-object-removal-with-gaussian-splatting)  
+   标签：评分：6.0/10、query:q1
+   evidence：使用高斯泼溅进行3D物体移除
+6. [SparseOcc++: Geometry-Aware Sparse Latent Representation for Semantic Occupancy Prediction](/202607/11/2607.04732v1-sparseocc-geometry-aware-sparse-latent-representation-for-semantic-occupancy-prediction)  
+   标签：评分：6.0/10、query:q1
+   evidence：3D语义占据预测与体素表示
+7. [NoDrift3R: Raymap-Guided Coupling for Drift-Robust Unposed Feed-Forward 3D Reconstruction](/202607/11/2607.07168v1-nodrift3r-raymap-guided-coupling-for-drift-robust-unposed-feed-forward-3d-reconstruction)  
+   标签：评分：6.0/10、query:q7
+   evidence：使用 3D 高斯泼溅进行快速场景重建
 
 
 <div class="dpr-home-promo-card">

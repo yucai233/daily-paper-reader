@@ -1,0 +1,291 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-11T20:37:34.386433+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.03765v1",
+      "title": "Sparse-View Surface Reconstruction using Gaussian Splatting through High-Confidence Depth Propagation with Normal Priors",
+      "abstract": "3D reconstruction from sparse views is a challenging task in 3D computer vision. Recent studies on 3D Gaussian Splatting (3DGS) have achieved remarkable results with sparse views in novel view synthesis, yet reconstructing high-quality geometric surfaces from sparse views remains a challenge, due to the limited geometry clues and the discreteness of Gaussians. In this paper, we propose a novel 3DGS-based method for high-fidelity surface reconstruction from sparse views. Our key insight is to introduce a normal-guided depth propagation approach, which can extend depth information from high-confidence regions to constrain the depth in low-confidence areas. Additionally, we propose an abnormal depth edge-aware regularization to address depth discontinuities caused by the discreteness of Gaussians. Extensive experiments on DTU and Tanks-and-Temples datasets demonstrate that our method outperforms the state-of-the-art methods in sparse view surface reconstruction. Project page: https://hanl2010.github.io/DP-GS.",
+      "authors": [
+        "Liang Han",
+        "Bangcai Wei",
+        "Junsheng Zhou",
+        "Yu-Shen Liu",
+        "Zhizhong Han"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-04T08:33:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.03765v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting for surface reconstruction",
+      "llm_evidence_cn": "基于3D高斯泼溅的表面重建",
+      "llm_evidence": "基于3D高斯泼溅的表面重建",
+      "canonical_evidence": "基于3D高斯泼溅的表面重建",
+      "llm_tldr_en": "Proposes a normal-guided depth propagation method for high-fidelity surface reconstruction using 3D Gaussian Splatting.",
+      "llm_tldr_cn": "提出一种正态引导的深度传播方法，利用3D高斯泼溅实现高保真表面重建。",
+      "llm_tldr": "提出一种正态引导的深度传播方法，利用3D高斯泼溅实现高保真表面重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.03612v1",
+      "title": "SAF3R: Dynamic Sparse Attention for Feed-Forward 3D Reconstruction Transformers",
+      "abstract": "Feed-forward 3D reconstruction (F3R) transformers have recently achieved remarkable success. However, scaling them to long image sequences remains challenging, as the quadratic complexity of cross-view global attention quickly becomes the dominant computational bottleneck. While recent efforts attempt to improve efficiency through compressed or sparse attention, they fail to fully exploit the inherent sparsity and dynamic behavior of global attention. In this work, we present a comprehensive analysis of global attention across multiple F3R transformers and reveal that attention patterns are highly heterogeneous, dynamic, and extremely sparse across layers and attention heads. Motivated by these findings, we propose SAF3R, a training-free dynamic sparse attention framework tailored to F3R transformers. SAF3R integrates tailored sparse attention mechanisms with offline head profiling and an efficient online adaptation strategy to match input-dependent attention behaviors. Extensive experiments demonstrate that SAF3R achieves high sparsity ratios while preserving camera pose estimation and 3D reconstruction quality, translating into substantial end-to-end speedup on F3R transformers compared to existing methods. Code is available at https://github.com/jndeng/SAF3R",
+      "authors": [
+        "Jianing Deng",
+        "Yuanzhe Li",
+        "Jialu Wang",
+        "Song Wang",
+        "Tianlong Chen",
+        "Huanrui Yang",
+        "Jingtong Hu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-07-03T22:01:35+00:00",
+      "link": "https://arxiv.org/pdf/2607.03612v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "accelerating feed-forward 3D reconstruction transformers",
+      "llm_evidence_cn": "加速前馈 3D 重建 Transformer",
+      "llm_evidence": "加速前馈 3D 重建 Transformer",
+      "canonical_evidence": "加速前馈 3D 重建 Transformer",
+      "llm_tldr_en": "Proposes dynamic sparse attention to accelerate feed-forward 3D reconstruction in long sequences.",
+      "llm_tldr_cn": "提出动态稀疏注意力机制，以加速长序列中的前馈 3D 重建。",
+      "llm_tldr": "提出动态稀疏注意力机制，以加速长序列中的前馈 3D 重建。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.03875v1",
+      "title": "MACRO: Training-free Multi-plane Attention for Closeup Render Optimization",
+      "abstract": "Close-up rendering, zooming into a scene well beyond any training camera, is important for virtual production and interactive 3D content, yet remains an open challenge. 3D Gaussian splatting (3DGS) enables high-fidelity, real-time novel view synthesis, but its rendering quality degrades at close range. Recent diffusion-based methods that enhance the rendering by conditioning on reference images from the training set produce significant artifacts in this setting. We analyze this failure and identify its root cause: the scale gap between the close-up and reference views. We show that the features in reference-conditioned enhancement models are not scale-invariant, causing cross-view attention to retrieve incorrect correspondences when the same content appears at different scales, and that this mismatch cannot be corrected in latent space because the VAE encoder is not scale-equivariant. Building on this analysis we introduce MACRO, Multi-plane Attention for Closeup Render Optimization, a training-free method for high-quality close-up novel view synthesis from 3DGS. MACRO resolves the scale gap by leveraging the scene's known 3D structure: it decomposes the close-up into depth planes, crops and resizes references in image space to match the scale of each plane before encoding, and applies a depth-aware attention mask so each token attends only to scale-matched references. The method requires no architectural changes or additional training. We further contribute two new close-up novel view synthesis benchmarks, the first standardized evaluation protocol for this setting, and demonstrate state-of-the-art results on both, outperforming existing 3DGS and diffusion-based methods on both reconstruction and perceptual metrics. Project page: https://nitzanhod.github.io/MACRO",
+      "authors": [
+        "Nitzan Hodos",
+        "Roy Amoyal",
+        "Lior Fritz",
+        "Ianir Ideses",
+        "Sagie Benaim",
+        "Netalee Efrat"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-04T13:36:06+00:00",
+      "link": "https://arxiv.org/pdf/2607.03875v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "optimizing neural rendering quality for 3D Gaussian splatting",
+      "llm_evidence_cn": "优化3D高斯泼溅的神经渲染质量",
+      "llm_evidence": "优化3D高斯泼溅的神经渲染质量",
+      "canonical_evidence": "优化3D高斯泼溅的神经渲染质量",
+      "llm_tldr_en": "Improves close-up rendering quality in 3D Gaussian splatting using a training-free attention mechanism.",
+      "llm_tldr_cn": "利用免训练的注意力机制提高3D高斯泼溅在特写镜头下的渲染质量。",
+      "llm_tldr": "利用免训练的注意力机制提高3D高斯泼溅在特写镜头下的渲染质量。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.04144v1",
+      "title": "Semantic-Guided Progressive Object Removal with Gaussian Splatting",
+      "abstract": "Removing unwanted objects from reconstructed 3D scenes is an important task in computer vision, supporting applications in AR/VR, robotics, and digital content creation. Existing methods typically complete the entire masked region in a single step and without effectively utilizing semantic information from other views, leading to difficulties in handling complex geometric details and textures. In this work, we propose a novel framework that integrates Semantic-guided Block Matching (SBM) and Region-Wise Progressive Refinement (RPR) for high-quality 3D object removal. First, we leverage DINOv2 to encode semantic guidance from multi-view observations, and the best match tokens are decoded to complete missing regions in the target view while maintaining cross-view consistency. Second, we introduce a RPR strategy that segments the target mask into multiple subregions and selectively refines those with poor visual quality. Our method is built upon Gaussian Splatting, ensuring high-fidelity scene reconstruction with efficient computation. Experimental results demonstrate that our approach outperforms existing Gaussian-based methods in terms of perceptual quality and coherence in 3D object removal.",
+      "authors": [
+        "Xianliang Huang",
+        "Chen Xiao",
+        "Yuanxiang Ni",
+        "Guanming Liu",
+        "Mingkai Liu",
+        "Dikai Fan",
+        "Xiao Liu",
+        "Hao Zhang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-05T07:11:48+00:00",
+      "link": "https://arxiv.org/pdf/2607.04144v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "3D object removal using Gaussian Splatting",
+      "llm_evidence_cn": "使用高斯泼溅进行3D物体移除",
+      "llm_evidence": "使用高斯泼溅进行3D物体移除",
+      "canonical_evidence": "使用高斯泼溅进行3D物体移除",
+      "llm_tldr_en": "Integrates semantic guidance and progressive refinement for high-quality object removal in 3D Gaussian Splatting scenes.",
+      "llm_tldr_cn": "结合语义引导和渐进式细化，在3D高斯泼溅场景中实现高质量的物体移除。",
+      "llm_tldr": "结合语义引导和渐进式细化，在3D高斯泼溅场景中实现高质量的物体移除。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.05243v1",
+      "title": "GUSH3R: Everyone Everywhere All at Once as Gaussians",
+      "abstract": "Reconstructing dynamic human-scene environments from monocular videos is a challenging problem that requires jointly modeling scene geometry, camera motion, and non-rigid human dynamics while enabling photorealistic rendering. Recent feed-forward methods can efficiently predict geometry, but they are often limited to non-photorealistic representations such as point clouds and meshes, or they fail to handle non-rigid objects, particularly dynamic humans. To fill this gap, we present GUSH3R (Gaussian-Unified Scene Human 3D Reconstruction), a feed-forward framework for online dynamic human-scene reconstruction. From a monocular human-scene video, our method reconstructs dynamic humans (everyone) and static scenes (everywhere) in a single forward pass (all at once) as 3D Gaussian Splatting (3DGS) primitives (as gaussians), which are geometrically consistent and capable of novel view synthesis. Experiments on monocular human-scene datasets demonstrate that our approach achieves competitive novel view synthesis quality while significantly improving inference efficiency compared to optimization-based methods.",
+      "authors": [
+        "Keito Abe",
+        "Kaede Shiohara",
+        "Takashi Otonari",
+        "Toshihiko Yamasaki"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-06T15:53:09+00:00",
+      "link": "https://arxiv.org/pdf/2607.05243v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Dynamic human-scene reconstruction with photorealistic rendering",
+      "llm_evidence_cn": "具有逼真渲染效果的动态人景重建",
+      "llm_evidence": "具有逼真渲染效果的动态人景重建",
+      "canonical_evidence": "具有逼真渲染效果的动态人景重建",
+      "llm_tldr_en": "A feed-forward framework for online dynamic human-scene reconstruction using 3D Gaussian representations.",
+      "llm_tldr_cn": "一种使用3D高斯表示进行在线动态人景重建的前馈框架。",
+      "llm_tldr": "一种使用3D高斯表示进行在线动态人景重建的前馈框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.04732v1",
+      "title": "SparseOcc++: Geometry-Aware Sparse Latent Representation for Semantic Occupancy Prediction",
+      "abstract": "Vision-based 3D semantic occupancy prediction is essential for autonomous driving, yet dense voxel representations waste computation on largely empty space, while BEV and TPV projections compromise fine-grained 3D structure. Fully sparse representations offer an attractive alternative, but existing methods, including SparseOcc, entangle scene completion with semantic prediction by indiscriminately propagating high-dimensional features into empty regions and applying voxel-wise classification. This creates excessive activations, computational overhead, and geometric ambiguity. We present SparseOcc++, a geometry-aware sparse framework that explicitly decouples scene completion from semantic segmentation. SparseOcc++ reformulates completion as signed-distance regression on sparse anchor voxels through a scene completion field (SCF). To model complex outdoor geometry robustly, it combines orthogonal decomposition with discretized distance learning. A geometry-guided propagation module then converts the SCF into a complete volumetric scene and restricts semantic segmentation to geometrically verified regions. Experiments establish new state of the art: SparseOcc++ improves IoU by 2.3 points and is 3.9x faster than SparseOcc on nuScenes, while achieving a 5.9x speedup over OccFormer on SemanticKITTI.",
+      "authors": [
+        "Pin Tang",
+        "Zhongdao Wang",
+        "Guoqing Wang",
+        "Xiangxuan Ren",
+        "Chao Ma"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-06T07:10:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.04732v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "3D semantic occupancy prediction and voxel representations",
+      "llm_evidence_cn": "3D语义占据预测与体素表示",
+      "llm_evidence": "3D语义占据预测与体素表示",
+      "canonical_evidence": "3D语义占据预测与体素表示",
+      "llm_tldr_en": "Introduces a geometry-aware sparse framework for semantic occupancy prediction, decoupling completion from segmentation.",
+      "llm_tldr_cn": "提出一种几何感知的稀疏框架，用于语义占据预测，将场景补全与语义分割解耦。",
+      "llm_tldr": "提出一种几何感知的稀疏框架，用于语义占据预测，将场景补全与语义分割解耦。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.07168v1",
+      "title": "NoDrift3R: Raymap-Guided Coupling for Drift-Robust Unposed Feed-Forward 3D Reconstruction",
+      "abstract": "Pose-Free Feed-forward 3D Gaussian Splatting (3DGS) has recently emerged as a powerful paradigm for fast scene reconstruction. However, its performance degrades significantly in long image sequences due to cumulative camera pose estimation drift, which propagates errors into geometric modeling and severely limits rendering fidelity. In this work, we revisit the long-sequence bottleneck and identify pose drift as the primary factor restricting reconstruction quality. Furthermore, while SfM-based pseudo ground-truth poses introduce sensor noise, purely rendering-based supervision often leads to optimization instability and local minima due to the entangled optimization of geometry and pose. To address the challenges, we propose a synergistic pose-free framework that explicitly couples geometry and appearance via a Raymap-Guided Coupling Module (RGC). Concretely, we anchor Gaussian centers to raymap-induced geometry and jointly optimize RGB reconstruction, raymap consistency, and camera regularization under a unified objective, yielding a bidirectional feedback loop: stronger geometry improves rendering, and appearance supervision in turn refines geometry and pose. To further stabilize learning across wide temporal ranges, we introduce a Dual-Frequency Viewpoint Scheduling strategy that combines easy-to-hard interval expansion with replay of short-interval pairs. Extensive experiments across in-domain and cross-domain datasets show consistent gains in both rendering and pose estimation, with notably improved robustness on long sequences. Ablation studies validate our central insight: explicitly designed geometry-appearance synergy is the key to scalable and drift-robust pose-free feed-forward 3D reconstruction.",
+      "authors": [
+        "Xiangyu Sun",
+        "Liu Liu",
+        "Seungkwon Yang",
+        "Jingbing Han",
+        "Seungtae Nam",
+        "Zhizhong Su",
+        "Eunbyung Park"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-08T09:02:18+00:00",
+      "link": "https://arxiv.org/pdf/2607.07168v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "fast scene reconstruction using 3D Gaussian Splatting",
+      "llm_evidence_cn": "使用 3D 高斯泼溅进行快速场景重建",
+      "llm_evidence": "使用 3D 高斯泼溅进行快速场景重建",
+      "canonical_evidence": "使用 3D 高斯泼溅进行快速场景重建",
+      "llm_tldr_en": "Addresses pose drift in feed-forward 3D Gaussian Splatting for robust and fast scene reconstruction.",
+      "llm_tldr_cn": "解决前馈 3D 高斯泼溅中的位姿漂移问题，实现稳健快速的场景重建。",
+      "llm_tldr": "解决前馈 3D 高斯泼溅中的位姿漂移问题，实现稳健快速的场景重建。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
