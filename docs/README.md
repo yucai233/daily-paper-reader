@@ -6,44 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-11
-- 运行时间：2026-07-11 20:55:55 UTC
+- 最新运行日期：2026-07-12
+- 运行时间：2026-07-12 20:59:31 UTC
 - 运行状态：成功
-- 本次总论文数：7
+- 本次总论文数：2
 - 精读区：0
-- 速读区：7
+- 速读区：2
 
 ### 今日简报（AI）
-- 今日共生成 7 篇推荐（精读 0 篇，速读 7 篇）
-- 速读：《Sparse-View Surface Reconstruction using Gaussian Splatting through High-Confidence Depth Propagation with Normal Priors》（7.0/10）, 《MACRO: Training-free Multi-plane Attention for Closeup Render Optimization》（7.0/10）, 《GUSH3R: Everyone Everywhere All at Once as Gaussians》（7.0/10）
-- 这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。
-- 详情：[/202607/11/README](/202607/11/README)
+探索视频生成模型的光照感知潜力与 MoE 驱动的 3D 空间推理新范式。
+重点关注视频模型作为“原生光照估计器”的独特能力，以及几何感知混合专家模型在稀疏视图 3D 重建中的性能提升。
+建议关注生成式 AI 在物理环境理解上的跨界应用，并尝试将 MoE 架构引入复杂的 3D 视觉推理任务。
+- 详情：[/202607/12/README](/202607/12/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Sparse-View Surface Reconstruction using Gaussian Splatting through High-Confidence Depth Propagation with Normal Priors](/202607/11/2607.03765v1-sparse-view-surface-reconstruction-using-gaussian-splatting-through-high-confidence-depth-propagation-with-normal-priors)  
-   标签：评分：7.0/10、query:q1
-   evidence：基于3D高斯泼溅的表面重建
-2. [MACRO: Training-free Multi-plane Attention for Closeup Render Optimization](/202607/11/2607.03875v1-macro-training-free-multi-plane-attention-for-closeup-render-optimization)  
-   标签：评分：7.0/10、query:q7
-   evidence：优化3D高斯泼溅的神经渲染质量
-3. [GUSH3R: Everyone Everywhere All at Once as Gaussians](/202607/11/2607.05243v1-gush3r-everyone-everywhere-all-at-once-as-gaussians)  
-   标签：评分：7.0/10、query:q1
-   evidence：具有逼真渲染效果的动态人景重建
-4. [SAF3R: Dynamic Sparse Attention for Feed-Forward 3D Reconstruction Transformers](/202607/11/2607.03612v1-saf3r-dynamic-sparse-attention-for-feed-forward-3d-reconstruction-transformers)  
-   标签：评分：6.0/10、query:q7
-   evidence：加速前馈 3D 重建 Transformer
-5. [Semantic-Guided Progressive Object Removal with Gaussian Splatting](/202607/11/2607.04144v1-semantic-guided-progressive-object-removal-with-gaussian-splatting)  
+1. [Video Generation Models Are Inherent Lighting Estimators](/202607/12/2607.04674v1-video-generation-models-are-inherent-lighting-estimators)  
+   标签：评分：6.0/10、query:profile-1
+   evidence：用于逼真渲染的物理真实反射和光照估计
+2. [SpaR3D-MoE: Adaptive 3D Spatial Reasoning from Sparse Views Meets Geometry-Inductive Mixture-of-Experts](/202607/12/2607.06620v1-spar3d-moe-adaptive-3d-spatial-reasoning-from-sparse-views-meets-geometry-inductive-mixture-of-experts)  
    标签：评分：6.0/10、query:q1
-   evidence：使用高斯泼溅进行3D物体移除
-6. [SparseOcc++: Geometry-Aware Sparse Latent Representation for Semantic Occupancy Prediction](/202607/11/2607.04732v1-sparseocc-geometry-aware-sparse-latent-representation-for-semantic-occupancy-prediction)  
-   标签：评分：6.0/10、query:q1
-   evidence：3D语义占据预测与体素表示
-7. [NoDrift3R: Raymap-Guided Coupling for Drift-Robust Unposed Feed-Forward 3D Reconstruction](/202607/11/2607.07168v1-nodrift3r-raymap-guided-coupling-for-drift-robust-unposed-feed-forward-3d-reconstruction)  
-   标签：评分：6.0/10、query:q7
-   evidence：使用 3D 高斯泼溅进行快速场景重建
+   evidence：用于3D空间推理的自适应时空流形采样
 
 
 <div class="dpr-home-promo-card">

@@ -1,0 +1,37 @@
+{
+  "label": "2026-07-12",
+  "date": "2026-07-12",
+  "generated_at": "2026-07-12T20:59:39",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/12/2607.04674v1-video-generation-models-are-inherent-lighting-estimators",
+      "section": "quick",
+      "title_en": "Video Generation Models Are Inherent Lighting Estimators",
+      "authors": "Ziqi Cai, Shuchen Weng, Kaiqi Liu, Zifeng Wang, Zhiquan Zhang, Minggui Teng, Han Jiang, Boxin Shi",
+      "date": "2026-07-06",
+      "pdf": "https://arxiv.org/pdf/2607.04674v1",
+      "score": "6.0",
+      "evidence": "用于逼真渲染的物理真实反射和光照估计",
+      "tldr": "本研究提出V-LITE框架，旨在解决从单段视频中恢复动态环境贴图的难题。研究者发现视频生成模型内部蕴含丰富的物理光影知识，因此将其转化为引导式视频修复任务，通过在视频中插入合成铬球来诱导模型生成合理的反射。为处理HDR数据，设计了HDR感知VAE并采用LoRA微调策略。该方法利用混合HDR数据集训练，成功实现了时间连贯的高质量光照估计，证明了视频扩散模型在理解物理场景光照方面的巨大潜力。",
+      "tags": "query:profile-1",
+      "abstract_en": "Recovering dynamic environment maps from a single in-the-wild video is crucial for photorealistic rendering, yet remains a challenge. Recent video generation models can produce photorealistic scenes with complex lighting, possessing an inherent understanding of lighting. In this paper, we introduce V-LITE (Video generation models are inherent lighting estimators), a framework that unlocks this internal knowledge by reframing lighting estimation as a guided video inpainting task. Inspired by VFX industry practices, we insert a synthetic chrome ball into the scene to compel the model to generate physically plausible reflections from the surrounding spatio-temporal context. To bridge the gap from LDR-native models to the HDR domain, we design an HDR-aware VAE and employ an efficient LoRA-based fine-tuning strategy. We then construct a mixed dataset comprising high-fidelity HDR images to provide realistic HDR priors, and in-the-wild HDR videos to provide dynamic spatio-temporal context. Extensive experiments demonstrate that V-LITE produces temporally coherent HDR environment maps, revealing that modern video diffusion models are not merely synthesizers but also powerful, inherently capable estimators of physical scene lighting.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/12/2607.06620v1-spar3d-moe-adaptive-3d-spatial-reasoning-from-sparse-views-meets-geometry-inductive-mixture-of-experts",
+      "section": "quick",
+      "title_en": "SpaR3D-MoE: Adaptive 3D Spatial Reasoning from Sparse Views Meets Geometry-Inductive Mixture-of-Experts",
+      "authors": "Haida Feng, Hao Wei, Haolin Wang, Shiwei Li, Chade Li, Yihong Wu",
+      "date": "2026-07-07",
+      "pdf": "https://arxiv.org/pdf/2607.06620v1",
+      "score": "6.0",
+      "evidence": "用于3D空间推理的自适应时空流形采样",
+      "tldr": "SpaR3D-MoE是一个端到端框架，旨在通过稀疏RGB输入提升多模态大语言模型的3D空间推理能力。它通过自适应时空流形采样构建几何感知图以提取关键帧，并引入由指令-位姿感知路由驱动的几何归纳混合专家（MoE）架构，解决了传统模型在处理3D空间任务时的序列冗余和模态竞争问题，在多个基准测试中达到SOTA性能。",
+      "tags": "query:q1",
+      "abstract_en": "Recent Multimodal Large Language Models (MLLMs) struggle to bridge the representational gap between 2D semantic understanding and 3D spatial geometry. Existing 3D-aware models either rely on costly 3D-specific data or utilize RGB-only inputs with heuristic sampling and monolithic, shallow fusion, which respectively disrupt essential spatiotemporal connectivity and induce modality contention across diverse spatial tasks. To overcome these bottlenecks, we introduce SpaR3D-MoE, an end-to-end framework that enables adaptive spatial reasoning by equipping MLLMs with geometry-aware capabilities from only sparse RGB inputs. First, we propose an adaptive spatiotemporal manifold sampling mechanism that constructs a geometry-aware spatiotemporal graph to extract informative keyframes, effectively mitigating sequence redundancy while preserving the scene's topological connectivity. Second, we introduce the heterogeneous geometry-inductive Mixture-of-Experts driven by an instruction-pose aware router, which adaptively routes multimodal tokens to specialized experts, resolving the cross-modal contention inherent in monolithic fusion. Extensive experiments on VSI-Bench, ScanQA, and SQA3D demonstrate that our method achieves state-of-the-art performance. Notably, SpaR3D-MoE achieves the highest average score of 63.5 on VSI-Bench, outperforming the strongest baseline by 7.8 absolute points, alongside relative improvements of 35.4% and 51.4% in Route Plan and Relative Direction tasks, respectively.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
