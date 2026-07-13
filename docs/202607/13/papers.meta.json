@@ -1,0 +1,37 @@
+{
+  "label": "2026-07-13",
+  "date": "2026-07-13",
+  "generated_at": "2026-07-13T21:39:10",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/13/2607.08808v1-stereosplat-feed-forward-stereo-gaussian-splatting-with-diffusion-assisted-progressive-inference",
+      "section": "quick",
+      "title_en": "StereoSplat+: Feed-Forward Stereo Gaussian Splatting with Diffusion-Assisted Progressive Inference",
+      "authors": "Zihua Liu, Masatoshi Okutomi",
+      "date": "2026-07-09",
+      "pdf": "https://arxiv.org/pdf/2607.08808v1",
+      "score": "7.0",
+      "evidence": "前馈立体高斯泼溅",
+      "tldr": "针对机器人和AR场景中单次立体视觉重建3D场景的挑战，本文提出StereoSplat+。该框架包含一个能处理变长立体输入的Feed-forward高斯估计器，并引入扩散增强的渐进式推理机制。通过将渲染的视角经扩散模型优化后反馈，显著提升了在遮挡和外插视角下的重建质量与几何精度。",
+      "tags": "query:q1",
+      "abstract_en": "Recent advances in 3D Gaussian Splatting (3DGS) have enabled high-quality, render-ready scene representations for novel-view synthesis. However, most existing 3DGS pipelines rely on multi-view observations (or non-causal access to future frames) to achieve sufficient coverage, which is often unavailable in on-device robotics and AR settings where sensing is restricted to a single stereo rig. Recovering a high-quality 3DGS scene from one stereo observation, therefore, remains challenging due to occlusions, limited field of view, and missing geometry. We present StereoSplat+, a diffusion-enhanced feed-forward framework that enables causal reconstruction from a single stereo pair. Our method builds on two key components. First, we propose StereoSplat, an input-invariant feed-forward 3D Gaussian estimator that takes a variable number of posed stereo pairs as input and predicts high-quality 3D Gaussians. StereoSplat fuses complementary geometry cues via a cost-volume branch and a triplane-based 3D volume branch and leverages continuous pose encoding to generalize across view counts and camera configurations. Second, since multiple posed stereo pairs are typically unavailable at inference time, we introduce a diffusion-enhanced one-shot progressive inference scheme called StereoSplat+: starting from one stereo pair, we render novel stereo views from the predicted 3DGS, refine them with a one-step diffusion enhancer, and feed them back as additional inputs to update the 3DGS. Experiments on the KITTI-360 dataset show that StereoSplat+ improves novel-view rendering quality and geometry accuracy, especially in occluded regions and under strong view extrapolation, outperforming recent feed-forward 3DGS baselines.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/13/2607.09260v1-anythingreality-robust-online-gaussian-splatting-slam-for-open-vocabulary-vr-scene-exploration",
+      "section": "quick",
+      "title_en": "AnythingReality: Robust Online Gaussian Splatting SLAM for Open-Vocabulary VR Scene Exploration",
+      "authors": "Timofei Kozlov, Dmitrii Maliukov, Andrey Marchenko, Miguel Altamirano Cabrera, Dzmitry Tsetserukou",
+      "date": "2026-07-10",
+      "pdf": "https://arxiv.org/pdf/2607.09260v1",
+      "score": "7.0",
+      "evidence": "在线 3D 高斯泼溅架构",
+      "tldr": "本研究提出AnythingReality，一个集成了鲁棒在线3D高斯泼溅（3DGS）、实时VR探索和语音驱动视觉语言模型（VLM）交互的系统。该系统结合ORB-SLAM3位姿估计与在线高斯重建，解决了噪声数据下的场景建模难题，支持沉浸式VR体验与开放词汇语义交互，在图像质量和运行效率上均优于现有SOTA方法。",
+      "tags": "query:q1",
+      "abstract_en": "We present a novel integrated architecture for robust online 3D Gaussian splatting, real-time VR exploration, and speech-driven Vision-Language-Model interaction. Unlike methods assuming clean depth or external poses, our system combines ORB-SLAM3-based pose estimation with online Gaussian reconstruction for noisy real-world data. A VR pipeline enables immersive exploration of incremental reconstructions; a semantic module transcribes voice commands, generates scene descriptions, and records points of interest. Against state-of-the-art online Gaussian splatting methods, we improve image quality on our dataset (+14.5% PSNR, +8.6% SSIM, -14.3% LPIPS) and TUM-RGBD (+11.7% PSNR, +7.8% SSIM, -21.6% LPIPS), with comparable or superior frame rates via quality-speed configurations. We achieve an 88% VLM object-recognition rate.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
