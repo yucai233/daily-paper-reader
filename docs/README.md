@@ -6,29 +6,35 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-13
-- 运行时间：2026-07-13 21:29:01 UTC
+- 最新运行日期：2026-07-14
+- 运行时间：2026-07-14 21:27:50 UTC
 - 运行状态：成功
-- 本次总论文数：2
-- 精读区：0
-- 速读区：2
+- 本次总论文数：5
+- 精读区：1
+- 速读区：4
 
 ### 今日简报（AI）
-今日聚焦 3D 高斯泼溅（GS）在立体重建与 VR 实时导航领域的最新进展。
-扩散模型辅助的渐进式推理显著提升了重建精度，而开放词汇 SLAM 则为 VR 场景探索带来了更强的语义理解力。
-建议关注 GS 技术如何通过融合生成式 AI 与语义感知，加速构建高保真的可交互虚拟世界。
-- 详情：[/202607/13/README](/202607/13/README)
+今日聚焦 3D 粒子散射的谱域深度学习突破，并同步探索高保真场景重建与通用 3D
+- 详情：[/202607/14/README](/202607/14/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [Spectral-Domain Deep Learning of Intrinsic Scattering Operators for Arbitrarily Shaped Compact 3D Particles](/202607/14/2607.10570v1-spectral-domain-deep-learning-of-intrinsic-scattering-operators-for-arbitrarily-shaped-compact-3d-particles)  
+   标签：评分：8.0/10、query:q4
+   evidence：3D粒子的神经散射模型
 
 ### 速读区论文标签
-1. [StereoSplat+: Feed-Forward Stereo Gaussian Splatting with Diffusion-Assisted Progressive Inference](/202607/13/2607.08808v1-stereosplat-feed-forward-stereo-gaussian-splatting-with-diffusion-assisted-progressive-inference)  
+1. [Incremental Online Scene Reconstruction by 3D Gaussian Triangulation](/202607/14/2607.10690v1-incremental-online-scene-reconstruction-by-3d-gaussian-triangulation)  
    标签：评分：7.0/10、query:q1
-   evidence：前馈立体高斯泼溅
-2. [AnythingReality: Robust Online Gaussian Splatting SLAM for Open-Vocabulary VR Scene Exploration](/202607/13/2607.09260v1-anythingreality-robust-online-gaussian-splatting-slam-for-open-vocabulary-vr-scene-exploration)  
+   evidence：用于高质量渲染的3D高斯泼溅
+2. [MAC-Splat: Multi-Attribute Consistency for High-Fidelity Sparse-View Reconstruction](/202607/14/2607.10792v1-mac-splat-multi-attribute-consistency-for-high-fidelity-sparse-view-reconstruction)  
    标签：评分：7.0/10、query:q1
-   evidence：在线 3D 高斯泼溅架构
+   evidence：可泛化的神经渲染与3D高斯泼溅
+3. [ABot-3DWorld 0: A Universal World Model to Explore Any 3D Space](/202607/14/2607.11673v1-abot-3dworld-0-a-universal-world-model-to-explore-any-3d-space)  
+   标签：评分：7.0/10、query:q1
+   evidence：从视频进行3D高斯泼溅场景重建
+4. [PanoWorld: Real-World Panoramic Generation](/202607/14/2607.09661v1-panoworld-real-world-panoramic-generation)  
+   标签：评分：6.0/10、query:q1
+   evidence：稠密全景射线调节与隐式几何变换
 
 
 <div class="dpr-home-promo-card">

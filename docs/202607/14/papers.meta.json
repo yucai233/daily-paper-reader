@@ -1,0 +1,79 @@
+{
+  "label": "2026-07-14",
+  "date": "2026-07-14",
+  "generated_at": "2026-07-14T21:28:10",
+  "count": 5,
+  "papers": [
+    {
+      "paper_id": "202607/14/2607.10570v1-spectral-domain-deep-learning-of-intrinsic-scattering-operators-for-arbitrarily-shaped-compact-3d-particles",
+      "section": "deep",
+      "title_en": "Spectral-Domain Deep Learning of Intrinsic Scattering Operators for Arbitrarily Shaped Compact 3D Particles",
+      "authors": "Daize Li, Jiafu Shen, Yifei Liu, Bonan Zhang, Heping Xie",
+      "date": "2026-07-12",
+      "pdf": "https://arxiv.org/pdf/2607.10570v1",
+      "score": "8.0",
+      "evidence": "3D粒子的神经散射模型",
+      "tldr": "针对任意形状3D颗粒的光散射预测难题，本文提出一种双谱域深度学习模型。该模型利用球谐系数压缩几何形貌，并以T矩阵表征散射算子，通过Transformer架构实现从形貌谱到散射算子的直接映射。该方法不仅大幅提升了计算效率，还能处理复杂的角度和偏振依赖，在合成形状和自然沙粒上展现了极强的泛化能力。",
+      "tags": "query:q4",
+      "abstract_en": "Rapid prediction of optical scattering from arbitrarily shaped three-dimensional particles is important for particle optics and photonic characterization, but remains challenging because of the large variability of complex morphologies and the strong angular dependence of their scattering responses. To address both issues, a dual spectral-domain neural scattering model is introduced in which morphology and scattering are represented in physically ordered bases: particle geometry is compressed into only 256 spherical-harmonic coefficients, and the optical response is encoded by the complex T-matrix in a spherical-vector-wave basis. The morphology spectrum replaces high-dimensional Euclidean geometry representations, such as voxel grids, point clouds, or meshes, with a compact ordered descriptor, while the T-matrix represents a geometry-determined scattering operator that can be queried for different incidence directions, polarizations, and observation angles. A spectral-token Transformer trained on 50{,}000 irregular particles at 1064~nm maps the morphology spectrum directly to the T-matrix. The predicted operators recover modal structure and reproduce full-angle differential scattering maps and incidence-angle scans. Generalization to out-of-distribution synthetic shapes and natural sand-particle morphologies shows that the dual spectral architecture learns an intrinsic relation from the geometry spectrum to multipolar scattering. This establishes spectral-domain operator learning as a compact route for reusable, angle- and polarization-resolved optical scattering prediction of complex 3D particles.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/14/2607.10690v1-incremental-online-scene-reconstruction-by-3d-gaussian-triangulation",
+      "section": "quick",
+      "title_en": "Incremental Online Scene Reconstruction by 3D Gaussian Triangulation",
+      "authors": "Yanjin Zhu, Shaofan Liu, Jianke Zhu",
+      "date": "2026-07-12",
+      "pdf": "https://arxiv.org/pdf/2607.10690v1",
+      "score": "7.0",
+      "evidence": "用于高质量渲染的3D高斯泼溅",
+      "tldr": "本研究针对增量式场景重建中3D高斯泼溅（3DGS）难以直接提取网格的问题，提出了一种基于3D高斯三角剖分的在线重建框架。该方法通过直接对稠密几何高斯表示进行三角化，实现了高保真显式网格的实时更新。核心贡献包括直接网格化算法、确保精度的平面拉伸约束，以及通过动态冻结历史区域降低长序列处理开销。该框架在保持高质量渲染的同时，显著提升了重建效率与精度。",
+      "tags": "query:q1",
+      "abstract_en": "Incremental scene reconstruction is essential for real-world applications. Although 3D Gaussian Splatting shows strong potential, most existing approaches require offline conversion of the optimized Gaussians into an intermediate implicit field for explicit mesh extraction, which hinders seamless integration with downstream tasks. To address this limitation, we propose a novel online framework that incrementally reconstructs and updates high-fidelity explicit meshes by directly triangulating a dense geometric Gaussian representation, which supports both high-quality rendering and incremental surface reconstruction. Moreover, we present a direct meshing algorithm that efficiently extracts and updates the mesh from the Gaussian set. To ensure mesh accuracy, we enforce a plane-based pulling constraint that dynamically aligns 3D Gaussian primitives to the approximated local surface. Furthermore, our framework significantly reduces memory and computational overhead during long-sequence processing by dynamically freezing fully optimized historical regions. Experiments on public datasets demonstrate that our method outperforms conventional Gaussian-based methods on both rendering quality and reconstruction accuracy.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/14/2607.10792v1-mac-splat-multi-attribute-consistency-for-high-fidelity-sparse-view-reconstruction",
+      "section": "quick",
+      "title_en": "MAC-Splat: Multi-Attribute Consistency for High-Fidelity Sparse-View Reconstruction",
+      "authors": "Jinqian Yang, Yichen Wu, Wanhua Li, Haokun Lin, Renzhen Wang, Xiangchu Feng, Xixi Jia",
+      "date": "2026-07-12",
+      "pdf": "https://arxiv.org/pdf/2607.10792v1",
+      "score": "7.0",
+      "evidence": "可泛化的神经渲染与3D高斯泼溅",
+      "tldr": "针对稀疏视图下3D场景重建存在的几何伪影和深度歧义问题，本文提出了MAC-Splat框架。该方法利用MASt3R和DINOv3提取语义感知的2D对应关系作为几何锚点，并引入多属性一致性（MAC）损失，在统一世界坐标系下对高斯点的位置、形状和外观进行联合正则化。实验证明，该方法在ScanNet++数据集上显著提升了重建质量，PSNR相比Splatt3R提升超过4.5 dB，有效解决了病态的稀疏视图重建难题。",
+      "tags": "query:q1",
+      "abstract_en": "Reconstructing high-fidelity 3D scenes from sparse-views remains a central problem in generalizable neural rendering. Existing generalizable 3D Gaussian Splatting (3DGS) methods often exhibit geometric artifacts in sparse-view settings, since supervision based solely on 2D photometric losses cannot resolve depth and correspondence ambiguities. To address this issue, we propose MAC-Splat, a training framework built around direct 3D consistency supervision. MAC-Splat builds on the MASt3R geometric backbone and a frozen DINOv3 encoder to obtain semantically informed 2D correspondences, which serve as geometric anchors for 3D supervision. Using these anchors, we define the Multi-Attribute Consistency (MAC) loss. This objective jointly regularizes the 3D attributes of matched Gaussians, including their position, shape, and appearance, by enforcing agreement in a common world coordinate frame. The formulation is robust to outliers and respects the geometry of covariance matrices, which leads to stable training under sparse-view conditions. Experiments on ScanNet++ show that MAC-Splat outperforms strong baselines, with particularly large gains under different overlap regimes. In particular, it improves average PSNR over Splatt3R by more than 4.5 dB, reduces LPIPS, and maintains performance as the camera pose gap increases. These results indicate that a direct, multi-attribute 3D consistency objective, when combined with high-quality correspondences, is effective for addressing the ill-posed sparse-view reconstruction problem.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/14/2607.11673v1-abot-3dworld-0-a-universal-world-model-to-explore-any-3d-space",
+      "section": "quick",
+      "title_en": "ABot-3DWorld 0: A Universal World Model to Explore Any 3D Space",
+      "authors": "Mingchao Sun, Luyang Tang, Yu Liu, Xu Yan, Zhan Li, Yunwei Zhang, Fei Yu, Zengye Ge, Yumin Liu, Jiacheng Zhang, Yongchang Zhang, Jiawei Zhang, Zhicheng Liu, Zhongxu Sun, Tianjian Ouyang, Wenzheng Chen, Shixing Yang, Nianfei Fan, Guodong Sun, Huan Li, Zheng Zhou, Yongze Li, Yingliang Peng, Mengmeng Du, Yuan Liu, Haozhe Shi, Chunnuo Gong, Chengzhen Yu, Chunxue Jia, Yang Liu, Shiying Zeng, Junnan Lai, Hang Zhang, Ning Guo, Baoquan Chen, Mu Xu, Hongyu Pan",
+      "date": "2026-07-13",
+      "pdf": "https://arxiv.org/pdf/2607.11673v1",
+      "score": "7.0",
+      "evidence": "从视频进行3D高斯泼溅场景重建",
+      "tldr": "ABot-3DWorld 0 是一款通用的多模态 3D 世界模型，能够将文本、图像和视频转化为可探索的高保真 3D 场景。该模型引入了空间生成原语（SGP），结合全景图与点云高效描述空间，并通过 3D 一致性全景视频生成与 3DGS 重建技术，实现了从几何恢复到创意生成的全流程覆盖。它降低了 3D 内容创作门槛，支持地图原生空间探索，在开源方法中达到了领先水平。",
+      "tags": "query:q1",
+      "abstract_en": "We present ABot-3DWorld 0, a universal multimodal 3D world model that turns text, image, and video inputs into high-fidelity, explorable 3D worlds. At the heart of our framework is a unified Spatial Generative Primitive (SGP), a compact tuple of a high-quality panorama and a spatial point cloud that delivers an efficient description of any 3D space. Multimodal inputs are first lifted into this primitive; a 3D-consistent panoramic video generator then explores the primitive along a planned trajectory; finally, our panoramic video reconstruction engine converts the generated video into a clean, photorealistic 3D Gaussian Splatting (3DGS) world. This pipeline covers two regimes: rich inputs (multi-view sets, casual video) are lifted into the SGP through a geometry-rigorous recovery that mirrors the observed scene, while a single image or sentence is completed generatively into a creative world. The result is one low-barrier engine for general 3D content creation that further anchors generated worlds to geographic points of interest, enabling map-native spatial exploration at consumer scale. Experiments show that ABot-3DWorld 0 sets the state of the art among open-source methods and demonstrates stronger scene fidelity than Marble under rich multimodal inputs.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/14/2607.09661v1-panoworld-real-world-panoramic-generation",
+      "section": "quick",
+      "title_en": "PanoWorld: Real-World Panoramic Generation",
+      "authors": "Haoyuan Li, Dizhe Zhang, Yuemei Zhou, Xiangkai Zhang, Haoran Feng, Xiaofan Lin, Wenjie Jiang, Bo Du, Ming-Hsuan Yang, Lu Qi",
+      "date": "2026-07-10",
+      "pdf": "https://arxiv.org/pdf/2607.09661v1",
+      "score": "6.0",
+      "evidence": "稠密全景射线调节与隐式几何变换",
+      "tldr": "PanoWorld 旨在解决全景世界模型中的长程记忆挑战。通过利用全景表示的旋转等变性，将相机轨迹简化为平移，并提出稠密全景射线调节（DPRC）和几何感知记忆增强（GMA）技术。研究还构建了包含真实无人机视频和高质量模拟片段的大规模数据集 World360。实验证明 PanoWorld 在物理一致性和大尺度空间变化下表现优异，显著超越现有方法。",
+      "tags": "query:q1",
+      "abstract_en": "In this work, we aim to address the challenge of long-range memory in panoramic world models by exploiting the rotation-equivariant property of omnidirectional representations, where rotation can be treated as an implicit geometric transformation.Building on this insight, we propose PanoWorld, which simplifies camera trajectories into translations via fixed headings for both current-action modeling and long-range memory through Dense Panoramic Ray-Conditioning (DPRC) and Geometry-aware Memory Augmentation (GMA).Then, a three-stage training pipeline is introduced to progressively optimize each component. To better evaluate physical consistency under large-scale spatial variations and diverse illumination conditions, where existing datasets are relatively stable, we construct World360, a large-scale dataset consisting of both real-world video clips collected via panoramic unmanned aerial vehicles and high-quality simulated clips generated by AirSim360.Extensive experiments on World360 demonstrate the effectiveness of PanoWorld, outperforming alternative methods by a large margin.Our models, training code, and dataset will be publicly available. More information can be found on our project page: https://lihaoy-ux.github.io/panoworld-page/.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

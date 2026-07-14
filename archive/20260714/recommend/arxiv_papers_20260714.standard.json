@@ -1,0 +1,244 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-14T21:26:40.210630+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2607.10570v1",
+      "title": "Spectral-Domain Deep Learning of Intrinsic Scattering Operators for Arbitrarily Shaped Compact 3D Particles",
+      "abstract": "Rapid prediction of optical scattering from arbitrarily shaped three-dimensional particles is important for particle optics and photonic characterization, but remains challenging because of the large variability of complex morphologies and the strong angular dependence of their scattering responses. To address both issues, a dual spectral-domain neural scattering model is introduced in which morphology and scattering are represented in physically ordered bases: particle geometry is compressed into only 256 spherical-harmonic coefficients, and the optical response is encoded by the complex T-matrix in a spherical-vector-wave basis. The morphology spectrum replaces high-dimensional Euclidean geometry representations, such as voxel grids, point clouds, or meshes, with a compact ordered descriptor, while the T-matrix represents a geometry-determined scattering operator that can be queried for different incidence directions, polarizations, and observation angles. A spectral-token Transformer trained on 50{,}000 irregular particles at 1064~nm maps the morphology spectrum directly to the T-matrix. The predicted operators recover modal structure and reproduce full-angle differential scattering maps and incidence-angle scans. Generalization to out-of-distribution synthetic shapes and natural sand-particle morphologies shows that the dual spectral architecture learns an intrinsic relation from the geometry spectrum to multipolar scattering. This establishes spectral-domain operator learning as a compact route for reusable, angle- and polarization-resolved optical scattering prediction of complex 3D particles.",
+      "authors": [
+        "Daize Li",
+        "Jiafu Shen",
+        "Yifei Liu",
+        "Bonan Zhang",
+        "Heping Xie"
+      ],
+      "primary_category": "cond-mat.mes-hall",
+      "categories": [
+        "cond-mat.mes-hall"
+      ],
+      "published": "2026-07-12T04:52:50+00:00",
+      "link": "https://arxiv.org/pdf/2607.10570v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "neural scattering model for 3D particles",
+      "llm_evidence_cn": "3D粒子的神经散射模型",
+      "llm_evidence": "3D粒子的神经散射模型",
+      "canonical_evidence": "3D粒子的神经散射模型",
+      "llm_tldr_en": "A dual spectral-domain neural model for predicting optical scattering from 3D particles.",
+      "llm_tldr_cn": "一种用于预测3D粒子光学散射的双谱域神经模型。",
+      "llm_tldr": "一种用于预测3D粒子光学散射的双谱域神经模型。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "deep learning for multiple scattering in volumes",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.10690v1",
+      "title": "Incremental Online Scene Reconstruction by 3D Gaussian Triangulation",
+      "abstract": "Incremental scene reconstruction is essential for real-world applications. Although 3D Gaussian Splatting shows strong potential, most existing approaches require offline conversion of the optimized Gaussians into an intermediate implicit field for explicit mesh extraction, which hinders seamless integration with downstream tasks. To address this limitation, we propose a novel online framework that incrementally reconstructs and updates high-fidelity explicit meshes by directly triangulating a dense geometric Gaussian representation, which supports both high-quality rendering and incremental surface reconstruction. Moreover, we present a direct meshing algorithm that efficiently extracts and updates the mesh from the Gaussian set. To ensure mesh accuracy, we enforce a plane-based pulling constraint that dynamically aligns 3D Gaussian primitives to the approximated local surface. Furthermore, our framework significantly reduces memory and computational overhead during long-sequence processing by dynamically freezing fully optimized historical regions. Experiments on public datasets demonstrate that our method outperforms conventional Gaussian-based methods on both rendering quality and reconstruction accuracy.",
+      "authors": [
+        "Yanjin Zhu",
+        "Shaofan Liu",
+        "Jianke Zhu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-12T10:22:18+00:00",
+      "link": "https://arxiv.org/pdf/2607.10690v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting for high-quality rendering",
+      "llm_evidence_cn": "用于高质量渲染的3D高斯泼溅",
+      "llm_evidence": "用于高质量渲染的3D高斯泼溅",
+      "canonical_evidence": "用于高质量渲染的3D高斯泼溅",
+      "llm_tldr_en": "An online framework for incremental scene reconstruction and high-quality rendering using 3D Gaussians.",
+      "llm_tldr_cn": "一种使用3D高斯进行增量场景重建和高质量渲染的在线框架。",
+      "llm_tldr": "一种使用3D高斯进行增量场景重建和高质量渲染的在线框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.09661v1",
+      "title": "PanoWorld: Real-World Panoramic Generation",
+      "abstract": "In this work, we aim to address the challenge of long-range memory in panoramic world models by exploiting the rotation-equivariant property of omnidirectional representations, where rotation can be treated as an implicit geometric transformation.Building on this insight, we propose PanoWorld, which simplifies camera trajectories into translations via fixed headings for both current-action modeling and long-range memory through Dense Panoramic Ray-Conditioning (DPRC) and Geometry-aware Memory Augmentation (GMA).Then, a three-stage training pipeline is introduced to progressively optimize each component. To better evaluate physical consistency under large-scale spatial variations and diverse illumination conditions, where existing datasets are relatively stable, we construct World360, a large-scale dataset consisting of both real-world video clips collected via panoramic unmanned aerial vehicles and high-quality simulated clips generated by AirSim360.Extensive experiments on World360 demonstrate the effectiveness of PanoWorld, outperforming alternative methods by a large margin.Our models, training code, and dataset will be publicly available. More information can be found on our project page: https://lihaoy-ux.github.io/panoworld-page/.",
+      "authors": [
+        "Haoyuan Li",
+        "Dizhe Zhang",
+        "Yuemei Zhou",
+        "Xiangkai Zhang",
+        "Haoran Feng",
+        "Xiaofan Lin",
+        "Wenjie Jiang",
+        "Bo Du",
+        "Ming-Hsuan Yang",
+        "Lu Qi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-10T17:59:32+00:00",
+      "link": "https://arxiv.org/pdf/2607.09661v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Dense Panoramic Ray-Conditioning and implicit geometric transformation",
+      "llm_evidence_cn": "稠密全景射线调节与隐式几何变换",
+      "llm_evidence": "稠密全景射线调节与隐式几何变换",
+      "canonical_evidence": "稠密全景射线调节与隐式几何变换",
+      "llm_tldr_en": "PanoWorld uses ray-conditioning and geometry-aware memory for panoramic world modeling.",
+      "llm_tldr_cn": "PanoWorld 利用射线调节和几何感知存储进行全景世界建模。",
+      "llm_tldr": "PanoWorld 利用射线调节和几何感知存储进行全景世界建模。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.10792v1",
+      "title": "MAC-Splat: Multi-Attribute Consistency for High-Fidelity Sparse-View Reconstruction",
+      "abstract": "Reconstructing high-fidelity 3D scenes from sparse-views remains a central problem in generalizable neural rendering. Existing generalizable 3D Gaussian Splatting (3DGS) methods often exhibit geometric artifacts in sparse-view settings, since supervision based solely on 2D photometric losses cannot resolve depth and correspondence ambiguities. To address this issue, we propose MAC-Splat, a training framework built around direct 3D consistency supervision. MAC-Splat builds on the MASt3R geometric backbone and a frozen DINOv3 encoder to obtain semantically informed 2D correspondences, which serve as geometric anchors for 3D supervision. Using these anchors, we define the Multi-Attribute Consistency (MAC) loss. This objective jointly regularizes the 3D attributes of matched Gaussians, including their position, shape, and appearance, by enforcing agreement in a common world coordinate frame. The formulation is robust to outliers and respects the geometry of covariance matrices, which leads to stable training under sparse-view conditions. Experiments on ScanNet++ show that MAC-Splat outperforms strong baselines, with particularly large gains under different overlap regimes. In particular, it improves average PSNR over Splatt3R by more than 4.5 dB, reduces LPIPS, and maintains performance as the camera pose gap increases. These results indicate that a direct, multi-attribute 3D consistency objective, when combined with high-quality correspondences, is effective for addressing the ill-posed sparse-view reconstruction problem.",
+      "authors": [
+        "Jinqian Yang",
+        "Yichen Wu",
+        "Wanhua Li",
+        "Haokun Lin",
+        "Renzhen Wang",
+        "Xiangchu Feng",
+        "Xixi Jia"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-12T14:50:08+00:00",
+      "link": "https://arxiv.org/pdf/2607.10792v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "generalizable neural rendering and 3D Gaussian Splatting",
+      "llm_evidence_cn": "可泛化的神经渲染与3D高斯泼溅",
+      "llm_evidence": "可泛化的神经渲染与3D高斯泼溅",
+      "canonical_evidence": "可泛化的神经渲染与3D高斯泼溅",
+      "llm_tldr_en": "Improves sparse-view neural rendering using 3D consistency supervision and Gaussian Splatting.",
+      "llm_tldr_cn": "利用3D一致性监督和高斯泼溅改进稀疏视图下的神经渲染。",
+      "llm_tldr": "利用3D一致性监督和高斯泼溅改进稀疏视图下的神经渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.11673v1",
+      "title": "ABot-3DWorld 0: A Universal World Model to Explore Any 3D Space",
+      "abstract": "We present ABot-3DWorld 0, a universal multimodal 3D world model that turns text, image, and video inputs into high-fidelity, explorable 3D worlds. At the heart of our framework is a unified Spatial Generative Primitive (SGP), a compact tuple of a high-quality panorama and a spatial point cloud that delivers an efficient description of any 3D space. Multimodal inputs are first lifted into this primitive; a 3D-consistent panoramic video generator then explores the primitive along a planned trajectory; finally, our panoramic video reconstruction engine converts the generated video into a clean, photorealistic 3D Gaussian Splatting (3DGS) world. This pipeline covers two regimes: rich inputs (multi-view sets, casual video) are lifted into the SGP through a geometry-rigorous recovery that mirrors the observed scene, while a single image or sentence is completed generatively into a creative world. The result is one low-barrier engine for general 3D content creation that further anchors generated worlds to geographic points of interest, enabling map-native spatial exploration at consumer scale. Experiments show that ABot-3DWorld 0 sets the state of the art among open-source methods and demonstrates stronger scene fidelity than Marble under rich multimodal inputs.",
+      "authors": [
+        "Mingchao Sun",
+        "Luyang Tang",
+        "Yu Liu",
+        "Xu Yan",
+        "Zhan Li",
+        "Yunwei Zhang",
+        "Fei Yu",
+        "Zengye Ge",
+        "Yumin Liu",
+        "Jiacheng Zhang",
+        "Yongchang Zhang",
+        "Jiawei Zhang",
+        "Zhicheng Liu",
+        "Zhongxu Sun",
+        "Tianjian Ouyang",
+        "Wenzheng Chen",
+        "Shixing Yang",
+        "Nianfei Fan",
+        "Guodong Sun",
+        "Huan Li",
+        "Zheng Zhou",
+        "Yongze Li",
+        "Yingliang Peng",
+        "Mengmeng Du",
+        "Yuan Liu",
+        "Haozhe Shi",
+        "Chunnuo Gong",
+        "Chengzhen Yu",
+        "Chunxue Jia",
+        "Yang Liu",
+        "Shiying Zeng",
+        "Junnan Lai",
+        "Hang Zhang",
+        "Ning Guo",
+        "Baoquan Chen",
+        "Mu Xu",
+        "Hongyu Pan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-13T15:14:48+00:00",
+      "link": "https://arxiv.org/pdf/2607.11673v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting world reconstruction from video",
+      "llm_evidence_cn": "从视频进行3D高斯泼溅场景重建",
+      "llm_evidence": "从视频进行3D高斯泼溅场景重建",
+      "canonical_evidence": "从视频进行3D高斯泼溅场景重建",
+      "llm_tldr_en": "A world model that converts multimodal inputs into photorealistic 3D Gaussian Splatting environments.",
+      "llm_tldr_cn": "一种将多模态输入转换为逼真3D高斯泼溅环境的世界模型。",
+      "llm_tldr": "一种将多模态输入转换为逼真3D高斯泼溅环境的世界模型。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
