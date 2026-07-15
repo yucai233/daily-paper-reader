@@ -1,0 +1,272 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-15T21:07:40.899120+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.10050v1",
+      "title": "SyncSpace: Layout-Conditioned 3D Gaussian Splatting for Space Reskinning in Mixed Reality",
+      "abstract": "We present SyncSpace, a system that achieves both spatial alignment and visual consistency between a generated 3DGS world and physical space. We first scan the space via depth sensing to extract 3D bounding boxes, which we render into a layout-only panorama and feed as a geometric prior to a generative world model, producing a Gaussian splat scene in which objects are re-semantized to fit a target style without per-object control. We then align the generated scene to physical space with a coarse-to-fine registration algorithm, refined manually via pinch gestures when automatic registration does not converge. We demonstrate a hand-tracked engulfment interaction in which the virtual world rises to replace the physical space, and show a single space reskinned into multiple stylistically distinct worlds with its layout preserved.",
+      "authors": [
+        "Qinchuan Zhang",
+        "Weibo Xu",
+        "Yunge Wen"
+      ],
+      "primary_category": "cs.HC",
+      "categories": [
+        "cs.HC"
+      ],
+      "published": "2026-07-11T00:16:02+00:00",
+      "link": "https://arxiv.org/pdf/2607.10050v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "layout-conditioned 3D Gaussian Splatting for neural rendering",
+      "llm_evidence_cn": "基于布局条件的3D高斯泼溅神经渲染",
+      "llm_evidence": "基于布局条件的3D高斯泼溅神经渲染",
+      "canonical_evidence": "基于布局条件的3D高斯泼溅神经渲染",
+      "llm_tldr_en": "Aligns generated 3D Gaussian Splatting scenes with physical spaces for immersive mixed reality reskinning.",
+      "llm_tldr_cn": "将生成的3D高斯泼溅场景与物理空间对齐，用于沉浸式混合现实场景重构。",
+      "llm_tldr": "将生成的3D高斯泼溅场景与物理空间对齐，用于沉浸式混合现实场景重构。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.11673v2",
+      "title": "ABot-3DWorld 0: A Universal World Model to Explore Any 3D Space",
+      "abstract": "We present ABot-3DWorld 0, a universal multimodal 3D world model that turns text, image, and video inputs into high-fidelity, explorable 3D worlds. At the heart of our framework is a unified Spatial Generative Primitive (SGP), a compact tuple of a high-quality panorama and a spatial point cloud that delivers an efficient description of any 3D space. Multimodal inputs are first lifted into this primitive; a 3D-consistent panoramic video generator then explores the primitive along a planned trajectory; finally, our panoramic video reconstruction engine converts the generated video into a clean, photorealistic 3D Gaussian Splatting (3DGS) world. This pipeline covers two regimes: rich inputs (multi-view sets, casual video) are lifted into the SGP through a geometry-rigorous recovery that mirrors the observed scene, while a single image or sentence is completed generatively into a creative world. The result is one low-barrier engine for general 3D content creation that further anchors generated worlds to geographic points of interest, enabling map-native spatial exploration at consumer scale. Experiments show that ABot-3DWorld 0 sets the state of the art among open-source methods and demonstrates stronger scene fidelity than Marble under rich multimodal inputs.",
+      "authors": [
+        "Mingchao Sun",
+        "Luyang Tang",
+        "Yu Liu",
+        "Xu Yan",
+        "Zhan Li",
+        "Yunwei Zhang",
+        "Fei Yu",
+        "Zengye Ge",
+        "Yumin Liu",
+        "Jiacheng Zhang",
+        "Yongchang Zhang",
+        "Jiawei Zhang",
+        "Zhicheng Liu",
+        "Zhongxu Sun",
+        "Tianjian Ouyang",
+        "Wenzheng Chen",
+        "Shixing Yang",
+        "Nianfei Fan",
+        "Guodong Sun",
+        "Huan Li",
+        "Zheng Zhou",
+        "Yongze Li",
+        "Yingliang Peng",
+        "Mengmeng Du",
+        "Yuan Liu",
+        "Haozhe Shi",
+        "Chunnuo Gong",
+        "Chengzhen Yu",
+        "Chunxue Jia",
+        "Yang Liu",
+        "Shiying Zeng",
+        "Junnan Lai",
+        "Hang Zhang",
+        "Ning Guo",
+        "Baoquan Chen",
+        "Mu Xu",
+        "Hongyu Pan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-13T15:14:48+00:00",
+      "link": "https://arxiv.org/pdf/2607.11673v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "3D Gaussian Splatting world reconstruction from video",
+      "llm_evidence_cn": "从视频进行3D高斯泼溅世界重建",
+      "llm_evidence": "从视频进行3D高斯泼溅世界重建",
+      "canonical_evidence": "从视频进行3D高斯泼溅世界重建",
+      "llm_tldr_en": "A universal world model that reconstructs photorealistic 3D Gaussian Splatting environments from multimodal inputs.",
+      "llm_tldr_cn": "一种通用的世界模型，可从多模态输入重建逼真的3D高斯泼溅环境。",
+      "llm_tldr": "一种通用的世界模型，可从多模态输入重建逼真的3D高斯泼溅环境。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.11285v1",
+      "title": "SalientGS: Unified SfM-to-3DGS with Importance-Guided MCMC Gaussian Allocation",
+      "abstract": "Reconstructing 3D scenes from unordered images remains bottlenecked by expensive Structure-from-Motion (SfM) preprocessing and frozen pose interfaces. We present SalientGS, a unified SfM-to-3D Gaussian Splatting (3DGS) pipeline. Its central contribution is importance-guided Markov Chain Monte Carlo (MCMC) Gaussian allocation, which aggregates multi-view residuals into per-Gaussian underfit and redundancy signals. These signals define a smooth importance-weighted sampling distribution that biases both birth and relocation toward underfit regions. This reallocates capacity from well-fit areas without altering the underlying stochastic gradient Langevin dynamics (SGLD). SalientGS achieves end-to-end reconstruction in 15 minutes with state-of-the-art perceptual quality. The supplementary material provides dedicated sections for Per-Scene Qualitative Comparisons and Per-Image Learned Perceptual Image Patch Similarity (LPIPS) Analysis, including failure cases. Code and evaluation scripts are available at https://github.com/Six-Bit-TX/SalientGS.",
+      "authors": [
+        "Tianyu Xiong",
+        "Rui Li",
+        "Suning Ge",
+        "Jiaqi Yang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-13T09:06:49+00:00",
+      "link": "https://arxiv.org/pdf/2607.11285v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting reconstruction pipeline",
+      "llm_evidence_cn": "3D高斯泼溅重建流水线",
+      "llm_evidence": "3D高斯泼溅重建流水线",
+      "canonical_evidence": "3D高斯泼溅重建流水线",
+      "llm_tldr_en": "Presents SalientGS, a unified pipeline for fast 3D scene reconstruction using Gaussian Splatting.",
+      "llm_tldr_cn": "提出SalientGS，一个使用高斯泼溅进行快速3D场景重建的统一流水线。",
+      "llm_tldr": "提出SalientGS，一个使用高斯泼溅进行快速3D场景重建的统一流水线。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.12000v1",
+      "title": "MetaView: Monocular Novel View Synthesis with Scale-Aware Implicit Geometry Priors",
+      "abstract": "Current visual generation models are capable of producing high-quality content, yet they lack a coherent perception of the spatial structure. Existing generative novel view synthesis methods typically introduce explicit geometry priors, which enforce spatial consistency but inherently restrict generalization in large view changes. In contrast, recent interactive generative methods favor implicit scene modeling, offering greater flexibility at the cost of precise camera control and geometry consistency. In this paper, we propose MetaView, a diffusion-based monocular novel view synthesis framework that enables rendering under large view changes from a single image. Our key insight is to combine implicit geometry modeling with minimal yet essential explicit 3D cues: we incorporate implicit geometry priors from a feed-forward geometry perception network to regularize structure without imposing restrictive reconstruction pipelines, while leveraging metric depth to anchor the generation to a metric scale. This design allows MetaView to achieve both geometry consistency and precise controllability. Extensive experiments demonstrate that, under challenging monocular large viewpoint changes, MetaView significantly outperforms existing methods and exhibits superior generalization. Our code is publicly available at https://github.com/KlingAIResearch/MetaView.",
+      "authors": [
+        "Yufei Cai",
+        "Xuesong Niu",
+        "Hao Lu",
+        "Kun Gai",
+        "Kai Wu",
+        "Guosheng Lin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-13T17:51:32+00:00",
+      "link": "https://arxiv.org/pdf/2607.12000v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "implicit geometry modeling for novel view synthesis",
+      "llm_evidence_cn": "用于新视角合成的隐式几何建模",
+      "llm_evidence": "用于新视角合成的隐式几何建模",
+      "canonical_evidence": "用于新视角合成的隐式几何建模",
+      "llm_tldr_en": "A diffusion-based framework for monocular novel view synthesis using implicit geometry priors.",
+      "llm_tldr_cn": "一种利用隐式几何先验进行单目新视角合成的扩散框架。",
+      "llm_tldr": "一种利用隐式几何先验进行单目新视角合成的扩散框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.12656v1",
+      "title": "SpeedyGS: Content-Aware 3D Gaussian Splatting Compression via Two-Stage Optimization",
+      "abstract": "Recent progress in compressing large-scale 3D Gaussian Splatting (3DGS) data has substantially reduced storage footprint, network transmission bandwidth, and memory traffic to GPU caches before rendering. Yet decoding with advanced 3DGS codecs still takes seconds, making them unsuitable for interactive applications. To systematically address this challenge, we propose SpeedyGS, a Content-Aware 3DGS Compressor that separately optimizes the structural formation and statistical coding. First, in structural formation, we jointly optimize adaptive quantization and pruning under a unified rate-distortion objective, where the rate term is replaced by a lightweight rate proxy that estimates entropy coding cost of the next stage, thereby efficiently regulating Gaussian density and precision to yield a compact scene representation. Then, in the statistical coding phase, Gaussian geometry is converted into sparse octree tokens and subsequently undergoes multi-stage coding, while Gaussian attributes are serialized into a 1D token stream for entropy coding via a complexity-controllable local autoregressive model. SpeedyGS achieves a favorable balance among optimization efficiency, compression performance, decoding latency, and rendering speed. Compared to vanilla 3DGS, SpeedyGS achieves up to 160$\\times$ model size reduction with negligible quality degradation across common datasets. Compared to state-of-the-art compression methods, it also offers significantly faster decoding and accelerates optimization by 9$\\times$ on consumer-grade hardware. To further reduce decoding overhead, the statistical coding stage also supports channel-wise, fixed-length coding for Gaussian as a simpler alternative, enabling SpeedyGS to better adapt to the underlying application and reduce decoding latency to nearly zero.",
+      "authors": [
+        "Junteng Zhang",
+        "Tong Chen",
+        "Yuxin Zhao",
+        "Yibo Shi",
+        "Jing Wang",
+        "Zhan Ma"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP"
+      ],
+      "published": "2026-07-14T11:38:08+00:00",
+      "link": "https://arxiv.org/pdf/2607.12656v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting compression and rendering optimization",
+      "llm_evidence_cn": "3D高斯泼溅压缩与渲染优化",
+      "llm_evidence": "3D高斯泼溅压缩与渲染优化",
+      "canonical_evidence": "3D高斯泼溅压缩与渲染优化",
+      "llm_tldr_en": "Proposes SpeedyGS for efficient 3DGS compression and faster decoding for interactive applications.",
+      "llm_tldr_cn": "提出SpeedyGS用于高效3DGS压缩，实现交互式应用的快速解码。",
+      "llm_tldr": "提出SpeedyGS用于高效3DGS压缩，实现交互式应用的快速解码。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.12810v1",
+      "title": "Symmetry-Informed Deep Learning for Electromagnetic Scattering",
+      "abstract": "Deep learning can accelerate the modeling of electromagnetic devices by replacing costly simulations with neural networks trained to map design parameters to scattering parameters. However, data efficiency remains a central bottleneck, as training data is typically generated through expensive numerical simulations. Here we show that symmetry provides a powerful and largely untapped route to overcoming this limitation in electromagnetic scattering problems. Leveraging the equivariance of Maxwell's equations, we obtain general transformation rules that map symmetries of electromagnetic devices to corresponding transformations of their scattering parameters. This enables both systematic data augmentation and the construction of exactly equivariant neural networks. We implement the framework for both discrete and continuous symmetry groups and demonstrate its effectiveness on photonic-crystal slabs and free-form diffraction gratings. Incorporating symmetry improves data efficiency by an order of magnitude compared to standard architectures, while equivariant models additionally enforce physical constraints exactly. Our approach is general and complementary to existing physics-informed strategies, provides a first-principles framework for constructing physically grounded surrogate models, and establishes symmetry as a unifying inductive bias for data-efficient and physically consistent learning in computational electromagnetics and beyond.",
+      "authors": [
+        "Viktor A. Lilja",
+        "Philippe Tassin"
+      ],
+      "primary_category": "physics.optics",
+      "categories": [
+        "physics.optics"
+      ],
+      "published": "2026-07-14T14:22:45+00:00",
+      "link": "https://arxiv.org/pdf/2607.12810v1",
+      "tags": [
+        "keyword:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "deep learning for electromagnetic scattering modeling",
+      "llm_evidence_cn": "深度学习用于电磁散射建模",
+      "llm_evidence": "深度学习用于电磁散射建模",
+      "canonical_evidence": "深度学习用于电磁散射建模",
+      "llm_tldr_en": "Uses symmetry-informed deep learning to accelerate electromagnetic scattering simulations.",
+      "llm_tldr_cn": "利用对称性告知的深度学习加速电磁散射模拟。",
+      "llm_tldr": "利用对称性告知的深度学习加速电磁散射模拟。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "deep learning for multiple scattering in volumes",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

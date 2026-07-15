@@ -1,0 +1,93 @@
+{
+  "label": "2026-07-15",
+  "date": "2026-07-15",
+  "generated_at": "2026-07-15T21:08:21",
+  "count": 6,
+  "papers": [
+    {
+      "paper_id": "202607/15/2607.10050v1-syncspace-layout-conditioned-3d-gaussian-splatting-for-space-reskinning-in-mixed-reality",
+      "section": "quick",
+      "title_en": "SyncSpace: Layout-Conditioned 3D Gaussian Splatting for Space Reskinning in Mixed Reality",
+      "authors": "Qinchuan Zhang, Weibo Xu, Yunge Wen",
+      "date": "2026-07-11",
+      "pdf": "https://arxiv.org/pdf/2607.10050v1",
+      "score": "7.0",
+      "evidence": "基于布局条件的3D高斯泼溅神经渲染",
+      "tldr": "SyncSpace 是一种用于混合现实空间重绘的系统，通过 3D 高斯泼溅（3DGS）技术实现虚拟世界与物理空间的精确对齐。它利用深度感知提取物理布局作为几何先验，引导生成式模型创建符合特定风格且保持空间结构的 3D 场景，并结合粗到精的配准算法与手势交互，实现了物理空间向多样化虚拟风格的无缝转换。",
+      "tags": "query:q1",
+      "abstract_en": "We present SyncSpace, a system that achieves both spatial alignment and visual consistency between a generated 3DGS world and physical space. We first scan the space via depth sensing to extract 3D bounding boxes, which we render into a layout-only panorama and feed as a geometric prior to a generative world model, producing a Gaussian splat scene in which objects are re-semantized to fit a target style without per-object control. We then align the generated scene to physical space with a coarse-to-fine registration algorithm, refined manually via pinch gestures when automatic registration does not converge. We demonstrate a hand-tracked engulfment interaction in which the virtual world rises to replace the physical space, and show a single space reskinned into multiple stylistically distinct worlds with its layout preserved.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/15/2607.11285v1-salientgs-unified-sfm-to-3dgs-with-importance-guided-mcmc-gaussian-allocation",
+      "section": "quick",
+      "title_en": "SalientGS: Unified SfM-to-3DGS with Importance-Guided MCMC Gaussian Allocation",
+      "authors": "Tianyu Xiong, Rui Li, Suning Ge, Jiaqi Yang",
+      "date": "2026-07-13",
+      "pdf": "https://arxiv.org/pdf/2607.11285v1",
+      "score": "7.0",
+      "evidence": "3D高斯泼溅重建流水线",
+      "tldr": "本研究针对无序图像3D重建中SfM预处理耗时且位姿固定的瓶颈，提出了SalientGS，一个统一的SfM到3DGS流水线。其核心贡献是重要性引导的MCMC高斯分配机制，通过聚合多视图残差生成欠拟合和冗余信号，引导高斯点的生成与重定位，从而在不改变随机梯度朗之万动力学的情况下优化资源分配。该方法在15分钟内实现端到端重建，并达到最先进的感知质量。",
+      "tags": "query:q1",
+      "abstract_en": "Reconstructing 3D scenes from unordered images remains bottlenecked by expensive Structure-from-Motion (SfM) preprocessing and frozen pose interfaces. We present SalientGS, a unified SfM-to-3D Gaussian Splatting (3DGS) pipeline. Its central contribution is importance-guided Markov Chain Monte Carlo (MCMC) Gaussian allocation, which aggregates multi-view residuals into per-Gaussian underfit and redundancy signals. These signals define a smooth importance-weighted sampling distribution that biases both birth and relocation toward underfit regions. This reallocates capacity from well-fit areas without altering the underlying stochastic gradient Langevin dynamics (SGLD). SalientGS achieves end-to-end reconstruction in 15 minutes with state-of-the-art perceptual quality. The supplementary material provides dedicated sections for Per-Scene Qualitative Comparisons and Per-Image Learned Perceptual Image Patch Similarity (LPIPS) Analysis, including failure cases. Code and evaluation scripts are available at https://github.com/Six-Bit-TX/SalientGS.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/15/2607.12656v1-speedygs-content-aware-3d-gaussian-splatting-compression-via-two-stage-optimization",
+      "section": "quick",
+      "title_en": "SpeedyGS: Content-Aware 3D Gaussian Splatting Compression via Two-Stage Optimization",
+      "authors": "Junteng Zhang, Tong Chen, Yuxin Zhao, Yibo Shi, Jing Wang, Zhan Ma",
+      "date": "2026-07-14",
+      "pdf": "https://arxiv.org/pdf/2607.12656v1",
+      "score": "7.0",
+      "evidence": "3D高斯泼溅压缩与渲染优化",
+      "tldr": "针对大规模3D高斯泼溅（3DGS）压缩中解码延迟高、难以满足交互式应用的问题，本文提出SpeedyGS。该方法采用两阶段优化策略：首先利用轻量级速率代理联合优化自适应量化与剪枝，构建紧凑的场景表示；随后通过稀疏八叉树和局部自回归模型对几何与属性进行高效统计编码。SpeedyGS在保持高质量渲染的同时，实现了高达160倍的压缩比，并将优化速度提升9倍，支持近乎零延迟的解码。",
+      "tags": "query:q1",
+      "abstract_en": "Recent progress in compressing large-scale 3D Gaussian Splatting (3DGS) data has substantially reduced storage footprint, network transmission bandwidth, and memory traffic to GPU caches before rendering. Yet decoding with advanced 3DGS codecs still takes seconds, making them unsuitable for interactive applications. To systematically address this challenge, we propose SpeedyGS, a Content-Aware 3DGS Compressor that separately optimizes the structural formation and statistical coding. First, in structural formation, we jointly optimize adaptive quantization and pruning under a unified rate-distortion objective, where the rate term is replaced by a lightweight rate proxy that estimates entropy coding cost of the next stage, thereby efficiently regulating Gaussian density and precision to yield a compact scene representation. Then, in the statistical coding phase, Gaussian geometry is converted into sparse octree tokens and subsequently undergoes multi-stage coding, while Gaussian attributes are serialized into a 1D token stream for entropy coding via a complexity-controllable local autoregressive model. SpeedyGS achieves a favorable balance among optimization efficiency, compression performance, decoding latency, and rendering speed. Compared to vanilla 3DGS, SpeedyGS achieves up to 160$\\times$ model size reduction with negligible quality degradation across common datasets. Compared to state-of-the-art compression methods, it also offers significantly faster decoding and accelerates optimization by 9$\\times$ on consumer-grade hardware. To further reduce decoding overhead, the statistical coding stage also supports channel-wise, fixed-length coding for Gaussian as a simpler alternative, enabling SpeedyGS to better adapt to the underlying application and reduce decoding latency to nearly zero.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/15/2607.11673v2-abot-3dworld-0-a-universal-world-model-to-explore-any-3d-space",
+      "section": "quick",
+      "title_en": "ABot-3DWorld 0: A Universal World Model to Explore Any 3D Space",
+      "authors": "Mingchao Sun, Luyang Tang, Yu Liu, Xu Yan, Zhan Li, Yunwei Zhang, Fei Yu, Zengye Ge, Yumin Liu, Jiacheng Zhang, Yongchang Zhang, Jiawei Zhang, Zhicheng Liu, Zhongxu Sun, Tianjian Ouyang, Wenzheng Chen, Shixing Yang, Nianfei Fan, Guodong Sun, Huan Li, Zheng Zhou, Yongze Li, Yingliang Peng, Mengmeng Du, Yuan Liu, Haozhe Shi, Chunnuo Gong, Chengzhen Yu, Chunxue Jia, Yang Liu, Shiying Zeng, Junnan Lai, Hang Zhang, Ning Guo, Baoquan Chen, Mu Xu, Hongyu Pan",
+      "date": "2026-07-13",
+      "pdf": "https://arxiv.org/pdf/2607.11673v2",
+      "score": "6.0",
+      "evidence": "从视频进行3D高斯泼溅世界重建",
+      "tldr": "ABot-3DWorld 0 是一个通用的多模态 3D 世界模型，能将文本、图像和视频转化为可探索的高保真 3D 场景。该模型核心是空间生成原语（SGP），结合全景图与点云描述空间。通过将输入提升为 SGP，利用全景视频生成器沿轨迹探索，并最终通过 3D 高斯泼溅（3DGS）重建出逼真的 3D 世界。它支持从单图/文本生成创意世界或从多视角视频恢复真实场景，在开源方法中达到领先水平。",
+      "tags": "query:q1",
+      "abstract_en": "We present ABot-3DWorld 0, a universal multimodal 3D world model that turns text, image, and video inputs into high-fidelity, explorable 3D worlds. At the heart of our framework is a unified Spatial Generative Primitive (SGP), a compact tuple of a high-quality panorama and a spatial point cloud that delivers an efficient description of any 3D space. Multimodal inputs are first lifted into this primitive; a 3D-consistent panoramic video generator then explores the primitive along a planned trajectory; finally, our panoramic video reconstruction engine converts the generated video into a clean, photorealistic 3D Gaussian Splatting (3DGS) world. This pipeline covers two regimes: rich inputs (multi-view sets, casual video) are lifted into the SGP through a geometry-rigorous recovery that mirrors the observed scene, while a single image or sentence is completed generatively into a creative world. The result is one low-barrier engine for general 3D content creation that further anchors generated worlds to geographic points of interest, enabling map-native spatial exploration at consumer scale. Experiments show that ABot-3DWorld 0 sets the state of the art among open-source methods and demonstrates stronger scene fidelity than Marble under rich multimodal inputs.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/15/2607.12000v1-metaview-monocular-novel-view-synthesis-with-scale-aware-implicit-geometry-priors",
+      "section": "quick",
+      "title_en": "MetaView: Monocular Novel View Synthesis with Scale-Aware Implicit Geometry Priors",
+      "authors": "Yufei Cai, Xuesong Niu, Hao Lu, Kun Gai, Kai Wu, Guosheng Lin",
+      "date": "2026-07-13",
+      "pdf": "https://arxiv.org/pdf/2607.12000v1",
+      "score": "6.0",
+      "evidence": "用于新视角合成的隐式几何建模",
+      "tldr": "MetaView 是一种基于扩散模型的单目新视角合成框架，旨在解决现有生成模型在处理大视角变化时空间一致性差和控制精度不足的问题。该方法通过结合前馈几何感知网络的隐式几何先验与度量深度信息，在不依赖复杂显式重建的前提下，实现了具备尺度感知的结构正则化。实验证明，MetaView 在单目大视角切换场景下表现优异，兼具几何一致性与精确的可控性。",
+      "tags": "query:q1",
+      "abstract_en": "Current visual generation models are capable of producing high-quality content, yet they lack a coherent perception of the spatial structure. Existing generative novel view synthesis methods typically introduce explicit geometry priors, which enforce spatial consistency but inherently restrict generalization in large view changes. In contrast, recent interactive generative methods favor implicit scene modeling, offering greater flexibility at the cost of precise camera control and geometry consistency. In this paper, we propose MetaView, a diffusion-based monocular novel view synthesis framework that enables rendering under large view changes from a single image. Our key insight is to combine implicit geometry modeling with minimal yet essential explicit 3D cues: we incorporate implicit geometry priors from a feed-forward geometry perception network to regularize structure without imposing restrictive reconstruction pipelines, while leveraging metric depth to anchor the generation to a metric scale. This design allows MetaView to achieve both geometry consistency and precise controllability. Extensive experiments demonstrate that, under challenging monocular large viewpoint changes, MetaView significantly outperforms existing methods and exhibits superior generalization. Our code is publicly available at https://github.com/KlingAIResearch/MetaView.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/15/2607.12810v1-symmetry-informed-deep-learning-for-electromagnetic-scattering",
+      "section": "quick",
+      "title_en": "Symmetry-Informed Deep Learning for Electromagnetic Scattering",
+      "authors": "Viktor A. Lilja, Philippe Tassin",
+      "date": "2026-07-14",
+      "pdf": "https://arxiv.org/pdf/2607.12810v1",
+      "score": "6.0",
+      "evidence": "深度学习用于电磁散射建模",
+      "tldr": "本研究针对电磁散射建模中数值模拟成本高、训练数据不足的瓶颈，提出了一种利用对称性的深度学习框架。通过麦克斯韦方程组的等变性，推导出电磁设备对称性与散射参数变换之间的映射规则，实现了系统的数据增强和等变神经网络构建。在光子晶体板和衍射光栅上的实验表明，该方法将数据效率提升了一个数量级，并确保模型严格遵循物理约束，为计算电磁学提供了物理一致的代理模型构建方案。",
+      "tags": "query:q4",
+      "abstract_en": "Deep learning can accelerate the modeling of electromagnetic devices by replacing costly simulations with neural networks trained to map design parameters to scattering parameters. However, data efficiency remains a central bottleneck, as training data is typically generated through expensive numerical simulations. Here we show that symmetry provides a powerful and largely untapped route to overcoming this limitation in electromagnetic scattering problems. Leveraging the equivariance of Maxwell's equations, we obtain general transformation rules that map symmetries of electromagnetic devices to corresponding transformations of their scattering parameters. This enables both systematic data augmentation and the construction of exactly equivariant neural networks. We implement the framework for both discrete and continuous symmetry groups and demonstrate its effectiveness on photonic-crystal slabs and free-form diffraction gratings. Incorporating symmetry improves data efficiency by an order of magnitude compared to standard architectures, while equivariant models additionally enforce physical constraints exactly. Our approach is general and complementary to existing physics-informed strategies, provides a first-principles framework for constructing physically grounded surrogate models, and establishes symmetry as a unifying inductive bias for data-efficient and physically consistent learning in computational electromagnetics and beyond.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
