@@ -6,41 +6,34 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-15
-- 运行时间：2026-07-15 21:08:14 UTC
+- 最新运行日期：2026-07-16
+- 运行时间：2026-07-16 21:16:58 UTC
 - 运行状态：成功
-- 本次总论文数：6
-- 精读区：0
-- 速读区：6
+- 本次总论文数：4
+- 精读区：2
+- 速读区：2
 
 ### 今日简报（AI）
-今日聚焦 3D Gaussian Splatting 的前沿演进，涵盖空间重绘、分配优化及高效压缩三大核心突破。
-重点关注 SyncSpace 实现的混合现实空间布局重构，以及 SalientGS 通过重要性引导提升的 3DGS 生成质量。
-建议关注 3DGS 在移动端部署与交互式场景中的轻量化与可控性进展。
-- 详情：[/202607/15/README](/202607/15/README)
+今日聚焦神经辐射传输与超快纹理烘焙，深度探索从逆向渲染到高效 3D 重建的前沿突破。
+重点关注满分论文提出的体积逆向渲染新范式，以及能显著提升渲染效率的空间纹理贴图技术。
+建议优先研读高分渲染论文以掌握底层原理，并关注视频重光照与占据预测在可控生成中的应用。
+- 详情：[/202607/16/README](/202607/16/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [Volumetric Inverse Rendering via Neural Radiative Transfer](/202607/16/2607.13695v1-volumetric-inverse-rendering-via-neural-radiative-transfer)  
+   标签：评分：10.0/10、query:profile-1
+   evidence：用于体积逆渲染和全局光照的神经辐射传输
+2. [Bake It Till You Make It: Ultrafast Spatial Texture-Atlas Splatting](/202607/16/2607.13808v1-bake-it-till-you-make-it-ultrafast-spatial-texture-atlas-splatting)  
+   标签：评分：8.0/10、query:q7
+   evidence：通过解耦辐射表示和空间哈希网格烘焙实现超快渲染
 
 ### 速读区论文标签
-1. [SyncSpace: Layout-Conditioned 3D Gaussian Splatting for Space Reskinning in Mixed Reality](/202607/15/2607.10050v1-syncspace-layout-conditioned-3d-gaussian-splatting-for-space-reskinning-in-mixed-reality)  
-   标签：评分：7.0/10、query:q1
-   evidence：基于布局条件的3D高斯泼溅神经渲染
-2. [SalientGS: Unified SfM-to-3DGS with Importance-Guided MCMC Gaussian Allocation](/202607/15/2607.11285v1-salientgs-unified-sfm-to-3dgs-with-importance-guided-mcmc-gaussian-allocation)  
-   标签：评分：7.0/10、query:q1
-   evidence：3D高斯泼溅重建流水线
-3. [SpeedyGS: Content-Aware 3D Gaussian Splatting Compression via Two-Stage Optimization](/202607/15/2607.12656v1-speedygs-content-aware-3d-gaussian-splatting-compression-via-two-stage-optimization)  
-   标签：评分：7.0/10、query:q1
-   evidence：3D高斯泼溅压缩与渲染优化
-4. [ABot-3DWorld 0: A Universal World Model to Explore Any 3D Space](/202607/15/2607.11673v2-abot-3dworld-0-a-universal-world-model-to-explore-any-3d-space)  
+1. [LightCrafter: PBR-Conditioned Video Diffusion Refinement for Controllable and Consistent Relighting](/202607/16/2607.08016v2-lightcrafter-pbr-conditioned-video-diffusion-refinement-for-controllable-and-consistent-relighting)  
+   标签：评分：6.0/10、query:profile-1
+   evidence：用于物理光线传输和重光照的神经渲染器
+2. [GPOcc++: Unified Sparse Gaussian Occupancy Prediction with Visual Geometry Priors](/202607/16/2607.13481v1-gpocc-unified-sparse-gaussian-occupancy-prediction-with-visual-geometry-priors)  
    标签：评分：6.0/10、query:q1
-   evidence：从视频进行3D高斯泼溅世界重建
-5. [MetaView: Monocular Novel View Synthesis with Scale-Aware Implicit Geometry Priors](/202607/15/2607.12000v1-metaview-monocular-novel-view-synthesis-with-scale-aware-implicit-geometry-priors)  
-   标签：评分：6.0/10、query:q1
-   evidence：用于新视角合成的隐式几何建模
-6. [Symmetry-Informed Deep Learning for Electromagnetic Scattering](/202607/15/2607.12810v1-symmetry-informed-deep-learning-for-electromagnetic-scattering)  
-   标签：评分：6.0/10、query:q4
-   evidence：深度学习用于电磁散射建模
+   evidence：利用稀疏高斯表示进行体积占用预测
 
 
 <div class="dpr-home-promo-card">

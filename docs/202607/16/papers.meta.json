@@ -1,0 +1,65 @@
+{
+  "label": "2026-07-16",
+  "date": "2026-07-16",
+  "generated_at": "2026-07-16T21:17:08",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202607/16/2607.13695v1-volumetric-inverse-rendering-via-neural-radiative-transfer",
+      "section": "deep",
+      "title_en": "Volumetric Inverse Rendering via Neural Radiative Transfer",
+      "authors": "Ntumba Elie Nsampi, Adarsh Djeacoumar, Hans-Peter Seidel, Tobias Ritschel, Thomas Leimkühler",
+      "date": "2026-07-15",
+      "pdf": "https://arxiv.org/pdf/2607.13695v1",
+      "score": "10.0",
+      "evidence": "用于体积逆渲染和全局光照的神经辐射传输",
+      "tldr": "本研究针对体积逆渲染中全局光照难以高效建模的问题，提出了一种基于神经辐射传输的优化框架。该方法将介质的光学属性和全光场表示为神经场，通过最小化局部微分形式的辐射传输方程（RTE）残差以及主视线上的体积渲染项进行联合优化。该方法不仅能从多视图图像中重建空间变化的散射、吸收和相位函数，还支持在全局光照下学习具有物理属性的参与介质生成模型，克服了传统方法在算法复杂性或物理简化上的局限。",
+      "tags": "query:profile-1",
+      "abstract_en": "Volumetric inverse rendering seeks to recover the optical properties of participating media from images. Existing approaches either rely on differentiable stochastic light transport simulation, which require substantial algorithmic effort, or use simplified models that fail to capture global illumination. We propose a formulation that reconciles physically complete light transport with general-purpose neural optimization. The optical properties of the medium and the full light field are represented as neural fields and estimated through a joint optimization process. Global illumination is enforced via a residual objective derived from the Radiative Transfer Equation in local differential form, complemented by a volume rendering term along primary viewing rays to mitigate \\rev{low-frequency} bias. We demonstrate reconstruction of spatially varying, color-resolved scattering, absorption, and phase function parameters from multi-view images. Beyond reconstruction, the same framework supports learning generative models of participating media with physical optical properties under global illumination.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/16/2607.13808v1-bake-it-till-you-make-it-ultrafast-spatial-texture-atlas-splatting",
+      "section": "deep",
+      "title_en": "Bake It Till You Make It: Ultrafast Spatial Texture-Atlas Splatting",
+      "authors": "Neel Kelkar, Simon Niedermayr, Kaloian Petkov, Klaus Engel, Rüdiger Westermann",
+      "date": "2026-07-15",
+      "pdf": "https://arxiv.org/pdf/2607.13808v1",
+      "score": "8.0",
+      "evidence": "通过解耦辐射表示和空间哈希网格烘焙实现超快渲染",
+      "tldr": "针对3D高斯泼溅（3DGS）在处理精细纹理时渲染开销大的问题，本文提出了一种超快速的空间纹理图集泼溅方法。该方法将低频几何与高频纹理表示解耦，利用2D面片捕捉几何特征，并将高频纹理烘焙至紧凑的纹理图集中。通过稀疏化优化大幅减少面片数量，在保持高保真度的同时，实现了比3DGS快5倍的渲染速度，支持在消费级硬件上进行4K 60FPS实时渲染。",
+      "tags": "query:q7",
+      "abstract_en": "Recent extensions of 3D Gaussian Splatting (3DGS) capture fine color details using hash-grid-based appearance parameterization but incur high computational cost during fragment rendering. We introduce a decoupled radiance representation that models low-frequency geometry and view dependent appearance features with 2D surfels while representing high-frequency textures via a view-independent spatial hash grid that is baked into a compact texture atlas. By including sparsity-enhancing optimizations that penalize semi-transparency and per-primitive falloff, our method aggressively prunes insignificant surfels and achieves significantly faster and sparser reconstructions than prior work. Exploiting geometric sparsity and efficient GPU texture mapping, our approach achieves up to a fivefold speedup over 3DGS while preserving state-of-the-art visual fidelity, enabling real-time 4K rendering at 60 FPS on consumer hardware.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/16/2607.08016v2-lightcrafter-pbr-conditioned-video-diffusion-refinement-for-controllable-and-consistent-relighting",
+      "section": "quick",
+      "title_en": "LightCrafter: PBR-Conditioned Video Diffusion Refinement for Controllable and Consistent Relighting",
+      "authors": "Zixin Guo, Yehonathan Litman, Yifeng He, John Miller, Chuhan Chen, Deva Ramanan",
+      "date": "2026-07-09",
+      "pdf": "https://arxiv.org/pdf/2607.08016v2",
+      "score": "6.0",
+      "evidence": "用于物理光线传输和重光照的神经渲染器",
+      "tldr": "针对视频重照明中光影物理真实感与长视频时序一致性难以兼顾的问题，本文提出LightCrafter。该方法将重照明任务重构为对PBR代理视频的扩散细化过程，通过将目标光照预先渲染到代理视频中，降低了扩散模型学习光照概念的难度，并利用CogVideoX在合成与真实数据上的后训练提升了全局光照效果。该方法在可控性、一致性及真实感上均优于现有技术，为高质量视频编辑提供了新思路。",
+      "tags": "query:profile-1",
+      "abstract_en": "Video relighting requires balancing long-form temporal consistency with a physically grounded understanding of light transport, which depends on accurate estimation of intrinsic scene properties such as materials, geometry, and illumination. Existing methods follow two paradigms: (1) reconstruct a video's photometric properties via inverse rendering and relight them to a target illumination via forward rendering, using physically-based rendering (PBR) or a neural renderer; these suffer from noisy reconstructions and struggle with hard-to-model effects such as global illumination. (2) Frame the task as generative video-to-video translation conditioned on relighting targets (a target environment map or text); this limits relighting control and temporal stability, since diffusion models struggle to translate long-form videos, and is constrained by the availability of input/relit training pairs. We propose LightCrafter, a hybrid pipeline that reformulates video relighting as video translation of a proxy video: rather than translating the input video directly to the target, we translate a PBR rendering of the input under the target illumination to the final target. This bakes illumination targets into the PBR proxy, removing the need to teach the diffusion model illumination concepts like environment maps, and enables more intricate lighting control while naturally providing long-form temporal consistency. We show PBR renders alone already outperform some prior art but struggle with effects like global illumination; to capture these, we leverage photometric priors in video generation models by post-training CogVideoX on synthetic video pairs and real-world unpaired videos. We outperform prior state-of-the-art on existing real-world relighting benchmarks and contribute a synthetic benchmark for further analysis. We will release our dataset, benchmark, metrics, and code.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/16/2607.13481v1-gpocc-unified-sparse-gaussian-occupancy-prediction-with-visual-geometry-priors",
+      "section": "quick",
+      "title_en": "GPOcc++: Unified Sparse Gaussian Occupancy Prediction with Visual Geometry Priors",
+      "authors": "Changqing Zhou, Yueru Luo, Yulan Guo, Bing Wang, Jie Qin, Changhao Chen",
+      "date": "2026-07-15",
+      "pdf": "https://arxiv.org/pdf/2607.13481v1",
+      "score": "6.0",
+      "evidence": "利用稀疏高斯表示进行体积占用预测",
+      "tldr": "本研究针对自动驾驶和具身智能中的3D占据预测难题，提出了GPOcc++框架。该方法利用视觉几何先验，将其转化为稀疏高斯表示，以解决遮挡和未观测区域的建模问题。GPOcc++统一了多视图和时序信息处理，并从室内场景扩展至室外，实现了高效且泛化性强的体积场景建模，在多个基准测试中表现优异。",
+      "tags": "query:q1",
+      "abstract_en": "Accurate 3D scene understanding is fundamental to embodied intelligence and autonomous driving, where 3D occupancy provides a unified representation of objects, structures, and free space. However, recovering such a complete volumetric representation from visual observations remains challenging, particularly in occluded and unobserved regions. Visual geometry priors offer strong and generalizable geometric cues for addressing this challenge, but their outputs are inherently surface-centric, whereas occupancy prediction requires reasoning about volumetric interiors and free space. To bridge this gap, we introduce GPOcc, which transforms visual geometry priors into occupancy-aware sparse Gaussian representations for efficient and expressive volumetric scene modeling. Building on GPOcc, GPOcc++ models multi-view observations and temporal sequences within a unified framework, allowing spatial and temporal evidence to be handled through the same representation. We further extend GPOcc++ from indoor scenes to outdoor occupancy prediction. Extensive experiments on both indoor and outdoor benchmarks demonstrate consistently strong performance across both multi-view and temporal settings, together with favorable efficiency and generalization. Code will be released at https://github.com/JuIvyy/GPOcc.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
