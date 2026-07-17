@@ -1,0 +1,255 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-17T19:50:11.640615+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2607.14415v1",
+      "title": "$K$-NeAS: Scalable Multi-Material CT Reconstruction Using Neural SDFs",
+      "abstract": "Computed Tomography (CT) carries significant ionizing radiation risks, driving the need for sparse-view reconstruction. Implicit scene representations (ISRs) address this by recovering continuous volumetric attenuation fields directly from sparse projections, and recent geometry-aware extensions jointly model surface geometry alongside attenuation to improve fidelity and enable clean tissue segmentation without manual thresholding. However, these methods remain limited by manually tuned attenuation bounds and rigid two-material constraints. This paper proposes $K$-NeAS, a unified and scalable architecture for automated, multi-material surface reconstruction. We replace independent material networks with a shared latent backbone and introduce a fully differentiable $K$-material sequential soft selector to model an arbitrary number of overlapping tissues. To eliminate manual tuning, we automate attenuation bounding using a Gaussian Mixture Model (GMM) and implement a scheduled auxiliary floater loss to mitigate geometric hallucinations common under extreme sparsity. Evaluated across four clinical Cone-Beam CT (CBCT) datasets, $K$-NeAS successfully scales to arbitrary material counts, achieving superior 3D volumetric fidelity at $K=3$ materials on complex multi-tissue regions such as the Abdomen ($33.28\\text{ dB}$ 3D PSNR vs. $31.40\\text{ dB}$ single-material NeAS baseline, a $+1.88\\text{ dB}$ improvement). Furthermore, our model exhibits enhanced robustness under sparse-sampling conditions, outperforming baseline 3D PSNR by up to $1.17\\text{ dB}$ under 5- and 10-view constraints.",
+      "authors": [
+        "Daksh K. Shah",
+        "Emmanouil Nikolakakis",
+        "Razvan V. Marinescu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-15T23:08:45+00:00",
+      "link": "https://arxiv.org/pdf/2607.14415v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "recovering continuous volumetric attenuation fields using neural SDFs",
+      "llm_evidence_cn": "使用神经SDF恢复连续体积衰减场",
+      "llm_evidence": "使用神经SDF恢复连续体积衰减场",
+      "canonical_evidence": "使用神经SDF恢复连续体积衰减场",
+      "llm_tldr_en": "Introduces K-NeAS for scalable multi-material CT reconstruction using implicit scene representations.",
+      "llm_tldr_cn": "引入K-NeAS，利用隐式场景表示进行可扩展的多材料CT重建。",
+      "llm_tldr": "引入K-NeAS，利用隐式场景表示进行可扩展的多材料CT重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.13468v1",
+      "title": "HIVE-3D: Hierarchical Voxel Enhancement for High-Quality 3D Scene Generation",
+      "abstract": "Recently, a line of works can generate impressive 3D objects from a single image, but they are limited by restricted representation resolution, making them unsuitable for 3D scene generation. In this work, we introduce HIVE-3D, a novel method for high-quality 3D scene generation based on hierarchical voxel enhancement framework. Specifically, given a single scene image as input, we first produce a coarse initial scene, then introduce image segmentation and attention-based retrieval to align 2D image components with 3D scene components. Subsequently, we organize these scene relations into a hierarchical component tree, where nodes closer to the leaves denote finer-grained components. Finally, we propose a voxel super-resolution model that generates refined voxels for the target instance while maintaining strong consistency with the coarse voxels. Equipped with this model, we perform coarse-to-fine hierarchical super-resolution on images and voxels for each component, producing a high-resolution and high-quality 3D scene. Extensive experiments demonstrate that our method significantly outperforms previous approaches, achieving state-of-the-art performance.",
+      "authors": [
+        "Bin Zang",
+        "Wenting Zheng",
+        "Xiaoliang Luo",
+        "Zhiyuan Fang",
+        "Shi Li",
+        "Lvchun Wang",
+        "Wei Yu",
+        "Yi Zhao",
+        "Tian Xie",
+        "Yuchi Huo",
+        "Rengan Xie"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-07-15T05:56:34+00:00",
+      "link": "https://arxiv.org/pdf/2607.13468v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "hierarchical voxel enhancement for 3D scene generation",
+      "llm_evidence_cn": "用于3D场景生成的层级体素增强",
+      "llm_evidence": "用于3D场景生成的层级体素增强",
+      "canonical_evidence": "用于3D场景生成的层级体素增强",
+      "llm_tldr_en": "Uses a hierarchical voxel enhancement framework and super-resolution for high-quality 3D scene generation.",
+      "llm_tldr_cn": "采用层级体素增强框架和超分辨率技术进行高质量3D场景生成。",
+      "llm_tldr": "采用层级体素增强框架和超分辨率技术进行高质量3D场景生成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.13812v1",
+      "title": "TCAM-Diff: Triplane-Aware Cross-Attention Medical Diffusion Model",
+      "abstract": "We introduce TCAM-Diff, a novel 3D medical image generation model that reduces the memory requirements to encode and generate high-resolution 3D data. This model utilizes a decoder-only autoencoder method to learn triplane representation from dense volume and leverages generalization operations to prevent overfitting. Subsequently, it uses a triplane-aware cross-attention diffusion model to learn and integrate these features effectively. Furthermore, the features generated by the diffusion model can be rapidly transformed into 3D volumes using a pre-trained decoder module. Our experiments on three different scales of medical datasets, BrainTumour 128 x 128 x 128, Pancreas 256 x 256 x 256, and Colon 512 x 512 x 512, demonstrate outstanding results. We utilized MSE and SSIM to assess reconstruction quality and leveraged the Wasserstein Generative Adversarial Network (W-GAN) critic to assess generative quality. Comparisons with existing approaches show that our method gives better reconstruction and generation results than other encoder-decoder methods with similar-sized latent spaces.",
+      "authors": [
+        "Zhenkai Zhang",
+        "Krista A. Ehinger",
+        "Tom Drummond"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.CV"
+      ],
+      "published": "2026-07-15T13:23:01+00:00",
+      "link": "https://arxiv.org/pdf/2607.13812v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "triplane representation from dense volume",
+      "llm_evidence_cn": "从密集卷中学习三平面表示",
+      "llm_evidence": "从密集卷中学习三平面表示",
+      "canonical_evidence": "从密集卷中学习三平面表示",
+      "llm_tldr_en": "Learns triplane representations from dense volumes for high-resolution 3D medical image generation.",
+      "llm_tldr_cn": "从密集卷中学习三平面表示，用于高分辨率3D医学图像生成。",
+      "llm_tldr": "从密集卷中学习三平面表示，用于高分辨率3D医学图像生成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.13492v1",
+      "title": "CASA-SDF: Curriculum-Aware Spatial Adaptation with Curvature-Guided Density for Neural Implicit Surface Reconstruction",
+      "abstract": "Neural implicit representations have emerged as a powerful paradigm for 3D reconstruction. However, high-fidelity indoor surface reconstruction remains a significant challenge, primarily due to the pronounced \\emph{geometric heterogeneity} of indoor scenes. Large texture-less planar regions typically require stronger regularization to suppress high-frequency artifacts, while thin structures demand sharper, more adaptive representations to mitigate the spectral bias of multi-layer perceptrons (MLPs) and prevent over-smoothing. Existing approaches often rely on spatially indiscriminate prior supervision and a scene-global SDF-to-density transformation, which constrains their ability to balance planar smoothness and detail preservation. In this paper, we propose CASA-SDF (Curriculum-Aware Spatial Adaptation for SDF), a unified framework that addresses this challenge via complementary adaptations of supervision and representation capacity. Specifically, Hybrid Spatially-Adaptive Uncertainty Annealing (SAUA) fuses semantic and photometric uncertainties to construct a pixel-wise curriculum for monocular prior supervision. This strategy maintains regularization in reliable regions while attenuating unreliable supervision early in training to enable data-driven photometric refinement. Meanwhile, Curvature-Aware Locally Adaptive Density Transformation (CALADT) progressively modulates the sharpness of the SDF-to-density mapping via a curvature proxy to enhance the representation of thin structures. Extensive experiments on benchmark indoor datasets demonstrate that CASA-SDF improves surface completeness and detail recovery on high-frequency structures, without compromising the stability of planar surfaces.",
+      "authors": [
+        "Lei Yang",
+        "Weiqing Li",
+        "Zhiyong Su",
+        "Liang Xiao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-07-15T06:38:23+00:00",
+      "link": "https://arxiv.org/pdf/2607.13492v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "SDF-to-density transformation in neural implicit representations",
+      "llm_evidence_cn": "神经隐式表示中的SDF到密度转换",
+      "llm_evidence": "神经隐式表示中的SDF到密度转换",
+      "canonical_evidence": "神经隐式表示中的SDF到密度转换",
+      "llm_tldr_en": "Improves neural implicit surface reconstruction using curvature-guided density and spatial adaptation.",
+      "llm_tldr_cn": "利用曲率引导的密度和空间自适应改进神经隐式表面重建。",
+      "llm_tldr": "利用曲率引导的密度和空间自适应改进神经隐式表面重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.15271v1",
+      "title": "Online Neural Space Time Memory for Dynamic Novel View Synthesis",
+      "abstract": "Online novel view synthesis from multi-view streaming videos faces a fundamental trade-off: maintaining a persistent, long-horizon memory to reconstruct temporarily occluded regions while operating under strict real-time constraints. While Test-Time Training (TTT) offers a powerful memory mechanism, standard models mandate gradient-based memory updates at every frame to adapt to the changing motion in dynamic scenes. The computational cost of heavy memory updates precludes real-time application and can lead to instability over long contexts. Given that memory updates are more demanding than memory application and video content is largely redundant, we propose to decouple the frequencies of these two processes. Our approach performs periodic memory updates while applying the memory on a per-frame basis, using cross-view attention to manage deformations between the prior memory state and the current frame. To lock in the historical context, we introduce two critical mechanisms: an auxiliary Memory Loss that forces persistent internalization of the scene, and a Memory Caching strategy that regularizes active weights against catastrophic drift. Our method demonstrates real-time, state-of-the-art performance on scenes with dynamic human motion as well as minute-scale online memorization.",
+      "authors": [
+        "Baback Elmieh",
+        "Lynn Tsai",
+        "Zeman Li",
+        "Srinivas Kaza",
+        "Tiancheng Sun",
+        "Gabor Csapo",
+        "Ali Behrouz",
+        "Yuan Deng",
+        "Stephen Lombardi",
+        "Steven M. Seitz",
+        "Xuan Luo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR",
+        "cs.LG"
+      ],
+      "published": "2026-07-16T17:58:18+00:00",
+      "link": "https://arxiv.org/pdf/2607.15271v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "neural space time memory for novel view synthesis",
+      "llm_evidence_cn": "用于新视角合成的神经时空记忆",
+      "llm_evidence": "用于新视角合成的神经时空记忆",
+      "canonical_evidence": "用于新视角合成的神经时空记忆",
+      "llm_tldr_en": "Decouples memory updates for real-time dynamic novel view synthesis using neural architectures.",
+      "llm_tldr_cn": "利用神经架构解耦记忆更新，实现实时动态新视角合成。",
+      "llm_tldr": "利用神经架构解耦记忆更新，实现实时动态新视角合成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.14513v1",
+      "title": "Compression of 3D Gaussian Splatting Data Using GPU-friendly Graphics Texture Coding",
+      "abstract": "Techniques for modeling 3D scenes from image collections, such as 3D Gaussian Splatting (3DGS), are capable of generating high-quality novel views by leveraging graphics primitives with view-dependent appearance. In 3DGS, spherical harmonic (SH) are employed to model view-dependent color, resulting in a large number of SH coefficients per primitive and large memory requirements. While compression approaches have been proposed to mitigate this problem, they do not exploit the capabilities of modern Graphics Processing Units (GPUs) for parallel decoding and rendering. In this paper, we propose a method for compressing SH color coefficients using texture compression schemes specifically designed for efficient parallel GPU decoding and supported by dedicated hardware acceleration. It is shown that those methods can compress color coefficients more effectively than 2D textures by exploiting the fact that primitives can be locally grouped and reordered according to color. Furthermore, we introduce a bit-rate control strategy that preserves random access, enabling large-scale parallelization without compromising rendering performance. Experimental results using BC1 and BC7 texture compression formats show that GPU-based decompression can be achieved with negligible or imperceptible degradation in the visual quality of rendered 3DGS scenes.",
+      "authors": [
+        "Amir Said",
+        "Randall Rauwendaal"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "eess.IV"
+      ],
+      "published": "2026-07-16T03:10:27+00:00",
+      "link": "https://arxiv.org/pdf/2607.14513v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "accelerating rendering with GPU-friendly texture coding for 3DGS",
+      "llm_evidence_cn": "通过GPU友好的3DGS纹理编码加速渲染",
+      "llm_evidence": "通过GPU友好的3DGS纹理编码加速渲染",
+      "canonical_evidence": "通过GPU友好的3DGS纹理编码加速渲染",
+      "llm_tldr_en": "Compresses 3D Gaussian Splatting data for efficient parallel GPU decoding and rendering.",
+      "llm_tldr_cn": "压缩3D高斯泼溅数据以实现高效的GPU并行解码和渲染。",
+      "llm_tldr": "压缩3D高斯泼溅数据以实现高效的GPU并行解码和渲染。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
