@@ -1,0 +1,23 @@
+{
+  "label": "2026-07-18",
+  "date": "2026-07-18",
+  "generated_at": "2026-07-18T19:52:05",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/18/2607.14990v1-jade-gs-joint-alternating-deblurring-guided-by-events-in-3d-gaussian-splatting",
+      "section": "quick",
+      "title_en": "JADE-GS: Joint Alternating Deblurring Guided by Events in 3D Gaussian Splatting",
+      "authors": "Haoyu Fu, Jiafeng Huang, Yuchen Wang, Shengjie Zhao",
+      "date": "2026-07-16",
+      "pdf": "https://arxiv.org/pdf/2607.14990v1",
+      "score": "6.0",
+      "evidence": "结合基于事件去模糊的3D高斯泼溅",
+      "tldr": "JADE-GS 针对快速移动相机导致的图像模糊问题，结合事件相机的高时间分辨率特性，提出了一种基于 3D Gaussian Splatting (3DGS) 的去模糊框架。它通过像素自适应路由门融合物理先验与学习先验，并构建 2D 修复器与 3DGS 渲染器的双向循环优化机制，有效解决了漂移和纹理失真问题，在保持实时渲染的同时实现了卓越的感知质量。",
+      "tags": "query:q1",
+      "abstract_en": "When a camera moves fast during exposure, blur destroys the intra-exposure motion a 3D model needs to recover the sharp scene, while event cameras capture exactly this signal at microsecond resolution. Turning them into reliable 3D supervision faces two obstacles. First, the two restoration priors fail in opposite ways: physics-based event-integration priors preserve edges but accumulate drift; learned networks recover texture but distort boundaries. Second, existing pipelines run in one direction only, so raw event noise or the biases of fixed 2D pseudo-labels pass uncorrected into the geometry. JADE-GS addresses both: a pixel-adaptive routing gate fuses the complementary priors, and the resulting 2D restorer is coupled to a 3D Gaussian Splatting student in a bidirectional loop, where detached, multi-view-consistent renders and a physics-based reblurring constraint regularize the restorer, turning a fixed preprocessor into a geometry-aware predictor. Across synthetic and real benchmarks, JADE-GS attains the best perceptual quality, leading LPIPS and CLIP-IQA on both benchmarks with competitive PSNR and SSIM, and trainsin about one hour under 5 GB on a single consumer GPU while preserving real-time rendering.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

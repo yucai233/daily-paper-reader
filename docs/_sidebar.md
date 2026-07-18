@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-07-18 <!--dpr-date:20260718-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202607/18/2607.14990v1-jade-gs-joint-alternating-deblurring-guided-by-events-in-3d-gaussian-splatting" data-sidebar-item="{&quot;title&quot;: &quot;JADE-GS: Joint Alternating Deblurring Guided by Events in 3D Gaussian Splatting&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.14990v1-jade-gs-joint-alternating-deblurring-guided-by-events-in-3d-gaussian-splatting&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;q1&quot;}], &quot;evidence&quot;: &quot;结合基于事件去模糊的3D高斯泼溅&quot;}">JADE-GS: Joint Alternating Deblurring Guided by Events in 3D Gaussian Splatting</a>
   * 2026-07-17 <!--dpr-date:20260717-->
     * 精读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202607/17/2607.14415v1-k-neas-scalable-multi-material-ct-reconstruction-using-neural-sdfs" data-sidebar-item="{&quot;title&quot;: &quot;$K$-NeAS: Scalable Multi-Material CT Reconstruction Using Neural SDFs&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.14415v1-k-neas-scalable-multi-material-ct-reconstruction-using-neural-sdfs&quot;, &quot;score&quot;: &quot;8.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;q1&quot;}], &quot;evidence&quot;: &quot;使用神经SDF恢复连续体积衰减场&quot;}">$K$-NeAS: Scalable Multi-Material CT Reconstruction Using Neural SDFs</a>

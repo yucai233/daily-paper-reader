@@ -1,0 +1,54 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-18T19:51:44.025238+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.14990v1",
+      "title": "JADE-GS: Joint Alternating Deblurring Guided by Events in 3D Gaussian Splatting",
+      "abstract": "When a camera moves fast during exposure, blur destroys the intra-exposure motion a 3D model needs to recover the sharp scene, while event cameras capture exactly this signal at microsecond resolution. Turning them into reliable 3D supervision faces two obstacles. First, the two restoration priors fail in opposite ways: physics-based event-integration priors preserve edges but accumulate drift; learned networks recover texture but distort boundaries. Second, existing pipelines run in one direction only, so raw event noise or the biases of fixed 2D pseudo-labels pass uncorrected into the geometry. JADE-GS addresses both: a pixel-adaptive routing gate fuses the complementary priors, and the resulting 2D restorer is coupled to a 3D Gaussian Splatting student in a bidirectional loop, where detached, multi-view-consistent renders and a physics-based reblurring constraint regularize the restorer, turning a fixed preprocessor into a geometry-aware predictor. Across synthetic and real benchmarks, JADE-GS attains the best perceptual quality, leading LPIPS and CLIP-IQA on both benchmarks with competitive PSNR and SSIM, and trainsin about one hour under 5 GB on a single consumer GPU while preserving real-time rendering.",
+      "authors": [
+        "Haoyu Fu",
+        "Jiafeng Huang",
+        "Yuchen Wang",
+        "Shengjie Zhao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-16T13:40:13+00:00",
+      "link": "https://arxiv.org/pdf/2607.14990v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "3D Gaussian Splatting coupled with event-based deblurring",
+      "llm_evidence_cn": "结合基于事件去模糊的3D高斯泼溅",
+      "llm_evidence": "结合基于事件去模糊的3D高斯泼溅",
+      "canonical_evidence": "结合基于事件去模糊的3D高斯泼溅",
+      "llm_tldr_en": "Integrates event-based deblurring with 3D Gaussian Splatting for sharp scene recovery from fast motion.",
+      "llm_tldr_cn": "将基于事件的去模糊与3D高斯泼溅结合，用于从快速运动中恢复清晰场景。",
+      "llm_tldr": "将基于事件的去模糊与3D高斯泼溅结合，用于从快速运动中恢复清晰场景。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -6,40 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-17
-- 运行时间：2026-07-17 19:51:14 UTC
+- 最新运行日期：2026-07-18
+- 运行时间：2026-07-18 19:51:58 UTC
 - 运行状态：成功
-- 本次总论文数：6
-- 精读区：1
-- 速读区：5
+- 本次总论文数：1
+- 精读区：0
+- 速读区：1
 
 ### 今日简报（AI）
-今日聚焦神经隐式表示在 CT 重建与 3D 生成中的前沿突破。
-$K$-NeAS 实现了可扩展的多材料 CT 重建，而 HIVE-3D 与 CASA-SDF 则显著提升了 3D 场景与表面的生成质量。
-建议关注 Neural SDF 如何在医疗影像与高保真建模中实现从算法到性能的跨越。
-- 详情：[/202607/17/README](/202607/17/README)
+今日聚焦 3D 高斯泼溅（3DGS）的去模糊技术，探索事件相机引导的新方案。
+JADE-GS 提出通过事件流与 3DGS 交替优化，有效解决动态场景下的运动模糊难题。
+关注三维重建质量的读者可重点了解事件相机如何提升复杂运动场景下的渲染精度。
+- 详情：[/202607/18/README](/202607/18/README)
 
 ### 精读区论文标签
-1. [$K$-NeAS: Scalable Multi-Material CT Reconstruction Using Neural SDFs](/202607/17/2607.14415v1-k-neas-scalable-multi-material-ct-reconstruction-using-neural-sdfs)  
-   标签：评分：8.0/10、query:q1
-   evidence：使用神经SDF恢复连续体积衰减场
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [HIVE-3D: Hierarchical Voxel Enhancement for High-Quality 3D Scene Generation](/202607/17/2607.13468v1-hive-3d-hierarchical-voxel-enhancement-for-high-quality-3d-scene-generation)  
-   标签：评分：7.0/10、query:q1
-   evidence：用于3D场景生成的层级体素增强
-2. [CASA-SDF: Curriculum-Aware Spatial Adaptation with Curvature-Guided Density for Neural Implicit Surface Reconstruction](/202607/17/2607.13492v1-casa-sdf-curriculum-aware-spatial-adaptation-with-curvature-guided-density-for-neural-implicit-surface-reconstruction)  
-   标签：评分：7.0/10、query:q1
-   evidence：神经隐式表示中的SDF到密度转换
-3. [Compression of 3D Gaussian Splatting Data Using GPU-friendly Graphics Texture Coding](/202607/17/2607.14513v1-compression-of-3d-gaussian-splatting-data-using-gpu-friendly-graphics-texture-coding)  
-   标签：评分：7.0/10、query:q7
-   evidence：通过GPU友好的3DGS纹理编码加速渲染
-4. [TCAM-Diff: Triplane-Aware Cross-Attention Medical Diffusion Model](/202607/17/2607.13812v1-tcam-diff-triplane-aware-cross-attention-medical-diffusion-model)  
+1. [JADE-GS: Joint Alternating Deblurring Guided by Events in 3D Gaussian Splatting](/202607/18/2607.14990v1-jade-gs-joint-alternating-deblurring-guided-by-events-in-3d-gaussian-splatting)  
    标签：评分：6.0/10、query:q1
-   evidence：从密集卷中学习三平面表示
-5. [Online Neural Space Time Memory for Dynamic Novel View Synthesis](/202607/17/2607.15271v1-online-neural-space-time-memory-for-dynamic-novel-view-synthesis)  
-   标签：评分：6.0/10、query:q1
-   evidence：用于新视角合成的神经时空记忆
+   evidence：结合基于事件去模糊的3D高斯泼溅
 
 
 <div class="dpr-home-promo-card">
