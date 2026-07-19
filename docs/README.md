@@ -6,26 +6,28 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-18
-- 运行时间：2026-07-18 19:51:58 UTC
+- 最新运行日期：2026-07-19
+- 运行时间：2026-07-19 20:04:02 UTC
 - 运行状态：成功
-- 本次总论文数：1
-- 精读区：0
+- 本次总论文数：2
+- 精读区：1
 - 速读区：1
 
 ### 今日简报（AI）
-今日聚焦 3D 高斯泼溅（3DGS）的去模糊技术，探索事件相机引导的新方案。
-JADE-GS 提出通过事件流与 3DGS 交替优化，有效解决动态场景下的运动模糊难题。
-关注三维重建质量的读者可重点了解事件相机如何提升复杂运动场景下的渲染精度。
-- 详情：[/202607/18/README](/202607/18/README)
+今日聚焦 3D Gaussian Splatting 性能飞跃，攻克长序列建模与即时重建两大难题。
+AsySplat 通过非对称策略提升长场景效率，而另一项研究实现了无序输入的全局一致性极速重建。
+推荐关注 3DGS 在大规模动态场景及零门槛快速建模方向的最新工程进展。
+- 详情：[/202607/19/README](/202607/19/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [AsySplat: Efficient Asymmetric 3D Gaussian Splatting for Long-Sequence Scene Modeling](/202607/19/2607.10995v1-asysplat-efficient-asymmetric-3d-gaussian-splatting-for-long-sequence-scene-modeling)  
+   标签：评分：8.0/10、query:q1
+   evidence：用于高效神经体积渲染和场景建模的非对称架构
 
 ### 速读区论文标签
-1. [JADE-GS: Joint Alternating Deblurring Guided by Events in 3D Gaussian Splatting](/202607/18/2607.14990v1-jade-gs-joint-alternating-deblurring-guided-by-events-in-3d-gaussian-splatting)  
-   标签：评分：6.0/10、query:q1
-   evidence：结合基于事件去模糊的3D高斯泼溅
+1. [Immediate 3D Gaussian Splat Reconstruction of Unordered Input with Global Consistency](/202607/19/2607.14481v1-immediate-3d-gaussian-splat-reconstruction-of-unordered-input-with-global-consistency)  
+   标签：评分：7.0/10、query:q1
+   evidence：用于捕获场景实时渲染的3D高斯泼溅技术
 
 
 <div class="dpr-home-promo-card">

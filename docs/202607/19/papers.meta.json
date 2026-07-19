@@ -1,0 +1,37 @@
+{
+  "label": "2026-07-19",
+  "date": "2026-07-19",
+  "generated_at": "2026-07-19T20:04:10",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/19/2607.10995v1-asysplat-efficient-asymmetric-3d-gaussian-splatting-for-long-sequence-scene-modeling",
+      "section": "deep",
+      "title_en": "AsySplat: Efficient Asymmetric 3D Gaussian Splatting for Long-Sequence Scene Modeling",
+      "authors": "Yingji Zhong, Dave Zhenyu Chen, Fuzhao Ou, Youyu Chen, Zhihao Li, Lanqing Hong, Dan Xu",
+      "date": "2026-07-13",
+      "pdf": "https://arxiv.org/pdf/2607.10995v1",
+      "score": "8.0",
+      "evidence": "用于高效神经体积渲染和场景建模的非对称架构",
+      "tldr": "针对长序列场景建模中 3D 高斯泼溅（3DGS）模型的计算冗余问题，本文提出 AsySplat。该方法通过非对称架构解耦几何与外观建模，利用粗粒度几何分支和细粒度外观分支的协同工作，在显著减少参数量和计算开销的同时，实现了高效的高质量新视角合成，相比优化类方法提速近 800 倍。",
+      "tags": "query:q1",
+      "abstract_en": "Recent generalizable 3D Gaussian Splatting models have advanced long-sequence novel view synthesis (NVS), but at the cost of substantial redundant computation. We identify that the redundancy can be mitigated based on two observations: (i) high-precision geometry is not strictly required for high-quality NVS; (ii) appearance learning is generally easier than geometry recovery. Motivated by these insights, we propose an asymmetric architecture that decouples geometry and appearance modeling. The geometry branch processes coarse-grained tokens with most of the parameters for multi-view reconstruction, while the appearance branch operates on fine-grained tokens to capture details using significantly fewer parameters. The two branches interact through bilateral connections, enabling mutual guidance for their respective tasks. This task-aware asymmetry reduces the computational redundancy and allocates the computation more judiciously, thereby increasing parameter efficiency and enabling smaller models to achieve strong performance. On 32-view 960P inputs, our model matches optimization-based methods while delivering nearly 800x speedup, and surpasses the zero-shot performance of state-of-the-art generalizable models with markedly fewer parameters and reduced training/inference overhead, achieving an overall efficiency improvement.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/19/2607.14481v1-immediate-3d-gaussian-splat-reconstruction-of-unordered-input-with-global-consistency",
+      "section": "quick",
+      "title_en": "Immediate 3D Gaussian Splat Reconstruction of Unordered Input with Global Consistency",
+      "authors": "Andreas Meuleman, Linus Franke, Boris Zhestiankin, Camille Montemagni, George Drettakis",
+      "date": "2026-07-16",
+      "pdf": "https://arxiv.org/pdf/2607.14481v1",
+      "score": "7.0",
+      "evidence": "用于捕获场景实时渲染的3D高斯泼溅技术",
+      "tldr": "本研究针对 3D 高斯泼溅（3DGS）重建中传统 SfM 耗时长且增量式 SLAM 无法处理无序输入的问题，提出首个支持无序输入且具备全局一致性的即时反馈重建方案。通过重用视觉地点识别模型和共视图实现快速匹配，并引入基于簇的闭环检测与渐进式层级结构，该方法能在捕捉过程中实时生成高质量辐射场。实验证明，该系统可扩展至包含数千张图像的大规模场景，在保证效率的同时提供了优异的视觉重建效果。",
+      "tags": "query:q1",
+      "abstract_en": "3D Gaussian Splatting (3DGS) has become the method of choice for reconstructing and real-time rendering of captured scenes. To capture a scene with good visual quality, continuous image sequences are usually combined with out-of-order shots for better scene coverage. Structure from motion can reconstruct such captures, but only after they are all available and often with high computational cost. Incremental reconstruction methods -- often derived from SLAM solutions -- provide immediate feedback, but cannot handle the out-of-order capture we require. We provide the first immediate feedback solution for such radiance field capture that provides global consistency. We first introduce a method for fast matching in out-of-order sequences, by repurposing visual place recognition models and a covisibility graph, and provide an efficient way to find highly connected keyframes, improving quality even for ordered sequences. We show how these steps -- together with GPU optimization and careful Gaussian primitive placement -- provide fast local reconstruction, in our challenging radiance field reconstruction case. We then introduce a novel cluster-based method, again using the covisibility graph, to provide efficient loop closure that does not require sequential input. Finally, to handle large scenes in our context, we introduce a progressive hierarchy that allows our method to scale to large environments, without compromising efficiency. Our results show we provide immediate feedback 3DGS reconstruction with good visual quality in several datasets, with up to thousands of input images.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

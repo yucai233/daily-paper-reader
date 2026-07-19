@@ -1,0 +1,95 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-19T20:01:32.419662+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2607.10995v1",
+      "title": "AsySplat: Efficient Asymmetric 3D Gaussian Splatting for Long-Sequence Scene Modeling",
+      "abstract": "Recent generalizable 3D Gaussian Splatting models have advanced long-sequence novel view synthesis (NVS), but at the cost of substantial redundant computation. We identify that the redundancy can be mitigated based on two observations: (i) high-precision geometry is not strictly required for high-quality NVS; (ii) appearance learning is generally easier than geometry recovery. Motivated by these insights, we propose an asymmetric architecture that decouples geometry and appearance modeling. The geometry branch processes coarse-grained tokens with most of the parameters for multi-view reconstruction, while the appearance branch operates on fine-grained tokens to capture details using significantly fewer parameters. The two branches interact through bilateral connections, enabling mutual guidance for their respective tasks. This task-aware asymmetry reduces the computational redundancy and allocates the computation more judiciously, thereby increasing parameter efficiency and enabling smaller models to achieve strong performance. On 32-view 960P inputs, our model matches optimization-based methods while delivering nearly 800x speedup, and surpasses the zero-shot performance of state-of-the-art generalizable models with markedly fewer parameters and reduced training/inference overhead, achieving an overall efficiency improvement.",
+      "authors": [
+        "Yingji Zhong",
+        "Dave Zhenyu Chen",
+        "Fuzhao Ou",
+        "Youyu Chen",
+        "Zhihao Li",
+        "Lanqing Hong",
+        "Dan Xu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-13T01:39:19+00:00",
+      "link": "https://arxiv.org/pdf/2607.10995v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Asymmetric architecture for efficient neural volume rendering and scene modeling",
+      "llm_evidence_cn": "用于高效神经体积渲染和场景建模的非对称架构",
+      "llm_evidence": "用于高效神经体积渲染和场景建模的非对称架构",
+      "canonical_evidence": "用于高效神经体积渲染和场景建模的非对称架构",
+      "llm_tldr_en": "Decouples geometry and appearance in 3D Gaussian Splatting to reduce computation in long-sequence modeling.",
+      "llm_tldr_cn": "在3D高斯泼溅中解耦几何与外观，以减少长序列建模中的计算开销。",
+      "llm_tldr": "在3D高斯泼溅中解耦几何与外观，以减少长序列建模中的计算开销。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.14481v1",
+      "title": "Immediate 3D Gaussian Splat Reconstruction of Unordered Input with Global Consistency",
+      "abstract": "3D Gaussian Splatting (3DGS) has become the method of choice for reconstructing and real-time rendering of captured scenes. To capture a scene with good visual quality, continuous image sequences are usually combined with out-of-order shots for better scene coverage. Structure from motion can reconstruct such captures, but only after they are all available and often with high computational cost. Incremental reconstruction methods -- often derived from SLAM solutions -- provide immediate feedback, but cannot handle the out-of-order capture we require. We provide the first immediate feedback solution for such radiance field capture that provides global consistency. We first introduce a method for fast matching in out-of-order sequences, by repurposing visual place recognition models and a covisibility graph, and provide an efficient way to find highly connected keyframes, improving quality even for ordered sequences. We show how these steps -- together with GPU optimization and careful Gaussian primitive placement -- provide fast local reconstruction, in our challenging radiance field reconstruction case. We then introduce a novel cluster-based method, again using the covisibility graph, to provide efficient loop closure that does not require sequential input. Finally, to handle large scenes in our context, we introduce a progressive hierarchy that allows our method to scale to large environments, without compromising efficiency. Our results show we provide immediate feedback 3DGS reconstruction with good visual quality in several datasets, with up to thousands of input images.",
+      "authors": [
+        "Andreas Meuleman",
+        "Linus Franke",
+        "Boris Zhestiankin",
+        "Camille Montemagni",
+        "George Drettakis"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-16T01:53:13+00:00",
+      "link": "https://arxiv.org/pdf/2607.14481v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting for real-time rendering of captured scenes",
+      "llm_evidence_cn": "用于捕获场景实时渲染的3D高斯泼溅技术",
+      "llm_evidence": "用于捕获场景实时渲染的3D高斯泼溅技术",
+      "canonical_evidence": "用于捕获场景实时渲染的3D高斯泼溅技术",
+      "llm_tldr_en": "Enables immediate, globally consistent 3D Gaussian Splatting reconstruction from unordered image sequences.",
+      "llm_tldr_cn": "实现了从无序图像序列中进行即时且全局一致的3D高斯泼溅重建。",
+      "llm_tldr": "实现了从无序图像序列中进行即时且全局一致的3D高斯泼溅重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
