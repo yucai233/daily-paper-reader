@@ -1,0 +1,53 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-20T21:23:52.415695+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.11097v1",
+      "title": "Revisiting Matching Response and Swept Feature Volumes for Wide-baseline Omnidirectional Stereo",
+      "abstract": "In this paper, we propose a training strategy for confidence estimation in omnidirectional stereo, targeting the ambiguous matches that frequently occur in wide-baseline setups. Reinterpreting the matching responses produced by the 3D encoder decoder block, we show that their expectation values provide intrinsic confidence signals. Building on this, our method directly penalizes ambiguous responses without auxiliary heads, multi-pass inference, or additional modules, resulting in more efficient and generalized predictions. Beyond confidence, we introduce swept feature volume resampling, where response features produced by 3D CNNs are resampled using regressed positive matching indices and then processed by 2D CNNs to predict meta-information such as surface normals. This joint learning introduces auxiliary geometric regularization and improves depth coherence by leveraging additional contextual cues during response aggregation stage. Experimental results demonstrate that our approach enhances both confidence estimation and surface normal prediction while maintaining deployment practicality for autonomous mobility applications.",
+      "authors": [
+        "Seungjin Jeon",
+        "Jongwoo Lim",
+        "Changhee Won"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-13T05:09:06+00:00",
+      "link": "https://arxiv.org/pdf/2607.11097v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "swept feature volumes and 3D encoder-decoder for stereo",
+      "llm_evidence_cn": "用于立体匹配的扫描特征体与3D编解码器",
+      "llm_evidence": "用于立体匹配的扫描特征体与3D编解码器",
+      "canonical_evidence": "用于立体匹配的扫描特征体与3D编解码器",
+      "llm_tldr_en": "Uses 3D CNNs and feature volumes to improve confidence estimation in wide-baseline omnidirectional stereo.",
+      "llm_tldr_cn": "利用3D CNN和特征体改进了宽基线全景立体的置信度估计。",
+      "llm_tldr": "利用3D CNN和特征体改进了宽基线全景立体的置信度估计。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-07-20 <!--dpr-date:20260720-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202607/20/2607.11097v1-revisiting-matching-response-and-swept-feature-volumes-for-wide-baseline-omnidirectional-stereo" data-sidebar-item="{&quot;title&quot;: &quot;Revisiting Matching Response and Swept Feature Volumes for Wide-baseline Omnidirectional Stereo&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.11097v1-revisiting-matching-response-and-swept-feature-volumes-for-wide-baseline-omnidirectional-stereo&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;q1&quot;}], &quot;evidence&quot;: &quot;用于立体匹配的扫描特征体与3D编解码器&quot;}">Revisiting Matching Response and Swept Feature Volumes for Wide-baseline Omnidirectional Stereo</a>
   * 2026-07-19 <!--dpr-date:20260719-->
     * 精读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202607/19/2607.10995v1-asysplat-efficient-asymmetric-3d-gaussian-splatting-for-long-sequence-scene-modeling" data-sidebar-item="{&quot;title&quot;: &quot;AsySplat: Efficient Asymmetric 3D Gaussian Splatting for Long-Sequence Scene Modeling&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.10995v1-asysplat-efficient-asymmetric-3d-gaussian-splatting-for-long-sequence-scene-modeling&quot;, &quot;score&quot;: &quot;8.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;q1&quot;}], &quot;evidence&quot;: &quot;用于高效神经体积渲染和场景建模的非对称架构&quot;}">AsySplat: Efficient Asymmetric 3D Gaussian Splatting for Long-Sequence Scene Modeling</a>

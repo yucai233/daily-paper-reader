@@ -1,0 +1,23 @@
+{
+  "label": "2026-07-20",
+  "date": "2026-07-20",
+  "generated_at": "2026-07-20T21:24:18",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/20/2607.11097v1-revisiting-matching-response-and-swept-feature-volumes-for-wide-baseline-omnidirectional-stereo",
+      "section": "quick",
+      "title_en": "Revisiting Matching Response and Swept Feature Volumes for Wide-baseline Omnidirectional Stereo",
+      "authors": "Seungjin Jeon, Jongwoo Lim, Changhee Won",
+      "date": "2026-07-13",
+      "pdf": "https://arxiv.org/pdf/2607.11097v1",
+      "score": "6.0",
+      "evidence": "用于立体匹配的扫描特征体与3D编解码器",
+      "tldr": "本研究针对宽基线全景立体匹配中的歧义匹配问题，提出了一种新的置信度估计训练策略。通过重新解释3D编码器-解码器产生的匹配响应，利用其期望值作为内在置信度信号，直接惩罚歧义响应。此外，引入扫掠特征体积重采样技术，结合2D CNN预测表面法线等元信息，增强了几何正则化和深度一致性，在提升预测精度的同时保持了部署的实用性。",
+      "tags": "query:q1",
+      "abstract_en": "In this paper, we propose a training strategy for confidence estimation in omnidirectional stereo, targeting the ambiguous matches that frequently occur in wide-baseline setups. Reinterpreting the matching responses produced by the 3D encoder decoder block, we show that their expectation values provide intrinsic confidence signals. Building on this, our method directly penalizes ambiguous responses without auxiliary heads, multi-pass inference, or additional modules, resulting in more efficient and generalized predictions. Beyond confidence, we introduce swept feature volume resampling, where response features produced by 3D CNNs are resampled using regressed positive matching indices and then processed by 2D CNNs to predict meta-information such as surface normals. This joint learning introduces auxiliary geometric regularization and improves depth coherence by leveraging additional contextual cues during response aggregation stage. Experimental results demonstrate that our approach enhances both confidence estimation and surface normal prediction while maintaining deployment practicality for autonomous mobility applications.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
