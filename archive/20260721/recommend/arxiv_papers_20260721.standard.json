@@ -1,0 +1,399 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-21T21:30:54.123762+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 8,
+    "quick_skim_target": 11,
+    "quick_selected": 8
+  },
+  "deep_dive": [
+    {
+      "id": "2607.18150v1",
+      "title": "Lossless-INR: Lossless Volumetric Implicit Neural Representations",
+      "abstract": "Implicit neural representation (INR) methods provide continuous coordinate-to-value mappings and integrate naturally with direct volume rendering, making them attractive for representing volumetric data. However, existing INR-based approaches for volumetric data are inherently lossy, and even small reconstruction errors can propagate through rendering and downstream analysis. In this work, we explore Lossless-INR, a lossless INR framework for 3D scientific volumetric data based on bit-plane decomposition. By decomposing each voxel value into binary bit-planes, we reformulate reconstruction as per-bit binary classification, so that exact recovery reduces to predicting every bit correctly. To make this optimization tractable while keeping the representation compact, we combine an octree block-partitioning strategy that adaptively subdivides complex regions with a ternary feature-grid network whose grid entries are parameterized by a ternary set of values. Experiments on diverse volumetric datasets show that this design can achieve zero bit-error rate and bit-exact reconstruction, enabling faithful rendering and downstream analysis with a compact representation. The code is available at https://github.com/TouKaienn/Lossless-INR.",
+      "authors": [
+        "Kaiyuan Tang",
+        "Daniel Burke",
+        "Chaoli Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-07-20T16:50:15+00:00",
+      "link": "https://arxiv.org/pdf/2607.18150v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "lossless implicit neural representations for volume rendering",
+      "llm_evidence_cn": "用于体渲染的无损隐式神经表示",
+      "llm_evidence": "用于体渲染的无损隐式神经表示",
+      "canonical_evidence": "用于体渲染的无损隐式神经表示",
+      "llm_tldr_en": "Develops a lossless implicit neural representation framework for 3D scientific volumetric data rendering.",
+      "llm_tldr_cn": "开发了一种用于3D科学体积数据渲染的无损隐式神经表示框架。",
+      "llm_tldr": "开发了一种用于3D科学体积数据渲染的无损隐式神经表示框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.17842v1",
+      "title": "CaT-GS: Efficient 3DGS Rendering for Large Scale Scenes via Inter-frame Caching and Tile Scheduling",
+      "abstract": "Recent breakthroughs in 3D Gaussian Splatting (3DGS) have advanced neural rendering with high fidelity and speed. However, its performance degrades significantly in large-scale scenes due to the computational burden of tile-based rasterization. Existing optimization efforts either require costly scene re-training or focus on narrow aspects of the pipeline, overlooking critical inefficiencies in real-world deployments. Through a comprehensive analysis, we identify three primary sources of redundancy and low GPU utilization: redundant inter-frame pre-processing, viewpoint-based occlusion redundancy, and severe tile-level load imbalance. To address these issues, we propose CaT-GS, a novel and efficient 3DGS rendering pipeline. CaT-GS introduces a speculative multi-frame preprocessing method to eliminate redundant computations across consecutive frames, and an inter-frame caching mechanism to eliminate viewpoint redundant rendering stages. Furthermore, it refactors rasterization tasks with a dedicated kernel to mitigate tile load imbalance, significantly boosting GPU utilization. Extensive experiments demonstrate that CaT-GS achieves a speedup of up to 10 times over the original 3DGS and up to 70% over previous state-of-the-art methods, establishing a new benchmark for high-fidelity, real-time rendering of large-scale scenes.",
+      "authors": [
+        "Tingjia Zhang",
+        "Bo Chen",
+        "Shengzhong Liu",
+        "Fan Wu",
+        "Guihai Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-20T11:33:51+00:00",
+      "link": "https://arxiv.org/pdf/2607.17842v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "efficient neural rendering pipeline for large scale scenes",
+      "llm_evidence_cn": "大规模场景的高效神经渲染管线",
+      "llm_evidence": "大规模场景的高效神经渲染管线",
+      "canonical_evidence": "大规模场景的高效神经渲染管线",
+      "llm_tldr_en": "Accelerates 3D Gaussian Splatting rendering through inter-frame caching and tile scheduling.",
+      "llm_tldr_cn": "通过帧间缓存和瓦片调度加速3D高斯泼溅渲染。",
+      "llm_tldr": "通过帧间缓存和瓦片调度加速3D高斯泼溅渲染。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.16624v1",
+      "title": "SPARE-GS: Structural Parsimony and Resource Efficiency for 3D Gaussian Splatting",
+      "abstract": "3D Gaussian Splatting (3DGS) achieves high-fidelity novel view synthesis in real-time; however its training efficiency and representation compactness are hindered by excessive primitive proliferation. To address this challenge, we formulate the structural evolution of 3DGS as a global budget-constrained optimization problem and derive an optimality condition, which requires the marginal utility of structural resources to be balanced across spatial regions under a finite primitive budget. Based on this formulation, we propose SPARE-GS, a general plug-and-play framework that dynamically aligns the distribution of 3D Gaussian primitives with regional representational demand. SPARE-GS estimates capacity-normalized regional demand, assigns adaptive target quotas, and uses regional budget deviations to coordinate densification, pruning and adaptive termination toward a more balanced structural allocation. Extensive experiments across standard, accelerated, and structure-enhanced 3DGS pipelines demonstrate that SPARE-GS reduces the Gaussian count and training time by an average of 30.38% and 23.81%, respectively, while improving the average PSNR. Moreover, the resulting compact representations reduce downstream processing time and improve the rate-distortion performance of diverse compression and pruning methods, demonstrating the broad applicability of global structural budget regulation.",
+      "authors": [
+        "Zhang Chen",
+        "Shuai Wan",
+        "Fuzheng Yang",
+        "Jiazhi Xia",
+        "Weiyao Lin",
+        "Junhui Hou"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-18T03:55:12+00:00",
+      "link": "https://arxiv.org/pdf/2607.16624v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "resource efficiency for 3D Gaussian Splatting",
+      "llm_evidence_cn": "3D高斯泼溅的资源效率优化",
+      "llm_evidence": "3D高斯泼溅的资源效率优化",
+      "canonical_evidence": "3D高斯泼溅的资源效率优化",
+      "llm_tldr_en": "Optimizes 3D Gaussian Splatting efficiency by dynamically aligning primitives with representational demand.",
+      "llm_tldr_cn": "通过动态对齐基元与表示需求，优化3D高斯泼溅的训练与渲染效率。",
+      "llm_tldr": "通过动态对齐基元与表示需求，优化3D高斯泼溅的训练与渲染效率。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.17803v1",
+      "title": "FF-ProCams: Feed-Forward Gaussian Splatting for Projector-Camera System",
+      "abstract": "Projector-camera (ProCams) systems achieve active scene perception and controllable appearance manipulation via structured illumination, serving as a core infrastructure for spatial augmented reality, projection mapping, and surface reflectance acquisition. Existing inverse-rendering methods for ProCams deliver high-fidelity results but rely on time-consuming per-scene optimization, while mainstream feed-forward 3D reconstruction models produce baked appearance that cannot adapt to spatially varying projector illumination.   To resolve this accuracy-efficiency trade-off, we propose FF-ProCams, a Feed-Forward 3D Gaussian inverse-rendering framework for ProCams. A hybrid Mamba2-Transformer encoder aggregates cross-view geometric and photometric cues from sparse multi-view observations, and lightweight heads predict a relightable Gaussian representation in a single forward pass. We further design a projector-aware differentiable renderer to synthesize camera observations under arbitrary active illumination and ProCams poses. To enable feed-forward training, we construct a large-scale synthetic ProCams dataset covering diverse object geometries and surface materials. Experiments show FF-ProCams achieves high-fidelity projector-aware rendering, generalizes to unseen patterns, and supports novel projector-camera poses. Using only 8 input views, it outperforms optimization-based baselines with 297 views while reducing test-time reconstruction to 0.13 seconds (a three-to-five-order-of-magnitude speedup). The code and data are available at https://github.com/CPREgroup/FF-ProCams/.",
+      "authors": [
+        "Ziyao Wang",
+        "Yuqi Li",
+        "Wenxing Zheng",
+        "Jiaying Chen",
+        "Chong Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-20T10:42:16+00:00",
+      "link": "https://arxiv.org/pdf/2607.17803v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "feed-forward 3D Gaussian inverse-rendering",
+      "llm_evidence_cn": "前馈3D高斯逆向渲染",
+      "llm_evidence": "前馈3D高斯逆向渲染",
+      "canonical_evidence": "前馈3D高斯逆向渲染",
+      "llm_tldr_en": "A feed-forward framework for fast 3D Gaussian reconstruction and rendering in projector-camera systems.",
+      "llm_tldr_cn": "一种用于投影仪-相机系统中快速3D高斯重建与渲染的前馈框架。",
+      "llm_tldr": "一种用于投影仪-相机系统中快速3D高斯重建与渲染的前馈框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.17660v1",
+      "title": "RayOcc: Occlusion-Aware Ray Occupancy Estimation via Gaussian Mixture Intensity",
+      "abstract": "Camera-only 3D semantic occupancy prediction aims to infer voxel-wise scene semantics from multi-view images, yet remains fundamentally challenging due to depth ambiguity and occlusion. Along a single camera ray, multiple spatially separated surfaces may coexist, making occupancy inherently a multi-label existence problem rather than a single-depth estimation task. However, most existing approaches favor a single dominant depth hypothesis per ray, limiting their ability to model volumetric scenes under complex occlusion. To address this limitation, we introduce RayOcc, an occlusion-aware ray occupancy framework that reformulates ray modeling as multi-label existence prediction. Instead of predicting a categorical depth distribution, RayOcc estimates a non-normalized Gaussian mixture intensity along each ray and converts it into interval-wise occupancy probabilities via a Poisson event formulation, allowing multiple occupied hypotheses to coexist without enforcing mutual competition across depth. The predicted mixture components are interpreted as occupancy hypotheses to initialize sparse 3D Gaussian primitives, which are refined and rasterized for semantic occupancy prediction. Experiments on the nuScenes benchmark show that RayOcc achieves state-of-the-art overall IoU and mIoU among the compared Gaussian-based occupancy methods.",
+      "authors": [
+        "Junho Kim",
+        "Seongwon Lee"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-20T08:10:58+00:00",
+      "link": "https://arxiv.org/pdf/2607.17660v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "modeling volumetric scenes via ray occupancy estimation",
+      "llm_evidence_cn": "通过射线占据估计对体积场景建模",
+      "llm_evidence": "通过射线占据估计对体积场景建模",
+      "canonical_evidence": "通过射线占据估计对体积场景建模",
+      "llm_tldr_en": "Reformulates ray modeling as multi-label existence prediction to handle volumetric occlusion in 3D scenes.",
+      "llm_tldr_cn": "将射线建模重新表述为多标签存在预测，以处理3D场景中的体积遮挡。",
+      "llm_tldr": "将射线建模重新表述为多标签存在预测，以处理3D场景中的体积遮挡。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.17916v1",
+      "title": "Packet-Loss Robust 3D Gaussian Compression via Atomic Packaging and GNN-based Error Concealment",
+      "abstract": "3D Gaussian Splatting (3DGS) and recent compression schemes such as HAC++ enable high-fidelity real-time neural rendering, but their bitstreams are fragile under packet loss during network streaming. Existing compression methods often separate correlated anchor attributes into independent streams, so losing one packet can create attribute-inconsistent broken anchors and severe rendering artifacts. We propose a packet-loss robust 3DGS transmission and error concealment framework. On the encoder side, anchor-level atomic packaging jointly encapsulates all attributes of each anchor, converting corrupted-attribute failures into clean missing-anchor erasures. Stratified random grouping further disperses packet losses across the spatial domain to avoid large contiguous voids. On the decoder side, we formulate recovery as prior-aware attribute inpainting. A Context-Aware Residual Interpolation (CARI) branch uses hash-grid prior predictions and neighboring residuals to build a robust baseline, while a lightweight two-layer graph neural network with cross-attention over hash-grid priors refines high-frequency attribute residuals. Attribute-wise confidence control falls back to interpolation when learned predictions are unreliable. Experiments under 20 percent random packet loss on BungeeNeRF, Mip-NeRF 360, and Tanks and Temples show that the proposed method substantially improves over no-concealment transmission and limits average PSNR degradation to about 3 dB relative to the lossless HAC++ reference.",
+      "authors": [
+        "Yuxuan Tao",
+        "Xuerui Ma",
+        "Hao Zhang",
+        "Chunhua Peng"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.CV",
+        "cs.MM"
+      ],
+      "published": "2026-07-20T13:13:38+00:00",
+      "link": "https://arxiv.org/pdf/2607.17916v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "neural rendering via 3D Gaussian Splatting",
+      "llm_evidence_cn": "通过3D高斯泼溅进行神经渲染",
+      "llm_evidence": "通过3D高斯泼溅进行神经渲染",
+      "canonical_evidence": "通过3D高斯泼溅进行神经渲染",
+      "llm_tldr_en": "Proposes a packet-loss robust transmission and error concealment framework for 3D Gaussian Splatting.",
+      "llm_tldr_cn": "为3D高斯泼溅提出了一种抗丢包传输和错误掩盖框架。",
+      "llm_tldr": "为3D高斯泼溅提出了一种抗丢包传输和错误掩盖框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.18078v1",
+      "title": "VGOcc: Learning Visual-Geometric Gaussians for Vision-Centric 3D Driving Occupancy Prediction",
+      "abstract": "Vision-only occupancy prediction requires recovering a semantic 3D occupancy field from calibrated surround-view images, where each view provides observations with ambiguous depth along camera rays. Existing methods have progressed from dense structured representations to sparse Gaussian primitives, improving the efficiency of 3D scene representation. However, Gaussian learning still relies primarily on image domain features, which provide limited explicit geometric information for volumetric reasoning. Our key observation is that effective Gaussian occupancy modeling requires not only sparse primitives, but also richer geometric and semantic learning cues. In this paper, we propose VGOcc, which learns visual and geometric cues from foundation models for Gaussian modeling. VGOcc incorporates these cues into primitive initialization and refinement, yielding a representation termed Visual-Geometric Gaussians tailored to semantic occupancy prediction. Specifically, we propose Visual-Geometric Gaussian Birth to form spatially balanced Gaussian centers from ray depth hypotheses, while visual semantic features initialize primitive attributes. Next, we design Pose-Aware Feature Learning to combine foundation tokens with camera embeddings and calibrated ray information. Features from neighboring views are then aggregated at projected 3D locations for each Gaussian refinement stage. Finally, Gaussian decoder refines birth Gaussians with pose-aware features and renders them into semantic occupancy. Experiments on nuScenes demonstrate that VGOcc achieves state-of-the-art performance in vision-only 3D occupancy prediction. Codes will be available at https://github.com/JHLin42in/VGOcc.",
+      "authors": [
+        "Junhong Lin",
+        "Xianda Guo",
+        "Kangli Wang",
+        "Yuqi Ye",
+        "Xiaoyu Liang",
+        "Yanlun Peng",
+        "Wei Gao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-20T15:46:30+00:00",
+      "link": "https://arxiv.org/pdf/2607.18078v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Gaussian primitives for volumetric reasoning",
+      "llm_evidence_cn": "用于体积推理的高斯基元",
+      "llm_evidence": "用于体积推理的高斯基元",
+      "canonical_evidence": "用于体积推理的高斯基元",
+      "llm_tldr_en": "Enhances 3D occupancy prediction using sparse Gaussian primitives and visual-geometric learning cues.",
+      "llm_tldr_cn": "利用稀疏高斯基元和视觉几何学习线索增强3D占用预测。",
+      "llm_tldr": "利用稀疏高斯基元和视觉几何学习线索增强3D占用预测。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.17967v1",
+      "title": "Fine-Detail Monocular Geometry Estimation with Self-Guided Sparse Volumetric Refinement",
+      "abstract": "Monocular geometry estimation has recently achieved impressive performance across diverse scenes. However, state-of-the-art models still face notable distortion in local 3D structure, especially in fine details, like thin structures and small objects. We attribute this limitation to an architectural mismatch: most current models decode 3D geometry within a 2D parameterization, where feature interactions are governed by image-plane proximity rather than true 3D spatial relationships. This inadvertently mixes features from geometrically distant surfaces, resulting in over-smoothed geometry particularly around thin or elongated structure. In this paper, we propose a fine-detail monocular geometry estimation with Self-Guided Sparse 3D Refinement (SSR) that lifts monocular geometry modeling from 2D image space to 3D space for high-fidelity metric-scale point maps. Our model lifts the coarse point map from a foundation base model onto a sparse voxel shell and refines it via SSR. The SSR employs sparse convolutions that aggregate features based on 3D spatial locality, avoiding feature mixing across depth discontinuities. Extensive experiments on diverse datasets demonstrate that our method significantly outperforms existing approaches in recovering fine detailed 3D geometry across both quantitative metrics and qualitative visualizations.",
+      "authors": [
+        "Lingyu Kong",
+        "Ruicheng Li",
+        "Ruicheng Wang",
+        "Sicheng Xu",
+        "Chengtang Yao",
+        "Jianfeng Xiang",
+        "Jiaolong Yang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-20T14:07:32+00:00",
+      "link": "https://arxiv.org/pdf/2607.17967v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "sparse volumetric refinement for 3D geometry",
+      "llm_evidence_cn": "用于3D几何的稀疏体积细化",
+      "llm_evidence": "用于3D几何的稀疏体积细化",
+      "canonical_evidence": "用于3D几何的稀疏体积细化",
+      "llm_tldr_en": "Proposes a sparse volumetric refinement method to improve fine-detail monocular 3D geometry estimation.",
+      "llm_tldr_cn": "提出一种稀疏体积细化方法，以改进单目3D几何估计中的精细细节。",
+      "llm_tldr": "提出一种稀疏体积细化方法，以改进单目3D几何估计中的精细细节。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.18067v1",
+      "title": "QIRF Quantum-Inspired Non-Orthogonal Function-Space Compression for 3D Gaussian Splatting",
+      "abstract": "3D Gaussian Splatting (3DGS) achieves high-quality real-time rendering by representing a scene with a large collection of anisotropic Gaussian primitives. However, complex scenes often require millions of Gaussians, resulting in substantial storage and rendering costs. Existing compression methods mainly reduce redundancy through primitive-wise pruning, attribute quantization, clustering, or neural coding, while redundancy caused by strongly overlapping and non-orthogonal Gaussian basis functions remains largely unexplored. We present QIRF, a quantum-inspired non-orthogonal function-space compression method for 3D Gaussian Splatting. QIRF models neighboring Gaussian primitives as a local non-orthogonal basis and formulates primitive reduction as a subspace-aware selection problem. Specifically, an analytic Gaussian overlap matrix and a radiance-response density matrix are constructed to characterize functional redundancy and rendering relevance. Generalized eigendecomposition is then used to identify the dominant local subspace and select representative Gaussian primitives. An RRDM-based response model and detail-aware safeguarding further preserve visually important high-frequency structures under aggressive pruning. Experiments on 13 scenes from Mip-NeRF 360, Tanks and Temples, and Deep Blending show that QIRF reduces the Gaussian count and raw PLY storage by 71.7 percent on average, corresponding to approximately 3.54 times compression, while maintaining reconstruction quality comparable to 3DGS and achieving a marginal average PSNR improvement of 0.10 dB. QIRF also improves the average rendering speed over 3DGS by 34.3 percent. These results suggest that non-orthogonal function-space redundancy is an important yet underexplored source of representational redundancy in explicit Gaussian radiance fields.",
+      "authors": [
+        "Shizeng Jiang",
+        "Hao Zhang",
+        "Xuerui Ma",
+        "Ying Hu",
+        "Tao Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-20T15:34:45+00:00",
+      "link": "https://arxiv.org/pdf/2607.18067v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "neural rendering and function-space compression",
+      "llm_evidence_cn": "神经渲染与函数空间压缩",
+      "llm_evidence": "神经渲染与函数空间压缩",
+      "canonical_evidence": "神经渲染与函数空间压缩",
+      "llm_tldr_en": "Presents a quantum-inspired non-orthogonal function-space compression method for 3D Gaussian Splatting.",
+      "llm_tldr_cn": "提出了一种受量子启发的非正交函数空间压缩方法，用于3D高斯泼溅。",
+      "llm_tldr": "提出了一种受量子启发的非正交函数空间压缩方法，用于3D高斯泼溅。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.18187v1",
+      "title": "EVOLVE: Efficient Learned Volume Compression with Variable-Rate Encoding on a Cross-Domain Database",
+      "abstract": "Large-scale scientific simulations generate volumetric data at rates that far outpace advances in storage and network bandwidth, making effective lossy compression increasingly critical. However, conventional compressors often struggle to preserve fine structural details at high compression ratios (CRs), and implicit neural representations (INRs) require costly per-volume optimization and produce models with fixed CRs. To respond, we present EVOLVE, an autoencoder (AE)-based volume-compression framework that targets high CRs for offline compression, with three key contributions. First, we construct a large-scale cross-domain database of 6,376 volumes from 21 scientific simulations, curated via perceptual hashing to ensure diversity, enabling the optimized model to extract features that generalize across volumes within the covered scientific simulation domains. Second, we reexamine the design space of AE-based compressors and incorporate several macro- and micro-designs into a vanilla AE to develop EVOLVE, which substantially improves the expressive power and compression capability. Third, we develop a learnable gain mechanism with a three-stage training strategy to enable variable-rate encoding, allowing a single model to support continuous CR adjustment at inference time. Experiments on multiple unseen scientific simulation datasets demonstrate that EVOLVE achieves substantially higher CRs than conventional compressors at comparable reconstruction quality, while delivering compression speeds that are orders of magnitude faster than INR-based methods, highlighting its promise as a strong alternative for compressing scientific data. The code, model weights, and results are available on our project page at https://evolve-vis.github.io.",
+      "authors": [
+        "Kaiyuan Tang",
+        "Maizhe Yang",
+        "Chaoli Wang"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.DB",
+        "cs.LG"
+      ],
+      "published": "2026-07-20T17:26:21+00:00",
+      "link": "https://arxiv.org/pdf/2607.18187v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "learned volume compression for scientific simulations",
+      "llm_evidence_cn": "用于科学模拟的学习型体积压缩",
+      "llm_evidence": "用于科学模拟的学习型体积压缩",
+      "canonical_evidence": "用于科学模拟的学习型体积压缩",
+      "llm_tldr_en": "Introduces an autoencoder-based framework for high-ratio compression of large-scale scientific volumetric data.",
+      "llm_tldr_cn": "引入一种基于自动编码器的框架，用于大规模科学体积数据的高倍率压缩。",
+      "llm_tldr": "引入一种基于自动编码器的框架，用于大规模科学体积数据的高倍率压缩。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

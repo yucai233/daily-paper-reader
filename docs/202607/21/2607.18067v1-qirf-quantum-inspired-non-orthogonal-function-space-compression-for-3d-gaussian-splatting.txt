@@ -1,0 +1,293 @@
+Title: QIRF Quantum-Inspired Non-Orthogonal Function-Space Compression for 3D Gaussian Splatting
+
+URL Source: https://arxiv.org/pdf/2607.18067v1
+
+Published Time: Tue, 21 Jul 2026 02:16:20 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+# QIRF: Quantum-Inspired Non-Orthogonal Function-Space Compression for 3D Gaussian Splatting 
+
+Shizeng Jiang ∗1,2 , Hao Zhang 1,2 †, Xuerui Ma 3,4 , Ying Hu 3,4 , Tao Zhang 1,2,5 ‡ 
+
+> 1,2,5
+
+School of Electronic Information, Central South University, China  
+
+> 3,4
+
+Hunan Malanshan Audio and Video Laboratory, China 
+
+Abstract 
+
+3D Gaussian Splatting (3DGS) achieves high-quality real-time rendering by representing a scene with a large collection of anisotropic Gaussian primitives. However, complex scenes often require millions of Gaussians, resulting in substantial storage and rendering costs. Existing compression methods mainly reduce redundancy through primitive-wise pruning, attribute quantization, clustering, or neural coding, while re-dundancy caused by strongly overlapping and non-orthogonal Gaussian basis functions remains largely unexplored. We present QIRF, a quantum-inspired non-orthogonal function-space compression for 3D gaussian splatting. QIRF models neighboring Gaussian primitives as a local non-orthogonal basis and formulates primitive reduction as a subspace-aware selection problem. Specifically, an analytic Gaussian over-lap matrix and a radiance-response density matrix are con-structed to characterize functional redundancy and rendering relevance. Generalized eigendecomposition is then used to identify the dominant local subspace and select representative Gaussian primitives. An RRDM-based response model and detail-aware safeguarding further preserve visually important high-frequency structures under aggressive pruning. Experi-ments on 13 scenes from Mip-NeRF 360, Tanks&Temples, and Deep Blending show that QIRF reduces the Gaussian count and raw PLY storage by 71 .7% on average, correspond-ing to approximately 3.54 × compression, while maintaining reconstruction quality comparable to 3DGS and achieving a marginal average PSNR improvement of 0.10 dB. QIRF also improves the average rendering speed over 3DGS by 34 .3% .These results suggest that non-orthogonal function-space re-dundancy is an important yet underexplored source of repre-sentational redundancy in explicit Gaussian radiance fields. 
+
+1 Introduction 
+
+Novel-view synthesis (NVS) aims to reconstruct a scene from calibrated images and render photorealistic views from unseen camera poses. Neural Radiance Fields (NeRFs) (Mildenhall et al. 2021) achieve remarkable rendering qual-ity but typically require expensive volumetric sampling. In contrast, 3D Gaussian Splatting (3DGS) (Kerbl et al. 2023) represents a scene using explicit anisotropic Gaussian prim-itives and renders them through differentiable rasterization, 
+
+> ∗
+
+First Author 
+
+> †
+
+Corresponding Author 
+
+> ‡
+
+Corresponding Author 
+
+enabling efficient optimization and high-quality real-time rendering. However, efficient rasterization does not neces-sarily imply a compact scene representation. Adaptive den-sification repeatedly introduces new primitives into under-reconstructed regions (Lee et al. 2024; Fan et al. 2023), causing complex scenes to contain millions of Gaussians and occupy hundreds of megabytes or even more than one gigabyte in raw PLY format. This redundancy increases stor-age requirements, GPU memory consumption, transmission bandwidth, and rasterization cost. Existing compact 3DGS methods address this problem through primitive pruning (Fan et al. 2023; Wang et al. 2024), attribute quantization (Fan et al. 2023; Chen et al. 2024), codebook learning (Lee et al. 2024), anchor-based prediction (Lu et al. 2024; Chen et al. 2024), and entropy coding (Chen et al. 2024; Wang et al. 2024). In particu-lar, pruning-based approaches generally assign an indepen-dent importance score to each Gaussian according to opac-ity, visibility, gradient magnitude, or rendering contribution. Although effective, such primitive-wise criteria do not ex-plicitly model the functional redundancy caused by strongly overlapping anisotropic Gaussians. Two Gaussians may both receive high individual importance scores while spanning nearly the same local scene function. Therefore, determining whether a primitive is individually important is not equiva-lent to determining whether it contributes a unique direction to the underlying radiance-field representation. Motivated by this observation, we view a 3DGS scene as a function space spanned by non-orthogonal Gaussian basis functions and formulate compact scene representation as a local basis-reduction problem. Inspired by non-orthogonal basis analysis in quantum chemistry (Hall 1951; Roothaan 1951; Löwdin 1955), we introduce QIRF, a quantum-inspired non-orthogonal function-space compression for 3D gaussian splatting. Within each spatial block, QIRF con-structs an analytic overlap matrix to characterize correlations among neighboring Gaussian basis functions and a radiance-response density matrix to describe their accumulated render-ing relevance. Generalized eigendecomposition is then used to identify the dominant local response subspace, from which representative Gaussian primitives are selected according to their participation in the retained modes. An RRDM-based response model further integrates multiple rendering signals, while detail-aware safeguarding preserves visually important arXiv:2607.18067v1 [cs.CV] 20 Jul 2026 primitives around thin structures, high-frequency textures, and occlusion boundaries. Experiments on 13 scenes from Mip-NeRF 360, Tanks&Temples, and Deep Blending show that QIRF removes 71 .7% of Gaussian primitives on aver-age and achieves approximately 3.54 × raw PLY compres-sion while maintaining reconstruction quality comparable to 3DGS, with a marginal average PSNR improvement of 0.10 
+
+dB. QIRF also improves the average rendering speed over 3DGS by 34 .3% .Our contributions are summarized as follows: 1. We formulate compact 3D Gaussian Splatting as a lo-cal non-orthogonal basis-reduction problem and explic-itly model functional redundancy among overlapping anisotropic Gaussian primitives. 2. We introduce a subspace-aware primitive selection method that combines an analytic Gaussian overlap ma-trix with a radiance-response density matrix through gen-eralized eigendecomposition. 3. We develop an RRDM-based response model and a detail-aware safeguarding strategy to preserve visually impor-tant structures under aggressive primitive reduction. 4. Experiments on 13 benchmark scenes demonstrate that QIRF removes 71 .7% of Gaussian primitives on average, achieves approximately 3.54 × raw PLY compression, and improves the average rendering speed over 3DGS by 34 .3% , while maintaining comparable reconstruction quality. 
+
+2 Related Work 
+
+Neural Radiance Fields and 3D Gaussian Splatting 
+
+Neural Radiance Fields (NeRFs) represent scenes as contin-uous neural functions and synthesize novel views through differentiable volume rendering (Mildenhall et al. 2021). Subsequent methods, such as mip-NeRF, mip-NeRF 360, and Zip-NeRF, improve anti-aliasing, rendering quality, and robustness in complex or unbounded scenes (Barron et al. 2021, 2022, 2023). However, NeRF-based approaches gen-erally rely on dense sampling along camera rays and re-peated network evaluations, which limits training and ren-dering efficiency. To reduce this computational cost, ex-plicit and structured radiance-field representations have been widely explored. PlenOctrees and SNeRG convert learned radiance fields into structures suitable for fast rendering (Yu et al. 2021; Hedman et al. 2021), while Instant-NGP acceler-ates optimization through multiresolution hash-grid encod-ing (Müller et al. 2022). Other methods improve efficiency using sparse voxel grids, tensor decomposition, or planar fac-torization (Fridovich-Keil et al. 2022; Sun, Sun, and Chen 2022; Chen et al. 2022; Fridovich-Keil et al. 2023). 3D Gaussian Splatting (3DGS) (Kerbl et al. 2023) rep-resents a scene using explicit anisotropic Gaussian primi-tives and renders them through differentiable rasterization. This formulation enables efficient optimization and high-quality real-time rendering without dense volumetric sam-pling. However, the adaptive densification process of 3DGS may generate millions of Gaussian primitives in complex scenes. The resulting over-parameterized representation in-creases storage requirements, GPU memory consumption, transmission bandwidth, and rasterization cost, motivating extensive research on compact and efficient 3D Gaussian representations. 
+
+Compact 3D Gaussian Representations 
+
+The explicit representation of 3D Gaussian Splatting (3DGS) has motivated extensive research on compact scene represen-tations. Existing methods mainly reduce redundancy through 
+
+primitive reduction and attribute compression .Primitive-reduction methods remove visually insignificant or redundant Gaussians according to opacity, visibility, gra-dients, or rendering contribution. LightGaussian performs importance-based pruning followed by lightweight recovery optimization to improve reconstruction quality after prun-ing (Fan et al. 2023). More recent approaches, including MaskGaussian (Liu et al. 2025) and RadSplat (Niemeyer et al. 2025), further improve primitive selection using struc-tured masking or rendering-aware importance estimation, enabling more compact Gaussian representations while pre-serving rendering quality. Although effective, these methods generally evaluate the importance of each Gaussian indepen-dently using scalar scores or learned masks, without explic-itly modeling the functional redundancy among overlapping Gaussian basis functions. Attribute-compression methods instead focus on reduc-ing the storage cost of retained primitives. Compact3DGS compresses Gaussian attributes through vector quantization, learned codebooks, and entropy coding while preserving re-construction quality (Lee et al. 2024). Such methods sig-nificantly reduce model size by optimizing parameter repre-sentations and coding schemes, yet they still treat Gaussian primitives as independent entities and do not explicitly ex-ploit the function-space correlation induced by overlapping Gaussian bases. Unlike previous approaches, QIRF performs compression from a function-space perspective. Rather than assigning in-dependent importance scores or compressing only Gaussian attributes, it constructs a local non-orthogonal basis us-ing neighboring Gaussians and identifies dominant scene subspaces through generalized natural scene orbital analy-sis. This enables QIRF to remove functionally redundant Gaussian basis functions before representation optimization, making it complementary to existing pruning- and attribute-compression-based methods. Generalized Eigenanalysis in Non-Orthogonal Function Spaces Representations constructed from overlapping basis functions are commonly analyzed through an overlap matrix that defines the metric of a non-orthogonal basis space. In quantum chemistry, the Roothaan–Hall formulation solves a generalized eigenvalue problem to account for correlations among non-orthogonal atomic orbitals (Roothaan 1951; Hall 1951). Natural-orbital analysis further diagonalizes a density operator and uses the resulting occupation values to iden-tify compact low-rank subspaces (Löwdin 1955; Löwdin and Shull 1956). Similar generalized eigendecomposition tech-niques have also been explored in numerical linear algebra and learning problems involving non-orthogonal represen-tations (Golub and Van Loan 2013; Saad 2011; Huggins et al. 2020).These studies suggest that generalized eigen-decomposition provides a principled way to identify domi-nant subspaces when basis functions are correlated and non-orthogonal. Such a perspective has received little attention in compact 3D Gaussian Splatting, although neighboring anisotropic Gaussian primitives also exhibit substantial spa-tial overlap and functional correlation. Consequently, rep-resenting a scene as a collection of independent Gaussian primitives may overlook redundancy existing in the underly-ing local function space. Unlike standard principal component analysis (PCA), which assumes an Euclidean inner product and orthogonal basis vectors (Jolliffe and Cadima 2016), generalized eigen-decomposition explicitly incorporates the overlap matrix as the metric of the local basis space (Roothaan 1951; Hall 1951). Consequently, the extracted dominant modes jointly account for both rendering responses and basis redundancy, making the formulation more suitable for compact represen-tations built from overlapping Gaussian primitives. Building upon this observation, QIRF models neighboring Gaussian primitives as a local non-orthogonal basis and for-mulates Gaussian selection as a generalized eigenvalue prob-lem. The resulting dominant subspace provides a function-space criterion for identifying representative Gaussian prim-itives, which differs fundamentally from independent impor-tance scoring and attribute-level compression. 
+
+3 Method 
+
+Background 
+
+3D Gaussian Splatting (3DGS) represents a scene using ex-plicit anisotropic Gaussian primitives. Each Gaussian is pa-rameterized by its center position μi, covariance matrix Σi,opacity αi, and view-dependent appearance coefficients ci.Its continuous density is 
+
+Gi(x) = exp 
+
+
+
+− 12 (x − μi)⊤Σ−1 
+
+> i
+
+(x − μi)
+
+
+
+, (1) where x ∈ R3. The covariance is parameterized as 
+
+Σi = RiSiS⊤ 
+
+> i
+
+R⊤ 
+
+> i
+
+, (2) where Ri and Si denote the rotation and scaling matrices. During rendering, Gaussians are projected onto the image plane and composited according to depth order, 
+
+C(p) = X 
+
+> i∈N (p)
+
+Ti(p)αi(p)ci(d), (3) where 
+
+Ti(p) = Y
+
+> j<i
+
+(1 − αj (p)) . (4) Although this explicit rasterization enables real-time ren-dering, adaptive densification often introduces millions of Gaussian primitives, resulting in substantial redundancy, storage overhead, and increased rasterization cost. Our objec-tive is therefore to identify a compact subset of representative Gaussians while preserving rendering quality. 
+
+Method Overview 
+
+We present an overview of our proposed pipeline in Figure 1. Given an input 3DGS scene, we first partition Gaussian primitives into adaptive voxel blocks and model neighbor-ing anisotropic Gaussians within each block as overlapping non-orthogonal basis functions. For each local block, QIRF constructs a Gaussian overlap matrix to measure basis redun-dancy and a Radiance-Response Density Matrix (RRDM) to describe rendering relevance. These matrices are then used for Generalized Natural Scene Orbital (GNSO) anal-ysis, where a generalized eigenvalue problem identifies the dominant local function subspace and representative Gaus-sians are selected according to their participation in the re-tained modes. To preserve thin structures and high-frequency details, detail-aware safeguarding retains a small number of important inactive Gaussians before hard pruning. The se-lected primitives are finally fine-tuned without further den-sification, producing a compact 3DGS representation with reduced storage and maintained rendering quality. 
+
+Problem Formulation and Adaptive Partitioning 
+
+A 3DGS scene is represented by N anisotropic Gaussian primitives G = {G i}Ni=1 , where each primitive is parameter-ized as 
+
+Gi = ( μi, Σi, α i, ci) . (5) Our goal is to identify a compact representative subset 
+
+A ⊆ { 1, . . . , N }, |A| ≪ N, (6) while preserving novel-view rendering quality. Unlike primitive-wise pruning methods that evaluate each Gaussian independently, QIRF formulates compression as a local non-orthogonal basis-reduction problem. The objective is to re-tain primitives that span the dominant radiance-response sub-space rather than simply removing Gaussians with low scalar importance scores. Constructing global N ×N correlation matrices is compu-tationally infeasible for scenes containing millions of Gaus-sians. We therefore partition the scene into local voxel blocks and perform function-space analysis independently within each block. In practice, we use a scene-adaptive voxel size selected from a small candidate set according to the sparsity of the initial partition. Specifically, we first partition the scene with a base voxel size v0 and compute the block sparsity ratio 
+
+ρblock = Nblocks 
+
+NGaussians 
+
+, (7) where Nblocks denotes the number of non-empty blocks. A larger ρblock indicates many low-occupancy blocks, for which a coarser voxel size is used to improve the stability of local subspace estimation. This adaptive choice depends only on training-scene geometry and does not use test-view metrics. 
+
+Local Function-Space Modeling 
+
+Within each voxel block, neighboring Gaussian primitives are interpreted as non-orthogonal spatial basis functions. For the i-th primitive, we denote the corresponding Gaussian basis by ϕi(x), following the anisotropic density defined in Input 3DGS 
+
+G = {G i}
+
+Local Function-Space Analysis Local Function-Space Modeling(On the zoomed block) Gaussian Overlap Matrix S 
+
+> Measure basis overlap (non-orthogonal) 11... m22... m
+
+φ1φ2 φ 3φm
+
+> ...
+
+Radiance-Response Density Matrix P     
+
+> Aggregate rendering Optimization responses Radiance-Response Density: P=ηPrender + (1-η)Popt 1122... ... mmHigh Low High Low
+
+Detail -Aware Safeguarding Inactive Candidates 
+
+... Detail Score Retained(keep) Discarded(prune) 
+
+Compact 3DGS Representation Representative Gaussian Set    
+
+> GNSO Analysis (Per Block) Generalized eigenproblem
+> Pc = λSc Dominant Function Modes (Eigenvalue spectrum) 10 0
+> 10 -2 10 -4 10 -6 1kmEnergy-preserving truncation (energy) }Energy-preserving truncation Representative Gaussian Selection
+
+... 
+
+> (GNSO) log λ
+> Discarded modes Local Dominant Function Subspace
+
+. . . 
+
+. . . Figure 1: Overview of QIRF. Local overlap and radiance-response density matrices guide GNSO-based subspace selection, while detail-aware safeguarding preserves important primitives for compact 3DGS representation. Eq. (1). We first construct the local overlap matrix 
+
+Sij =
+
+Z
+
+R3
+
+ϕi(x)ϕj (x) dx, (8) which measures the functional similarity between two Gaussian bases. A large value of Sij indicates strong spa-tial overlap and potential functional redundancy. To improve numerical stability, we use the regularized metric 
+
+eS = S + ϵI, ϵ = 10 −4. (9) Spatial overlap alone does not determine rendering rel-evance. After densification stops, we accumulate for each Gaussian an eight-dimensional response descriptor ¯ri ∈ R8
+
+using an exponential moving average. The descriptor con-tains four rendering-response channels (visibility, compos-ited contribution, residual-weighted contribution, and pro-jected alpha mass) and four optimization-response channels (gradient magnitudes of position, scale, opacity, and appear-ance). The exact channel definitions and normalization are provided in the supplementary material. For a local block with m Gaussians, we stack the normalized rendering and optimization components into 
+
+Hr, H o ∈ Rm×4, respectively. We then construct the Radiance-Response Density Matrix (RRDM) as 
+
+P = η HrH⊤
+
+r
+
+tr( HrH⊤
+
+r ) + ϵ +(1 −η) HoH⊤
+
+o
+
+tr( HoH⊤
+
+o ) + ϵ , η = 0 .75 .
+
+(10) By construction, P ∈ Rm×m is positive semidefinite and encodes the similarity of accumulated rendering and optimization responses between local Gaussians. Only the 
+
+8-dimensional per-Gaussian descriptors are stored during training; the local RRDM is constructed once at the pruning iteration. 
+
+Generalized Natural Scene Orbital Compression 
+
+Given the overlap metric eS and the Radiance-Response Den-sity Matrix P, QIRF identifies the dominant local function modes by solving the generalized eigenvalue problem 
+
+Pu k = λk eSu k, (11) where the eigenvectors uk define the Generalized Natural Scene Orbitals (GNSO) , and the corresponding eigenvalues 
+
+λk measure the occupation strength of each local response mode. Unlike conventional principal component analysis (PCA) or covariance decomposition, which assumes an Euclidean 3DGS Compact 3DGS MaskGaussian Ours bicycle counter truck playroom 
+
+> 25.21 6.07 M 24.71 2.65 M 25.08 2.34 M 25.20 1.72 M 28.95 1.20 M 28.63 0.52 M 29.05 0.42 M 28.97 0.32 M 25.34 2.58 M 25.02 0.96 M 25.32 0.89 M 25.45 0.85 M 29.88 2.33 M 30.20 0.76M 30.20 0.57 M 30.01 0.50 M
+
+Figure 2: Qualitative visual comparisons and quantitative results for QIRF, 3DGS, MaskGaussian, and Compact3DGS. We report PSNR and the number of Gaussians in millions. inner product, Eq. (11) explicitly incorporates the overlap matrix as the metric of the local basis space. Consequently, the extracted modes jointly account for rendering relevance and functional redundancy among neighboring Gaussian ba-sis functions, making the formulation particularly suitable for compact explicit Gaussian representations. After sorting the occupation values in descending order, we retain the smallest number of modes r satisfying 
+
+Prk=1 λk
+
+Pmk=1 λk
+
+≥ τ, τ = 0 .95 , (12) which preserves the dominant local function subspace while discarding weak response modes. The retained modes are mapped back to the original Gaussian primitives using an occupation-weighted partici-pation score, 
+
+qi =
+
+> r
+
+X
+
+> k=1
+
+λk|uik |2, (13) where a larger qi indicates a stronger contribution of the i-th Gaussian to the dominant local function subspace. To obtain a discrete primitive set, each block retains the top-kb partici-pation scores, where kb = min {mb, max( rb, ⌈κm b⌉)} with 
+
+κ = 0 .22 . Thus, τ determines the retained GNSO subspace, whereas κ controls the primitive budget. The complete block-wise selection procedure is provided in the supplementary material. The resulting representative set forms the base compact representation, which is further refined by the following detail-aware safeguarding strategy. 
+
+Detail-Aware Safeguarding and Post-Pruning Optimization 
+
+Although GNSO preserves the dominant local function sub-space, aggressive truncation may discard small Gaussian primitives corresponding to thin structures, high-frequency textures, or occlusion boundaries. To alleviate this issue, we assign each inactive Gaussian a detail score according to its gradient response, visibility, scale, and opacity, 
+
+di = gγi vνi s−ρi αδi , (14) where gi, vi, si, and αi denote the normalized gradient mag-nitude, accumulated visibility, effective Gaussian scale, and opacity, respectively. The inverse-scale term favors small Gaussian primitives that are more likely to represent fine geometric structures. From the GNSO-inactive candidates, we retain the top 
+
+Kdetail = ⌊0.05 N ⌋ Gaussians ranked by the detail score. 
+
+Kdetail = ⌊0.05 N ⌋ , (15) yielding the final representative set 
+
+A = AGNSO ∪ A detail . (16) This safeguarding step preserves visually important lo-cal structures while maintaining a compact Gaussian representation. After hard pruning, the retained Gaussian primitives are further optimized with densification disabled, ensuring that the representation remains fixed in size. The post-pruning optimization minimizes 
+
+L = L3DGS + λMSE LMSE , λMSE = 2 , (17) where L3DGS is the original reconstruction objective and 
+
+LMSE is an additional reconstruction loss that compen-sates for the quality degradation introduced by pruning. Since densification is disabled after pruning, the optimization Table 1: Quantitative comparison of our method with prior work on three benchmark datasets. Results marked with ∗ are cited from original papers; all other values are obtained via our reproduced experiments. #GS denotes the number of Gaussians in millions. FPS denotes rendering speed. Best results are highlighted in bold with light red background. Method Mip-NeRF 360 Tanks&Temples Deep Blending PSNR ↑ SSIM ↑ LPIPS ↓ #GS (M) ↓ FPS ↑ PSNR ↑ SSIM ↑ LPIPS ↓ #GS (M) ↓ FPS ↑ PSNR ↑ SSIM ↑ LPIPS ↓ #GS (M) ↓ FPS ↑                                                                                          
+
+> 3DGS ∗27.21 0.815 0.214 ––23.14 0.841 0.183 ––29.41 0.903 0.243 ––3DGS 27.42 0.813 0.218 3.300 187.70 23.62 0.844 0.179 1.830 254.50 29.45 0.899 0.247 2.810 201.20 RadSplat 27.45 0.811 0.223 2.184 247.80 23.61 0.847 0.177 1.053 396.40 29.55 0.903 0.243 1.515 345.30 Compact3DGS 27.01 0.797 0.247 1.429 281.10 23.35 0.830 0.202 0.833 358.90 29.73 0.901 0.258 1.044 366.20 MaskGaussian 27.43 0.812 0.224 1.228 384.70 23.61 0.846 0.180 0.740 558.30 29.78 0.907 0.245 0.914 532.40
+> Ours 27.44 0.806 0.241 0.951 240.25 23.79 0.842 0.194 0.605 335.96 29.81 0.905 0.247 0.624 288.21
+
+Table 2: Quantitative comparison of our method with prior work on three datasets. PLY (MB) represents the storage size of point cloud files, and Train denotes training time. Best results are highlighted in bold with light red background. Method Mip-NeRF 360 Tanks&Temples Deep Blending PSNR ↑ SSIM ↑ LPIPS ↓ #GS (M) ↓ PLY (MB) ↓ Train ↓ PSNR ↑ SSIM ↑ LPIPS ↓ #GS (M) ↓ PLY (MB) ↓ Train ↓ PSNR ↑ SSIM ↑ LPIPS ↓ #GS (M) ↓ PLY (MB) ↓ Train ↓                                                      
+
+> Compact3DGS 27.01 0.797 0.247 1.429 327.45 26m58s 23.35 0.830 0.202 0.833 198.10 14m44s 29.73 0.901 0.258 1.044 247.93 22m08s MaskGaussian 27.43 0.812 0.224 1.228 287.38 20m21s 23.61 0.846 0.180 0.740 175.13 11m11s 29.78 0.907 0.245 0.914 216.24 16m37s
+> Ours 27.44 0.806 0.241 0.951 224.96 26m14s 23.79 0.842 0.194 0.605 142.97 12m58s 29.81 0.905 0.247 0.624 147.50 20m56s
+
+improves rendering fidelity while keeping the number of Gaussian primitives unchanged, resulting in a compact fixed-cardinality 3DGS representation. 
+
+4 Experiments 
+
+Experimental Settings 
+
+Implementation Details. All experiments are conducted on a single NVIDIA RTX 4090 GPU for 30,000 training it-erations. Standard 3DGS densification is performed until iteration 13,000, followed by RRDM accumulation. Hard pruning is applied at iteration 15,000, after which the re-tained Gaussian primitives are optimized with densification disabled. Unless otherwise specified, the keep ratio, detail safeguarding ratio, and GNSO energy threshold are set to 
+
+0.22 , 0.05 , and 0.95 , respectively. The RRDM dimension is 8, the density mixing coefficient is 0.75 , and the exponential decay factor is 0.995 . A base voxel size of 0.03 is adopted and is increased to 0.06 for sparse scenes according to the adaptive partitioning strategy. After pruning, an additional reconstruction loss with weight λMSE = 2 is introduced to improve reconstruction quality. Except for the adaptive voxel size, all hyperparameters are shared across all scenes. 
+
+Compared Methods. We compare QIRF with the origi-nal 3DGS and three representative compact 3DGS meth-ods: Compact3DGS, MaskGaussian, and RadSplat. Com-pact3DGS reduces storage through attribute quantization and entropy coding, MaskGaussian performs adaptive primitive selection using learnable Gaussian masks, and RadSplat im-proves compactness through rendering-aware Gaussian prun-ing. Unless otherwise stated, all baseline results are taken from the original papers or reproduced using the official im-plementations with the recommended settings. 
+
+Datasets and Evaluation Metrics. Following previous com-pact 3DGS works, experiments are conducted on three public benchmarks: Mip-NeRF 360, Tanks & Temples, and Deep Blending. Reconstruction quality is evaluated using PSNR, SSIM, and LPIPS. Representation efficiency is measured by the number of retained Gaussian primitives (#GS), raw PLY storage size, and rendering speed (FPS). Higher PSNR, SSIM, and FPS indicate better performance, whereas lower LPIPS, Gaussian count, and storage size indicate a more compact representation. 
+
+Experimental Results 
+
+Table 1 reports quantitative comparisons between QIRF and recent compact 3DGS methods on Mip-NeRF 360, Tanks&Temples, and Deep Blending. Compared with vanilla 3DGS, QIRF substantially reduces the number of Gaussian primitives while maintaining competitive reconstruction quality. Specifically, QIRF achieves the smallest Gaussian count on all three datasets, reducing the primitives by ap-proximately 71 .2% , 67 .0% , and 77 .8% , respectively. Despite this aggressive compression, QIRF achieves the best average PSNR on Tanks&Temples and Deep Blending, and remains highly competitive on Mip-NeRF 360. These results indicate that function-space compression can effectively remove re-dundant Gaussian primitives without noticeably degrading pixel-level reconstruction fidelity. Table 2 further compares storage size and training cost with Compact3DGS and MaskGaussian. QIRF achieves the smallest raw PLY size across all datasets, reducing the aver-age storage to 224 .96 MB on Mip-NeRF 360, 142 .97 MB on Tanks&Temples, and 147 .50 MB on Deep Blending. Com-pared with MaskGaussian, QIRF reduces PLY storage by 
+
+21 .7% , 18 .4% , and 31 .8% on the three datasets, respectively. Compared with Compact3DGS, QIRF reduces storage by 
+
+31 .3% , 27 .8% , and 40 .5% , respectively. Although QIRF is not always the fastest method during training, its training time remains comparable to existing compact 3DGS approaches while providing a significantly more compact representation. Qualitative comparisons are shown in Figure 2. Com-pared with vanilla 3DGS, Compact3DGS and MaskGaus-sian, QIRF preserves scene geometry, object boundaries, and high-frequency textures while using fewer Gaussian Table 3: Quantitative ablation study of our core components on three benchmark datasets. GNSO denotes the generalized natural scene orbital subspace selection module; GNSO+Detail represents our full QIRF pipeline equipped with the detail-aware recovery strategy. Method Mip-NeRF 360 Tanks&Temples Deep Blending PSNR ↑ SSIM ↑ LPIPS ↓ #GS (M) ↓ PLY (MB) ↓ Train ↓ PSNR ↑ SSIM ↑ LPIPS ↓ #GS (M) ↓ PLY (MB) ↓ Train ↓ PSNR ↑ SSIM ↑ LPIPS ↓ #GS (M) ↓ PLY (MB) ↓ Train ↓                                    
+
+> GNSO 27.18 0.7933 0.2621 0.932 220.50 27m09s 23.76 0.8363 0.2029 0.532 125.80 13m53s 29.86 0.9042 0.2515 0.508 120.20 21m47s GNSO+Detail 27.44 0.8060 0.2411 0.951 224.96 26m14s 23.79 0.8415 0.1940 0.605 142.97 12m58s 29.81 0.9049 0.2473 0.624 147.50 20m56s
+
+12345625.16 25.18 25.20 123429.0 29.2 29.4 29.6 0.0 0.5 1.0 1.5 21.9 22.0 22.1 22.2 1234527.1 27.2 27.3  Ordinary Eigenspace  Generalized Eigenspace - - - 3DGS PSNR # Gaussian(M) Bicycle # Gaussian(M) DrJohnson PSNR # Guassian(M) PSNR Train  Ordinary Eigenspace  Generalized Eigenspace - - - 3DGS Garden PSNR # Guassian(M)  Ordinary Eigenspace  Generalized Eigenspace - - - 3DGS  Ordinary Eigenspace  Generalized Eigenspace - - - 3DGS 
+
+Figure 3: PSNR versus the number of retained Gaussians for ordinary and generalized eigenspace selection. The dashed line represents the original 3DGS performance. primitives. Fine structures, such as bicycle spokes, thin ob-ject boundaries, reflective regions, vehicle contours, and in-door decorations, remain visually consistent after pruning. These observations suggest that the proposed GNSO-based function-space selection and detail-aware safeguarding pre-serve visually important structures under high compression ratios. In terms of rendering efficiency, QIRF achieves 240 .3,
+
+336 .0, and 288 .2 FPS on Mip-NeRF 360, Tanks&Temples, and Deep Blending, respectively, as reported in Table 1. This is faster than vanilla 3DGS, showing that reducing re-dundant primitives directly improves rasterization efficiency. However, QIRF is slower than highly optimized rendering-oriented methods such as MaskGaussian and Compact3DGS. This suggests that the current implementation primarily fo-cuses on function-space redundancy reduction and com-pact representation, while further system-level optimization, such as active-Gaussian indexing and sparse rasterization, is needed to fully translate compression into rendering speed. 
+
+Ablation Study 
+
+Compares ordinary eigenspace selection with the proposed generalized eigenspace formulation on Bicycle, Garden, Train, and DrJohnson in Figure 3. Both variants retain a substantially smaller number of Gaussians than the original 3DGS models. However, the generalized formulation consis-tently achieves higher PSNR under a comparable Gaussian budget. This advantage is particularly evident on Garden and Train, where ordinary eigendecomposition causes a more noticeable quality degradation. The results demonstrate that treating the Gaussian primitives as a non-orthogonal basis and explicitly incorporating the overlap matrix leads to a more informative subspace and more reliable Gaussian se-lection. Table 3 shows that detail-aware safeguarding improves re-construction quality over the GNSO-only model with limited additional storage. On Mip-NeRF 360, PSNR increases from 
+
+27 .18 to 27 .44 dB, SSIM from 0.7933 to 0.8060 , and LPIPS decreases from 0.2621 to 0.2411 . Similar gains are observed on Tanks&Temples, while on Deep Blending PSNR remains nearly unchanged but SSIM and LPIPS improve. These gains require only a modest increase in Gaussian count and PLY size, indicating that retaining a small number of structurally important primitives effectively compensates for the quality loss caused by aggressive function-space pruning. 
+
+Limitations and Future Work 
+
+Several aspects of QIRF remain open for further explo-ration. The current framework mainly focuses on reducing primitive-level redundancy, while attribute quantization and entropy coding are not incorporated; consequently, the re-ported storage results primarily reflect raw PLY compression. The adaptive partitioning strategy currently selects from a small set of voxel sizes, and more flexible scene-dependent partitioning may further improve robustness. In addition, the dominant GNSO subspace is mapped back to representative Gaussian primitives rather than directly rendered as a con-tracted basis. Although QIRF improves rendering efficiency over vanilla 3DGS, further integration with sparse rasteri-zation and dedicated CUDA kernels may provide additional acceleration. These directions offer opportunities to extend QIRF toward more compact and efficient Gaussian radiance-field representations. 
+
+5 Conclusion 
+
+We presented QIRF, a quantum-inspired non-orthogonal function-space compression for 3D gaussian splatting. Rather than treating Gaussian primitives independently, QIRF models neighboring Gaussians as a local non-orthogonal basis and combines an analytic overlap matrix with a Radiance-Response Density Matrix to identify dom-inant scene subspaces through generalized eigendecompo-sition. Detail-aware safeguarding further preserves visually important structures under aggressive primitive reduction. Across 13 scenes from three standard datasets, QIRF removes 
+
+71 .7% of Gaussian primitives on average and achieves ap-proximately 3.54 × raw PLY compression while maintaining comparable reconstruction quality, with a marginal average PSNR improvement of 0.10 dB. These results suggest that non-orthogonal function-space redundancy is an important yet underexplored source of representational redundancy in explicit Gaussian radiance fields. Future work will investi-gate more flexible spatial partitioning, perceptual response modeling, contracted Gaussian basis optimization, and in-tegration with attribute quantization, entropy coding, and specialized rendering kernels. 
+
+References 
+
+Barron, J. T.; Mildenhall, B.; Tancik, M.; Hedman, P.; Martin-Brualla, R.; and Srinivasan, P. P. 2021. Mip-NeRF: A Multiscale Representation for Anti-Aliasing Neural Radiance Fields. In Proceedings of the IEEE/CVF Inter-national Conference on Computer Vision , 5855–5864. Los Alamitos, CA: IEEE Computer Society. Barron, J. T.; Mildenhall, B.; Verbin, D.; Srinivasan, P. P.; and Hedman, P. 2022. Mip-NeRF 360: Unbounded Anti-Aliased Neural Radiance Fields. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,5470–5479. Los Alamitos, CA: IEEE Computer Society. Barron, J. T.; Mildenhall, B.; Verbin, D.; Srinivasan, P. P.; and Hedman, P. 2023. Zip-NeRF: Anti-Aliased Grid-Based Neural Radiance Fields. In Proceedings of the IEEE/CVF In-ternational Conference on Computer Vision , 19697–19705. Los Alamitos, CA: IEEE Computer Society. Chen, A.; Xu, Z.; Geiger, A.; Yu, J.; and Su, H. 2022. Ten-soRF: Tensorial Radiance Fields. In Proceedings of the Eu-ropean Conference on Computer Vision , 333–350. Cham, Switzerland: Springer Nature Switzerland. Chen, Y.; Wu, Q.; Lin, W.; Harandi, M.; and Cai, J. 2024. HAC: Hash-Grid Assisted Context for 3D Gaussian Splatting Compression. In Proceedings of the European Conference on Computer Vision , 422–438. Cham, Switzerland: Springer Nature Switzerland. Fan, Z.; Wang, K.; Wen, K.; Zhu, Z.; Xu, D.; and Wang, Z. 2023. LightGaussian: Unbounded 3D Gaussian Compres-sion with 15x Reduction and 200+ FPS. arXiv preprint. ArXiv:2311.16027 [cs.CV]. Fridovich-Keil, S.; Meanti, G.; Warburg, F. R.; Recht, B.; and Kanazawa, A. 2023. K-Planes: Explicit Radiance Fields in Space, Time, and Appearance. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 12479–12488. Los Alamitos, CA: IEEE Com-puter Society. Fridovich-Keil, S.; Yu, A.; Tancik, M.; Chen, Q.; Recht, B.; and Kanazawa, A. 2022. Plenoxels: Radiance Fields without Neural Networks. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,5501–5510. Los Alamitos, CA: IEEE Computer Society. Golub, G. H.; and Van Loan, C. F. 2013. Matrix Computa-tions . Johns Hopkins University Press, 4 edition. Hall, G. G. 1951. The Molecular Orbital Theory of Chemical Valency VIII. A Method of Calculating Ionization Potentials. 
+
+Proceedings of the Royal Society of London. Series A, Math-ematical and Physical Sciences , 205(1083): 541–552. Hedman, P.; Srinivasan, P. P.; Mildenhall, B.; Barron, J. T.; and Debevec, P. 2021. Baking Neural Radiance Fields for Real-Time View Synthesis. In Proceedings of the IEEE/CVF International Conference on Computer Vision , 5875–5884. Los Alamitos, CA: IEEE Computer Society. Huggins, W. J.; Lee, J.; Baek, U.; O’Gorman, B.; and Wha-ley, K. B. 2020. A Non-Orthogonal Variational Quantum Eigensolver. New Journal of Physics , 22(7): 073009. Jolliffe, I. T.; and Cadima, J. 2016. Principal Component Analysis . Springer, 2 edition. Kerbl, B.; Kopanas, G.; Leimkühler, T.; and Drettakis, G. 2023. 3D Gaussian Splatting for Real-Time Radiance Field Rendering. ACM Transactions on Graphics , 42(4): 139:1– 139:14. Lee, J. C.; Rho, D.; Sun, X.; Ko, J. H.; and Park, E. 2024. Compact 3D Gaussian Representation for Radiance Field. In 
+
+Proceedings of the IEEE/CVF Conference on Computer Vi-sion and Pattern Recognition , 21719–21728. Los Alamitos, CA: IEEE Computer Society. Liu, Y.; Zhong, Z.; Zhan, Y.; Xu, S.; and Sun, X. 2025. MaskGaussian: Adaptive 3D Gaussian Representation from Probabilistic Masks. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 681–690. Löwdin, P.-O. 1955. Quantum Theory of Many-Particle Sys-tems. I. Physical Interpretations by Means of Density Ma-trices, Natural Spin-Orbitals, and Convergence Problems in the Method of Configurational Interaction. Physical Review ,97(6): 1474–1489. Löwdin, P.-O.; and Shull, H. 1956. Natural Orbitals in the Quantum Theory of Two-Electron Systems. Physical Review ,101(6): 1730–1739. Lu, T.; Yu, M.; Xu, L.; Xiangli, Y.; Wang, L.; Lin, D.; and Dai, B. 2024. Scaffold-GS: Structured 3D Gaussians for View-Adaptive Rendering. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,20654–20664. Los Alamitos, CA: IEEE Computer Society. Mildenhall, B.; Srinivasan, P. P.; Tancik, M.; Barron, J. T.; Ramamoorthi, R.; and Ng, R. 2021. NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis. Com-munications of the ACM , 65(1): 99–106. Müller, T.; Evans, A.; Schied, C.; and Keller, A. 2022. In-stant Neural Graphics Primitives with a Multiresolution Hash Encoding. ACM Transactions on Graphics , 41(4): 102:1– 102:15. Niemeyer, M.; Manhardt, F.; Rakotosaona, M. J.; Oechsle, M.; Duckworth, D.; Gosula, R.; and Tombari, F. 2025. Rad-Splat: Radiance Field-Informed Gaussian Splatting for Ro-bust Real-Time Rendering with 900+ FPS. In 2025 Interna-tional Conference on 3D Vision (3DV) , 134–144. IEEE. Roothaan, C. C. J. 1951. New Developments in Molecular Orbital Theory. Reviews of Modern Physics , 23(2): 69–89. Saad, Y. 2011. Numerical Methods for Large Eigenvalue Problems . SIAM. Sun, C.; Sun, M.; and Chen, H.-T. 2022. Direct Voxel Grid Optimization: Super-Fast Convergence for Radiance Fields Reconstruction. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 5459–5469. Los Alamitos, CA: IEEE Computer Society. Wang, H.; Zhu, H.; He, T.; Feng, R.; Deng, J.; Bian, J.; and Chen, Z. 2024. End-to-End Rate-Distortion Optimized 3D Gaussian Representation. In Proceedings of the European Conference on Computer Vision , 76–92. Cham, Switzerland: Springer Nature Switzerland. Yu, A.; Li, R.; Tancik, M.; Li, H.; Ng, R.; and Kanazawa, A. 2021. PlenOctrees for Real-Time Rendering of Neural Radiance Fields. In Proceedings of the IEEE/CVF Inter-national Conference on Computer Vision , 5752–5761. Los Alamitos, CA: IEEE Computer Society.
