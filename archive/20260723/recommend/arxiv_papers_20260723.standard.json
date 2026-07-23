@@ -1,0 +1,300 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-23T20:20:18.119712+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2607.18466v1",
+      "title": "ECoNGS: Efficient Compressive Neural Gaussian Splats for Volume Visualization",
+      "abstract": "Recent advances in differentiable Gaussian splatting have highlighted the potential of primitive-based approaches as alternative scene representations for interactive, high-quality, volume visualization (VolVis) of large datasets. However, the explicit nature of current primitive-based methods, combined with isolated optimization for each VolVis scene, results in redundant, non-compact representations. We present ECoNGS, an efficient compressive neural Gaussian splatting framework for VolVis scene representation. ECoNGS employs lightweight neural networks to dynamically predict implicit, editable Gaussian splats from explicit anchor points, effectively combining model compactness and parameter efficiency of implicit representations with high-performance rendering of explicit primitives. We explore a joint learning strategy that clusters geometrically similar scenes and shares parameters across them, significantly reducing overall training time and model size while maintaining reconstruction fidelity. To achieve a more compact scene representation, we further compress the explicit anchor attributes using a neural entropy model that estimates their probability distributions, enabling compact storage via entropy coding. We systematically investigate Gaussian initialization strategies and propose a simple yet effective scheme tailored for VolVis scenes, improving reconstruction accuracy and accelerating convergence. We evaluate ECoNGS qualitatively and quantitatively across various univariate and multivariate VolVis scenes, highlighting its superior performance over prior methods in training time, reconstruction quality, and model size. In particular, compared with the prior method iVR-GS, ECoNGS improves reconstruction quality by up to 2.2 dB in PSNR while reducing the model size by up to 6.1x and the training time by up to 5.9x. The code is available at https://github.com/TouKaienn/ECoNGS.",
+      "authors": [
+        "Kaiyuan Tang",
+        "Chaoli Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-07-20T19:35:24+00:00",
+      "link": "https://arxiv.org/pdf/2607.18466v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "neural Gaussian splatting for volume visualization",
+      "llm_evidence_cn": "用于体渲染可视化的神经高斯泼溅",
+      "llm_evidence": "用于体渲染可视化的神经高斯泼溅",
+      "canonical_evidence": "用于体渲染可视化的神经高斯泼溅",
+      "llm_tldr_en": "Presents ECoNGS, a compressive neural Gaussian splatting framework for efficient volume visualization.",
+      "llm_tldr_cn": "提出了ECoNGS，一种用于高效体渲染可视化的压缩神经高斯泼溅框架。",
+      "llm_tldr": "提出了ECoNGS，一种用于高效体渲染可视化的压缩神经高斯泼溅框架。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.20417v1",
+      "title": "ATSplat: Compact Feed-forward 3D Gaussian Splatting with Adaptive Token Expansion",
+      "abstract": "3D Gaussian Splatting (3DGS) achieves high-quality novel-view synthesis by optimizing freely placed primitives in 3D and adaptively densifying them in under-reconstructed regions. However, this scene-adaptive capacity allocation is largely lost in existing feed-forward 3DGS methods, which commonly regress Gaussians at input pixels and lift them along camera rays. Such pixel-aligned formulations make the number and placement of primitives depend on image resolution and input viewpoints rather than scene complexity, resulting in dense and often redundant Gaussian sets. We present ATSplat, a feed-forward 3DGS framework that restores the adaptive allocation capability of 3DGS optimization through Adaptive 3D Tokens. ATSplat first lifts coarse patch-level depth and camera cues into sparse 3D anchor tokens, forming a compact scaffold of the scene. Each token is then regressed into local Gaussians with learnable 3D offsets, decoupling primitive placement from input image grids. An Adaptive Token Expansion module predicts a token-level uncertainty score, supervised by rendering error maps, and selectively expands high-uncertainty tokens through learnable expansion layers. This sparse-to-adaptive formulation enables ATSplat to concentrate primitives in challenging regions while maintaining a compact representation. Experiments on two representative datasets, RealEstate10K and DL3DV, show that ATSplat achieves state-of-the-art rendering quality while reducing the number of Gaussians by more than $5.7\\times$ compared with dense feed-forward 3DGS methods. From 12 input images at $512 \\times 960$ resolution, ATSplat completes reconstruction in less than a second using a single commercial GPU, and renders high-quality novel views at 1136 FPS ($512 \\times 960$) with only 311K Gaussians.",
+      "authors": [
+        "Cho In",
+        "Jeonghwan Cho",
+        "Mijin Yoo",
+        "Gim Hee Lee",
+        "Seon Joo Kim"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-22T17:54:44+00:00",
+      "link": "https://arxiv.org/pdf/2607.20417v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Accelerating 3D Gaussian Splatting with feed-forward architectures",
+      "llm_evidence_cn": "利用前馈架构加速3D高斯泼溅",
+      "llm_evidence": "利用前馈架构加速3D高斯泼溅",
+      "canonical_evidence": "利用前馈架构加速3D高斯泼溅",
+      "llm_tldr_en": "Presents ATSplat, a feed-forward 3DGS framework using adaptive tokens to improve efficiency and placement.",
+      "llm_tldr_cn": "提出ATSplat，一种利用自适应令牌提高效率和位置分布的前馈3DGS框架。",
+      "llm_tldr": "提出ATSplat，一种利用自适应令牌提高效率和位置分布的前馈3DGS框架。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.19893v1",
+      "title": "Odin: Primitive-Level Synchronization for Distributed Point-Based Neural Rendering",
+      "abstract": "Point-based neural rendering (PBNR) represents 3D scenes as explicit, trainable primitives and underpins high-quality reconstruction and emerging embodied AI and world-model pipelines. Unlike layer-structured neural networks, PBNR has primitive-indexed dependencies: each view reads and updates only a sparse, view-dependent subset of mutable scene state. As large scenes require distributed training and optimized renderers reduce per-view computation, global task- or iteration-level barriers increasingly place synchronization, rather than rendering, on the critical path. We present Odin, a distributed PBNR training system that replaces global barriers with primitive-level synchronization. Its ahead-of-time scheduler uses stable locality and phase order to identify low-conflict overlap windows, while the runtime validates primitive publication before later work observes mutable state. Odin provides a quality-first path that preserves synchronized-training visibility and a throughput-first path that uses overlap and gradient evidence to admit only small, low-impact delayed reads; structural changes and high-impact cases remain synchronized. Across four existing PBNR pipelines and 13 non-city scenes on 8 GPUs, Odin improves throughput by 1.22 times on average and hides 82% of critical-path wait while preserving reconstruction quality. In a MatrixCity mixed-parallel case study scaling to 64 GPUs, Odin improves throughput over Grendel by up to 1.89 times without changing renderer kernels, optimizers, training budgets, or model capacity.",
+      "authors": [
+        "Zhenxiang Ma",
+        "Zeyu He",
+        "Yuanzhen Zhou",
+        "Zhenyu Yang",
+        "Yuchang Zhang",
+        "Miao Tao",
+        "Rong Fu",
+        "Jidong Zhai",
+        "Hengjie Li"
+      ],
+      "primary_category": "cs.DC",
+      "categories": [
+        "cs.DC"
+      ],
+      "published": "2026-07-22T08:27:33+00:00",
+      "link": "https://arxiv.org/pdf/2607.19893v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "accelerating point-based neural rendering via synchronization optimization",
+      "llm_evidence_cn": "通过同步优化加速基于点的神经渲染",
+      "llm_evidence": "通过同步优化加速基于点的神经渲染",
+      "canonical_evidence": "通过同步优化加速基于点的神经渲染",
+      "llm_tldr_en": "Optimizes distributed point-based neural rendering by replacing global barriers with primitive-level synchronization.",
+      "llm_tldr_cn": "通过用基元级同步替换全局屏障，优化了分布式基于点的神经渲染。",
+      "llm_tldr": "通过用基元级同步替换全局屏障，优化了分布式基于点的神经渲染。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.18539v1",
+      "title": "AniGS: Bridging Rendering and Diffusion Prior for 3D Scene Animation",
+      "abstract": "Novel view rendering of large and complex reconstructed scenes is becoming increasingly photorealistic. However, most reconstructions remain static and lack the ambient motion that makes environments immersive. We present AniGS, a method for scene-level animation of 3D Gaussian Splatting (3DGS) reconstructions that adds subtle, distributed dynamics, e.g., vegetation motion, while preserving rigid structures. Unlike existing 3D animation techniques which are limited to object-centric subjects or small regions, AniGS is designed for large, cluttered, navigable scenes. AniGS represents the scene with a canonical 3DGS and models motion using a time-conditioned deformation field. To animate the entire scene, we leverage a pretrained video diffusion model and introduce an iterative dataset--model update strategy that progressively expands viewpoint coverage and repeatedly updates camera-fixed training videos using a render-and-refine scheme. To prevent artifacts from unintended motion in static areas, we further introduce a composed video-to-video refinement scheme that restricts motion to desired regions. Experiments on five real-world, large-scale outdoor scenes demonstrate that AniGS produces natural ambient dynamics and high-quality novel view videos, enabling more immersive viewing experiences of reconstructed environments.",
+      "authors": [
+        "Yen-Chi Cheng",
+        "Chen Gao",
+        "Chuhan Chen",
+        "Tuotuo Li",
+        "Rajvi Shah",
+        "Ayush Saraf",
+        "Changil Kim",
+        "Liangyan Gui",
+        "Alexander Schwing",
+        "Johannes Kopf",
+        "Hung-Yu Tseng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-20T22:14:03+00:00",
+      "link": "https://arxiv.org/pdf/2607.18539v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "neural rendering for large scene animation",
+      "llm_evidence_cn": "用于大型场景动画的神经渲染",
+      "llm_evidence": "用于大型场景动画的神经渲染",
+      "canonical_evidence": "用于大型场景动画的神经渲染",
+      "llm_tldr_en": "Animates 3D Gaussian Splatting reconstructions using a time-conditioned deformation field and diffusion priors.",
+      "llm_tldr_cn": "利用时间条件变形场和扩散先验使3D高斯泼溅重建场景实现动画化。",
+      "llm_tldr": "利用时间条件变形场和扩散先验使3D高斯泼溅重建场景实现动画化。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.18646v1",
+      "title": "Fluid-SDF: Ultra-Lightweight and Editable Implicit Shape Representation via Differentiable Primitives",
+      "abstract": "Implicit Neural Representations (INRs) have become the standard for continuous 2D shape modeling, but they suffer from black-box uneditability, vulnerability to noise, and high parameter counts that severely hinder deployment on edge devices. We introduce Fluid-SDF, a highly compressed, differentiable Constructive Solid Geometry (CSG) framework that models shapes using explicit geometric primitives blended via a smooth minimum function. By replacing traditional multi-layer perceptrons (MLPs) with a parameterized primitive engine, Fluid-SDF reconstructs complex, non-convex topologies using strictly under 100 parameters, achieving comparable or superior intersection-over-union (mIoU) to standard neural baselines. Furthermore, we demonstrate that Fluid-SDF acts as a powerful geometric prior, inherently resisting high-frequency dataset noise where capacity-matched neural networks catastrophically overfit. Finally, unlike standard INRs, Fluid-SDF's explicit parameter space allows for direct, zero-shot user editing of local and global shape features without retraining. By bypassing expensive on-device gradient updates entirely, Fluid-SDF is uniquely suited for mobile AI, augmented reality, and resource-constrained embedded environments",
+      "authors": [
+        "Pradyumna Sripada",
+        "Chinmay Nadgir",
+        "Ksheer Agrawal",
+        "Krishna Kanth Kodanganti"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-21T02:35:20+00:00",
+      "link": "https://arxiv.org/pdf/2607.18646v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Implicit neural representations and differentiable primitives for shape modeling",
+      "llm_evidence_cn": "用于形状建模的隐式神经表示和可微原语",
+      "llm_evidence": "用于形状建模的隐式神经表示和可微原语",
+      "canonical_evidence": "用于形状建模的隐式神经表示和可微原语",
+      "llm_tldr_en": "Introduces an ultra-lightweight implicit shape representation using differentiable geometric primitives.",
+      "llm_tldr_cn": "介绍一种使用可微几何原语的超轻量级隐式形状表示方法。",
+      "llm_tldr": "介绍一种使用可微几何原语的超轻量级隐式形状表示方法。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.19100v1",
+      "title": "FlexiAvatar: Unified 3D Gaussian Human Avatars Under Arbitrary Body Visibility",
+      "abstract": "Reconstructing animatable 3D human avatars from monocular video is a fundamental problem in computer vision with broad applications in AR/VR and digital content creation. Existing approaches typically couple parametric body models with neural rendering or 3D Gaussian splatting and optimize all body regions jointly from short videos, which often degrades fidelity in the visible areas. To overcome this limitation, we introduce FlexiAvatar, a unified framework that explicitly optimizes only the visible body regions, effectively eliminating artifacts arising from unobserved limbs. Our method integrates occlusion-robust SMPL-X tracking with part-specific residual refinement to capture high-frequency geometric and appearance details. To complete entirely unseen regions (e.g., back views), we leverage a diffusion-based approach to generate texture consistent with the observed appearance. Experiments on full-body (NeuMan, ZJU-MoCap, WildAvatar), upper/half-body (talk-show clips), and head-only (INSTA) inputs show that FlexiAvatar delivers consistently higher reconstruction quality, outperforming state-of-the-art methods by an average PSNR improvement of approximately 3% across datasets. Finally, by restricting optimization to observed regions, our method reduces the effective number of Gaussians that must be optimized and rendered, leading to reduced runtime and memory overhead in partial-visibility scenarios.",
+      "authors": [
+        "Yihalem Yimolal Tiruneh",
+        "Muhammad Salman Ali",
+        "Uyoung Jeong",
+        "Muneeb A. Khan",
+        "MD Khalequzzaman Chowdhury Sayem",
+        "Allanur Bayramgeldiyev",
+        "Binod Bhattarai",
+        "Seungryul Baek"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-21T13:43:31+00:00",
+      "link": "https://arxiv.org/pdf/2607.19100v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Neural rendering and 3D Gaussian splatting for human avatars",
+      "llm_evidence_cn": "用于人体化身的神经渲染和3D高斯泼溅",
+      "llm_evidence": "用于人体化身的神经渲染和3D高斯泼溅",
+      "canonical_evidence": "用于人体化身的神经渲染和3D高斯泼溅",
+      "llm_tldr_en": "Optimizes visible body regions in 3D Gaussian human avatars to improve fidelity and eliminate artifacts.",
+      "llm_tldr_cn": "优化3D高斯人体化身中的可见区域，以提高保真度并消除伪影。",
+      "llm_tldr": "优化3D高斯人体化身中的可见区域，以提高保真度并消除伪影。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.19731v1",
+      "title": "Fast Wave-optics Rendering of Multiplane Images for 3D Holographic Displays",
+      "abstract": "Recent advances in neural rendering have unlocked unprecedented capabilities in 3D reconstruction and novel view synthesis, giving rise to applications such as virtual fly-throughs of a 3D scene reconstructed from a set of sparse, casually captured images. However, these renderings are viewed on a computer screen or conventional VR headsets as 2D images, greatly limiting the perceptual realism and immersiveness of such experiences. The rapid development in novel 3D scene representations calls for dedicated rendering algorithms that convert these readily-available 3D contents into formats that are compatible with emerging 3D display technologies, such as holographic displays. In this paper, we propose a wave-optics rendering pipeline that works with multiplane images (MPIs) for efficient and high-quality hologram synthesis. Our MPI-based computer-generated holography algorithm greatly outperforms state-of-the-art primitive-based CGH algorithms in terms of runtime, achieving speedups up to 250,000x while achieving comparable image quality, and significantly outperforms conventional layer-based CGH algorithms in terms of image quality. We validate our method extensively on a wide variety of 3D scene datasets both in simulation and through experimentally captured results, showing exceptional 3D focal stack and 4D light field reconstruction performance without sacrificing efficiency.",
+      "authors": [
+        "Brian Chao",
+        "Dario Seyb",
+        "Nathan Matsuda",
+        "Oliver Cossairt",
+        "Yang Zhou",
+        "Douglas Lanman",
+        "Gordon Wetzstein",
+        "Grace Kuo",
+        "Changwon Jang"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.ET",
+        "cs.MM",
+        "eess.IV",
+        "eess.SP"
+      ],
+      "published": "2026-07-22T03:58:18+00:00",
+      "link": "https://arxiv.org/pdf/2607.19731v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Neural rendering for 3D scene representations and novel view synthesis",
+      "llm_evidence_cn": "用于 3D 场景表示和新视角合成的神经渲染",
+      "llm_evidence": "用于 3D 场景表示和新视角合成的神经渲染",
+      "canonical_evidence": "用于 3D 场景表示和新视角合成的神经渲染",
+      "llm_tldr_en": "Proposes a wave-optics rendering pipeline for converting neural 3D scene representations into holographic formats.",
+      "llm_tldr_cn": "提出一种波动光学渲染流水线，将神经 3D 场景表示转换为全息显示格式。",
+      "llm_tldr": "提出一种波动光学渲染流水线，将神经 3D 场景表示转换为全息显示格式。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

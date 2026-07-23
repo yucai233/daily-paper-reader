@@ -6,52 +6,43 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-21
-- 运行时间：2026-07-21 21:32:22 UTC
+- 最新运行日期：2026-07-23
+- 运行时间：2026-07-23 20:24:18 UTC
 - 运行状态：成功
-- 本次总论文数：10
+- 本次总论文数：7
 - 精读区：2
-- 速读区：8
+- 速读区：5
 
 ### 今日简报（AI）
-今日聚焦高保真神经表示与高效 3D 渲染，重点攻克无损体积重建与大规模场景 3DGS 优化。
-Lossless-INR 实现了 9.0 分的无损隐式表示突破，CaT-GS 则通过缓存调度显著提升了大规模 3DGS 的渲染效率。
-建议重点关注 3DGS 与占据空间预测（Occupancy）的结合，这是当前自动驾驶与三维重建的热
-- 详情：[/202607/21/README](/202607/21/README)
+今日聚焦 3D Gaussian Splatting 的极致压缩与高效渲染，深度解析 7 篇涵盖体积可视化与场景动画的前沿成果。
+重点推荐 ECoNGS 的高效压缩体积渲染技术，以及 ATSplat 利用自适应 Token 扩展实现的紧凑型 3D 场景重建。
+建议优先研读两篇高分论文以掌握 3DGS 轻量化核心算法，并关注分布式渲染与扩散先验结合的跨界应用。
+- 详情：[/202607/23/README](/202607/23/README)
 
 ### 精读区论文标签
-1. [Lossless-INR: Lossless Volumetric Implicit Neural Representations](/202607/21/2607.18150v1-lossless-inr-lossless-volumetric-implicit-neural-representations)  
-   标签：评分：9.0/10、query:q1
-   evidence：用于体渲染的无损隐式神经表示
-2. [CaT-GS: Efficient 3DGS Rendering for Large Scale Scenes via Inter-frame Caching and Tile Scheduling](/202607/21/2607.17842v1-cat-gs-efficient-3dgs-rendering-for-large-scale-scenes-via-inter-frame-caching-and-tile-scheduling)  
+1. [ECoNGS: Efficient Compressive Neural Gaussian Splats for Volume Visualization](/202607/23/2607.18466v1-econgs-efficient-compressive-neural-gaussian-splats-for-volume-visualization)  
+   标签：评分：9.0/10、query:profile-1
+   evidence：用于体渲染可视化的神经高斯泼溅
+2. [ATSplat: Compact Feed-forward 3D Gaussian Splatting with Adaptive Token Expansion](/202607/23/2607.20417v1-atsplat-compact-feed-forward-3d-gaussian-splatting-with-adaptive-token-expansion)  
    标签：评分：8.0/10、query:q7
-   evidence：大规模场景的高效神经渲染管线
+   evidence：利用前馈架构加速3D高斯泼溅
 
 ### 速读区论文标签
-1. [SPARE-GS: Structural Parsimony and Resource Efficiency for 3D Gaussian Splatting](/202607/21/2607.16624v1-spare-gs-structural-parsimony-and-resource-efficiency-for-3d-gaussian-splatting)  
+1. [Odin: Primitive-Level Synchronization for Distributed Point-Based Neural Rendering](/202607/23/2607.19893v1-odin-primitive-level-synchronization-for-distributed-point-based-neural-rendering)  
    标签：评分：7.0/10、query:q7
-   evidence：3D高斯泼溅的资源效率优化
-2. [RayOcc: Occlusion-Aware Ray Occupancy Estimation via Gaussian Mixture Intensity](/202607/21/2607.17660v1-rayocc-occlusion-aware-ray-occupancy-estimation-via-gaussian-mixture-intensity)  
-   标签：评分：7.0/10、query:q1
-   evidence：通过射线占据估计对体积场景建模
-3. [VGOcc: Learning Visual-Geometric Gaussians for Vision-Centric 3D Driving Occupancy Prediction](/202607/21/2607.18078v1-vgocc-learning-visual-geometric-gaussians-for-vision-centric-3d-driving-occupancy-prediction)  
-   标签：评分：7.0/10、query:q1
-   evidence：用于体积推理的高斯基元
-4. [FF-ProCams: Feed-Forward Gaussian Splatting for Projector-Camera System](/202607/21/2607.17803v1-ff-procams-feed-forward-gaussian-splatting-for-projector-camera-system)  
+   evidence：通过同步优化加速基于点的神经渲染
+2. [AniGS: Bridging Rendering and Diffusion Prior for 3D Scene Animation](/202607/23/2607.18539v1-anigs-bridging-rendering-and-diffusion-prior-for-3d-scene-animation)  
    标签：评分：6.0/10、query:q1
-   evidence：前馈3D高斯逆向渲染
-5. [Packet-Loss Robust 3D Gaussian Compression via Atomic Packaging and GNN-based Error Concealment](/202607/21/2607.17916v1-packet-loss-robust-3d-gaussian-compression-via-atomic-packaging-and-gnn-based-error-concealment)  
+   evidence：用于大型场景动画的神经渲染
+3. [Fluid-SDF: Ultra-Lightweight and Editable Implicit Shape Representation via Differentiable Primitives](/202607/23/2607.18646v1-fluid-sdf-ultra-lightweight-and-editable-implicit-shape-representation-via-differentiable-primitives)  
    标签：评分：6.0/10、query:q1
-   evidence：通过3D高斯泼溅进行神经渲染
-6. [Fine-Detail Monocular Geometry Estimation with Self-Guided Sparse Volumetric Refinement](/202607/21/2607.17967v1-fine-detail-monocular-geometry-estimation-with-self-guided-sparse-volumetric-refinement)  
+   evidence：用于形状建模的隐式神经表示和可微原语
+4. [FlexiAvatar: Unified 3D Gaussian Human Avatars Under Arbitrary Body Visibility](/202607/23/2607.19100v1-flexiavatar-unified-3d-gaussian-human-avatars-under-arbitrary-body-visibility)  
    标签：评分：6.0/10、query:q1
-   evidence：用于3D几何的稀疏体积细化
-7. [QIRF Quantum-Inspired Non-Orthogonal Function-Space Compression for 3D Gaussian Splatting](/202607/21/2607.18067v1-qirf-quantum-inspired-non-orthogonal-function-space-compression-for-3d-gaussian-splatting)  
+   evidence：用于人体化身的神经渲染和3D高斯泼溅
+5. [Fast Wave-optics Rendering of Multiplane Images for 3D Holographic Displays](/202607/23/2607.19731v1-fast-wave-optics-rendering-of-multiplane-images-for-3d-holographic-displays)  
    标签：评分：6.0/10、query:q1
-   evidence：神经渲染与函数空间压缩
-8. [EVOLVE: Efficient Learned Volume Compression with Variable-Rate Encoding on a Cross-Domain Database](/202607/21/2607.18187v1-evolve-efficient-learned-volume-compression-with-variable-rate-encoding-on-a-cross-domain-database)  
-   标签：评分：6.0/10、query:profile-1
-   evidence：用于科学模拟的学习型体积压缩
+   evidence：用于 3D 场景表示和新视角合成的神经渲染
 
 
 <div class="dpr-home-promo-card">
