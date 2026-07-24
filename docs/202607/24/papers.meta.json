@@ -1,0 +1,93 @@
+{
+  "label": "2026-07-24",
+  "date": "2026-07-24",
+  "generated_at": "2026-07-24T21:05:51",
+  "count": 6,
+  "papers": [
+    {
+      "paper_id": "202607/24/2607.20970v1-from-scalars-to-time-series-rethinking-implicit-neural-representations-for-time-varying-volumetric-data",
+      "section": "deep",
+      "title_en": "From Scalars to Time Series: Rethinking Implicit Neural Representations for Time-Varying Volumetric Data",
+      "authors": "Weihan Zhang, Xuan Zhao, Yenwen Peng, Yuqi Chen, Jun Tao",
+      "date": "2026-07-23",
+      "pdf": "https://arxiv.org/pdf/2607.20970v1",
+      "score": "8.0",
+      "evidence": "时变体积数据的隐式神经表示",
+      "tldr": "本研究重新审视了时变体数据的隐式神经表示（INR）设计，提出将数据视为空间索引的时间序列而非离散的时空坐标点。通过引入序列级监督，该方法避免了密集的时空采样，显著降低了训练成本并提升了重建质量。该框架具有良好的兼容性，结合混合专家（MoE）架构后，能更有效地处理异构的时间动态，为时变科学数据的高效表示提供了新思路。",
+      "tags": "query:q1",
+      "abstract_en": "Implicit neural representations (INRs) for time-varying volumetric data are typically trained using dense sampling over spatiotemporal coordinates, where each observation corresponds to a single point in space and time. This coordinate-wise formulation requires extensive sampling during optimization, leading to high computational cost and inefficient use of temporal structure. In this work, we revisit this design choice and show that dense spatiotemporal sampling is not necessary for learning time-varying fields. Instead, we represent the data as a collection of spatially indexed time series and train INRs using sequence-level supervision over each spatial location, rather than coordinate-wise scalar samples. This reformulation eliminates the need for dense spatiotemporal sampling and instead learns each spatial location from its full temporal evolution in a structured manner. We demonstrate that this representation is compatible with a range of existing INR architectures and consistently improves reconstruction quality, while significantly reducing training cost. Furthermore, we show that this formulation can be combined with mixture-of-experts architectures, and that our MoE instantiation further improves reconstruction quality compared to both the base reformulation and existing MoE-based INR methods, providing a stronger capacity allocation under heterogeneous temporal dynamics.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/24/2607.20813v1-subsplat-high-resolution-pixel-aligned-3dgs-via-sub-pixel-gaussian-reparameterization",
+      "section": "quick",
+      "title_en": "SubSplat: High-Resolution Pixel-aligned 3DGS via Sub-pixel Gaussian Reparameterization",
+      "authors": "Jiun Lee, Jaekwang Kim, Sangmin Lee",
+      "date": "2026-07-23",
+      "pdf": "https://arxiv.org/pdf/2607.20813v1",
+      "score": "7.0",
+      "evidence": "通过像素对齐的高斯泼溅进行神经渲染",
+      "tldr": "本研究针对像素对齐的高斯泼溅（3DGS）在处理高分辨率渲染时面临的计算成本与渲染质量之间的权衡问题，提出了SubSplat框架。该框架引入了亚像素高斯重参数化器（SPGR），能够从低分辨率特征中将主高斯细分为细粒度的基元，从而在不增加网络计算负担的前提下恢复结构密度。结合多视图特征聚合技术，SubSplat在RealEstate10K和ACID数据集上实现了高效且高保真的新视角合成，有效解决了高分辨率渲染中的伪影问题。",
+      "tags": "query:q1",
+      "abstract_en": "Pixel-aligned Gaussian splatting enables efficient and generalizable novel-view synthesis. However, high-resolution rendering faces a critical trade-off where increasing input resolution improves detail at the expense of quadratically rising network computational cost. Conversely, maintaining low-resolution inputs stabilizes this cost but results in insufficient Gaussian density and artifacts. To address this, we propose SubSplat, which introduces Sub-pixel Gaussian Reparameterizer(SPGR) to subdivide primary Gaussians into fine-grained primitives, restoring structural density directly from low-resolution features. We further enhance the reparameterization quality through feature aggregation, which effectively captures high-frequency details across multiple views. Experiments on RealEstate10K and ACID demonstrate that SubSplat achieves high-fidelity rendering with superior efficiency. Our results validate that the proposed framework successfully resolves the trade-off between reparameterization fidelity and network computational cost inherent in pixel-aligned Gaussian Splatting.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/24/2607.21448v1-graings-gradient-decoupled-gaussian-splatting-for-efficient-dynamic-novel-view-synthesis",
+      "section": "quick",
+      "title_en": "GrainGS: Gradient-Decoupled Gaussian Splatting for Efficient Dynamic Novel View Synthesis",
+      "authors": "Jiahao He, Yihua Shao, Zhengkai Zhao, Pan Gao, Fei Ma, Jingcai Guo, Hao Tang, Nicu Sebe, Qi Tian",
+      "date": "2026-07-23",
+      "pdf": "https://arxiv.org/pdf/2607.21448v1",
+      "score": "7.0",
+      "evidence": "使用3D高斯泼溅的神经渲染",
+      "tldr": "GrainGS 针对动态场景重建中运动建模与结构稳定性难以平衡的问题，提出了一种梯度解耦的高斯泼溅框架。该方法结合了分层锚点支架与逐高斯变形技术，通过停止梯度操作分离变形路径与位置优化，并采用外观分解建模光影变化。实验证明，GrainGS 在保持高重建质量的同时，实现了超高速渲染和极小的存储占用，为高效动态新视角合成提供了新方案。",
+      "tags": "query:q1",
+      "abstract_en": "Dynamic scene reconstruction with 3D Gaussian Splatting requires a balance between fine-grained motion modeling, structural stability, and compact representation. Existing per-primitive methods provide flexible local deformation but often suffer from redundant primitive growth, while anchor-based methods improve spatial regularity at the cost of suppressing locally varying motion. To address these issues, we present GrainGS, a dynamic Gaussian framework that combines a hierarchical anchor scaffold with per-Gaussian deformation. A static warm-up stage first establishes a time-invariant canonical representation from observations across all timestamps. During joint training, a stop-gradient operation blocks the deformation-mediated gradient pathway to the canonical positions while preserving their direct refinement through the reconstruction objective. Each Gaussian then predicts independent temporal offsets for position, rotation, and scale, enabling detailed local motion within a structurally constrained scaffold. A canonical-residual appearance decomposition further models frame-dependent photometric changes without forcing them into geometric deformation. Experiments on synthetic monocular and real-world multiview benchmarks show that GrainGS achieves high reconstruction quality, real-time novel view synthesis, and compact storage. Under the synthetic benchmark setting, it reaches an average peak signal-to-noise ratio of 36.98 decibels, renders at 435.6 frames per second, and requires 4.67 megabytes of storage.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/24/2607.21485v1-recurrent-sinusoidal-inrs-for-efficient-high-fidelity-representation",
+      "section": "quick",
+      "title_en": "Recurrent Sinusoidal INRs for Efficient High-Fidelity Representation",
+      "authors": "Hyunmin Cho, Jaejun Yoo, Kyong Hwan Jin",
+      "date": "2026-07-23",
+      "pdf": "https://arxiv.org/pdf/2607.21485v1",
+      "score": "7.0",
+      "evidence": "用于3D任务的隐式神经表示",
+      "tldr": "本研究探讨了隐式神经表示（INR）中的正弦循环机制，揭示了正弦激活通过迭代产生谐波谱富集的原理。作者提出一种共享正弦模块的循环架构，通过迭代细化潜在表示增强频谱支持。实验表明，该方法在图像、NeRF和SDF任务中，以更少参数和优化步数实现了比前馈基线更高的保真度，为高效表示提供了新思路。",
+      "tags": "query:q1",
+      "abstract_en": "We study sinusoidal recurrence as an iterative mechanism for harmonic spectral enrichment in implicit neural representations (INRs). Our analysis reveals that sinusoidal activations induce a harmonic line spectrum, providing a spectral account of how recurrent unrolling enriches the effective spectral support. We realize this principle with a shared sinusoidal block that iteratively refines the latent representation. We empirically validate the resulting spectral behavior against feed-forward INRs, non-sinusoidal recurrent variants, and equilibrium-style sinusoidal models. Complementing this analysis, we evaluate the proposed architecture across image and 3D representation tasks. On RGB image benchmarks, our method achieves higher fidelity than feed-forward baselines with fewer parameters and fewer optimization steps, and it further transfers favorably to super-resolution, NeRF, and SDF tasks.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/24/2607.21562v1-scene-parameter-saliency-via-differentiable-light-transport",
+      "section": "quick",
+      "title_en": "Scene Parameter Saliency via Differentiable Light Transport",
+      "authors": "Linas Beresna, Eugene Fiume",
+      "date": "2026-07-23",
+      "pdf": "https://arxiv.org/pdf/2607.21562v1",
+      "score": "7.0",
+      "evidence": "可微分光线传输与多弹跳梯度",
+      "tldr": "本研究借鉴神经网络的可解释性方法，提出利用可微渲染器生成“度量显著性图”。通过对渲染图像的标量度量进行反向微分，可以识别出对特定指标（如眩光、亮度或感知得分）影响最大的场景参数。该方法能捕捉包括多反弹光线传输在内的复杂依赖关系，揭示了显著性取决于具体度量而非场景固有属性，为场景理解提供了新工具。",
+      "tags": "query:q4",
+      "abstract_en": "Gradient-based saliency methods reveal which input features most influence a neural network's output, and are a standard tool for model interpretability. We observe that differentiable renderers, which are conventionally used for parameter optimisation, produce an analogous form of saliency: given any scalar metric evaluated on a rendered image, a single reverse-mode differentiation pass yields per-parameter gradients that identify which scene elements most influence the metric. We call these gradient fields metric saliency maps. Unlike neural saliency, which propagates attribution through learned weights, metric saliency propagates through the image formation process itself, including multi-bounce light transport, capturing parameter dependencies that are semi-opaque to manual inspection. We compute metric saliency maps for qualitatively different objectives: psychovisual glare indices, mean scene luminance, and neural perceptual scores. The saliency rankings differ substantially across metrics for the same scene, with parameters that dominate one objective being negligible for another. The saliency map is specific to the metric, not an intrinsic property of the scene. Our results suggest that differentiable renderers produce derivative images that are as informative for scene understanding as the primal images they were designed to generate.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/24/2607.20071v1-gaussianseed-hierarchical-gaussian-seeding-for-high-resolution-3d-occupancy-prediction",
+      "section": "quick",
+      "title_en": "GaussianSeed: Hierarchical Gaussian Seeding for High-Resolution 3D Occupancy Prediction",
+      "authors": "Xinzhuo Li, Xianghui Pan, Jiayuan Du, Wei Wei, Liuyi Wang, Chengju Liu, Qijun Chen",
+      "date": "2026-07-22",
+      "pdf": "https://arxiv.org/pdf/2607.20071v1",
+      "score": "6.0",
+      "evidence": "用于3D场景表示的分层高斯原语",
+      "tldr": "针对自动驾驶中高分辨率3D占据预测计算成本高的问题，本文提出GaussianSeed框架。该方法采用多尺度高斯层次结构，通过由粗到精的策略有效解决了内存瓶颈，实现了0.1m高空间分辨率下的实时推理。此外，研究者还发布了高精度数据集TJScenes。实验证明该方法在保持高精度的同时，具有极低的推理延迟，显著提升了高分辨率占据预测的效率。",
+      "tags": "query:q1",
+      "abstract_en": "Vision-centric 3D occupancy prediction provides dense scene representations essential for autonomous driving and robotic navigation, yet existing methods struggle to scale to high voxel resolutions due to prohibitive computational costs. To address this, we introduce GaussianSeed, a progressive multi-scale Gaussian occupancy prediction framework that organizes primitives into a coarse-to-fine hierarchy. Benefiting from this hierarchical design, GaussianSeed effectively circumvents the memory bottlenecks inherent in dense representations, successfully scaling to a $0.1\\text{m}$ spatial resolution while maintaining real-time inference capabilities. To comprehensively evaluate high-resolution geometric perception, we further construct TJScenes, a panoramic six-camera occupancy dataset with highly detailed $0.1\\text{m}$ annotations. Extensive experiments on Occ3D-nuScenes and TJScenes demonstrate that GaussianSeed delivers the lowest latency among all evaluated methods while maintaining highly competitive accuracy, advancing the efficiency-quality frontier of high-resolution 3D occupancy prediction.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
