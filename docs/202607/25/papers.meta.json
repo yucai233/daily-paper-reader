@@ -1,0 +1,51 @@
+{
+  "label": "2026-07-25",
+  "date": "2026-07-25",
+  "generated_at": "2026-07-25T20:56:06",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202607/25/2607.16491v1-continuous-3-d-latent-diffusion-for-medical-generation-and-reconstruction",
+      "section": "quick",
+      "title_en": "Continuous 3-D Latent Diffusion for Medical Generation and Reconstruction",
+      "authors": "Youness Mellak, Antoine De Paepe, Dimitris Visvikis, Alexandre Bousse",
+      "date": "2026-07-17",
+      "pdf": "https://arxiv.org/pdf/2607.16491v1",
+      "score": "7.0",
+      "evidence": "具有坐标条件局部隐式解码器的连续3D潜空间扩散",
+      "tldr": "本研究针对高分辨率3D医学图像扩散模型计算成本高昂的问题，提出了一种连续3D潜扩散模型（LDM）框架。该框架通过引入带有坐标条件局部隐式图像函数（LIIF）解码器的紧凑型自动编码器，将体积表示为空间坐标的连续函数，显著提升了处理效率并降低了显存占用。实验表明，该方法在512^3高分辨率CT和256^3 MRI上表现优异，不仅能生成无缝的全卷图像，还能在无需重新训练的情况下应用于稀疏视图CT和加速MRI重建等逆问题。",
+      "tags": "query:q1",
+      "abstract_en": "High-resolution three-dimensional (3-D) medical diffusion models remain constrained by the cost of processing full volumes, even when denoising is performed in a compact latent space. We introduce a continuous 3-D latent diffusion model (LDM) framework for computed tomography (CT) and magnetic resonance imaging (MRI) generation and measurement-guided reconstruction. Its central component is a compact autoencoder (AE) with a coordinate-conditioned local implicit image function (LIIF) decoder that represents a volume as a continuous function of spatial coordinates. By evaluating the convolutional decoder once on the latent grid and restricting repeated computation to a lightweight implicit head, the proposed design avoids overlapping sub-volume decoding while remaining differentiable for inverse-problem optimization. We evaluate the framework on CT volumes of 512^3 voxels and MRI volumes of 256^3 voxels. On high-resolution CT, the proposed AE is approximately x12-32 faster than the evaluated reference autoencoders, achieves the lowest peak graphics processing unit (GPU) memory use, and retains comparable structural fidelity despite a moderate reduction in voxel-level accuracy. The resulting frozen 3-D latent prior generates coherent full volumes without visible patch seams and can be applied, without task-specific retraining, to sparse-view CT and accelerated MRI reconstruction through hard data consistency. Although direct pixel-domain reconstruction remains more accurate, the results demonstrate that a single volumetric latent prior can support both unconditional generation and measurement-conditioned reconstruction on one GPU. Overall, the framework provides a practical trade-off between continuous volumetric decoding, computational efficiency, and fine-detail preservation. Our code will be made available at https://github.com/mellak/.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/25/2607.16838v1-topogs-planar-reconstruction-via-topology-aware-3d-gaussian-splatting",
+      "section": "quick",
+      "title_en": "TopoGS: Planar Reconstruction via Topology-aware 3D Gaussian Splatting",
+      "authors": "Shanshan Pan, Jiale Chen, Yilin Liu, Hui Huang",
+      "date": "2026-07-18",
+      "pdf": "https://arxiv.org/pdf/2607.16838v1",
+      "score": "6.0",
+      "evidence": "用于场景重建的3D高斯泼溅",
+      "tldr": "TopoGS是首个将平面和拓扑约束显式集成到3D高斯泼溅（3DGS）中的框架，旨在解决现有方法中平面孤立导致的重建破碎和边界对齐问题。该方法通过从多视图图像分割中提取全局2D拓扑关系，并将高斯原语锚定到这些结构元素上，实现了平面参数、渲染保真度和拓扑邻接性的联合优化，从而生成连贯、结构化的3D模型。",
+      "tags": "query:q1",
+      "abstract_en": "Extracting structured, parametric 3D representations from raw images remains a fundamental challenge in computer vision and graphics. While recent advancements in the 3D Gaussian Splatting (3DGS) pipeline integrate planar primitives to yield compact and editable geometry, these approaches typically treat planes as isolated, discrete sets. This lack of topological connectivity hinders robust geometric reasoning, leading to fragmented reconstructions and misaligned boundaries that fall short of the precision for rigorous spatial analysis and professional design workflows. To address this, we introduce TopoGS, the first 3DGS framework to explicitly integrate both planar and topological constraints for coherent 3D reconstruction. Specifically, we extract global 2D topological relationships from multi-view image segmentations and anchor Gaussian primitives to these structural elements. This formulation enables the joint optimization of plane parameters, rendering fidelity, and topological adjacency. By enforcing strict multi-view consistency alongside these topological constraints, our method significantly mitigates geometric misalignments and produces connected, structured 3D models. Extensive evaluations on the ScanNet++ dataset demonstrate that TopoGS achieves state-of-the-art performance, providing a highly robust solution for generating accurate, topologically sound, and visually faithful scene representations.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/25/2607.20789v1-3d-gimp-when-3d-gaussian-inpainting-meets-patchmatch",
+      "section": "quick",
+      "title_en": "3D-GIMP: When 3D Gaussian Inpainting Meets PatchMatch",
+      "authors": "Xuening Tian, Dieter Schmalstieg, Shohei Mori",
+      "date": "2026-07-22",
+      "pdf": "https://arxiv.org/pdf/2607.20789v1",
+      "score": "6.0",
+      "evidence": "用于场景编辑和渲染的3D高斯泼溅",
+      "tldr": "针对3D高斯泼溅（3DGS）中物体移除导致的计算开销大、细节模糊及多视角不一致问题，本文提出3D-GIMP。该方法结合了生成式修复与PatchMatch算法，仅在关键参考视图进行一次修复，随后通过3D感知PatchMatch将纹理传播至其他视图。这种混合范式在保持高频细节的同时，显著提升了渲染速度和视角一致性。",
+      "tags": "query:q1",
+      "abstract_en": "Recent advances in 3D scene editing have leveraged iterative diffusion models to update input views. However, this process is computationally expensive and struggles to produce sharp details. Meanwhile, ``hallucination drift'' frequently introduces multi-view inconsistencies, leading to structural artifacts when rendering novel viewpoints. To address this problem, we present 3D-GIMP (3D Gaussian Inpainting Meets Patch Matching), a novel hybrid paradigm designed for high-fidelity object removal in 3D Gaussian Splatting. Instead of diffusing every view, 3D-GIMP performs a single generative inpainting on a key reference view, which serves as an appearance prior. We then introduce a 3D-aware PatchMatch algorithm to propagate these reference textures across all remaining views via correspondence matching, effectively bypassing the stochastic nature of frame-by-frame diffusion. By prioritizing reconstructive consistency over iterative generation, 3D-GIMP maintains high-frequency details across arbitrary resolutions while ensuring a mathematically consistent 3D reconstruction. Our experiments demonstrate that 3D-GIMP not only achieves competitive inpainting quality as previous methods using diffusion in multiple views, but also outperforms these methods in rendering speed and view consistency.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

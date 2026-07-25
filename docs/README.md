@@ -6,39 +6,30 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-24
-- 运行时间：2026-07-24 21:05:39 UTC
+- 最新运行日期：2026-07-25
+- 运行时间：2026-07-25 20:55:54 UTC
 - 运行状态：成功
-- 本次总论文数：6
-- 精读区：1
-- 速读区：5
+- 本次总论文数：3
+- 精读区：0
+- 速读区：3
 
 ### 今日简报（AI）
-今日聚焦隐式神经表示（INR）与 3DGS 的前沿突破，深度解析时变体积数据与高精度渲染的融合方案。
-重点关注 INR 架构从标量到时间序列的重构
-- 详情：[/202607/24/README](/202607/24/README)
+今日聚焦 3D 生成与重建前沿，重点攻克医疗影像扩散模型及 3D 高斯泼溅（3DGS
+- 详情：[/202607/25/README](/202607/25/README)
 
 ### 精读区论文标签
-1. [From Scalars to Time Series: Rethinking Implicit Neural Representations for Time-Varying Volumetric Data](/202607/24/2607.20970v1-from-scalars-to-time-series-rethinking-implicit-neural-representations-for-time-varying-volumetric-data)  
-   标签：评分：8.0/10、query:q1
-   evidence：时变体积数据的隐式神经表示
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [SubSplat: High-Resolution Pixel-aligned 3DGS via Sub-pixel Gaussian Reparameterization](/202607/24/2607.20813v1-subsplat-high-resolution-pixel-aligned-3dgs-via-sub-pixel-gaussian-reparameterization)  
+1. [Continuous 3-D Latent Diffusion for Medical Generation and Reconstruction](/202607/25/2607.16491v1-continuous-3-d-latent-diffusion-for-medical-generation-and-reconstruction)  
    标签：评分：7.0/10、query:q1
-   evidence：通过像素对齐的高斯泼溅进行神经渲染
-2. [GrainGS: Gradient-Decoupled Gaussian Splatting for Efficient Dynamic Novel View Synthesis](/202607/24/2607.21448v1-graings-gradient-decoupled-gaussian-splatting-for-efficient-dynamic-novel-view-synthesis)  
-   标签：评分：7.0/10、query:q1
-   evidence：使用3D高斯泼溅的神经渲染
-3. [Recurrent Sinusoidal INRs for Efficient High-Fidelity Representation](/202607/24/2607.21485v1-recurrent-sinusoidal-inrs-for-efficient-high-fidelity-representation)  
-   标签：评分：7.0/10、query:q1
-   evidence：用于3D任务的隐式神经表示
-4. [Scene Parameter Saliency via Differentiable Light Transport](/202607/24/2607.21562v1-scene-parameter-saliency-via-differentiable-light-transport)  
-   标签：评分：7.0/10、query:q4
-   evidence：可微分光线传输与多弹跳梯度
-5. [GaussianSeed: Hierarchical Gaussian Seeding for High-Resolution 3D Occupancy Prediction](/202607/24/2607.20071v1-gaussianseed-hierarchical-gaussian-seeding-for-high-resolution-3d-occupancy-prediction)  
+   evidence：具有坐标条件局部隐式解码器的连续3D潜空间扩散
+2. [TopoGS: Planar Reconstruction via Topology-aware 3D Gaussian Splatting](/202607/25/2607.16838v1-topogs-planar-reconstruction-via-topology-aware-3d-gaussian-splatting)  
    标签：评分：6.0/10、query:q1
-   evidence：用于3D场景表示的分层高斯原语
+   evidence：用于场景重建的3D高斯泼溅
+3. [3D-GIMP: When 3D Gaussian Inpainting Meets PatchMatch](/202607/25/2607.20789v1-3d-gimp-when-3d-gaussian-inpainting-meets-patchmatch)  
+   标签：评分：6.0/10、query:q1
+   evidence：用于场景编辑和渲染的3D高斯泼溅
 
 
 <div class="dpr-home-promo-card">
