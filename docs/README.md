@@ -6,30 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-25
-- 运行时间：2026-07-25 20:55:54 UTC
+- 最新运行日期：2026-07-26
+- 运行时间：2026-07-26 20:13:36 UTC
 - 运行状态：成功
-- 本次总论文数：3
+- 本次总论文数：2
 - 精读区：0
-- 速读区：3
+- 速读区：2
 
 ### 今日简报（AI）
-今日聚焦 3D 生成与重建前沿，重点攻克医疗影像扩散模型及 3D 高斯泼溅（3DGS
-- 详情：[/202607/25/README](/202607/25/README)
+今日聚焦 CNS-Edit++ 框架，攻克不受类别限制的 3D 形状编辑难题。
+核心结论在于利用耦合神经形状表示，实现了跨品类 3D 模型的高效、精准编辑。
+推荐 3D 创作者关注其在通用资产修改中的潜力，探索更灵活的建模工作流。
+- 详情：[/202607/26/README](/202607/26/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Continuous 3-D Latent Diffusion for Medical Generation and Reconstruction](/202607/25/2607.16491v1-continuous-3-d-latent-diffusion-for-medical-generation-and-reconstruction)  
+1. [CNS-Edit++: Category-Agnostic 3D Editing with Coupled Neural Shape Representation](/202607/26/2607.16577v2-cns-edit-category-agnostic-3d-editing-with-coupled-neural-shape-representation)  
    标签：评分：7.0/10、query:q1
-   evidence：具有坐标条件局部隐式解码器的连续3D潜空间扩散
-2. [TopoGS: Planar Reconstruction via Topology-aware 3D Gaussian Splatting](/202607/25/2607.16838v1-topogs-planar-reconstruction-via-topology-aware-3d-gaussian-splatting)  
+   evidence：用于3D形状表示和编辑的神经特征体优化
+2. [CNS-Edit++: Category-Agnostic 3D Editing with Coupled Neural Shape Representation](/202607/26/2607.16577v1-cns-edit-category-agnostic-3d-editing-with-coupled-neural-shape-representation)  
    标签：评分：6.0/10、query:q1
-   evidence：用于场景重建的3D高斯泼溅
-3. [3D-GIMP: When 3D Gaussian Inpainting Meets PatchMatch](/202607/25/2607.20789v1-3d-gimp-when-3d-gaussian-inpainting-meets-patchmatch)  
-   标签：评分：6.0/10、query:q1
-   evidence：用于场景编辑和渲染的3D高斯泼溅
+   evidence：用于3D形状编辑的神经特征体优化
 
 
 <div class="dpr-home-promo-card">

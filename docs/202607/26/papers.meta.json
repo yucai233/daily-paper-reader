@@ -1,0 +1,37 @@
+{
+  "label": "2026-07-26",
+  "date": "2026-07-26",
+  "generated_at": "2026-07-26T20:13:58",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/26/2607.16577v2-cns-edit-category-agnostic-3d-editing-with-coupled-neural-shape-representation",
+      "section": "quick",
+      "title_en": "CNS-Edit++: Category-Agnostic 3D Editing with Coupled Neural Shape Representation",
+      "authors": "Jingyu Hu, Weilong Yan, Zhengzhe Liu, Haipeng Li, Ka-Hei Hui, Hao Zhang, Chi-Wing Fu",
+      "date": "2026-07-18",
+      "pdf": "https://arxiv.org/pdf/2607.16577v2",
+      "score": "7.0",
+      "evidence": "用于3D形状表示和编辑的神经特征体优化",
+      "tldr": "本研究提出了CNS-Edit++，一个基于耦合神经形状（CNS）表示的通用3D形状编辑框架。该框架通过结合捕捉语义的全局潜码和提供空间上下文的3D神经特征体，实现了从特定类别到类别无关的3D编辑扩展。通过协同优化这两个组件并引入KV-cache替换与特征正则化机制，CNS-Edit++支持包括拖拽、缩放、删除在内的多种编辑操作，在保持非编辑区域稳定的同时，显著提升了3D生成模型的编辑能力和灵活性。",
+      "tags": "query:q1",
+      "abstract_en": "This paper presents a latent-space 3D shape editing framework built upon a coupled neural shape (CNS) representation and a neural feature volume optimization. This work extends CNS-Edit, built on Coupled Neural Shape optimization, to CNS-Edit++, by generalizing the category-specific coupled representation to category-agnostic 3D shape editing with foundation models. The Coupled Neural Shape (CNS) representation couples a global latent code that captures high-level shape semantics with a 3D neural feature volume that provides spatial context for local shape manipulation. Then we formulate a coupled neural shape optimization procedure that co-optimizes these two components subject to a given editing operation. Our framework can be instantiated on both the category-specific 3D inversion model and category-agnostic 3D foundation models. We provide various shape editing operators, including copy, resize, delete, mix, point-wise drag, and region-wise drag, each of which is formulated as an objective to guide the CNS optimization. To preserve regions outside the editing area, we further introduce two complementary region-wise control mechanisms, i.e., KV-cache replacement and latent feature regularization. Extensive quantitative and qualitative evaluations across different 3D generative models demonstrate the strong capabilities of our approach over state-of-the-art solutions.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/26/2607.16577v1-cns-edit-category-agnostic-3d-editing-with-coupled-neural-shape-representation",
+      "section": "quick",
+      "title_en": "CNS-Edit++: Category-Agnostic 3D Editing with Coupled Neural Shape Representation",
+      "authors": "Jingyu Hu, Weilong Yan, Zhengzhe Liu, Haipeng Li, Ka-Hei Hui, Hao, Zhang, Chi-Wing Fu",
+      "date": "2026-07-18",
+      "pdf": "https://arxiv.org/pdf/2607.16577v1",
+      "score": "6.0",
+      "evidence": "用于3D形状编辑的神经特征体优化",
+      "tldr": "CNS-Edit++ 是一种通用的 3D 形状编辑框架，通过耦合全局语义潜码与局部空间特征体积，实现了从特定类别到跨类别的 3D 编辑能力。该方法利用神经特征体积优化，支持包括拖拽、缩放、混合在内的多种编辑操作，并通过 KV 缓存替换和特征正则化确保非编辑区域的稳定性，在多种 3D 生成模型上表现优异。",
+      "tags": "query:q1",
+      "abstract_en": "This paper presents a latent-space 3D shape editing framework built upon a coupled neural shape (CNS) representation and a neural feature volume optimization. This work extends CNS-Edit, built on Coupled Neural Shape optimization, to CNS-Edit++, by generalizing the category-specific coupled representation to category-agnostic 3D shape editing with foundation models. The Coupled Neural Shape (CNS) representation couples a global latent code that captures high-level shape semantics with a 3D neural feature volume that provides spatial context for local shape manipulation. Then we formulate a coupled neural shape optimization procedure that co-optimizes these two components subject to a given editing operation. Our framework can be instantiated on both the category-specific 3D inversion model and category-agnostic 3D foundation models. We provide various shape editing operators, including copy, resize, delete, mix, point-wise drag, and region-wise drag, each of which is formulated as an objective to guide the CNS optimization. To preserve regions outside the editing area, we further introduce two complementary region-wise control mechanisms, i.e., KV-cache replacement and latent feature regularization. Extensive quantitative and qualitative evaluations across different 3D generative models demonstrate the strong capabilities of our approach over state-of-the-art solutions.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,100 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-26T20:13:06.931669+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.16577v2",
+      "title": "CNS-Edit++: Category-Agnostic 3D Editing with Coupled Neural Shape Representation",
+      "abstract": "This paper presents a latent-space 3D shape editing framework built upon a coupled neural shape (CNS) representation and a neural feature volume optimization. This work extends CNS-Edit, built on Coupled Neural Shape optimization, to CNS-Edit++, by generalizing the category-specific coupled representation to category-agnostic 3D shape editing with foundation models. The Coupled Neural Shape (CNS) representation couples a global latent code that captures high-level shape semantics with a 3D neural feature volume that provides spatial context for local shape manipulation. Then we formulate a coupled neural shape optimization procedure that co-optimizes these two components subject to a given editing operation. Our framework can be instantiated on both the category-specific 3D inversion model and category-agnostic 3D foundation models. We provide various shape editing operators, including copy, resize, delete, mix, point-wise drag, and region-wise drag, each of which is formulated as an objective to guide the CNS optimization. To preserve regions outside the editing area, we further introduce two complementary region-wise control mechanisms, i.e., KV-cache replacement and latent feature regularization. Extensive quantitative and qualitative evaluations across different 3D generative models demonstrate the strong capabilities of our approach over state-of-the-art solutions.",
+      "authors": [
+        "Jingyu Hu",
+        "Weilong Yan",
+        "Zhengzhe Liu",
+        "Haipeng Li",
+        "Ka-Hei Hui",
+        "Hao Zhang",
+        "Chi-Wing Fu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-07-18T01:29:50+00:00",
+      "link": "https://arxiv.org/pdf/2607.16577v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Neural feature volume optimization for 3D shape representation and editing",
+      "llm_evidence_cn": "用于3D形状表示和编辑的神经特征体优化",
+      "llm_evidence": "用于3D形状表示和编辑的神经特征体优化",
+      "canonical_evidence": "用于3D形状表示和编辑的神经特征体优化",
+      "llm_tldr_en": "Proposes a coupled neural shape representation using a 3D neural feature volume for shape manipulation.",
+      "llm_tldr_cn": "提出一种耦合神经形状表示，利用3D神经特征体进行形状操作。",
+      "llm_tldr": "提出一种耦合神经形状表示，利用3D神经特征体进行形状操作。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.16577v1",
+      "title": "CNS-Edit++: Category-Agnostic 3D Editing with Coupled Neural Shape Representation",
+      "abstract": "This paper presents a latent-space 3D shape editing framework built upon a coupled neural shape (CNS) representation and a neural feature volume optimization. This work extends CNS-Edit, built on Coupled Neural Shape optimization, to CNS-Edit++, by generalizing the category-specific coupled representation to category-agnostic 3D shape editing with foundation models. The Coupled Neural Shape (CNS) representation couples a global latent code that captures high-level shape semantics with a 3D neural feature volume that provides spatial context for local shape manipulation. Then we formulate a coupled neural shape optimization procedure that co-optimizes these two components subject to a given editing operation. Our framework can be instantiated on both the category-specific 3D inversion model and category-agnostic 3D foundation models. We provide various shape editing operators, including copy, resize, delete, mix, point-wise drag, and region-wise drag, each of which is formulated as an objective to guide the CNS optimization. To preserve regions outside the editing area, we further introduce two complementary region-wise control mechanisms, i.e., KV-cache replacement and latent feature regularization. Extensive quantitative and qualitative evaluations across different 3D generative models demonstrate the strong capabilities of our approach over state-of-the-art solutions.",
+      "authors": [
+        "Jingyu Hu",
+        "Weilong Yan",
+        "Zhengzhe Liu",
+        "Haipeng Li",
+        "Ka-Hei Hui",
+        "Hao",
+        "Zhang",
+        "Chi-Wing Fu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-07-18T01:29:50+00:00",
+      "link": "https://arxiv.org/pdf/2607.16577v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Neural feature volume optimization for 3D shape editing",
+      "llm_evidence_cn": "用于3D形状编辑的神经特征体优化",
+      "llm_evidence": "用于3D形状编辑的神经特征体优化",
+      "canonical_evidence": "用于3D形状编辑的神经特征体优化",
+      "llm_tldr_en": "Presents a 3D shape editing framework using coupled neural shape representations and feature volume optimization.",
+      "llm_tldr_cn": "提出了一种使用耦合神经形状表示和特征体优化的3D形状编辑框架。",
+      "llm_tldr": "提出了一种使用耦合神经形状表示和特征体优化的3D形状编辑框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
