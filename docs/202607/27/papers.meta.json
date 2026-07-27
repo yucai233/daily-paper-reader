@@ -1,0 +1,51 @@
+{
+  "label": "2026-07-27",
+  "date": "2026-07-27",
+  "generated_at": "2026-07-27T21:21:03",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202607/27/2607.21896v1-learning-adaptive-semantic-gaussian-allocation-for-3d-occupancy",
+      "section": "deep",
+      "title_en": "Learning Adaptive Semantic Gaussian Allocation for 3D Occupancy",
+      "authors": "Kanglin Ning, Yiran Zhao, Wenrui Li, Houde Quan, Qifan Li, Xingtao Wang, Xiaopeng Fan",
+      "date": "2026-07-24",
+      "pdf": "https://arxiv.org/pdf/2607.21896v1",
+      "score": "8.0",
+      "evidence": "使用3D高斯将语义原语渲染到体素体积中",
+      "tldr": "针对3D语义占据预测中语义高斯分布不均导致的冗余与不足问题，本文提出SAGFormer。该方法通过学习自适应分配策略，利用高斯属性和局部几何语义特征对候选高斯进行评分与筛选，在受限的资源下优化了高斯分布。实验证明，该方法在nuScenes和KITTI-360数据集上显著提升了预测精度和资源利用率，实现了更高效的语义表示。",
+      "tags": "query:q1",
+      "abstract_en": "Semantic 3D Gaussians provide a compact representation for 3D semantic occupancy prediction by rendering semantic primitives into a voxel volume under voxel-wise supervision. Recent methods have improved the modeling ability and efficiency of this representation through more flexible primitive shapes, geometry-guided initialization, and progressive densification. However, these advances mainly determine how primitives are represented, initialized, or added, and do not explicitly address how to select the most useful Gaussians when their total number must be limited to control memory and computation. This imbalance creates an allocation bottleneck: redundant Gaussians remain in simple regions, while difficult regions receive insufficient semantic support. We propose the Semantic Gaussian Allocation Transformer (SAGFormer), which uses Gaussian attributes and local geometric-semantic features to score candidates and select a fixed final Gaussian set. Experiments on nuScenes-SurroundOcc and SSCBench-KITTI-360 show that SAGFormer improves occupancy prediction under the evaluated protocols and yields more semantically consistent and better-utilized Gaussian representations. Under similar final counts and raw coverage, it reduces semantic mixing, strengthens class-consistent voxel support, and produces fewer unused Gaussians. The results indicate that explicit capacity allocation is a useful complement to Gaussian refinement for semantic occupancy prediction.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/27/2607.19765v1-extending-a-large-view-synthesis-model-for-multi-view-panoptic-segmentation",
+      "section": "quick",
+      "title_en": "Extending a Large View Synthesis Model for Multi-view Panoptic Segmentation",
+      "authors": "Kwonyoung Ryu, In-Jae Lee, Jonghyun Jin, Hyunjee Lee, Jongmin Lee, Jaesik Park",
+      "date": "2026-07-22",
+      "pdf": "https://arxiv.org/pdf/2607.19765v1",
+      "score": "6.0",
+      "evidence": "大视角合成模型和外观渲染",
+      "tldr": "本研究发现大型视图合成模型（LVSM）通过RGB监督学习到的空间对应关系可推广至非光影信号。据此，作者提出了首个将LVSM扩展至3D场景理解的方法，通过冻结的合成模型将输入视图的全景标签以二进制编码形式传播至新视图。该方法无需显式3D重建或针对分割的特定训练，在ScanNet和Replica数据集上表现优异，不仅分割质量媲美基于高斯的方法，且在视图合成精度上大幅领先，展现了极强的跨场景泛化能力。",
+      "tags": "query:q1",
+      "abstract_en": "Large view synthesis models synthesize novel views through cross-view attention without explicit 3D representations, and recent studies have shown that they learn accurate spatial correspondence from RGB supervision alone. We observe that this correspondence generalizes beyond appearance. When non-photorealistic signals such as binary encoded panoptic labels are passed through the model, they are propagated to novel views with consistent spatial structure. These results indicate that the correspondence learned for RGB view synthesis can also propagate view-independent per-pixel labels. From this observation, we present the first work to extend large view synthesis models beyond appearance rendering to 3D scene understanding. We propose a panoptic segmentation pipeline that reuses a frozen view synthesis model to propagate panoptic labels from input views to novel views, without 3D reconstruction or any segmentation-specific training of the view synthesis model. Given panoptic labels on the input views, we encode them into binary channel representations and pass them through the same model to render target-view segmentation. On ScanNet, our method achieves segmentation quality on par with Gaussian based approaches requiring explicit 3D reconstruction, while outperforming them in novel view synthesis by more than 7 dB. The label propagation also transfers across datasets, surpassing these approaches on Replica without any fine-tuning.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/27/2607.22446v1-deformable-triangle-splatting-flexible-primitives-for-real-time-radiance-field-rendering",
+      "section": "quick",
+      "title_en": "Deformable Triangle Splatting: Flexible Primitives for Real-Time Radiance Field Rendering",
+      "authors": "Oriol Jiménez-Ayguadé, Antonio Agudo",
+      "date": "2026-07-24",
+      "pdf": "https://arxiv.org/pdf/2607.22446v1",
+      "score": "6.0",
+      "evidence": "具有灵活原语和可微光栅化的辐射场渲染",
+      "tldr": "针对辐射场渲染中传统2D基元（如高斯盘、三角形）受限于凸边界、难以高效表示复杂曲面和凹形结构的问题，本文提出可变形三角形泼溅（Deformable Triangle Splatting）。该方法通过在三角形边缘引入可学习的控制点位移，实现了非凸形状的灵活表示，并设计了基于重心坐标系的微分光栅化管线。实验证明，该方法在保持实时渲染效率的同时，显著提升了复杂场景的重建质量和基元表达能力。",
+      "tags": "query:q1",
+      "abstract_en": "Recent radiance field methods represent scenes with 2D primitives that offer surface alignment and efficient rasterization, from Gaussian disks to triangles, yet all rely on convex boundaries: curved and concave structures demand excessive primitives. We introduce Deformable Triangle Splatting, which augments each triangle with $K$ control points per edge, each parameterized by a single learnable scalar displacement that shifts the boundary inward or outward, enabling non-convex shape representation while preserving the three base vertices that define the 3D plane. To render these non-convex primitives differentiably, we design a rasterization pipeline in the triangle's barycentric coordinate space, ensuring view-consistent rendering. A winding number test determines whether each pixel lies inside the deformed primitive, and a window function controlled by two learnable parameters, sharpness and corner smoothness, together with a per-primitive scalar opacity, produces the smooth opacity transition from interior to boundary. Validation is done in a variety of real-world scenes, outperforming recent works based on non-volumetric primitives in terms of visual quality and versatility while still achieving competitive rendering efficiency.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -6,29 +6,31 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-26
-- 运行时间：2026-07-26 20:13:36 UTC
+- 最新运行日期：2026-07-27
+- 运行时间：2026-07-27 21:20:51 UTC
 - 运行状态：成功
-- 本次总论文数：2
-- 精读区：0
+- 本次总论文数：3
+- 精读区：1
 - 速读区：2
 
 ### 今日简报（AI）
-今日聚焦 CNS-Edit++ 框架，攻克不受类别限制的 3D 形状编辑难题。
-核心结论在于利用耦合神经形状表示，实现了跨品类 3D 模型的高效、精准编辑。
-推荐 3D 创作者关注其在通用资产修改中的潜力，探索更灵活的建模工作流。
-- 详情：[/202607/26/README](/202607/26/README)
+今日聚焦 3D 场景理解的前沿突破，重点解析了自适应语义高斯分配及辐射场实时渲染技术。
+核心结论指出，通过自适应分配语义高斯可显著优化 3D 占用预测，而变形三角形基元则为高效渲染提供了新方案。
+建议优先研读 8.0 分的高分论文，掌握如何利用语义信息提升 3D 空间表征的精准度。
+- 详情：[/202607/27/README](/202607/27/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [Learning Adaptive Semantic Gaussian Allocation for 3D Occupancy](/202607/27/2607.21896v1-learning-adaptive-semantic-gaussian-allocation-for-3d-occupancy)  
+   标签：评分：8.0/10、query:q1
+   evidence：使用3D高斯将语义原语渲染到体素体积中
 
 ### 速读区论文标签
-1. [CNS-Edit++: Category-Agnostic 3D Editing with Coupled Neural Shape Representation](/202607/26/2607.16577v2-cns-edit-category-agnostic-3d-editing-with-coupled-neural-shape-representation)  
-   标签：评分：7.0/10、query:q1
-   evidence：用于3D形状表示和编辑的神经特征体优化
-2. [CNS-Edit++: Category-Agnostic 3D Editing with Coupled Neural Shape Representation](/202607/26/2607.16577v1-cns-edit-category-agnostic-3d-editing-with-coupled-neural-shape-representation)  
+1. [Extending a Large View Synthesis Model for Multi-view Panoptic Segmentation](/202607/27/2607.19765v1-extending-a-large-view-synthesis-model-for-multi-view-panoptic-segmentation)  
    标签：评分：6.0/10、query:q1
-   evidence：用于3D形状编辑的神经特征体优化
+   evidence：大视角合成模型和外观渲染
+2. [Deformable Triangle Splatting: Flexible Primitives for Real-Time Radiance Field Rendering](/202607/27/2607.22446v1-deformable-triangle-splatting-flexible-primitives-for-real-time-radiance-field-rendering)  
+   标签：评分：6.0/10、query:q1
+   evidence：具有灵活原语和可微光栅化的辐射场渲染
 
 
 <div class="dpr-home-promo-card">
