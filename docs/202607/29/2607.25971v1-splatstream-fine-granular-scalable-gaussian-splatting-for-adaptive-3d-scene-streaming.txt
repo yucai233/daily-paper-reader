@@ -1,0 +1,414 @@
+Title: SplatStream: Fine Granular Scalable Gaussian Splatting for Adaptive 3D Scene Streaming
+
+URL Source: https://arxiv.org/pdf/2607.25971v1
+
+Published Time: Wed, 29 Jul 2026 01:16:43 GMT
+
+Number of Pages: 5
+
+Markdown Content:
+# SplatStream: Fine Granular Scalable Gaussian Splatting for Adaptive 3D Scene Streaming 
+
+Muhammad Talha 
+
+University of Missouri–Kansas City 
+
+mtgcf@umkc.edu 
+
+William Gordon 
+
+BASIS Independent Silicon Valley 
+
+william-gordon@outlook.com 
+
+Sajid Umair 
+
+University of Missouri–Kansas City 
+
+suzqnu@umkc.edu 
+
+Zhu Li 
+
+University of Missouri–Kansas City 
+
+lizhu@umkc.edu 
+
+Anique Akhtar 
+
+Qualcomm, Inc. 
+
+aniquea@qti.qualcomm.com 
+
+Joel Jung 
+
+Qualcomm, Inc. 
+
+joeljung@qti.qualcomm.com 
+
+Abstract —Dynamic 3D Gaussian Splatting (GS) enables high-quality real-time rendering for immersive media, but its large representation size and frame-wise redundancy create significant challenges for adaptive streaming. This paper presents Splat-Stream, a fine granular scalable Gaussian splatting framework for dynamic 3D scene delivery. The proposed method decompose the GS scenes into quality and resolution layers, and introduces inter-layer predictive coding to achieve scalability. For temporal direction, B-frames are introduced to have temporal quality scalability. A lightweight cross-layer transformer based predictor is utilized for both cross layer and temporal predictions. In addition, a volume-opacity based importance measure is used for fine-grained Gaussian packetization, allowing visually important primitives to be transmitted earlier for progressive refinement. Finally, the scalable GS bitstream is mapped to an MPEG-DASH compatible sub-representation structure, enabling fine granular adaptive, low-latency delivery of dynamic Gaussian splatting content under bandwidth-varying conditions. 
+
+Index Terms —3D Gaussian Splatting, dynamic scene compres-sion, scalable streaming, inter-frame prediction, MPEG-DASH, point cloud compression. 
+
+I. I NTRODUCTION AND MOTIVATION 
+
+3D Gaussian Splatting (3DGS) has emerged as an efficient representation for real-time novel-view synthesis, providing high visual quality through rasterization-based rendering [1]. By modeling a scene with anisotropic Gaussian primitives carrying geometry, opacity, scale, rotation, and spherical har-monic (SH) appearance attributes, 3DGS enables interactive rendering for immersive applications such as AR/VR, telepres-ence, and free-viewpoint video. However, high-quality 3DGS scenes often contain hundreds of thousands or millions of Gaussians with high-dimensional attributes, making storage and transmission expensive. This problem becomes more severe for dynamic scenes, where Gaussian frames must be de-livered continuously under bandwidth and latency constraints, while also satisfying pixel-rate limits imposed by the number of rendered pixels the decoder must process per second. Recent 3DGS compression methods reduce storage using pruning, quantization, compact attribute modeling, anchor structures, context modeling, and entropy coding. Compact-3DGS, LightGaussian, EAGLES, Scaffold-GS, CompGS, HAC, and ContextGS show that Gaussian primitives and attributes contain substantial redundancy [2]–[8]. In addition, L-GSC provides a lightweight open-source 3D Gaussian Splat codec for encoding and decoding GS representations [9]. In parallel, MPEG G-PCC v1 Amd.1 and V-PCC v1 Amd.1 have been used as standardized anchors for Gaussian splatting data, since Gaussian centers and attributes can be organized in point-cloud-like forms and compressed using geometry, attribute, or video-based point-cloud coding tools [10]–[12]. While these methods provide strong compression performance, they are mainly designed for compact storage or frame-level coding, and do not fully address adaptive streaming requirements such as fast startup, resolution switching, temporal scalability, and fine-grained partial decoding. Streaming-oriented 3DGS methods have begun to address these requirements. Fine-granular scalable Gaussian splatting coding introduced an intra-coded streamable framework with progressively decodable Gaussian packets [13], while low-latency scalable Gaussian splatting coding and LTS further explored DASH-like multi-layer organization for immersive Gaussian scenes [14], [15]. These works are related to MPEG-DASH, where media is organized into representations, seg-ments, and sub-representations for adaptive delivery [16]. However, existing scalable 3DGS streaming approaches are still limited: many are intra-frame oriented, focus mainly on packetization, or do not jointly combine multi-resolution rendering, learned inter-quality-layer prediction, temporal pre-diction, and fine-grained Gaussian refinement in a unified dynamic streaming framework. For dynamic 3DGS, temporal redundancy is also criti-cal. Consecutive frames often share similar geometry and appearance despite motion, deformation, visibility changes, and topology variation. InterGS introduced inter-predictive coding for Gaussian splatting sequences, and InterGS-Lite further improved this direction using lightweight prediction and vector quantization of residuals [17], [18]. Nevertheless, these works are predictive coding tools rather than complete scalable streaming systems: they do not define spatial quality layers, temporal enhancement layers, or DASH-compatible sub-representations. In this work, we propose SplatStream , a fine-grained scal-able Gaussian splatting framework for adaptive streaming arXiv:2607.25971v1 [eess.IV] 28 Jul 2026 of dynamic 3D scenes. SplatStream treats 3DGS coding as a streamable representation design problem. It uses multi-resolution rendering supervision for scalable intra anchors, introduces a lightweight transformer predictor to reduce re-dundancy between quality layers, integrates InterGS-Lite for 1080p temporal prediction, and orders Gaussians using avolume-opacity importance criterion inspired by rendering-free primitive importance estimation [19]. The resulting bit-stream supports spatial startup quality, temporal scalability, and fine-grained DASH-style refinement. The main contributions are: 
+
+• Multi-resolution GS rendering: We supervise the original-resolution Gaussian representation at multiple rendering resolutions, allowing compact startup at low quality and progressive refinement toward high-resolution playback. 
+
+• Transformer-based inter-quality-layer prediction: Alightweight transformer predicts higher-quality Gaussian attributes from decoded lower-quality layers, reducing redundancy in enhancement-layer coding. 
+
+• Temporal scalability with inter-frame prediction: 
+
+InterGS-Lite is integrated as the temporal coding module, and dynamic frames are organized into base temporal and B-layer enhancement representations. 
+
+• MPEG-DASH sub-representation mapping: Spatial layers, temporal layers, and volume-opacity refinement units are organized into DASH-compatible representa-tions and sub-representations for adaptive, fine-grained, low-latency streaming. II. M ETHODOLOGY 
+
+A. Overview of SplatStream 
+
+SplatStream provides a scalable streaming structure for dy-namic 3D Gaussian Splatting (3DGS). Given Gaussian frames 
+
+{G t}Tt=1 , each primitive is represented as 
+
+gi = {xi, si, qi, α i, ci}, (1) where the terms denote center, scale, rotation, opacity, and SH appearance coefficients, respectively. SplatStream supports three complementary forms of scala-bility: spatial-quality scalability, temporal scalability, and fine-grained Gaussian scalability. The first frame of each GOP is treated as an intra anchor. Its Gaussian model is trained at the original scene resolution, but the rendering loss is evaluated at multiple target resolutions, e.g., 540 p, 720 p, and 
+
+1080 p, to make the same representation effective for different display qualities. Temporal prediction is performed only in the reconstructed 1080 p Gaussian domain using an extended InterGS-Lite framework, where a lightweight transformer pre-dictor is added to the original KNN-bilateral predictor set. Finally, opacity-volume Gaussian ordering and MPEG-DASH sub-representations enable fine-grained adaptive streaming. 
+
+B. Multi-Resolution Intra Rendering Loss 
+
+The multi-resolution loss makes the intra anchor suitable for scalable streaming rather than only full-resolution offline rendering. In adaptive delivery, early packets should preserve dominant scene structure for low-rate startup, while later 20 40 60 80 100 120  
+
+> bpp
+> 10
+> 15
+> 20
+> 25
+> 30
+> 35
+> Dataset RGB-PSNR
+> Dataset RGB-PSNR vs bpp
+> Fine-granularity RD curves | Number of frames: 4
+> 10% | 42.2kG
+> 20% | 84.3kG
+> 30% | 126.5kG
+> 40% | 168.7kG
+> 50% | 210.8kG
+> 60% | 253.0kG
+> 70% | 295.2kG
+> 80% | 337.3kG 90% | 379.5kG
+> 100% | 421.7kG
+> 10% | 36.3kG
+> 20% | 72.7kG
+> 30% | 109.0kG
+> 40% | 145.4kG
+> 50% | 181.7kG
+> 60% | 218.1kG
+> 70% | 254.4kG
+> 80% | 290.7kG
+> 90% | 327.1kG
+> 100% | 363.4kG
+> 10% | 89.3kG
+> 20% | 178.6kG
+> 30% | 267.9kG
+> 40% | 357.2kG
+> 50% | 446.5kG
+> 60% | 535.8kG
+> 70% | 625.1kG
+> 80% | 714.4kG
+> 90% | 803.7kG
+> 100% | 893.1kG
+> bartender semitracked
+> cinema semitracked
+> breakfast semitracked
+
+Fig. 1: RGB-PSNR versus bpp for fine-grained refinement levels across three dynamic 3DGS sequences. 20 40 60 80 100 120 
+
+> bpp
+> 0.3
+> 0.4
+> 0.5
+> 0.6
+> 0.7
+> 0.8
+> 0.9
+> Dataset SSIM
+> Dataset SSIM vs bpp
+> Fine-granularity RD curves | Number of frames: 4
+> 10% | 42.2kG
+> 20% | 84.3kG
+> 30% | 126.5kG
+> 40% | 168.7kG
+> 50% | 210.8kG
+> 60% | 253.0kG
+> 70% | 295.2kG
+> 80% | 337.3kG
+> 90% | 379.5kG
+> 100% | 421.7kG
+> 10% | 36.3kG
+> 20% | 72.7kG
+> 30% | 109.0kG
+> 40% | 145.4kG
+> 50% | 181.7kG
+> 60% | 218.1kG
+> 70% | 254.4kG
+> 80% | 290.7kG
+> 90% | 327.1kG
+> 100% | 363.4kG
+> 10% | 89.3kG
+> 20% | 178.6kG
+> 30% | 267.9kG
+> 40% | 357.2kG
+> 50% | 446.5kG
+> 60% | 535.8kG
+> 70% | 625.1kG
+> 80% | 714.4kG
+> 90% | 803.7kG
+> 100% | 893.1kG
+> bartender semitracked
+> cinema semitracked
+> breakfast semitracked
+
+Fig. 2: SSIM versus bpp for fine-grained refinement levels across three dynamic 3DGS sequences. packets refine the reconstruction as bandwidth improves. Im-portantly, we do not train separate PLY models for 540 p, 720 p,and 1080 p; instead, the same intra Gaussian representation is rendered and supervised at multiple target resolutions. Let t = a denote the first frame of a GOP and let R =
+
+{540 , 720 , 1080 } be the set of target rendering resolutions. The intra representation Ga is rendered at resolution r ∈ R as 
+
+ˆIra = Φ( Ga, r ), (2) where Φ( ·) denotes the Gaussian rasterizer and Ira is the ground-truth image downsampled to resolution r. The multi-resolution intra rendering loss is 
+
+LMR = X
+
+r∈R 
+
+λr
+
+h
+
+(1 − β) ˆIra − Ira 1
+
++ βLSSIM 
+
+ˆIra, Ira
+
+ i 
+
+,
+
+(3) where λr controls the contribution of each resolution and β
+
+balances pixel distortion and structural similarity. After training, scalable intra packets are generated by con-trolling the transmitted Gaussian subset and enhancement in-formation. Lower-rate packets support compact startup, while higher-rate packets refine the reconstruction toward full qual-ity. The decoded full-quality intra representation then serves as the reference for the 1080 p temporal prediction chain. 20 40 60 80 100 120 
+
+> bpp
+> 0.1
+> 0.2
+> 0.3
+> 0.4
+> 0.5
+> 0.6
+> Dataset LPIPS
+> Dataset LPIPS vs bpp
+> Fine-granularity RD curves | Number of frames: 4
+> 10% | 42.2kG
+> 20% | 84.3kG
+> 30% | 126.5kG
+> 40% | 168.7kG
+> 50% | 210.8kG
+> 60% | 253.0kG
+> 70% | 295.2kG
+> 80% | 337.3kG
+> 90% | 379.5kG
+> 100% | 421.7kG
+> 10% | 36.3kG
+> 20% | 72.7kG
+> 30% | 109.0kG
+> 40% | 145.4kG
+> 50% | 181.7kG
+> 60% | 218.1kG
+> 70% | 254.4kG
+> 80% | 290.7kG
+> 90% | 327.1kG
+> 100% | 363.4kG
+> 10% | 89.3kG
+> 20% | 178.6kG
+> 30% | 267.9kG
+> 40% | 357.2kG
+> 50% | 446.5kG
+> 60% | 535.8kG
+> 70% | 625.1kG
+> 80% | 714.4kG
+> 90% | 803.7kG
+> 100% | 893.1kG
+> bartender semitracked
+> cinema semitracked
+> breakfast semitracked
+
+Fig. 3: LPIPS versus bpp for fine-grained refinement levels across three dynamic 3DGS sequences. 
+
+C. Transformer-Enhanced InterGS-Lite Prediction 
+
+Temporal prediction in SplatStream is built upon InterGS-Lite [18]. The original InterGS-Lite framework uses a hybrid predictor based on K-nearest-neighbor (KNN) feature transfer and bilateral prediction. In this work, we extend the predictor set by adding a lightweight transformer predictor. Thus, for each target Gaussian, the encoder considers multiple prediction candidates: P = {P KNN , Pbilateral , Ptrans }. (4) The KNN branch captures local geometric correspondence from the reconstructed reference frame, the bilateral branch provides a spatially smooth attribute prediction, and the trans-former branch learns geometry-aware local correlations that are difficult to capture with hand-crafted predictors. For a P-frame at time t, prediction is performed in the reconstructed 1080 p Gaussian domain. Given the previous reconstructed reference frame ˜G1080 
+
+t−1 and the current target frame G1080 
+
+t , each predictor estimates the attributes of a target Gaussian: 
+
+ˆθ(p)
+
+t,i = Pp
+
+
+
+gt,i , ˜G1080 
+
+t−1
+
+
+
+, p ∈ { KNN , bilateral , trans }. (5) The encoder selects the predictor that minimizes the attribute prediction error: 
+
+p∗
+
+i = arg min 
+
+p θt,i − ˆθ(p)
+
+t,i 1
+
+. (6) The selected prediction is used to form the residual: 
+
+et,i = θt,i − ˆθ(p∗ 
+
+> i
+
+)
+
+t,i . (7) The predictor index p∗
+
+i is transmitted as side information so that the decoder can reproduce the same prediction. For the transformer branch, the input is formed from a local KNN neighborhood in the reconstructed reference frame. For each target Gaussian gt,i , we collect K neighboring reference Gaussians: Ni = KNN 
+
+
+
+xt,i , ˜G1080 
+
+t−1
+
+
+
+. (8) Each neighbor is converted into a token containing compact PCA-domain SH information and relative geometry. Let τ ij 
+
+denote the token of the j-th neighbor and wij its affinity weight. The token is first affinity-gated: 
+
+uij = wij τ ij . (9) The gated token is projected into an embedding space and augmented with learned rank and geometric positional infor-mation: 
+
+h0
+
+ij = Win uij + rj + fgeo (∆ xij ), (10) where rj is a learned rank embedding, fgeo (·) is a geometry MLP, and ∆xij is the relative position between the target Gaussian and the reference neighbor. The transformer applies single-head QKV attention: 
+
+Qi = H0
+
+i WQ, Ki = H0
+
+i WK , Vi = H0
+
+i WV . (11) To make the attention explicitly aware of local 3D geometry, a relative-position bias is added to the attention logits: 
+
+Si(m, n ) = qTim kin 
+
+√d + bψ (∆ xin − ∆xim ) , (12) where bψ (·) is implemented using Fourier relative-position fea-tures followed by a learned projection. The attention weights and context are computed as 
+
+Ai = softmax (Si), Ci = AiVi. (13) After residual connections, layer normalization, and a feed-forward block, the predictor head outputs the PCA-domain SH prediction: ˆytrans 
+
+t,i = fhead (Pool (Hi)) . (14) The transformer is trained using an L1 loss against the target PCA-domain SH vector: 
+
+Ltrans = 1
+
+N
+
+NX
+
+i=1 
+
+ˆytrans 
+
+t,i − yt,i 1 . (15) After predictor selection, SH residuals are coded using vector quantization, while opacity, scale, and rotation residuals are scalar-quantized and entropy coded, following InterGS-Lite. At the decoder, the same reconstructed reference frame and transmitted predictor index are used to reproduce the selected prediction. The decoded frame is reconstructed as 
+
+˜G1080 
+
+t = ˆG1080 
+
+t + ˜E1080 
+
+t . (16) Thus, SplatStream preserves the closed-loop InterGS-Lite prediction structure while extending its predictor set with a learned geometry-aware transformer. 
+
+D. Hierarchical GOP and B-Layer Temporal Scalability 
+
+To support temporal scalability, SplatStream organizes each GOP into a base temporal layer and an enhancement temporal layer. For example, for a seven-frame GOP, {1, 2, 3, 4, 5, 6, 7},
+
+the base temporal layer contains I1, P3, P5, P7, which provides a lower-frame-rate representation. The base temporal prediction chain is I1 → P3 → P5 → P7. (17) The intermediate frames are assigned to a B-layer temporal enhancement representation: B2, B4, B6. For simplicity, these B-layer frames are not coded with true bidirectional prediction. Instead, they are encoded using the same InterGS-Lite P-style prediction from the nearest previous reconstructed anchor: I1 → B2, P3 → B4, P5 → B6. (18) Thus, the term B-layer denotes the temporal enhancement role of these frames, not a bidirectional prediction mode. A client may decode only the base temporal layer for lower-frame-rate playback or request B-layer frames to recover the full frame rate. TABLE I: Fine-grained importance-ordered refinement operating points after the full intra anchor. The P2, B1, and B3 columns report the coded size of the selected refinement unit for display frames 2, 1, and 3, respectively. Added temporal size is their sum. Total size includes the full intra anchor S3. Total Gaussians and cumulative BPG are computed over frames 0, 1, 2, and 3, and quality metrics are averaged over these frames.                                                          
+
+> Ref. level Coding level P2size B1size B3size Added temp. size Total size Total #G Cum. BPG Avg. PSNR / SSIM / LPIPS
+> 10% Very-low-rate ref. 0.59 MB 0.53 MB 0.59 MB 1.71 MB 23.46 MB 474560 395.48 22.86 / 0.617 / 0.365 20% Low-rate ref. 1.17 MB 1.06 MB 1.18 MB 3.41 MB 25.17 MB 601059 334.97 24.51 / 0.672 / 0.316 30% Progressive ref. 1.76 MB 1.60 MB 1.76 MB 5.12 MB 26.87 MB 727557 295.49 25.92 / 0.730 / 0.280 50% Medium-rate ref. 2.93 MB 2.66 MB 2.94 MB 8.53 MB 30.29 MB 980553 247.10 27.82 / 0.793 / 0.233 100% Full-quality ref. 5.86 MB 5.32 MB 5.88 MB 17.07 MB 38.82 MB 1613044 192.53 32.34 / 0.892 / 0.164
+
+E. Opacity-Volume Prefixes for Fine-Grained Scalability 
+
+SplatStream further supports fine-grained quality scalability within each decoded Gaussian frame. After a frame is recon-structed, its Gaussians are ranked using an opacity-volume importance score. Since 3DGS stores opacity as a logit and scale in log-space, we compute 
+
+Vi = exp( si,x + si,y + si,z ), (19) 
+
+ρi = σ(αi)Vi, (20) where σ(·) is the sigmoid function and ρi is the importance score. Gaussians with larger spatial support and higher opacity are transmitted earlier. Let π be the ordering that sorts Gaussians by decreasing ρi.For a prefix percentage x, the renderable subset is 
+
+˜Gxt =
+
+
+
+gπ(i) | 1 ≤ i ≤
+
+ xN t
+
+100 
+
+ 
+
+, (21) where Nt is the number of Gaussians in the reconstructed frame. Prefixes form nested representations: 
+
+˜G10  
+
+> t
+
+⊂ ˜G20  
+
+> t
+
+⊂ · · · ⊂ ˜G100  
+
+> t
+
+. (22) This enables progressive rendering from a small subset of important Gaussians to the full reconstruction. 
+
+F. MPEG-DASH Sub-Representation Mapping 
+
+SplatStream maps the scalable Gaussian bitstream to a DASH-like structure, where each GOP is treated as a tem-poral segment and spatial, temporal, and fine-grained qual-ity layers are exposed as selectable representations or sub-representations. The scalable intra packets support startup and spatial-quality refinement, the base temporal layer enables lower-frame-rate playback, and B-layer packets provide op-tional temporal enhancement for full-frame-rate playback. Importance-ordered Gaussian refinement units are exposed as fine-grained sub-representations, allowing the client to request partial refinement levels, e.g., 10%, 20%, 30%, 50%, or 100%, according to bandwidth and rendering budget. The DASH-like manifest records packet type, temporal layer, re-finement percentage, byte size, bits per Gaussian, Gaussian count, predictor metadata, and dependency information, en-abling the client to select the appropriate operating point for its bandwidth, frame-rate, and quality requirements. 
+
+G. Adaptive Decoding and Playback 
+
+At the decoder, reconstruction follows the dependency graph specified in the manifest. A low-bandwidth client may first decode a compact intra representation for fast startup. To enter the full-resolution temporal prediction chain, the client de-codes the full-quality intra anchor and reconstructs ˜G1080 1 . Sub-sequent anchor P-frames are decoded using the transformer-enhanced InterGS-Lite prediction chain. If bandwidth is lim-ited, the client may decode only the base temporal layer: 
+
+I1, P 3, P 5, P 7. If additional bandwidth is available, the client requests B-layer enhancement frames: B2, B4, B6. Within each decoded frame, the client may render only the available opacity-volume prefix ˜Gxt , where x ∈ { 10 , 20 , . . . , 100 }. As more sub-representations arrive, the rendering is progressively refined in quality and temporal smoothness. Overall, SplatStream combines multi-resolution intra ren-dering supervision, transformer-enhanced InterGS-Lite predic-tion, B-layer temporal scalability, opacity-volume Gaussian prefixing, and MPEG-DASH sub-representation mapping. This unified design enables adaptive dynamic 3DGS streaming across display quality, frame rate, and fine-grained reconstruc-tion levels. III. E XPERIMENTATION AND RESULTS 
+
+We evaluate SplatStream on three forward-facing dy-namic 3DGS sequences from the MPEG common test condi-tions: bartender semitracked , cinema semitracked , and break-fast semitracked . Each experiment uses a four-frame GOP with display frames {0, 1, 2, 3}, organized as I0, B 1, P 2, B 3.Here, I0 is the scalable intra anchor, P2 forms the base temporal layer, and B1 and B3 are B-layer temporal enhance-ment frames coded using P-style prediction. The intra anchor supports multiple spatial qualities, while temporal prediction is performed in the reconstructed 1080p Gaussian domain. For fine-grained streaming, reconstructed Gaussians are ordered using the opacity-volume importance score and progressively decoded using refinement levels from 10% to 100%. We report RGB-PSNR, SSIM, and LPIPS. Required bandwidth is computed assuming a 30 fps stream and a four-frame GOP: 
+
+Rbw = 8BGOP 
+
+TGOP 
+
+, TGOP = 430 , (23) where BGOP is the transmitted size of the selected operating point. Table II reports bandwidth-adaptive operating points for one GOP of the bartender semitracked sequence. The first three rows show intra-only spatial scalability, where the client starts from I540 0 and progressively receives I720 0 and 
+
+I1080 0 . The total size increases from 13.80 MB to 21.75 MB, while PSNR improves from 30.45 dB to 34.12 dB. After the full spatial anchor is available, the stream enters temporal playback. The base temporal mode adds P 1080 2 and enables frames {0, 2}. Full-frame-rate playback is then achieved by adding refinement units for P2, B1, and B3. As the refinement level increases from 10% to 100%, the total size increases from 23.46 MB to 38.82 MB, while PSNR improves from 22.86 dB to 32.34 dB and LPIPS decreases from 0.365 to 0.164. This demonstrates that SplatStream provides selectable DASH-like operating points under different bandwidth conditions. TABLE II: Bandwidth-adaptive operating points of SplatStream for one four-frame GOP. Total size is the transmitted data required for the selected operating point. Required bandwidth is computed assuming a 30 fps stream and a four-frame GOP. Quality metrics are averaged over the available decoded frames.                                                                                                                                       
+
+> Bandwidth mode Selected stream units Available frames Playback mode Refinement Total size/GOP Req. BW Total #G Avg. PSNR / SSIM / LPIPS
+> Startup I540 00Intra only –13.80 MB 828 Mbps 278127 30.45 / 0.886 / 0.161 Low spatial quality I540 0+I720 00Intra only –17.56 MB 1054 Mbps 292580 33.15 / 0.904 / 0.155 Full spatial anchor I540 0+I720 0+I1080 00Intra only –21.75 MB 1305 Mbps 348060 34.12 / 0.911 / 0.150 Low-frame-rate temporal S3 + P1080 20,2Base temporal layer 100% 27.62 MB 1657 Mbps 772201 32.84 / 0.898 / 0.160 Very-low BW full FPS S3 + P10 2+B10 1+B10 30,1,2,3Full temporal layer 10% 23.46 MB 1408 Mbps 474560 22.86 / 0.617 / 0.365 Low BW full FPS S3 + P20 2+B20 1+B20 30,1,2,3Full temporal layer 20% 25.17 MB 1510 Mbps 601059 24.51 / 0.672 / 0.316 Moderate BW full FPS S3 + P30 2+B30 1+B30 30,1,2,3Full temporal layer 30% 26.87 MB 1612 Mbps 727557 25.92 / 0.730 / 0.280 Medium BW full FPS S3 + P50 2+B50 1+B50 30,1,2,3Full temporal layer 50% 30.29 MB 1817 Mbps 980553 27.82 / 0.793 / 0.233 High BW full FPS S3 + P100 2+B100 1+B100 30,1,2,3Full temporal layer 100% 38.82 MB 2329 Mbps 1613044 32.34 / 0.892 / 0.164
+
+Table I further analyzes the fine-grained refinement units. The added temporal size increases smoothly from 1.71 MB at 10% refinement to 17.07 MB at 100% refinement. Over the same range, the number of rendered Gaussians increases from 474,560 to 1,613,044, PSNR improves from 22.86 dB to 32.34 dB, SSIM increases from 0.617 to 0.892, and LPIPS decreases from 0.365 to 0.164. These results show that opacity-volume ordering produces meaningful progressive refinement: early units provide a compact coarse reconstruction, while later units recover finer details and improve perceptual quality. Fig. 1, Fig. 2, and Fig. 3 report fine-granularity RD curves over all three sequences. Across bartender semitracked , cin-ema semitracked , and breakfast semitracked , increasing the refinement percentage consistently improves PSNR, SSIM, and LPIPS. Although the absolute quality varies by sequence due to different scene complexity and Gaussian distributions, all curves follow the same trend. This confirms that the proposed importance-ordered refinement units provide stable bandwidth-quality scalability across dynamic 3DGS content. IV. C ONCLUSION 
+
+This paper presented SplatStream , a fine-grained scalable streaming framework for dynamic 3D Gaussian Splatting. The proposed method converts dynamic 3DGS from a monolithic compressed representation into a DASH-like adaptive stream with spatial, temporal, and fine-grained quality scalability. Multi-resolution rendering supervision enables a compact intra anchor for startup and progressive spatial refinement, while the transformer-enhanced InterGS-Lite predictor improves tempo-ral coding for both base P-frames and B-layer enhancement frames. In addition, opacity-volume based Gaussian ordering provides progressively decodable refinement units, allowing clients to trade bandwidth for reconstruction quality in a controlled manner. Experimental results on dynamic 3DGS sequences show that SplatStream supports bandwidth-adaptive operation, low-frame-rate and full-frame-rate playback, and smooth quality refinement across PSNR, SSIM, and LPIPS. These results demonstrate the potential of scalable Gaussian packetization and DASH-compatible organization for practical low-latency immersive 3D scene streaming. REFERENCES [1] B. Kerbl, G. Kopanas, T. Leimk¨ uhler, and G. Drettakis, “3d gaussian splatting for real-time radiance field rendering,” ACM Transactions on Graphics , vol. 42, no. 4, 2023. [2] J. C. Lee, D. Rho, X. Sun, J. H. Ko, and E. Park, “Compact 3d gaussian representation for radiance field,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2024, pp. 21 719–21 728. [3] Z. Fan, K. Wang, K. Wen, Z. Zhu, D. Xu, and Z. Wang, “Lightgaussian: Unbounded 3d gaussian compression with 15x reduction and 200+ fps,” 
+
+arXiv preprint arXiv:2311.17245 , 2023. [4] S. Girish, K. Gupta, and A. Shrivastava, “Eagles: Efficient accelerated 3d gaussians with lightweight encodings,” in European Conference on Computer Vision , 2024. [5] T. Lu, X. Yu, L. Xu, Y. Xiangli, L. Wang, D. Lin, and B. Dai, “Scaffold-gs: Structured 3d gaussians for view-adaptive rendering,” in 
+
+Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2024. [6] X. Liu, X. Wu, P. Zhang, S. Zhao, H. Feng, S. Wang, and S. Kwong, “Compgs: Efficient 3d scene representation via compressed gaussian splatting,” in Proceedings of the ACM International Conference on Multimedia , 2024. [7] Y. Chen, Q. Wu, W. Lin, M. Harandi, and J. Cai, “Hac: Hash-grid assisted context for 3d gaussian splatting compression,” in European Conference on Computer Vision , 2024, pp. 422–438. [8] Y. Wang et al. , “Contextgs: Compact 3d gaussian splatting with anchor level context model,” arXiv preprint arXiv:2405.20721 , 2024. [9] Qualcomm Technologies, Inc., “L-GSC v1.0: Lightweight 3D Gaussian Splat Codec,” https://github.com/qualcomm/lite-3Dgsplat-codec, 2026, accessed: 2026-05-09. [10] Information Technology – Coded Representation of Immersive Media – Part 9: Geometry-Based Point Cloud Compression , ISO/IEC Std. ISO/IEC 23 090-9:2023, 2023. [11] ISO/IEC 23090-5:2021/Amd.1, Information technology – Coded repre-sentation of immersive media – Part 5: Visual volumetric video-based coding (V3C) and video-based point cloud compression (V-PCC) – Amendment 1 , ISO/IEC Std., 2023. [12] S. Schwarz, M. Preda, V. Baroncini, M. Budagavi, P. Cesar, P. A. Chou, R. A. Cohen, M. Krivoku´ ca, S. Lasserre, Z. Li, J. Llach, K. Mammou, R. Mekuria, O. Nakagami, E. Siahaan, A. Tabatabai, A. M. Tourapis, and V. Zakharchenko, “Emerging mpeg standards for point cloud compression,” IEEE Journal on Emerging and Selected Topics in Circuits and Systems , vol. 9, no. 1, pp. 133–148, 2019. [13] J. Zou, L. Shi, S. Xu, J. Wang, G. Van der Auwera, and Z. Li, “Fine granular scalable gaussian splatting coding for real-time immersive ed-ucation,” in Proceedings of the International Conference on Computing, Networking and Communications , 2026. [14] L. Shi, J. Zou, S. Sun, G. Van der Auwera, and Z. Li, “Low latency immersive visual communication with scalable gaussian splatting cod-ing,” in Proceedings of the IEEE International Workshop on Multimedia Signal Processing , 2025. [15] Y.-C. Sun, Y. Shi, C.-T. Lee, M. Zhu, W. T. Ooi, Y. Liu, C.-Y. Huang, and C.-H. Hsu, “Lts: A dash streaming system for dynamic multi-layer 3d gaussian splatting scenes,” in Proceedings of the 16th ACM Multimedia Systems Conference , 2025, pp. 136–147. [16] I. Sodagar, “The mpeg-dash standard for multimedia streaming over the internet,” IEEE Multimedia , vol. 18, no. 4, pp. 62–67, 2011. [17] M. Talha, Z. Li, A. Akhtar, and G. Van der Auwera, “Intergs: Inter-predictive coding of gaussian splatting sequences,” in Proceedings of the IEEE International Conference on Visual Communications and Image Processing , 2025. [18] M. Talha, Z. Li, A. Akhtar, and G. V. der Auwera, “Intergs-lite: Light weight dynamic gs coding with vector quantization of prediction residuals,” in Proceedings of the Data Compression Conference , 2026, accepted. [19] K. Yang, Q. Yang, Y. Xu, and Z. Li, “Rap: Fast feedforward rendering-free attribute-guided primitive importance score prediction for efficient 3d gaussian splatting processing,” arXiv preprint arXiv:2602.19753 ,2026.
