@@ -1,0 +1,165 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-30T21:39:35.923866+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.26525v1",
+      "title": "AtlasLC: Fast Codec-Ready Compression of Object-Centric 3D Gaussian Splatting",
+      "abstract": "3D Gaussian Splatting (3DGS) enables photorealistic novel-view synthesis with real-time rendering, but deploying compressed object-centric 3DGS in XR requires more than image-space rate-distortion. In practical XR asset pipelines, reusable objects are repeatedly packaged, transmitted, decoded, and instantiated, making asset-preparation cost, codec compatibility, decoding latency, and preservation of depth and silhouette cues first-class concerns. Existing 3DGS compression methods are largely developed for scene-scale captures and often rely on heavy layout generation or aggressive global pruning, assumptions that transfer poorly to semantically concentrated foreground objects. We present AtlasLC, a source-free, training-free compression pipeline for object-centric 3DGS that operates directly on released Gaussian assets, without original images, camera poses, or per-asset optimization. AtlasLC couples local-competition pruning with deterministic atlas packing to remove the mapping/remapping bottleneck while preserving object-wide foreground support; a lightweight single-pass sort-based conditional transport is used as a shared coordinate backbone for these stages. Across the evaluated assets, AtlasLC reduces atlas-preparation time by up to a factor of 25 and end-to-end compression time by up to a factor of 5, while offering a favorable deployment-aware balance of payload, decode latency, runtime FPS, and 3D geometry relative to the evaluated compressed baselines. Relative to similarly compact structured baselines, it uses about 6 to 8 percent fewer bits while maintaining comparable perceptual and geometric quality. These results show that object-centric 3DGS compression should be optimized for a deployment-aware operating point enabling scalable XR asset libraries.",
+      "authors": [
+        "ByungHyun Kim",
+        "Jinwoo Jeon",
+        "Woontack Woo"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR"
+      ],
+      "published": "2026-07-29T06:43:17+00:00",
+      "link": "https://arxiv.org/pdf/2607.26525v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting for real-time rendering and compression",
+      "llm_evidence_cn": "用于实时渲染和压缩的 3D 高斯泼溅技术",
+      "llm_evidence": "用于实时渲染和压缩的 3D 高斯泼溅技术",
+      "canonical_evidence": "用于实时渲染和压缩的 3D 高斯泼溅技术",
+      "llm_tldr_en": "AtlasLC provides a training-free compression pipeline for object-centric 3D Gaussian Splatting in XR.",
+      "llm_tldr_cn": "AtlasLC 为 XR 中的以对象为中心的 3D 高斯泼溅提供了一种无需训练的压缩流水线。",
+      "llm_tldr": "AtlasLC 为 XR 中的以对象为中心的 3D 高斯泼溅提供了一种无需训练的压缩流水线。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.24298v1",
+      "title": "UMI3D: Robust 3D Generation on Unconstrained Multi-Image Inputs via Simultaneous Focus Cross-Attention Routing",
+      "abstract": "Recent 3D foundation models can generate high-quality assets from a single image, but degrade markedly on unconstrained multi-image inputs, often producing distorted geometry, over-smoothed textures, and chaotic colors. We argue that this failure stems not from limited model capacity, but from a mismatch between single-image cross-attention and the multi-image setting: existing models lack a principled way to decide which image each 3D voxel should trust at each denoising step. Revisiting recent single-image 3D foundation models, we show that explicitly routing each voxel to its most informative image is sufficient to unlock strong performance on inconsistent multi-image inputs. Based on this observation, we propose UMI3D, a training-free and plug-and-play framework that restructures cross-attention for unconstrained multi-image 3D generation. Its core, Simultaneous Focus Cross-Attention (SFC-Attn), activates all conditioning images at each denoising step while allowing each voxel to focus on the single image that best explains it. To enable this routing, we derive the Voxel Reference Score (VRS), a model-intrinsic metric for voxel--image affinity that requires no external matching, segmentation, or correspondence models. Extensive experiments show that UMI3D unlocks the multi-image potential of single-image 3D generation frameworks across diverse tasks. Project Page: UMI3D-Project.github.io.",
+      "authors": [
+        "Zefan Qu",
+        "Zhenwei Wang",
+        "Gerhard Petrus Hancke",
+        "Rynson W. H. Lau"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-27T11:44:05+00:00",
+      "link": "https://arxiv.org/pdf/2607.24298v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "3D voxel routing for high-quality asset generation",
+      "llm_evidence_cn": "用于高质量资产生成的 3D 体素路由",
+      "llm_evidence": "用于高质量资产生成的 3D 体素路由",
+      "canonical_evidence": "用于高质量资产生成的 3D 体素路由",
+      "llm_tldr_en": "Introduces a cross-attention routing method for robust 3D generation from multiple unconstrained images.",
+      "llm_tldr_cn": "引入了一种交叉注意力路由方法，用于从多个不受约束的图像中进行鲁棒的 3D 生成。",
+      "llm_tldr": "引入了一种交叉注意力路由方法，用于从多个不受约束的图像中进行鲁棒的 3D 生成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.26578v1",
+      "title": "3DGBGS: 3D Granular Ball Gaussian Splatting for Compact Novel View Synthesis",
+      "abstract": "Three-dimensional Gaussian Splatting (3DGS) enables high-quality real-time novel-view synthesis through explicit Gaussian primitives and differentiable rasterization. 3DGS and Granular Ball Computing (GBC), proposed in 2019, share a natural compatibility in adaptive representation. The efficiency of 3DGS partly stems from a coarse-to-fine and on-demand refinement process that draws on the generation principle of GBC. This connection motivates us to further introduce adaptive granular ball organization into anchor-based 3DGS. Existing anchor-based methods typically construct anchors from sparse SfM point clouds through fixed voxelization, which cannot adequately adapt to spatially non-uniform point distributions and leads to a trade-off among anchor count, model compactness, and rendering quality. To address this issue, we propose 3DGBGS (3D Granular Ball Gaussian Splatting), a compact anchor-based framework for novel-view synthesis. 3DGBGS adaptively partitions SfM point clouds into 3D granular balls, using larger balls to compactly represent smooth and redundant regions and smaller balls to preserve complex geometry and local details. Based on this representation, Granular Ball Anchor Initialization (GBAI) uses granular ball centers to initialize compact anchor positions, while the Granular Ball Scale Prior (GBSP) exploits granular ball radii to provide local scale priors for Gaussian generation. Experiments on four benchmarks show that 3DGBGS reduces initial and final anchors by 37.1% and 10.0%, respectively, and model storage by 9.8% on average, while maintaining comparable rendering quality.",
+      "authors": [
+        "Meng Yang",
+        "Shuyin Xia",
+        "Dawei Dai",
+        "YiWang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-29T07:57:17+00:00",
+      "link": "https://arxiv.org/pdf/2607.26578v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting for novel view synthesis",
+      "llm_evidence_cn": "用于新视角合成的3D高斯泼溅技术",
+      "llm_evidence": "用于新视角合成的3D高斯泼溅技术",
+      "canonical_evidence": "用于新视角合成的3D高斯泼溅技术",
+      "llm_tldr_en": "Integrates Granular Ball Computing with 3D Gaussian Splatting for more compact and adaptive scene representation.",
+      "llm_tldr_cn": "将粒度球计算与3D高斯泼溅结合，实现了更紧凑、自适应的场景表示。",
+      "llm_tldr": "将粒度球计算与3D高斯泼溅结合，实现了更紧凑、自适应的场景表示。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.26595v1",
+      "title": "SpatialQ: Understanding 3D Gaussian Splatting Scene Quality via Visual-based MLLM",
+      "abstract": "3D Gaussian Splatting (3DGS) has emerged as an effective representation for novel view synthesis and 3D scene reconstruction, creating an increasing demand for reliable quality assessment. Unlike conventional image quality assessment (IQA), the quality of a 3DGS scene depends not only on the perceptual fidelity of rendered views, but also on scene-level factors such as spatial structure and cross-view consistency. Existing IQA methods are limited by their reliance on 2D perceptual cues, whereas general multimodal large language models (MLLMs) are not designed for stable quality regression and may produce unreliable judgments. To address these limitations, a multimodal quality assessment framework is developed for 3DGS scene understanding. First, a 3D-aware quality representation learning framework is introduced by augmenting a VGGT-based encoder with a dedicated quality head. Multi-view images are encoded into view-specific features and aggregated to capture cross-view consistency, while geometric cues are incorporated through joint modeling of depth and point-cloud-related structural information, enabling the learning of structure-aware quality representations beyond appearance-driven features. Second, a grounded multimodal reasoning mechanism is constructed by jointly feeding original images, depth maps, point cloud renderings, and camera parameters into a Qwen-based MLLM.",
+      "authors": [
+        "Jingxuan Su",
+        "Shenglin Wang",
+        "Tiesong Zhao",
+        "Ge Li",
+        "Wei Gao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-29T08:14:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.26595v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "quality assessment for 3D Gaussian Splatting scenes",
+      "llm_evidence_cn": "3D高斯泼溅场景的质量评估",
+      "llm_evidence": "3D高斯泼溅场景的质量评估",
+      "canonical_evidence": "3D高斯泼溅场景的质量评估",
+      "llm_tldr_en": "Develops a multimodal framework using MLLMs to assess the quality of 3D Gaussian Splatting reconstructions.",
+      "llm_tldr_cn": "开发了一个利用多模态大模型评估3D高斯泼溅重建质量的框架。",
+      "llm_tldr": "开发了一个利用多模态大模型评估3D高斯泼溅重建质量的框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
