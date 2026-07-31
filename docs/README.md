@@ -6,35 +6,38 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-30
-- 运行时间：2026-07-30 21:41:54 UTC
+- 最新运行日期：2026-07-31
+- 运行时间：2026-07-31 20:30:28 UTC
 - 运行状态：成功
-- 本次总论文数：4
-- 精读区：0
+- 本次总论文数：6
+- 精读区：2
 - 速读区：4
 
 ### 今日简报（AI）
-今日聚焦 3D 高斯泼溅（3DGS）的极致压缩与多视角 3D 生成的鲁棒性优化。
-AtlasLC 与 3DGBGS 实现了更轻量、更快速的 3DGS 存储方案，UMI3D 则提升了非约束多图输入的生成稳定性。
-推荐关注 3DGS 压缩技术，这是实现高质量三维场景在移动端流畅运行的关键。
-- 详情：[/202607/30/README](/202607/30/README)
+今日深度探索 3D 重建与动态体积渲染前沿，涵盖从隐式神经体积到高斯泼溅（3
+- 详情：[/202607/31/README](/202607/31/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [A Query-Efficient Stochastic Volume Rendering Framework for Time-Varying Implicit Neural Volumes](/202607/31/2607.28047v1-a-query-efficient-stochastic-volume-rendering-framework-for-time-varying-implicit-neural-volumes)  
+   标签：评分：10.0/10、query:q3
+   evidence：神经体积的随机体渲染
+2. [Convolutional Neural Shading for High-Quality 3D Reconstruction from Multi-View Images](/202607/31/2607.28132v1-convolutional-neural-shading-for-high-quality-3d-reconstruction-from-multi-view-images)  
+   标签：评分：8.0/10、query:q1
+   evidence：神经辐射场与神经可微渲染
 
 ### 速读区论文标签
-1. [AtlasLC: Fast Codec-Ready Compression of Object-Centric 3D Gaussian Splatting](/202607/30/2607.26525v1-atlaslc-fast-codec-ready-compression-of-object-centric-3d-gaussian-splatting)  
+1. [TSOG: A Format For Temporally And Spatially Ordered Gaussians](/202607/31/2607.28049v1-tsog-a-format-for-temporally-and-spatially-ordered-gaussians)  
    标签：评分：7.0/10、query:q1
-   evidence：用于实时渲染和压缩的 3D 高斯泼溅技术
-2. [3DGBGS: 3D Granular Ball Gaussian Splatting for Compact Novel View Synthesis](/202607/30/2607.26578v1-3dgbgs-3d-granular-ball-gaussian-splatting-for-compact-novel-view-synthesis)  
+   evidence：4D高斯泼溅与几何外观的神经表示
+2. [MonoVoc: Decoupling Geometry and Semantics for Lightweight Monocular Open-Vocabulary 3D Gaussians](/202607/31/2607.28300v1-monovoc-decoupling-geometry-and-semantics-for-lightweight-monocular-open-vocabulary-3d-gaussians)  
    标签：评分：7.0/10、query:q1
-   evidence：用于新视角合成的3D高斯泼溅技术
-3. [UMI3D: Robust 3D Generation on Unconstrained Multi-Image Inputs via Simultaneous Focus Cross-Attention Routing](/202607/30/2607.24298v1-umi3d-robust-3d-generation-on-unconstrained-multi-image-inputs-via-simultaneous-focus-cross-attention-routing)  
+   evidence：3D高斯框架与神经场景重建
+3. [MeshFM: 2D Features Are All You Need for 3D Shape Understanding](/202607/31/2607.27592v1-meshfm-2d-features-are-all-you-need-for-3d-shape-understanding)  
    标签：评分：6.0/10、query:q1
-   evidence：用于高质量资产生成的 3D 体素路由
-4. [SpatialQ: Understanding 3D Gaussian Splatting Scene Quality via Visual-based MLLM](/202607/30/2607.26595v1-spatialq-understanding-3d-gaussian-splatting-scene-quality-via-visual-based-mllm)  
+   evidence：利用2D特征监督优化3D特征场
+4. [4DHumanDiff: Direct Text-to-4DGS Generation for Consistent 360-Degree Dynamic Humans](/202607/31/2607.27634v1-4dhumandiff-direct-text-to-4dgs-generation-for-consistent-360-degree-dynamic-humans)  
    标签：评分：6.0/10、query:q1
-   evidence：3D高斯泼溅场景的质量评估
+   evidence：用于动态渲染的4D高斯点云
 
 
 <div class="dpr-home-promo-card">
