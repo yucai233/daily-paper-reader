@@ -1,0 +1,94 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-01T20:55:11.537529+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.25971v2",
+      "title": "SplatStream: Fine Granular Scalable Gaussian Splatting for Adaptive 3D Scene Streaming",
+      "abstract": "Dynamic 3D Gaussian Splatting (GS) enables high quality real-time rendering for immersive media, but its large representation size and frame-wise redundancy create significant challenges for adaptive streaming. This paper presents SplatStream, a fine granular scalable Gaussian splatting framework for dynamic 3D scene delivery. The proposed method decompose the GS scenes into quality and resolution layers, and introduces inter-layer predictive coding to achieve scalability. For temporal direction, B-frames are introduced to have temporal quality scalability. A lightweight cross-layer transformer based predictor is utilized for both cross layer and temporal predictions. In addition, a volume-opacity based importance measure is used for fine-grained Gaussian packetization, allowing visually important primitives to be transmitted earlier for progressive refinement. Finally, the scalable GS bitstream is mapped to an MPEG-DASH compatible sub-representation structure, enabling fine granular adaptive, low-latency delivery of dynamic Gaussian splatting content under bandwidth-varying conditions.",
+      "authors": [
+        "Muhammad Talha",
+        "William Gordon",
+        "Sajid Umair",
+        "Zhu Li",
+        "Anique Akhtar",
+        "Joel Jung"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "eess.SP"
+      ],
+      "published": "2026-07-28T16:52:45+00:00",
+      "link": "https://arxiv.org/pdf/2607.25971v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Gaussian Splatting for dynamic 3D scene rendering and volume-opacity importance",
+      "llm_evidence_cn": "用于动态3D场景渲染的高斯泼溅技术及体积不透明度度量",
+      "llm_evidence": "用于动态3D场景渲染的高斯泼溅技术及体积不透明度度量",
+      "canonical_evidence": "用于动态3D场景渲染的高斯泼溅技术及体积不透明度度量",
+      "llm_tldr_en": "Introduces a scalable Gaussian Splatting framework for adaptive 3D scene streaming and real-time rendering.",
+      "llm_tldr_cn": "介绍了一种可扩展的高斯泼溅框架，用于自适应3D场景流传输和实时渲染。",
+      "llm_tldr": "介绍了一种可扩展的高斯泼溅框架，用于自适应3D场景流传输和实时渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.26829v1",
+      "title": "BATS: Resource-Efficient Volumetric Segmentation with Boundary-Aware Mixed-Resolution Tokens",
+      "abstract": "Many high-performing volumetric segmentation models maintain dense multi-scale feature maps, leading to high activation memory and inference cost. We present BATS (Boundary-Aware Token Selection), a 3D medical image segmentation architecture that concentrates fine-resolution processing near predicted class boundaries. A dense boundary predictor identifies where additional resolution is needed, while a fine-first context cascade constructs an input-dependent mixed-resolution hierarchy. Homogeneous regions are represented coarsely, with finer tokens retained around boundaries, thin structures, and small targets. The sparse hierarchy is refined and rasterised into a dense segmentation.   BATS predicts boundary relevance independently at every resolution level, preventing an erroneous coarse-scale decision from suppressing fine-scale evidence. Parent cluster attention further injects hierarchical ancestor tokens into local attention neighbourhoods, providing cross-scale context without dense multi-scale feature maps or cross-scale neighbour search.   We evaluate BATS on five public CT and MRI datasets using the standardised nnU-Net Revisited protocol. BATS achieves the highest LiTS Dice among the compared methods and averages within 0.37 Dice points of the strongest dense baseline, MedNeXt-L, across the five datasets. Relative to MedNeXt-L, it reduces peak allocated GPU memory by more than 53% on KiTS, LiTS, and BraTS. Inference is up to 30% faster on KiTS and LiTS, which retain fewer tokens, but slower on the more token-dense BraTS. Mixed-resolution processing therefore provides consistent memory savings, while runtime and accuracy gains depend on dataset boundary density.",
+      "authors": [
+        "David Hagerman",
+        "Roman Naeem",
+        "Fredrik Kahl"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-07-29T12:21:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.26829v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "accelerating volumetric processing with sparse hierarchy",
+      "llm_evidence_cn": "通过稀疏层次结构加速体积处理",
+      "llm_evidence": "通过稀疏层次结构加速体积处理",
+      "canonical_evidence": "通过稀疏层次结构加速体积处理",
+      "llm_tldr_en": "Uses boundary-aware token selection to reduce memory and inference costs in volumetric segmentation.",
+      "llm_tldr_cn": "利用边界感知令牌选择来降低体积分割中的内存和推理成本。",
+      "llm_tldr": "利用边界感知令牌选择来降低体积分割中的内存和推理成本。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

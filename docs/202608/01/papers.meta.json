@@ -1,0 +1,37 @@
+{
+  "label": "2026-08-01",
+  "date": "2026-08-01",
+  "generated_at": "2026-08-01T20:55:47",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202608/01/2607.25971v2-splatstream-fine-granular-scalable-gaussian-splatting-for-adaptive-3d-scene-streaming",
+      "section": "quick",
+      "title_en": "SplatStream: Fine Granular Scalable Gaussian Splatting for Adaptive 3D Scene Streaming",
+      "authors": "Muhammad Talha, William Gordon, Sajid Umair, Zhu Li, Anique Akhtar, Joel Jung",
+      "date": "2026-07-28",
+      "pdf": "https://arxiv.org/pdf/2607.25971v2",
+      "score": "7.0",
+      "evidence": "用于动态3D场景渲染的高斯泼溅技术及体积不透明度度量",
+      "tldr": "针对动态3D高斯泼溅（GS）在自适应流媒体传输中面临的数据量大和帧间冗余挑战，本文提出了SplatStream框架。该框架通过将GS场景分解为质量和分辨率层，并引入跨层预测编码与B帧技术，实现了细粒度的可伸缩性。利用基于Transformer的轻量级预测器和基于体积不透明度的重要性度量，SplatStream支持在带宽波动环境下的渐进式精细化传输，并兼容MPEG-DASH标准，实现了低延迟的动态3D场景分发。",
+      "tags": "query:q1",
+      "abstract_en": "Dynamic 3D Gaussian Splatting (GS) enables high quality real-time rendering for immersive media, but its large representation size and frame-wise redundancy create significant challenges for adaptive streaming. This paper presents SplatStream, a fine granular scalable Gaussian splatting framework for dynamic 3D scene delivery. The proposed method decompose the GS scenes into quality and resolution layers, and introduces inter-layer predictive coding to achieve scalability. For temporal direction, B-frames are introduced to have temporal quality scalability. A lightweight cross-layer transformer based predictor is utilized for both cross layer and temporal predictions. In addition, a volume-opacity based importance measure is used for fine-grained Gaussian packetization, allowing visually important primitives to be transmitted earlier for progressive refinement. Finally, the scalable GS bitstream is mapped to an MPEG-DASH compatible sub-representation structure, enabling fine granular adaptive, low-latency delivery of dynamic Gaussian splatting content under bandwidth-varying conditions.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/01/2607.26829v1-bats-resource-efficient-volumetric-segmentation-with-boundary-aware-mixed-resolution-tokens",
+      "section": "quick",
+      "title_en": "BATS: Resource-Efficient Volumetric Segmentation with Boundary-Aware Mixed-Resolution Tokens",
+      "authors": "David Hagerman, Roman Naeem, Fredrik Kahl",
+      "date": "2026-07-29",
+      "pdf": "https://arxiv.org/pdf/2607.26829v1",
+      "score": "6.0",
+      "evidence": "通过稀疏层次结构加速体积处理",
+      "tldr": "针对高分辨率 3D 医学图像分割中显存和计算开销巨大的问题，本文提出 BATS 架构。该方法通过边界感知令牌选择机制，仅在预测的类别边界、细微结构和小目标周围保留高分辨率令牌，而对同质区域进行粗略表示。BATS 引入了独立的分辨率预测和父簇注意力机制以增强跨尺度上下文。实验表明，BATS 在保持与 SOTA 模型相当精度的同时，显著降低了 53% 以上的显存占用，并提升了推理速度。",
+      "tags": "query:q7",
+      "abstract_en": "Many high-performing volumetric segmentation models maintain dense multi-scale feature maps, leading to high activation memory and inference cost. We present BATS (Boundary-Aware Token Selection), a 3D medical image segmentation architecture that concentrates fine-resolution processing near predicted class boundaries. A dense boundary predictor identifies where additional resolution is needed, while a fine-first context cascade constructs an input-dependent mixed-resolution hierarchy. Homogeneous regions are represented coarsely, with finer tokens retained around boundaries, thin structures, and small targets. The sparse hierarchy is refined and rasterised into a dense segmentation.   BATS predicts boundary relevance independently at every resolution level, preventing an erroneous coarse-scale decision from suppressing fine-scale evidence. Parent cluster attention further injects hierarchical ancestor tokens into local attention neighbourhoods, providing cross-scale context without dense multi-scale feature maps or cross-scale neighbour search.   We evaluate BATS on five public CT and MRI datasets using the standardised nnU-Net Revisited protocol. BATS achieves the highest LiTS Dice among the compared methods and averages within 0.37 Dice points of the strongest dense baseline, MedNeXt-L, across the five datasets. Relative to MedNeXt-L, it reduces peak allocated GPU memory by more than 53% on KiTS, LiTS, and BraTS. Inference is up to 30% faster on KiTS and LiTS, which retain fewer tokens, but slower on the more token-dense BraTS. Mixed-resolution processing therefore provides consistent memory savings, while runtime and accuracy gains depend on dataset boundary density.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
