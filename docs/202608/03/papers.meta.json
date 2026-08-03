@@ -1,0 +1,65 @@
+{
+  "label": "2026-08-03",
+  "date": "2026-08-03",
+  "generated_at": "2026-08-03T21:10:10",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202608/03/2607.29284v1-fillgs-filling-observation-gaps-in-4d-gaussian-splatting-via-viewpoint-time-selection-and-generative-refinement",
+      "section": "deep",
+      "title_en": "FillGS: Filling Observation Gaps in 4D Gaussian Splatting via Viewpoint-Time Selection and Generative Refinement",
+      "authors": "Takashi Otonari, Toshihiko Yamasaki",
+      "date": "2026-07-31",
+      "pdf": "https://arxiv.org/pdf/2607.29284v1",
+      "score": "8.0",
+      "evidence": "主动选择时空虚拟视点以改进4DGS重建",
+      "tldr": "针对4D高斯泼溅（4DGS）在稀疏视角下重建动态场景时出现的伪影问题，本文提出FillGS框架。该方法通过分析渲染敏感度和运动感知观测密度，主动选择观测稀疏的时空虚拟视角，并利用生成模型进行增强。通过过滤不可靠区域并仅使用可靠生成内容微调模型，FillGS显著提升了动态场景的重建质量，减少了观测缺失导致的伪影。",
+      "tags": "query:q1",
+      "abstract_en": "4D Gaussian Splatting (4DGS) can render dynamic scenes photorealistically. However, with limited viewpoint coverage, some spatiotemporal regions remain sparsely observed, leading to artifacts, particularly in scenes with large motion. Existing approaches leveraging generative models rely on heuristic virtual-viewpoint selection before refining rendered views. As a result, they cannot actively explore such sparsely observed regions. To address this issue, we propose a pipeline that actively selects spatiotemporal virtual viewpoints to improve 4DGS reconstruction. Our method selects virtual viewpoints for generative enhancement based on the rendering sensitivity and motion-aware observation density of 4D Gaussians, prioritizing views that alleviate observation sparsity. In the refined images, we filter out regions that conflict with captured observations or are likely to contain generative artifacts and then fine-tune 4DGS using only the reliable regions. We evaluate our method on multi-view video benchmarks using new train/test splits designed to induce observation gaps. Results show consistent improvements over prior viewpoint selection strategies and fine-tuning methods in both qualitative and quantitative evaluations, while reducing artifacts.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/03/2607.28834v1-focusgs-spatial-delta-layers-for-local-repair-and-deterministic-editing-of-trained-3d-gaussian-assets",
+      "section": "quick",
+      "title_en": "FocusGS: Spatial Delta Layers for Local Repair and Deterministic Editing of Trained 3D Gaussian Assets",
+      "authors": "Yiqun Pan, Yukun Shi",
+      "date": "2026-07-30",
+      "pdf": "https://arxiv.org/pdf/2607.28834v1",
+      "score": "7.0",
+      "evidence": "3D高斯泼溅编辑与局部修复技术",
+      "tldr": "FocusGS 针对已训练的 3D 高斯泼溅（3DGS）模型，提出了一种基于空间增量层（Spatial Delta Layers）的局部修复与确定性编辑方法。该方法通过“擦除-插入”分解（EIF）机制，解决了局部区域梯度匮乏问题，实现了对 3D 资产的精确维护。实验表明，FocusGS 在局部修复和确定性编辑任务中显著提升了 PSNR，为 3DGS 资产提供了一个轻量且可验证的维护工具。",
+      "tags": "query:q1",
+      "abstract_en": "3D Gaussian Splatting (3DGS) is evolving from one-time reconstruction into deliverable, inspectable, and maintainable visual assets. Existing workflows focus on global reconstruction, training-time density control, or open-ended generative editing, leaving trained assets without precise local maintenance. We propose FocusGS, which unifies local repair and deterministic editing as composite spatial deltas. Repair is the purely additive special case: its base-manipulation term is empty, and it adds only local Gaussian bases; deterministic editing uses erase-insert factorization (EIF) to combine old-carrier erasure with new-content insertion. FocusGS addresses spatial gradient starvation: local repair raises target-region PSNR by 7.91 dB over 93 evaluation views. Across all 83 deterministic editing trials, the target ROI improves, with a trial-averaged mean edited ROI PSNR of 21.97 dB and a mean gain of +11.05 dB; across five public editing cases, FocusGS-EIF reaches 33.17 dB Target-mask PSNR and 0.994 Target-delta Correlation, while both text-driven baselines fail to complete the prescribed updates. FocusGS provides a lightweight, verifiable 3DGS maintenance operator.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/03/2607.29037v1-go-pre-goal-oriented-next-best-view-selection-via-predictive-rendering-entropy-for-active-3d-reconstruction",
+      "section": "quick",
+      "title_en": "GO-PRE: Goal-Oriented Next-Best-View Selection via Predictive Rendering Entropy for Active 3D Reconstruction",
+      "authors": "Yan Song, Zhihao Li, Chenglong Li, Li He, Yan Wang, Wenqiang Zhang",
+      "date": "2026-07-31",
+      "pdf": "https://arxiv.org/pdf/2607.29037v1",
+      "score": "6.0",
+      "evidence": "针对预测空间信息增益的最佳视点选择框架",
+      "tldr": "主动三维重建旨在有限拍摄预算下最大化重建保真度。针对现有方法中代理信号（如几何启发式）与渲染保真度目标不一致的问题，本文提出了GO-PRE框架。该框架以目标为导向，通过最大化用户指定目标视图流形上的平均边际预测熵减来选择最佳视角。GO-PRE支持交互式目标设定并实现了实时信息增益计算，在多个基准测试中显著提升了重建性能和不确定性量化能力。",
+      "tags": "query:q1",
+      "abstract_en": "Active 3D reconstruction relies on active view selection to maximize reconstruction fidelity under limited capture budgets. However, most existing methods rely on surrogate signals such as parameter uncertainty or geometric heuristics, but these signals are often misaligned with the ultimate goal: the fidelity of rendered predictions. We propose GO-PRE, a goal-oriented next-best-view selection framework that explicitly targets information gain in the prediction space. Specifically, we formulate the objective as maximizing the reduction of the average marginal predictive entropy over a user-specified target view manifold. GO-PRE supports interactive goal specification and yields an efficient acquisition rule that enables real-time computation of information gain. Extensive experiments across benchmarks demonstrate that GO-PRE consistently improves active reconstruction performance and provides more reliable uncertainty quantification compared to state-of-the-art methods.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/03/2607.29633v1-oasis-occlusion-aware-single-image-hand-avatar-reconstruction-via-3d-gaussian-splatting",
+      "section": "quick",
+      "title_en": "OASIS: Occlusion-aware Single-image Hand Avatar Reconstruction via 3D Gaussian Splatting",
+      "authors": "Zhisheng Han, Shiyao Wu, Jiayan Qiu, Yakun Ju, Lu Liu, Le Zhang, Pengfei Feng, Huiyu Zhou, Zheheng Jiang",
+      "date": "2026-07-31",
+      "pdf": "https://arxiv.org/pdf/2607.29633v1",
+      "score": "6.0",
+      "evidence": "3D高斯泼溅作为体积NeRF拟合的替代方案",
+      "tldr": "针对单张图像重建3D手部化身的难题，本文提出OASIS框架。该框架基于3D高斯泼溅（3DGS），通过几何对齐的视觉证据标记和可见性条件点图注意力机制，有效解决了严重自遮挡下的细节丢失问题。同时，引入网格特征表示以捕捉非刚性变形。OASIS在视觉保真度和效率上均优于现有方法，并支持文本生成化身等下游应用。",
+      "tags": "query:q1",
+      "abstract_en": "Single-image 3D hand avatar reconstruction is fundamentally ill-posed and particularly challenging due to limited visual evidence under severe self-occlusion and the complex pose-dependent deformation of highly articulated hands. Existing methods predominantly rely on implicit NeRF-style representations, whose volumetric fitting is computationally expensive and often struggles to preserve fine-grained hand details. In this work, we present OASIS, a tailored 3D Gaussian Splatting framework for single-image hand avatar reconstruction. To faithfully encode sparse image-specific appearance cues in single-view reconstruction, we construct geometry-aligned visual evidence tokens by explicitly aligning input image observations with 3D hand geometry and context-adaptively tokenizing the resulting visual evidence. Since severe self-occlusion makes the reliability of image evidence inherently visibility-dependent, we introduce a visibility-conditioned point-image attention to reliably transfer visual evidence to geometric tokens, yielding occlusion-aware Gaussian features for faithful and robust reconstruction. To further capture non-rigid deformation of articulated hands, we introduce a Feature-on-Mesh representation to enable Gaussian deformation to be guided by local surface stretching. Under this framework, we adopt a one-shot adaptation scheme that learns a shared hand prior from multi-identity training data and then fits it to a target image for target-specific reconstruction. Extensive experiments show that OASIS outperforms existing baselines in both visual fidelity and efficiency across challenging poses and in-the-wild scenarios, and further demonstrates strong versatility in downstream applications such as text-to-avatar generation and texture editing.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
