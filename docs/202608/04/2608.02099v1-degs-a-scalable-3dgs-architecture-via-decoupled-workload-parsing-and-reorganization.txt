@@ -1,0 +1,725 @@
+Title: DeGS: A Scalable 3DGS Architecture via Decoupled Workload Parsing and Reorganization
+
+URL Source: https://arxiv.org/pdf/2608.02099v1
+
+Published Time: Tue, 04 Aug 2026 02:17:57 GMT
+
+Number of Pages: 15
+
+Markdown Content:
+# DeGS: A Scalable 3DGS Architecture via Decoupled Workload Parsing and Reorganization 
+
+Minnan Pei 1,2 , Gang Li 1,† , Zeyu Zhu 1,2 , Siting Wang 1,2 , Junwen Si 1,Zhuoran Song 3, Yu Feng 3, Fangxin Liu 3, Xiaoyao Liang 3, and Jian Cheng 1,2,† 
+
+> 1
+
+Institute of Automation, Chinese Academy of Sciences, C 2DL , Beijing, China 
+
+> 2
+
+University of Chinese Academy of Sciences , Beijing, China 
+
+> 3
+
+Shanghai Jiao Tong University , Shanghai, China peiminnan19@mails.ucas.ac.cn 
+
+Abstract —3D Gaussian Splatting (3DGS) has emerged as a leading technique for real-time novel view synthesis, yet existing 3DGS accelerators suffer from poor architectural scalability: increasing the number of PEs leads to marginal performance improvement during rendering. We identify that the root cause is the tightly coupled “checking-while-blending” dataflow, which exacerbates PE underutilization caused by spatial redundancy from irregular Gaussian coverage and temporal redundancy from asynchronous pixel-wise termination under parallel execution. To address this issue, we propose DeGS, a scalable architecture for efficient 3DGS inference. To systematically eliminate the redundancies inherent in rendering, DeGS exploits a decoupled dataflow, restructuring the coupled α-checking, transmittance checking, and α-blending of the standard rendering process into consecutive workload parsing, reorganization, and blend-ing stages. This allows the fragmented, length-variable, and temporal-dependent workloads to be reorganized into compact, conflict-free, and dense workloads prior to blending, thereby significantly improving PE utilization during parallel blend-ing. Implemented in 28 nm technology, DeGS achieves 2.36 ×–7.25 × throughput, 1.82 ×–6.02 × end-to-end speedup, and 1.59 ×–4.42 × energy efficiency over state-of-the-art 3DGS accelerators (GSCore, GBU, GCC) across diverse scenes and resolutions (720p to 8K). Moreover, scaling from 16 to 1024 PEs, DeGS maintains over 80% PE utilization at high resolutions, significantly outper-forming existing accelerators. 
+
+Index Terms —3D Gaussian Splatting (3DGS), neural render-ing, domain-specific accelerator, scalable architecture 
+
+I. I NTRODUCTION 
+
+3D Gaussian Splatting (3DGS) has rapidly emerged as a compelling technique for novel view synthesis, combining high visual quality and real-time rendering capabilities [1]– [12]. It has demonstrated outstanding performance in appli-cations such as AR/VR [13]–[17], SLAM-based navigation [18]–[23], and physical environment simulation [24]–[28]. In such diverse scenarios, 3DGS often needs to operate under varying input resolutions (ranging from 720p to 8K) as well as different computational and power budgets. While a number of efficient 3DGS accelerators have been proposed for specific applications [29]–[33], endowing them with strong architec-tural scalability remains critical. According to the operation characteristics, the standard 3DGS processing pipeline can be broadly divided into 
+
+> †
+
+Gang Li and Jian Cheng are the co-corresponding authors. 
+
+two stages: memory-intensive Gaussian preprocessing and compute-intensive Gaussian rendering. In the preprocessing stage, the learned 3D Gaussian representation is converted into a 2D form through Gaussian culling, projection, and sorting. The rendering stage then performs pixel-wise α-blending on these 2D Gaussians to synthesize the final RGB image. Although the first stage involves massive memory operations, its efficiency can be effectively improved by in-creasing DRAM bandwidth [30], which makes the second stage dominate the overall execution time [12], [34]–[36]. For compute-intensive rendering, performance is expected to scale with available computational power. However, we observe that existing 3DGS accelerators fail to exhibit such architectural scalability: increasing the number of compute units often leads to a significant drop in their utilization, resulting in marginal performance improvement. For instance, in 2K image rendering, as the number of blending processing elements (PEs) is increased from 16 to 1024, the PE utilization of GSCore [32] and GBU [33] drastically drops from 84.7% and 18.7% to 34.8% and 7.1%, respectively, resulting in a performance improvement of only 6.28 × and 8.47 ×. We identify that the primary cause of this gap lies in the tightly coupled rendering dataflow adopted in existing accelerators, which exacerbates PE underutilization caused by spatial and temporal redundancies in parallel processing. This scalability gap stems from two factors: 
+
+The mismatch between irregular, dynamic workloads and regular parallel processing results in massive redun-dancy. The 3DGS representation exhibits an inherent irregular and dynamic nature. In the 2D spatial dimension, the Gaussian splats vary in shape and size. Existing coarse-grained tile-based (e.g., 16 ×16) parallel rendering computes a massive number of pixels outside the effective Gaussian regions, which do not contribute to the final image, resulting in spatial redundancy . In the temporal dimension, each pixel’s blending proceeds in a near-to-far depth order, and the termination time of this process differs across pixels. When blending is performed on a per-tile basis, PEs that finish early cannot proceed to new tasks until all pixels within the same tile complete their blending, leading to temporal redundancy . As the tile size and number of PEs increase, both forms of arXiv:2608.02099v1 [cs.AR] 3 Aug 2026 redundancy are significantly exacerbated, causing a substantial decline in PE utilization. 
+
+The tightly coupled condition checking and pixel blend-ing dataflow hinders the effective elimination of aforemen-tioned redundancy. While spatial and temporal redundancies in the rendering process are readily identifiable, existing accel-erators still struggle to eliminate such redundant computations. The fundamental reason lies in their adherence to the standard blending pipeline, where pixel validity checking, pixel termi-nation condition checking, and pixel blending are executed simultaneously in each blending iteration due to the shared α
+
+calculation. This prevents a pixel from being predetermined as valid before α calculation is completed, introducing mas-sive ineffective computations caused by spatial and temporal redundancy. In summary, the tightly coupled “checking-while-blending” rendering dataflow makes it difficult to identify redundancies in advance and dynamically skip them for higher effective PE utilization. In this paper, we present DeGS, a scalable architecture for efficient 3DGS inference. Unlike the “checking-while-blending” rendering dataflow in existing works, our core idea is to decouple condition checking from pixel blending, en-abling blending to utilize computing resources more efficiently during computational scaling. Specifically, we reformulate the rendering process as three consecutive stages: workload pars-ing, workload reorganization, and blending. This is achieved by an efficient span analysis that can identify the exact scope of effective workloads, avoiding on-the-fly pixel-wise valida-tion. Prior to blending, we explicitly parse the fragmented, length-variable, and temporal-dependent workloads, extract fine-grained valid workload segments, and reorganize them into compact, conflict-free, and dense ones. In this way, we can eliminate spatial and temporal redundancies as much as possible and improve effective PE utilization during rendering. This paper makes the following contributions:  
+
+> •
+
+Decoupled Dataflow: We restructure the standard render-ing pipeline so that redundant work is removed before color blending. Span Parsing uses 1D scanline solving to identify valid spans before pixel-wise α computation, while Task Reorganization then groups spans with vary-ing lengths and dependencies into packets that can be executed without conflicts. Blending Execution finally processes only these regularized packets, enabling dense and scalable rendering. Together, these stages move valid-ity checking and dependence handling out of the blending array, allowing the backend to execute only regularized valid work.  
+
+> •
+
+Scalable Architecture: We propose DeGS, a 3DGS rendering architecture that isolates irregular workload handling from backend blending. Span Engine performs front-end row-span parsing in hardware, removing coarse boundary processing from the backend. Packing Sched-uler then converts these variable-length, dependence-constrained spans into dependence-safe fixed-width pack-ets through banked distribution, conflict-aware issuing, and packet compaction. As a result, the Blending Array operates on a regular packet interface and can be special-ized purely for arithmetic throughput, rather than on-the-fly validity checking or hazard resolution.  
+
+> •
+
+State-of-the-art Performance: We implement our accel-erator in a 28nm technology node. Evaluation shows that DeGS achieves 2.36 ×–7.25 × throughput, 1.82 ×–6.02 ×
+
+end-to-end speedup, and 1.59 ×–4.42 × energy efficiency over state-of-the-art 3DGS accelerators across scenes. Moreover, across the evaluated design scales from 16 to 1024 PEs and resolutions from 720p to 8K, DeGS consistently provides the best PE utilization, latency, throughput, and energy efficiency. II. B ACKGROUND AND MOTIVATION 
+
+A. Standard 3DGS Processing Pipeline 
+
+3D Gaussian Splatting (3DGS) represents a scene as a collection of 3D spatial Gaussian attributes and a standard 3DGS rendering pipeline can be divided into two stages: 
+
+Preprocessing , which transforms each 3D Gaussian into a 2D screen-space footprint and derives its screen-space parame-ters in the depth and tile order; Rendering , which evaluates pixel-wise Gaussian contributions and performs α-blending to generate the final image. For the i-th 3D Gaussian, its geometry is parameterized by a mean vector μi and a covariance matrix Σi, while its view-dependent appearance is represented by spherical harmonics coefficients sh i. Given the view transformation matrix W and the projection function π(·), the projected screen-space center and the corresponding view-dependent color are given by: 
+
+μ∗ 
+
+> i
+
+= π(W μ i), ci = f (W ; μi; sh i), (1) where f (·) denotes the spherical harmonics evaluation func-tion. Let J denote the Jacobian of the projection function at the transformed Gaussian center. Using the standard affine approximation, the corresponding 2D screen-space covariance matrix is: 
+
+Σ∗ 
+
+> i
+
+= J  W ΣiW ⊤ J⊤. (2) Its inverse covariance is parameterized as: 
+
+(Σ ∗ 
+
+> i
+
+)−1 =
+
+A BB C
+
+
+
+, (3) where (A, B, C ) compactly describe the projected Gaussian shape in screen space. In practical implementations, these projected parameters are further used to derive a coarse 3-
+
+σ bounding box. Each Gaussian is paired with the tiles on this bounding box, and then sorted in near-to-far depth order for each tile. For a screen-space sample at pixel coordinate p = ( x, y ),let: 
+
+dx = x − μ∗
+
+> i,x
+
+, dy = y − μ∗ 
+
+> i,y
+
+. (4) The corresponding quadratic form is: 
+
+q(x, y ) = dx dy  A BB C
+
+  dx dy 
+
+
+
+= A dx 2 + 2 B dx dy + C dy 2.
+
+(5) (a) Row and pixel distribution of effective Gaussian coverage. (b) Spatial variation of effective Gaussian coverage.   
+
+> (c) Imbalance and locality of ideal pixel termination. (d) Temporal termination divergence of pixels in batches. Fig. 1. Analysis of intrinsic spatial and temporal workload irregularity in Gaussian blending.
+
+This quadratic form determines both the effective support of the Gaussian in screen space and its opacity contribution at each sample location. In the blending stage, each projected Gaussian is sampled on the pixel grid, producing a set of candidate fragments . For a fragment associated with pixel p, the corresponding opacity is: 
+
+αp = oi · exp 
+
+
+
+− 12 q(x, y )
+
+
+
+, (6) where oi is the base opacity of the Gaussian primitive. Since a Gaussian has infinite mathematical support, standard 3DGS introduces a strict truncation threshold ϵ (typically 1/255 )and performs α-checking to determine whether a candidate fragment contributes non-negligible opacity. Specifically, a fragment is considered valid only if αp ≥ ϵ, which is equivalently expressed as the following analytic ellipse in screen space: 
+
+q(x, y ) ≤ Qth ,i where Qth ,i = −2 ln( ϵ/o i). (7) Fragments outside this boundary are discarded and do not participate in the subsequent blending process. For fragments that pass α-checking, 3DGS performs stan-dard near-to-far α-blending. Let Cp denote the accumulated color of pixel p, and let Tp,i denote the residual transmittance before processing the i-th Gaussian. The blending recurrence is: 
+
+Cp ← Cp + Tp,i αp ci, Tp,i +1 ← Tp,i (1 − αp), (8) where ci is the view-dependent color of the Gaussian. Since T
+
+decreases monotonically along the recurrence, standard 3DGS also employs asynchronous early termination : once Tp,i < τ 
+
+for a small threshold τ (e.g., 10 −4), the pixel is considered converged and all remaining farther Gaussians are skipped for that pixel. At a high level, 3DGS rendering projects each learned 3D Gaussian into a 2D elliptical footprint, generates candidate fragments from a coarse screen-space bounding box, and blends only the fragments that pass the opacity threshold. For a projected Gaussian overlapping a 16 × 16 tile, the bounding box may cover many candidate pixels, while the true valid support is only the elliptical region satisfying Eq. 7. Valid fragments are then processed in near-to-far order using the transmittance recurrence in Eq. 8, and different pixels may terminate at different depths once their residual trans-mittance becomes small. This first-principles example directly exposes the two sources of ineffective parallel work in standard tile-based rendering: invalid candidates outside the Gaussian support cause spatial redundancy, and early-terminated pixels waiting for long-tail pixels cause temporal redundancy. 
+
+B. Scalability Challenges of 3DGS Architecture 
+
+Based on the operation characteristics, the 3DGS process-ing pipeline can be broadly categorized into two stages: a memory-intensive preprocessing stage, which includes Gaus-sian culling, projection, and sorting, and a compute-intensive rendering stage, comprising α computation, termination con-dition checking, and pixel blending. As for preprocessing, although it involves extensive memory operations, existing work has shown that its efficiency can be effectively improved by increasing DRAM bandwidth (e.g., by replacing LPDDR4 with LPDDR5) [30], [37]. This makes the rendering stage the primary performance bottleneck. To enhance rendering efficiency, a series of dedicated 3DGS accelerators have been proposed [30], [32], [33]. How-ever, we observe a clear scalability issue: as the number of PEs increases, their utilization drops significantly, leading to marginal gains in rendering performance . Through in-depth analysis, we identify that the underlying cause lies in the coupled dataflow employed by existing architectures, which prevents the effective elimination of redundancies during ren-dering. PE     
+
+> Spatial Redundancy
+> Temporal Redundancy
+> 2D Splats
+> DeGS GCC
+> GSCore GBU
+> Workload over Execution Time PE 2D Splats Workload over Execution Time Fig. 2. Qualitative comparison of workload regularity and PE utilization across 3DGS accelerators. DeGS reduces both spatially invalid work and temporal waiting.
+
+1) Spatial and Temporal Redundancy: The 2D Gaus-sians obtained by preprocessing exhibit significant irregularity, and this irregularity demonstrates evident dynamic variations throughout the rendering process. In the 2D spatial dimension, Gaussians at a fixed viewpoint vary in shape and size, leading to drastically different projection coverages: some fine-grained Gaussians cover only a few pixels, whereas others may span tens of pixel rows or even larger regions, as illustrated in Figure 1(a). While reducing the tile size can locally decrease the number of invalid pixels, it increases the number of tile intersections per Gaussian and thus introduces a much heavier bandwidth bottleneck [30], [37]. Moreover, as shown in Figure 1(b), the number of valid pixels covered by a specific tile also varies significantly during rendering along the depth direction. In tile-based rendering, computations on different pixels within a tile are executed in parallel. This leads to a large number of invalid pixels outside Gaussians occupying compute units during rendering. We refer to this type of redundancy as spatial redundancy .In the depth direction, the blending process for each pixel employs a strict near-to-far iterative computation scheme, terminating when the residual transmittance falls below a threshold. During this process, the execution depths of differ-ent pixels exhibit both locality and notable variation. As shown in Figure 1(c), adjacent pixels often terminate computation in similar batches, whereas pixels that are farther apart exhibit substantial differences in termination time. This results in a significant imbalance in the completion times of pixels within a fixed-size tile. During parallel execution, computations that finish early are forced to wait for the remaining ones to complete because of Eq. 8, leading to a waste of computational resources. Meanwhile, as tile size increases under higher degrees of parallelism, pixel blending that could otherwise terminate early is increasingly delayed by long-tail pixels within the batch, as Figure 1(d) shows. We refer to this idling of computing resources in parallel processing, caused by varying execution depths, as temporal redundancy .In conclusion, the mismatch between irregular, dynamic workloads and coarse-grained regular parallel processing re-sults in massive redundancy during rendering. 
+
+2) Coupled Condition Checking and Pixel Blending: Al-though spatial and temporal redundancies can be identified, the tightly coupled dataflow of condition checking and blending adopted by existing architectures makes it difficult to avoid the resulting performance penalty. Concretely, the rendering of a given tile comprises three components: pixel valid-ity checking ( α-checking), pixel blending ( α-blending), and pixel termination condition checking (transmittance checking). Since α computation is involved in all three steps, the pipeline effectively forms a coupled, “checking-while-blending” mech-anism. That is, the checking result at time T can only guide the computation at time T + 1 , while the invalid computations at time T itself cannot be eliminated. This results in redundancy in every iteration of the blending process. As the number of PEs and the degree of computational parallelism increase, both spatial and temporal redundancies are exacerbated. This coupled execution pattern further reduces the PE utilization, making it difficult for blending performance to scale effec-tively with the increased computational power. Throughout this paper, unless otherwise specified, PE utilization refers exclusively to the utilization of the pixel-wise calculation in Eq. 6 and Eq. 8. Any slot spent on extra computation and idle cycles caused by spatial redundancy or temporal redundancy is counted as utilization loss. 
+
+3) Limitation of Existing 3DGS Architectures: Fig-ure 2 shows three typical "checking-while-blending" coupled dataflows in prior 3DGS accelerators. GSCore [32] adopts the most rigid regular dataflow: it processes a fixed 2D Gaussian splat region every cycle regardless of the valid coverage or asynchronous termination. As in the standard coupled rendering flow, invalid fragments occupy PE slots in the spatial dimension, while lockstep execution forces early-terminated pixels to wait for the long-tail pixels in the temporal dimension. As a result, GSCore suffers from both spatial redundancy and temporal redundancy most directly, and therefore achieves the lowest PE utilization. GBU [33] and 
+
+GCC [30] both generate the subsequent workload on the fly by coupling α-checking with boundary testing at each execution step, thereby reducing part of the spatial redundancy. In GBU, each row is bound to a specific PE because of the read-modify-Span Parsing  
+
+> x0L
+> Conflict
+
+Task Reorganization   
+
+> Conflict Segment Length Conflict Domain (1,0)
+> 2,1
+> 3,1
+> 4,1
+> 2,1
+> 1,0
+> 2,0
+> 3,0
+> 4,0
+> 2,0
+> 1,1
+> 2,1
+> 3,1
+> 4,1
+> 2,1
+> 1,0
+> 2,0
+> 3,0
+> 4,0
+> 2,0
+> 1,1
+> Conflict Delay
+> 2,1 2,0
+> Next Group
+> 3,1 4,1 4,0
+> Next Group
+
+Blending Execution  
+
+> Execution Packet Length = 16
+> 2D Splats
+> Reorg.
+> Packing
+> Dense
+> Sparse Fig. 3. Decoupled DeGS dataflow. Span Parsing extracts valid row spans from projected Gaussians, Task Reorganization converts length-variable dependent spans into conflict-free packets, and Blending Execution operates on regularized packets.
+
+write dependence in Eq. 8. Consequently, irregular workloads across rows cannot be redistributed after assignment. Splat irregularity appears as unequal waiting windows across rows spatially, while temporal irregularity appears as idle PE lanes after early termination, and both become more severe as the array scales up. GCC, however, still relies on a fixed-size traversal window mapped onto regular pixels inside a coupled evaluate-while-checking flow. As the array grows, the search window grows as well, making the filtering increasingly coarse and gradually reintroducing GSCore-like spatial and temporal redundancy. Overall, these architectures differ only in how irregular work enters execution, but none of them decouples redundancy identification from blending execution before work reaches the PE array. 
+
+C. Our Approach 
+
+To achieve notable performance scaling with an increasing number of PEs for time-dominant rendering, the key lies in reducing the spatial and temporal redundancies mentioned earlier. However, due to the coupled rendering dataflow that intertwines condition checking and pixel blending, existing accelerators suffer from severe computational waste during parallel processing. To boost effective PE utilization during rendering, an intu-itive approach is to eliminate redundancy by identifying and reorganizing the fragmented and sparsely distributed work-loads into compact and dense ones for subsequent blend-ing. Accordingly, we present a decoupled rendering dataflow, which exploits an efficient span analysis method to locate valid rendering workloads in advance of blending, requiring neither on-the-fly checking nor brute-force pre-computation of all α values. In this way, the standard rendering process is reformulated as consecutive workload parsing, reorganization, and blending stages, which helps to improve architectural scalability. III. D EGS D ATAFLOW 
+
+DeGS decouples standard 3DGS blending into three con-crete stages. First, Span Parsing directly extracts valid row spans from projected Gaussians, using lightweight computa-tion to resolve the span region before execution. Second, Task Reorganization reschedules and packs dependence-constrained span tasks into conflict-free rendering packets. Finally, Blend-ing Execution consumes only these regular packets and per-forms dense α-blending. Importantly, this three-stage decou-pling preserves the valid blending recurrence in Eq. 8 while removing and absorbing workload irregularity before blending execution. 
+
+A. Span Parsing 
+
+In the conventional coupled dataflow, hardware must eval-uate Eq. 6 for all candidate fragments inside a coarse 2D bounding box, and then use the condition αp ≥ ϵ to determine whether each candidate actually falls inside the valid Gaus-sian support. Under this coupled checking-and-execution flow, however, fragments that are eventually discarded have already consumed issue bandwidth and incurred useless computation on both αp and Eq. 8 in the current iteration. As a result, the large number of invalid candidate fragments introduced by ir-regular spatial coverage directly appears as spatial redundancy in the array. Rather than filtering invalid fragments inside the coupled blending computation, Span Parsing directly extracts valid row spans before execution. By exploiting the analytic ellipse of projected 2D Gaussians, it transforms per-fragment probing in a coarse 2D bounding box into a 1D scanline problem without explicitly evaluating αp at every pixel. Instead, it leverages the analytic continuity of the ellipse to directly recover the length of each valid interval. Specifically, the valid support of a 2D Gaussian is defined by Eq. 7. Since this iso-contour is an analytic ellipse, its intersection with any fixed scanline y must be a contiguous 1D interval. Therefore, if we can efficiently determine the span center and half-width on each scanline, we can directly recover the full valid row span without probing all pixels inside the bounding box. A direct row solution of q(x, y ) in Eq. 5 for 
+
+x is mathematically valid, but introduces expensive algebraic operations into the rasterization path, offsetting the benefit of exact boundary trimming. To avoid this cost, we first rewrite the original quadratic form as: 
+
+q(x, y ) = A
+
+
+
+dx + BA dy 
+
+2
+
++
+
+
+
+C − B2
+
+A
+
+
+
+dy 2, (9) and extract a set of structural parameters that depend only on the intrinsic Gaussian geometry: 
+
+m = − BA , C′ = C − B2
+
+A , (10) 
+
+rx =
+
+r Qth 
+
+A , inv _r2 
+
+> y
+
+= C′
+
+Qth 
+
+. (11) These parameters are mathematically equivalent to the orig-inal covariance parameters (A, B, C, Q th ), but are much better suited for direct scanline boundary solving. More importantly, they can be precomputed during the memory-dominated pre-processing stage and passed into the rendering pipeline as compact reusable descriptors. With these parameters, for a given scanline offset dy , the center of the valid row span is: 
+
+xc(y) = μx + m · dy, (12) and substituting the transformed parameters into the support condition: 
+
+A(x − xc)2 + C′dy 2 ≤ Qth (13) gives the half-width of the valid span: 
+
+w(dy ) = rx ·
+
+q
+
+1 − dy 2 · inv _r2 
+
+> y
+
+. (14) 
+
+x0 = ⌊xc − w⌋ − δ, x1 = ⌈xc + w⌉ + δ, L = x1 − x0 + 1 . (15) With w and xc, we can directly determine the starting position x0 and valid length L of each row span, while δ
+
+estimates the error based on dw dy . However, if we continue evaluating αp in Eq.6, the extra cost of span solving would lead to higher overall complexity and area overhead. To offset this cost and further exploit the continuity of the 2D Gaussian, we must compactly encode q(x, y ) within the span. Let the screen coordinate be discretized as x = x0 + n, and define the row sequence: 
+
+gn = q(x0 + n, y ), (16) with first-order forward difference: 
+
+dn = gn+1 − gn. (17) Classical digital differential analyzer (DDA) rasterization yields: 
+
+gn+1 = gn + dn, dn+1 = dn + 2 A. (18) However, this pixel-wise recurrence introduces strict loop-carried dependence and would reintroduce serialization into blending. To avoid that, we derive the closed form: 
+
+qn = g0 + n · d0 + A · n(n − 1) . (19) As a result, one complete valid row span can be compactly represented as: 
+
+(y, x 0, L, g 0, d 0, A ), (20) while (g0, d 0) preserve the minimum state required to re-construct the quadratic value of any valid fragment within the span. Blending execution no longer needs to perform exploratory boundary probing, instead, it only reconstructs qn
+
+from the local offset n.In summary, Span Parsing resolves exact Gaussian row spans with lightweight row-level computation, while reducing pixel-wise evaluation from Eq. 5 to the closed-form recon-struction in Eq. 19. The key effect is not merely earlier filtering, but no longer feed the backend execution with a coarse candidate region, but a compact row span as a small set of parameters that contains only valid state required for reconstructing complete information. 
+
+B. Task Reorganization 
+
+After Span Parsing, invalid fragments have been removed, but the remaining row spans are still irregular in length and constrained by pixel-wise update order. Task Reorganization 
+
+therefore makes the dependence structure explicit. We partition spans into conflict domains , where segments in the same domain may update overlapping pixel state and therefore must preserve depth order, while segments from different domains can be issued opportunistically. The scheduler then converts variable-length spans into fixed-width packets only after or-dering and reuse-distance constraints have been enforced. In coupled dataflow, if multiple tasks update the same pixel state at nearby times, directly feeding these spans into blending in generation order would still allow local dependence conflicts to reappear as long-tail stalls and execution bubbles. For decoupling, dependence-aware scheduling and packing is per-formed. A conflict domain is the smallest local scheduling re-gion in this reorganization. Across different conflict domains, segments can be issued out of order whenever resources are available to maximize parallelism. Within the same domain, however, issuance must preserve the original depth order and satisfy a minimum conflict delay to avoid read-modify-write hazards. After dependence-safe issuance, the resulting segments are assembled into fixed-width task packets , where each row span is decomposed into pixel-level tasks. Conflict-free tasks drawn from different spans are then packed together into a fixed-width rendering packet. As a result, temporal imbalance is confined to bounded scheduling regions rather than amplified at the array level, and the backend receives a continuous, regularized task stream for dense execution. As illustrated in Figure 3, when a later task (2 , 1) conflicts with the just-issued task (2 , 0) in the same row, it is tem-porarily stalled due to the four-cycle conflict delay, and the scheduler instead steals a ready task such as (3 , 0) or (4 , 0) 
+
+from an idle domain. This out-of-order peeking mechanism fundamentally breaks the conventional tile-level lockstep ex-ecution model: long-tail rows now cause only very localized blocking, and the scheduler can immediately interleave short tasks from other domains. As a result, early-converged regions and long-tail regions are naturally overlapped on the timeline, eliminating global temporal idling at the tile level. Duplicating for Tiles 
+
+> Feature Buffer Gaussian Buffer
+> Conversion Unit
+
+DRAM                                  
+
+> μ,s,q, ln o
+> Culling Unit
+> SH Unit
+> μ,s,q
+> ln o
+> sh
+> Hierarchical
+> Sorting Unit
+> G2D feature d,GID
+> Pixel Buffer
+> G2D feature Pixel RGB
+> Span Engine
+> Span Buffer
+> Sorting Buffer
+> GSU GSU
+> Span Array
+> PE PE PE PE
+> Dispatcher
+> Packing Scheduler
+> PU Issue Bank
+> PU Issue Bank
+> PU Issue Bank
+> PU Issue Bank
+> PE PE PE PE
+> PE PE PE PE
+> Temporary Global
+> Blending Array
+> PE PE PE PE
+> Projection Unit
+> Global A,TG, ln o,cTp,CpFig. 4. Overall design of DeGS architecture.
+
+C. Blending Execution 
+
+After Span Parsing and Task Reorganization, the backend no longer receives raw candidate fragments. Instead, it receives fixed-width packets whose validity has already been resolved and whose update order has already been made dependence-safe. Blending Execution therefore performs only three func-tions: reconstruct qn in Eq. 19 from the span descriptor, eval-uate α, and apply the standard recurrence. For each fragment in execution packet of valid row spans, Blending Execution computes: 
+
+α = exp 
+
+
+
+− 12 qn
+
+
+
+, (21) and execute the transmittance and color recurrence in Eq. 8. In this way, the coupled “checking-while-blending” execu-tion flow is fully broken: spatial redundancy has been removed by Span Parsing, temporal redundancy has been absorbed by Task Reorganization, and Blending Execution operates only on regularized valid work. As a result, redundancy is no longer exposed to the blending process, but is instead eliminated or absorbed before arithmetic execution while preserving the standard 3DGS blending semantics. IV. D EGS M ICROARCHITECTURE 
+
+As motivated in Section II, the scaling bottleneck of prior 3DGS accelerators is not blending arithmetic itself, but the di-rect exposure of irregular Gaussian coverage and asynchronous pixel termination to a wide PE array. DeGS is therefore organized around irregularity isolation. Specifically, the Span Engine prevents spatially irregular and partially invalid Gaus-sian support from entering the backend as coarse candidate fragments by converting each projected Gaussian into valid row spans. The Packing Scheduler then prevents variable span length and update-order constraints from propagating to the backend by issuing only dependence-safe, fixed-width packets. As a result, the Blending Array sees a regular packet stream rather than raw irregular rendering work, and can be optimized purely for arithmetic throughput. By isolating spatial invalidity and temporal dependence before arithmetic execution, DeGS prevents frontend irregularity from propagating into the Blend-ing Array, which is the key to scalable PE utilization. 
+
+A. Span Engine 
+
+The Span Engine converts each projected Gaussian into a stream of row spans before the Gaussian reaches the Packing Scheduler. It enumerates only the scanlines that intersect the Gaussian valid coverage and emits one Span Vector for each valid scanline. By moving this work out of the Blending Array, DeGS prevents coarse 2D bounding boxes from expanding into invalid pixel tasks in the arithmetic pipeline. As shown in Figure 5, the Span Engine contains two compute blocks with different throughput requirements. The Gaussian Slicing Unit (GSU) performs scanline enumeration. Using the temporary geometric descriptor produced during preprocessing, the GSU generates the valid scanline index range [ymin , y max ] with shift-and-mask logic and pushes the resulting row work items into the Span Buffer. The Span Unit then consumes these row work items and solves the exact horizontal support of each scanline. For scanline y, the Span Unit computes the span center xc, the span half-width w, and the initial closed-form parameters (g0, d 0) required by Eq. 19, and packs them into a Span Vector (G ID , y, x 0, L, g 0, d 0).The Span Buffer is required because scanline enumeration and exact span solving have very different costs. The GSU is lightweight and should run continuously, whereas the Span Unit contains the critical arithmetic for span solving. In particular, the Span Unit evaluates the non-linear term in Eq. 14 through a small LUT specialized for √1 − x over the bounded input range x ∈ [0 , 1] , avoiding a general floating-point square-root unit. If the GSU were directly coupled to the Span Unit, the number of Span Units would have to scale with the peak row-generation rate, which would make Span Engine disproportionately expensive. The Span Buffer breaks the coupling row slicing and row spanning, while the number of Span Units is chosen only to match the demand of the Packing Scheduler. This decoupling also changes how Gaussian parameters are stored on chip. DeGS does not keep one unified Gaussian-parameter pool for the entire rendering flow. Instead, it splits the projected Gaussian descriptor into two parts according to lifetime. The Temporary Gaussian Parameter contains only the short-lifetime geometric fields required by the GSU and the Span Unit, and is released after span generation. The 
+
+Global Gaussian Parameter contains the attributes still needed GSU 
+
+GSU   
+
+> G0μ* r* m
+> ymin
+> ymax
+
+<< 
+
+>>  mask         
+
+> Ts-1-y max
+> 11…1
+> 11…1
+> Ts
+> Bit[y] = 1
+> G1
+> G2
+> Span Buffer
+> Gaussian Slicing Unit
+> Span Array
+> L = 0
+> L > 0
+> FMA + LUT
+> Bound Calc.
+> w x c
+> GID y x 0L d 0g0
+> A ln o T G
+> Feature Buffer
+> Temporary Gaussian Parameter
+> Span Unit
+> y0
+> y1
+> Compactor
+> Index Gen.
+> FIFO Fig. 5. Architecture of Span Engine.
+
+after span generation, such as the coefficients and appearance fields later consumed by the Blending Array. This split reduces unnecessary parameter residency in the early pipeline stages and avoids transporting large Gaussian records through the Span Engine. 
+
+B. Packing Scheduler 
+
+The Packing Scheduler prevents variable span length and workload dependence from reaching the Blending Array. Its input is the stream of row spans produced by the Span Engine, and its output is a stream of fixed-width pixel task packets. To perform this conversion, the Packing Scheduler adds three hardware functions that are absent from a directly coupled design: banked task distribution, dependence-safe segment issuing, and fixed-width packet assembly. As shown in Figure 6, the Packing Scheduler first distributes incoming row spans across multiple Issue Banks through the Spatial Crossbar. The crossbar maps spans with different y
+
+indices to different banks so that row-localized work is spread across the scheduling channels instead of accumulating in a single queue. After bank assignment, the Segmenter splits each row span into fixed-stride Segments. A Segment is the minimum scheduling unit in the Packing Scheduler and the minimum spatial unit tracked for dependence control. Dependence control is then applied at the Segment granu-larity. The first mechanism is termination feedback from the Blending Array. When the Blending Array detects that the pixels covered by a previously issued Segment have already satisfied the transmittance termination condition, it returns a termination signal to the corresponding Issue Bank, and the remaining farther Segments for that spatial region are discarded before issue. The second mechanism is a scoreboard-based delay constraint, which uses a timing wheel to detect overlapping updates to the same pixel region and enforces a fixed 4-cycle reuse distance, matching the write-back latency of the Blending Array. As a result, overlapping Segments are never issued within the unsafe read-modify-write interval. Row 0          
+
+> …
+> Spatial Crossbar
+> 0
+> 4
+> 8
+> 12
+> Segmenter
+> 4 Cycles
+> Ready
+> Packing Unit
+> Segments
+> >>
+> 3
+> …
+> >>
+> 5
+> L = 3 Addr = 0
+> L = 2 Addr = 3
+> L = 4 Addr = 5
+> Packing Buffer
+> 9
+> LPE
+> T Buffer
+> A
+> d
+> g
+> n(n+1)
+> n
+> >R Buffer
+> G Buffer
+> B Buffer
+> r
+> LUT exp
+> g
+> b
+> Termination for Segments
+> Blending PE
+> PE Array  Feature Buffer
+> Issue Bank 1 Y: 1,5,9,13
+
+PU     
+
+> Issue Bank 2 Y: 2,6,10,14
+
+PU     
+
+> Issue Bank 3 Y: 3,7,11,15
+
+PU  
+
+> Next Group
+> Fig. 6. Architecture of Packing Scheduler & Blending PE.
+
+After this dependence filtering, each Issue Bank forwards only issuable Segments to the Packing Unit (PU). Because the effective lengths of these Segments are still variable, the PU uses prefix-sum and shift logic to compact them into fixed-width pixel task packets. The resulting packets are stored in the Packing Buffer and then streamed to the Blending Array in order. Therefore, the Blending Array no longer receives raw row spans with uneven length and unresolved dependence. Instead, it receives only dense pixel packets whose ordering and reuse distance have already been enforced by the Packing Scheduler. 
+
+C. Blending Array 
+
+The Blending Array executes the pixel task packets pro-duced by the Packing Scheduler. Its input is the fixed-width packet stream stored in the Packing Buffer, and its output is the updated pixel state in the Pixel Buffer. Because dependence ordering has already been enforced by the Packing Scheduler, the Blending Array only performs arithmetic execution and write-back. In each cycle, each PE reads one pixel task from the current packet and extracts the local state required for closed-form span, including (x, y ), (g0, d 0), and the Gaussian identifier 
+
+GID . The packet does not carry the full Gaussian record. Instead, the PE uses GID to fetch the remaining Gaussian attributes from the Global Gaussian Parameter buffer, includ-ing the quadratic coefficient A and the appearance parameters needed for blending. This late-fetch organization keeps the packet format compact and avoids carrying high-dimensional Gaussian attributes across the scheduling pipeline. After operand collection, the PE reconstructs the exact quadratic value qn using Eq. 19 and then computes the corre-sponding opacity α. Since the local offset n takes only a small TABLE I AREA AND POWER BREAKDOWN OF BASELINES AND DEGS.                                                                                     
+
+> (a) Baselines
+> Architecture Area Power Config GSCore P & S 0.89 0.58 –Blending 1.81 0.25 64 PE SRAM 1.25 0.04 272 KB Total 3.95 0.87 –GBU P & S 0.89 0.58 –Blending 2.88 0.88 64 PE Scheduler 0.24 0.07 –SRAM 0.43 0.06 91 KB Total 4.44 1.59 –GCC P & S 0.72 0.30 –Blending 0.96 0.44 64 PE SRAM 1.01 0.05 190 KB Total 2.69 0.79 –
+> (b) DeGS
+> Component Area Power Config Projection Unit 0.92 0.60 4Sorting Unit 0.02 0.01 4Span Engine 0.17 0.09 2+8 Packing Scheduler 0.07 0.04 8Blending Array 0.88 0.23 64 PE Compute Units 2.06 0.97 –Gaussian Buffer 0.31 0.01 72 KB Feature Buffer 0.03 0.001 8 KB Span Buffer 0.04 0.001 2 KB Packing Buffer 0.16 0.02 32 KB Pixel Buffer 0.12 0.01 16 KB SRAM 0.66 0.04 130 KB Total 2.72 1.01 –
+
+Note: Shaded entries indicate the components whose area and power increase when scaling the compute resources of the blending stage. 
+
+set of discrete values inside each packetized segment, DeGS replaces a general-purpose multiplier with a specialized half-lookup FP-INT multiplier optimized for these offset cases. The resulting qn is then sent to LUT exp for opacity evaluation, after which the PE updates transmittance and accumulated color according to Eq. 8 and writes the updated pixel state back to the Pixel Buffer. Therefore, the Blending Array is a narrow and regular arithmetic stage: it consumes fixed-width packets, reconstructs qn, evaluates α, and performs the standard 3DGS blending recurrence without additional boundary testing or dependence arbitration. V. E VALUATION 
+
+A. Methodology 
+
+Workloads & Datasets. To ensure fair comparison with our baselines, we adopt standard benchmarks commonly used in prior 3DGS accelerator works [29]–[33], [38]–[40] and select representative scenes from Tanks & Temples [41], Deep Blending [42], and Mip-NeRF 360 [43]. These datasets cover dense and sparse Gaussian distributions across both indoor and outdoor scenes. All scenes are trained for 30K iterations using the original 3DGS pipeline [1]. We extended the output resolution from 720p to 8K, ensuring the test covers the effects of resolution growth on array utilization, bandwidth pressure, and system throughput, while also ensuring comparability with existing evaluations. 
+
+Baselines. We compare DeGS against representative domain-specific 3DGS rendering accelerators in terms of throughput, energy efficiency, and scalability. GSCore [32] is the earliest dedicated 3DGS accelerator and largely follows a GPU-style tile-based dataflow. Although GBU [33] was originally proposed as a GPU-coprocessor, we include it because of its distinctive IRSS dataflow. For fairness, we compare against the standalone GBU architecture reported in the original paper, and all later references to GBU in this section follow this standalone configuration. GCC [30] is a 0 8 16 24 32                      
+
+> 0
+> 8
+> 16
+> 24
+> 32 Direct FP16 Alpha
+> 0816 24 32
+> FP32 vs FP16
+> 0816 24 32
+> DeGS vs FP16 0.0
+> 0.1
+> 0.2
+> 0.4
+> 0.8
+> 0
+> 1e-5
+> 1e-4
+> 2e-4
+> 3e-4
+> 0
+> 1e-4
+> 5e-4
+> 1e-3
+> 2e-3
+> Fig. 7. Error of Single-Gaussian Parsing. 25 30 35
+> PSNR
+> 720p
+> 1080p
+> 2K
+> 4K
+> 8K
+> 0.85 0.90 0.95
+> SSIM
+> 0.1 0.2 0.3
+> LPIPS
+> DB T&T Mip DeGS GPU
+> Fig. 8. End-to-End Rendering Quality.
+
+specialized architecture based on Gaussian-wise and cross-stage dataflow reorganization. Table I further compares the area and power breakdowns of these designs. Across all architectures, area is mainly dominated by the projection and sorting (P&S) units, the Gaussian blending unit (Blending), and on-chip SRAM. The original GBU configuration uses only 8 blending PEs, which leads to high utilization but also makes the blending unit a relatively small fraction of total area, resulting in low throughput and high latency regardless of whether area normalization is applied in our experiment. To enable a fairer comparison, we scale GBU to 64 PEs, matching the other baselines. We ensure that DeGS remains comparable to these baselines in both area and power. 
+
+Simulation. We build cycle-accurate simulators for DeGS and all baseline architectures, modeling key timing behaviors including dataflow scheduling, pipeline bubbles, and SRAM access conflicts to obtain accurate throughput, latency and ef-fective utilization. The simulators are trace-driven: all architec-tures consume the same projected and depth-ordered Gaussian workloads, including Gaussian–tile associations, candidate-fragment coverage, per-tile depth order, and per-pixel termi-nation behavior. They advance execution cycle by cycle and model pipeline backpressure, issue scheduling, conflict delays, PE execution, pixel-state read/writeback, off-chip bandwidth limits, and SRAM capacity and port/bank conflicts. For image quality evaluation, we use the rendering output of the original 3DGS implementation running on an RTX 3090 [44] as the reference. For fair comparison, we align the computational tar-get frequency, on-chip storage budget, and process parameters across all architectures. Unless otherwise specified, we use an LPDDR5 [45] memory configuration (6400 MT/s, 256-bit bus width), comparable to NVIDIA Orin AGX [46]. In sensitivity analysis, we additionally evaluate a lower-bandwidth configu-ration (e.g., 3200 MT/s, 128-bit), which is closer to those used in prior work. 
+
+Implementation. We implement the core logic of DeGS in SystemVerilog at the RTL level and synthesize the design using Synopsys Design Compiler under the TSMC 28 nm standard-cell library. To align with all baselines, the target clock frequency is set to 1.0 GHz. On-chip storage structures are modeled using CACTI-P [47] under the same 28 nm tech-nology to obtain area, leakage power, and dynamic read/write energy. All hardware comparisons are conducted under aligned frequency, technology node, and on-chip storage budget. 
+
+B. Rendering Quality 
+
+Numerical Error of Single Gaussian Parsing. Unlike methods such as pruning, compression, or frame reuse that improve efficiency by changing the rendered result, DeGS pre-serves the mathematical semantics of standard 3DGS blend-ing. Therefore, any observed deviation arises from limited numerical precision and LUT implementation. To isolate this numerical effect, Figure 7 evaluates the α map of a single projected 32 × 32 Gaussian with Eq. 6. Relative to direct FP32 evaluation, direct FP16 computation yields an average absolute α error of 6.75 × 10 −5. When the DeGS is fur-ther applied as Eq. 19, the average absolute error relative to direct FP16 becomes 2.72 × 10 −4. These results show that DeGS preserves the per-Gaussian α distribution, with only minor perturbations near the support boundary. At high resolutions, the main numerical challenge comes not from the semantics-preserving DDA reformulation, but from the enlarged dynamic range of screen-space coordinates and local increments in boundary-related computation. DeGS therefore applies lightweight mixed-precision support on these criti-cal paths, and represents large-magnitude intermediate val-ues in fixed point to improve numerical robustness. As a result, boundary and offset computation remains stable at 4K– 8K without introducing high precision overhead to the full pipeline. 
+
+End-to-End Rendering Quality. We next compare the absolute rendering quality of DeGS against the GPU reference. Figure 8 reports PSNR, SSIM, and LPIPS from 720p to 8K on Deep Blending, Tanks&Temples, and Mip-NeRF 360. Across all tested settings, DeGS closely follows the GPU reference in all three metrics. The average absolute gap / worst-case degradation is 0.225 dB / 0.478 dB in PSNR, 0.00155 / 0.00381 in SSIM, and 0.00112 / 0.00273 in LPIPS. DeGS also follows the same resolution-dependent quality trend as the GPU ref-erence across all dataset groups, with no visible systematic drift. These results indicate that the reformulated execution flow does not introduce measurable end-to-end quality loss, and is unlikely to cause visually noticeable artifacts in the rendered results. Instead, the remaining differences are consis-tent with the implementation-level numerical effects observed in the single-Gaussian study. With mixed-precision protection on numerically sensitive screen-space paths, DeGS preserves stable rendering quality from 720p to 8K. 
+
+C. Performance 
+
+We evaluate hardware performance using configurations in Table I. Steady-state throughput measures sustained frame delivery under stage-overlapped execution, and thus reflects 0       
+
+> 5
+> 10
+> (a) Throughput
+> Speedup
+> T&T (720p) DB (1080p) Mip-NeRF 360 (2K) GeoMean
+> 0
+> 3
+> 6
+> (b) Latency
+> Speedup
+> Train
+> Truck
+> DrJohnson
+> Playroom
+> Bicycle Bonsai
+> Counter
+> Garden
+> Kitchen Room
+> Stump
+> GeoMean
+> 0
+> 2
+> 4
+> (c) Energy
+> Efficiency
+> GSCore GBU GCC DeGS
+> Fig. 9. Area-normalized improvement factors across end-to-end latency speedup, steady-state throughput gain, and sustained energy-efficiency gain, respectively. Higher is better in all cases.
+
+whether the architecture can maintain a stable stream of useful work in continuous rendering scenarios. End-to-end latency measures the response time of a single rendering request from input to final image, and therefore captures interactive respon-siveness under abrupt viewpoint changes. Sustained energy efficiency further evaluates how effectively the architecture converts silicon area and energy into rendered frames during long-running execution, which is especially important for edge deployment. The gain is most pronounced on large outdoor scenes such as garden and bicycle , where irregular Gaussian coverage and asynchronous termination are stronger, while the gap becomes smaller on dense indoor scenes such as bonsai ,
+
+room , and playroom .As shown in Figure 9, DeGS consistently outperforms prior architectures. For steady-state throughput, DeGS im-proves over GBU by 2.14 ×–2.80 × across scenes, with a geometric-mean gain of 2.36 ×. Relative to GSCore and GCC, the gains are 7.25 × and 2.82 ×, respectively. For end-to-end latency, DeGS achieves 1.45 ×–2.39 × speedup over GCC across scenes, with geometric-mean gains of 6.02 ×, 2.44 ×,and 1.82 × over GSCore, GBU, and GCC, respectively. DeGS removes invalid work before blending and regularizes the remaining tasks before they reach the arithmetic array, so under pipelined execution the blending stage is no longer dominated by spatial and temporal redundancy. For sustained energy efficiency, DeGS improves over the strongest baseline by 1.47 ×–1.75 × across scenes, with geometric-mean gains of 4.42 ×, 3.32 ×, and 1.59 × over GSCore, GBU, and GCC, respectively. Although DeGS does not introduce a separate frame or Gaussian reuse algorithm, it benefits more effectively from larger tile sizes because a larger aggregation window reduces Gaussian duplication and scheduling overhead, while the decoupled dataflow avoids the extra spatial and temporal redundancy that grows with tile size in prior coupled architec-tures. 
+
+Ablation study. Figure 10 reports a mechanism-level at-tribution, since the three DeGS stages are connected through Span Vectors, conflict-domain scheduling, and dense-packet 0 1 2 3 4    
+
+> Coupled
+> +SP
+> +SP+TR
+> DeGS
+> (a) Rendering speedup
+> 0% 25% 50% 75% 100%
+> Coupled
+> +SP
+> +SP+TR
+> DeGS
+> (b) Energy Saving
+
+Fig. 10. Mechanism-level speed and energy ablation averaged across datasets. TABLE II TRACE -DERIVED 4DGS WORKLOAD EVIDENCE AND DEGS BACKEND BENEFIT AT 960 × 720 , 16 × 16 TILE SIZE , AND 64 PE S.                        
+
+> Metric Coffee Spinach Beef Mean Dynamic and irregular 4DGS rendering traces
+> Active-Gaussian overlap / tile-workload churn 0.450 / 4.6% 0.270 / 4.9% 0.266 / 5.7% 0.329 / 5.1% P99 tile candidates / footprint Gini 2.39K / 0.854 1.95K / 0.882 2.06K / 0.883 2.13K / 0.873
+> DeGS rendering-stage benefit
+> Blending PE utilization, coupled / DeGS 15.5% / 86.7% 27.4% / 92.3% 28.6% / 91.5% 23.9% / 90.2% Rendering speedup / trace-level E2E proxy 5.94 ×/ 2.51 ×3.16 ×/ 1.95 ×3.03 ×/ 1.95 ×4.04 ×/ 2.20 ×
+
+interfaces. The latency benefit mainly appears after the full pipeline is enabled. Span Parsing removes spatial redundancy, while Task Reorganization and Blending Execution convert the remaining valid spans into dense backend execution. For energy, the largest reduction comes from Span Parsing, because early removal of invalid fragments avoids downstream 
+
+α evaluation, pixel-state accesses, and backend activity, even after accounting for frontend and buffer overhead. 
+
+Dynamic Gaussian Splatting applicability. We use 4DGS as a representative dynamic-scene workload to test whether DeGS extends beyond static 3DGS rendering. We train N3V scenes with the standard 4DGS pipeline, materialize timestamp-conditioned Gaussian attributes, and replay the resulting frame-local traces. Table II shows that these traces preserve the key workload properties assumed in our mo-tivation: active-Gaussian overlap is only 0.266–0.450, tile-workload churn is 4.6%–5.7%, and projected coverage remains highly irregular. Since alpha blending is still a frame-local near-to-far recurrence, cross-frame motion changes the trace distribution but does not introduce cross-frame dependence into the Blending Array. DeGS therefore retains its rendering-stage benefit on dynamic scenes, improving mean PE utiliza-tion from 23.9% to 90.2%, achieving 4.04 × rendering speedup and 2.20 × end-to-end speedup when dynamic materialization cost is held unchanged. 
+
+Contemporary NPU baseline. Beyond the three rasterization-oriented 3DGS accelerator dataflows evaluated above, we further compare DeGS with ORANGE [39], a contemporary NPU-based 3DGS rendering baseline. Figure 11(a) reports raw end-to-end throughput on the same seven scenes without area normalization; DeGS-64 still outperforms ORANGE O-4 by 1.6 ×–2.2 × while using a substantially smaller area footprint. Figure 11(b) shows that widening a GEMM-style backend alone is insufficient: ORANGE reformulates blending into a GEMM-friendly kernel with a narrow reduction dimension (K = 6), so scaling the systolic backend from 4 to 16,384 MACs reduces local array utilization from 96.0% to 4.69%. In contrast, Train Truck DrJ Play Bicy      
+
+> Garden Room GM
+> 0
+> 100
+> 200
+> 300
+> (a) Throughput (FPS)  2.0 ×
+> 1.6 ×
+> 2.0 ×
+> 2.0 ×
+> 2.2 ×1.6 ×
+> 2.0 ×1.9 ×
+> ORANGE O-4 DeGS-64
+> 4
+> 16
+> 64
+> 64
+> 1024
+> 256
+> 16384
+> 1024 0
+> 25
+> 50
+> 75
+> 100
+> (b) Array utilization (%)
+> ORANGE MAC # DeGS PE #
+
+Fig. 11. Raw throughput and backend utilization versus ORANGE. TABLE III COORDINATED SCALING CONFIGURATIONS OF DEGS. Total PEs Peak TOPS Tile Size #GSUs #Span Units #Issue Banks PEs/Array 16 0.1 16 1 4 4 464 0.5 32 2 8 8 8256 2.0 64 4 16 16 16 1024 8.0 128 8 32 32 32 
+
+DeGS regularizes valid blending work before execution and maintains 88.5%–73.6% mean backend utilization when scaling from 16 to 1024 PEs. This confirms that DeGS addresses a complementary dataflow bottleneck rather than relying on a wider general-purpose NPU array to absorb 3DGS irregularity. 
+
+D. Scalability Analysis 
+
+Scaling in DeGS is not achieved by simply replicating a wider blending PE array. The key architectural advantage is that DeGS removes invalid work before blending execution and localizes dependence handling in the scheduling layer, so increasing array scale no longer amplifies spatial redundancy and temporal redundancy in tandem, as in prior coupled designs. 
+
+Decoupled Scaling Rule. This property of DeGS enables the coordinated scaling rule in Table III. The rationale is that Projection and Sorting are primarily constrained by off-chip bandwidth and therefore are not the main scaling bottlenecks. The Span Parsing and Task Reorganization stages only need to expose valid work in row-level parallelism. Moreover, as Figure 1(a) suggests, a projected Gaussian typically expands into multiple valid rows, and each valid row usually contains multiple effective pixels rather than isolated single-pixel work. DeGS therefore provisions the numbers of GSUs, Span Units, and Issue Banks for stable packet generation instead of one-to-one matching with the PE count, while leaving moderate redundancy in these stages to absorb workload imbalance. Consequently, these stages can be provisioned sublinearly with PE count in our evaluated design space. By contrast, the Pixel Buffer must scale linearly with PE count. The effectiveness of this asymmetric provisioning is reflected in Figure 13: across most coordinated scaling points, the pressure of GSU, Span Array, and Issue Bank remains below full starvation, and they become limiting mainly in the low-resolution, large-array regime. 
+
+Scaling Behavior. From Figure 12, DeGS not only delivers better metrics across almost all evaluated resolutions and array sizes, but more importantly degrades much more gracefully as 0                           
+
+> 20
+> 40
+> 60
+> 80
+> 100
+> (a) Blending
+> Utilization ( %)
+> 10 0
+> 10 1
+> 10 2
+> (b) Throughput / Area
+> (FPS  mm  2)
+> 10 1
+> 10 2
+> 10 3
+> (c) Latency / Area
+> (ms  mm  2)
+> 16 64 256 1024 16 64 256 1024 16 64 256 1024 16 64 256 1024 16 64 256 1024
+> 10 1
+> 10 0
+> 10 1
+> 10 2
+> (d) Energy Eff. / Area
+> (Frames  J 1mm  2)
+> 720p 1080p 2K 4K 8K
+> GSCore GBU GCC DeGS
+
+Fig. 12. Blending PE utilization of each accelerator. 720p      
+
+> 1080p
+> 2K
+> 4K
+> 8K
+> 1024
+> 256
+> 64
+> 16
+> Number of PEs
+> DRAM
+> 720p
+> 1080p
+> 2K
+> 4K
+> 8K
+> GSU
+> 720p
+> 1080p
+> 2K
+> 4K
+> 8K
+> Span Array
+> 720p
+> 1080p
+> 2K
+> 4K
+> 8K
+> Issue Bank
+> 0.0 0.2 0.4 0.6 0.8 1.0
+> Blending Starvation
+
+Fig. 13. Bottleneck pressure of pre-execution stages. 
+
+the array scales up and enters the effective scaling regime at a lower resolution than prior designs. In particular, DeGS main-tains over 80% PE utilization at higher resolutions, whereas the utilization of other architectures quickly drops to 10%–30% as the array becomes larger. Correspondingly, GSCore, GCC, and GBU all begin to show degradation in area-normalized throughput, latency, or energy efficiency at relatively small array scales. These results indicate that the decoupled dataflow of DeGS cuts off the propagation path through which wider arrays and larger blocks amplify redundancy in prior architec-tures. 
+
+Bottleneck Analysis. Figure 13 further shows that, when the array becomes large while the rendering resolution remains low, the saturation of DeGS is mainly caused by insufficient workload supply of valid tasks, rather than by backend redun-dancy. In this regime, each Gaussian produces shorter valid row spans, causing the Span Engine to reach its supply limit more easily. At the same time, the number of scheduler-visible tasks in the Issue Banks also decreases, which makes local scheduling holes and backend waiting more likely, and therefore prevents the Blending Array from being continuously (a) Stage-wise latency breakdown under different off-chip bandwidths. 
+
+> (b) Impact of issue-bank partition on spatial redundancy.
+> (c) Segment length sensitivity under asynchronous termination.
+> (d) Tile size sensitivity under conflict dominated long tails.
+
+Fig. 14. Sensitivity Study. 
+
+saturated. However, once the array throughput exceeds the rate at which off-chip DRAM can provide valid data to the blending stage, simply increasing the number of frontend units can no longer deliver proportional benefit under such workloads. 
+
+E. Sensitivity Study 
+
+Off-chip Bandwidth Sensitivity. Figure 14(a) shows the stage-wise latency trend of DeGS under three off-chip band-width settings at two representative array scales (PE=64 and PE=256) on Mip-NeRF 360. Increasing bandwidth from 51.2 GB/s to 204.8 GB/s consistently reduces the latency of Projection and Sorting across all resolutions. As a result, the system bottleneck progressively shifts away from preprocess-ing and toward rendering as bandwidth increases. This trend is most evident in the high-load regime: for the 8K workload at PE=256, Blending remains the dominant stage even at 204.8 GB/s. The 100 Hz real-time reference line further shows that DeGS achieves real-time rendering for resolutions up to 4K under both low- and high-bandwidth settings. These results indicate that lower-bandwidth settings would make DeGS appear memory-bound and thus obscure the scaling behavior of the blending backend. Therefore, our main evaluation uses an Orin-class LPDDR5 configuration to place the system in the regime where scalability is determined primarily by blending dataflow organization rather than by DRAM bandwidth. 
+
+Bank Partition Sensitivity. Figure 14(b) shows the spatial redundancy ratio at 1080p as the number of banks increases under different PE configurations on Mip-NeRF 360. For all PE configurations, redundancy increases as the number of banks grows, and the growth is much faster at larger PE counts. This trend indicates that finer bank partitioning simplifies localized dispatch and storage management, but also fragments spatially correlated Gaussian work and distributes effective tasks less evenly across banks. This uneven distribution lowers the effective task supply seen by blending and ultimately increases spatial redundancy. By contrast, the coordinated scaling points used in DeGS, namely 4/8/16/32 banks for PE=16/64/256/1024, keep the redundancy within roughly 5%. 
+
+Segment Length Sensitivity. Figure 14(c) reports the re-dundancy ratio under different segment length across reso-lutions with 64 PE setting on Mip-NeRF 360. Finer seg-ments consistently reduce redundancy, with the largest gains appearing at lower resolutions. At higher resolutions, the gap between neighboring settings becomes smaller. This re-sult indicates that segment granularity determines how much termination-induced waiting remains visible to Task Reorga-nization. Coarse segments expose more temporal imbalance to the scheduler, whereas excessively fine segments provide diminishing redundancy reduction while increasing control overhead. In DeGS, segment sizes on 1 × 16 are sufficient to keep redundancy low, making them a practical operating range. 
+
+Tile Size Sensitivity. Figure 14(d) reports the signed dom-inance ratio for the 1080p workload under different tile sizes on Mip-NeRF 360. For both segment settings, small tiles (8 and 16) remain in the upper region, showing that Task Reorganization cannot expose enough conflict-free workload within such a limited scheduling window. As a result, the Blending PE is still dominated by conflict-induced waiting rather than by pure blending throughput. When the tile size increases to 32, the dominance ratio moves close to zero and begins to turn lower region, indicating that the scheduler can now supply a sufficiently dense stream of ready tasks and the system is no longer primarily limited by conflict exposure. Unlike prior coupled architectures, DeGS can scale tile size without incurring substantial spatial or temporal redundancy. The main overhead is only a modest increase in on-chip buffering, which further improves its adaptability to diverse application scenarios. VI. R ELATED WORK 
+
+Architectural support for 3DGS. The rapid adoption of 3DGS has motivated a growing body of hardware and system support for both rendering and training [29]–[33], [37]–[39], [48]–[55]. On the inference side, prior work has explored tile-based execution [32], whose rasterization primitive is adopted or extended by many 3DGS accelerators [29], [31], [38], [54]. Row-oriented rasterization and blending support [33], which reduces coarse spatial waste but remains limited by row-local dependencies and imbalance. Gaussian-wise execution [30], which reorganizes cross-stage execution but still couples fil-tering with backend traversal. Other works optimize GPU-oriented pipelines [40], [48], caching and reuse [37], [49], or immersive and large-scale deployment [50]. In contrast, DeGS decouples valid-work discovery and dependence handling from blending. A separate set of works targets 3DGS training or SLAM-oriented workloads [51]–[54], [56], for example by reducing atomic overheads, filtering redundant gradient updates, or exploiting sparsity in online pipelines. 
+
+GPU-oriented optimization. Another line of work im-proves 3DGS efficiency by directly reducing the amount of work that needs to be processed on GPU. Represen-tative examples include pruning, compression, quantization, and quality-aware simplification, which remove low-impact Gaussians, reduce memory and storage cost, or trade a con-trolled amount of rendering fidelity for lower computation and bandwidth demand [62]–[66]. A separate direction focuses on accelerating Gaussian rendering on commodity GPUs, where optimizations must operate within the constraints of SIMT execution, fixed memory hierarchies, and existing graphics or compute APIs [11], [12], [34], [36], [48], [49], [67]– [73]. These methods typically emphasize scheduling, caching, warping, or temporal reuse on programmable platforms. In contrast to semantics-preserving architectural support for ded-icated accelerators, the former reduces the workload itself, while the latter improves how that workload is executed on general-purpose hardware. VII. C ONCLUSION 
+
+In this work, we show that the scaling wall of 3DGS render-ing is rooted not in insufficient arithmetic throughput alone, but in the coupled execution of α-checking and blending, which amplifies irregular spatial coverage and asynchronous termination into severe hardware utilization loss under wider arrays. To address this problem, we propose DeGS, a fully decoupled 3DGS rendering microarchitecture that front-loads valid-work discovery and task regularization through Span Parsing and Task Reorganization, so that backend blending operates only on dense and conflict-free execution packets. Across diverse scenes, resolutions, and array sizes, DeGS consistently delivers higher throughput, energy efficiency, and scaling efficiency than prior semantics-preserving 3DGS ac-celerators while preserving near-reference rendering quality, suggesting that scalable Gaussian rendering requires redesign-ing the dataflow before widening blending PEs. REFERENCES [1] B. Kerbl, G. Kopanas, T. Leimkühler, and G. Drettakis, “3d gaussian splatting for real-time radiance field rendering.” ACM Trans. Graph. ,vol. 42, no. 4, pp. 139–1, 2023. [2] Y. Bao, T. Ding, J. Huo, Y. Liu, Y. Li, W. Li, Y. Gao, and J. Luo, “3d gaussian splatting: Survey, technologies, challenges, and opportunities,”   
+
+> IEEE Transactions on Circuits and Systems for Video Technology , 2025. [3] B. Fei, J. Xu, R. Zhang, Q. Zhou, W. Yang, and Y. He, “3d gaussian splatting as new era: A survey,” IEEE Transactions on Visualization and Computer Graphics , 2024.
+
+[4] T. Wu, Y.-J. Yuan, L.-X. Zhang, J. Yang, Y.-P. Cao, L.-Q. Yan, and L. Gao, “Recent advances in 3d gaussian splatting,” Computational Visual Media , vol. 10, no. 4, pp. 613–642, 2024. [5] A. Dalal, D. Hagen, K. G. Robbersmyr, and K. M. Knausgård, “Gaussian splatting: 3d reconstruction and novel view synthesis, a review,” IEEE Access , 2024. [6] B. Huang, Z. Yu, A. Chen, A. Geiger, and S. Gao, “2d gaussian splatting for geometrically accurate radiance fields,” in ACM SIGGRAPH 2024 conference papers , 2024, pp. 1–11. [7] M. T. Bagdasarian, P. Knoll, Y. Li, F. Barthel, A. Hilsmann, P. Eisert, and W. Morgenstern, “3dgs. zip: A survey on 3d gaussian splatting compression methods,” in Computer Graphics Forum , vol. 44, no. 2. Wiley Online Library, 2025, p. e70078. [8] Z. Yang, H. Yang, Z. Pan, and L. Zhang, “Real-time photorealistic dynamic scene representation and rendering with 4d gaussian splatting,” 
+
+arXiv preprint arXiv:2310.10642 , 2023. [9] G. Wu, T. Yi, J. Fang, L. Xie, X. Zhang, W. Wei, W. Liu, Q. Tian, and X. Wang, “4d gaussian splatting for real-time dynamic scene rendering,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 2024, pp. 20 310–20 320. [10] A. Hamdi, L. Melas-Kyriazi, J. Mai, G. Qian, R. Liu, C. Vondrick, B. Ghanem, and A. Vedaldi, “Ges: Generalized exponential splatting for efficient radiance field rendering,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2024, pp. 19 812–19 822. [11] D. Lee, D. Jeong, J. W. Lee, and H. Yoon, “Gs-scale: Unlocking large-scale 3d gaussian splatting training via host offloading,” arXiv preprint arXiv:2509.15645 , 2025. [12] X. Wang, R. Yi, and L. Ma, “Adr-gaussian: Accelerating gaussian splatting with adaptive radius,” in SIGGRAPH Asia 2024 Conference Papers , 2024, pp. 1–10. [13] Y. Jiang, C. Yu, T. Xie, X. Li, Y. Feng, H. Wang, M. Li, H. Lau, F. Gao, Y. Yang et al. , “Vr-gs: A physical dynamics-aware interactive gaussian splatting system in virtual reality,” in ACM SIGGRAPH 2024 Conference Papers , 2024, pp. 1–1. [14] X. Tu, L. Radl, M. Steiner, M. Steinberger, B. Kerbl, and F. De la Torre, “Vrsplat: Fast and robust gaussian splatting for virtual reality,” 
+
+Proceedings of the ACM on Computer Graphics and Interactive Tech-niques , vol. 8, no. 1, pp. 1–22, 2025. [15] J. Chen, J. Hu, G. Wang, Z. Jiang, T. Zhou, Z. Chen, and C. Lv, “Taoavatar: Real-time lifelike full-body talking avatars for augmented reality via 3d gaussian splatting,” in Proceedings of the Computer Vision and Pattern Recognition Conference , 2025, pp. 10 723–10 734. [16] Y. Shen, B. Li, J. Huang, D. Yip, and Z. Wang, “Gaussianshopvr: Facilitating immersive 3d authoring using gaussian splatting in vr,” in 
+
+Proceedings of the 38th Annual ACM Symposium on User Interface Software and Technology , 2025, pp. 1–14. [17] L. Franke, L. Fink, and M. Stamminger, “Vr-splatting: Foveated radiance field rendering via 3d gaussian splatting and neural points,” Proceedings of the ACM on Computer Graphics and Interactive Techniques , vol. 8, no. 1, pp. 1–21, 2025. [18] J. Zheng, Z. Zhu, V. Bieri, M. Pollefeys, S. Peng, and I. Armeni, “Wildgs-slam: Monocular gaussian splatting slam in dynamic environ-ments,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2025, pp. 11 461–11 471. [19] J. Hu, X. Chen, B. Feng, G. Li, L. Yang, H. Bao, G. Zhang, and Z. Cui, “Cg-slam: Efficient dense rgb-d slam in a consistent uncertainty-aware 3d gaussian field,” in European Conference on Computer Vision .Springer, 2024, pp. 93–112. [20] Z. Peng, T. Shao, Y. Liu, J. Zhou, Y. Yang, J. Wang, and K. Zhou, “Rtg-slam: Real-time 3d reconstruction at scale using gaussian splatting,” in 
+
+ACM SIGGRAPH 2024 conference papers , 2024, pp. 1–11. [21] M. Li, S. Liu, H. Zhou, G. Zhu, N. Cheng, T. Deng, and H. Wang, “Sgs-slam: Semantic gaussian splatting for neural dense slam,” in European Conference on Computer Vision . Springer, 2024, pp. 163–179. [22] X. Lang, L. Li, C. Wu, C. Zhao, L. Liu, Y. Liu, J. Lv, and X. Zuo, “Gaussian-lic: Real-time photo-realistic slam with gaussian splatting and lidar-inertial-camera fusion,” in 2025 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2025, pp. 8500–8507. [23] N. Keetha, J. Karhade, K. M. Jatavallabhula, G. Yang, S. Scherer, D. Ramanan, and J. Luiten, “Splatam: Splat track & map 3d gaussians for dense rgb-d slam,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 2024, pp. 21 357–21 366. [24] X. Xu, W. Ge, D. Qiu, Z. Chen, D. Yan, Z. Liu, H. Zhao, H. Zhao, S. Zhang, J. Liang et al. , “Gaussianproperty: Integrating physical prop-erties to 3d gaussians with lmms,” in Proceedings of the IEEE/CVF International Conference on Computer Vision , 2025, pp. 7231–7240. [25] T. Xie, Z. Zong, Y. Qiu, X. Li, Y. Feng, Y. Yang, and C. Jiang, “Phys-gaussian: Physics-integrated 3d gaussians for generative dynamics,” in 
+
+Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2024, pp. 4389–4398. [26] F. Liu, H. Wang, S. Yao, S. Zhang, J. Zhou, and Y. Duan, “Physics3d: Learning physical properties of 3d gaussians via video diffusion,” arXiv preprint arXiv:2406.04338 , 2024. [27] S. Yoo, Y. Jang, D. Kim, Y. Han, S. Jung, and H. J. Kim, “Ready-go: Real-to-sim dynamic 3d gaussian splatting simulation for environment-specific visual navigation with moving obstacles,” arXiv preprint arXiv:2602.11575 , 2026. [28] G. Hess, C. Lindström, M. Fatemi, C. Petersson, and L. Svensson, “Splatad: Real-time lidar and camera rendering with 3d gaussian splat-ting for autonomous driving,” in Proceedings of the Computer Vision and Pattern Recognition Conference , 2025, pp. 11 982–11 992. [29] W. Lin, Y. Feng, and Y. Zhu, “Metasapiens: Real-time neural rendering with efficiency-aware pruning and accelerated foveated rendering,” in 
+
+Proceedings of the 30th ACM International Conference on Architectural Support for Programming Languages and Operating Systems, Volume 1 ,2025, pp. 669–682. [30] M. Pei, G. Li, J. Si, Z. Zhu, Z. Mo, P. Wang, Z. Song, X. Liang, and J. Cheng, “Gcc: A 3dgs inference architecture with gaussian-wise and cross-stage conditional processing,” in Proceedings of the 58th IEEE/ACM International Symposium on Microarchitecture , 2025, pp. 1824–1837. [31] Y. Sun, P. Yan, Y. Jing, L. Ye, and T. Jia, “Gsnorm: An efficient 3d gaussian rendering accelerator with splat normalization and lut-assist rasterization,” in Proceedings of the 30th Asia and South Pacific Design Automation Conference , 2025, pp. 1379–1385. [32] J. Lee, S. Lee, J. Lee, J. Park, and J. Sim, “Gscore: Efficient radiance field rendering via architectural support for 3d gaussian splatting,” in 
+
+Proceedings of the 29th ACM International Conference on Architectural Support for Programming Languages and Operating Systems, Volume 3 ,2024, pp. 497–511. [33] Z. Ye, Y. Fu, J. Zhang, L. Li, Y. Zhang, S. Li, C. Wan, C. Wan, C. Li, S. Prathipati et al. , “Gaussian blending unit: An edge gpu plug-in for real-time gaussian-based rendering in ar/vr,” in 2025 IEEE International Symposium on High Performance Computer Architecture (HPCA) . IEEE, 2025, pp. 353–365. [34] G. Feng, S. Chen, R. Fu, Z. Liao, Y. Wang, T. Liu, Z. Pei, H. Li, X. Zhang, and B. Dai, “Flashgs: Efficient 3d gaussian splatting for large-scale and high-resolution rendering,” arXiv preprint arXiv:2408.07967 ,2024. [35] J. Lee, Y. Lee, Y. Kwon, and M. Rhu, “Characterization and analysis of the 3d gaussian splatting rendering pipeline,” IEEE Computer Architec-ture Letters , vol. 24, no. 1, pp. 13–16, 2024. [36] A. Hanson, A. Tu, G. Lin, V. Singla, M. Zwicker, and T. Goldstein, “Speedy-splat: Fast 3d gaussian splatting with sparse pixels and sparse primitives,” in Proceedings of the Computer Vision and Pattern Recog-nition Conference , 2025, pp. 21 537–21 546. [37] C. Oh, S. Oh, J. Hwang, Y. Kim, H. Sharma, and J. Park, “Neo: Real-time on-device 3d gaussian splatting with reuse-and-update sorting acceleration,” arXiv preprint arXiv:2511.12930 , 2025. [38] H. Zhu, Z. Liu, X. Li, A. Wu, J. Zhao, F. Liu, Y. Gan, J. Leng, and Y. Feng, “Nebula: Enable city-scale 3d gaussian splatting in virtual reality via collaborative rendering and accelerated stereo rasterization,” 
+
+arXiv preprint arXiv:2512.20495 , 2025. [39] H. Li, Y. Liang, F. Liu, B. Zhu, Z. Wang, Y. Feng, L. Lu, L. Jiang, and H. Guan, “Orange: Exploring ockham’s razor for neural rendering by accelerating 3dgs on npus with gemm-friendly blending and balanced workloads,” in 2026 IEEE International Symposium on High Perfor-mance Computer Architecture (HPCA) . IEEE, 2026, pp. 1–15. [40] S. Li, B. Keller, Y. C. Lin, and B. Khailany, “Gaurast: Enhancing gpu triangle rasterizers to accelerate 3d gaussian splatting,” in 2025 62nd ACM/IEEE Design Automation Conference (DAC) . IEEE, 2025, pp. 1–7. [41] A. Knapitsch, J. Park, Q.-Y. Zhou, and V. Koltun, “Tanks and temples: Benchmarking large-scale scene reconstruction,” ACM Transactions on Graphics (ToG) , vol. 36, no. 4, pp. 1–13, 2017. [42] P. Hedman, J. Philip, T. Price, J.-M. Frahm, G. Drettakis, and G. Bros-tow, “Deep blending for free-viewpoint image-based rendering,” ACM Transactions on Graphics (ToG) , vol. 37, no. 6, pp. 1–15, 2018. [43] J. T. Barron, B. Mildenhall, D. Verbin, P. P. Srinivasan, and P. Hedman, “Mip-nerf 360: Unbounded anti-aliased neural radiance fields,” in Pro-ceedings of the IEEE/CVF conference on computer vision and pattern recognition , 2022, pp. 5470–5479. [44] NVIDIA Corporation, “GeForce RTX 3090 Family,” https://www.nvidia.com/en-us/geforce/graphics-cards/30-series/rtx-3090/, 2020. [45] Micron Technology, Inc., “LPDDR5 SDRAM,” Micron Technology, Inc., Datasheet Rev. A, May 2021, accessed: 2026-03-29. [Online]. Available: https://assets.sourcengine.com/datasheets/8d27f742-173e-4aa6-85b2-d1eef2c66360.pdf [46] NVIDIA Corporation, “NVIDIA Jetson AGX Orin Series Technical Brief,” NVIDIA Corporation, Technical Brief, 2022, accessed: 2026-03-29. [Online]. Available: https://www.nvidia.com/content/dam/en-zz/Solutions/gtcf21/jetson-orin/nvidia-jetson-agx-orin-technical-brief.pdf [47] S. Li, K. Chen, J. H. Ahn, J. B. Brockman, and N. P. Jouppi, “Cacti-p: Architecture-level modeling for sram-based structures with advanced leakage reduction techniques,” in ICCAD: International Conference on Computer-Aided Design , 2011, pp. 694–701. [48] J. Lee, J. Kim, J. Park, and J. Sim, “Vr-pipe: Streamlining hardware graphics pipeline for volume rendering,” arXiv preprint arXiv:2502.17078 , 2025. [49] Y. Feng, W. Lin, Y. Cheng, Z. Liu, J. Leng, M. Guo, C. Chen, S. Sun, and Y. Zhu, “Lumina: Real-time neural rendering by exploiting compu-tational redundancy,” in Proceedings of the 52nd Annual International Symposium on Computer Architecture , 2025, pp. 1925–1939. [50] C. Nian, X. Mo, J. Peng, W. Zhang, F. U. D. Farrukh, F. Chen, and C. Zhang, “Hypergs: Efficient real-time 3d gaussian rendering processor through hierarchical sorting,” in 2025 IEEE International Symposium on Circuits and Systems (ISCAS) . IEEE, 2025, pp. 1–5. [51] L. Wu, H. Zhu, S. He, J. Zheng, C. Chen, and X. Zeng, “Gauspu: 3d gaussian splatting processor for real-time slam systems,” in 2024 57th IEEE/ACM International Symposium on Microarchitecture (MICRO) .IEEE, 2024, pp. 1562–1573. [52] X. Huang, H. Zhu, T. Ma, Y. Xiong, F. Liu, Z. He, Y. Gan, Z. Liu, J. Leng, Y. Feng et al. , “Splatonic: Architecture support for 3d gaussian splatting slam via sparse processing,” arXiv preprint arXiv:2511.18755 ,2025. [53] S. Durvasula, A. Zhao, F. Chen, R. Liang, P. K. Sanjaya, Y. Guan, C. Giannoula, and N. Vijaykumar, “Arc: Warp-level adaptive atomic reduction in gpus to accelerate differentiable rendering,” in ASPLOS ,2025. [54] H. He, G. Li, F. Liu, L. Jiang, X. Liang, and Z. Song, “Gsarch: Breaking memory barriers in 3d gaussian splatting training via architectural support,” in 2025 IEEE International Symposium on High Performance Computer Architecture (HPCA) , 2025, pp. 366–379. [55] Z. Wang, G. He, D. Liu, L. Gao, S. X. Hu, C. Zhang, Z. Song, N. Lane, W. Luk, and H. Fan, “Accelerating 3d gaussian splatting with neural sort-ing and axis-oriented rasterization,” arXiv preprint arXiv:2506.07069 ,2025. [56] L. Li, J. Qin, J. Peng, Z. Wan, H. Qu, Y. Han, P. Zheng, H. Zhang, Y. Cao, T. Chen et al. , “Rtgs: Real-time 3d gaussian splatting slam via multi-level redundancy reduction,” in Proceedings of the 58th IEEE/ACM International Symposium on Microarchitecture , 2025, pp. 1838–1851. [57] S. Cheng, X. Guan, and Z. Du, “Area-efficient automated logic design with Monte-Carlo tree search,” in Advanced Parallel Processing Tech-nologies: 16th International Symposium, APPT 2025, Athens, Greece, July 13–16, 2025, Proceedings , ser. Lecture Notes in Computer Science, vol. 16062. Springer Nature Singapore, 2025, pp. 47–58. [58] H. Han, D. Huang, T. Ma, X. Zheng, J. Mu, Z. Du, X. Hu, and Q. Guo, “VecTEE: Compact TEE metadata caching for efficient secure vector computing,” Presented at the 16th International Symposium on Advanced Parallel Processing Technologies (APPT), Athens, Greece, Jul. 2025. [59] X. Zheng, H. Han, S. Shi, Q. Fang, Z. Du, X. Hu, and Q. Guo, “InputSnatch: Stealing input in LLM services via cache-sharing timing side-channel attacks,” Presented at the 16th International Symposium on Advanced Parallel Processing Technologies (APPT), Athens, Greece, Jul. 2025. [60] X. Guan, S. Cheng, R. Zhang, and Z. Du, “MV-BSD: Multi-variable speculation diagrams for compact automated logic design,” Presented at the 16th International Symposium on Advanced Parallel Processing Technologies (APPT), Athens, Greece, Jul. 2025. [61] R. Xia, Y. Hao, Y. Zhao, Y. Liu, Y. Zhao, Z. Du, X. Hu, W. Li, and Q. Guo, “COMET: An FP32 matrix multiplication accelerator by extending INT8-based arrays,” Presented at the 16th International Symposium on Advanced Parallel Processing Technologies (APPT), Athens, Greece, Jul. 2025. [62] Z. Fan, K. Wang, K. Wen, Z. Zhu, D. Xu, Z. Wang et al. , “Lightgaussian: Unbounded 3d gaussian compression with 15x reduction and 200+ fps,” in NeurIPS , 2025. [63] K. Navaneet, K. P. Meibodi, S. A. Koohpayegani, and H. Pirsiavash, “Compgs: Smaller and faster gaussian splatting with vector quantiza-tion,” in ECCV , 2024. [64] G. Fang and B. Wang, “Mini-splatting: Representing scenes with a constrained number of gaussians,” in ECCV , 2024. [65] S. Girish, K. Gupta, and A. Shrivastava, “Eagles: Efficient accelerated 3d gaussians with lightweight encodings,” in ECCV , 2024. [66] P. Papantonakis, G. Kopanas, B. Kerbl, A. Lanvin, and G. Drettakis, “Reducing the memory footprint of 3d gaussian splatting,” in PACM-CGIT , 2024. [67] Y. Feng, W. Lin, Z. Liu, J. Leng, M. Guo, H. Zhao, X. Hou, J. Zhao, and Y. Zhu, “Potamoi: Accelerating neural rendering via a unified streaming architecture,” in TACO , 2024. [68] Y. Feng, Z. Liu, J. Leng, M. Guo, and Y. Zhu, “Cicero: Addressing algorithmic and architectural bottlenecks in neural rendering by radiance warping and memory optimizations,” in ISCA , 2024. [69] S. Zhao, H. Zhang, S. Bhuyan, C. S. Mishra, Z. Ying, M. T. Kandemir, A. Sivasubramaniam, and C. R. Das, “Déja view: Spatio-temporal compute reuse for energy-efficient 360 vr video streaming,” in ISCA ,2020. [70] Y. Zhu, A. Samajdar, M. Mattina, and P. Whatmough, “Euphrates: Algorithm-soc co-design for low-power mobile continuous vision,” in 
+
+ISCA , 2018. [71] J. Hwang, M. Kim, D. Kim, S. Nam, Y. Kim, D. Kim, H. Sharma, and J. Park, “Cova: Exploiting compressed-domain analysis to accelerate video analytics,” in ATC , 2022. [72] J. Hwang, D. Kim, S. Lee, Y. Kim, G. Heo, H. Kim, Y. Jeong, T. Meaza, E. Park, J. Ahn, and J. Park, “Déjà vu: Efficient video-language query engine with learning-based inter-frame computation reuse,” in PVLDB ,2025. [73] H. Gui, L. Hu, R. Chen, M. Huang, Y. Yin, J. Yang, Y. Wu, C. Liu, Z. Sun, X. Zhang et al. , “Balanced 3dgs: Gaussian-wise parallelism rendering with fine-grained tiling,” arXiv preprint arXiv:2412.17378 ,2024.
