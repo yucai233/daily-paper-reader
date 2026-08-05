@@ -1,0 +1,264 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-05T20:30:54.702812+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.00094v2",
+      "title": "Video Models as Native 4D Renderers: World-Grounded Conditioning from Animated Mesh",
+      "abstract": "Pretrained video diffusion models can act as renderers when the desired scene state is already specified by an animated mesh, a camera trajectory, and a reference image. This 4D generative rendering setting raises a representation question: what image-format condition lets a video backbone obey both camera motion and scene-internal animation? We propose DAR, a reference-guided renderer that extends Wan2.2 camera control from Plücker rays alone to a joint camera-plus-geometry interface. DAR projects a neural 4D G-buffer (tracking, world position, and normal) from the animated mesh and injects it through a widened control adapter while preserving the pretrained image-to-video prior. The central design choice is the pair of tracking and world position. Tracking identifies the persistent surface element that should carry appearance; world position gives its current scene-coordinate state; normal supplies local shape. Depth plus calibrated rays can recover 3D in principle, but depth is a camera-dependent chart in which camera and object motion are mixed. On the 68-case DAR-4D benchmark, LoRA DAR reaches PSNR 23.22, SSIM 0.895, and LPIPS 0.134, improving over off-the-shelf Wan2.2-Depth by 1.54 dB PSNR; a full fine-tune reaches PSNR 25.36 and SSIM 0.917. Matched ablations show that replacing world position by depth reduces PSNR by 1.26--1.55 dB at every checkpoint, supporting tracking+world-position correspondence as a practical 4D rendering condition.",
+      "authors": [
+        "Junhao Chen",
+        "Mingjin Chen",
+        "Henghaofan Zhang",
+        "Minglin Chen",
+        "Liaoyuan Fan",
+        "Boran Zhang",
+        "Saining Zhang",
+        "Mingze Sun",
+        "Hao Zhao",
+        "Ruqi Huang",
+        "Zhihao Li",
+        "Yufei Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-30T16:55:28+00:00",
+      "link": "https://arxiv.org/pdf/2608.00094v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural 4D rendering using video diffusion models",
+      "llm_evidence_cn": "使用视频扩散模型的神经4D渲染",
+      "llm_evidence": "使用视频扩散模型的神经4D渲染",
+      "canonical_evidence": "使用视频扩散模型的神经4D渲染",
+      "llm_tldr_en": "Uses video diffusion models as native 4D renderers by conditioning on animated mesh and camera paths.",
+      "llm_tldr_cn": "通过动画网格和相机路径调节，将视频扩散模型用作原生4D渲染器。",
+      "llm_tldr": "通过动画网格和相机路径调节，将视频扩散模型用作原生4D渲染器。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.01958v1",
+      "title": "FAST-GS: Frequency Aware Space-time Gaussian Splatting for Photorealistic Dynamic Novel View Synthesis",
+      "abstract": "4D Gaussian Splatting (4DGS) excels in dynamic 3D reconstruction and real-time novel view synthesis via efficient 4D Gaussian representations and parallelizable rendering. However, existing 4DGS approaches rely on a single polynomial to model motion, which limits performance in complex dynamic scenes where high-frequency motion components are prevalent, and fails to ensure long-term stability due to cumulative trajectory drift. To address these issues, we propose a Fourier Motion Modeling module: this paradigm decomposes motion into frequency-based sinusoidal components, capturing both low-frequency global trajectories and high-frequency local details to model complex motion patterns accurately. It retains the real-time rendering capability of 4DGS while improving complex motion fitting and long-term coherence. Additionally, we integrate a motion-aware regularization strategy into the loss function: it uses frequency-dependent weights to suppress high-frequency jitter while preserving low-frequency motion coherence. Extensive experiments on N3V and Google Immersive datasets from multiple scenarios demonstrate the effectiveness of our method.",
+      "authors": [
+        "Zhengyang Zhang",
+        "Ziyu Lu",
+        "PengCheng Li",
+        "Hongbo Duan",
+        "Yi Liu",
+        "Pengting Luo",
+        "Peiyu Zhuang",
+        "Xinghui Li",
+        "Shaohua Ma"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-03T09:27:33+00:00",
+      "link": "https://arxiv.org/pdf/2608.01958v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "accelerating dynamic 3D reconstruction and novel view synthesis",
+      "llm_evidence_cn": "加速动态3D重建与新视角合成",
+      "llm_evidence": "加速动态3D重建与新视角合成",
+      "canonical_evidence": "加速动态3D重建与新视角合成",
+      "llm_tldr_en": "Introduces Fourier Motion Modeling to 4D Gaussian Splatting for efficient and stable dynamic scene rendering.",
+      "llm_tldr_cn": "将傅里叶运动建模引入4D高斯泼溅，实现高效且稳定的动态场景渲染。",
+      "llm_tldr": "将傅里叶运动建模引入4D高斯泼溅，实现高效且稳定的动态场景渲染。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.02145v1",
+      "title": "UniqueSplat: View-conditioned 3D Gaussian Splatting for Generalizable 3D Reconstruction",
+      "abstract": "In this paper, we propose UniqueSplat, a view-conditioned feed-forward 3D Gaussian Splatting model to reconstruct customized 3D radiance fields for each view query. Existing feed-forward methods such as pixelSplat and MVSplat aim to generate fixed Gaussians across all views of each scene by minimizing the error between rendered views and ground-truth images. However, such fixed Gaussians generally render images from all views and lack the ability to adapt to specific viewpoints, as they do not incorporate target view information when predicting Gaussians. To address this, our UniqueSplat learns the view-conditioned information as a prior and incorporates this knowledge into network parameters, so that Gaussians are dynamically adjusted in accordance with different views. Specifically, we propose a two-branch view-conditioned hyperNetwork to simultaneously learn view-agnostic embeddings and view-specific knowledge, which not only explores the shareable knowledge from various views, but also adapts the model to specific views at test time. Extensive experiments on widely-used datasets including RealEstate10K, ACID and DTU demonstrate the superiority of UniqueSplat over the state-of-the-art methods. Moreover, UniqueSplat encouragingly outperforms existing methods in cross-dataset evaluation, showing its notable generalization ability.",
+      "authors": [
+        "Haixu Song",
+        "Xiaoke Yang",
+        "Shengjun Zhang",
+        "Jiwen Lu",
+        "Yueqi Duan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-03T12:31:12+00:00",
+      "link": "https://arxiv.org/pdf/2608.02145v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "view-conditioned feed-forward 3D Gaussian Splatting",
+      "llm_evidence_cn": "视图条件前馈3D高斯泼溅",
+      "llm_evidence": "视图条件前馈3D高斯泼溅",
+      "canonical_evidence": "视图条件前馈3D高斯泼溅",
+      "llm_tldr_en": "UniqueSplat adjusts Gaussians dynamically based on target view information for reconstruction.",
+      "llm_tldr_cn": "UniqueSplat根据目标视图信息动态调整高斯分布以进行重建。",
+      "llm_tldr": "UniqueSplat根据目标视图信息动态调整高斯分布以进行重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.02191v1",
+      "title": "DerainSplat: Feed-Forward Clean 3D Gaussian Splatting from Sparse Rainy Views",
+      "abstract": "Although image deraining has advanced substantially, existing methods mainly focus on 2D image restoration. As spatial intelligence applications such as embodied AI and autonomous driving continue to emerge, reconstructing clean 3D scenes from sparse rainy views in a feed-forward manner becomes increasingly important. Existing feed-forward 3D Gaussian Splatting (3DGS) methods often assume clean inputs and collapse under rainy conditions. To this end, we present \\textbf{\\textit{DerainSplat}}, a feed-forward framework that reconstructs clean 3D scenes from only a few rainy views. To support this task, we build a large-scale multi-view derain dataset through a four-stage synthesis pipeline that sequentially models overcast illumination, depth-dependent haze, rain streaks, and lens raindrops, producing privileged weather factors. We introduce a weather net that predicts the weather factors from rainy context and yields two support maps. Scene support modulates cross-view cost-volume matching, while radiance support drives depth-aligned appearance fusion to fill corrupted pixels. The derived geometry evidence further attenuates Gaussian opacity to reduce spurious structures. A rainy cycle consistency re-renders clean views using the predicted factors and aligns them with rainy inputs. Extensive experiments show that \\textbf{\\textit{DerainSplat}} outperforms existing methods on various datasets, including RealEstate10K, ACID, Mip-NeRF360, and real-world rainy scenes, with strong cross-dataset generalization.",
+      "authors": [
+        "Fuzhen Jiang",
+        "Changyue Shi",
+        "Chuxiao Yang",
+        "Xinyuan Hu",
+        "Wenjie Ye",
+        "Minghao Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-03T13:15:37+00:00",
+      "link": "https://arxiv.org/pdf/2608.02191v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "feed-forward 3D Gaussian Splatting for scene reconstruction",
+      "llm_evidence_cn": "用于场景重建的前馈3D高斯泼溅",
+      "llm_evidence": "用于场景重建的前馈3D高斯泼溅",
+      "canonical_evidence": "用于场景重建的前馈3D高斯泼溅",
+      "llm_tldr_en": "Reconstructs clean 3D scenes from rainy views using a feed-forward 3D Gaussian Splatting framework.",
+      "llm_tldr_cn": "使用前馈3D高斯泼溅框架从雨天视图中重建清晰的3D场景。",
+      "llm_tldr": "使用前馈3D高斯泼溅框架从雨天视图中重建清晰的3D场景。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.02206v1",
+      "title": "CLEAR: Conflict-aware Learning via Evidence-guided Adaptive Routing for Unified Sparse-View 3D Gaussian Super-Resolution",
+      "abstract": "Sparse-view 3D Gaussian Splatting Super-resolution is highly challenging since the sparse and low-resolution (LR) inputs lack sufficient geometric and high-frequency information for accurate reconstruction. To achieve high-quality reconstruction, existing sparse-view super-resolution methods adhere to two-stage pipeline that performs LR Gaussian reconstruction and then high-resolution (HR) Gaussian refinement, which directly results in stage-wise Gaussian transfer and reconstruction error accumulation. To this end, we propose CLEAR, a Conflict-aware Learning via Evidence-guided Adaptive Routing, as the first unified single-stage framework for Sparse-view 3D Gaussian Splatting Super-resolution. Specifically, CLEAR performs joint the optimization of authentic LR observations and external HR priors within a unified Gaussian representation. To mitigate the gradient conflicts introduced by sparse supervision during training, we propose a Gaussian-wise conflict-aware optimization strategy that regards the LR gradient as a reliable anchor and applies evidence-conditioned soft correction only to severe HR conflicts. Moreover, to recover high-frequency details, we introduce an evidence-guided Patch-to-Gaussian routing mechanism which estimates patch reliability and detail demand, lifts them into Gaussian space, and selectively routes high-frequency gradients and densification. Finally, we employ shared Gaussian dropout and a detached mid-training anchoring to enhance the robustness of training framework. Extensive experiments on both synthetic and real-world $4\\times$ super-resolution benchmarks demonstrate that CLEAR consistently achieves state-of-the-art rendering quality and superior geometric fidelity.",
+      "authors": [
+        "Hantang Li",
+        "Qiang Zhu",
+        "Xiandong Meng",
+        "Debin Zhao",
+        "Xiaopeng Fan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-03T13:31:53+00:00",
+      "link": "https://arxiv.org/pdf/2608.02206v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "sparse-view 3D Gaussian Splatting reconstruction",
+      "llm_evidence_cn": "稀疏视图3D高斯泼溅重建",
+      "llm_evidence": "稀疏视图3D高斯泼溅重建",
+      "canonical_evidence": "稀疏视图3D高斯泼溅重建",
+      "llm_tldr_en": "CLEAR is a unified single-stage framework for sparse-view 3D Gaussian Splatting super-resolution.",
+      "llm_tldr_cn": "CLEAR是一个用于稀疏视图3D高斯泼溅超分辨率的统一单阶段框架。",
+      "llm_tldr": "CLEAR是一个用于稀疏视图3D高斯泼溅超分辨率的统一单阶段框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.02437v2",
+      "title": "InfiniSplat: Implicit Gaussian Decoding for Large-Baseline Monocular View Synthesis",
+      "abstract": "Single-image feed-forward 3D Gaussian Splatting (3DGS) aims to directly generate a renderable 3D scene representation from one input image, avoiding the cost of multi-view capture and per-scene optimization. However, existing methods are often constrained by a pixel-aligned representation, where Gaussians are predicted from fixed image-grid locations. Such pixel-aligned primitives can produce promising nearby-view renderings, but they remain weakly coupled to underlying scene surfaces and struggle to preserve coherent structures under large viewpoint shifts. We present InfiniSplat, a feed-forward single-image 3DGS framework that moves from a pixel-aligned representation toward a surface-aligned representation. InfiniSplat constructs this representation by first using geometry-guided sampling to place 2D supports according to depth-induced local surface structure, and then applying a query-conditioned implicit decoder to predict Gaussian attributes from the image features queried at these supports. By grounding support locations in geometry while decoupling Gaussian prediction from fixed pixel centers, InfiniSplat produces Gaussian layouts that better follow scene surfaces and reduce scattered primitives caused by grid discretization. Across multiple cross-dataset NVS evaluations, InfiniSplat achieves state-of-the-art performance compared with single-image feed-forward baselines, and demonstrates zero-shot generalization from Hypersim indoor synthetic training to complex open-world scenes. Project page: https://zju3dv.github.io/InfiniSplat.",
+      "authors": [
+        "Jiawei Wang",
+        "Hao Yu",
+        "Yongzhen Hu",
+        "Xinyi Yang",
+        "Tao Ni",
+        "Xin Zhan",
+        "Junbo Chen",
+        "Xiaowei Zhou",
+        "Ruizhen Hu",
+        "Sida Peng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-03T16:17:39+00:00",
+      "link": "https://arxiv.org/pdf/2608.02437v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "feed-forward 3D Gaussian Splatting for view synthesis",
+      "llm_evidence_cn": "用于视图合成的前馈3D高斯泼溅技术",
+      "llm_evidence": "用于视图合成的前馈3D高斯泼溅技术",
+      "canonical_evidence": "用于视图合成的前馈3D高斯泼溅技术",
+      "llm_tldr_en": "InfiniSplat uses implicit Gaussian decoding for large-baseline monocular view synthesis.",
+      "llm_tldr_cn": "InfiniSplat利用隐式高斯解码实现大基线单目视图合成。",
+      "llm_tldr": "InfiniSplat利用隐式高斯解码实现大基线单目视图合成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

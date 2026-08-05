@@ -1,0 +1,221 @@
+Title: FAST-GS: Frequency Aware Space-time Gaussian Splatting for Photorealistic Dynamic Novel View Synthesis
+
+URL Source: https://arxiv.org/pdf/2608.01958v1
+
+Published Time: Tue, 04 Aug 2026 02:07:54 GMT
+
+Number of Pages: 5
+
+Markdown Content:
+# FAST-GS: FREQUENCY AWARE SPACE-TIME GAUSSIAN SPLATTING FOR PHOTOREALISTIC DYNAMIC NOVEL VIEW SYNTHESIS 
+
+# Zhengyang Zhang 1⋆, Ziyu Lu 1⋆, PengCheng Li 1, Hongbo Duan 1,Yi Liu 1, Pengting Luo 2, Peiyu Zhuang 2∗, Xinghui Li 1∗, Shaohua Ma 1∗
+
+1Shenzhen International Graduate School, Tsinghua University, Shenzhen, China 
+
+2 Central Media Technology Institute, Huawei 
+
+ABSTRACT 
+
+4D Gaussian Splatting (4DGS) excels in dynamic 3D reconstruction and real-time novel view synthesis via efficient 4D Gaussian rep-resentations and parallelizable rendering. However, existing 4DGS approaches rely on a single polynomial to model motion—this lim-its performance in complex dynamic scenes where high-frequency motion components are prevalent, and fails to ensure long-term stability due to cumulative trajectory drift. To address these issues, we propose a Fourier Motion Modeling module: this paradigm decomposes motion into frequency-based sinusoidal components, capturing both low-frequency global trajectories and high-frequency local details to model complex motion patterns accurately. It retains 4DGS’s real-time rendering capability while improving complex motion fitting and long-term coherence. Additionally, we integrate a motion-aware regularization strategy into the loss function: it uses frequency-dependent weights to suppress high-frequency jitter while preserving low-frequency motion coherence. Extensive experiments on N3V and Google Immersive datasets from multiple scenarios demonstrate the effectiveness of our method. 
+
+Index Terms — 4D Gaussian Splatting, Fourier Motion Model-ing, Frequency-Aware Representation 
+
+1. INTRODUCTION 
+
+Accurate, photorealistic rendering of dynamic 3D scenes is critical for immersive media (VR/AR), sports broadcasting, and film pro-duction. A core challenge in this field is balancing high fidelity (capturing complex motion) and temporal coherence (maintaining stability in long sequences)—existing methods struggle to address both simultaneously. Recent years have witnessed remarkable progress in the field of neural rendering. Neural Radiance Fields (NeRF) [1] and their dynamic extensions [2–7] have enabled high-quality novel view syn-thesis and dynamic scene reconstruction through neural networks and volumetric rendering. However, their substantial computational cost has hindered real-time high-definition rendering of complex dy-namic scenes. More recently, 3D Gaussian Splatting (3DGS) [8] has attracted considerable attention due to its capacity for high-quality real-time rendering in unbounded static scenes, and is increasingly supplanting NeRF as the mainstream backbone for 3D reconstruc-tion models. By employing an explicit Gaussian representation, 3DGS forgoes the generalization ability inherent in NeRF’s contin-uous neural field representation, yet achieves real-time performance 
+
+> ⋆
+
+These authors contributed equally to this work. 
+
+> ∗
+
+Corresponding author. E-mail(s): ma.shaohua@sz.tsinghua.edu.cn, li.xinghui@sz.tsinghua.edu.cn, zhuangpeiyu2022@163.com 𝐀 𝐀   
+
+> t
+> 𝐀 = 𝐀 𝐀 𝐀 = 𝐀 𝐀+𝐀 𝐀 = 𝐀 𝐀+𝐀
+> 𝐀 𝐀
+> 𝐀 𝐀+𝐀
+> 𝐀 𝐀+𝐀
+> Filter
+> 𝐀 𝐀
+> 𝐀 𝐀+𝐀
+> 𝐀 𝐀+𝐀
+
+Fig. 1 : A simplified illustration of temporal slicing within a 4DGS. The 4D Gaussian is conceptualized as a hypercylinder in 4D space. For a given time query, corresponding 3D Gaussian el-lipsoids are extracted. Their color depth indicates temporal opacity; ellipsoids falling below a predefined opacity threshold are filtered from rendering. without sacrificing visual quality. For dynamic scenes, Dynamic 3D Gaussians [9] facilitate the reconstruction of multi-view dynamic scenes by modeling per-frame Gaussian positions and rotations in-dependently. Nevertheless, this method encounters challenges of escalating complexity and excessive memory consumption when processing long sequences. Building upon this foundation, 4D Gaussian Splatting (4DGS) [10–12] models time-varying scenes as four-dimensional spatiotem-poral Gaussian hyperprisms: [11, 13, 14] motion using 6-DoF tra-jectories or deformation fields to learn inter-frame Gaussian trans-formations, [10, 12, 15] adopt 4D Gaussian primitives to integrate spatio-temporal structures and corresponding features for real-time rendering of dynamic content. As shown in Fig.1, at each time step, the 4D Gaussian is sliced into 3D Gaussians with time-varying po-sition and transparency attributes. Transient content (such as ap-pearing or disappearing objects) is filtered out via thresholding, and the remaining Gaussians are rasterised and projected onto a two-dimensional screen. By directly optimising the 4D Gaussian set, 4DGS effectively represents both static and dynamic scene compo-nents simultaneously, achieving high-fidelity modelling. However, existing 4DGS approaches predominantly employ a single polyno-mial function [10, 12, 16] to parameterise the spatiotemporal motion of 3D Gaussians — this design has two critical flaws: (1) High-frequency motion fitting failure : Polynomials suppress high-frequency components (e.g., flame’s flickering), leading to blurry rendering of fast, local motion. (2) Long-term trajectory drift : Polynomial parameters accumu-late errors in long sequences, causing temporal incoherence. arXiv:2608.01958v1 [cs.CV] 3 Aug 2026 Fig. 2 : Pipeline of FAST-GS. Given a scene input, after point cloud initialization, our FAST-GS further incorporates Fourier-based motion, temporal opacity, polynomial rotation, and time-dependent features. Following 4D Gaussian modeling, our rendering process [10] consists of three stages: temporal slicing, projection, and differentiable rasterization, ultimately producing the novel view rendering. The output image is optimized using a loss function enhanced with motion regularization. To solve these flaws, we introduce FAST-GS (Frequency Aware Space-Time Gaussian Splatting). Its core insight is that Fourier series — a classic signal processing tool - naturally decomposes the spatiotemporal motion (x(t), y (t), z (t)) of Gaussian points into multi-frequency components, making it ideal for modeling dynamic motion. By replacing polynomial motion modeling with fourier decomposition and adding frequency-weighted regularization, this approach retains the real-time rendering benefits of 4DGS while ad-dressing two key challenges: complex motion fitting and long-term stability. 
+
+2. METHOD 2.1. Preliminary: 3D and 4D Gaussian Splatting 
+
+3D Gaussian Splatting (3DGS) [8] represents scenes with a set of anisotropic 3D Gaussians. Each Gaussian is defined by a center μ
+
+and a covariance matrix Σ, which determine its spatial extent and orientation. The influence of a Gaussian at a 3D point x is given by: 
+
+G(x) = exp 
+
+
+
+− 12 (x − μ)⊤Σ−1(x − μ)
+
+
+
+(1) The covariance is decomposed as Σ = RSS ⊤R⊤, where R
+
+is a rotation matrix and S a scaling matrix. Rendering uses alpha compositing: the pixel color C is computed by blending ordered Gaussians: 
+
+C = X
+
+> i∈N
+
+ciαii−1Y
+
+> j=1
+
+(1 − αj ) (2) where ci and αi denote the color and opacity of each Gaussian. This enables efficient and photorealistic rendering. 4D Gaussian Splatting (4DGS) [10] achieves this by aug-menting 3D Gaussians with time-varying Gaussian parameters (rotation, position). The 4D rotation is constructed as a prod-uct of two quaternion-based matrices: R = RlRr , where Rl
+
+and Rr are left and right rotation matrices defined by quater-nions (a, b, c, d ) and (p, q, r, s ) respectively. The position and scale are given by: μxyz |t = μ1:3 + Σ 1:3 ,4Σ−14,4(t − μt) and 
+
+Σxyz |t = Σ 1:3 ,1:3 − Σ1:3 ,4Σ−14,4Σ4,1:3 .These time-varying parameters are all modeled by polynomials, which is the root cause of the limitations of 4DGS: it cannot repre-sent high-frequency variations and accumulates errors over time. 
+
+2.2. Frequency Aware Space-Time Gaussians 
+
+To model complex, long-duration motion, we redesign 4DGS’s mo-tion representation using Fourier series as shown in Fig.2. Specifi-cally, for each 3D Gaussian point, its instantaneous position in Eq.(1) 
+
+μ(t) = [ x(t), y (t), z (t)] T at any time t satisfies: 
+
+μ(t) = μbase + ∆ μ(t) (3) where μbase = [ xbase , y base , z base ]T denotes the static 3D Gaussian center, and ∆μ(t) represents the displacement calculated via Fourier series to capture dynamic variations. For x, y, z directions (inde-pendently calculated), ∆μ(t) includes a constant term and a Fourier series term, expressed as: 
+
+∆x(t) = Ax, 0 +
+
+> L
+
+X
+
+> k=1
+
+[Ax,k · sin(2 πkt ) + Bx,k · cos(2 πkt )] ∆y(t) = Ay, 0 +
+
+> L
+
+X
+
+> k=1
+
+[Ay,k · sin(2 πkt ) + By,k · cos(2 πkt )] ∆z(t) = Az, 0 +
+
+> L
+
+X
+
+> k=1
+
+[Az,k · sin(2 πkt ) + Bz,k · cos(2 πkt )] 
+
+(4) where the coefficients A and B represent the k-th order coefficients for the displacement formulas in the x, y, z directions respectively. In our implementation, we use L = 5 as we find it a good balance between representation precision and model efficiency. We employ variations in opacity to represent the appearance or disappearance of a Gaussian at a given time t. For a spacetime point (x, t), the opacity of an Gaussian is 
+
+α(t) = σ(t) exp 
+
+
+
+− 12 (x − μ(t)) T Σ( t)−1(x − μ(t)) 
+
+
+
+(5) Fig. 3 : Qualitative comparison on the N3V dataset. While most methods yield comparable results, our approach demonstrates superior performance in modeling details of challenging and complex regions or objects. Zoom in for best viewing. where σ(t) is temporal opacity, Σ( t) is the time-dependent covari-ance and μ(t) is the instantaneous position in Eq.(3).The detail about each of the components are the following: Inspired by [4, 8, 16] that use radial basis functions for approx-imating spatial signals, we model the temporal opacity σ(t) of a Gaussian using a 1D radial basis function: 
+
+σ(t) = σs exp  −sτ |t − μτ |2 (6) where μτ denotes the temporal center (peak visibility time), sτ con-trols the temporal scaling (duration of visibility), and σs represents the spatial opacity independent of time. This formulation allows each Gaussian to appear and disappear smoothly over time. Following [10, 16], we parameterize the rotation matrix R(t)
+
+using a real-valued quaternion q(t), represented by the instantaneous position in Eq.(3) of time: 
+
+q(t) = 
+
+> nq
+
+X
+
+> k=0
+
+ck (t − μτ )k (7) where ck are polynomial coefficients and nq = 1 in our imple-mentation. Notably, the scaling matrix S remains time-independent, as temporal variation did not improve rendering quality in experi-ments [16]. To ensure model compactness, we follow the same approach as [16] by employing feature vectors rather than spherical harmonic (SH) coefficients to store the RGB color of each Gaussian. The fea-ture splatting process is analogous to standard Gaussian splatting [8], with the key difference that the RGB color ci in Eq.(2) is replaced by a feature vector fi(t).
+
+2.3. Motion Regularization 
+
+To control the parameter complexity of the Fourier approximation, suppress high-frequency jitter while preserving motion details, and mitigate overfitting to noise in the training data, we propose a motion regularization loss function defined as follows: 
+
+LM −reg =
+
+> L
+
+X
+
+> i=1 2
+
+X
+
+> j=0
+
+ 1
+
+i2 · (∥wj, 2i−1∥2 + ∥wj, 2i∥2)
+
+
+
+(8) where j ∈ { 0, 1, 2} denotes x/y/z directions, and wj, 2i−1/w j, 2i
+
+are sin/cos coefficients for the i-th frequency. The weight 1/i 2 im-plements a low-pass filter: higher frequencies (larger i) are penalized more heavily, suppressing jitter without blurring low-frequency mo-tion. Then for the regularizing iterations, the total loss function is taken to be 
+
+L = L1 + LDSSIM + λM −reg LM −reg (9) where L1 (pixel-wise loss) and LDSSIM (structural similarity) en-sure photorealism, and λM −reg denotes adjustable weights that can be customized according to specific scenarios. 
+
+3. EXPERIMENTS 3.1. Datasets 
+
+We evaluate our proposed method on the N3V dataset [22], which includes 6 multi-view video sequences (18–21 cameras, 2704×2028 resolution). In addition, we also conducted experiments on Google Immersive [23] to validate the generalization of our model on differ-ent datasets. Consistent with previous work, we reserve cam00 as the test view and use the remaining cameras for training on N3V dataset. For Google Immersive, we use the first 80% frames for training and use the last 20% frames for testing. In accordance with common experimental practice, we adopt the same settings for all previous 
+
+Table 1 : Quantitative comparison on generalization and efficiency. We randomly selected two views from the 02 Flames scene in Google Immersive for additional experiments. The efficiency ex-periment was conducted at viewpoint cam0010.                             
+
+> Method PSNR (dB) ↑Speed Storage Training
+> cam0010 cam0037 (FPS) ↑(MB) ↓Time ↓
+> Hybrid 3D-4D [17] 28.51 29.61 137 373 31m27s
+> STGFS [16] 27.97 27.64 154 248 34m11s
+> Ours 30.56 31.54 146 363 40m34s
+
+Table 2 : Quantitative comparison on N3V dataset across multiple scenes: Coffee Martini , Cook Spinach , Flame Steak , Sear Steak —each with a duration of 10 seconds. The best and second best scores among competing methods are highlighted (Exclude NeRF-based methods [14, 18, 19]).                                                                                                                                                                                                                                      
+
+> Method PSNR ↑DSSIM1 ↓DSSIM2 ↓LPIPSAlex ↓
+> Sear Flame Cook Coffee Sear Flame Cook Coffee Sear Flame Cook Coffee Sear Flame Cook Coffee Steak Steak Spinach Martini Steak Steak Spinach Martini Steak Steak Spinach Martini Steak Steak Spinach Martini
+> NeRFPlayer [19] 29.13 31.93 30.56 31.53 0.0460 0.0250 0.0355 0.0245 ————0.0138 0.0880 0.1130 0.0850 HyperReel [14] 32.57 32.20 32.30 28.37 0.0240 0.0255 0.0295 0.0540 ————0.0770 0.0780 0.0890 0.1270 K-Planes [18] 32.52 32.38 31.82 29.99 ————0.0132 0.0153 0.0169 0.0162 ————Dynamic 3DGS [9] 33.68 33.24 32.97 26.49 0.0224 0.0233 0.0263 0.0557 0.0105 0.0113 0.0129 0.0332 0.0790 0.0790 0.0870 0.1390 4DGS [11] 33.01 31.83 33.06 27.88 0.0237 0.0248 0.0267 0.0470 0.0125 0.0137 0.0142 0.0284 0.0416 0.0418 0.0519 0.8550 4DGS [10] 33.44 33.19 32.73 27.98 0.0204 0.0204 0.0245 0.0435 0.0105 0.0106 0.0133 0.0265 0.0411 0.0389 0.0489 0.8470 4DGS-1K [20] 33.60 33.25 33.06 28.54 0.0396 0.0419 0.0460 0.0834 ————0.0402 0.0421 0.0467 0.0744 Ex4DGS [15] 33.69 33.91 33.23 28.79 0.0410 0.0440 0.0530 0.0850 0.0210 0.0200 0.0240 0.0490 0.0350 0.0340 0.0420 0.0700 Hybrid 3D-4D [17] 34.45 33.79 33.42 28.86 0.0225 0.0217 0.0362 0.0541 0.0120 0.0117 0.0228 0.0241 0.0317 0.0294 0.0349 0.0986 MEGA [21] 33.67 32.27 33.08 27.84 0.0200 0.0242 0.0230 0.0440 0.0103 0.0129 0.0125 0.0270 0.0403 0.0538 0.0471 0.0770 STGFS [16] 33.40 33.59 33.30 28.55 0.0351 0.0350 0.0425 0.0418 0.0064 0.0053 0.0046 0.0253 0.0309 0.0308 0.0358 0.0692 Ours 34.65 33.09 33.49 29.98 0.0298 0.0195 0.0211 0.0367 0.0022 0.0165 0.0131 0.0167 0.0306 0.0399 0.0338 0.0583
+
+Table 3 : Ablation studies on Fourier order ( L) and regularization weight ( λ). Evaluated on the Cook Spinach scene. We adopt L = 5 
+
+and λ = 0 .1 as the default settings.                    
+
+> Experiment Value PSNR Observation
+> Fourier Order ( L)128.45 Low fidelity 331.12 Improved
+> 5 (Ours) 33.62 Optimal Balance
+> 733.79 +19% Train Time Reg. Weight (λ)030.12 High-freq Jitter 0.01 30.95 Minor Jitter
+> 0.1 (Ours) 33.62 Best Quality
+> 1.0 29.40 Over-smoothed
+
+methods during the experiment process [9–11, 15–17, 20, 21] to en-sure a fair comparison. 
+
+3.2. Results and Analysis 
+
+As shown in Table 2, our method demonstrates competitive or state-of-the-art performance across four challenging dynamic scenes com-pared to existing Gaussian Splatting-based approaches. It performs particularly well in scenarios involving complex motion patterns. In terms of reconstruction fidelity (PSNR), our method achieves the highest scores on Sear Steak (34 .65) and Cook Spinach (33 .49) ,and ranks second on Coffee Martini (29 .98) . This consistent per-formance across diverse scene types underscores the robustness of our frequency-aware motion modeling, especially under significant non-rigid deformations and fast motion. On structural similarity metrics, for fair comparison, we group existing methods’ DSSIM results into DSSIM1 (range 1.0) and DSSIM2 (range 2.0). Our method excels in DSSIM2 on Sear Steak ,significantly outperforming other methods. It also achieves the best DSSIM1 results on Flame Steak (0 .0195) and Cook Spinach 
+
+(0 .0211) , confirming its ability to preserve structural consistency. For perceptual quality (LPIPSAlex), our method obtains the best results on Cook Spinach (0 .0338) and Coffee Martini (0 .0583) , and ranks second on Sear Steak (0 .0306) , indicating improved visual realism beyond numerical metrics. Also shown in Table 1, our model still demonstrates excellent performance even when the test view is randomly selected. More-over, the slight increase in cost is fully offset by the significant im-provement in quality. Notably, our approach maintains strong per-formance across all scenes without noticeable degradation, demon-strating the generalization capacity of the frequency-aware represen-tation. 
+
+3.3. Ablation Study 
+
+To validate the effectiveness of motion regularization, we conducted an ablation study. As shown in Fig.4 and Table 3: motion regu-larization can significantly improve the rendering quality of rapidly moving objects, and the best balance between performance and effi-ciency is achieved when the Fourier Order L = 5 and λ = 0.1 are set appropriately. PSNR:32.98 PSNR:34.88 PSNR:31.43 PSNR:33.90 
+
+Fig. 4 : Ablation with motion regularization. With motion regular-ization, the rendering results of rapidly moving objects (such as the spatula in cook spinach) are more realistic. 
+
+4. CONCLUSION 
+
+We propose FAST-GS, a frequency-aware 4D Gaussian Splatting method for dynamic novel view synthesis. By replacing polynomial motion modeling with fourier decomposition, we address 4DGS’s inability to fit complex motion and maintain long-term stability. Our motion-aware regularization further balances noise suppression and detail preservation. Experiments on N3V and Google Immersive confirm that FAST-GS enhances rendering quality in complex scenes while retaining real-time performance. 5. REFERENCES 
+
+[1] Ben Mildenhall, Pratul P Srinivasan, Matthew Tancik, Jonathan T Barron, Ravi Ramamoorthi, and Ren Ng, “Nerf: Representing scenes as neural radiance fields for view synthe-sis,” Communications of the ACM , vol. 65, no. 1, pp. 99–106, 2021. [2] Jonathan T Barron, Ben Mildenhall, Dor Verbin, Pratul P Srini-vasan, and Peter Hedman, “Zip-nerf: Anti-aliased grid-based neural radiance fields,” in Proceedings of the IEEE/CVF In-ternational Conference on Computer Vision , 2023, pp. 19697– 19705. [3] Anpei Chen, Zexiang Xu, Andreas Geiger, Jingyi Yu, and Hao Su, “Tensorf: Tensorial radiance fields,” in European confer-ence on computer vision . Springer, 2022, pp. 333–350. [4] Zhang Chen, Zhong Li, Liangchen Song, Lele Chen, Jingyi Yu, Junsong Yuan, and Yi Xu, “Neurbf: A neural fields represen-tation with adaptive radial basis functions,” in Proceedings of the IEEE/CVF International Conference on Computer Vision ,2023, pp. 4182–4194. [5] Thomas Neff, Pascal Stadlbauer, Mathias Parger, Andreas Kurz, Joerg H Mueller, Chakravarty R Alla Chaitanya, Anton Kaplanyan, and Markus Steinberger, “Donerf: Towards real-time rendering of compact neural radiance fields using depth oracle networks,” in Computer Graphics Forum . Wiley Online Library, 2021, vol. 40, pp. 45–59. [6] Martin Piala and Ronald Clark, “Terminerf: Ray termination prediction for efficient neural rendering,” in 2021 International Conference on 3D Vision (3DV) . IEEE, 2021, pp. 1106–1114. [7] Zhong Li, Liangchen Song, Celong Liu, Junsong Yuan, and Yi Xu, “Neulf: Efficient novel view synthesis with neural 4d light field,” arXiv preprint arXiv:2105.07112 , 2021. [8] Bernhard Kerbl, Georgios Kopanas, Thomas Leimk¨ uhler, and George Drettakis, “3d gaussian splatting for real-time radiance field rendering.,” ACM Trans. Graph. , vol. 42, no. 4, pp. 139– 1, 2023. [9] Jonathon Luiten, Georgios Kopanas, Bastian Leibe, and Deva Ramanan, “Dynamic 3d gaussians: Tracking by persistent dy-namic view synthesis,” in 2024 International Conference on 3D Vision (3DV) . IEEE, 2024, pp. 800–809. [10] Zeyu Yang, Hongye Yang, Zijie Pan, and Li Zhang, “Real-time photorealistic dynamic scene representation and rendering with 4d gaussian splatting,” arXiv preprint arXiv:2310.10642 ,2023. [11] Guanjun Wu, Taoran Yi, Jiemin Fang, Lingxi Xie, Xiaopeng Zhang, Wei Wei, Wenyu Liu, Qi Tian, and Xinggang Wang, “4d gaussian splatting for real-time dynamic scene rendering,” in Proceedings of the IEEE/CVF conference on computer vi-sion and pattern recognition , 2024, pp. 20310–20320. [12] Yuanxing Duan, Fangyin Wei, Qiyu Dai, Yuhang He, Wen-zheng Chen, and Baoquan Chen, “4d-rotor gaussian splatting: towards efficient novel view synthesis for dynamic scenes,” in 
+
+ACM SIGGRAPH 2024 Conference Papers , 2024, pp. 1–11. [13] Ziyi Yang, Xinyu Gao, Wen Zhou, Shaohui Jiao, Yuqing Zhang, and Xiaogang Jin, “Deformable 3d gaussians for high-fidelity monocular dynamic scene reconstruction,” in Proceed-ings of the IEEE/CVF conference on computer vision and pat-tern recognition , 2024, pp. 20331–20341. [14] Benjamin Attal, Jia-Bin Huang, Christian Richardt, Michael Zollhoefer, Johannes Kopf, Matthew O’Toole, and Changil Kim, “Hyperreel: High-fidelity 6-dof video with ray-conditioned sampling,” in Proceedings of the IEEE/CVF Con-ference on Computer Vision and Pattern Recognition , 2023, pp. 16610–16620. [15] Junoh Lee, ChangYeon Won, Hyunjun Jung, Inhwan Bae, and Hae-Gon Jeon, “Fully explicit dynamic gaussian splatting,” 
+
+Advances in Neural Information Processing Systems , vol. 37, pp. 5384–5409, 2024. [16] Zhan Li, Zhang Chen, Zhong Li, and Yi Xu, “Spacetime gaus-sian feature splatting for real-time dynamic view synthesis,” in 
+
+Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2024, pp. 8508–8520. [17] Seungjun Oh, Younggeun Lee, Hyejin Jeon, and Eunbyung Park, “Hybrid 3d-4d gaussian splatting for fast dynamic scene representation,” arXiv preprint arXiv:2505.13215 , 2025. [18] Sara Fridovich-Keil, Giacomo Meanti, Frederik Rahbæk War-burg, Benjamin Recht, and Angjoo Kanazawa, “K-planes: Ex-plicit radiance fields in space, time, and appearance,” in Pro-ceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2023, pp. 12479–12488. [19] Liangchen Song, Anpei Chen, Zhong Li, Zhang Chen, Lele Chen, Junsong Yuan, Yi Xu, and Andreas Geiger, “Nerfplayer: A streamable dynamic scene representation with decomposed neural radiance fields,” IEEE Transactions on Visualization and Computer Graphics , vol. 29, no. 5, pp. 2732–2742, 2023. [20] Yuheng Yuan, Qiuhong Shen, Xingyi Yang, and Xinchao Wang, “1000+ fps 4d gaussian splatting for dynamic scene rendering,” arXiv preprint arXiv:2503.16422 , 2025. [21] Xinjie Zhang, Zhening Liu, Yifan Zhang, Xingtong Ge, Dailan He, Tongda Xu, Yan Wang, Zehong Lin, Shuicheng Yan, and Jun Zhang, “Mega: Memory-efficient 4d gaussian splatting for dynamic scenes,” arXiv preprint arXiv:2410.13613 , 2024. [22] Tianye Li, Mira Slavcheva, Michael Zollhoefer, Simon Green, Christoph Lassner, Changil Kim, Tanner Schmidt, Steven Lovegrove, Michael Goesele, Richard Newcombe, et al., “Neural 3d video synthesis from multi-view video,” in Pro-ceedings of the IEEE/CVF conference on computer vision and pattern recognition , 2022, pp. 5521–5531. [23] Michael Broxton, John Flynn, Ryan Overbeck, Daniel Erick-son, Peter Hedman, Matthew DuVall, Jason Dourgarian, Jay Busch, Matt Whalen, and Paul Debevec, “Immersive light field video with a layered mesh representation,” vol. 39, no. 4, pp. 86:1–86:15, 2020.

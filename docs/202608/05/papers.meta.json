@@ -1,0 +1,93 @@
+{
+  "label": "2026-08-05",
+  "date": "2026-08-05",
+  "generated_at": "2026-08-05T20:31:53",
+  "count": 6,
+  "papers": [
+    {
+      "paper_id": "202608/05/2608.00094v2-video-models-as-native-4d-renderers-world-grounded-conditioning-from-animated-mesh",
+      "section": "quick",
+      "title_en": "Video Models as Native 4D Renderers: World-Grounded Conditioning from Animated Mesh",
+      "authors": "Junhao Chen, Mingjin Chen, Henghaofan Zhang, Minglin Chen, Liaoyuan Fan, Boran Zhang, Saining Zhang, Mingze Sun, Hao Zhao, Ruqi Huang, Zhihao Li, Yufei Wang",
+      "date": "2026-07-30",
+      "pdf": "https://arxiv.org/pdf/2608.00094v2",
+      "score": "7.0",
+      "evidence": "使用视频扩散模型的神经4D渲染",
+      "tldr": "本研究提出 DAR，将预训练视频扩散模型转化为 4D 渲染器。通过从动画网格投影包含追踪、世界位置和法线的神经 4D G-buffer，DAR 解决了相机轨迹与物体动画同步控制的难题。实验表明，相比传统的深度图调节，该方法能更精准地分离并还原复杂运动，在 DAR-4D 基准测试中显著提升了渲染的保真度与一致性。",
+      "tags": "query:q1",
+      "abstract_en": "Pretrained video diffusion models can act as renderers when the desired scene state is already specified by an animated mesh, a camera trajectory, and a reference image. This 4D generative rendering setting raises a representation question: what image-format condition lets a video backbone obey both camera motion and scene-internal animation? We propose DAR, a reference-guided renderer that extends Wan2.2 camera control from Plücker rays alone to a joint camera-plus-geometry interface. DAR projects a neural 4D G-buffer (tracking, world position, and normal) from the animated mesh and injects it through a widened control adapter while preserving the pretrained image-to-video prior. The central design choice is the pair of tracking and world position. Tracking identifies the persistent surface element that should carry appearance; world position gives its current scene-coordinate state; normal supplies local shape. Depth plus calibrated rays can recover 3D in principle, but depth is a camera-dependent chart in which camera and object motion are mixed. On the 68-case DAR-4D benchmark, LoRA DAR reaches PSNR 23.22, SSIM 0.895, and LPIPS 0.134, improving over off-the-shelf Wan2.2-Depth by 1.54 dB PSNR; a full fine-tune reaches PSNR 25.36 and SSIM 0.917. Matched ablations show that replacing world position by depth reduces PSNR by 1.26--1.55 dB at every checkpoint, supporting tracking+world-position correspondence as a practical 4D rendering condition.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/05/2608.01958v1-fast-gs-frequency-aware-space-time-gaussian-splatting-for-photorealistic-dynamic-novel-view-synthesis",
+      "section": "quick",
+      "title_en": "FAST-GS: Frequency Aware Space-time Gaussian Splatting for Photorealistic Dynamic Novel View Synthesis",
+      "authors": "Zhengyang Zhang, Ziyu Lu, PengCheng Li, Hongbo Duan, Yi Liu, Pengting Luo, Peiyu Zhuang, Xinghui Li, Shaohua Ma",
+      "date": "2026-08-03",
+      "pdf": "https://arxiv.org/pdf/2608.01958v1",
+      "score": "7.0",
+      "evidence": "加速动态3D重建与新视角合成",
+      "tldr": "针对4D高斯泼溅（4DGS）在处理复杂动态场景时难以捕捉高频运动且存在轨迹漂移的问题，本文提出了FAST-GS。该方法引入傅里叶运动建模模块，将运动分解为不同频率的正弦分量，并结合运动感知正则化策略。在保持实时渲染的同时，显著提升了复杂运动拟合的准确性和长期稳定性，在多个主流数据集上表现优异。",
+      "tags": "query:q7",
+      "abstract_en": "4D Gaussian Splatting (4DGS) excels in dynamic 3D reconstruction and real-time novel view synthesis via efficient 4D Gaussian representations and parallelizable rendering. However, existing 4DGS approaches rely on a single polynomial to model motion, which limits performance in complex dynamic scenes where high-frequency motion components are prevalent, and fails to ensure long-term stability due to cumulative trajectory drift. To address these issues, we propose a Fourier Motion Modeling module: this paradigm decomposes motion into frequency-based sinusoidal components, capturing both low-frequency global trajectories and high-frequency local details to model complex motion patterns accurately. It retains the real-time rendering capability of 4DGS while improving complex motion fitting and long-term coherence. Additionally, we integrate a motion-aware regularization strategy into the loss function: it uses frequency-dependent weights to suppress high-frequency jitter while preserving low-frequency motion coherence. Extensive experiments on N3V and Google Immersive datasets from multiple scenarios demonstrate the effectiveness of our method.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/05/2608.02145v1-uniquesplat-view-conditioned-3d-gaussian-splatting-for-generalizable-3d-reconstruction",
+      "section": "quick",
+      "title_en": "UniqueSplat: View-conditioned 3D Gaussian Splatting for Generalizable 3D Reconstruction",
+      "authors": "Haixu Song, Xiaoke Yang, Shengjun Zhang, Jiwen Lu, Yueqi Duan",
+      "date": "2026-08-03",
+      "pdf": "https://arxiv.org/pdf/2608.02145v1",
+      "score": "7.0",
+      "evidence": "视图条件前馈3D高斯泼溅",
+      "tldr": "UniqueSplat 是一种视角条件的 3D 高斯泼溅（3DGS）模型，旨在解决现有前馈方法生成的固定高斯点云缺乏视角适应性的问题。该模型通过引入视角信息作为先验，利用双分支超网络动态调整高斯参数，从而为每个查询视角重建定制化的辐射场。实验证明，该方法在 RealEstate10K 等数据集上表现优异，且具有极强的跨数据集泛化能力。",
+      "tags": "query:q1",
+      "abstract_en": "In this paper, we propose UniqueSplat, a view-conditioned feed-forward 3D Gaussian Splatting model to reconstruct customized 3D radiance fields for each view query. Existing feed-forward methods such as pixelSplat and MVSplat aim to generate fixed Gaussians across all views of each scene by minimizing the error between rendered views and ground-truth images. However, such fixed Gaussians generally render images from all views and lack the ability to adapt to specific viewpoints, as they do not incorporate target view information when predicting Gaussians. To address this, our UniqueSplat learns the view-conditioned information as a prior and incorporates this knowledge into network parameters, so that Gaussians are dynamically adjusted in accordance with different views. Specifically, we propose a two-branch view-conditioned hyperNetwork to simultaneously learn view-agnostic embeddings and view-specific knowledge, which not only explores the shareable knowledge from various views, but also adapts the model to specific views at test time. Extensive experiments on widely-used datasets including RealEstate10K, ACID and DTU demonstrate the superiority of UniqueSplat over the state-of-the-art methods. Moreover, UniqueSplat encouragingly outperforms existing methods in cross-dataset evaluation, showing its notable generalization ability.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/05/2608.02191v1-derainsplat-feed-forward-clean-3d-gaussian-splatting-from-sparse-rainy-views",
+      "section": "quick",
+      "title_en": "DerainSplat: Feed-Forward Clean 3D Gaussian Splatting from Sparse Rainy Views",
+      "authors": "Fuzhen Jiang, Changyue Shi, Chuxiao Yang, Xinyuan Hu, Wenjie Ye, Minghao Chen",
+      "date": "2026-08-03",
+      "pdf": "https://arxiv.org/pdf/2608.02191v1",
+      "score": "7.0",
+      "evidence": "用于场景重建的前馈3D高斯泼溅",
+      "tldr": "本文提出DerainSplat，一种从稀疏雨天视图中前馈重建干净3D场景的框架。针对现有3DGS方法在雨天环境下失效的问题，研究者构建了大规模多视图去雨数据集，并设计了天气网络来预测天气因子和支持图，以调制跨视图匹配和外观融合。该方法通过雨天循环一致性进一步优化重建效果，在多个基准数据集和真实场景中展现了卓越的去雨重建质量和泛化性能。",
+      "tags": "query:q1",
+      "abstract_en": "Although image deraining has advanced substantially, existing methods mainly focus on 2D image restoration. As spatial intelligence applications such as embodied AI and autonomous driving continue to emerge, reconstructing clean 3D scenes from sparse rainy views in a feed-forward manner becomes increasingly important. Existing feed-forward 3D Gaussian Splatting (3DGS) methods often assume clean inputs and collapse under rainy conditions. To this end, we present \\textbf{\\textit{DerainSplat}}, a feed-forward framework that reconstructs clean 3D scenes from only a few rainy views. To support this task, we build a large-scale multi-view derain dataset through a four-stage synthesis pipeline that sequentially models overcast illumination, depth-dependent haze, rain streaks, and lens raindrops, producing privileged weather factors. We introduce a weather net that predicts the weather factors from rainy context and yields two support maps. Scene support modulates cross-view cost-volume matching, while radiance support drives depth-aligned appearance fusion to fill corrupted pixels. The derived geometry evidence further attenuates Gaussian opacity to reduce spurious structures. A rainy cycle consistency re-renders clean views using the predicted factors and aligns them with rainy inputs. Extensive experiments show that \\textbf{\\textit{DerainSplat}} outperforms existing methods on various datasets, including RealEstate10K, ACID, Mip-NeRF360, and real-world rainy scenes, with strong cross-dataset generalization.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/05/2608.02206v1-clear-conflict-aware-learning-via-evidence-guided-adaptive-routing-for-unified-sparse-view-3d-gaussian-super-resolution",
+      "section": "quick",
+      "title_en": "CLEAR: Conflict-aware Learning via Evidence-guided Adaptive Routing for Unified Sparse-View 3D Gaussian Super-Resolution",
+      "authors": "Hantang Li, Qiang Zhu, Xiandong Meng, Debin Zhao, Xiaopeng Fan",
+      "date": "2026-08-03",
+      "pdf": "https://arxiv.org/pdf/2608.02206v1",
+      "score": "7.0",
+      "evidence": "稀疏视图3D高斯泼溅重建",
+      "tldr": "针对稀疏视图3D高斯泼溅超分辨率中两阶段方法导致的误差累积问题，本文提出了首个统一的单阶段框架CLEAR。该框架通过联合优化真实低分辨率观测与外部高分辨率先验，引入冲突感知优化策略和证据引导的自适应路由机制，有效解决了梯度冲突并恢复了高频细节，在多个基准测试中实现了最先进的渲染质量和几何保真度。",
+      "tags": "query:q1",
+      "abstract_en": "Sparse-view 3D Gaussian Splatting Super-resolution is highly challenging since the sparse and low-resolution (LR) inputs lack sufficient geometric and high-frequency information for accurate reconstruction. To achieve high-quality reconstruction, existing sparse-view super-resolution methods adhere to two-stage pipeline that performs LR Gaussian reconstruction and then high-resolution (HR) Gaussian refinement, which directly results in stage-wise Gaussian transfer and reconstruction error accumulation. To this end, we propose CLEAR, a Conflict-aware Learning via Evidence-guided Adaptive Routing, as the first unified single-stage framework for Sparse-view 3D Gaussian Splatting Super-resolution. Specifically, CLEAR performs joint the optimization of authentic LR observations and external HR priors within a unified Gaussian representation. To mitigate the gradient conflicts introduced by sparse supervision during training, we propose a Gaussian-wise conflict-aware optimization strategy that regards the LR gradient as a reliable anchor and applies evidence-conditioned soft correction only to severe HR conflicts. Moreover, to recover high-frequency details, we introduce an evidence-guided Patch-to-Gaussian routing mechanism which estimates patch reliability and detail demand, lifts them into Gaussian space, and selectively routes high-frequency gradients and densification. Finally, we employ shared Gaussian dropout and a detached mid-training anchoring to enhance the robustness of training framework. Extensive experiments on both synthetic and real-world $4\\times$ super-resolution benchmarks demonstrate that CLEAR consistently achieves state-of-the-art rendering quality and superior geometric fidelity.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/05/2608.02437v2-infinisplat-implicit-gaussian-decoding-for-large-baseline-monocular-view-synthesis",
+      "section": "quick",
+      "title_en": "InfiniSplat: Implicit Gaussian Decoding for Large-Baseline Monocular View Synthesis",
+      "authors": "Jiawei Wang, Hao Yu, Yongzhen Hu, Xinyi Yang, Tao Ni, Xin Zhan, Junbo Chen, Xiaowei Zhou, Ruizhen Hu, Sida Peng",
+      "date": "2026-08-03",
+      "pdf": "https://arxiv.org/pdf/2608.02437v2",
+      "score": "7.0",
+      "evidence": "用于视图合成的前馈3D高斯泼溅技术",
+      "tldr": "InfiniSplat 针对单图前馈 3D 高斯泼溅（3DGS）中像素对齐表示在处理大基线视角合成时结构不连贯的问题，提出了一种从像素对齐转向表面对齐的新框架。该方法通过几何引导采样确定 2D 支撑点，并利用隐式解码器预测高斯属性，使高斯分布更贴合场景表面。实验证明其在大基线视角合成上达到 SOTA 水平，并具备出色的零样本泛化能力。",
+      "tags": "query:q1",
+      "abstract_en": "Single-image feed-forward 3D Gaussian Splatting (3DGS) aims to directly generate a renderable 3D scene representation from one input image, avoiding the cost of multi-view capture and per-scene optimization. However, existing methods are often constrained by a pixel-aligned representation, where Gaussians are predicted from fixed image-grid locations. Such pixel-aligned primitives can produce promising nearby-view renderings, but they remain weakly coupled to underlying scene surfaces and struggle to preserve coherent structures under large viewpoint shifts. We present InfiniSplat, a feed-forward single-image 3DGS framework that moves from a pixel-aligned representation toward a surface-aligned representation. InfiniSplat constructs this representation by first using geometry-guided sampling to place 2D supports according to depth-induced local surface structure, and then applying a query-conditioned implicit decoder to predict Gaussian attributes from the image features queried at these supports. By grounding support locations in geometry while decoupling Gaussian prediction from fixed pixel centers, InfiniSplat produces Gaussian layouts that better follow scene surfaces and reduce scattered primitives caused by grid discretization. Across multiple cross-dataset NVS evaluations, InfiniSplat achieves state-of-the-art performance compared with single-image feed-forward baselines, and demonstrates zero-shot generalization from Hypersim indoor synthetic training to complex open-world scenes. Project page: https://zju3dv.github.io/InfiniSplat.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
