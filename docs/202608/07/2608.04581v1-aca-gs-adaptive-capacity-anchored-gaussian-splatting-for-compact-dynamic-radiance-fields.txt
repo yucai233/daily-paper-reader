@@ -1,0 +1,550 @@
+Title: ACA-GS: Adaptive-Capacity Anchored Gaussian Splatting for Compact Dynamic Radiance Fields
+
+URL Source: https://arxiv.org/pdf/2608.04581v1
+
+Published Time: Thu, 06 Aug 2026 00:40:13 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+# ACA-GS: Adaptive-Capacity Anchored Gaussian Splatting for Compact Dynamic Radiance Fields 
+
+# Seunghyeon Song 
+
+Sungkyunkwan University Suwon, Gyeonggi-do Republic of Korea shs4489@skku.edu 
+
+# Joo Chan Lee 
+
+Sungkyunkwan University Suwon, Gyeonggi-do Republic of Korea maincold2@skku.edu 
+
+# Chanung Park 
+
+Sungkyunkwan University Suwon, Gyeonggi-do Republic of Korea pcw980420@g.skku.edu 
+
+# Jun Young Jeong 
+
+Electronics and Telecommunications Research Institute Daejeon, Republic of Korea jyj0120@etri.re.kr 
+
+# Minseo Lee 
+
+Yonsei University Seoul, Republic of Korea lms@yonsei.ac.kr 
+
+# Eunbyung Park 
+
+Yonsei University Seoul, Republic of Korea epark@yonsei.ac.kr 
+
+# Jong Hwan Ko ∗
+
+Sungkyunkwan University Suwon, Gyeonggi-do Republic of Korea jhko@skku.edu Ground Truth Ours GIFStream 
+
+PSNR 32.02 / 3.5 MB PSNR 31.94 / 5.3 MB 
+
+Figure 1: We propose adaptive-capacity anchor-based representation that dynamically adjusts both per-anchor cardinality and feature capacity, achieving high rendering quality with small storage size at dynamic fast motion scenes. 
+
+## Abstract 
+
+Recent advances in 4D Gaussian Splatting (4DGS) enable high-fidelity, real-time spatiotemporal rendering, but expose a funda-mental trade-off between motion expressiveness and storage effi-ciency. While anchor-based designs achieve compactness through anchor-level parameter sharing, their rigid uniform parametriza-tion enforces fixed Neural Gaussian counts and feature budgets per anchor. Consequently, insufficient fidelity is addressed by excessive anchor density, rather than lightweight, targeted increases in Neural Gaussian count or feature capacity, resulting in memory waste. To overcome this rigidity, we introduce an adaptive-capacity anchor-based framework that dynamically allocates the representational capacity based on local spatiotemporal demands. Adaptive Anchor Cardinality varies the number of Neural Gaussians per anchor, concentrating primitives in regions of high geometric or motion complexity while suppressing redundancy. In parallel, Adaptive  
+
+> ∗Corresponding author.
+> This work is licensed under a Creative Commons Attribution 4.0 International License.
+> MM ’26, Rio de Janeiro, Brazil
+> ©2026 Copyright held by the owner/author(s). ACM ISBN 979-8-4007-2213-4/2026/11 https://doi.org/10.1145/3767308.3836536
+
+Anchor Feature Masking modulates anchor-level feature channels, assigning rich features to complex regions and lightweight repre-sentations to simpler ones. Experiments on MPEG, Panoptic Sports, and N3DV datasets demonstrate substantial storage reduction with-out degrading visual quality. Notably, on challenging MPEG se-quences with complex motion, our method achieves up to 1.5 ×
+
+higher compression than state-of-the-art anchor-based methods while preserving comparable quality. 
+
+## CCS Concepts 
+
+• Computing methodologies → Rendering ; Point-based models ;Reconstruction. 
+
+## Keywords 
+
+Gaussian Splatting, Compact 4D Representation, Anchor-based Modeling, Novel View Synthesis 
+
+ACM Reference Format: 
+
+Seunghyeon Song, Joo Chan Lee, Chanung Park, Jun Young Jeong, Minseo Lee, Eunbyung Park, and Jong Hwan Ko. 2026. ACA-GS: Adaptive-Capacity Anchored Gaussian Splatting for Compact Dynamic Radiance Fields. In 
+
+Proceedings of the 34th ACM International Conference on Multimedia (MM ’26), November 10–14, 2026, Rio de Janeiro, Brazil. ACM, New York, NY, USA, 9 pages. https://doi.org/10.1145/3767308.3836536 arXiv:2608.04581v1 [cs.CV] 5 Aug 2026 MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Song et al. # Anchor: 2, # Gaussians: 4            
+
+> (b) Adaptive Anchor Capacity (Ours) (a) Fixed Anchor Capacity
+> # Anchors: 2, # Gaussians: 24
+> Total # Anchors: 8, # Gaussians: 32
+> Simple Region
+> Fine Region
+> # Anchors: 2, # Gaussians: 8
+> # Anchors: 4, # Gaussians: 16
+> Total # Anchors: 8, # Gaussians: 32
+> Simple Region
+> Fine Region
+> A1
+> A2
+> A1
+> A2
+> A1 A2
+> Anchor Feature
+> A1 A2
+> Anchor Feature
+> A5 A6
+> A3 A4
+> A3 A4
+> Gaussian
+> Relocate
+> A3
+> A4 A3
+> A5
+> A4
+> A6
+> Dynamic Region Dynamic Region
+> A7 A8
+> A5 A6
+> A7 A8
+> A7
+> A8 A5
+> A6
+> A7
+> A8
+> Motion
+> Motion
+> Anchor
+> Densify
+> # Anchors: 4, # Gaussians: 4 # Anchors: 2, # Gaussians: 8
+> A7 A8
+
+Figure 2: Overview. (a) Fixed Anchor Capacity enforces uni-form Gaussian counts and feature dimensions regardless of local complexity, causing redundancy in simple areas and insufficient detail in complex and dynamic regions. (b) Adap-tive Anchor Capacity dynamically scales resources to spa-tiotemporal demands, eliminating redundancy while ensur-ing high fidelity in fine and large motion regions. 
+
+## 1 Introduction 
+
+Building on the success of neural radiance fields [ 26 ], 3D Gaussian Splatting (3DGS) [ 12 ] has emerged as a paradigm-shifting method in novel view synthesis, achieving high-fidelity 3D scene recon-struction with real-time rendering by utilizing explicit 3D Gaussian primitives. Following the success of 3DGS, there has been a surge of research extending this technique from static scenes to the spa-tiotemporal domain for the effective representation of dynamic scenes. These efforts include training separate 3DGS models per frame [ 25 ], combining a single static model with deformation net-works [ 1, 35 ], or integrating spatiotemporal grid structures [ 32 ]and 4D rotation/scaling parameters [22, 36]. However, these methods face an inherent trade-off between the complexity of dynamic scenes and storage efficiency. Deformation-based methods [ 1, 32 , 35 ] show limitations in precisely representing regions with rapid motion, which inevitably leads to a degrada-tion in rendering quality. Conversely, 4D primitive-based meth-ods [ 22 , 36 ] attempt to mitigate these artifacts and maintain high quality by narrowing the frame interval or increasing temporal dimensions. However, this results in an exponential increase in storage requirements. More recently, several methods extended anchor-based 3D rep-resentation, originally proposed in Scaffold-GS [ 24 ], to dynamic scenes. For instance, ADC-GS [ 9 ] maintained a canonical anchor structure and refined anchors based on temporal significance, and GIFStream [ 19 ] augmented the anchor representation with a fea-ture stream for temporal prediction, improving robustness under large motions. Despite their promising storage efficiency, these methods inherit a fundamental structural rigidity: each anchor is parameterized with 1) a fixed number of Neural Gaussians (i.e., cardinality) and 2) a uniform anchor feature channel. Given that cardinality and feature dimensions are the primary determinants of an anchor’s representational capacity, an identical assignment of these parameters irrespective of local scene complexity results in suboptimal distribution of model resources. For instance, fine-detail regions or intricate geometry require a high density of Neural Gaussians and sufficient feature capac-ity to achieve high-fidelity reconstruction. However, when these resources are fixed per anchor, the model must introduce an exces-sive number of anchors to reach the required Gaussian count, as illustrated in Fig. 2(a). In contrast, in simple backgrounds or low-frequency regions, fixed allocation produces redundant primitives and unnecessarily large feature capacity, resulting in significant storage inefficiency. In dynamic regions, where predicting individual temporal tra-jectories for each Gaussian is challenging, anchor-based methods represent motion via anchor-level deformation. By extension, this approach requires dense anchor placement in areas exhibiting large or complex motion. When anchors are sparsely placed in such re-gions, the model fails to capture rich motion patterns, leading to noticeable quality degradation, as illustrated in Fig. 2(a). Conversely, increasing anchor density to capture such motion can waste capac-ity by introducing redundant primitives due to the fixed Neural Gaussian cardinality. Furthermore, anchor feature capacity should be adaptively modulated based on local spatiotemporal complexity to ensure robust representational power for both intricate geometry and diverse motion patterns. In this work, we propose an adaptive anchor representation for dynamic scenes, which can adjust 1) the Neural Gaussian cardinality and 2) the anchor feature channels for each anchor (Fig. 2(b)). First, for adaptive cardinality, we propose an importance-based relocation strategy that identifies unnecessary Neural Gaussians and relocates them to important regions, binding them to nearby anchors. To measure the importance of primitives from each anchor, we intro-duce an accumulated view-dependent opacity metric, since prior anchor-based methods do not explicitly represent per-primitive view-independent opacity. Based on this importance measure, Neu-ral Gaussians are adaptively reallocated according to spatial and dynamic complexity, assigning higher Gaussian density to fine re-gions while keeping simple regions compact without redundant primitives (Fig. 3). Second, instead of utilizing the entire feature channel of an an-chor, we introduce learnable channel masks that selectively activate spatial features according to local complexity. Aggressively reduc-ing spatial features for motion-critical anchors can induce spatio-temporal interference, where temporal capacity is consumed by spatial details. We therefore introduce a conditional regularization loss to preserve sufficient feature capacity in high-motion regions. We evaluated the proposed framework on various dynamic novel view synthesis datasets, including N3DV [ 20 ], Panoptic Sports [ 11 ], and MPEG datasets. The experimental results demonstrate that our method achieves high rendering quality with compact storage size. Notably, on the MPEG dataset, which includes fast and large mo-tions, our model achieved approximately 1.5× higher compression rates compared to the previous state-of-the-art method [ 19 ] while maintaining perceptual quality. This validates that our adaptive resource allocation approach is an effective solution for achieving high-quality rendering and storage efficiency in dynamic 3D scenes. ACA-GS: Adaptive-Capacity Anchored Gaussian Splatting for Compact Dynamic Radiance Fields MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil 3000 Iter 7000 Iter 15000 Iter 
+
+> Anchor
+> Distribution
+> Neural Gaussian
+> Distribution
+> Low  High Low  High
+
+Figure 3: Distribution of Anchor and Neural Gaussian within our method over training iterations. Per-pixel anchor counts: Blue (0–1), Green (2–4), Red ( ≥5). Per-anchor Neural Gaus-sians: Blue (1–3), Green (4–6), Red (7–10). 
+
+## 2 Related Work 
+
+3D Gaussian Splatting (3DGS) [ 12 ] represents scenes with anisotropic 3D Gaussians and supports efficient rasterization and differentiable optimization, enabling 1080p rendering at over 30 FPS. While vanilla 3DGS relies on Structure-from-Motion (SfM) [ 29 ] initialization and adaptive densification, recent advancements have addressed its limitations in aliasing and geometric dependency. Notably, Mip-Splatting [ 37 ] introduces frequency-limited filters to mitigate sam-pling artifacts, while Scaffold-GS [ 24 ] adopts anchor-based hier-archical attributes to reduce redundancy and enforce structural consistency. Although these methods reduce redundancy and im-prove structural consistency, the explicit Gaussian attributes still incur substantial storage overhead, often exceeding gigabytes for complex scenes, thereby necessitating the development of effective compression techniques. 
+
+## 2.1 Compression of 3DGS 
+
+Early approaches reduce the primitive budget and attribute size through significance-based pruning, learnable masking, and at-tribute quantization [ 7, 8, 16 ]. Other methods reorganize Gaussian attributes into compression friendly structures [ 27 ] or jointly op-timize the representation under rate-distortion constraints [ 30 ]. Recently, HAC [ 3] and HAC++ [ 4 ] demonstrated state-of-the-art bi-trate efficiency by leveraging spatial consistency through hash-grid context models and anchor-based neural prediction, respectively. Additionally, OMG3D [ 15 ] introduced Sub-Vector Quantization (SVQ) to balance codebook size and reconstruction fidelity, show-ing that exploiting local distinctiveness can drastically minimize the primitive budget while maintaining high rendering speeds. While these techniques have enabled 3DGS to represent static scenes effi-ciently, they are not directly applicable to dynamic scenes where scene content evolves over time, leading to new challenges in rep-resentation efficiency and scalability. 
+
+## 2.2 3DGS for Dynamic Scenes 
+
+Extending 3DGS to dynamic scenes typically follows two distinct paradigms: deformation-based and primitive-based approaches. Deformation-based methods [ 1, 10 , 14 , 19 , 32 , 35 ] decouple the scene into a canonical 3D Gaussian field and a learnable deforma-tion field parameterized by MLPs or grids. While storage-efficient, these methods often struggle to capture rapid motions or topologi-cal changes due to the limited capacity of the deformation network. Conversely, 4D primitive-based approaches [ 22 , 34 , 36 ] explicitly model spatio-temporal Gaussians, enabling high-fidelity reconstruc-tion of complex dynamic scenes. However, expanding primitives into the temporal dimension results in substantial memory con-sumption and lacks explicit temporal correspondence, hindering efficient compression. Recent hybrid approaches, such as Anchored 4DGS [ 21 ] and 4D Scaffold [ 6], bridge this gap by utilizing sparse anchor points to generate local dynamic Gaussians, offering a bal-ance between representational capacity and structural coherence suitable for compression. These advances in dynamic 3DGS repre-sentation naturally raise the question of how to effectively compress spatio-temporal Gaussian primitives while preserving visual fidelity and temporal coherence. 
+
+## 2.3 Compression of 3DGS for Dynamic Scenes 
+
+Compressing dynamic 3DGS presents unique challenges due to the compounding redundancy across both spatial and temporal dimensions. For primitive-based models, 4DGS-1K [ 38 ] focused on lifespan-based pruning to eliminate transient primitives that con-tribute minimally to rendering. Also, CSTG [ 17 ] used vector quan-tization and learnable masking methods to compress 4D Gaussian primitives in STG [ 22 ]. MEGA [ 40 ] further enhanced compactness by decoupling color into a DC-AC representation and employing entropy-constrained deformation to minimize the total Gaussian count. More recently, OMG4D [ 18 ] achieved extreme compaction by iteratively merging spatio-temporally adjacent Gaussians and applying 4D Sub-Vector Quantization (SVQ). For deformation-based methods, 4DGS-CC [ 5 ] and Light4GS [ 23 ] represented the defor-mation field using learnable context entropy coding. Recently, several works have compressed the anchor-based rep-resentation for dynamic scenes. ADC-GS [ 9] groups Gaussians into compact canonical anchors and proposes an anchor-level coarse-to-fine deformation with rate-distortion optimization to reduce deformation redundancy. GIFStream [ 19 ] extends the anchor repre-sentation with a feature stream for temporal prediction and employs an end-to-end compression pipeline with auto-regressive entropy coding for anchor attributes, while pruning time-dependent fea-tures for compact representation. However, these anchor-based methods share an inherent limitation in structural flexibility, which can lead to suboptimal efficiency. In this work, we propose an adaptive anchor representation that dynamically adjusts both the number of Neural Gaussians and the feature capacity per anchor, allocating higher representational capacity to fine-grained dynamic regions while reducing memory usage in less informative areas, thereby achieving higher visual fidelity with a lower overall mem-ory footprint for dynamic scenes. 
+
+## 3 Method 
+
+In conventional anchor-based representations, high-complexity re-gions are handled by densifying anchors. However, a fixed number of Neural Gaussians and uniform feature capacity per anchor often lead to a substantially larger anchor set to achieve competitive quality. We relax this constraint with two novel mechanisms that provide greater freedom in capacity allocation across both space and time while preserving compact, high-quality representations. Adaptive Anchor Cardinality (Section 3.1) enables anchors to generate a variable number of Neural Gaussians, concentrating MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Song et al. Masked 
+
+> Anchor Feature
+> Time
+> Feature
+> Important
+> Opacity
+> Unimportant
+> Opacity
+
+Attributes 
+
+> Anchor Elements
+> AA
+> B
+> A
+
+(b) Adaptive Anchor Cardinality 
+
+Canonical 
+
+Deformation 
+
+𝛼 !, 𝑠 !
+
+𝑞 !, 𝑐 ! 
+
+> 𝑅 !
+> ",𝑇 !"
+> Channel
+> Masking
+
+Motion 
+
+> Relocate
+
+(a) Adaptive Anchor Feature Maskin g
+
+Adaptive 
+
+Neural Gaussians 
+
+Rendering 
+
+> MLP
+
+3D Anchor Set   
+
+> time
+> MLP
+> Center
+> Position
+> X
+> Y
+> Z
+> X
+> Y
+> Z
+> Dead
+> Alive
+> B+ Offset Noise
+> Masked
+> Adaptive
+> Feature Capacity
+> B
+> Redundant
+> (for low detail)
+> Anchor A Anchor B
+> Low
+> High
+
+Figure 4: Overall structure of our method. Given a set of 3D anchors, MLPs decode per-anchor and time-dependent features to generate Neural Gaussians for rendering. (a) Learnable masks eliminate representational redundancy for adaptive per-anchor capacity. (b) Low-importance Neural Gaussians are reallocated to high-importance regions based on accumulated importance, reducing redundant primitives while improving rendering quality. 
+
+primitives in regions with high-frequency geometric structures, while reducing redundancy in smooth regions. Furthermore, this flexibility enables the use of fewer anchors in static regions by assigning more Neural Gaussians to each anchor, while focusing anchor density on dynamic areas that require many anchors for high-fidelity motion representation. Adaptive Anchor Feature Masking (Section 3.2) further enhances representation flexibility by modulating feature dimensionality at the anchor level, assigning richer features to high-complexity re-gions and lightweight features to simpler ones. In this approach, feature reduction on motion-critical anchors can introduce spatio-temporal interference, where capacity needed for temporal mod-eling is consumed by spatial representation. In Section 3.3, we introduce a conditional regularization loss to control the reduction strength and preserve sufficient feature capacity in high-motion regions, and we present the complete training objective. 
+
+Baseline Architecture. We build on an anchor-based representa-tion for dynamic scene modeling [ 19 , 24 ]. Each voxelized anchor 
+
+𝑖 , together with its associated offsets o𝑖 ∈ R𝐾 ×3, generates 𝐾 local Neural Gaussians via anchor features F𝑖 ∈ R𝐶 𝐹 (Fig. 4), where 𝐶 𝐹 de-notes the feature channel dimension. To capture temporal variation, each anchor is further augmented with time-dependent features 
+
+T𝑖 ∈ R𝑇 ×𝐶 𝑇 , spanning 𝑇 video frames. Here, we learn to identify and mask static anchors that do not require motion representation using a masking parameter 𝑑 𝑖 ∈ R, which is thresholded to either preserve or mask the time-dependent feature T𝑖 . At each time step 
+
+𝑡 , the network jointly consumes the static anchor feature F𝑖 and the dynamic feature T𝑖,𝑡 ∈ R𝐶 𝑇 to predict the spatial attributes of 
+
+𝐾 Neural Gaussians. These include color, rotation, scaling factor and opacity vectors, along with time-varying motion parameters that govern Gaussian deformation. 
+
+## 3.1 Adaptive Anchor Cardinality 
+
+As the first adaptive mechanism, we introduce Adaptive Anchor Car-dinality (AAC) to break the constraint of assigning a fixed number of Neural Gaussians per anchor. AAC enables heterogeneous per-anchor cardinality by using accumulated view-dependent opacity as a global importance score. Based on this score, we relocate less influential Gaussians from over-represented regions to anchors re-quiring higher primitive density. This redistribution enhances local structure without introducing additional anchor points, avoiding extra memory overhead (Fig. 4(b)). 
+
+Importance of Neural Gaussians. Relocation operates by iden-tifying and moving less important Neural Gaussians, which re-quires a reliable measure of primitive importance. In 3DGS-based methods without anchor structure, opacity is commonly used as a proxy [ 12 , 13 ], where each Gaussian carries an explicit opacity attribute that can be evaluated independently of anchor visibility. In contrast, anchor-based Gaussians do not store per-primitive opacity directly: their view-dependent opacity is decoded on-the-fly by an MLP conditioned on the anchor features, and thus becomes avail-able only when the parent anchor is spawned within the current camera’s view frustum (Fig. 5). Consequently, primitives that are important from other viewpoints can be temporarily unspawned and never decoded, receiving negligible importance when judged solely by instantaneous opacity. To address this bias, we accumulate the opacity contributions of each Neural Gaussian over a reloca-tion interval 𝑇 𝑅 of iterations. The resulting importance score I𝑖,𝑘 is defined with each training view 𝑣 𝑡 at iteration 𝑡 :
+
+I𝑖,𝑘 =
+
+> 𝑇 𝑅
+
+∑︁ 
+
+> 𝑡 =1
+
+𝛼 (𝑡 ) 
+
+> 𝑖,𝑘
+
+(𝑣 𝑡 ), (1) ACA-GS: Adaptive-Capacity Anchored Gaussian Splatting for Compact Dynamic Radiance Fields MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil View A
+
+> View B
+
+. ..
+
+.
+
+.
+
+. .
+
+.
+
+..
+
+.
+
+.
+
+.
+
+. 
+
+> Only View B Only View A Both
+
+..
+
+.
+
+.
+
+. .View A 
+
+> View B
+> Per -View
+> Rendering
+> 2D Anchor Distribution
+> Anchor Point
+
+Figure 5: Per-view visibility of anchors. Since only anchors within the view frustum are rendered, we accumulate opacity across views to estimate view-independent importance. 
+
+where 𝛼 (𝑡 ) 
+
+> 𝑖,𝑘
+
+(·) denotes the view-dependent opacity of each Neural Gaussian at iteration 𝑡 . By aggregating evidence across viewpoints and timestamps, this metric captures the global relevance of each dynamic primitive, independent of momentary view frustum and the corresponding temporal state. The score I𝑖,𝑘 is reset after each relocation step, ensuring that every relocation cycle is driven solely by newly observed contributions. 
+
+Neural Gaussian Relocation. Guided by the accumulated im-portance scores I, the relocation stage determines which Neural Gaussians to select and where to redistribute representational capac-ity. Rather than spawning additional anchors, it operates through a two-step procedure: importance-driven deactivation followed by sampling-based relocation. In the first step, Neural Gaussians are ranked by their accumu-lated importance and split by a threshold 𝜏 . Gaussians above 𝜏 
+
+are retained as active (alive), while those below 𝜏 are flagged as inactive (dead) and become candidates for relocation. To maintain training stability, we cap the number of selected inactive Gaussians to at most 𝜌 % of the total population per relocation step. Unless otherwise noted, we set 𝜏 = 0.005 and 𝜌 = 20 in our experiments. In the second step, we relocate the selected inactive Neural Gaus-sians to anchors that require higher primitive density while pre-serving the total population. For each inactive Gaussian, we sample a parent Gaussian from the active set via importance-proportional sampling to determine its relocation target. In practice, since the sampling probability is governed by importance scores, active Gaus-sians in anchors covering fine-detail regions are significantly more likely to be selected as target anchors. Through relocation, inactive Gaussians are reactivated by inheriting their parent’s attributes, including anchor membership. Their spatial positions are initialized by perturbing the parent offset oparent with a perturbation 𝝐 ∈ R3
+
+to avoid exact overlap while preserving local structure. Specifically, the offset of relocated Gaussian onew is defined as follows, 
+
+onew = oparent + | oparent | ⊙ 𝝐 , 𝝐 ∼ N ( 0, 𝛿 2𝐼 ), (2) where 𝛿 controls the perturbation magnitude and is set to 0.05 by default, | · | denotes the element-wise absolute value, and ⊙ denotes the Hadamard product. 
+
+Cardinality Gating Mask. Allowing each anchor to host a varying number of Neural Gaussians poses a key architectural challenge. A naive design would require cardinality-specific decoding, for example, separate MLP decoders for different per-anchor Gauss-ian counts, which introduces heterogeneous tensor shapes across anchors. This could lead to excessive parameter growth and pre-vent efficient batch-parallel execution. We address this challenge with a per-Gaussian gating strategy, which allocates a fixed upper bound on the number of Gaussians per anchor and activates only the required subset, thereby decoupling the attribute prediction process from the actual Gaussian activation. In this design, the shared MLPs consistently predict attributes for a fixed maximum number of Neural Gaussians per anchor, regardless of how many are actually needed. And then, the decision of which Gaussians to activate is handled separately by the gating mask, allowing the network architecture to remain fixed and batch-friendly while the number of rendered primitives varies per anchor. Specifically, each gating value 𝑔 𝑖,𝑘 ∈ { 0, 1} controls whether the 
+
+𝑘 -th Neural Gaussian associated with anchor 𝑖 is active. Consistent with prior anchor-based designs, all Gaussian attributes are densely predicted by shared MLPs, independent of activation, rather than being conditionally decoded. Activation is instead handled at the rendering stage, with the gating mask applied at the opacity level, yielding the gated opacity 𝑔 𝑖,𝑘 𝛼 𝑖,𝑘 . This leads to Neural Gaussians with 𝑔 𝑖,𝑘 = 0 being excluded from rendering, ignored prior to rasterization. This strategy enables anchors to flexibly adjust their active primitive counts while preserving a fixed-size, batch-parallel processing pipeline. 
+
+## 3.2 Adaptive Anchor Feature Masking 
+
+AAC improves memory efficiency by refining the spatial allocation of Neural Gaussians using a compact set of primitives. However, redundancy may still persist in the feature channels assigned to each anchor, as a fixed feature dimensionality is imposed despite the diverse representational demands across different regions. To address this inefficiency, Adaptive Anchor Feature Masking (AAFM) dynamically modulates the number of active feature channels per anchor using learnable masks (Fig. 4(a)). While aggressive sparsification is desirable for compactness, empirical evidence indicates that treating all channels as elimina-tion candidates can destabilize optimization. To address this, each anchor feature F𝑖 is factorized into a base segment Fbase  
+
+> 𝑖
+
+and an adaptive segment Fadapt  
+
+> 𝑖
+
+. AAFM restricts masking exclusively to 
+
+Fadapt , while keeping the base segment Fbase fully active throughout training. The base component thus functions as a stable represen-tational backbone, preserving essential capacity during learning. Accordingly, we adopt an additional mask parameter 𝑚 𝑖 ∈ R for each anchor 𝑖 to learn a binary mask 𝑀 𝑖 ∈ { 0, 1} via the straight-through estimator (STE) [ 2 ], and reparameterize the anchor feature as follows: 
+
+F𝑖 = concat (Fbase  
+
+> 𝑖
+
+, 𝑀 𝑖 Fadapt  
+
+> 𝑖
+
+),𝑀 𝑖 = sg (1[𝜎 (𝑚 𝑖 ) > 𝛾 ] − 𝜎 (𝑚 𝑖 )) + 𝜎 (𝑚 𝑖 ), (3) where concat (· , ·) denotes concatenation along the feature channel dimension, 𝛾 is the masking threshold, and sg (·) , 1[·] , and 𝜎 (·) are the stop-gradient, indicator, and sigmoid functions, respectively. Under this design, feature sparsity is encouraged via a mask regularization term, LM, which penalizes the activation of adaptive feature channels and is formulated as follows: 
+
+LM = 1
+
+𝑁 
+
+> 𝑁
+
+∑︁ 
+
+> 𝑖 =1
+
+𝜎 (𝑚 𝑖 ), (4) MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Song et al. 
+
+Table 1: Quantitative results on MPEG dataset. We evaluate our method on the Bartender and Cinema without image resolution downscaling. Storage size is measured in megabytes (MB). We high-light the best and second-best performances. 
+
+Method MPEG PSNR ↑ SSIM ↑ LPIPS(VGG) ↓ Size ↓
+
+4DGaussian [32] 28.60 0.856 0.260 110 4DGS [36] 29.03 0.879 0.195 366.6 E-D3DGS [1] 28.01 0.861 0.247 35.6 STG [22] 28.41 0.878 0.217 60.8 CSTG+PP [17] 27.50 0.867 0.233 9.7 GIFStream [19] 29.89 0.900 0.223 5.4 
+
+Ours 29.92 0.898 0.228 3.5 
+
+Figure 6: Rate-distortion (PSNR) curve on MPEG datasets. We control the model size exclusively via anchor densi-fication for both GIFStream [19] and Ours. Table 2: Quantitative results on Panoptic Sports [ 11 ] and N3DV [ 20 ] datasets. Since we could not find configuration about Panoptic Sports (basketball, boxes), we reported the paper results of GIFStream [ 19 ]. Consistent with prior studies, images from N3DV are downscaled by a factor of 0.5. Storage size is measured in megabytes (MB). 
+
+Method Panoptic Sports N3DV PSNR ↑ SSIM ↑ LPIPS(VGG) ↓ Size ↓ PSNR ↑ SSIM ↑ LPIPS(ALEX) ↓ Size ↓
+
+Dynamic 3DGS [25] 28.84 0.910 0.175 2083.8 - - - -4DGaussian [32] 27.71 0.914 0.175 137.7 31.15 - 0.049 90 4DGS [36] 28.68 0.911 0.157 973.8 32.01 - - 202 E-D3DGS [1] 25.61 0.896 0.172 297.9 31.42 0.945 0.037 137 STG [22] 25.09 0.900 0.181 180.9 32.05 0.946 0.044 200 CSTG+PP [17] 26.13 0.902 0.192 23.4 31.69 0.945 0.054 15 GIFStream [19] 29.50 0.931 0.114 12.6 31.75 0.938 0.051 10 
+
+Ours 29.30 0.922 0.128 7.3 31.73 0.940 0.058 6.3 
+
+where 𝜎 (·) is the sigmoid function, and 𝑁 is the total number of anchors. When the reconstruction loss indicates that Fbase alone is sufficient, the corresponding masks of Fadapt naturally converge to-ward deactivation, suppressing redundant feature channels. Rather than explicitly pruning these channels, which would induce varying input dimensionalities for subsequent MLPs, masking is applied via element-wise modulation after training to preserve a fixed input shape. The actual removal of deactivated channels is reserved for the post-training stage, with the balance between reconstruction fidelity and feature sparsity. 
+
+## 3.3 Optimization 
+
+Conditional Regularization. A naive integration of AAFM often leads to functional overlap between spatial and temporal features. To maintain spatial quality, time-dependent features tend to be used to compensate for the reduced expressivity caused by anchor feature masking. This capacity leakage distorts the intended role of temporal features and degrades compression efficiency by inhibiting effective sparsification. To mitigate such behavior, we introduce a Conditional Regu-larization Loss (LCR ) that regulates anchor feature sparsification based on local temporal activity. This loss drives feature masking in regions where temporal features are weak or inactive, typically corresponding to static or simple areas, while suppressing spar-sification in temporally dynamic regions. We can formulate the conditional regularization loss as follows: 
+
+LCR = 1
+
+𝑁 
+
+> 𝑁
+
+∑︁ 
+
+> 𝑖 =1
+
+𝜎 (𝑑 𝑖 )( 1 − 𝜎 (𝑚 𝑖 )) , (5) where 𝜎 (·) is the sigmoid function, and 𝑚 𝑖 , 𝑑 𝑖 denote the anchor and time-dependent feature masks. By constraining where anchor fea-ture capacity can be reduced, this design prevents time-dependent features from absorbing loss of spatial details, thereby preserving their dedicated role in temporal modeling. 
+
+Training Objective. We optimize the entire model in an end-to-end manner, and the final objective L is defined as follows: 
+
+L = Lbase + 𝜆 M LM + 𝜆 CR LCR , (6) where Lbase includes the rendering loss, entropy loss for compres-sion, and regularization terms used in GIFStream [19]. 
+
+## 4 Experiments 
+
+We evaluate our method on three real-world multi-view video datasets: N3DV [ 20 ], MPEG, and Panoptic Sports [ 11 ]. For quantita-tive evaluation, we report PSNR, SSIM [ 31 ], and LPIPS [ 39 ], along with storage size in megabytes (MB). Following prior work, LPIPS ACA-GS: Adaptive-Capacity Anchored Gaussian Splatting for Compact Dynamic Radiance Fields MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil 
+
+Table 3: Ablation study of each module of the proposed method where AAC, AAFM, Comp. refer to Adaptive Anchor Cardinality, Adaptive Anchor Feature Masking and end-to-end compression strategy of GIFStream [19].                                                   
+
+> Method MPEG Bartender Comp. AAC AAFM PSNR SSIM LPIPS FPS # Anchors Size(MB) –––32.07 0.900 0.226 55 111,759 248.3
+> ✓–32.30 0.901 0.225 67 59,336 132.2
+> ✓✓32.13 0.898 0.234 71 54,828 117.6
+> ✓
+> GIFStream 31.94 0.898 0.227 77 111,759 5.3
+> ✓–32.12 0.899 0.227 83 59,336 4.0
+> ✓✓32.02 0.896 0.235 84 54,828 3.5
+
+Table 4: Ablation study of Adaptive Anchor Cardinality (AAC). Under adaptivity, cardinality denotes the maximum Neural Gaussian count per anchor.                                    
+
+> Adaptivity Cardinality PSNR SSIM LPIPS # Gaussians # Anchors Size(MB) –532.07 0.900 0.226 558,795 111,759 248
+> ✓631.88 0.895 0.237 196,501 58,899 130
+> ✓10 (Ours) 32.13 0.898 0.234 250,792 54,828 118
+> ✓14 32.02 0.896 0.233 267,225 52,905 122
+
+is computed with AlexNet on N3DV and with VGG on the other datasets. We implement our model on top of the GIFStream frame-work [ 19 ], maintaining the original voxelized anchor initialization and densification strategy. For stable training, AAC is activated every 500 iterations starting from 3,000 iteration, once anchor den-sification has stabilized. In contrast, AAFM is active from the start, with the regularization weight 𝜆 M tuned to reach a final masking ratio of about 60%. After training, as a post-hoc step, we prune deactivated Neural Gaussians and masked anchor features. 
+
+## 4.1 Results 
+
+As shown in Tables 1 and 2, our method attains the most compact representation across all evaluated benchmarks. Compared to un-compressed baselines such as 4DGS and STG that incur substantial storage overhead, our approach achieves a significant reduction in memory footprint while providing superior or comparable re-construction fidelity. Specifically, our model maintains an efficient footprint of roughly 3.5 to 7.3 MB across all scenes, consistently outperforming these uncompressed references in both efficiency and quality. Furthermore, our method remains superior to heav-ily compressed baselines like CSTG+PP across nearly all quality metrics. Notably, compared to the state-of-the-art anchor-based GIFStream, our framework achieves a further 35% to 42% reduction in storage while matching its visual performance (Fig. 8). The rate-distortion curves on the MPEG datasets in Fig. 6 further highlight this advantage, as our method consistently attains superior quality metrics compared to GIFStream across the entire evaluated size range. These quantitative evaluations confirm that our adaptive-capacity design effectively removes spatiotemporal redundancy, ensuring high-fidelity rendering across diverse dynamic scenes without excessive memory overhead. 
+
+## 4.2 Ablation Study 
+
+Overall Architecture. Table 3 evaluates each module with and without the learned compression pipeline [ 19 ]. Without compres-sion, AAC alone reduces the anchor count from 111,759 to 59,336, 
+
+Table 5: Ablation study of Adaptive Anchor Feature Masking (AAFM). ’Total CH’ denotes the total dimension of an anchor feature, while Fbase and Fadapt represent the number of fixed and maskable channels, respectively.                       
+
+> N3DV Flame Steak Total CH Fbase |Fadapt PSNR SSIM LPIPS(ALEX) Size(MB) 24 12 | 12 32.96 0.953 0.044 5.34
+> 48 (Ours) 24 | 24 33.64 0.956 0.043 6.15
+> 64 32 | 32 33.57 0.957 0.041 6.77
+
+Table 6: Ablation study on the anchor feature masking regu-larization weight 𝜆 M.                    
+
+> 𝜆 MMasking Ratio PSNR SSIM LPIPS Size (MB) 3e-3 32% 32.07 0.897 0.232 3.8
+> 8e-3 61% 32.02 0.896 0.235 3.5 3e-2 89% 31.50 0.890 0.241 3.0
+
+Table 7: Ablation studies on 𝜆 CR , 𝛾 , 𝜏 and 𝜌 .                                                     
+
+> Param. Value PSNR SSIM LPIPS Size (MB)
+> 𝜆 CR
+> 0.001 31.80 0.894 0.237 3.6
+> 0.1 (Ours) 32.02 0.896 0.235 3.5 0.2 32.01 0.897 0.234 3.5
+> 𝛾
+> 0.001 31.84 0.894 0.236 3.5
+> 0.01 (Ours) 32.02 0.896 0.235 3.5 0.1 31.98 0.897 0.233 3.4
+> 𝜏
+> 0.0001 32.01 0.897 0.236 3.5
+> 0.005 (Ours) 32.02 0.896 0.235 3.5 0.01 32.03 0.897 0.236 3.6
+> 𝜌
+> 10% 31.96 0.895 0.239 3.6
+> 20% (Ours) 32.02 0.896 0.235 3.5 30% 32.01 0.897 0.234 3.4
+
+while improving PSNR (32.07 to 32.30) and speed (55 to 67 FPS). Adding AAFM—trained with conditional regularization loss—further reduces the size to 117.6 MB and boosts speed to 71 FPS, demonstrat-ing that primitive relocation and feature pruning synergistically optimize capacity. When integrated with the compression pipeline, our models further reduce storage by 33.9% while maintaining quality. These results confirm that adaptive resource allocation effectively complements existing attribute compression methods. Fig. 7 illustrates the adaptive distribution of anchors, Neural Gaussians, and feature channels across four regions (P1–P4) with distinct spatiotemporal characteristics. In simple static areas (P1), the model prioritizes efficiency through minimal resource alloca-tion, whereas detailed static regions (P2) leverage increased Gauss-ian counts and feature dimensions to enhance representational power. For dynamic regions, since motion representation relies on rigid transformations via anchor-level deformation, accurately capturing fast and large-scale motion requires increasing the num-ber of anchors in both P3 and P4. Also, within these regions, P3 utilizes fewer Neural Gaussians given its simple spatial structure, whereas P4 allocates a sufficient number of primitives to capture the required fine-grained detail. Notably, Conditional Regularization maintains high feature capacity in P3 and P4, mitigating training dif-ficulty in dynamic areas. These results demonstrate that our method MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Song et al. (b) Neural Gaussian Distribution 
+
+> Low  High
+
+(a) Anchor Distribution 
+
+> Low  High
+
+(c) Anchor Feature Channel Distribution   
+
+> Low  High
+> P1P2
+> P3
+> P4
+> P1. Simple, Static
+> # A
+> (a)
+
+# ↓ 
+
+> # NG
+> (b)
+
+# ↓ 
+
+> # FC
+> (c)
+
+# ↓ 
+
+> P2. Fine, Static
+> # A
+> (a)
+
+# − 
+
+> # NG
+> (b)
+
+# ↑ 
+
+> # FC
+> (c)
+
+# ↑ 
+
+> P3. Simple, Motion
+> # A
+> (a)
+> # NG
+> (b)
+> # FC
+> (c)
+
+# ↑ 
+
+> P4. Fine, Motion
+> # A
+> (a)
+
+# ↑ 
+
+> # NG
+> (b)
+
+# − 
+
+> # FC
+> (c)
+
+# ↑
+
+# ↓
+
+# ↑
+
+Figure 7: Visualization. In this figure, we visualize the pixel-wise density of anchor components using a heatmap spectrum from Low (Blue) to High (Red). (a) Anchor Distribution: Blue, Green, and Red correspond to anchor counts of 0–1, 2–4, and ≥5per pixel, respectively. (b) Neural Gaussian Distribution: The colors represent the cardinality of Neural Gaussians: 1–3 (Blue), 4–6 (Green), and 7–10 (Red). (c) Anchor Feature Channel Distribution: Blue denotes 50% active channels, while Red denotes full channel usage. We provide a detailed analysis of each region in Section 4.2. 
+
+adaptively scales resources based on local complexity and motion, achieving high quality while maintaining model compactness. 
+
+Adaptive Anchor Cardinality. Table 4 evaluates the impact of the maximum cardinality setting within the AAC strategy. Our results indicate that limited cardinality constrains the expressivity of individual anchors, requiring more anchors to capture geometric details. Conversely, excessively high cardinality induces Gaussian over-concentration, which leads to floater artifacts and compro-mises rendering quality. Consequently, we adopt a maximum cardi-nality of 10 as the optimal trade-off between reconstruction fidelity and computational efficiency, ensuring robust generalization across various scene scales. 
+
+Adaptive Anchor Feature Masking. Table 5 evaluates anchor feature capacity on N3DV Flame Steak by partitioning it into fixed (Fbase ) and maskable ( Fadapt ) components. We observe a trade-off where lower channel capacity degrades reconstruction quality, while excessive dimensions offer diminishing PSNR gains. Our 48-channel configuration attains an optimal balance, delivering high fidelity within a compact footprint. AAFM thus effectively suppresses redundancy, enabling complex spatiotemporal model-ing without the overhead of larger feature budgets. Table 6 further analyzes the regularization weight 𝜆 M on MPEG Bartender. An overly large value induces excessive masking and degrades quality. We therefore set 𝜆 M to reach a masking ratio of about 60%, which consistently preserves quality across scenes. 
+
+Hyperparameter Sensitivity. Table 7 reports sensitivity analyses for the main hyperparameters of AAC and AAFM. Performance remains stable across a reasonable range of values for all parameters, indicating that our method is robust to hyperparameter choices. We use the default settings across all experiments. Ground Truth GIFStream Ours    
+
+> 33.03/12.0 MB 32.99/6.2 MB
+
+Figure 8: Qualitative comparison on N3DV Cook Spinach [ 20 ](300 frames, 1352 × 1014). 
+
+## 5 Conclusions 
+
+In this paper, we proposed an adaptive-capacity anchor-based frame-work for dynamic scenes, designed to overcome the structural rigid-ity inherent in conventional anchor-based methods. Our approach dynamically allocates anchor representational capacity based on spatiotemporal demands. To achieve this, Adaptive Anchor Cardi-nality relocates unnecessary Neural Gaussians to regions requiring higher geometric detail without introducing additional anchors. Furthermore, Adaptive Anchor Feature Masking reduces redundant anchor features via learnable channel masking with regulariza-tion for stable spatiotemporal modeling. Experimental results on MPEG, Panoptic Sports, and N3DV show that our method improves storage efficiency without sacrificing visual quality or real-time rendering, achieving notably higher compression on fast motion scenes. As a next step, we aim to scale our framework to long video sequences [ 33 ] by enhancing inter-frame consistency. Also, integrat-ing a hierarchical anchor representation [ 28 ] will further optimize compression by modulating complexity across spatial scales. ACA-GS: Adaptive-Capacity Anchored Gaussian Splatting for Compact Dynamic Radiance Fields MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil 
+
+## Acknowledgments 
+
+This work was supported in part by the Institute of Information and Communications Technology Planning and Evaluation (IITP) grants (2018-0-00207, RS-2019-II190421, RS-2020-II201821, RS-2021-II212052, RS-2025-02217613, RS-2025-25442569) funded by the Ko-rean government (MSIT); the National Research Foundation of Korea (NRF) grants (RS-2024-00345732, RS-2025-02216217) funded by the Korean government (MSIT); and the Technology Innovation Program (RS-2023-00235718, 23040-15FC, 1415187505) and the K-CHIPS (Korea Collaborative & High-tech Initiative for Prospective Semiconductor Research) program (RS-2026-25521189, Develop-ment of Application Processor Design Technologies for Multimodal Sensor Signal Processing) funded by the Ministry of Trade, Industry and Energy (MOTIE, Korea). 
+
+## References 
+
+[1] Jeongmin Bae, Seoha Kim, Youngsik Yun, Hahyun Lee, Gun Bang, and Youngjung Uh. 2024. Per-Gaussian Embedding-Based Deformation for Deformable 3D Gaussian Splatting. In European Conference on Computer Vision (ECCV) .[2] Yoshua Bengio, Nicholas Léonard, and Aaron Courville. 2013. Estimating or Propagating Gradients Through Stochastic Neurons for Conditional Computation. arXiv:1308.3432 [cs.LG] https://arxiv.org/abs/1308.3432 [3] Yihang Chen, Qianyi Wu, Weiyao Lin, Mehrtash Harandi, and Jianfei Cai. 2024. HAC: Hash-grid Assisted Context for 3D Gaussian Splatting Compression. In 
+
+European Conference on Computer Vision .[4] Yihang Chen, Qianyi Wu, Weiyao Lin, Mehrtash Harandi, and Jianfei Cai. 2025. HAC++: Towards 100X Compression of 3D Gaussian Splatting. IEEE Transactions on Pattern Analysis and Machine Intelligence 47, 11 (nov 2025). [5] Zicong Chen, Zhenghao Chen, Wei Jiang, Wei Wang, Lei Liu, and Dong Xu. 2025. 4DGS-CC: A Contextual Coding Framework for 4D Gaussian Splatting Data Compression. arXiv:2504.18925 [cs.CE] https://arxiv.org/abs/2504.18925 [6] Woong Oh Cho, In Cho, Seoha Kim, Jeongmin Bae, Youngjung Uh, and Seon Joo Kim. 2026. 4D scaffold Gaussian splatting with dynamic-aware anchor growing for efficient and high-fidelity dynamic scene reconstruction (AAAI’26) . AAAI Press, Article 375, 9 pages. doi:10.1609/aaai.v40i5.37332 [7] Zhiwen Fan, Kevin Wang, Kairun Wen, Zehao Zhu, Dejia Xu, and Zhangyang Wang. 2024. LightGaussian: Unbounded 3D Gaussian Compression with 15x Reduction and 200+ FPS. In Advances in Neural Information Processing Systems ,Vol. 37. Curran Associates, Inc., 140138–140158. doi:10.52202/079017-4447 [8] Sharath Girish, Kamal Gupta, and Abhinav Shrivastava. 2024. EAGLES: Efficient Accelerated 3D Gaussians with Lightweight EncodingS. In European Conference on Computer Vision (ECCV) . 54–71. [9] He Huang, Qi Yang, Mufan Liu, Yiling Xu, and Zhu Li. 2025. ADC-GS: Anchor-Driven Deformable and Compressed Gaussian Splatting for Dynamic Scene Reconstruction. In Proceedings of the Thirty-Fourth International Joint Conference on Artificial Intelligence, IJCAI-25 . 1179–1187. [10] Yi-Hua Huang, Yang-Tian Sun, Ziyi Yang, Xiaoyang Lyu, Yan-Pei Cao, and Xiao-juan Qi. 2024. SC-GS: Sparse-Controlled Gaussian Splatting for Editable Dynamic Scenes. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) . 4220–4230. [11] Hanbyul Joo, Hao Liu, Lei Tan, Lin Gui, Bart Nabbe, Iain Matthews, Takeo Kanade, Shohei Nobuhara, and Yaser Sheikh. 2015. Panoptic Studio: A Massively Multi-view System for Social Motion Capture. In Proceedings of the IEEE International Conference on Computer Vision (ICCV) .[12] Bernhard Kerbl, Georgios Kopanas, Thomas Leimkühler, and George Drettakis. 2023. 3D Gaussian Splatting for Real-Time Radiance Field Rendering. ACM Transactions on Graphics 42, 4 (July 2023). [13] Shakiba Kheradmand, Daniel Rebain, Gopal Sharma, Weiwei Sun, Yang-Che Tseng, Hossam Isack, Abhishek Kar, Andrea Tagliasacchi, and Kwang Moo Yi. 2024. 3D Gaussian Splatting as Markov Chain Monte Carlo. In Advances in Neural Information Processing Systems (NeurIPS) .[14] Agelos Kratimenos, Jiahui Lei, and Kostas Daniilidis. 2024. DynMF: Neural Motion Factorization for Real-time Dynamic View Synthesis with 3D Gaussian Splatting. ECCV (2024). [15] Joo Chan Lee, Jong Hwan Ko, and Eunbyung Park. 2025. Optimized Minimal 3D Gaussian Splatting. In Advances in Neural Information Processing Systems .[16] Joo Chan Lee, Daniel Rho, Xiangyu Sun, Jong Hwan Ko, and Eunbyung Park. 2024. Compact 3D Gaussian Representation for Radiance Field. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .[17] Joo Chan Lee, Daniel Rho, Xiangyu Sun, Jong Hwan Ko, and Eunbyung Park. 2024. Compact 3D Gaussian Splatting for Static and Dynamic Radiance Fields. 
+
+arXiv preprint arXiv:2408.03822 (2024). [18] Minseo Lee, Byeonghyeon Lee, Lucas Yunkyu Lee, Eunsoo Lee, Sangmin Kim, Seunghyeon Song, Joo Chan Lee, Jong Hwan Ko, Jaesik Park, and Eunbyung Park. 2025. Optimized Minimal 4D Gaussian Splatting. arXiv:2510.03857 [cs.CV] https://arxiv.org/abs/2510.03857 [19] Hao Li, Sicheng Li, Xiang Gao, Abudouaihati Batuer, Lu Yu, and Yiyi Liao. 2025. GIFStream: 4D Gaussian-based Immersive Video with Feature Stream. In Pro-ceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .[20] Tianye Li, Mira Slavcheva, Michael Zollhöfer, Simon Green, Christoph Lassner, Changil Kim, Tanner Schmidt, Steven Lovegrove, Michael Goesele, Richard New-combe, and Zhaoyang Lv. 2022. Neural 3D Video Synthesis From Multi-View Video. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) . 5521–5531. [21] Yilong Li, Bo Pang, Yisong Chen, and Guoping Wang. 2025. Anchored 4D Gaussian Splatting for Dynamic Novel View Synthesis. In Proceedings of the SIGGRAPH Asia 2025 Conference Papers . Article 73, 11 pages. [22] Zhan Li, Zhang Chen, Zhong Li, and Yi Xu. 2024. Spacetime Gaussian Feature Splatting for Real-Time Dynamic View Synthesis. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) . 8508–8520. [23] Mufan Liu, Qi Yang, He Huang, Wenjie Huang, Zhenlong Yuan, Zhu Li, Yiling Xu, and Yunfeng Guan. 2026. Light4GS: Lightweight Compact 4D Gaussian Splatting Generation via Context Model. IEEE Trans. Circuits Syst. Video Technol. 36, 6 (2026), 7992–8005. doi:10.1109/TCSVT.2026.3656896 [24] Tao Lu, Mulin Yu, Linning Xu, Yuanbo Xiangli, Limin Wang, Dahua Lin, and Bo Dai. 2024. Scaffold-gs: Structured 3d gaussians for view-adaptive render-ing. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition .[25] Jonathon Luiten, Georgios Kopanas, Bastian Leibe, and Deva Ramanan. 2024. Dynamic 3D Gaussians: Tracking by Persistent Dynamic View Synthesis. In 3DV .[26] Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ramamoorthi, and Ren Ng. 2020. NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis. In ECCV .[27] Wieland Morgenstern, Florian Barthel, Anna Hilsmann, and Peter Eisert. 2025. Compact 3D Scene Representation via Self-Organizing Gaussian Grids. In Euro-pean Conference on Computer Vision (ECCV) . 18–34. [28] Kerui Ren, Lihan Jiang, Tao Lu, Mulin Yu, Linning Xu, Zhangkai Ni, and Bo Dai. 2025. Octree-GS: Towards Consistent Real-time Rendering with LOD-Structured 3D Gaussians. IEEE Transactions on Pattern Analysis and Machine Intelligence 
+
+(2025). [29] Johannes L. Schönberger and Jan-Michael Frahm. 2016. Structure-from-Motion Revisited. In CVPR . doi:10.1109/CVPR.2016.445 [30] Henan Wang, Hanxin Zhu, Tianyu He, Runsen Feng, Jiajun Deng, Jiang Bian, and Zhibo Chen. 2024. End-to-End Rate-Distortion Optimized 3D Gaussian Representation. In European Conference on Computer Vision .[31] Zhou Wang, Alan C. Bovik, Hamid R. Sheikh, and Eero P. Simoncelli. 2004. Image Quality Assessment: From Error Visibility to Structural Similarity. IEEE Transactions on Image Processing 13, 4 (2004), 600–612. [32] Guanjun Wu, Taoran Yi, Jiemin Fang, Lingxi Xie, Xiaopeng Zhang, Wei Wei, Wenyu Liu, Qi Tian, and Xinggang Wang. 2024. 4D Gaussian Splatting for Real-Time Dynamic Scene Rendering. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) . 20310–20320. [33] Zhen Xu, Yinghao Xu, Zhiyuan Yu, Sida Peng, Jiaming Sun, Hujun Bao, and Xi-aowei Zhou. 2024. Representing Long Volumetric Video with Temporal Gaussian Hierarchy. ACM Transactions on Graphics 43, 6 (November 2024). [34] Jinbo Yan, Rui Peng, Luyang Tang, and Ronggang Wang. 2024. 4D Gaussian Splatting with Scale-aware Residual Field and Adaptive Optimization for Real-time rendering of temporally complex dynamic scenes. In ACM Multimedia 2024 .[35] Ziyi Yang, Xinyu Gao, Wen Zhou, Shaohui Jiao, Yuqing Zhang, and Xiaogang Jin. 2024. Deformable 3D Gaussians for High-Fidelity Monocular Dynamic Scene Reconstruction. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) . 20331–20341. [36] Zeyu Yang, Hongye Yang, Zijie Pan, and Li Zhang. 2024. Real-time Photorealistic Dynamic Scene Representation and Rendering with 4D Gaussian Splatting. In 
+
+International Conference on Learning Representations (ICLR) .[37] Zehao Yu, Anpei Chen, Binbin Huang, Torsten Sattler, and Andreas Geiger. 2024. Mip-Splatting: Alias-free 3D Gaussian Splatting. Conference on Computer Vision and Pattern Recognition (CVPR) (2024). [38] Yuheng Yuan, Qiuhong Shen, Xingyi Yang, and Xinchao Wang. 2025. 1000+ FPS 4D Gaussian Splatting for Dynamic Scene Rendering. In Advances in Neural Information Processing Systems . 74665–74683. [39] Richard Zhang, Phillip Isola, Alexei A Efros, Eli Shechtman, and Oliver Wang. 2018. The Unreasonable Effectiveness of Deep Features as a Perceptual Metric. In CVPR .[40] Xinjie Zhang, Zhening Liu, Yifan Zhang, Xingtong Ge, Dailan He, Tongda Xu, Yan Wang, Zehong Lin, Shuicheng Yan, and Jun Zhang. 2025. MEGA: Memory-Efficient 4D Gaussian Splatting for Dynamic Scenes. In Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) . 27828–27838.
