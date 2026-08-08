@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-08-08 <!--dpr-date:20260808-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/08/2608.04145v2-simulation-based-imaging-learning-acoustic-inverse-problems-from-simulated-data" data-sidebar-item="{&quot;title&quot;: &quot;Simulation-Based Imaging: Learning Acoustic Inverse Problems from Simulated Data&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.04145v2-simulation-based-imaging-learning-acoustic-inverse-problems-from-simulated-data&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;profile-1&quot;}], &quot;evidence&quot;: &quot;深度学习用于模拟数据的体素重建&quot;}">Simulation-Based Imaging: Learning Acoustic Inverse Problems from Simulated Data</a>
   * 2026-08-07 <!--dpr-date:20260807-->
     * 精读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/07/2608.05564v1-esvr-3d-ellipsoid-based-sparse-volume-rendering-via-structure-aware-primitive-learning-and-per-primitive-ray-sampling" data-sidebar-item="{&quot;title&quot;: &quot;ESVR: 3D Ellipsoid-based Sparse Volume Rendering via Structure-aware Primitive Learning and Per-primitive Ray Sampling&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.05564v1-esvr-3d-ellipsoid-based-sparse-volume-rendering-via-structure-aware-primitive-learning-and-per-primitive-ray-sampling&quot;, &quot;score&quot;: &quot;10.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;profile-1&quot;}], &quot;evidence&quot;: &quot;通过结构感知原语学习和射线采样进行稀疏体渲染&quot;}">ESVR: 3D Ellipsoid-based Sparse Volume Rendering via Structure-aware Primitive Learning and Per-primitive Ray Sampling</a>
