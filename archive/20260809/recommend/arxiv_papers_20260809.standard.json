@@ -1,0 +1,90 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-09T19:34:39.115171+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.02937v1",
+      "title": "ScoreField: Neural Inverse Scattering with Score-Based Generative Priors",
+      "abstract": "Designing an effective electromagnetic inverse-scattering solver requires faithful enforcement of nonlinear full-wave physics together with an expressive prior on the unknown permittivity contrast. We propose ScoreField, a neural inverse scattering framework that integrates coupled implicit neural representations (INRs) with a pretrained score-based generative prior. ScoreField employs two INRs to parameterize the permittivity contrast and the induced current fields, and jointly optimize them under the Lippmann-Schwinger equations. In addition to the implicit regularization by the INR architecture, the score model provides a learned prior gradient on the contrast, which is propagated to the contrast INR through the chain rule. This formulation enables ScoreField to effectively handle strong multiple scattering, where nonlinear wave interactions require accurate modeling of the coupled full-wave physics. We evaluate ScoreField on simulated weak- and strong-scattering benchmarks, the canonical Austria phantom, and experimental Fresnel measurements. We note that ScoreField significantly improves reconstruction fidelity and suppresses artifacts relative to classical full-wave methods and deep learning baselines, achieving an average PSNR improvement of $1.8 \\, \\mathrm{dB}$ over the best competing method on real Fresnel data.",
+      "authors": [
+        "Wenhan Guo",
+        "Yuan Gao",
+        "Yu Sun"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.LG",
+        "physics.comp-ph"
+      ],
+      "published": "2026-08-03T22:51:01+00:00",
+      "link": "https://arxiv.org/pdf/2608.02937v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "neural inverse scattering with implicit neural representations",
+      "llm_evidence_cn": "使用隐式神经表示的神经逆散射",
+      "llm_evidence": "使用隐式神经表示的神经逆散射",
+      "canonical_evidence": "使用隐式神经表示的神经逆散射",
+      "llm_tldr_en": "Integrates implicit neural representations with generative priors to solve electromagnetic inverse scattering.",
+      "llm_tldr_cn": "将隐式神经表示与生成先验相结合，解决电磁逆散射问题。",
+      "llm_tldr": "将隐式神经表示与生成先验相结合，解决电磁逆散射问题。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "deep learning for multiple scattering in volumes",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.04145v1",
+      "title": "Simulation-Based Imaging: Learning Acoustic Inverse Problems from Simulated Data",
+      "abstract": "We introduce Simulation-Based Imaging (SBI), a framework for non-destructive acoustic imaging in which machine learning models trained entirely on simulated data serve as real-time solvers for the acoustic inverse problem. A high-fidelity nodal Discontinuous Galerkin forward solver generates large training datasets by randomizing inclusion geometry within a unit-cube domain; a 2D convolutional neural network then learns a direct mapping from boundary pressure measurements to a 32 by 32 by 32 voxel reconstruction of the interior. The trained model reliably recovers inclusion position and size from 144 boundary sensors with no prior knowledge of inclusion count or geometry. Reconstruction error degrades by only 13% under 5% additive measurement noise, and just 17% of the sensor array (24 of 144 sensors) suffices for quality within 4% of full coverage. These results establish SBI as a viable proof-of-concept imaging device whose complexity resides in software rather than hardware, opening a path toward cheap, portable, deployable imaging systems.",
+      "authors": [
+        "Luke Bodmer",
+        "E. Bruce Pitman"
+      ],
+      "primary_category": "cs.CE",
+      "categories": [
+        "cs.CE"
+      ],
+      "published": "2026-08-04T18:55:16+00:00",
+      "link": "https://arxiv.org/pdf/2608.04145v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "deep learning for voxel reconstruction from simulated data",
+      "llm_evidence_cn": "利用深度学习从模拟数据中进行体素重建",
+      "llm_evidence": "利用深度学习从模拟数据中进行体素重建",
+      "canonical_evidence": "利用深度学习从模拟数据中进行体素重建",
+      "llm_tldr_en": "Uses CNNs to solve acoustic inverse problems by mapping measurements to a 3D voxel grid.",
+      "llm_tldr_cn": "利用卷积神经网络通过将测量值映射到3D体素网格来解决声学逆问题。",
+      "llm_tldr": "利用卷积神经网络通过将测量值映射到3D体素网格来解决声学逆问题。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

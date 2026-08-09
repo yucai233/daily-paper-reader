@@ -1,0 +1,272 @@
+Title: Simulation-Based Imaging: Learning Acoustic Inverse Problems from Simulated Data
+
+URL Source: https://arxiv.org/pdf/2608.04145v1
+
+Published Time: Thu, 06 Aug 2026 00:06:30 GMT
+
+Number of Pages: 16
+
+Markdown Content:
+# Simulation-Based Imaging: Learning Acoustic Inverse Problems from Simulated Data 
+
+## Luke J. Bodmer 1 and E. Bruce Pitman 11Department of Materials Design and Innovation, School of Engineering and Applied Sciences, University at Buffalo, Buffalo, NY 14260 USA 
+
+Abstract 
+
+We introduce Simulation-Based Imaging (SBI), a framework for non-destructive acoustic imaging in which machine learning models trained entirely on simulated data serve as real-time solvers for the acoustic inverse problem. A high-fidelity nodal Discon-tinuous Galerkin (DG) forward solver generates large training datasets by randomizing inclusion geometry within a unit-cube domain; a 2D convolutional neural network then learns a direct mapping from boundary pressure measurements to a 32 × 32 × 32 voxel reconstruction of the interior. The trained model reliably recovers inclusion position and size from 144 boundary sensors with no prior knowledge of inclusion count or ge-ometry. Reconstruction error degrades by only 13% under 5% additive measurement noise, and just 17% of the sensor array (24 of 144 sensors) suffices for quality within 4% of full coverage. These results establish SBI as a viable proof-of-concept imag-ing device whose complexity resides in software rather than hardware, opening a path toward cheap, portable, deployable imaging systems. 
+
+Keywords: acoustic imaging, inverse problems, simulation-based learning, discontinuous Galerkin, convolutional neural networks, non-destructive testing 
+
+# 1 Introduction 
+
+The ability to image the internal structure of an object without modifying or destroying it is a technology of enormous practical value: we scan bridges for structural flaws, the earth for mineral deposits, and human tissue for disease and injury. Every such technology solves an inverse problem — determining the internal structure that produced a set of observed boundary measurements. Current solutions face a fundamental constraint: accuracy requires expensive, immobile hardware. Medical MRI scanners cost $1–3 million and require purpose-built shielded rooms [1]. Industrial computed-tomography systems for non-destructive inspection typically cost hundreds of thousands to several million dollars [2]. MRI scanner density in sub-Saharan 1arXiv:2608.04145v1 [cs.CE] 4 Aug 2026 Africa averages 0.8 units per million people [3], and rural hospitals in the United States routinely lack advanced imaging infrastructure [4]. Full Waveform Inversion (FWI) emerged as a physics-driven alternative, iteratively min-imizing a misfit between observed and simulated wavefields to recover material properties. First proposed for seismic imaging by Lailly [5] and Tarantola [6] in the early 1980s, FWI was later applied to non-destructive testing [7], bone quantification [8], and brain imaging [9,10]. Despite these successes, FWI’s iterative nature is computationally prohibitive: a single 2D brain-slice reconstruction has been reported to require 32 hours [9]. Recent work has begun combining deep learning with FWI to reduce computational cost [11–13], typically using neural networks as surrogate forward models or post-processing refinement steps. We take a different approach: train the inverse model directly, bypassing iterative optimization entirely. SBI shifts complexity from hardware and runtime computation to an upfront simulation campaign. Piezoelectric transducers that generate and detect pressure waves cost on the order of dollars [14]; the intelligence of the system lives in a trained model that can run on a laptop or smartphone and produces images in milliseconds. Once trained, deployment costs essentially nothing. This paper demonstrates that this approach is viable in a con-trolled simulation environment and lays the quantitative foundation for future experimental validation. 
+
+# 2 Problem Formulation 
+
+## 2.1 Governing Equations 
+
+We model acoustic wave propagation using the linear acoustic system in three spatial di-mensions: 
+
+∂u ∂t = − 1
+
+ρ∂p ∂x , (1) 
+
+∂v ∂t = − 1
+
+ρ∂p ∂y , (2) 
+
+∂w ∂t = − 1
+
+ρ∂p ∂z , (3) 
+
+∂p ∂t = −κ
+
+∂u ∂x + ∂v ∂y + ∂w ∂z 
+
+
+
+, (4) where p is acoustic pressure [Pa], ( u, v, w ) are particle velocity components [m/s], ρ is mass density [kg/m 3], and κ = ρc 2 is the bulk modulus [Pa]. 
+
+## 2.2 Imaging Setup 
+
+The domain is a unit cube [0 , 1] 3 with uniform background material ( ρb, cb). Inside the cube are one to three smaller cubic inclusions with elevated density and wave speed ( ρi > ρ b,2Figure 1: Left: pressure isosurfaces from a DG simulation showing an acoustic wave propa-gating through a cubic domain containing an embedded inclusion, with 144 boundary sensors (dots on the faces). Right: the resulting 144 sensor time-series that form the input to the inverse model. 
+
+ci > c b). A Gaussian pressure pulse 
+
+psrc (t) = A exp 
+
+
+
+−(t − t0)2
+
+2σ2
+
+
+
+, σ = t0
+
+4 , (5) is injected from the center of each of the six cube faces in sequence. Pressure time-series are recorded at 144 sensors distributed in 5 × 5 grids across all six faces (sensors overlapping the source region are excluded). Fig. 1 shows the domain and sensor arrangement. The inverse problem is to recover the density field ρ(x) — equivalently, the position, size, and density of the inclusions — from these 144 time-series alone. No a priori knowledge of inclusion count, position, or size is assumed. 
+
+# 3 Forward Model: Nodal Discontinuous Galerkin Solver 
+
+## 3.1 Choice of Discretization 
+
+For 3D wave propagation on domains containing material discontinuities, we require a method that is geometrically flexible, high-order accurate, and naturally handles impedance-mismatch interfaces. We implement a nodal Discontinuous Galerkin (DG) finite element method following Hesthaven and Warburton [15]. The DG method uses discontinuous piecewise-polynomial approximations, coupling adjacent elements through upwind numer-ical fluxes. Key properties for our application are: 
+
+• Geometric flexibility: Unstructured tetrahedral meshes conformally resolve material interfaces, so density jumps at inclusion boundaries are exact rather than smeared. 3• High-order accuracy: Polynomial order p can be raised without remeshing, achiev-ing O(hp+1 ) convergence. 
+
+• Local conservation: Each element exactly conserves mass, momentum, and energy. 
+
+• Parallelism: Element-local residual computations are trivially parallelizable on GPU hardware. 
+
+## 3.2 Mesh Generation 
+
+Unstructured tetrahedral meshes are generated with Gmsh [16]. Each simulation instance places inclusions at randomized positions; a fresh mesh is generated per simulation so that element faces align exactly with each inclusion’s surface. This avoids any smearing of the material discontinuity across elements. 
+
+## 3.3 Reference Element and Basis Functions 
+
+All element-level computations are performed on a reference tetrahedron with vertices 
+
+v0=( −1, −1, −1) , v1=(1 , −1, −1) ,
+
+v2=( −1, 1, −1) , v3=( −1, −1, 1) .
+
+The affine map to a physical element with vertices vphys  
+
+> i
+
+is 
+
+x(ξ) = 12
+
+ − (1+ r+s+t) vphys 0 + (1+ r) vphys 1
+
++ (1+ s) vphys 2 + (1+ t) vphys 3
+
+. (6) Within each element the solution is represented by Np = ( p+1)( p+2)( p+3) /6 high-order nodal basis functions constructed from Jacobi polynomials on the reference tetrahedron [15]. Warp-and-blend node positions minimize the Lebesgue constant, ensuring well-conditioned interpolation. For polynomial order p = 2 (used in this work) each tetrahedron carries 
+
+Np = 10 nodes. Physical-space derivatives are computed using the inverse Jacobian: 
+
+∂∂x = ∂r ∂x ∂∂r + ∂s ∂x ∂∂s + ∂t ∂x ∂∂t , (7) where the metric terms come from inverting the element Jacobian J = ∂(x, y, z )/∂ (r, s, t ). For straight-sided (affine) tetrahedra J is constant within each element, so all precomputed operators — the Vandermonde matrix V, differentiation matrices Dr, Ds, Dt, and the lift matrix L — need only be formed once on the reference element and reused for every physical element. 43.4 Upwind Flux at Material Interfaces 
+
+At element interfaces, the DG method couples discontinuous traces through a numerical flux. For heterogeneous acoustic media the upwind flux accounts for impedance mismatch between adjacent materials [17]: ˆp = p− + Z+ n · [v] − [p]
+
+Z− + Z+ κ−, (8) where [ ·] denotes the jump across the interface, Z = ρc is the acoustic impedance, and superscripts − and + denote interior and exterior traces respectively. The corresponding velocity flux is obtained symmetrically. This formulation exactly captures reflections and transmissions at inclusion boundaries without any ad hoc tuning. 
+
+## 3.5 Semi-Discrete System and Time Integration 
+
+The DG discretization of (1)–(4) yields a system of ODEs: 
+
+du
+
+dt = − 1
+
+ρ∇hp − L(Fu), (9) 
+
+dp dt = −κ ∇h · u − L(Fp), (10) where ∇h denotes the discrete gradient/divergence and L(F ) are the lifted flux contributions from element boundaries. Time integration uses a low-storage 5-stage 4th-order Runge-Kutta scheme [15]. The time step obeys the DG CFL condition ∆t ≤ 0.9 hmin 
+
+(2 p + 1) cmax 
+
+, (11) where hmin is the smallest element inscribed diameter and cmax is the maximum wave speed in the domain. 
+
+## 3.6 Boundary Conditions 
+
+All six cube faces impose perfectly reflecting (rigid-wall) conditions via 
+
+u+ = u− − 2( n · u−)n, p+ = p−. (12) The pressure source (5) on each face is implemented by overriding the exterior pressure trace and computing the corresponding velocity adjustment from the local acoustic impedance. 
+
+## 3.7 GPU Acceleration and Dataset Generation 
+
+The solver uses CuPy [18] as a GPU-accelerated NumPy replacement. All arrays are transferred to GPU memory before time-stepping; all linear-algebra operations use GPU-accelerated routines, yielding approximately 10–50 × speedup over CPU execution. 5Simulations used p = 2 with approximately 70,000 tetrahedra, giving ∼700,000 scalar degrees of freedom per field. With four field variables (pressure plus three velocity compo-nents) the total is ∼2.8 million DOF. A batch of 1000 simulations ran in parallel on four NVIDIA RTX 3090 GPUs and completed in approximately 48 hours. Fig. 2 shows a sample of the resulting simulation pairs. 
+
+# 4 Inverse Model 
+
+## 4.1 Output Representation 
+
+The inverse model must predict the internal density field ρ(x) from boundary measurements. We represent the output as a 32 × 32 × 32 voxel grid, then take its 3D discrete Fourier transform to obtain k-space (frequency-domain) coefficients. The network predicts both real and imaginary k-space components (2 × 32 3 = 65 ,536 output values); at inference time an inverse FFT recovers the spatial density image. This k-space representation offers two practical advantages. First, MSE loss in the fre-quency domain naturally weights low-frequency (large-scale) components more heavily be-cause they have larger magnitude — an implicit regularizer that encourages smooth, physi-cally plausible reconstructions without requiring a separate penalty. Second, k-space elimi-nates constant-valued output columns that arise from buffer regions in the voxel grid, which cause numerical difficulties for Gaussian Process methods. Ablation experiments confirm that k-space output achieves 3–4% lower voxel error than direct voxel prediction (Section 5.4). 
+
+## 4.2 Input Preprocessing 
+
+Raw sensor data consists of 144 time-series of length ∼600 timesteps. Three preprocessing steps reduce dimensionality while preserving the information content needed for inversion: 1. Temporal trimming: The first 41 timesteps are discarded to remove the initial source transient before boundary reflections arrive. 2. Temporal downsampling: Every 4th sample is retained, reducing the time axis by 4× while preserving the reflection signatures. 3. Reshape: The 144 sensor time-series are arranged as a 2D array of shape (sensors ×
+
+timesteps) rather than being flattened, preserving the spatial layout of the sensor array for 2D convolution. After preprocessing the input is a 144 × ∼ 154 array ( ∼37,000 features total). 
+
+## 4.3 Network Architecture 
+
+The inverse model is a 2D Convolutional Neural Network (2D CNN). Treating the prepro-cessed sensor array as a 2D image — sensor index on one axis, time on the other — lets convolutional filters simultaneously exploit spatial correlations across sensors and temporal correlations within each sensor’s time-series. 6Table 1: Optimized 2D CNN hyperparameters Parameter Value Conv channels [64, 128] Kernel size (3 × 5) Stride (1 × 3) Pool size (12 × 24) Regressor hidden 512 Dropout 0.5 Residual blocks Yes The architecture consists of two convolutional blocks followed by adaptive pooling and a fully connected regressor: 1. Conv blocks: Two layers with channel widths [64, 128], kernel size (3 × 5), stride (1 × 3), batch normalization, and ReLU activation. Residual (skip) connections are added around each block. 2. Adaptive average pooling: Output is pooled to a fixed 12 ×24 spatial map, yielding 128 × 12 × 24 = 36 ,864 features. 3. Regressor: A single fully-connected layer (512 hidden units, 50% dropout, ReLU) maps to the 65,536-dimensional k-space output. Table 1 summarizes the optimized configuration determined through the hyperparameter sweeps described in Section 5.3. 
+
+## 4.4 Training Configuration 
+
+The model is trained with AdamW (weight decay 10 −4, initial learning rate 10 −4) using a OneCycleLR cosine-annealing schedule. MSE loss compares predicted and true k-space coefficients: 
+
+L = 1
+
+N
+
+> N
+
+X
+
+> i=1
+
+(ki − ˆki)2, (13) where N = 32 3. Training runs for up to 500 epochs with early stopping (patience 50, restoring best weights). Batch size is 8; the test fraction is 10% (100 held-out simulations). All training was performed on a single NVIDIA RTX 3090 GPU. 
+
+# 5 Results 
+
+## 5.1 Dataset 
+
+The training dataset consists of 1000 DG simulations with the following parameters: 7• Background: ρb = 2 .0 kg/m 3, cb = 2 .0 m/s. 
+
+• Inclusions: ρi = 4 .0 kg/m 3, ci = 4 .0 m/s; one to three cubes per simulation. 
+
+• Inclusion side length: uniform in [0 .1, 0.2] m. 
+
+• Inclusion center: uniform within the interior 90% of the domain. 
+
+• Source: Gaussian pulse (frequency 6 Hz) at the center of each face. 
+
+• Simulation duration: 2 s. The 900/100 train/test split ensures no overlap between training and evaluation config-urations. 
+
+## 5.2 Qualitative Reconstruction 
+
+Fig. 3 shows three held-out test examples comparing ground-truth inclusion geometry with CNN predictions. The model successfully localizes inclusions across the range of positions and sizes in the test set, recovering inclusion location and approximate extent from 144 boundary time-series alone. 
+
+## 5.3 Hyperparameter Optimization 
+
+We swept architectural hyperparameters one at a time, fixing the best value before varying the next, and measured both MSE test loss and voxel error (sum of per-voxel absolute reconstruction errors on the test set). Three architecture families were evaluated: MLP, 1D CNN, and 2D CNN. The 2D CNN outperformed both alternatives across all hyperparameter settings: the 1D CNN was 5% worse and the MLP 8% worse. The performance gap reflects the information lost when flattening the sensor array into a 1D sequence — the 2D CNN retains the spatial layout of the 144 sensors and can exploit correlations between adjacent sensors that observe the same region of the domain from nearby angles. Within the 2D CNN sweeps, key findings were: 
+
+• Depth: A two-layer [64, 128] configuration generalized better than deeper networks; additional layers increased overfitting. 
+
+• Pooling: Asymmetric pooling (12 × 24) that preserves temporal resolution outper-formed symmetric compression. 
+
+• Regressor size: A compact 512-unit hidden layer outperformed larger regressors (1024–4096 units), acting as a bottleneck that forces efficient feature compression. 
+
+• Dropout: Reconstruction error improved monotonically with dropout rate; 50% dropout reduced error by 23% relative to 10% dropout. 8Table 2: Output representation comparison (5-fold cross-validation) Problem Repr. Train Loss Test Loss Voxel Error 3D Voxel 5.15 ×10 −2 7.89 ×10 −2 2553 ± 126 3D K-space 9.75 ×10 2 1.36 ×10 3 2470 ± 49 Table 3: Noise robustness (5-fold cross-validation, mean ± std) Noise Train Loss Test Loss Voxel Error 0% 5.03 ×10 −2 ±1.0×10 −3 8.33 ×10 −2 ±3.2×10 −3 2469 ± 50 5% 5.21 ×10 −2 ±1.7×10 −3 9.44 ×10 −2 ±3.0×10 −3 2783 ± 114 10% 5.25 ×10 −2 ±1.9×10 −3 1.07 ×10 −1 ±4.5×10 −3 2773 ± 76 
+
+## 5.4 Output Representation: K-Space vs. Voxel Grid 
+
+Table 2 compares direct voxel prediction against k-space prediction using 5-fold cross-validation. K-space achieves 3% lower voxel error in 3D despite MSE loss values that are numerically orders of magnitude larger (due to the large dynamic range of Fourier coeffi-cients). This apparent paradox arises because MSE on k-space is dominated by the large DC and low-frequency components, which the network learns most accurately; the high-frequency residuals are small and contribute little to spatial reconstruction error. 
+
+## 5.5 Noise Robustness 
+
+To assess behavior under realistic sensing conditions, we trained and evaluated the optimized 2D CNN at three additive Gaussian noise levels: 
+
+Xnoisy = X + N (0 , (αX peak )2), (14) where α ∈ { 0% , 5% , 10% } is the noise fraction relative to peak amplitude. All experiments used 5-fold cross-validation. Results (Table 3) show graceful degradation: 5% noise increases voxel error by 13% (2469 to 2783). Notably, 10% noise produces essentially the same voxel error as 5% noise (2773 vs. 2783), suggesting the model develops an implicit noise floor — once noise is above a threshold it neither helps nor significantly hurts reconstruction quality. Training loss remained nearly constant across noise levels (5.03 to 5.25 ×10 −2), while test loss increased proportionally with noise, reflecting the harder inverse problem rather than a failure of optimization. The small cross-validation standard deviations indicate reproducible, stable performance. 
+
+## 5.6 Sensor Sparsity 
+
+A sensor array of 144 units may be impractical for some deployment scenarios. We therefore evaluated reconstruction quality as a function of sensor count using five spatial configura-tions: full (144), uniform-sparse (120), checkerboard (72), diamond (48), and center-of-face (24). Fig. 4 illustrates each configuration on an unfolded-cube representation. 9Table 4: Sensor sparsity study (5-fold cross-validation, mean ± std) Sensors Pattern Train Loss Test Loss Voxel Error 144 (100%) Full 5.14 ×10 −2 8.37 ×10 −2 2567 ± 111 120 (83%) Uniform sparse 5.31 ×10 −2 8.42 ×10 −2 2686 ± 67 72 (50%) Checkerboard 5.21 ×10 −2 8.45 ×10 −2 2564 ± 110 48 (33%) Diamond 5.30 ×10 −2 8.34 ×10 −2 2511 ± 73 24 (17%) Center-of-face 5.32 ×10 −2 8.48 ×10 −2 2544 ± 115 The results in Table 4 reveal striking insensitivity to sensor density. Reconstruction error varies by less than 7% across all five configurations, and the 48-sensor diamond pattern actually achieves the lowest error, slightly outperforming full coverage. Reducing from 144 to 24 sensors changes reconstruction quality by less than 1% relative to the full-coverage baseline. This redundancy arises from the physics of the enclosed domain: acoustic energy injected from each face reflects repeatedly off the rigid walls, so every inclusion is probed from multiple effective angles regardless of which surface sensors are active. The CNN learns to extract this redundant information efficiently, making the inverse model robust to large reductions in hardware sensor count. 
+
+# 6 Discussion 
+
+## 6.1 SBI as a Viable Imaging Device 
+
+The results establish three properties that a practical imaging device must have: (1) it must produce correct images, (2) it must be robust to realistic measurement imperfections, and (3) it must not require impractical hardware. The CNN reconstructions in Fig. 3 satisfy (1); the noise robustness experiments satisfy (2); and the sensor sparsity results satisfy (3), showing that 17% of the nominal sensor count suffices. All three properties hold simultaneously. The inference time for a trained SBI model is on the order of milliseconds on commodity GPU hardware — a qualitative shift from the hours required by iterative FWI. 
+
+## 6.2 Generality of the Approach 
+
+SBI is not specific to linear acoustics or cubic inclusions. Any measurable quantity that appears in a simulation can be imaged: substituting a viscoelastic model enables imaging of shear moduli and attenuation; a nonlinear acoustic model (e.g., Westervelt equation) enables imaging of the nonlinearity coefficient. Substituting a different sensor geometry or excitation pattern requires only regenerating the training dataset. The inverse model architecture and training procedure remain unchanged. Similarly, the DG solver provides the accuracy and geometric flexibility needed to simu-late domains with arbitrarily shaped inclusions, curved boundaries, or multiple co-existing material regions — all of which are needed for clinical or industrial applications. 10 6.3 Limitations and Future Work 
+
+The central limitation of this work is that all validation uses simulated data. The simu-lations employ well-validated numerical methods and should accurately represent physical wave propagation, but the sim-to-real gap — differences between simulated and physical sen-sor responses, material properties, and geometry — must be characterized experimentally. Physical validation is the most important next step. Several avenues for improving reconstruction quality within the simulation framework are also available: 
+
+• Richer source signals: Multi-frequency pulses or multiple asymmetric source posi-tions would probe the domain at multiple length scales and angles, reducing inverse-problem ambiguity. 
+
+• Larger training datasets: The current 1000-simulation dataset was constrained by compute budget. More simulations — especially covering a wider range of inclusion counts, shapes, and material contrasts — should improve generalization. 
+
+• Advanced architectures: Transformer attention mechanisms could learn which sen-sors are most informative for each region of the domain. U-Net-style encoder-decoder architectures have proven effective for other sensor-to-image tasks and warrant evalu-ation here. 
+
+• Physics-informed training: Incorporating wave-equation constraints into the loss function or network architecture could improve generalization and reduce the data requirements. 
+
+# 7 Conclusion 
+
+We have introduced Simulation-Based Imaging (SBI), a framework in which machine learning models trained on simulated acoustic data serve as real-time solvers for the 3D acoustic inverse problem. Using a nodal DG forward solver on unstructured tetrahedral meshes to generate 1000 training simulations, and a 2D CNN inverse model that maps 144 boundary pressure time-series to a 32 3 density reconstruction, we demonstrated that: 
+
+• Inclusion position and size are reliably recovered from boundary measurements alone, with no prior knowledge of inclusion count or geometry. 
+
+• Performance degrades by only 13% under 5% measurement noise, and stabilizes at 10% noise. 
+
+• Only 17% of the sensor array (24 of 144) is needed for reconstruction quality within 4% of full coverage, enabling large reductions in hardware cost. These results demonstrate that simulation-assisted machine learning models can function as viable imaging devices: accurate, noise-tolerant, and hardware-efficient. The complexity of the imaging system lives in software — in the trained model and the simulation campaign 11 that produced it — rather than in specialized hardware. This opens a path toward cheap, portable, deployable imaging systems for medical diagnostics, non-destructive testing, and geophysical exploration. 
+
+# References 
+
+[1] S. Makin, “A portable mri makes imaging more democratic,” Dec 2021. [Online]. Available: https://www.scientificamerican.com/article/ a-portable-mri-makes-imaging-more-democratic/ [2] M. Castillo, “The industry of ct scanning,” American Journal of Neuroradiology , vol. 33, no. 4, pp. 583–585, Apr. 2012. [3] U. C. Anazodo, J. J. Ng, B. Ehiogu, J. Obungoloch, A. Fatade, H. J. M. M. Mutsaerts, M. F. Secca, M. Diop, A. Opadele, D. C. Alexander, M. O. Dada, G. Ogbole, R. Nunes, P. Figueiredo, M. Figini, B. Aribisala, B. O. Awojoyogbe, H. Aduluwa, C. Sprenger, R. Wagner, A. Olakunle, D. Romeo, Y. Sun, F. Fezeu, A. T. Orunmuyi, S. Geethanath, V. Gulani, E. C. Nganga, S. Adeleke, N. Ntobeuko, F. J. Minja, A. G. Webb, I. Asllani, F. Dako, and the Consortium for Advancement of MRI Education and Research in Africa (CAMERA) , “A framework for advancing sustainable magnetic resonance imaging access in africa,” NMR in Biomedicine , vol. 36, no. 3, p. e4846, 2023. [Online]. Available: https://analyticalsciencejournals.onlinelibrary.wiley.com/doi/abs/10.1002/nbm.4846 [4] Radiological Society of North America. (2021, Jun.) Rural areas face imaging obstacles on the road to health care equity. Radiological Society of North America. Accessed: 2026-03-16. [Online]. Available: https://www.rsna.org/news/2021/june/ rural-radiology-equity [5] P. Lailly and J. Bednar, “The seismic inverse problem as a sequence of before stack migrations,” in Conference on inverse scattering: theory and application , vol. 1983. Philadelphia, Pa, 1983, pp. 206–220. [6] A. Tarantola, “Inversion of seismic reflection data in the acoustic approximation,” Geo-physics , vol. 49, no. 8, pp. 1259–1266, aug 1984. [7] R. Seidl, “Full waveform inversion for ultrasonic nondestructive testing,” Ph.D. disser-tation, Technische Universit Munchen, 2018. [8] S. Bernard, V. Monteiller, D. Komatitsch, and P. Lasaygues, “Ultrasonic computed tomography based on full-waveform inversion for bone quantitative imaging,” Physics in Medicine and Biology , vol. 62, no. 17, p. 7011, 2017. [Online]. Available: https://doi.org/10.1088/1361-6560/aa7e5a [9] L. Guasch, O. Calder´ on Agudo, M.-X. Tang, P. Nachev, and M. Warner, “Full-waveform inversion imaging of the human brain,” npj Digital Medicine , vol. 3, p. 28, 2020. 12 [10] T. C. Robins, C. Cueto, J. Cudeiro, O. Bates, O. C. Agudo, G. Strong, L. Guasch, M. Warner, and M. X. Tang, “Dual-probe transcranial full-waveform inversion: Abrain phantom feasibility study,” Ultrasound in Medicine and Biology , vol. 49, no. 10, pp. 2302–2315, October 2023, epub 2023 Jul 18. [Online]. Available: https://doi.org/10.1016/j.ultrasmedbio.2023.06.001 [11] L. Herrmann, T. B¨ urchner, F. Dietrich, and S. Kollmannsberger, “On the use of neural networks for full waveform inversion,” Comput. Methods Appl. Mech. Eng. , vol. 415, no. 116278, p. 116278, oct 2023. [12] C. Zerafa, P. Galea, and C. Sebu, “Synergizing deep learning and full-waveform inversion: Bridging data-driven and theory-guided approaches for enhanced seismic imaging,” 2025. [Online]. Available: https://arxiv.org/abs/2502.17585 [13] J. Wang, N. Du, T. Yin, R. Song, K. Xu, S. Sun, and X. Ye, “A machine learning-assisted inversion method for solving biomedical imaging based on semi-experimental data,” Electronics , vol. 12, no. 12, 2023. [Online]. Available: https://www.mdpi.com/2079-9292/12/12/2623 [14] G.-H. Feng and H.-J. Liu, “Piezoelectric micromachined ultrasonic transducers with a cost-effective bottom-up fabrication scheme for millimeter-scale range finding,” 
+
+Sensors , vol. 19, no. 21, p. 4696, 2019, accessed: 2026-03-16. [Online]. Available: https://www.mdpi.com/1424-8220/19/21/4696 [15] J. Hesthaven and T. Warburton, Nodal Discontinuous Galerkin Methods: Algorithms, Analysis, and Applications , ser. Texts in Applied Mathematics. Springer New York, 2007. [Online]. Available: https://books.google.com/books?id=0fNte 5nQNwC [16] C. Geuzaine and J.-F. Remacle, “Gmsh: a three-dimensional finite element mesh genera-tor with built-in pre- and post-processing facilities,” International Journal for Numerical Methods in Engineering , vol. 79, no. 11, pp. 1309–1331, 2009. [17] W. Cao, W. Zhang, and W. Wang, “Acoustic wave simulation in strongly heterogeneous models using a discontinuous galerkin method,” Geophysics , vol. 89, no. 5, pp. T251–T262, August 2024. [Online]. Available: https://doi.org/10.1190/geo2023-0525.1 [18] R. Okuta, Y. Unno, D. Nishino, S. Hido, and C. Loomis, “Cupy: A numpy-compatible library for nvidia gpu calculations,” in Proceedings of Workshop on Machine Learning Systems (LearningSys) in The Thirty-first Annual Conference on Neural Information Processing Systems (NIPS) , 2017. [Online]. Available: http://learningsys.org/nips17/assets/papers/paper 16.pdf 13 Figure 2: Two representative 3D simulation instances. Each shows the inclusion config-uration (varying position within the domain) and the corresponding 144 boundary sensor time-series. The diversity of inclusion positions generates the input–output pairs used to train the inverse model. 14 15 Z+ X- Y- X+ Y+ Z-
+
+144 sensors (100%) - Full coverage    
+
+> Z+ X-Y-X+ Y+ Z-
+
+120 sensors (83%) - Uniform sparse    
+
+> Z+ X-Y-X+ Y+ Z-
+
+72 sensors (50%) - Checkerboard    
+
+> Z+ X-Y-X+ Y+ Z-
+
+48 sensors (33%) - Diamond    
+
+> Z+ X-Y-X+ Y+ Z-
+
+24 sensors (17%) - Square Figure 4: Sensor configurations for the sparsity study, displayed on an unfolded cube. Green dots are active sensors; gray dots are inactive. Left to right: full (144), uniform-sparse (120), checkerboard (72), diamond (48), center-of-face (24). 16
