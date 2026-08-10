@@ -1,0 +1,37 @@
+{
+  "label": "2026-08-10",
+  "date": "2026-08-10",
+  "generated_at": "2026-08-10T20:57:19",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202608/10/2608.07144v1-instancesplat-instance-aware-feed-forward-3d-gaussian-splatting-for-scene-understanding",
+      "section": "quick",
+      "title_en": "InstanceSplat: Instance-Aware Feed-Forward 3D Gaussian Splatting for Scene Understanding",
+      "authors": "Minchao Jiang, Xiaoxuan Ma, Shunyu Jia, Haoru Wang, Zhang Liang, Wentao Zhu",
+      "date": "2026-08-07",
+      "pdf": "https://arxiv.org/pdf/2608.07144v1",
+      "score": "7.0",
+      "evidence": "用于场景重建的前馈3D高斯泼溅技术",
+      "tldr": "InstanceSplat 是一种统一的前馈 3D 高斯泼溅（3DGS）框架，旨在从无位姿多视图图像中实现可泛化的 3D 重建和实例级场景理解。它通过单次前馈过程构建包含外观、几何、实例身份和语义信息的 3D 高斯表示，并利用实例中心学习策略促进重建与理解任务的相互增强。该方法在多项任务上达到了 SOTA 性能，具有极高的效率和泛化能力。",
+      "tags": "query:q1",
+      "abstract_en": "Feed-forward 3D Gaussian Splatting (3DGS) enables efficient and generalizable 3D reconstruction, but current feed-forward 3DGS methods for scene understanding remain largely category-oriented. In contrast, instance-aware 3DGS methods typically rely on per-scene optimization and often decouple reconstruction from instance and semantic learning, limiting reciprocal interactions among them. We present InstanceSplat, a unified feed-forward 3DGS framework for generalizable 3D reconstruction and instance-aware scene understanding from pose-free multi-view images. In a single forward pass, InstanceSplat constructs an instance-aware Gaussian representation that jointly encodes appearance, geometry, instance identity, and language-aligned semantics. Shared 3D Gaussians ground instance identities across views, producing renderable and cross-view-consistent instance features. To allow reconstruction and scene understanding to benefit from each other, we further design an instance-centric learning strategy that connects reconstruction, instance learning, and semantic learning through shared instance structure. Specifically, instance cues guide reconstruction, language-aligned semantics strengthen the discrimination of confusing same-category instances, and instance regions aggregate semantic evidence into coherent object-level predictions. Experiments on novel-view synthesis, instance segmentation, and open-vocabulary semantic understanding under varying input-view settings and on an unseen dataset demonstrate state-of-the-art performance, practical efficiency, and strong generalization.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/10/2608.03107v1-a-unified-resolution-conditioned-framework-for-orthogonal-line-scanning-image-fusion",
+      "section": "quick",
+      "title_en": "A Unified Resolution-Conditioned Framework for Orthogonal Line-Scanning Image Fusion",
+      "authors": "Yiming Gong, Kai Wang",
+      "date": "2026-08-04",
+      "pdf": "https://arxiv.org/pdf/2608.03107v1",
+      "score": "6.0",
+      "evidence": "用于显微镜体积成像的深度学习",
+      "tldr": "本研究针对激光线扫描显微成像中横向分辨率各向异性的问题，提出了一种基于秩增强线性注意力（RELA）的统一分辨率条件融合框架。通过引入FiLM机制和自适应RELA模块，该模型能够根据分辨率比例动态调整，实现单一模型在多种狭缝宽度配置下的高质量图像融合，显著提升了成像质量和泛化能力。",
+      "tags": "query:q1",
+      "abstract_en": "Laser line-scanning microscopy enables fast volumetric imaging but produces anisotropic lateral resolution. Orthogonal line scans provide complementary directional information that can recover near-isotropic resolution, yet existing deep-learning methods require a separate model for each optical configuration. We present a unified, resolution-conditioned fusion framework based on Rank Enhanced Linear Attention (RELA). Feature-wise Linear Modulation (FiLM) conditions the network continuously on the resolving-power ratio, enabling one model to adapt across slit widths. We further introduce Adaptive RELA, which replaces fixed-kernel rank enhancement with ratio-conditioned multi-scale depthwise convolutions and uses a learnable attention temperature to adjust selectivity with degradation severity. Training data spanning multiple slit configurations are generated using a physics-grounded separable point-spread-function model verified against measured optical data at 48.3 dB accuracy. The resulting model achieves 34-40 dB PSNR across configurations, whereas unconditioned multi-slit training collapses to 24.3 dB and per-slit specialists lose 4-9 dB outside their training setting. It also generalizes smoothly to unseen intermediate configurations without interpolation artifacts. Ablations show that FiLM resolves configuration ambiguity, global linear attention captures long-range directional correspondences, and adaptive temperature yields an additional 2 dB in the challenging near-isotropic regime, where complementary signals are weak.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

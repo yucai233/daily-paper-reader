@@ -1,0 +1,91 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-10T20:56:44.895154+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.07144v1",
+      "title": "InstanceSplat: Instance-Aware Feed-Forward 3D Gaussian Splatting for Scene Understanding",
+      "abstract": "Feed-forward 3D Gaussian Splatting (3DGS) enables efficient and generalizable 3D reconstruction, but current feed-forward 3DGS methods for scene understanding remain largely category-oriented. In contrast, instance-aware 3DGS methods typically rely on per-scene optimization and often decouple reconstruction from instance and semantic learning, limiting reciprocal interactions among them. We present InstanceSplat, a unified feed-forward 3DGS framework for generalizable 3D reconstruction and instance-aware scene understanding from pose-free multi-view images. In a single forward pass, InstanceSplat constructs an instance-aware Gaussian representation that jointly encodes appearance, geometry, instance identity, and language-aligned semantics. Shared 3D Gaussians ground instance identities across views, producing renderable and cross-view-consistent instance features. To allow reconstruction and scene understanding to benefit from each other, we further design an instance-centric learning strategy that connects reconstruction, instance learning, and semantic learning through shared instance structure. Specifically, instance cues guide reconstruction, language-aligned semantics strengthen the discrimination of confusing same-category instances, and instance regions aggregate semantic evidence into coherent object-level predictions. Experiments on novel-view synthesis, instance segmentation, and open-vocabulary semantic understanding under varying input-view settings and on an unseen dataset demonstrate state-of-the-art performance, practical efficiency, and strong generalization.",
+      "authors": [
+        "Minchao Jiang",
+        "Xiaoxuan Ma",
+        "Shunyu Jia",
+        "Haoru Wang",
+        "Zhang Liang",
+        "Wentao Zhu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-07T12:02:48+00:00",
+      "link": "https://arxiv.org/pdf/2608.07144v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Feed-forward 3D Gaussian Splatting for scene reconstruction",
+      "llm_evidence_cn": "用于场景重建的前馈3D高斯泼溅技术",
+      "llm_evidence": "用于场景重建的前馈3D高斯泼溅技术",
+      "canonical_evidence": "用于场景重建的前馈3D高斯泼溅技术",
+      "llm_tldr_en": "Proposes InstanceSplat for unified feed-forward 3D reconstruction and instance-aware scene understanding.",
+      "llm_tldr_cn": "提出InstanceSplat，实现统一的前馈3D重建和实例感知场景理解。",
+      "llm_tldr": "提出InstanceSplat，实现统一的前馈3D重建和实例感知场景理解。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.03107v1",
+      "title": "A Unified Resolution-Conditioned Framework for Orthogonal Line-Scanning Image Fusion",
+      "abstract": "Laser line-scanning microscopy enables fast volumetric imaging but produces anisotropic lateral resolution. Orthogonal line scans provide complementary directional information that can recover near-isotropic resolution, yet existing deep-learning methods require a separate model for each optical configuration. We present a unified, resolution-conditioned fusion framework based on Rank Enhanced Linear Attention (RELA). Feature-wise Linear Modulation (FiLM) conditions the network continuously on the resolving-power ratio, enabling one model to adapt across slit widths. We further introduce Adaptive RELA, which replaces fixed-kernel rank enhancement with ratio-conditioned multi-scale depthwise convolutions and uses a learnable attention temperature to adjust selectivity with degradation severity. Training data spanning multiple slit configurations are generated using a physics-grounded separable point-spread-function model verified against measured optical data at 48.3 dB accuracy. The resulting model achieves 34-40 dB PSNR across configurations, whereas unconditioned multi-slit training collapses to 24.3 dB and per-slit specialists lose 4-9 dB outside their training setting. It also generalizes smoothly to unseen intermediate configurations without interpolation artifacts. Ablations show that FiLM resolves configuration ambiguity, global linear attention captures long-range directional correspondences, and adaptive temperature yields an additional 2 dB in the challenging near-isotropic regime, where complementary signals are weak.",
+      "authors": [
+        "Yiming Gong",
+        "Kai Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-04T04:28:39+00:00",
+      "link": "https://arxiv.org/pdf/2608.03107v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Deep learning for volumetric imaging in microscopy",
+      "llm_evidence_cn": "用于显微镜体积成像的深度学习",
+      "llm_evidence": "用于显微镜体积成像的深度学习",
+      "canonical_evidence": "用于显微镜体积成像的深度学习",
+      "llm_tldr_en": "A unified resolution-conditioned framework for fusing orthogonal line-scanning volumetric images.",
+      "llm_tldr_cn": "一种用于融合正交线扫描体积图像的统一分辨率条件框架。",
+      "llm_tldr": "一种用于融合正交线扫描体积图像的统一分辨率条件框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
