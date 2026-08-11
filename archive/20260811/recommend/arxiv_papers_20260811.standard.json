@@ -1,0 +1,372 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-11T20:46:35.480744+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [
+    {
+      "id": "2608.07760v1",
+      "title": "XClipGS: Exact Half-Space Clipping for Medical Volume Gaussian Splatting",
+      "abstract": "Gaussian-splatting proxies enable interactive rendering of volumetric medical scans, but a clipping plane exposes anatomy not constrained by external-view training and intersects primitives that conventional splatting can only keep or drop whole. We present XClipGS (eXact Clipping), which treats these as two separate problems: the render-time clip operator and supervision of the hidden interior. Under the local affine model used by EWA splatting, the ray integral of a half-space-restricted Gaussian factorizes exactly into its ordinary 2D footprint and a conditional Gaussian CDF whose argument is affine in pixel coordinates. The resulting closed-form per-pixel operator introduces no learned clipping parameters or auxiliary network and remains differentiable with respect to the primitive and plane. We use multi-distance reference views with varied clipping-plane axes and offsets to supervise the interior through the same operator. We also introduce a paired clipped/unclipped cut-face protocol with difference-referenced cut error (CDE) and culled-side leakage (Leak), because global image metrics dilute errors near the plane. On eight CT and MRI volumes with plane offsets not used for training, XClipGS attains the highest PSNR on every volume (33.56 versus 32.34 dB for ClipGS) while rendering at over 650 FPS, far above real time, versus 278 FPS. On voxel-axis cut-face views, it raises average band SSIM from 0.809 to 0.860 and leaks roughly 40 times less. Without retraining, it also achieves the best average across all four metrics on arbitrary-normal planes; on a fixed interior, it matches RaRa's face fidelity with about 16 times less leakage. Project page: https://gaozhongpai.github.io/XClipGS/",
+      "authors": [
+        "Zhongpai Gao",
+        "Benjamin Planche",
+        "Meng Zheng",
+        "Anwesa Choudhuri",
+        "Chaoyi Zhou",
+        "Terrence Chen",
+        "Ziyan Wu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-08-07T20:51:05+00:00",
+      "link": "https://arxiv.org/pdf/2608.07760v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "interactive rendering of volumetric medical scans using Gaussian splatting proxies",
+      "llm_evidence_cn": "使用高斯泼溅代理对体积医学扫描进行交互式渲染",
+      "llm_evidence": "使用高斯泼溅代理对体积医学扫描进行交互式渲染",
+      "canonical_evidence": "使用高斯泼溅代理对体积医学扫描进行交互式渲染",
+      "llm_tldr_en": "Presents XClipGS for exact clipping in medical volume Gaussian splatting, enabling better interior visualization.",
+      "llm_tldr_cn": "提出XClipGS用于医学体积高斯泼溅的精确裁剪，实现更好的内部可视化。",
+      "llm_tldr": "提出XClipGS用于医学体积高斯泼溅的精确裁剪，实现更好的内部可视化。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.09110v1",
+      "title": "View-Adaptive Renderer for View-Consistent 2D-to-3D Generation",
+      "abstract": "Reconstructing 3D shapes from a single image remains a fundamental yet challenging problem in computer vision. Traditional monocular 3D generation pipelines typically synthesize multiple views from a single input image before applying Neural Radiance Field (NeRF)-based reconstruction. However, inherent projective ambiguities often produce visual discontinuities across generated viewpoints, leading to inaccuracies in reconstructed 3D models. Current solutions either incur significant additional computational burdens or fail to adequately resolve practical inconsistencies between synthesized views. To address these limitations, we propose a novel viewpoint-adaptive neural rendering framework that enables robust 3D reconstruction even when given partially inconsistent multi-view inputs. Our approach introduces view-adaptive neural renderers that independently correct viewpoint-dependent errors while simultaneously sharing a global feature backbone to preserve structural coherence. Furthermore, we propose a self-attention fusion module that adaptively integrates multi-view information, ensuring geometric consistency without relying heavily on indirect regularizations or computationally intensive methods. Through extensive experiments, we demonstrate that our method consistently improves 3D reconstruction fidelity. Importantly, our approach achieves near state-of-the-art performance without diffusion-based SDS supervision, relying primarily on photometric rendering loss with lightweight attention regularizers. This balance between accuracy and efficiency makes the proposed framework highly practical for real-world applications.",
+      "authors": [
+        "U-Chae Jun",
+        "Jaeeun Ko",
+        "Jiwoo Kang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-08-10T04:28:08+00:00",
+      "link": "https://arxiv.org/pdf/2608.09110v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "viewpoint-adaptive neural rendering for NeRF-based reconstruction",
+      "llm_evidence_cn": "用于NeRF重建的视点自适应神经渲染",
+      "llm_evidence": "用于NeRF重建的视点自适应神经渲染",
+      "canonical_evidence": "用于NeRF重建的视点自适应神经渲染",
+      "llm_tldr_en": "A viewpoint-adaptive neural rendering framework to improve consistency in NeRF-based 3D reconstruction.",
+      "llm_tldr_cn": "一种视点自适应神经渲染框架，旨在提高基于NeRF的3D重建的一致性。",
+      "llm_tldr": "一种视点自适应神经渲染框架，旨在提高基于NeRF的3D重建的一致性。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.01958v2",
+      "title": "FAST-GS: Frequency Aware Space-time Gaussian Splatting for Photorealistic Dynamic Novel View Synthesis",
+      "abstract": "4D Gaussian Splatting (4DGS) excels in dynamic 3D reconstruction and real-time novel view synthesis via efficient 4D Gaussian representations and parallelizable rendering. However, existing 4DGS approaches rely on a single polynomial to model motion, which limits performance in complex dynamic scenes where high-frequency motion components are prevalent, and fails to ensure long-term stability due to cumulative trajectory drift. To address these issues, we propose a Fourier Motion Modeling module: this paradigm decomposes motion into frequency-based sinusoidal components, capturing both low-frequency global trajectories and high-frequency local details to model complex motion patterns accurately. It retains the real-time rendering capability of 4DGS while improving complex motion fitting and long-term coherence. Additionally, we integrate a motion-aware regularization strategy into the loss function: it uses frequency-dependent weights to suppress high-frequency jitter while preserving low-frequency motion coherence. Extensive experiments on N3V and Google Immersive datasets from multiple scenarios demonstrate the effectiveness of our method.",
+      "authors": [
+        "Zhengyang Zhang",
+        "Ziyu Lu",
+        "PengCheng Li",
+        "Hongbo Duan",
+        "Yi Liu",
+        "Pengting Luo",
+        "Peiyu Zhuang",
+        "Xinghui Li",
+        "Shaohua Ma"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-03T09:27:33+00:00",
+      "link": "https://arxiv.org/pdf/2608.01958v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "dynamic 3D reconstruction and novel view synthesis using Gaussian Splatting",
+      "llm_evidence_cn": "使用高斯泼溅进行动态3D重建和新视角合成",
+      "llm_evidence": "使用高斯泼溅进行动态3D重建和新视角合成",
+      "canonical_evidence": "使用高斯泼溅进行动态3D重建和新视角合成",
+      "llm_tldr_en": "Proposes Fourier Motion Modeling for 4D Gaussian Splatting to capture high-frequency motion in dynamic scenes.",
+      "llm_tldr_cn": "为4D高斯泼溅提出傅里叶运动建模，以捕捉动态场景中的高频运动。",
+      "llm_tldr": "为4D高斯泼溅提出傅里叶运动建模，以捕捉动态场景中的高频运动。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.07598v1",
+      "title": "NewtonGS: Physics-Structured Object-Level Neural Newtonian Dynamics for Gaussian Scene Animation",
+      "abstract": "Animating objects in a static 3D Gaussian scene requires an explicit object-level dynamic state and a controllable model of object motion. Existing dynamic Gaussian methods primarily reconstruct time-varying scenes or simulate deformation, rather than provide compact object states for direct control. To address this gap, we present NewtonGS, a physics-structured framework for object-level state rollout and Gaussian scene animation. NewtonGS represents each object with a 22-dimensional state covering pose, linear and angular velocity, anisotropic scale and its rate, mass, and contact properties. Its Gaussian Neural Newtonian Dynamics (Gaussian-NND) model combines analytic translation, quaternion kinematics, gravity, damping, and scale-restoration dynamics with learned continuous and contact residuals. A discrete event map handles floor contact. Predicted poses and scales define a shared affine transformation that updates the means and covariances of all Gaussians associated with each object. We construct two procedurally generated datasets: State-32 for state-rollout evaluation and Gaussian-32 for state-to-Gaussian transformation. On both the in-distribution and velocity-range-shift splits of State-32, NewtonGS achieves lower trajectory RMSE, final displacement error, and velocity RMSE than five analytic baselines. Experiments on Gaussian-32 further demonstrate effective conversion from predicted states to animated Gaussian objects.",
+      "authors": [
+        "Lianlei Shan",
+        "Feiyang Ye",
+        "Yan Chen",
+        "Yong Wu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-06T09:41:43+00:00",
+      "link": "https://arxiv.org/pdf/2608.07598v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "neural Newtonian dynamics for Gaussian scene animation",
+      "llm_evidence_cn": "用于高斯场景动画的神经牛顿动力学",
+      "llm_evidence": "用于高斯场景动画的神经牛顿动力学",
+      "canonical_evidence": "用于高斯场景动画的神经牛顿动力学",
+      "llm_tldr_en": "A physics-structured framework for object-level state rollout and animation in 3D Gaussian scenes.",
+      "llm_tldr_cn": "一种用于3D高斯场景中物体级状态演化和动画的物理结构化框架。",
+      "llm_tldr": "一种用于3D高斯场景中物体级状态演化和动画的物理结构化框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.07937v1",
+      "title": "FlexSplat: Flexible Feed-Forward 3D Gaussian Splatting without Point Cloud Correspondence",
+      "abstract": "We present FlexSplat, a feed-forward framework for novel view synthesis (NVS) from uncalibrated, object-centric multi-view image collections. A recent line of query-based methods reconstructs a compact set of 3D Gaussians by treating them as transformer queries that are refined with multi-view deformable attention; these methods, however, assume that camera poses are given. FlexSplat removes this assumption: a geometry transformer is trained jointly with the Gaussian decoder to predict per-image camera parameters and depth, which in turn ground a depth-guided Gaussian parameterization and a multi-view deformable cross-attention that aggregates evidence across all input views into a single, view-consistent set of primitives. An uncertainty-weighted depth-consistency objective lets the jointly trained geometry adapt to the reconstruction task, while the cross-view consensus formed during decoding absorbs the residual error of the estimated cameras and depth. The representation uses a compact Gaussian budget that is decoupled from the input resolution - unlike pixel-aligned methods, the primitive count does not grow with the image grid - and is not dictated by the number of views. On ShapeNet-SRN and Google Scanned Objects (GSO), FlexSplat matches or approaches posed state-of-the-art reconstructors while requiring neither camera poses nor ground-truth depth, and matches the best perceptual (LPIPS) quality among the compared methods on GSO. Our results indicate that a jointly trained geometry front-end is sufficient to bring calibration-free operation to query-based Gaussian reconstruction while staying within 0.7 dB PSNR of posed methods and matching their perceptual quality.",
+      "authors": [
+        "Amir Sabbaghziarani",
+        "Hanting Ye",
+        "Maria Gorlatova",
+        "Yi Ding"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-08T05:52:26+00:00",
+      "link": "https://arxiv.org/pdf/2608.07937v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "feed-forward neural volume representation and novel view synthesis",
+      "llm_evidence_cn": "前馈神经体积表示与新视角合成",
+      "llm_evidence": "前馈神经体积表示与新视角合成",
+      "canonical_evidence": "前馈神经体积表示与新视角合成",
+      "llm_tldr_en": "Enables novel view synthesis from uncalibrated images using a transformer-based Gaussian Splatting decoder.",
+      "llm_tldr_cn": "利用基于Transformer的高斯泼溅解码器，实现从未校准图像中进行新视角合成。",
+      "llm_tldr": "利用基于Transformer的高斯泼溅解码器，实现从未校准图像中进行新视角合成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.09382v1",
+      "title": "Coordinate-Residual Physics-Driven Neural Network for Electromagnetic Inverse Scattering",
+      "abstract": "Electromagnetic inverse scattering is a nonlinear and ill-posed problem, where accurate reconstruction is challenging due to measurement limitations, noise, and high computational costs, especially for 3-D imaging. Although physics-driven neural networks (PDNNs) reduce the dependence on labeled training data, existing accelerated PDNN frameworks often rely on preliminary reconstruction-based region selection, which may introduce instability when the selected region is inaccurate. In this paper, a coordinate-residual physics-driven neural network (CRPDNN) is proposed for 3-D electromagnetic inverse scattering. The proposed solver directly reconstructs the unknown contrast distribution using normalized spatial coordinates and a residual convolutional network, without requiring a preliminary reconstruction. For the reported noise-free 3-D synthetic cases, CRPDNN achieves an average relative error of 2.10\\%, compared with 7.97\\% for CSI and 3.99\\% for $L_{2/3}$-FBE-WCIE, while providing approximately 5.5- and 12.1-fold speedups over the two baselines, respectively. Supplementary 2-D comparisons further confirm its stability and computational efficiency relative to existing PDNN frameworks. CRPDNN also maintains reliable reconstruction performance under noisy measurements, and the 3-D Fresnel experiments further indicate its potential for practical imaging applications. The related code is available at https://github.com/Physics-driven-methods.",
+      "authors": [
+        "Yutong Du",
+        "Zicheng Liu",
+        "Bo Qi",
+        "Yali Zong",
+        "Peixian Han"
+      ],
+      "primary_category": "physics.comp-ph",
+      "categories": [
+        "physics.comp-ph",
+        "cs.LG",
+        "physics.app-ph"
+      ],
+      "published": "2026-08-10T09:57:57+00:00",
+      "link": "https://arxiv.org/pdf/2608.09382v1",
+      "tags": [
+        "keyword:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Physics-driven neural network for 3D electromagnetic inverse scattering",
+      "llm_evidence_cn": "用于3D电磁逆散射的物理驱动神经网络",
+      "llm_evidence": "用于3D电磁逆散射的物理驱动神经网络",
+      "canonical_evidence": "用于3D电磁逆散射的物理驱动神经网络",
+      "llm_tldr_en": "Develops a physics-driven neural network to solve 3D electromagnetic inverse scattering problems.",
+      "llm_tldr_cn": "开发了一种物理驱动神经网络，用于解决3D电磁逆散射问题。",
+      "llm_tldr": "开发了一种物理驱动神经网络，用于解决3D电磁逆散射问题。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "deep learning for multiple scattering in volumes",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.08476v1",
+      "title": "RayLift: Lifting Complementary Ray-Wise Evidence with 3D Geometry Priors for Semantic Scene Completion",
+      "abstract": "Camera-based 3D semantic scene completion (SSC) provides comprehensive scene understanding for autonomous driving and robotics. However, existing methods often treat stereo depth estimates as deterministic geometric constraints, causing depth uncertainty and local correspondence errors to propagate directly into voxel representations. To address this issue, we propose RayLift, a framework that uses stereo geometry as a metric reference while incorporating complementary ray evidence to recover reliable 3D structures adaptively. RayLift first employs a Complementary Context Encoder that extracts geometry-aware priors from a frozen 3D vision foundation model, thereby enriching the scene context. It then introduces a Depth Ray Evidence Lifter module that jointly models geometric dissimilarity, depth confidence, and spatial uncertainty to adaptively sample and weight candidate surface locations along each camera ray. Finally, a Semantic-Aware Voxel Integrator injects the resulting ray evidence into voxel features by explicitly modeling their spatial support. Extensive experiments on SemanticKITTI and SSCBench-KITTI-360 demonstrate that RayLift achieves competitive performance and consistently outperforms existing methods.",
+      "authors": [
+        "Meng Wang",
+        "Hongxia Yu",
+        "Wenzhe He",
+        "Xingdong Song",
+        "Huilong Pi",
+        "Jiapeng Zhang",
+        "Ruihui Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-09T04:41:34+00:00",
+      "link": "https://arxiv.org/pdf/2608.08476v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "ray-wise evidence and voxel representations for scene completion",
+      "llm_evidence_cn": "用于场景补全的射线证据与体素表示",
+      "llm_evidence": "用于场景补全的射线证据与体素表示",
+      "canonical_evidence": "用于场景补全的射线证据与体素表示",
+      "llm_tldr_en": "Uses ray-wise evidence and geometry priors to improve 3D semantic scene completion in voxel space.",
+      "llm_tldr_cn": "利用射线证据和几何先验改进体素空间中的3D语义场景补全。",
+      "llm_tldr": "利用射线证据和几何先验改进体素空间中的3D语义场景补全。",
+      "llm_tags": [
+        "query:q3"
+      ],
+      "matched_query_tag": "query:q3",
+      "matched_query_text": "neural acceleration of volume ray marching",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.09604v1",
+      "title": "A Hybrid Neural-Microfacet BRDF Model for Real-Time Rendering",
+      "abstract": "Over the past decade, microfacet-based BRDF models have formed the foundation of real-time rendering pipelines. Despite their widespread use, they often fail to reproduce subtle appearance effects arising from complex light-surface interactions, which have led to the emergence of specialized physics-based models for specific optical phenomena (e.g., diffraction, iridescence, multilayers). Although more accurate, these models lose versatility and lack performance for real-time rendering. Recently introduced, neural models have demonstrated their ability to approximate BRDF reference data coming from measurements, simulations, or even complex shading networks. However, most current neural models require relatively large networks, making them costly for real-time rendering. In this paper, we introduce a hybrid model that combines a GGX-type microfacet model and a neural model to leverage the best features of both representations. The neural component corrects the appearance approximated by the microfacet component, allowing much smaller network than in existing neural models. We show that, at identical memory cost, our model approximates measurements better than state-of-the-art neural models for a low evaluation overhead compared to a microfacet-based model. Furthermore, our hybrid model remains easily editable by artists and benefits from an important sampling scheme, making it attractive for both offline and real-time rendering.",
+      "authors": [
+        "Louis De Oliveira",
+        "Anastasia Karpova",
+        "Georges Nader",
+        "Antoine Houdard",
+        "Pierre Mezieres",
+        "Damien Rioux-Lavoie",
+        "Romain Pacanowski"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.CV"
+      ],
+      "published": "2026-08-10T13:46:33+00:00",
+      "link": "https://arxiv.org/pdf/2608.09604v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "neural models for real-time rendering and BRDF approximation",
+      "llm_evidence_cn": "用于实时渲染和BRDF近似的神经模型",
+      "llm_evidence": "用于实时渲染和BRDF近似的神经模型",
+      "canonical_evidence": "用于实时渲染和BRDF近似的神经模型",
+      "llm_tldr_en": "A hybrid neural-microfacet model to approximate complex light-surface interactions for real-time rendering.",
+      "llm_tldr_cn": "一种混合神经微面模型，用于近似实时渲染中的复杂光与表面交互。",
+      "llm_tldr": "一种混合神经微面模型，用于近似实时渲染中的复杂光与表面交互。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.08659v1",
+      "title": "JSGS: JPEG State-Guided Supervision for 3D Gaussian Splatting from Mixed-Quality Views",
+      "abstract": "Standard 3D Gaussian Splatting (3DGS) assumes that every input image faithfully samples scene radiance. However, mixed-quality JPEG images violate this assumption because compression-induced blocking and ringing artifacts can corrupt updates to Gaussians shared across views. To address this problem, we propose JPEG State-Guided Supervision for 3D Gaussian Splatting from Mixed-Quality Views (JSGS). JSGS uses luminance and chrominance quantization tables stored in each JPEG file to construct a view-specific JPEG observation operator. This operator encodes and decodes each rendered view for domain-matched comparison with the corresponding decoded input image. The luminance quantization table supplies continuous weights within a fixed middle frequency band. A loss in the low frequency band anchors coarse structure, while the weighted middle frequency loss redistributes supervision among the selected DCT coordinates. The resulting block disagreement also guides the Gaussian Controller to regularize small primitives with high opacity in disagreement regions. Across seven scenes and three mixed-quality schedules, JSGS achieves the lowest mean LPIPS and the highest mean SSIM under every schedule while rendering at approximately 150 FPS. Code: https://github.com/Jayden-Cui/JSGS.",
+      "authors": [
+        "Jinhua Cui",
+        "Anhong Wang",
+        "Kai Hu",
+        "Donghan Bu",
+        "Peihao Li",
+        "Tammam Tillo",
+        "Hao Jing",
+        "Shiao Xu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-09T12:05:34+00:00",
+      "link": "https://arxiv.org/pdf/2608.08659v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting radiance sampling and rendering",
+      "llm_evidence_cn": "3D高斯泼溅辐射采样与渲染",
+      "llm_evidence": "3D高斯泼溅辐射采样与渲染",
+      "canonical_evidence": "3D高斯泼溅辐射采样与渲染",
+      "llm_tldr_en": "Improves 3D Gaussian Splatting quality from compressed JPEG views using a state-guided supervision operator.",
+      "llm_tldr_cn": "通过状态引导监督算子提高压缩JPEG视图下的3D高斯泼溅渲染质量。",
+      "llm_tldr": "通过状态引导监督算子提高压缩JPEG视图下的3D高斯泼溅渲染质量。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
