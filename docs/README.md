@@ -6,49 +6,43 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-11
-- 运行时间：2026-08-11 20:49:06 UTC
+- 最新运行日期：2026-08-12
+- 运行时间：2026-08-12 20:13:09 UTC
 - 运行状态：成功
-- 本次总论文数：9
-- 精读区：2
-- 速读区：7
+- 本次总论文数：7
+- 精读区：1
+- 速读区：6
 
 ### 今日简报（AI）
-今日聚焦 3D 高斯泼溅（GS）的跨界突破，涵盖医疗影像精确裁剪与高质量 2D 转 3D 生成。
-重点关注 XClipGS 实现的医疗体数据无损裁剪，以及 View-Adaptive Renderer 在提升 3D 生成视角一致性上的卓越表现。
-建议优先研读两篇 9 分佳作，掌握 3D 重建从静态体素到动态
-- 详情：[/202608/11/README](/202608/11/README)
+今日聚焦 3D 场景表示从隐式向显式原语的范式更迭，深度探讨 3DGS 的前沿演进。
+重点关注 3DGS 在双图去模糊、可控表面建模及显著性引导压缩等维度的技术突破。
+建议优先研
+- 详情：[/202608/12/README](/202608/12/README)
 
 ### 精读区论文标签
-1. [XClipGS: Exact Half-Space Clipping for Medical Volume Gaussian Splatting](/202608/11/2608.07760v1-xclipgs-exact-half-space-clipping-for-medical-volume-gaussian-splatting)  
-   标签：评分：9.0/10、query:q7
-   evidence：使用高斯泼溅代理对体积医学扫描进行交互式渲染
-2. [View-Adaptive Renderer for View-Consistent 2D-to-3D Generation](/202608/11/2608.09110v1-view-adaptive-renderer-for-view-consistent-2d-to-3d-generation)  
-   标签：评分：9.0/10、query:q1
-   evidence：用于NeRF重建的视点自适应神经渲染
+1. [Implicit representations are dead. Long live explicit primitives!](/202608/12/2608.10001v1-implicit-representations-are-dead-long-live-explicit-primitives)  
+   标签：评分：8.0/10、query:q1
+   evidence：医学体积的隐式神经表示与基于高斯的基元
 
 ### 速读区论文标签
-1. [FAST-GS: Frequency Aware Space-time Gaussian Splatting for Photorealistic Dynamic Novel View Synthesis](/202608/11/2608.01958v2-fast-gs-frequency-aware-space-time-gaussian-splatting-for-photorealistic-dynamic-novel-view-synthesis)  
+1. [CasDeblurGS: Cascaded 2D-to-3D Multi-View Consistency for 3D Gaussian Splatting from Two Blurry Images](/202608/12/2608.10345v1-casdeblurgs-cascaded-2d-to-3d-multi-view-consistency-for-3d-gaussian-splatting-from-two-blurry-images)  
    标签：评分：7.0/10、query:q1
-   evidence：使用高斯泼溅进行动态3D重建和新视角合成
-2. [FlexSplat: Flexible Feed-Forward 3D Gaussian Splatting without Point Cloud Correspondence](/202608/11/2608.07937v1-flexsplat-flexible-feed-forward-3d-gaussian-splatting-without-point-cloud-correspondence)  
+   evidence：用于场景重建的神经渲染和3D高斯泼溅
+2. [Gaussian Sculpting: End-to-End Controllable Surface Reconstruction via Field Optimization](/202608/12/2608.10602v1-gaussian-sculpting-end-to-end-controllable-surface-reconstruction-via-field-optimization)  
    标签：评分：7.0/10、query:q1
-   evidence：前馈神经体积表示与新视角合成
-3. [RayLift: Lifting Complementary Ray-Wise Evidence with 3D Geometry Priors for Semantic Scene Completion](/202608/11/2608.08476v1-raylift-lifting-complementary-ray-wise-evidence-with-3d-geometry-priors-for-semantic-scene-completion)  
-   标签：评分：7.0/10、query:q3
-   evidence：用于场景补全的射线证据与体素表示
-4. [JSGS: JPEG State-Guided Supervision for 3D Gaussian Splatting from Mixed-Quality Views](/202608/11/2608.08659v1-jsgs-jpeg-state-guided-supervision-for-3d-gaussian-splatting-from-mixed-quality-views)  
+   evidence：用于重建的高斯泼溅与场优化
+3. [Compact Feed-Forward 3D Gaussians via Saliency-Guided Primitive Merging](/202608/12/2608.10712v1-compact-feed-forward-3d-gaussians-via-saliency-guided-primitive-merging)  
    标签：评分：7.0/10、query:q1
-   evidence：3D高斯泼溅辐射采样与渲染
-5. [NewtonGS: Physics-Structured Object-Level Neural Newtonian Dynamics for Gaussian Scene Animation](/202608/11/2608.07598v1-newtongs-physics-structured-object-level-neural-newtonian-dynamics-for-gaussian-scene-animation)  
-   标签：评分：6.0/10、query:q1
-   evidence：用于高斯场景动画的神经牛顿动力学
-6. [Coordinate-Residual Physics-Driven Neural Network for Electromagnetic Inverse Scattering](/202608/11/2608.09382v1-coordinate-residual-physics-driven-neural-network-for-electromagnetic-inverse-scattering)  
-   标签：评分：6.0/10、query:q4
-   evidence：用于3D电磁逆散射的物理驱动神经网络
-7. [A Hybrid Neural-Microfacet BRDF Model for Real-Time Rendering](/202608/11/2608.09604v1-a-hybrid-neural-microfacet-brdf-model-for-real-time-rendering)  
+   evidence：紧凑的前馈3D高斯渲染与重建
+4. [Amulet: Frame Extrapolation Through Sparse Layered Scene Representation and Adaptive Shading](/202608/12/2608.10423v1-amulet-frame-extrapolation-through-sparse-layered-scene-representation-and-adaptive-shading)  
    标签：评分：6.0/10、query:q7
-   evidence：用于实时渲染和BRDF近似的神经模型
+   evidence：通过稀疏分层场景表示和自适应着色加速渲染
+5. [Beyond Pixels: From Video Priors to 4D Worlds](/202608/12/2608.10744v1-beyond-pixels-from-video-priors-to-4d-worlds)  
+   标签：评分：6.0/10、query:q1
+   evidence：从视频潜变量进行4D生成和显式4D预测
+6. [Learning Gaussian Structure: Intervention-Guided Density Control for Feed-Forward Driving Reconstruction](/202608/12/2608.11077v1-learning-gaussian-structure-intervention-guided-density-control-for-feed-forward-driving-reconstruction)  
+   标签：评分：6.0/10、query:q1
+   evidence：用于驾驶场景的前馈高斯重建
 
 
 <div class="dpr-home-promo-card">

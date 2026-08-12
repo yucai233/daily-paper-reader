@@ -1,0 +1,285 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-12T20:12:06.155617+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [
+    {
+      "id": "2608.10001v1",
+      "title": "Implicit representations are dead. Long live explicit primitives!",
+      "abstract": "Continuous parameterization of medical data has emerged as a powerful paradigm for resolution-independent image representation. While Implicit Neural Representations offer high fidelity and compact storage, their reliance on global Multi-Layer Perceptrons incurs sizeable computational costs, large memory requirements, and extensive optimization times. As medical imaging trends towards ever-more detailed, high-resolution volumes, these costs impose significant bottlenecks in the applicability of implicit approaches. Recently, explicit Gaussian-based primitives have revolutionized the representation learning paradigm by trading deep network evaluations for localized, rasterization-friendly primitives. In this paper, we present a comprehensive, cross-dimensional evaluation of Gaussian representations against implicit approaches for medical imaging applications. First, we outline a theoretical overview on the mathematical properties offered by explicit primitives beyond what is capable under the implicit neural paradigm. Subsequently, we benchmark the computational performance on two demanding image datasets: 2D microscopy histology and 3D lung Computed Tomography (CT). Our experiments demonstrate that Gaussian representations consistently match or surpass reconstruction metrics compared to implicit methods across all compression factors, while displaying significantly lower optimization times, and memory requirements. Together with the compelling mathematical properties offered by explicit primitives, these findings motivate the wider adoption of Gaussian representations and position them as an attractive direction for future research in medical imaging.",
+      "authors": [
+        "Nil Stolt-Ansó",
+        "Maik Dannecker",
+        "Wenqi Huang",
+        "Andras Jakab",
+        "Daniel Rueckert"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.CV"
+      ],
+      "published": "2026-08-07T15:30:48+00:00",
+      "link": "https://arxiv.org/pdf/2608.10001v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Implicit Neural Representations for medical volumes and Gaussian-based primitives",
+      "llm_evidence_cn": "医学体积的隐式神经表示与基于高斯的基元",
+      "llm_evidence": "医学体积的隐式神经表示与基于高斯的基元",
+      "canonical_evidence": "医学体积的隐式神经表示与基于高斯的基元",
+      "llm_tldr_en": "Discusses implicit neural representations and explicit Gaussian primitives for high-resolution medical volume data.",
+      "llm_tldr_cn": "探讨了用于高分辨率医学体积数据的隐式神经表示和显式高斯基元。",
+      "llm_tldr": "探讨了用于高分辨率医学体积数据的隐式神经表示和显式高斯基元。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.10345v1",
+      "title": "CasDeblurGS: Cascaded 2D-to-3D Multi-View Consistency for 3D Gaussian Splatting from Two Blurry Images",
+      "abstract": "Free-viewpoint 3D scene media is increasingly important for immersive applications, yet practical capture often suffers from severe view sparsity and motion blur. Although neural rendering has advanced sparse-view synthesis, existing blur-aware methods typically require substantial multi-view redundancy, accurate camera poses, or costly per-scene optimization. We address a stringent yet practical setting: reconstructing a coherent 3D scene from only two motion-blurred images with known intrinsics, without input-view poses, auxiliary sharp images, or per-scene test-time optimization. To this end, we propose CasDeblurGS, a cascaded framework that progressively recovers reliable cross-view information from local 2D correspondences to global 3D guidance. Stage 1 constructs locally reliable guidance through occlusion-aware correspondence filtering, while Stage 2 aggregates the intermediate restorations into a provisional pose-free 3D Gaussian representation whose input-view re-renders provide dense global guidance for final restoration. The resulting views enable a more coherent 3D representation and higher-quality novel-view synthesis. Experiments on real-world and synthetic Deblur-NeRF scenes show consistent gains over strong baselines, improving PSNR by 1.19 dB and 2.11 dB, respectively. Progressive ablations, cross-view correspondence visualization, and camera reprojection analysis further demonstrate improvements in both rendering quality and multi-view geometric consistency.",
+      "authors": [
+        "Haeyun Choi",
+        "Minhyuk Jang",
+        "I-Gil Kim"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-11T01:13:21+00:00",
+      "link": "https://arxiv.org/pdf/2608.10345v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Neural rendering and 3D Gaussian splatting for scene reconstruction",
+      "llm_evidence_cn": "用于场景重建的神经渲染和3D高斯泼溅",
+      "llm_evidence": "用于场景重建的神经渲染和3D高斯泼溅",
+      "canonical_evidence": "用于场景重建的神经渲染和3D高斯泼溅",
+      "llm_tldr_en": "Reconstructs 3D scenes from sparse, blurry images using a cascaded 3D Gaussian splatting framework.",
+      "llm_tldr_cn": "使用级联3D高斯泼溅框架从稀疏、模糊的图像中重建3D场景。",
+      "llm_tldr": "使用级联3D高斯泼溅框架从稀疏、模糊的图像中重建3D场景。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.10423v1",
+      "title": "Amulet: Frame Extrapolation Through Sparse Layered Scene Representation and Adaptive Shading",
+      "abstract": "We introduce Amulet, a rendering method that transforms a scene into a sparse, tiled and layered intermediate scene representation (cache) for high-frequency frame extrapolation. In contrast to reprojection-based techniques, Amulet explicitly rasterizes and stores potentially visible geometry in its layered image-space cache, allowing accurate shading and inpainting of newly disoccluded regions without hallucination. Our key contribution is a cache that is predictively filled with shading information for future views, amortized over multiple current frames. Novel views are synthesized by hierarchically traversing the cache front to back and refining stale or missing shading on the fly. Using a predictive, gradient-based scheduler that assigns lifetimes for each tile, we enable adaptive shading updates under motion and dynamic lighting. Amulet decouples the rasterization and shading rate from the refresh rate of the display. In many scenarios, our cache can use a single shaded frame to synthesize multiple extrapolated frames with only a few localized updates. In a typical application, we extrapolate a 60 Hz shading rate to a 240 Hz display. Amulet achieves up to 250 Hz at 4K resolution and is competitive with state-of-the-art frame generation methods, including DLSS and neural-flow approaches, in multiple metrics. Amulet explores the design space of sparse layered image-space representation. It enables accurate, non-neural multi frame extrapolation with explicit handling of disocclusions. Our findings show that Amulet can extrapolate many more frames than contemporary methods with high quality, rivaling latency-bound frame interpolation methods with similar quality in many scenes.",
+      "authors": [
+        "Sebastian Künzel",
+        "Fabian Schmierer",
+        "Sergej Geringer",
+        "Guido Reina",
+        "Daniel Weiskopf",
+        "Dieter Schmalstieg"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR"
+      ],
+      "published": "2026-08-11T03:14:05+00:00",
+      "link": "https://arxiv.org/pdf/2608.10423v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Accelerating rendering via sparse layered scene representation and adaptive shading",
+      "llm_evidence_cn": "通过稀疏分层场景表示和自适应着色加速渲染",
+      "llm_evidence": "通过稀疏分层场景表示和自适应着色加速渲染",
+      "canonical_evidence": "通过稀疏分层场景表示和自适应着色加速渲染",
+      "llm_tldr_en": "Introduces a sparse layered representation and predictive shading cache for high-frequency frame extrapolation.",
+      "llm_tldr_cn": "引入了稀疏分层表示和预测着色缓存，用于高频帧外推。",
+      "llm_tldr": "引入了稀疏分层表示和预测着色缓存，用于高频帧外推。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.10602v1",
+      "title": "Gaussian Sculpting: End-to-End Controllable Surface Reconstruction via Field Optimization",
+      "abstract": "3D Gaussian Splatting (3DGS) has recently enabled real-time novel view synthesis with impressive quality. However, it struggles to recover accurate surfaces under limited viewpoints and due to the inherent irregularity of Gaussian primitives. The resulting geometric errors are notoriously difficult to correct manually. To address these issues, we propose Gaussian Sculpting, a fully differentiable end-to-end framework for high-quality surface reconstruction. Our key insight is to anchor Gaussians onto an evolving differentiable surface, allowing them to guide signed distance field (SDF) optimization instead of extracting the surface only during post-processing. To enable stable gradient isolation during joint optimization, we design a bi-level training strategy in which the outer loop optimizes the geometry represented by the SDF, while the inner loop updates the Gaussians with the geometry fixed. We further impose constraints on Gaussian parameters to ensure consistency with the underlying surface, thereby improving both geometric and appearance fidelity during optimization. In addition, we introduce a multi-resolution subdivision scheme based on octree-like partitioning to preserve fine details while reducing memory consumption. Experiments on object-level scenes demonstrate that our method effectively removes redundant surfaces, recovers missing structures caused by limited viewpoints, and achieves strong reconstruction quality even at relatively low resolutions.",
+      "authors": [
+        "Ke Jiaxin",
+        "Juncheng Liu",
+        "Yi Wang",
+        "Zhouhui Lian",
+        "Bin Liu",
+        "Shengfa Wang",
+        "Xiangjia He"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-08-11T07:42:24+00:00",
+      "link": "https://arxiv.org/pdf/2608.10602v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Gaussian Splatting and field optimization for reconstruction",
+      "llm_evidence_cn": "用于重建的高斯泼溅与场优化",
+      "llm_evidence": "用于重建的高斯泼溅与场优化",
+      "canonical_evidence": "用于重建的高斯泼溅与场优化",
+      "llm_tldr_en": "Combines 3D Gaussian Splatting with SDF optimization for high-quality differentiable surface reconstruction.",
+      "llm_tldr_cn": "将3D高斯泼溅与SDF优化结合，实现高质量的可微表面重建。",
+      "llm_tldr": "将3D高斯泼溅与SDF优化结合，实现高质量的可微表面重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.10744v1",
+      "title": "Beyond Pixels: From Video Priors to 4D Worlds",
+      "abstract": "4D generation synthesizes dynamic 3D scenes from conditions such as text or images. Existing methods either reconstruct generated RGB videos with a separate 4D model or adapt a particular video generator to predict geometry directly. The former suffers from distribution mismatch and error propagation, whereas the latter ties 4D prediction to a specific generator and may require retraining when the generator or conditioning regime changes. We ask whether the final denoised latents of video models that share a variational autoencoder (VAE) can instead provide a reusable interface to explicit 4D prediction. Building on this insight, we introduce direct latent-to-4D generation and instantiate it as Latent-to-4D, which bypasses RGB by aligning a video latent with the token grid of a pretrained 4D decoder and refining it through frame-wise and global spatiotemporal attention. Trained on roughly 1K existing reconstruction clips, a single checkpoint transfers unchanged across multiple video diffusion transformers within the same VAE family. On Text4D-200 and I4D-200, Latent-to-4D surpasses matched same-latent Wan+4RC cascades in projection-based DINO-F1 by 2.88--3.45 and 5.81 points, respectively, while also being preferred by human raters for geometry, temporal stability, and overall quality.",
+      "authors": [
+        "Zihao Liu",
+        "Xiaolong Shen",
+        "Zhenglin Zhou",
+        "Ruijie Quan",
+        "Yi Yang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-11T10:02:41+00:00",
+      "link": "https://arxiv.org/pdf/2608.10744v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "4D generation and explicit 4D prediction from video latents",
+      "llm_evidence_cn": "从视频潜变量进行4D生成和显式4D预测",
+      "llm_evidence": "从视频潜变量进行4D生成和显式4D预测",
+      "canonical_evidence": "从视频潜变量进行4D生成和显式4D预测",
+      "llm_tldr_en": "Introduces Latent-to-4D for direct 4D scene generation by aligning video latents with token grids.",
+      "llm_tldr_cn": "引入Latent-to-4D，通过将视频潜变量与令牌网格对齐，实现直接的4D场景生成。",
+      "llm_tldr": "引入Latent-to-4D，通过将视频潜变量与令牌网格对齐，实现直接的4D场景生成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.10712v1",
+      "title": "Compact Feed-Forward 3D Gaussians via Saliency-Guided Primitive Merging",
+      "abstract": "3D scene reconstruction, modeling, and rendering are highly relevant for numerous tasks, and 3D Gaussian splatting has become a standard choice in this context. Its feed-forward variants provide fast reconstruction from sparse input views but often produce per-pixel primitives, leading to highly redundant and thus inefficient representations. We present a structure-aware merging pipeline that takes per-pixel primitives from any feed-forward method and consolidates them into a compact, content-adaptive Gaussian set while largely retaining visual quality at just $\\frac{1}{20}^\\text{th}$ of the Gaussians of a per-pixel method. We group spatially coherent Gaussians of similar appearance into variable-size clusters via adaptive superpixel segmentation guided by a saliency map, which allocates fine segments to textured regions and coarse segments to homogeneous areas. We compress each cluster into a compact latent representation through a learned encoder, then match and consolidate representations across views based on geometric overlap and feature similarity via a learned merger. A level-of-detail decoder then produces the final Gaussians at a controllable resolution, enabling a flexible quality-efficiency trade-off at inference. As a post-processing module, the pipeline is backbone-agnostic, leveraging the strengths of existing feed-forward methods. This leads to better and more robust quality than achieved by previous approaches that target a reduction in primitive count, while providing a highly compact representation, that can be rendered efficiently.",
+      "authors": [
+        "Tim-Felix Fassch",
+        "Jochen Kall",
+        "Cyrill Stachniss"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-11T09:32:08+00:00",
+      "link": "https://arxiv.org/pdf/2608.10712v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Compact feed-forward 3D Gaussian rendering and reconstruction",
+      "llm_evidence_cn": "紧凑的前馈3D高斯渲染与重建",
+      "llm_evidence": "紧凑的前馈3D高斯渲染与重建",
+      "canonical_evidence": "紧凑的前馈3D高斯渲染与重建",
+      "llm_tldr_en": "Proposes a merging pipeline to create compact 3D Gaussian representations for efficient scene rendering.",
+      "llm_tldr_cn": "提出了一种合并流水线，用于创建紧凑的3D高斯表示，以实现高效的场景渲染。",
+      "llm_tldr": "提出了一种合并流水线，用于创建紧凑的3D高斯表示，以实现高效的场景渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.11077v1",
+      "title": "Learning Gaussian Structure: Intervention-Guided Density Control for Feed-Forward Driving Reconstruction",
+      "abstract": "Feed-forward Gaussian reconstruction has recently emerged as an efficient approach for driving scene reconstruction. However, prevailing LiDAR-based methods preserve the initial correspondence between observed points and Gaussian primitives, treating the initialized primitive set as the final representation. Unlike optimization-based 3DGS, these methods cannot accumulate gradients during training to determine how the scenes representation should be densified. Meanwhile, the shared sparse backbone only fuses observations from different timestamps implicitly, without explicitly aggregating cross-time evidence for individual primitives. In this paper, we present Learning Gaussian Structure (LGS), a framework that enhances both Gaussian structure and primitive attributes. Our key observation is that changes in local gradient responses induced by a prune or add intervention reveal whether the corresponding structural adjustment benefits reconstruction. Based on this observation, our Gaussian Densify Policy learns a Densify Map comprising Prune and Addition Scores from controlled interventions, and directly adjusts the Gaussian structure during inference. We further develop a compact Cross-Time Point Query that explicitly retrieves and aggregates neighboring features from Gaussian primitives at other timestamps for reliable attribute prediction. Extensive experiments on the Waymo Open Dataset and PandaSet demonstrate that LGS consistently outperforms existing methods.",
+      "authors": [
+        "Hang Li",
+        "Jiahe Li",
+        "Meiying Gu",
+        "Jin Zheng",
+        "Lina Yu",
+        "Xiao Bai"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-11T15:38:55+00:00",
+      "link": "https://arxiv.org/pdf/2608.11077v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "feed-forward Gaussian reconstruction for driving scenes",
+      "llm_evidence_cn": "用于驾驶场景的前馈高斯重建",
+      "llm_evidence": "用于驾驶场景的前馈高斯重建",
+      "canonical_evidence": "用于驾驶场景的前馈高斯重建",
+      "llm_tldr_en": "Introduces Learning Gaussian Structure (LGS) to improve density control in feed-forward Gaussian reconstruction.",
+      "llm_tldr_cn": "引入学习高斯结构（LGS），以改进前馈高斯重建中的密度控制。",
+      "llm_tldr": "引入学习高斯结构（LGS），以改进前馈高斯重建中的密度控制。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

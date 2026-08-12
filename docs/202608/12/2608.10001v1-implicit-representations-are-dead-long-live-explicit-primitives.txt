@@ -1,0 +1,328 @@
+Title: Implicit representations are dead. Long live explicit primitives!
+
+URL Source: https://arxiv.org/pdf/2608.10001v1
+
+Published Time: Wed, 12 Aug 2026 00:03:16 GMT
+
+Number of Pages: 12
+
+Markdown Content:
+## Implicit representations are dead. Long live explicit primitives! 
+
+Nil Stolt-Ansó ⋆1, Maik Dannecker ⋆2, Wenqi Huang 1,Andras Jakab 2, and Daniel Rueckert 1,3 
+
+> 1
+
+Technical University Munich, Germany  
+
+> 2
+
+University of Zurich, Switzerland  
+
+> 3
+
+Imperial College London, United Kingdom 
+
+nil.stolt@tum.de – m.dannecker@tum.de 
+
+Abstract. Continuous parameterization of medical data has emerged as a powerful paradigm for resolution-independent image representation. While Implicit Neural Representations offer high fidelity and compact storage, their reliance on global Multi-Layer Perceptrons incurs sizeable computational costs, large memory requirements, and extensive opti-mization times. As medical imaging trends towards ever-more detailed, high-resolution volumes, these costs impose significant bottlenecks in the applicability of implicit approaches. Recently, explicit Gaussian-based primitives have revolutionized the representation learning paradigm by trading deep network evaluations for localized, rasterization-friendly prim-itives. In this paper, we present a comprehensive, cross-dimensional eval-uation of Gaussian representations against implicit approaches for med-ical imaging applications. First, we outline a theoretical overview on the mathematical properties offered by explicit primitives beyond what is ca-pable under the implicit neural paradigm. Subsequently, we benchmark the computational performance on two demanding image datasets: 2D microscopy histology and 3D lung Computed Tomography (CT). Our ex-periments demonstrate that Gaussian representations consistently match or surpass reconstruction metrics compared to implicit methods across all compression factors, while displaying significantly lower optimization times, and memory requirements. Together with the compelling mathe-matical properties offered by explicit primitives, these findings motivate the wider adoption of Gaussian representations and position them as an attractive direction for future research in medical imaging. 
+
+Keywords: Explicit Representations · Gaussian Primitives · Implicit Neural Representations · Medical Image Reconstruction. 
+
+1 Introduction 
+
+Medical images are acquired as discrete voxels of intensities, sampled along struc-tures such as grids. While standardized, these formats place a limit in spatial  
+
+> ⋆
+
+Equal contribution arXiv:2608.10001v1 [eess.IV] 7 Aug 2026 2 N. Stolt-Ansó & M. Dannecker et al. Explicit bases Implicit bases Discrete domain Continuous domain 
+
+Dictionary learning Explicit primitives Feature grids Implicit neural fields 
+
+> coordinate networks, global parameter-sharing continuous, closed form
+> our position
+> explicit, grid-bound atoms local, grid-bound features
+> K-SVD [1] Online dictionary learning [19] Kernel Dictionary Learning [37] Neural Volumes [16] Instant-NGP [22] K-planes [8] SIREN [33] WIRE [29] Fourier Features [36] Gaussian Image [43] Image-GS [44]
+
+Fig. 1. Representation paradigms positioned by domain (discrete → continuous) and basis type (implicit → explicit). Red arrows indicate the direction of research in recent years: (1-dotted) movement from explicit dictionaries towards neural representations, (2-dashed) shift towards feature-grids, (3-solid) switch to explicit primitives. 
+
+and temporal resolution in that a scan’s intrinsic detail is directly coupled to its memory footprint. Off-grid methods instead reframe data as continuous func-tions, being mostly unaffected by sampling structure and enabling arbitrary upsampling. Crucially, how this function is parameterized dictates optimization speed, memory dynamics, and ultimately clinical viability. Traditionally, dictionary learning and sparse coding methods [1, 19, 37] rep-resented images as explicit bases, with grid-bound weights dictating the com-ponents of the signal at a given location. With the popularity of deep learning, Implicit Neural Representations (INRs) freed the basis from the grid by storing the signal in the weights of a coordinate Multi-Layer Perceptron (MLP), with expressive activations [33, 28] and encodings [36] overcoming the spectral bias of early ReLU networks. To speed up the optimization process, latent feature grids [16, 22, 4, 8] reintroduced explicit, local feature storage to curb the cost of deep evaluation, retaining only a shallow decoder. Most recently, following 3D Gaussian Splatting [12], explicit primitive methods [43, 44] abandon neural de-coding entirely, representing signals with continuous, freely optimizable atoms. 
+
+Contributions. In this work, we argue explicit primitives offer advantages to medical imaging research unmatched by implicit approaches, both in terms of mathematical properties and in computational abilities. Concretely: (i) we es-tablish a unified formulation under which dictionaries, INRs, feature grids, and explicit primitives differ only in the parameterization and support of their bases; (ii) we catalogue the closed-form mathematical properties and inductive biases Implicit representations are dead. Long live explicit primitives! 3
+
+that follow from explicit parametric bases, and show how each unlocks concrete advantages across established and emerging medical imaging applications; and (iii) we benchmark explicit and implicit representations across two real-world medical datasets, showing consistently higher fidelity and robustness, at lower optimization times and memory requirements. 
+
+2 Unified formulation for off-grid methods 
+
+Off-grid methods map a coordinate x ∈ Rd to an intensity, feature, or vector quantity v ∈ Rc. We observe that the dominant paradigms are instances of a single generalized basis expansion, 
+
+v(x) = X 
+
+> k∈N (x)
+
+wk(x) ck (1) in which basis (weighting) functions wk(x) ∈ R are combined with coefficients 
+
+ck ∈ Rc over an active set N (x) ⊆ { 1, . . . , N }. The paradigms differ only in three choices: (i) where the bases wk originate, (ii) their spatial support together with how the active set N (x) is selected, and (iii) which quantities are optimized. 
+
+Dictionary methods. Sparse coding approximates a signal as v ≈ P 
+
+> k
+
+αk dk,with fixed (learned) atoms wk = dk and scalar coefficients ck = αk [1]. The atoms are discrete vectors defined only at grid samples and the active set N is chosen globally by a sparsity penalty ∥α∥0 ≤ T rather than by spatial locality. Only the coefficients (and, in a separate stage, the dictionary) are optimized. Dictionaries are thus the explicit grid-bound ancestor of the methods below. 
+
+Implicit representations. INRs model the signal as a deep MLP fθ (x) whose final linear layer reads fθ (x) = P 
+
+> k
+
+hk(x) pk. This is exactly Eq. (1) where 
+
+wk(x) = hk(x) is the penultimate layer’s k-th activation and c = p are the final layer’s weights. Here, the bases are generated on-the-fly: they have global support ( N (x) = {1, . . . , N } for all x), as they are nonlinear functions of all 
+
+weights θ, and optimization targets the generator parameters θ. While early ReLU networks exhibited spectral bias , periodic [33] and Gabor-wavelet [28] ac-tivations and Fourier encodings [36] have shown to capture high-frequency ex-pressivity. Generating bases on demand reduces storage requirements relative to dictionaries, although the MLP must learn to partition the domain through many successive layers, incurring large optimization times for detailed volumes. 
+
+Latent feature grids. Feature grids [16] take a hybrid approach by introducing explicit local storage alongside an implicit decoder fθ . A (multi-resolution) grid of latent feature vectors Z is instantiated and queried for an individual coordi-nate via interpolation Z(x) ∈ RF . Feature grids functionally equate to explicitly representing and directly optimizing the intermediate activations Z(x) of a deep 4 N. Stolt-Ansó & M. Dannecker et al. 
+
+network, bypassing the need for early layers of a network to generate it. This results in significantly lower depth requirements, considerably diminishing the compute costs of mapping coordinates to bases. Contextualizing this to fully im-plicit approaches, the overall function can be summarized as v(x) = fθ (Z(x)) .Most famously, [22] further utilize hardware-specific tricks to improve optimiza-tion times. Alternatively, other approaches factorize dense grids into compact planes and vectors [4, 8], alleviating the storage costs of high-resolution feature grids. 
+
+Explicit representations. Explicit methods make the bases themselves the free parameters. For Gaussian primitives, we define the basis as 
+
+wk(x) = exp 
+
+
+
+− 12 (x − μk)⊤Σ−1 
+
+> k
+
+(x − μk)
+
+
+
+, (2) with center μk ∈ Rd and anisotropic covariance Σk parameterized through its Cholesky factors to ensure positive semi-definiteness. The Gaussian parameters 
+
+{μk, Σk}, as well as ck are optimized. A Gaussian has infinite support, but its rapid exponential decay renders each primitive negligible beyond a few standard deviations. Truncating support via k-nearest neighbors further reduces compu-tational requirements with negligible impact on reconstruction metrics. The additive form of Eq. (1) imposes a zero (baseline) prior away from primi-tives. Alternatively, the normalized weighting form, known as Partition of Unity (PoU), is more efficient on large uniform regions [44], albeit forfeiting the ana-lytic closure outlined in Section 3. This returns to the dictionary principle, yet the atoms are now continuous, may span arbitrarily-large regions, and are freely optimizable. Overlapping primitives share bases across neighboring regions, thus scaling capacity with signal complexity rather than grid resolution. 
+
+3 The Explicit Advantage: Analytic, Controllable, and Geometric Representations 
+
+Section 2 established that explicit primitives are the only paradigm whose bases are at once continuous, parametric, and geometrically explicit. We now outline existing and potential applications of these mathematical properties. 
+
+3.1 Analytic closure Closure under convolution. Sensor blur is omnipresent in image acquisi-tion and especially critical in medical imaging, where the measurement is the anatomy convolved with the device’s point-spread function (PSF). Modeling the PSF inside an implicit network demands costly numerical integration, propagat-ing many stochastic samples per query [39]. Since Gaussians are closed under convolution, an explicit Gaussian representation captures the PSF as a simple covariance addition, Σobs = Σk + ΣPSF [6]. The same rasterization extends to Implicit representations are dead. Long live explicit primitives! 5
+
+tomographic projection, where it already enables sparse-view CT reconstruction an order of magnitude faster than neural fields [42]. 
+
+Spatial-spectral duality. The Fourier transform of a Gaussian is again a Gaussian, so an explicit representation can be fit directly against raw frequency-domain measurements, bypassing the gridding that discrete Fourier transforms require. Gabor primitives extend Gaussian primitives by adding frequency and phase components. Their spectra are origin-shifted Gaussians, further permitting spectral space-partitioning for improved high-frequency recovery [10]. 
+
+Analytical Lipschitz continuity. Balancing expressiveness and smooth-ness requires bounding a representation’s global upper bound on the function’s spatial rate of change, i.e. its Lipschitz constant. In implicit approaches, this demands complex processes of rigid layer-wise spectral normalizations [5], regu-larization techniques [15], strategic budget distribution across all network com-ponents [20], or applying smoothing constraints to the output space using control points [30]. Conversely, the Lipschitz constant of an explicit Gaussian represen-tation is analytically defined directly by covariance matrices Σk and amplitudes of its primitives, entirely avoiding the architectural overhead and expressiveness bottlenecks inherent to spectrally constrained MLPs. 
+
+Closed-form derivatives and volumes. Spatial derivatives of Eq. (2) are analytic, and a primitive’s volume is proportional to p|Σk|. While strictly iso-choric (volume-preserving) deformations are classically enforced through expen-sive Jacobian-determinant constraints [9], Gaussian representations reduce to a simple penalty on |Σk|, sidestepping the double-backpropagation through a neural deformation field. Explicit Gaussian deformation models already rival iterative and learning-based registration at a fraction of the runtime [14]. 
+
+3.2 Controllable optimization Structure-aware initialization. Random initialization of an MLP is notori-ously hard to tune, and data-aware priors demand expensive meta-learning [35, 32]. Explicit primitives can instead be placed deterministically from the target’s own structure, concentrating modeling capacity in high-frequency regions before the first gradient step [44]. 
+
+Adaptive densification. Capacity can be allocated where the signal de-mands it. New primitives may be spawned at high-error regions during optimiza-tion. As their support is effectively local, this resolves fine detail without per-turbing already-converged regions or risking catastrophic forgetting [12]. Multi-scale primitive densification has proven effective for exactly this in deformable registration [14]. 
+
+Native coarse-to-fine control. Coarse-to-fine optimization is essential to jointly learn representations and spatial transforms, as in pose or motion esti-mation. Implicit methods emulate it by annealing the positional encoding [25]. Meanwhile, explicit methods obtain it natively by applying a decaying blur to the covariances, granting direct control of the frequencies’ upper bound. 6 N. Stolt-Ansó & M. Dannecker et al. 
+
+Inductive biases and extrapolation. The blending choice in w(x) is itself a controllable prior. The additive form decays to a baseline away from primi-tives, naturally modeling empty uniform pockets (e.g. in the lungs) without the use of any primitives. Alternatively, the normalized form (PoU) captures large homogeneous regions [44, 6] with higher parameter-efficiency. Explicit primitives further extrapolate predictably beyond the training domain. This causes bor-dering background regions to require no additional primitives, deformation and velocity fields stay sensible outside the sampled coordinate range, and permits standardization of cohort volumes without boundary artifacts. 
+
+3.3 Geometric structure Semantical feature extraction. Extracting semantics from an INR is not straight-forward. Mapping network weights to labels [7], meta-learning segmen-tation priors [38], or auto-decoding a latent vector [24] all scale poorly and tend to overfit intensities at the expense of structure [34]. Over an explicit primitive set, the representation becomes a point cloud, allowing classification and segmen-tation to become graph- and node-level problems addressable with permutation-invariant graph networks [26, 41]. Message passing over Gaussian primitives al-ready drives classification [15] and segmentation [11] of splatted scenes, as well as general feature extraction [27]. 
+
+Parameter-space regularization In implicit neural fields, preventing oc-cupancy in specific regions relies on soft spatial regularizers [40, 18]. Because these are output-space constraints, they demand dense numerical integration to penalize the network indirectly. The transition to explicit parameters offers di-rect parameter-space intervention. If an anatomical prior dictates a disallowed region, or if a primitive’s contribution falls below a threshold, the parameters can be explicitly pruned or penalized [12, 31]. 
+
+3.4 Limitations Generative modeling. Implicit generative models rely on conditioning a multi-layer perceptron (MLP) with a global latent vector z [24]. Following works in-crease reconstruction fidelity by anchoring latent codes to specific spatial parti-tions [3, 21]. Some works try to bridge into the Gaussian domain by showing that Gaussian scenes can be generated by autoregressively predicting latent vectors along a grid, and learning to decode each vector into Gaussian parameters [17]. Despite the advantages of explicit methods, their off-grid topology introduces a fundamentally conflict with the strict grid-based requirements of current gener-ative architectures. Although works exist which experiment with utilizing per-mutation equivariant architectures to generate Gaussian scenes [29, 13], these rely ground-truth representations trained on densely acquired data, which is a rare commodity in medical imaging. Overall, this topic remains severely under-researched, simultaneously opening an exciting frontier for modeling image dis-tributions natively through explicit basis expansions. Implicit representations are dead. Long live explicit primitives! 7
+
+4 Performance evaluation and scaling properties 
+
+Next, we evaluate the performance and scaling properties of explicit representa-tions against common implicit representation techniques. While representation literature predominantly concerns itself in maximizing reconstruction quality, we argue that the applicability of these methods to real-world research also relies on training requirements. As such, we outline two metrics to aid researchers in quantifying hardware bottlenecks for their research: 
+
+Optimization duration. Optimization time dictates a researcher’s ability to perform architectural exploration and hyper-parameter tuning, as well as the size of a cohort for which results may be computed. We measure this as the time required for a reconstruction metric to plateau. In our experiments, we set the early-stopping criterion as the first 300 training steps elapsing without reconstruction metrics (PSNR) increasing by 0.2dB. 
+
+Backpropagation memory usage. A key factor influencing the efficacy of training processes is the size of a mini-batch. The memory capacity of a GPU places a ceiling over the maximum batch size. This influences the convergence stochasticity and the learning rate that may be employed, and consequently determines the feasibility of learning representations for a given type of data. We argue it is important for researchers to be given an up-front understanding on the memory requirements of a given method. We do so by reporting memory usage per coordinate during the backpropagation of gradients. 
+
+Datasets. To reflect applicability of implicit and explicit methods to real-world medical imaging research, we employ two datasets with significantly increased complexity compared to standard datasets used in INR literature. 
+
+Breast Cancer Histology images (BACH) [2]. Histology images offer high-resolution detailed color images of complex tissue, containing both regions of high-frequency features and flat uniform regions. The standard image size is [2048 x 1536], resulting in over 3.1 million RGB samples. 
+
+National Lung Screening Trial (NLST) [23]. 3D CT chest scans offer complex lung structures as well as intricate acquisition-related noise patterns. A volume’s resolution is [151 x 512 x 512], resulting in over 39.5 million vox-els, meaning that representation methods with sensible compression factors will require to be scalable to millions of trainable parameters. 
+
+Baselines. For all methods, we tuned learning rates via grid-search to determine the training parameter choices for each method. We observed both datasets having similar optimal learning rate choices and thus use the same for both. We run all methods for compression factors 5, 10, and 20. All methods are trained using ADAM optimizer, under a batch size of 200k and mixed-precision floating-point assignments. 
+
+Gaussian methods . We evaluate two Gaussian weighting schemes: Additive [43] and PoU [44]. We follow the initialization scheme in [44] and use a learning rate of 5 · 10 −2.8 N. Stolt-Ansó & M. Dannecker et al. 1416 64 
+
+> Back-propagation memory per coord (KB)
+
+Compression Factor 5 
+
+0.830 0.826 5.10 14.32 15.30 15.20 16.69 22.81 22.13 25.34 41.30 43.50 53.37 
+
+1416 64 Compression Factor 10 
+
+0.806 0.802 4.82 9.22 11.77 12.98 13.10 17.21 16.75 19.01 30.24 31.85 38.79 
+
+1416 64 Compression Factor 20 
+
+0.794 0.790 4.72 6.75 9.42 9.76 10.63 13.27 12.93 14.56 22.48 23.57 28.53 
+
+510 20 50 100 200 
+
+> Optimization Time (Sec)
+
+510 20 50 100 200 
+
+510 20 50 100 200 
+
+> [44] Gaussian (PoU) (78.6K Gaussians) [43] Gaussian (Add.) (78.6K Gaussians) [16] Neural Volumes (8 features per res.) [8] K-Planes (84 features per res.) FFReLU (2layers x 575units) FFReLU (4layers x 379units) FFReLU (8layers x 265units) [33] SIREN (2layers x 789units) [33] SIREN (4layers x 456units) [33] SIREN (8layers x 299units) [28] WIRE (2layers x 789units) [28] WIRE (4layers x 456units) [28] WIRE (8layers x 299units)
+
+10 15 20 25 30 35 40 
+
+> Final PSNR (dB)
+> Gaussian (PoU) [44] (78.6K Gaussians)
+> Gaussian (Add.) [43] (78.6K Gaussians)
+> Neural Volumes [16] (8 features per res.)
+> K-Planes [8] (84 features per res.)
+> FFReLU
+> (2layers x 575units)
+> FFReLU
+> (4layers x 379units)
+> FFReLU
+> (8layers x 265units)
+> SIREN [33] (2layers x 789units)
+> SIREN [33] (4layers x 456units)
+> SIREN [33] (8layers x 299units)
+> WIRE [28] (2layers x 789units)
+> WIRE [28] (4layers x 456units)
+> WIRE [28] (8layers x 299units)
+> [44] Gaussian (PoU) (39.3K Gaussians) [43] Gaussian (Add.) (39.3K Gaussians) [16] Neural Volumes (4 features per res.) [8] K-Planes (42 features per res.) FFReLU (2layers x 358units) FFReLU (4layers x 248units) FFReLU (8layers x 177units) [33] SIREN (2layers x 556units) [33] SIREN (4layers x 322units) [33] SIREN (8layers x 211units) [28] WIRE (2layers x 556units) [28] WIRE (4layers x 322units) [28] WIRE (8layers x 211units)
+
+10 15 20 25 30 35 40 
+
+> Gaussian (PoU) [44] (39.3K Gaussians)
+> Gaussian (Add.) [43] (39.3K Gaussians)
+> Neural Volumes [16] (4 features per res.)
+> K-Planes [8] (42 features per res.)
+> FFReLU
+> (2layers x 358units)
+> FFReLU
+> (4layers x 248units)
+> FFReLU
+> (8layers x 177units)
+> SIREN [33] (2layers x 556units)
+> SIREN [33] (4layers x 322units)
+> SIREN [33] (8layers x 211units)
+> WIRE [28] (2layers x 556units)
+> WIRE [28] (4layers x 322units)
+> WIRE [28] (8layers x 211units)
+> [44] Gaussian (PoU) (19.7K Gaussians) [43] Gaussian (Add.) (19.7K Gaussians) [16] Neural Volumes (2 features per res.) [8] K-Planes (21 features per res.) FFReLU (2layers x 215units) FFReLU (4layers x 158units) FFReLU (8layers x 117units) [33] SIREN (2layers x 393units) [33] SIREN (4layers x 227units) [33] SIREN (8layers x 149units) [28] WIRE (2layers x 393units) [28] WIRE (4layers x 227units) [28] WIRE (8layers x 149units)
+
+10 15 20 25 30 35 40 
+
+> Gaussian (PoU) [44] (19.7K Gaussians)
+> Gaussian (Add.) [43] (19.7K Gaussians)
+> Neural Volumes [16] (2 features per res.)
+> K-Planes [8] (21 features per res.)
+> FFReLU
+> (2layers x 215units)
+> FFReLU
+> (4layers x 158units)
+> FFReLU
+> (8layers x 117units)
+> SIREN [33] (2layers x 393units)
+> SIREN [33] (4layers x 227units)
+> SIREN [33] (8layers x 149units)
+> WIRE [28] (2layers x 393units)
+> WIRE [28] (4layers x 227units)
+> WIRE [28] (8layers x 149units)
+
+Performance and efficiency metrics for histology RGB images (n=10) 
+
+Fig. 2. Performance and efficiency metrics for various implicit and explicit approaches. Scatter point grayness indicates the number of steps before a run failed to increase PSNR by 0.2 and was early-stopped (black=earlier, white=later). 
+
+Implicit representations . We choose three popular fully-implicit baselines: Fourier-features [36], SIREN [33], and WIRE [28]. We used a learning rate of 
+
+10 −4 for Fourier-features, while SIREN and WIRE appeared to require a learning rate of 10 −5 in order to achieve competitive results. For Fourier-features we used 256 frequencies under the BACH dataset and 512 for NLST. For SIREN a frequency term ω of 250 performed best for BACH while a lower ω of 30 performed best for NLST. Similarly, WIRE performed best with parameters 
+
+ω = 250 and σ = 0 .1 for BACH, while under NLST WIRE performed best with 
+
+ω = 10 and σ = 1 .
+
+Feature grids . We include two feature-grid approaches: Multi-resolution Neu-ral Volumes [16] and K-planes [8]. Both feature grids resolutions start from 16 
+
+and increase by a factor of 2 up until the compression quota is met (resulting in the final resolution being a partial factor of 2). A learning rate of 10 −3 was used for both Neural Volumes and K-planes. 
+
+Results. Gaussian primitives appear to match or surpass implicit baselines in PSNR metrics. The Gaussian PoU weighting scheme seems to surpass the plain additive scheme, likely to its weighting scheme’s improved ability to model uniform regions more efficiently. While compared to feature grids, Gaussians are 2-5x faster and require 5-15x less memory, the difference grows to 5-100x faster and 10-200x less memory when compared to fully implicit methods. Fully-implicit methods scale the poorest, requiring the most fitting time and memory, while achieving lower metrics than Gaussian PoU and Neural Volumes. Also, as seen in the 8-layer variants in Fig. 2, fully-implicit methods suffer under increased depths likely due to vanishing gradients. Implicit representations are dead. Long live explicit primitives! 91416 64 256 
+
+> Back-propagation memory per coord (KB)
+
+Compression Factor 5 
+
+0.830 0.826 4.85 6.63 18.86 31.37 135.69 
+
+1416 64 256 Compression Factor 10 
+
+0.806 0.802 4.39 5.18 13.99 20.03 96.74 
+
+1416 64 256 Compression Factor 20 
+
+0.794 0.790 4.21 4.49 11.93 14.69 69.29 
+
+510 20 50 100 200 500 1000 
+
+> Optimization Time (Sec)
+
+510 20 50 100 200 500 1000 
+
+510 20 50 100 200 500 1000 
+
+> [44] Gaussian (PoU) (719.7K Gaussians) [43] Gaussian (Add.) (719.7K Gaussians) [16] Neural Volumes (4 features per res.) [8] K-Planes (16 features per res.) [36] FF-ReLU (3layers x 1388units) [33] SIREN (3layers x 1623units) [28] WIRE (3layers x 1988units)
+
+22.5 25.0 27.5 30.0 32.5 35.0 37.5 
+
+> Final PSNR (dB)
+> Gaussian (PoU) [44] (719.7K Gaussians)
+> Gaussian (Add.) [43] (719.7K Gaussians)
+> Neural Volumes [16] (4 features per res.)
+> K-Planes [8] (16 features per res.)
+> FF-ReLU [36] (3layers x 1388units)
+> SIREN [33] (3layers x 1623units)
+> WIRE [28] (3layers x 1988units) [44] Gaussian (PoU) (359.9K Gaussians) [43] Gaussian (Add.) (359.9K Gaussians) [16] Neural Volumes (2 features per res.) [8] K-Planes (8 features per res.) [36] FF-ReLU (3layers x 920units) [33] SIREN (3layers x 1147units) [28] WIRE (3layers x 1405units)
+
+22.5 25.0 27.5 30.0 32.5 35.0 37.5 
+
+> Gaussian (PoU) [44] (359.9K Gaussians)
+> Gaussian (Add.) [43] (359.9K Gaussians)
+> Neural Volumes [16] (2 features per res.)
+> K-Planes [8] (8 features per res.)
+> FF-ReLU [36] (3layers x 920units)
+> SIREN [33] (3layers x 1147units)
+> WIRE [28] (3layers x 1405units) [44] Gaussian (PoU) (179.9K Gaussians) [43] Gaussian (Add.) (179.9K Gaussians) [16] Neural Volumes (1 features per res.) [8] K-Planes (4 features per res.) [36] FF-ReLU (3layers x 595units) [33] SIREN (3layers x 811units) [28] WIRE (3layers x 993units)
+
+22.5 25.0 27.5 30.0 32.5 35.0 37.5 
+
+> Gaussian (PoU) [44] (179.9K Gaussians)
+> Gaussian (Add.) [43] (179.9K Gaussians)
+> Neural Volumes [16] (1 features per res.)
+> K-Planes [8] (4 features per res.)
+> FF-ReLU [36] (3layers x 595units)
+> SIREN [33] (3layers x 811units)
+> WIRE [28] (3layers x 993units)
+
+Performance and efficiency metrics for 3D lung CT volumes (n=10) 
+
+Fig. 3. Performance and efficiency metrics for various implicit and explicit approaches. Scatter point grayness indicates the number of steps before a run failed to increase PSNR by 0.2 and was early-stopped (black=earlier, white=later). 
+
+5 Conclusion 
+
+In this work we have consolidated implicit and explicit representations into the same mathematical framework of dictionary methods. Furthermore, we have outlined the various mathematical properties that, from a medical imaging per-spective, make Gaussian primitives exceptionally interesting over implicit ap-proaches. Finally, our empirical results on two datasets show that explicit meth-ods offer the most scalable solution to image representation while matching or surpassing state-of-the-art implicit methods. Ultimately, we hope that this work will serve as a catalyst to inspire a new generation of efficient and scalable off-grid paradigm. 
+
+Acknowledgments 
+
+We would like to thank Julian McGinnis for his endless patience with our contin-uous Gaussian discussions despite his implicit preferences. This work is funded by the Munich Center for Machine Learning. 
+
+Disclosure of Interests 
+
+The authors have no competing interests to declare that are relevant to the content of this article. 10 N. Stolt-Ansó & M. Dannecker et al. 
+
+References 
+
+1. Aharon, M., Elad, M., Bruckstein, A.: K-SVD: An algorithm for designing overcom-plete dictionaries for sparse representation. IEEE Trans. Signal Process. 54 (11), 4311–4322 (2006) 2. Aresta, G., et al.: BACH: Grand challenge on breast cancer histology images. Med. Image Anal. 56 , 122–139 (2019) 3. Chabra, R., Lenssen, J.E., Ilg, E., Schmidt, T., Straub, J., Lovegrove, S., New-combe, R.: Deep local shapes: Learning local SDF priors for detailed 3d recon-struction. In: ECCV (2020) 4. Chen, A., Xu, Z., Geiger, A., Yu, J., Su, H.: TensoRF: Tensorial radiance fields. In: ECCV (2022) 5. Coiffier, G., Béthune, L.: 1-Lipschitz neural distance fields. Comput. Graph. Forum 
+
+43 (5), e15128 (2024) 6. Dannecker, M., et al.: Fast and explicit: Slice-to-volume reconstruction via 3d Gaussian primitives with analytic point spread function modeling. arXiv preprint arXiv:2512.11624 (2025) 7. De Luigi, L., Cardace, A., Spezialetti, R., Zama Ramirez, P., Salti, S., Di Stefano, L.: Deep learning on implicit neural representations of shapes. In: ICLR (2023) 8. Fridovich-Keil, S., Meanti, G., Warburg, F.R., Recht, B., Kanazawa, A.: K-Planes: Explicit radiance fields in space, time, and appearance. In: CVPR (2023) 9. Haber, E., Modersitzki, J.: Numerical methods for volume preserving image regis-tration. Inverse Probl. 20 (5), 1621–1638 (2004) 10. Huang, W., et al.: Gabor primitives for accelerated cardiac cine MRI reconstruc-tion. arXiv preprint arXiv:2603.05681 (2026) 11. Jain, U., Mirzaei, A., Gilitschenski, I.: GaussianCut: Interactive segmentation via graph cut for 3d Gaussian splatting. In: NeurIPS (2024) 12. Kerbl, B., Kopanas, G., Leimkühler, T., Drettakis, G.: 3d Gaussian splatting for real-time radiance field rendering. ACM Trans. Graph. 42 (4), 1–14 (2023) 13. Lan, Y., Zhou, S., Lyu, Z., Hong, F., Yang, S., Dai, B., Pan, X., Loy, C.C.: Gaus-sianAnything: Interactive point cloud flow matching for 3d generation. In: ICLR (2025) 14. Li, X., et al.: Gaussian primitives for deformable image registration. arXiv preprint arXiv:2406.03394 (2024) 15. Liu, H.T.D., Williams, F., Jacobson, A., Fidler, S., Litany, O.: Learning smooth neural functions via Lipschitz regularization. In: ACM SIGGRAPH (2022) 16. Lombardi, S., Simon, T., Saragih, J., Schwartz, G., Lehrmann, A., Sheikh, Y.: Neural volumes: Learning dynamic renderable volumes from images. arXiv preprint arXiv:1906.07751 (2019) 17. von Lützow, N., Rößle, B., Schmid, K., Nießner, M.: GaussianGPT: Towards au-toregressive 3d Gaussian scene generation. arXiv preprint arXiv:2603.26661 (2026) 18. Maas, K.W., Ruijters, D., Vilanova, A., Pezzotti, N.: NeRF-CA: Dynamic recon-struction of x-ray coronary angiography with extremely sparse views. IEEE Trans. Vis. Comput. Graph. (2025) 19. Mairal, J., Bach, F., Ponce, J., Sapiro, G.: Online dictionary learning for sparse coding. In: ICML (2009) 20. McGinnis, J., Shit, S., Hölzl, F.A., Friedrich, P., Büschl, P., Sideri-Lampretsa, V., Mühlau, M., Cattin, P.C., Menze, B., Rueckert, D., et al.: Beyond uniformity: Regularizing implicit neural representations through a Lipschitz lens. In: ICLR (2026) Implicit representations are dead. Long live explicit primitives! 11 21. Mehta, I., Gharbi, M., Barnes, C., Shechtman, E., Ramamoorthi, R., Chandraker, M.: Modulated periodic activations for generalizable local functional representa-tions. In: ICCV (2021) 22. Müller, T., Evans, A., Schied, C., Keller, A.: Instant neural graphics primitives with a multiresolution hash encoding. ACM Trans. Graph. 41 (4), 1–15 (2022) 23. National Lung Screening Trial Research Team: The national lung screening trial: Overview and study design. Radiology 258 (1), 243–253 (2011) 24. Park, J.J., Florence, P., Straub, J., Newcombe, R., Lovegrove, S.: DeepSDF: Learn-ing continuous signed distance functions for shape representation. In: CVPR (2019) 25. Park, K., Sinha, U., Barron, J.T., Bouaziz, S., Goldman, D.B., Seitz, S.M., Martin-Brualla, R.: Nerfies: Deformable neural radiance fields. In: ICCV (2021) 26. Qi, C.R., Su, H., Mo, K., Guibas, L.J.: PointNet: Deep learning on point sets for 3d classification and segmentation. In: CVPR (2017) 27. Qi, Z., Ma, J., Xu, J., Zhou, Z., Cheng, L., Xiong, G.: GSPR: Multimodal place recognition using 3d Gaussian splatting for autonomous driving. In: IROS (2025) 28. Saragadam, V., LeJeune, D., Tan, J., Balakrishnan, G., Veeraraghavan, A., Bara-niuk, R.G.: WIRE: Wavelet implicit neural representations. In: CVPR (2023) 29. Shabanov, A., Hedman, P., Weber, E., Li, Z., Rozumny, D., Lan, G.L., Dhingra, N., Luo, L., Vedaldi, A., Richardt, C., et al.: Free-range gaussians: Non-grid-aligned generative 3d gaussian reconstruction. arXiv preprint arXiv:2604.04874 (2026) 30. Sideri-Lampretsa, V., McGinnis, J., Qiu, H., Paschali, M., Simson, W., Rueckert, D.: SINR: Spline-enhanced implicit neural representation for multi-modal registra-tion. In: MIDL (2024) 31. Singh, I., Dupuis, A., Kukran, S., Badve, C., Griswold, M.: Back to basis: Spatially continuous MRI with adaptive Gaussians. In: ISMRM Workshop on Data Sampling and Image Reconstruction (2026) 32. Sitzmann, V., Chan, E.R., Tucker, R., Snavely, N., Wetzstein, G.: MetaSDF: Meta-learning signed distance functions. In: NeurIPS (2020) 33. Sitzmann, V., Martel, J.N., Bergman, A.W., Lindell, D.B., Wetzstein, G.: Implicit neural representations with periodic activation functions. In: NeurIPS (2020) 34. Stolt-Ansó, N., McGinnis, J., Pan, J., Hammernik, K., Rueckert, D.: NISF: Neural implicit segmentation functions. In: MICCAI (2023) 35. Tancik, M., Mildenhall, B., Wang, T., Schmidt, D., Srinivasan, P.P., Barron, J.T., Ng, R.: Learned initializations for optimizing coordinate-based neural representa-tions. In: CVPR (2021) 36. Tancik, M., Srinivasan, P.P., Mildenhall, B., Fridovich-Keil, S., Raghavan, N., Sing-hal, U., Ramamoorthi, R., Barron, J.T., Ng, R.: Fourier features let networks learn high frequency functions in low dimensional domains. In: NeurIPS (2020) 37. Van Nguyen, H., Patel, V.M., Nasrabadi, N.M., Chellappa, R.: Kernel dictionary learning. In: ICASSP (2012) 38. Vyas, K., Veeraraghavan, A., Balakrishnan, G.: Fit pixels, get labels: Meta-learned implicit networks for image segmentation. In: MICCAI (2025) 39. Xu, J., Moyer, D., Gagoski, B., Iglesias, J.E., Grant, P.E., Golland, P., Adalsteins-son, E.: NeSVoR: Implicit neural representation for slice-to-volume reconstruction in MRI. IEEE Trans. Med. Imaging 42 (6), 1707–1719 (2023) 40. Yang, J., Pavone, M., Wang, Y.: FreeNeRF: Improving few-shot neural rendering with free frequency regularization. In: CVPR (2023) 41. Zaheer, M., Kottur, S., Ravanbakhsh, S., Póczos, B., Salakhutdinov, R., Smola, A.J.: Deep sets. In: NeurIPS (2017) 42. Zha, R., Lin, T.J., Cai, Y., Cao, J., Zhang, Y., Li, H.: R 2-Gaussian: Rectifying radiative Gaussian splatting for tomographic reconstruction. In: NeurIPS (2024) 12 N. Stolt-Ansó & M. Dannecker et al. 43. Zhang, X., Ge, X., Xu, T., He, D., Wang, Y., Qin, H., Lu, G., Geng, J., Zhang, J.: GaussianImage: 1000 FPS image representation and compression by 2d Gaussian splatting. In: ECCV (2024) 44. Zhang, Y., Li, B., Kuznetsov, A., Jindal, A., Diolatzis, S., Chen, K., Sochenov, A., Kaplanyan, A., Sun, Q.: Image-GS: Content-adaptive image representation via 2d Gaussians. In: ACM SIGGRAPH (2025)
