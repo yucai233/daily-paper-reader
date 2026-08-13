@@ -1,0 +1,51 @@
+{
+  "label": "2026-08-13",
+  "date": "2026-08-13",
+  "generated_at": "2026-08-13T21:09:41",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202608/13/2608.11422v1-cogent-counterfactual-gaussian-explanations-for-volumetric-medical-images",
+      "section": "deep",
+      "title_en": "COGENT: Counterfactual Gaussian Explanations for Volumetric Medical Images",
+      "authors": "Dorian Rząsa, Bartosz Zabdyr, Krzysztof Piekarz, Jakub Grzywaczewski, Bartlomiej Sobieski, Przemyslaw Biecek, Żaneta Świderska-Chadaj, Olga Śliwicka, Przemysław Spurek, Joanna Świebocka-Więk",
+      "date": "2026-08-11",
+      "pdf": "https://arxiv.org/pdf/2608.11422v1",
+      "score": "8.0",
+      "evidence": "基于高斯的体积表示的可微分渲染",
+      "tldr": "COGENT是一个针对体积医学图像的解释性框架，旨在解决传统体素空间解释方法忽略结构化表示的问题。该方法在基于高斯分布的3D场景表示参数空间中直接生成反事实解释，通过微分渲染优化高斯原语，使下游预测模型的梯度能识别关键影响因素。在肺部CT扫描上的实验表明，COGENT能提供稀疏、局部且符合解剖学一致性的临床解释，为解释体积深度学习模型提供了新视角。",
+      "tags": "query:q1",
+      "abstract_en": "Explainability is essential for deploying deep learning models in high-stakes medical applications. Existing explainability methods for volumetric imaging predominantly operate in voxel space, overlooking the structured representations introduced by recent advances in 3D scene modeling. We present COGENT (Counterfactual Gaussian Explanations), a framework that generates counterfactual explanations directly in the parameter space of Gaussian-based volumetric representations. Built upon MedGS and the Sybil lung cancer risk prediction model, COGENT optimizes selected Gaussian primitives through a differentiable rendering pipeline, enabling gradients from the downstream predictor to identify representation components that most influence model decisions. Unlike conventional pixel- or voxel-level attribution methods, our approach formulates explainability as a counterfactual optimization problem over an explicit 3D scene representation, producing sparse and spatially localized explanations while preserving anatomical consistency. We evaluate COGENT on lung CT scans using quantitative comparisons with existing explainability methods together with qualitative analysis by medical experts. The results demonstrate that representation-space counterfactual optimization provides clinically meaningful explanations while offering a new perspective on interpreting volumetric deep learning models.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/13/2608.11938v1-surfsvr-2d-surface-priors-as-3d-geometric-regularizers-for-sparse-voxel-reconstruction",
+      "section": "quick",
+      "title_en": "Surfsvr: 2D Surface Priors as 3D Geometric Regularizers for Sparse Voxel Reconstruction",
+      "authors": "Yan Di, Chengxi Li, Yaoxing Wang, Mengge Liu, Zhigang Li, Ruida Zhang, Mingyang Li, Pengyuan Wang, Shan Gao, Xiangyang Ji",
+      "date": "2026-08-12",
+      "pdf": "https://arxiv.org/pdf/2608.11938v1",
+      "score": "7.0",
+      "evidence": "带有几何正则化器的稀疏体素重建",
+      "tldr": "针对稀疏体素重建中存在的表面破碎和伪影问题，本文提出 SurfSVR 框架。该方法将 2D 表面先验转化为 3D 几何约束，通过整合外观、深度和法线信息将图像划分为连贯区域，并利用自适应几何模型进行拟合。这些结构化先验在体素细分、优化监督和剪枝等阶段提供引导，显著提升了弱纹理和稀疏观测区域的重建质量，在多个基准测试中达到 SOTA 水平。",
+      "tags": "query:q1",
+      "abstract_en": "Sparse voxel reconstruction offers an efficient representation for high-fidelity 3D modeling, yet its geometry is commonly optimized from local photometric evidence and discrete visibility statistics. This often leads to fragmented surfaces, excessive subdivision, and floating artifacts, particularly in weakly textured or sparsely observed regions. We introduce SurfSVR, a novel sparse voxel reconstruction paradigm that treats 2D surface priors as explicit 3D geometric regularizers. Instead of directly lifting noisy pixel-wise depth predictions, SurfSVR first organizes each image into coherent surface regions by jointly reasoning over appearance, monocular depth, normals and cross-view geometry. Each region is then represented by an adaptively selected planar or quadratic surface model based on fitting reliability and geometric complexity, while cross-model agreement distinguishes reliable geometry from ambiguous predictions. These structured 2D priors are lifted into 3D and integrated throughout the reconstruction pipeline. They guide surface-adaptive voxel subdivision, provide region-level depth and normal supervision during optimization, enhance geometrically reliable sparse-observed surfaces in voxel pruning, and suppress off-surface floaters during post-refinement training. This unified design converts semantic and geometric coherence in image space into persistent structural constraints in 3D. Extensive experiments on 3 public benchmarks demonstrate that SurfSVR consistently improves sparse voxel reconstruction across scenes with substantially different visibility and geometry characteristics, achieving state-of-the-art reconstruction quality. Codes and models will be released soon.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/13/2608.12175v1-tgrhuman-text-guided-realistic-3d-human-generation-via-diffusion-renderer",
+      "section": "quick",
+      "title_en": "TGRHuman: Text-Guided Realistic 3D Human Generation via Diffusion Renderer",
+      "authors": "Muxin Zhang, Chaohui Yu, Yuanwang Yang, Min Wei, Zhuo Su, Kun Li",
+      "date": "2026-08-12",
+      "pdf": "https://arxiv.org/pdf/2608.12175v1",
+      "score": "7.0",
+      "evidence": "用于三维合成的扩散渲染器",
+      "tldr": "针对现有文本生成3D人体方法在质量、一致性和效率上的不足，本文提出TGRHuman。该方法解耦了几何与纹理生成，通过显式的多视角法线生成与几何雕刻策略构建高质量几何，并利用扩散渲染器生成空间一致的纹理。相比基于NeRF的优化方法，TGRHuman在保持高保真度的同时显著提升了推理效率，实现了更优的几何细节和纹理表现。",
+      "tags": "query:q1",
+      "abstract_en": "Realistic 3D human generation plays a crucial role in many graphics applications. However, current methods still struggle to generate high-quality human geometry and texture while maintaining 3D consistency and inference efficiency. In this work, we address these limitations by introducing TGRHuman, a novel approach for generating realistic 3D humans from text. Our method decouples geometry and texture generation to alleviate the issues commonly encountered in NeRF-based methods. Instead of relying on slow, implicit score-distillation-based optimization, we directly use explicit multi-view observation generation and optimization for efficient 3D synthesis. For geometry generation, we propose a high-resolution generative module for multi-view normals together with a geometry-carving strategy that preserves view consistency and supports loose clothing. For texture generation, we produce spatially consistent RGB observations from densely sampled surrounding views using a carefully designed texture-prior acquisition strategy and a diffusion renderer, enabling detailed human texture synthesis. Experiments show that our method can generate high-quality and consistent 3D human geometry and texture efficiently. TGRHuman outperforms existing text-to-3D human methods in both geometry and texture quality.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
