@@ -6,31 +6,32 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-13
-- 运行时间：2026-08-13 21:08:21 UTC
+- 最新运行日期：2026-08-14
+- 运行时间：2026-08-14 19:59:22 UTC
 - 运行状态：成功
 - 本次总论文数：3
-- 精读区：1
-- 速读区：2
+- 精读区：0
+- 速读区：3
 
 ### 今日简报（AI）
-今日聚焦医疗影像可解释性与 3D 视觉重建，涵盖从反事实高斯解释到文本驱动真人生成的最新突破。
-重点推荐 COGENT 框架，它通过高斯分布为医学 AI 诊断提供直观逻辑，同时 Surfsvr 展示了 2D 先验在 3D 重建中的强大约束力。
-建议深入了解
-- 详情：[/202608/13/README](/202608/13/README)
+今日聚焦 3D 场景理解前沿，涵盖语义辐射场推理、高斯泼溅压缩成像及室内外统一占用预测。
+核心突破在于利用语义辐射场模拟真实空间推理，并引入大模型先验显著增强了高斯泼溅在复杂成像任务中的表现。
+推荐关注 3D 重建与大视觉模型（LVM）的深度融合，这是提升复杂场景感知鲁棒性的关键路径。
+- 详情：[/202608/14/README](/202608/14/README)
 
 ### 精读区论文标签
-1. [COGENT: Counterfactual Gaussian Explanations for Volumetric Medical Images](/202608/13/2608.11422v1-cogent-counterfactual-gaussian-explanations-for-volumetric-medical-images)  
-   标签：评分：8.0/10、query:q1
-   evidence：基于高斯的体积表示的可微分渲染
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Surfsvr: 2D Surface Priors as 3D Geometric Regularizers for Sparse Voxel Reconstruction](/202608/13/2608.11938v1-surfsvr-2d-surface-priors-as-3d-geometric-regularizers-for-sparse-voxel-reconstruction)  
+1. [Semantic Radiance Fields as Simulators for Spatial Reasoning in Real-World Scenes](/202608/14/2608.13095v1-semantic-radiance-fields-as-simulators-for-spatial-reasoning-in-real-world-scenes)  
    标签：评分：7.0/10、query:q1
-   evidence：带有几何正则化器的稀疏体素重建
-2. [TGRHuman: Text-Guided Realistic 3D Human Generation via Diffusion Renderer](/202608/13/2608.12175v1-tgrhuman-text-guided-realistic-3d-human-generation-via-diffusion-renderer)  
+   evidence：编码几何与外观的语义辐射场
+2. [GS$^{2}$CI: Robust Gaussian Splatting For Snapshot Compressive Imaging via Large Vision Model Priors](/202608/14/2608.13502v1-gs2ci-robust-gaussian-splatting-for-snapshot-compressive-imaging-via-large-vision-model-priors)  
    标签：评分：7.0/10、query:q1
-   evidence：用于三维合成的扩散渲染器
+   evidence：利用3D高斯泼溅从压缩成像中进行场景重建
+3. [OccAnyScene: Towards Unified Indoor-Outdoor 3D Occupancy Prediction](/202608/14/2608.08696v2-occanyscene-towards-unified-indoor-outdoor-3d-occupancy-prediction)  
+   标签：评分：6.0/10、query:q1
+   evidence：用于3D占据预测和场景提升的高斯框架
 
 
 <div class="dpr-home-promo-card">

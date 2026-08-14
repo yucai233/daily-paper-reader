@@ -1,0 +1,51 @@
+{
+  "label": "2026-08-14",
+  "date": "2026-08-14",
+  "generated_at": "2026-08-14T19:59:43",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202608/14/2608.13095v1-semantic-radiance-fields-as-simulators-for-spatial-reasoning-in-real-world-scenes",
+      "section": "quick",
+      "title_en": "Semantic Radiance Fields as Simulators for Spatial Reasoning in Real-World Scenes",
+      "authors": "Nico Heider, Michał Jan Włodarczyk, Katarzyna Wasielewska-Michniewska, Przemysław Hołda, Martin Schieck, Marcin Paprzycki, Maria Ganzha, Bogdan Franczyk",
+      "date": "2026-08-13",
+      "pdf": "https://arxiv.org/pdf/2608.13095v1",
+      "score": "7.0",
+      "evidence": "编码几何与外观的语义辐射场",
+      "tldr": "针对具身智能体在空间推理训练中面临的合成环境不真实或真实环境缺乏语义标注的问题，本文提出将语义辐射场（SRF）作为模拟器。SRF通过将预训练视觉模型的2D语义分割提升至3D辐射场，统一了几何、外观和语义信息。该方法支持新视角合成、语义查询和空间占用检测，为真实场景下的空间推理模型提供了高效的训练与评估环境。",
+      "tags": "query:q1",
+      "abstract_en": "Training and evaluating spatial reasoning in embodied agents requires diverse environments that are both geometrically faithful and semantically queryable. Synthetic simulators offer ground truth semantics but sacrifice realism; simulators based on reconstructions of real-world environments have realistic appearance but lack ground truth semantics by default. We propose using Semantic Radiance Fields (SRF) as simulators for spatial reasoning agents. SRFs are a representation that unifies these requirements by lifting 2D semantic segmentations from pretrained vision models into a 3D radiance field that jointly encodes geometry, appearance, and per-class semantic identity. The resulting fields are reconstructed from posed RGB captures of real scenes and support novel-view synthesis, semantic and free-space queries within a single grounded representation. This enables the efficient generation of diverse real-world environments to train and evaluate spatial reasoning models. As an example application, we outline an SRF-driven simulator for an orchard apple-reaching task, in which the radiance field supplies camera rendering, semantic ground truth, and occupancy queries to a physics engine.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/14/2608.13502v1-gs2ci-robust-gaussian-splatting-for-snapshot-compressive-imaging-via-large-vision-model-priors",
+      "section": "quick",
+      "title_en": "GS$^{2}$CI: Robust Gaussian Splatting For Snapshot Compressive Imaging via Large Vision Model Priors",
+      "authors": "Yanming Yang, Chenxi Song, Ping Wang, Xin Yuan, Chi Zhang",
+      "date": "2026-08-13",
+      "pdf": "https://arxiv.org/pdf/2608.13502v1",
+      "score": "7.0",
+      "evidence": "利用3D高斯泼溅从压缩成像中进行场景重建",
+      "tldr": "针对快照压缩成像（SCI）在3D重建中面临的信息丢失和视角受限等挑战，本文提出GS²CI框架。该方法结合3D高斯泼溅（3DGS）与大视觉模型（VFM）先验，通过3D VFM初始化、SCI感知优化及2D VFM伪视图监督实现高质量重建。此外，引入OSGR策略优化高斯点云的增密与生长，在提升重建质量的同时增强了对视角变化的鲁棒性，并保持了较高的计算效率。",
+      "tags": "query:q1",
+      "abstract_en": "Snapshot Compressive Imaging (SCI) offers an efficient solution for high-speed video acquisition and, under exposure-time camera--scene relative motion, multi-view scene capture by compressing temporal or spatial information into a single 2D measurement. While recent studies have explored SCI for 3D scene reconstruction, existing methods struggle with significant challenges due to information loss, limited viewpoint diversity, and the computational burden of jointly optimizing 3D representations and camera poses. In this work, we propose a novel framework that reconstructs high-quality 3D scenes from a single SCI measurement by leveraging 3D Gaussian Splatting (3DGS) and the powerful priors of large-scale vision foundation models (VFMs). Our primary reconstruction combines measurement-derived 3D VFM initialization with SCI-aware Gaussian optimization. After coarse-stage convergence, an auxiliary 2D VFM provides pseudo-view supervision at synthesized viewpoints for local appearance refinement. To further address the instability caused by ambiguous SCI supervision during 3DGS optimization, we introduce Opacity-Guided Splitting and Growth Regulation (OSGR), an SCI-specific densification strategy that augments split candidates using local opacity statistics, discourages loss-compensating opacity inflation through mean-opacity regulation, and bounds representation growth with explicit candidate-ratio and Gaussian-count constraints. Extensive experiments across multiple benchmarks demonstrate that our method achieves the strongest overall performance, combining leading reconstruction quality and robustness to viewpoint variation with competitive computational efficiency.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/14/2608.08696v2-occanyscene-towards-unified-indoor-outdoor-3d-occupancy-prediction",
+      "section": "quick",
+      "title_en": "OccAnyScene: Towards Unified Indoor-Outdoor 3D Occupancy Prediction",
+      "authors": "Junjie Liu, Wanshui Gan, Zitong Dai, Guiping Cao, Yan Li, Ke Chen, Dongmei Jiang, Xiangyuan Lan, Jianguo Zhang",
+      "date": "2026-08-09",
+      "pdf": "https://arxiv.org/pdf/2608.08696v2",
+      "score": "6.0",
+      "evidence": "用于3D占据预测和场景提升的高斯框架",
+      "tldr": "本研究针对现有3D语义占据预测模型局限于特定场景的问题，提出了跨场景3D语义占据预测任务，旨在用单一模型处理室内外异构场景。为此，作者开发了OccAnyScene框架，该框架基于预训练深度基础模型，采用像素平截头体中心的高斯表示。通过像素对齐特征聚合和参数化高斯构建，实现了度量一致且场景自适应的图像到3D转换。该方法在室内外主流数据集上均刷新了SOTA记录，为统一的场景理解提供了新思路。",
+      "tags": "query:q1",
+      "abstract_en": "3D occupancy prediction is fundamental to scene understanding, yet existing 3D semantic occupancy methods are typically specialized to fixed scene types and occupancy protocols. We introduce Cross-Scene 3D Semantic Occupancy Prediction, a new task setting which requires a single model to handle heterogeneous indoor and outdoor scenes with varying cameras, spatial ranges, voxel specifications, and semantic taxonomies. This setting poses a fundamental challenge: achieving metric-consistent yet scene-adaptive image-to-3D lifting across varying camera configurations and scene scales. To address this challenge, we propose OccAnyScene, a pixel-frustum-centered Gaussian framework built upon a pretrained depth foundation model. Specifically, the framework employs Pixel-Aligned Frustum Feature Aggregation to construct a camera-aware frustum query for each feature pixel, and Frustum-Parameterized Gaussian Construction to decode each query into multiple Gaussians whose positions and sizes are constrained by the predicted pixel depth and corresponding frustum geometry. OccAnyScene sets new state-of-the-art results, achieving 59.92% mIoU on the indoor Occ-ScanNet and 23.06% mIoU on the outdoor SurroundOcc-nuScenes.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
