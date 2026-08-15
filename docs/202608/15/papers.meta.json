@@ -1,0 +1,37 @@
+{
+  "label": "2026-08-15",
+  "date": "2026-08-15",
+  "generated_at": "2026-08-15T19:34:31",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202608/15/2608.08531v1-erf-gs-reconstructing-fast-motion-from-disjoint-event-rgb-viewpoints",
+      "section": "quick",
+      "title_en": "ERF-GS: Reconstructing Fast Motion from Disjoint Event-RGB Viewpoints",
+      "authors": "Xiaoyang Bai, Zhenyang Li, Weiwei Xu, Edmund Y. Lam, Yifan Peng",
+      "date": "2026-08-09",
+      "pdf": "https://arxiv.org/pdf/2608.08531v1",
+      "score": "7.0",
+      "evidence": "用于动态场景重建的神经辐射场和3D高斯泼溅",
+      "tldr": "针对动态3D场景重建中高速运动物体导致的运动模糊和低帧率挑战，本文提出ERF-GS框架。该方法将高时间分辨率的事件相机数据融入3D高斯泼溅（3DGS）的优化与加密阶段。不同于以往方法，ERF-GS实现了事件学习与RGB输入的解耦，能有效处理视点不相交及严重模糊的真实场景。实验证明，其在多个数据集上的表现优于4DGS等基准，显著提升了高速动态场景的重建质量。",
+      "tags": "query:q1",
+      "abstract_en": "Deep learning-driven representations such as neural radiance fields (NeRFs) and 3D Gaussian splatting (3DGS) have revolutionized the field of dynamic 3D scene reconstruction with improved visual precision and scalability. However, the reconstruction of fast-moving objects remains a challenge; existing methods based on conventional frame-based videos often struggle in scenarios such as sports events and animal videography. We propose an event-RGB fusion Gaussian splatting (ERF-GS) framework that integrates event information into both optimization and densification stages of the Gaussian splatting pipeline, taking advantage of novel event sensors with high frame-rate. Unlike many other event-assisted scene reconstruction methods, ERF-GS was developed using realistic simulation settings and realizes event-based learning detached from RGB inputs. This design enables its application beyond straightforward synthetic data into the realm of natural video with complex layout, low frame rates and severe motion blur. Our experiments show that ERF-GS outperforms both the 4DGS baseline and the concurrent E-D3DGS on different variants of the Neu3D and Nvidia datasets which include blurry RGB frames and disjoint RGB-event viewpoints. Our code is available at https://github.com/andrewbxy/ERF-GS.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/15/2608.10286v1-trace-gs-on-policy-trajectory-distillation-with-privileged-geometric-conditioning-for-sparse-view-3dgs-restoration",
+      "section": "quick",
+      "title_en": "TRACE-GS: On-Policy Trajectory Distillation with Privileged Geometric Conditioning for Sparse-View 3DGS Restoration",
+      "authors": "Linlian Jiang, Yuchen Xi, Sadman Rakib Pinon, Ruigang Yang, Yang Wang, Xinxin Zuo",
+      "date": "2026-08-10",
+      "pdf": "https://arxiv.org/pdf/2608.10286v1",
+      "score": "7.0",
+      "evidence": "用于稀疏视图3D高斯泼溅修复的扩散先验",
+      "tldr": "针对稀疏视图3DGS重建中几何约束不足导致的去噪偏差累积问题，本文提出TRACE-GS框架。该方法采用同策略轨迹蒸馏，在训练阶段利用额外视图提供的特权几何信息作为教师，引导稀疏视图学生模型在自身推理路径上进行去噪，从而对齐跨视图响应。该方法在推理时无需额外信息，显著提升了稀疏视图下的3DGS修复质量和泛化能力。",
+      "tags": "query:q1",
+      "abstract_en": "We present TRACE-GS, an on-policy trajectory distillation framework that leverages privileged geometric conditioning at training time, thereby adapting a diffusion prior to sparse-view 3D Gaussian Splatting (3DGS) restoration. Rather than pursuing increasingly sophisticated restoration architectures, we identify a more fundamental limitation shared by existing diffusion-based approaches: supervision at independently noised states does not cover those reached during inference. In sparse-view 3DGS, under-constrained geometry biases denoising from the outset, and the resulting deviations compound along the rollout. TRACE-GS instead performs on-policy trajectory distillation: a teacher conditioned on richer geometry from additional training views supplies targets along the sparse-view student's own rollout, aligning denoising directions and cross-view responses at each visited state. This training-only geometry places TRACE-GS in the learning using privileged information (LUPI) setting. At deployment, only the sparse-view student is retained, and its restored renderings serve as pseudo-observations for 3DGS refinement. To the best of our knowledge, TRACE-GS is the first to derive on-policy supervision from privileged geometry for sparse-view 3DGS restoration, achieving consistent gains and strong generalization across datasets and sparse-view settings.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

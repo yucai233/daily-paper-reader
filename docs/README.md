@@ -6,32 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-14
-- 运行时间：2026-08-14 19:59:22 UTC
+- 最新运行日期：2026-08-15
+- 运行时间：2026-08-15 19:34:18 UTC
 - 运行状态：成功
-- 本次总论文数：3
+- 本次总论文数：2
 - 精读区：0
-- 速读区：3
+- 速读区：2
 
 ### 今日简报（AI）
-今日聚焦 3D 场景理解前沿，涵盖语义辐射场推理、高斯泼溅压缩成像及室内外统一占用预测。
-核心突破在于利用语义辐射场模拟真实空间推理，并引入大模型先验显著增强了高斯泼溅在复杂成像任务中的表现。
-推荐关注 3D 重建与大视觉模型（LVM）的深度融合，这是提升复杂场景感知鲁棒性的关键路径。
-- 详情：[/202608/14/README](/202608/14/README)
+今日聚焦 3DGS 在高速运动重建与稀疏视角修复领域的双重突破。
+重点关注 ERF-GS 利用事件相机攻克高速模糊，以及 TRACE-GS 通过轨迹蒸馏优化稀疏视角下的场景还原。
+建议深入探索 3DGS 在动态捕捉与低采样环境下的鲁棒性提升方案。
+- 详情：[/202608/15/README](/202608/15/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Semantic Radiance Fields as Simulators for Spatial Reasoning in Real-World Scenes](/202608/14/2608.13095v1-semantic-radiance-fields-as-simulators-for-spatial-reasoning-in-real-world-scenes)  
+1. [ERF-GS: Reconstructing Fast Motion from Disjoint Event-RGB Viewpoints](/202608/15/2608.08531v1-erf-gs-reconstructing-fast-motion-from-disjoint-event-rgb-viewpoints)  
    标签：评分：7.0/10、query:q1
-   evidence：编码几何与外观的语义辐射场
-2. [GS$^{2}$CI: Robust Gaussian Splatting For Snapshot Compressive Imaging via Large Vision Model Priors](/202608/14/2608.13502v1-gs2ci-robust-gaussian-splatting-for-snapshot-compressive-imaging-via-large-vision-model-priors)  
+   evidence：用于动态场景重建的神经辐射场和3D高斯泼溅
+2. [TRACE-GS: On-Policy Trajectory Distillation with Privileged Geometric Conditioning for Sparse-View 3DGS Restoration](/202608/15/2608.10286v1-trace-gs-on-policy-trajectory-distillation-with-privileged-geometric-conditioning-for-sparse-view-3dgs-restoration)  
    标签：评分：7.0/10、query:q1
-   evidence：利用3D高斯泼溅从压缩成像中进行场景重建
-3. [OccAnyScene: Towards Unified Indoor-Outdoor 3D Occupancy Prediction](/202608/14/2608.08696v2-occanyscene-towards-unified-indoor-outdoor-3d-occupancy-prediction)  
-   标签：评分：6.0/10、query:q1
-   evidence：用于3D占据预测和场景提升的高斯框架
+   evidence：用于稀疏视图3D高斯泼溅修复的扩散先验
 
 
 <div class="dpr-home-promo-card">
