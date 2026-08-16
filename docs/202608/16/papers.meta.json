@@ -1,0 +1,37 @@
+{
+  "label": "2026-08-16",
+  "date": "2026-08-16",
+  "generated_at": "2026-08-16T19:39:24",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202608/16/2608.08696v1-occanyscene-towards-unified-indoor-outdoor-3d-occupancy-predictio",
+      "section": "quick",
+      "title_en": "OccAnyScene: Towards Unified Indoor-Outdoor 3D Occupancy Predictio",
+      "authors": "Junjie Liu, Wanshui Gan, Zitong Dai, Guiping Cao, Yan Li, Ke Chen, Dongmei Jiang, Xiangyuan Lan, Jianguo Zhang",
+      "date": "2026-08-09",
+      "pdf": "https://arxiv.org/pdf/2608.08696v1",
+      "score": "7.0",
+      "evidence": "用于3D占据预测和场景自适应图像到3D提升的高斯框架",
+      "tldr": "本文针对现有3D语义占据预测方法局限于特定场景的问题，提出了跨场景3D语义占据预测新任务，旨在用单一模型处理室内外异构场景。为此，作者开发了OccAnyScene框架，该框架基于预训练深度基础模型，利用像素平截头体中心的高斯表示，通过特征聚合与参数化高斯构建，实现了度量一致且场景自适应的图像到3D转换。该方法在室内外主流数据集上均刷新了性能记录，为统一的场景理解提供了新思路。",
+      "tags": "query:q1",
+      "abstract_en": "3D occupancy prediction is fundamental to scene understanding, yet existing 3D semantic occupancy methods are typically specialized to fixed scene types and occupancy protocols. We introduce Cross-Scene 3D Semantic Occupancy Prediction, a new task setting which requires a single model to handle heterogeneous indoor and outdoor scenes with varying cameras, spatial ranges, voxel specifications, and semantic taxonomies. This setting poses a fundamental challenge: achieving metric-consistent yet scene-adaptive image-to-3D lifting across varying camera configurations and scene scales. To address this challenge, we propose OccAnyScene, a pixel-frustum-centered Gaussian framework built upon a pretrained depth foundation model. Specifically, the framework employs Pixel-Aligned Frustum Feature Aggregation to construct a camera-aware frustum query for each feature pixel, and Frustum-Parameterized Gaussian Construction to decode each query into multiple Gaussians whose positions and sizes are constrained by the predicted pixel depth and corresponding frustum geometry. OccAnyScene sets new state-of-the-art results, achieving 59.92% mIoU on the indoor Occ-ScanNet and 23.06% mIoU on the outdoor SurroundOcc-nuScenes.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/16/2608.10682v1-visual-geometry-foundation-aware-gaussians-for-single-frame-surround-view-driving-reconstruction",
+      "section": "quick",
+      "title_en": "Visual Geometry Foundation-Aware Gaussians for Single-Frame Surround-View Driving Reconstruction",
+      "authors": "Junhong Lin, Jinlong Wang, Xianda Guo, Yanlun Peng, Wei Zheng, Guoqing Liu, Hanli Wang, Tiesong Zhao, Wei Gao",
+      "date": "2026-08-11",
+      "pdf": "https://arxiv.org/pdf/2608.10682v1",
+      "score": "7.0",
+      "evidence": "针对驾驶场景的使用3D高斯泼溅的神经体渲染架构",
+      "tldr": "针对单帧环视驾驶场景重建中重叠少、几何不稳定的挑战，本文提出VGGD框架。该方法通过引入预训练视觉几何基础模型（VGGT）增强前端特征，并利用双路径颈部网络解耦几何与外观表示。结合尺度预热策略和混合高斯解码器，VGGD在nuScenes基准上实现了最优的渲染质量和更强的几何一致性，有效缓解了稀疏视角下的几何歧义。",
+      "tags": "query:q1",
+      "abstract_en": "Single-frame surround-view reconstruction faces severe geometric instability and rendering artifacts due to minimal inter-camera overlap. While existing methods rely on complex decoders or auxiliary cues, they remain bottlenecked by the weak geometric capacity of upstream features. We argue that leveraging pretrained visual geometry priors strengthens upstream representations and alleviates the geometric ambiguity in sparse surround views. To this end, we propose VGGD, a visual geometry foundation-aware 3D Gaussian Splatting framework for feed-forward surround-view driving reconstruction, which shifts geometric modeling to the frontend and adapts foundation priors to the driving camera setting. First, VGGD leverages VGGT to provide transferable multi-view geometric prior tokens. Next, we introduce a Dual-Path Neck to decouple geometry-consistent and appearance-aware representations, improving appearance completion in weakly observed regions. We further apply Scale Warmup to stabilize early geometry learning and suppress scale drift under ego-pose changes. Finally, we use a hybrid pixel--volume Gaussian decoder to produce a renderable 3D Gaussian scene for novel-view synthesis. Experiments on the nuScenes single-frame benchmark show that VGGD achieves the best overall rendering quality among the compared methods and improves relative geometric consistency.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

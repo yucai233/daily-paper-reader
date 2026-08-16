@@ -1,0 +1,101 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-16T19:38:53.423297+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.08696v1",
+      "title": "OccAnyScene: Towards Unified Indoor-Outdoor 3D Occupancy Predictio",
+      "abstract": "3D occupancy prediction is fundamental to scene understanding, yet existing 3D semantic occupancy methods are typically specialized to fixed scene types and occupancy protocols. We introduce Cross-Scene 3D Semantic Occupancy Prediction, a new task setting which requires a single model to handle heterogeneous indoor and outdoor scenes with varying cameras, spatial ranges, voxel specifications, and semantic taxonomies. This setting poses a fundamental challenge: achieving metric-consistent yet scene-adaptive image-to-3D lifting across varying camera configurations and scene scales. To address this challenge, we propose OccAnyScene, a pixel-frustum-centered Gaussian framework built upon a pretrained depth foundation model. Specifically, the framework employs Pixel-Aligned Frustum Feature Aggregation to construct a camera-aware frustum query for each feature pixel, and Frustum-Parameterized Gaussian Construction to decode each query into multiple Gaussians whose positions and sizes are constrained by the predicted pixel depth and corresponding frustum geometry. OccAnyScene sets new state-of-the-art results, achieving 59.92% mIoU on the indoor Occ-ScanNet and 23.06% mIoU on the outdoor SurroundOcc-nuScenes.",
+      "authors": [
+        "Junjie Liu",
+        "Wanshui Gan",
+        "Zitong Dai",
+        "Guiping Cao",
+        "Yan Li",
+        "Ke Chen",
+        "Dongmei Jiang",
+        "Xiangyuan Lan",
+        "Jianguo Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-09T13:19:53+00:00",
+      "link": "https://arxiv.org/pdf/2608.08696v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Gaussian framework for 3D occupancy prediction and scene-adaptive image-to-3D lifting",
+      "llm_evidence_cn": "用于3D占据预测和场景自适应图像到3D提升的高斯框架",
+      "llm_evidence": "用于3D占据预测和场景自适应图像到3D提升的高斯框架",
+      "canonical_evidence": "用于3D占据预测和场景自适应图像到3D提升的高斯框架",
+      "llm_tldr_en": "Introduces OccAnyScene, a Gaussian-based framework for unified indoor-outdoor 3D occupancy prediction.",
+      "llm_tldr_cn": "引入了OccAnyScene，一个基于高斯的统一室内外3D占据预测框架。",
+      "llm_tldr": "引入了OccAnyScene，一个基于高斯的统一室内外3D占据预测框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.10682v1",
+      "title": "Visual Geometry Foundation-Aware Gaussians for Single-Frame Surround-View Driving Reconstruction",
+      "abstract": "Single-frame surround-view reconstruction faces severe geometric instability and rendering artifacts due to minimal inter-camera overlap. While existing methods rely on complex decoders or auxiliary cues, they remain bottlenecked by the weak geometric capacity of upstream features. We argue that leveraging pretrained visual geometry priors strengthens upstream representations and alleviates the geometric ambiguity in sparse surround views. To this end, we propose VGGD, a visual geometry foundation-aware 3D Gaussian Splatting framework for feed-forward surround-view driving reconstruction, which shifts geometric modeling to the frontend and adapts foundation priors to the driving camera setting. First, VGGD leverages VGGT to provide transferable multi-view geometric prior tokens. Next, we introduce a Dual-Path Neck to decouple geometry-consistent and appearance-aware representations, improving appearance completion in weakly observed regions. We further apply Scale Warmup to stabilize early geometry learning and suppress scale drift under ego-pose changes. Finally, we use a hybrid pixel--volume Gaussian decoder to produce a renderable 3D Gaussian scene for novel-view synthesis. Experiments on the nuScenes single-frame benchmark show that VGGD achieves the best overall rendering quality among the compared methods and improves relative geometric consistency.",
+      "authors": [
+        "Junhong Lin",
+        "Jinlong Wang",
+        "Xianda Guo",
+        "Yanlun Peng",
+        "Wei Zheng",
+        "Guoqing Liu",
+        "Hanli Wang",
+        "Tiesong Zhao",
+        "Wei Gao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-11T09:04:33+00:00",
+      "link": "https://arxiv.org/pdf/2608.10682v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural volume rendering architecture using 3D Gaussian Splatting for driving scenes",
+      "llm_evidence_cn": "针对驾驶场景的使用3D高斯泼溅的神经体渲染架构",
+      "llm_evidence": "针对驾驶场景的使用3D高斯泼溅的神经体渲染架构",
+      "canonical_evidence": "针对驾驶场景的使用3D高斯泼溅的神经体渲染架构",
+      "llm_tldr_en": "Uses visual geometry priors to improve 3D Gaussian Splatting for sparse-view driving scene reconstruction.",
+      "llm_tldr_cn": "利用视觉几何先验增强3D高斯泼溅，实现单帧环视驾驶场景的快速神经渲染重建。",
+      "llm_tldr": "利用视觉几何先验增强3D高斯泼溅，实现单帧环视驾驶场景的快速神经渲染重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

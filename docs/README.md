@@ -6,29 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-15
-- 运行时间：2026-08-15 19:34:18 UTC
+- 最新运行日期：2026-08-16
+- 运行时间：2026-08-16 19:39:16 UTC
 - 运行状态：成功
 - 本次总论文数：2
 - 精读区：0
 - 速读区：2
 
 ### 今日简报（AI）
-今日聚焦 3DGS 在高速运动重建与稀疏视角修复领域的双重突破。
-重点关注 ERF-GS 利用事件相机攻克高速模糊，以及 TRACE-GS 通过轨迹蒸馏优化稀疏视角下的场景还原。
-建议深入探索 3DGS 在动态捕捉与低采样环境下的鲁棒性提升方案。
-- 详情：[/202608/15/README](/202608/15/README)
+今日聚焦自动驾驶场景感知，速览 3D 占据预测与环视重建的最新技术突破。
+重点关注 OccAnyScene 实现的室内外统一 3D 占据预测，以及利用几何先验强化单帧环视驾驶场景的 3D 高斯重建。
+建议关注 3DGS 与大模型几何先验在复杂环境建模中的融合应用。
+- 详情：[/202608/16/README](/202608/16/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [ERF-GS: Reconstructing Fast Motion from Disjoint Event-RGB Viewpoints](/202608/15/2608.08531v1-erf-gs-reconstructing-fast-motion-from-disjoint-event-rgb-viewpoints)  
+1. [OccAnyScene: Towards Unified Indoor-Outdoor 3D Occupancy Predictio](/202608/16/2608.08696v1-occanyscene-towards-unified-indoor-outdoor-3d-occupancy-predictio)  
    标签：评分：7.0/10、query:q1
-   evidence：用于动态场景重建的神经辐射场和3D高斯泼溅
-2. [TRACE-GS: On-Policy Trajectory Distillation with Privileged Geometric Conditioning for Sparse-View 3DGS Restoration](/202608/15/2608.10286v1-trace-gs-on-policy-trajectory-distillation-with-privileged-geometric-conditioning-for-sparse-view-3dgs-restoration)  
+   evidence：用于3D占据预测和场景自适应图像到3D提升的高斯框架
+2. [Visual Geometry Foundation-Aware Gaussians for Single-Frame Surround-View Driving Reconstruction](/202608/16/2608.10682v1-visual-geometry-foundation-aware-gaussians-for-single-frame-surround-view-driving-reconstruction)  
    标签：评分：7.0/10、query:q1
-   evidence：用于稀疏视图3D高斯泼溅修复的扩散先验
+   evidence：针对驾驶场景的使用3D高斯泼溅的神经体渲染架构
 
 
 <div class="dpr-home-promo-card">
