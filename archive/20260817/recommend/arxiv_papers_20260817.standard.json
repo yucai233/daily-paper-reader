@@ -1,0 +1,223 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-17T20:21:34.166976+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2608.14112v1",
+      "title": "Fixed-Budget Gaussian Volume Encoding with Structure-Aware Allocation",
+      "abstract": "Scientific simulations often produce scalar volumes faster than they can be stored, transferred, and loaded, while in situ reduction must use only a limited share of simulation resources. This work encodes scalar fields as anisotropic Gaussian primitives under a fixed budget. The complete primitive set is allocated analytically from local field structure, including position, orientation, and shape, then refined directly against the scalar field without densification, pruning, or count changes. The selected budget determines encoded storage before refinement and, together with the iteration schedule, provides a controllable refinement-time budget. In a controlled benchmark, truncation-aware field evaluation reduces encoding time by up to 51x; 1.4 million Gaussians encode a billion-voxel volume in at most four minutes on one desktop GPU, with reduced-iteration refinement completing in under one minute. Across five datasets spanning 2.1 million to 1.1 billion evaluated voxels, compression-useful configurations achieve 15.0-38.7 dB PSNR at compression ratios from 2.2x to over 40,000x. Pre-encoding structure statistics characterize fields for which one-shot allocation yields limited gains from additional capacity. Because primitives retain scalar attributes rather than baked appearance, a single compact model serves every subsequent visualization state - supporting post-hoc transfer-function, colormap, lighting, and viewpoint changes without re-encoding.",
+      "authors": [
+        "Michael R. Martin",
+        "Joseph Insley",
+        "Victor A. Mateevitsi",
+        "Silvio Rizzi",
+        "Kwan-Liu Ma"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.CE",
+        "cs.GR",
+        "cs.LG"
+      ],
+      "published": "2026-08-14T09:15:35+00:00",
+      "link": "https://arxiv.org/pdf/2608.14112v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "encoding scalar fields as anisotropic Gaussian primitives for volume data",
+      "llm_evidence_cn": "将标量场编码为各向异性高斯原语以处理体积数据",
+      "llm_evidence": "将标量场编码为各向异性高斯原语以处理体积数据",
+      "canonical_evidence": "将标量场编码为各向异性高斯原语以处理体积数据",
+      "llm_tldr_en": "Encodes scientific scalar volumes as Gaussian primitives under a fixed budget for efficient storage.",
+      "llm_tldr_cn": "在固定预算下将科学标量体编码为高斯原语，以实现高效存储。",
+      "llm_tldr": "在固定预算下将科学标量体编码为高斯原语，以实现高效存储。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.13949v1",
+      "title": "Fast Implicit Neural Light Field Representation via Geometric Decomposition and Multi-Resolution Low-Rank Features",
+      "abstract": "Implicit neural representations provide a compact and continuous way to reconstruct dense light fields from sampled ray coordinates. However, fast light field reconstruction remains challenging because a light field is a high-dimensional signal with strong spatial-angular redundancy and structured disparity variations. Directly fitting 4D ray coordinates with a neural network often requires considerable optimization time to recover both view appearance and cross-view consistency. To address this issue, this paper proposes a fast implicit light field representation based on geometric decomposition and multi-resolution low-rank features. The proposed method decomposes a 4D light field into a horizontal disparity plane, a spatial texture plane, and a vertical disparity plane. Each plane is represented by a low-rank structure that combines a low-resolution 2D grid with the element-wise product of two high-resolution 1D line features at multiple resolution levels. The fused features are decoded by a lightweight multilayer perceptron to predict RGB values. Experiments on public light field datasets show that the proposed method achieves competitive reconstruction quality while providing a better trade-off among model parameters, training time, and inference efficiency.",
+      "authors": [
+        "Yao Guo",
+        "Ligen Shi",
+        "Shuchen Sun",
+        "Jun Qiu",
+        "Chang Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-14T04:44:14+00:00",
+      "link": "https://arxiv.org/pdf/2608.13949v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Accelerates implicit neural light field reconstruction using geometric decomposition and low-rank features",
+      "llm_evidence_cn": "利用几何分解和低秩特征加速隐式神经光场重建",
+      "llm_evidence": "利用几何分解和低秩特征加速隐式神经光场重建",
+      "canonical_evidence": "利用几何分解和低秩特征加速隐式神经光场重建",
+      "llm_tldr_en": "Introduces a fast implicit neural light field representation to improve reconstruction speed and consistency.",
+      "llm_tldr_cn": "引入一种快速隐式神经光场表示，以提高重建速度和一致性。",
+      "llm_tldr": "引入一种快速隐式神经光场表示，以提高重建速度和一致性。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.13255v1",
+      "title": "GeoCache: Training-Free Acceleration of Multi-View Texture Diffusion via Geometric Delta Transport",
+      "abstract": "Geometry-conditioned multi-view diffusion enables high-quality 3D texture generation, but its repeated per-view denoiser evaluations introduce substantial computational cost. Existing training-free accelerators primarily exploit temporal redundancy by reusing computation across denoising steps. In multi-view texturing, however, skipping a step also removes the cross-view interaction that continually aligns different observations of the same surface, leading to rapidly degraded consistency and fidelity. Our analysis identifies a complementary source of redundancy: although intermediate features remain view-specific, geometrically corresponding surface points exhibit transferable evolution in their predicted clean signals. Based on this observation, we introduce \\gc{}, a training-free plugin that evaluates a rotating subset of anchor views and transports their geometry-aligned per-step $\\xz$ updates to the remaining views. Periodic full-view computation controls accumulated error, while sampler-consistent reconstruction preserves the denoising trajectory. \\gc{} requires neither retraining nor architectural modification and uses the position maps already available in geometry-conditioned texturing pipelines. Across Hunyuan3D-2.1, SyncMVD, and MVPainter, \\gc{} achieves a stronger speed--fidelity trade-off than temporal caches and step reduction at operating points above $2\\times$. On Hunyuan3D-2.1, it delivers a $2.21\\times$ denoiser-loop speedup with an MV-LPIPS of 0.0293 and an MV-PSNR of 33.60 dB, providing the best fidelity among all tested methods above $2\\times$. The same transferred configuration reaches the highest speedup and lowest FLOPs on SyncMVD, while \\gc{} achieves the lowest FLOPs and best fidelity among the accelerated methods on MVPainter. These results establish cross-view geometry as an effective acceleration axis for multi-view texture diffusion.",
+      "authors": [
+        "Haotang Li",
+        "Zhenyu Qi",
+        "Shaohan Henry Wang",
+        "Kebin Peng",
+        "Yutong Zhao",
+        "Zi Wang",
+        "Bo Liu",
+        "Huanrui Yang",
+        "Sen He"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-13T13:57:35+00:00",
+      "link": "https://arxiv.org/pdf/2608.13255v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Accelerating multi-view texture diffusion via geometric transport",
+      "llm_evidence_cn": "通过几何传输加速多视角纹理扩散",
+      "llm_evidence": "通过几何传输加速多视角纹理扩散",
+      "canonical_evidence": "通过几何传输加速多视角纹理扩散",
+      "llm_tldr_en": "Accelerates 3D texture generation by reusing features across views based on geometric correspondence.",
+      "llm_tldr_cn": "通过基于几何对应关系跨视图重用特征，加速3D纹理生成。",
+      "llm_tldr": "通过基于几何对应关系跨视图重用特征，加速3D纹理生成。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.13929v1",
+      "title": "RGBX-Next: Towards Realistic Generative Rendering from G-Buffers",
+      "abstract": "Diffusion models have achieved impressive results in image, video, and streaming generation. However, compared to traditional 3D rendering, they still lack precise control over the generated output. We believe a viable path forward is to use generative models as learned renderers conditioned on traditionally rendered G-buffers. We introduce RGBX-Next, a unified generative framework for forward and inverse rendering, which allows estimating G-buffers from images, videos, and streams, and rendering realistic images, videos, and streams from G-buffers. Our key contribution is a general recipe for finetuning diffusion transformer (DiT) models into generative forward and inverse renderers. We show that the resulting models achieve high quality in both realistic generative rendering and intrinsic decomposition. We will make all our models publicly available. We believe that the design principles presented in this paper will benefit future research on controllable generative forward and inverse rendering.",
+      "authors": [
+        "Zheng Zeng",
+        "Marco Salvi",
+        "Lifan Wu",
+        "Jan Novák",
+        "Daqi Lin",
+        "Saeed Hadadan",
+        "Yichen Sheng",
+        "Robert Pottorff",
+        "Shiqiu Liu",
+        "Ravi Ramamoorthi",
+        "Ling-Qi Yan",
+        "Miloš Hašan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-08-14T03:57:52+00:00",
+      "link": "https://arxiv.org/pdf/2608.13929v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Generative models as learned renderers for forward and inverse rendering",
+      "llm_evidence_cn": "生成模型作为前向和逆向渲染的学习渲染器",
+      "llm_evidence": "生成模型作为前向和逆向渲染的学习渲染器",
+      "canonical_evidence": "生成模型作为前向和逆向渲染的学习渲染器",
+      "llm_tldr_en": "RGBX-Next uses diffusion transformers as learned renderers conditioned on G-buffers for realistic image synthesis.",
+      "llm_tldr_cn": "RGBX-Next使用扩散Transformer作为基于G-buffer条件的学习渲染器，实现逼真的图像合成。",
+      "llm_tldr": "RGBX-Next使用扩散Transformer作为基于G-buffer条件的学习渲染器，实现逼真的图像合成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.14078v1",
+      "title": "Owner3D: Ownership-Guided Style Writing for Training-Free Localized 3D Stylization",
+      "abstract": "Localized 3D stylization aims to modify the appearance of a specified object part while preserving the remaining surfaces. In large reconstruction models (LRMs), this task is challenging because style is injected into intermediate appearance representations before rendering, while compact triplane features are shared across target and non-target surfaces, causing style leakage and boundary ambiguity. We propose Owner3D, a training-free framework for localized 3D stylization that integrates localized appearance control directly into the LRM reconstruction process. Specifically, Owner3D introduces ownership-guided style writing to restrict reference-style injection to target regions, producing a single localized stylized triplane without additional training while avoiding separate global style and appearance representations. To resolve appearance ambiguity near semantic boundaries, we further introduce boundary dual slots that maintain separate local feature sources for target and non-target regions. Finally, a surface-first texture readout hierarchically combines surface, 3D, and triplane ownership evidence to robustly recover appearance under incomplete visibility. Experiments on a benchmark constructed from Google Scanned Objects and PartNet demonstrate that Owner3D consistently outperforms existing 3D stylization methods in target-region style fidelity and non-target appearance preservation, reducing appearance leakage by 86.4% and 89.9% compared with StyleSplat and LAENeRF, respectively.",
+      "authors": [
+        "Suchang Tao",
+        "Kaifeng Shi",
+        "Zhiyan Liu",
+        "Zhuoyuan Jiang",
+        "Yuqi Ouyang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-14T08:41:13+00:00",
+      "link": "https://arxiv.org/pdf/2608.14078v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Neural appearance representations and triplane features",
+      "llm_evidence_cn": "神经外观表示与三平面特征",
+      "llm_evidence": "神经外观表示与三平面特征",
+      "canonical_evidence": "神经外观表示与三平面特征",
+      "llm_tldr_en": "Integrates localized appearance control into triplane-based 3D reconstruction models.",
+      "llm_tldr_cn": "将局部外观控制集成到基于三平面的3D重建模型中。",
+      "llm_tldr": "将局部外观控制集成到基于三平面的3D重建模型中。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

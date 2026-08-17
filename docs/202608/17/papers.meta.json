@@ -1,0 +1,79 @@
+{
+  "label": "2026-08-17",
+  "date": "2026-08-17",
+  "generated_at": "2026-08-17T20:22:51",
+  "count": 5,
+  "papers": [
+    {
+      "paper_id": "202608/17/2608.13949v1-fast-implicit-neural-light-field-representation-via-geometric-decomposition-and-multi-resolution-low-rank-features",
+      "section": "deep",
+      "title_en": "Fast Implicit Neural Light Field Representation via Geometric Decomposition and Multi-Resolution Low-Rank Features",
+      "authors": "Yao Guo, Ligen Shi, Shuchen Sun, Jun Qiu, Chang Liu",
+      "date": "2026-08-14",
+      "pdf": "https://arxiv.org/pdf/2608.13949v1",
+      "score": "8.0",
+      "evidence": "利用几何分解和低秩特征加速隐式神经光场重建",
+      "tldr": "针对隐式神经表示在处理高维光场数据时优化慢、一致性难维持的问题，本文提出一种基于几何分解和多分辨率低秩特征的快速光场表示方法。通过将4D光场分解为水平视差、空间纹理和垂直视差三个平面，并结合多分辨率2D网格与1D线特征的低秩结构，利用轻量级MLP实现高效重建。该方法在保持高质量重建的同时，显著优化了训练时间、模型参数和推理效率。",
+      "tags": "query:q7",
+      "abstract_en": "Implicit neural representations provide a compact and continuous way to reconstruct dense light fields from sampled ray coordinates. However, fast light field reconstruction remains challenging because a light field is a high-dimensional signal with strong spatial-angular redundancy and structured disparity variations. Directly fitting 4D ray coordinates with a neural network often requires considerable optimization time to recover both view appearance and cross-view consistency. To address this issue, this paper proposes a fast implicit light field representation based on geometric decomposition and multi-resolution low-rank features. The proposed method decomposes a 4D light field into a horizontal disparity plane, a spatial texture plane, and a vertical disparity plane. Each plane is represented by a low-rank structure that combines a low-resolution 2D grid with the element-wise product of two high-resolution 1D line features at multiple resolution levels. The fused features are decoded by a lightweight multilayer perceptron to predict RGB values. Experiments on public light field datasets show that the proposed method achieves competitive reconstruction quality while providing a better trade-off among model parameters, training time, and inference efficiency.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/17/2608.14112v1-fixed-budget-gaussian-volume-encoding-with-structure-aware-allocation",
+      "section": "deep",
+      "title_en": "Fixed-Budget Gaussian Volume Encoding with Structure-Aware Allocation",
+      "authors": "Michael R. Martin, Joseph Insley, Victor A. Mateevitsi, Silvio Rizzi, Kwan-Liu Ma",
+      "date": "2026-08-14",
+      "pdf": "https://arxiv.org/pdf/2608.14112v1",
+      "score": "8.0",
+      "evidence": "将标量场编码为各向异性高斯原语以处理体积数据",
+      "tldr": "针对科学模拟中海量标量场数据的存储与传输瓶颈，本文提出一种基于固定预算的各向异性高斯原语编码方法。该方法利用局部场结构进行结构感知分配，无需增密或修剪即可直接优化。在保证固定存储预算的同时，通过截断感知评估大幅提升编码速度，支持在单GPU上快速处理十亿级体素，并能灵活支持后期可视化调整。",
+      "tags": "query:q1",
+      "abstract_en": "Scientific simulations often produce scalar volumes faster than they can be stored, transferred, and loaded, while in situ reduction must use only a limited share of simulation resources. This work encodes scalar fields as anisotropic Gaussian primitives under a fixed budget. The complete primitive set is allocated analytically from local field structure, including position, orientation, and shape, then refined directly against the scalar field without densification, pruning, or count changes. The selected budget determines encoded storage before refinement and, together with the iteration schedule, provides a controllable refinement-time budget. In a controlled benchmark, truncation-aware field evaluation reduces encoding time by up to 51x; 1.4 million Gaussians encode a billion-voxel volume in at most four minutes on one desktop GPU, with reduced-iteration refinement completing in under one minute. Across five datasets spanning 2.1 million to 1.1 billion evaluated voxels, compression-useful configurations achieve 15.0-38.7 dB PSNR at compression ratios from 2.2x to over 40,000x. Pre-encoding structure statistics characterize fields for which one-shot allocation yields limited gains from additional capacity. Because primitives retain scalar attributes rather than baked appearance, a single compact model serves every subsequent visualization state - supporting post-hoc transfer-function, colormap, lighting, and viewpoint changes without re-encoding.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/17/2608.13255v1-geocache-training-free-acceleration-of-multi-view-texture-diffusion-via-geometric-delta-transport",
+      "section": "quick",
+      "title_en": "GeoCache: Training-Free Acceleration of Multi-View Texture Diffusion via Geometric Delta Transport",
+      "authors": "Haotang Li, Zhenyu Qi, Shaohan Henry Wang, Kebin Peng, Yutong Zhao, Zi Wang, Bo Liu, Huanrui Yang, Sen He",
+      "date": "2026-08-13",
+      "pdf": "https://arxiv.org/pdf/2608.13255v1",
+      "score": "6.0",
+      "evidence": "通过几何传输加速多视角纹理扩散",
+      "tldr": "针对多视图纹理扩散生成中计算开销巨大的问题，本文提出了GeoCache，一种无需训练的加速插件。传统加速方法通过减少去噪步数来提速，但这往往会破坏视图间的一致性。GeoCache利用几何对应关系，仅对部分锚点视图进行去噪计算，并将预测的更新量传输至其他视图。在Hunyuan3D-2.1、SyncMVD等模型上的实验表明，该方法在实现2倍以上加速的同时，保持了优于现有技术的一致性和图像质量。",
+      "tags": "query:q7",
+      "abstract_en": "Geometry-conditioned multi-view diffusion enables high-quality 3D texture generation, but its repeated per-view denoiser evaluations introduce substantial computational cost. Existing training-free accelerators primarily exploit temporal redundancy by reusing computation across denoising steps. In multi-view texturing, however, skipping a step also removes the cross-view interaction that continually aligns different observations of the same surface, leading to rapidly degraded consistency and fidelity. Our analysis identifies a complementary source of redundancy: although intermediate features remain view-specific, geometrically corresponding surface points exhibit transferable evolution in their predicted clean signals. Based on this observation, we introduce \\gc{}, a training-free plugin that evaluates a rotating subset of anchor views and transports their geometry-aligned per-step $\\xz$ updates to the remaining views. Periodic full-view computation controls accumulated error, while sampler-consistent reconstruction preserves the denoising trajectory. \\gc{} requires neither retraining nor architectural modification and uses the position maps already available in geometry-conditioned texturing pipelines. Across Hunyuan3D-2.1, SyncMVD, and MVPainter, \\gc{} achieves a stronger speed--fidelity trade-off than temporal caches and step reduction at operating points above $2\\times$. On Hunyuan3D-2.1, it delivers a $2.21\\times$ denoiser-loop speedup with an MV-LPIPS of 0.0293 and an MV-PSNR of 33.60 dB, providing the best fidelity among all tested methods above $2\\times$. The same transferred configuration reaches the highest speedup and lowest FLOPs on SyncMVD, while \\gc{} achieves the lowest FLOPs and best fidelity among the accelerated methods on MVPainter. These results establish cross-view geometry as an effective acceleration axis for multi-view texture diffusion.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/17/2608.13929v1-rgbx-next-towards-realistic-generative-rendering-from-g-buffers",
+      "section": "quick",
+      "title_en": "RGBX-Next: Towards Realistic Generative Rendering from G-Buffers",
+      "authors": "Zheng Zeng, Marco Salvi, Lifan Wu, Jan Novák, Daqi Lin, Saeed Hadadan, Yichen Sheng, Robert Pottorff, Shiqiu Liu, Ravi Ramamoorthi, Ling-Qi Yan, Miloš Hašan",
+      "date": "2026-08-14",
+      "pdf": "https://arxiv.org/pdf/2608.13929v1",
+      "score": "6.0",
+      "evidence": "生成模型作为前向和逆向渲染的学习渲染器",
+      "tldr": "扩散模型在生成领域表现出色但缺乏精确控制。本文提出 RGBX-Next，一个基于 G-buffer 条件的统一生成框架，旨在将生成模型作为学习渲染器。通过微调扩散 Transformer (DiT)，该框架实现了前向渲染（从 G-buffer 生成真实图像/视频）和逆向渲染（从图像估计 G-buffer）。该方法在生成质量和内在分解方面均达到高水平，为可控生成渲染提供了新思路。",
+      "tags": "query:q1",
+      "abstract_en": "Diffusion models have achieved impressive results in image, video, and streaming generation. However, compared to traditional 3D rendering, they still lack precise control over the generated output. We believe a viable path forward is to use generative models as learned renderers conditioned on traditionally rendered G-buffers. We introduce RGBX-Next, a unified generative framework for forward and inverse rendering, which allows estimating G-buffers from images, videos, and streams, and rendering realistic images, videos, and streams from G-buffers. Our key contribution is a general recipe for finetuning diffusion transformer (DiT) models into generative forward and inverse renderers. We show that the resulting models achieve high quality in both realistic generative rendering and intrinsic decomposition. We will make all our models publicly available. We believe that the design principles presented in this paper will benefit future research on controllable generative forward and inverse rendering.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/17/2608.14078v1-owner3d-ownership-guided-style-writing-for-training-free-localized-3d-stylization",
+      "section": "quick",
+      "title_en": "Owner3D: Ownership-Guided Style Writing for Training-Free Localized 3D Stylization",
+      "authors": "Suchang Tao, Kaifeng Shi, Zhiyan Liu, Zhuoyuan Jiang, Yuqi Ouyang",
+      "date": "2026-08-14",
+      "pdf": "https://arxiv.org/pdf/2608.14078v1",
+      "score": "6.0",
+      "evidence": "神经外观表示与三平面特征",
+      "tldr": "Owner3D是一个无需训练的局部3D风格化框架，旨在解决大重建模型（LRM）中局部风格化导致的风格泄漏和边界模糊问题。该方法通过所有权引导的风格写入将风格注入限制在目标区域，并利用边界双插槽和表面优先纹理读取技术，在保持非目标区域原貌的同时，实现了高保真度的局部风格迁移，显著提升了风格化的准确性。",
+      "tags": "query:q1",
+      "abstract_en": "Localized 3D stylization aims to modify the appearance of a specified object part while preserving the remaining surfaces. In large reconstruction models (LRMs), this task is challenging because style is injected into intermediate appearance representations before rendering, while compact triplane features are shared across target and non-target surfaces, causing style leakage and boundary ambiguity. We propose Owner3D, a training-free framework for localized 3D stylization that integrates localized appearance control directly into the LRM reconstruction process. Specifically, Owner3D introduces ownership-guided style writing to restrict reference-style injection to target regions, producing a single localized stylized triplane without additional training while avoiding separate global style and appearance representations. To resolve appearance ambiguity near semantic boundaries, we further introduce boundary dual slots that maintain separate local feature sources for target and non-target regions. Finally, a surface-first texture readout hierarchically combines surface, 3D, and triplane ownership evidence to robustly recover appearance under incomplete visibility. Experiments on a benchmark constructed from Google Scanned Objects and PartNet demonstrate that Owner3D consistently outperforms existing 3D stylization methods in target-region style fidelity and non-target appearance preservation, reducing appearance leakage by 86.4% and 89.9% compared with StyleSplat and LAENeRF, respectively.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

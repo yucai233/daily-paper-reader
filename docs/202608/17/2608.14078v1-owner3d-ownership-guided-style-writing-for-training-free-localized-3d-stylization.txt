@@ -1,0 +1,381 @@
+Title: Owner3D: Ownership-Guided Style Writing for Training-Free Localized 3D Stylization
+
+URL Source: https://arxiv.org/pdf/2608.14078v1
+
+Published Time: Mon, 17 Aug 2026 00:35:17 GMT
+
+Number of Pages: 16
+
+Markdown Content:
+# Owner3D: Ownership-Guided Style Writing for Training-Free Localized 3D Stylization 
+
+Suchang Tao, Kaifeng Shi, Zhiyan Liu, Zhuoyuan Jiang, and Yuqi Ouyang ⋆
+
+College of Computer Science, Sichuan University, Chengdu, China 
+
+{taosuchang,shikaifeng,liuzhiyan666,jiangzhuoyuan}@stu.scu.edu.cn yuqi.ouyang@scu.edu.cn 
+
+Abstract. Localized 3D stylization aims to modify the appearance of a specified object part while preserving the remaining surfaces. In large reconstruction models (LRMs), this task is challenging because style is injected into intermediate appearance representations before rendering, while compact triplane features are shared across target and non-target surfaces, causing style leakage and boundary ambiguity. We propose Owner3D, a training-free framework for localized 3D stylization that inte-grates localized appearance control directly into the LRM reconstruction process. Specifically, Owner3D introduces ownership-guided style writing to restrict reference-style injection to target regions, producing a sin-gle localized stylized triplane without additional training while avoiding separate global style and appearance representations. To resolve appear-ance ambiguity near semantic boundaries, we further introduce boundary dual slots that maintain separate local feature sources for target and non-target regions. Finally, a surface-first texture readout hierarchically combines surface, 3D, and triplane ownership evidence to robustly recover appearance under incomplete visibility. Experiments on a benchmark constructed from Google Scanned Objects and PartNet demonstrate that Owner3D consistently outperforms existing 3D stylization methods in target-region style fidelity and non-target appearance preservation, reduc-ing appearance leakage by 86.4% and 89.9% compared with StyleSplat and LAENeRF, respectively. 
+
+Keywords: 3D Stylization · Large Reconstruction Models · Localized 3D Editing · Reference-Guided Editing · Attention Mechanisms 
+
+## 1 Introduction 
+
+Feed-forward 3D asset generation has enabled efficient construction of textured 3D assets from images, creating new opportunities for interactive appearance editing. Large reconstruction models (LRMs) further promote this process by mapping one or a sparse set of images to renderable triplane representations in a single forward pass [8, 28]. Building on this reconstruction capability, recent LRM stylization methods exploit the decoder structure by injecting style-image  
+
+> ⋆
+
+Corresponding author. arXiv:2608.14078v1 [cs.CV] 14 Aug 2026 2 S. Tao et al.  
+
+> Fig. 1: Representative localized 3D stylization results on real-world textured objects from Google Scanned Objects (GSO) [4]. Each example shows the source object, style reference image, and the stylized 3D output produced by Owner3D.
+
+keys and values into late cross-attention, producing stylized appearance triplanes without training additional 3D models [21]. This progress motivates localized 3D stylization, where users can modify the appearance of a specified semantic part, such as a roof, chimney, lampshade, chair seat, or shell, while preserving the remaining object. Representative examples are shown in Fig. 1, where our approach enables localized style transfer to selected regions while preserving the geometry and appearance of non-target regions across diverse objects and styles. Localized 3D stylization remains challenging due to three issues. First, style information is injected into intermediate appearance representations before render-ing, meaning that final-image masking cannot prevent undesired style propagation. Second, compact triplane representations share appearance features across differ-ent surface regions, causing target and non-target parts to compete for limited representation capacity near semantic boundaries. Third, incomplete visibility makes it difficult to reliably determine the ownership of each texture query, leading to ambiguous feature selection during texture readout. These challenges require localized stylization to control style writing, resolve boundary ambiguity, and select reliable appearance features. Owner3D 3
+
+To address the limitations, Owner3D presents a training-free framework for localized 3D stylization that integrates appearance control into the 3D recon-struction process by regulating both ownership-guided style writing and texture readout. Specifically, Owner3D introduces ownership-guided style writing in the decoder to localize style injection to the target region, producing a single localized stylized triplane without additional training or separate global style and content representations. Furthermore, Owner3D introduces boundary dual slots, a sparse local capacity expansion that separates target and non-target appearance features near shared triplane boundaries without maintaining an additional global content representation. Finally, surface-first texture readout hierarchically integrates surface, 3D, and triplane ownership evidence to select reliable appearance features under incomplete visibility. Our contributions are: 
+
+– We introduce Owner3D, a training-free localized 3D stylization framework that enables controllable part-level editing within a feed-forward reconstruc-tion pipeline, achieving high-quality stylization with significantly reduced non-target leakage compared with existing baselines. 
+
+– We establish an ownership-guided style writing paradigm for LRMs that enables localized reference-style injection while maintaining a single localized stylized triplane. 
+
+– We propose boundary dual slots to overcome the appearance ambiguity caused by shared triplane support, enabling independent local feature representation for target and non-target regions. 
+
+– We design surface-first texture readout to robustly recover appearance features by prioritizing surface ownership evidence and progressively leveraging 3D and triplane cues under incomplete visibility. 
+
+## 2 Related Work 
+
+2.1 3D Appearance Representations 
+
+Neural radiance fields and Gaussian splatting have established effective differen-tiable 3D appearance representations for high-quality view synthesis [13, 19]. To improve the compactness and scalability of 3D representations, triplane architec-tures encode spatial features on three orthogonal planes, providing an efficient representation scheme for 3D-aware generation and feed-forward reconstruction. Building upon this representation, large reconstruction models (LRMs) recon-struct 3D assets by encoding one or a sparse set of input images into image and triplane tokens, followed by a decoder that produces a reusable appearance triplane in a single forward pass [3,8,28]. However, the compact feature sharing of triplanes introduces ambiguity for localized stylization, as target and non-target regions may rely on overlapping appearance features near semantic boundaries. Different from reconstruction-oriented methods that focus on global appearance recovery, Owner3D investigates how compact triplane representations can be controlled for localized part-level stylization. 4 S. Tao et al. 
+
+2.2 Reference-Guided 3D Stylization 
+
+Classical image stylization transfers reference appearance by optimizing or sta-tistically modulating image features, including neural style transfer, adaptive instance normalization, whitening and coloring transformations, and histogram matching [5, 10, 16, 23]. These effective approaches remain confined to the im-age domain. 3D stylization extends such transfer to persistent assets repre-sented by meshes, neural radiance fields, Gaussians, or generated multi-view objects [11, 17, 18, 22, 26, 31]. Recent Gaussian methods, including StyleSplat, StylizedGS, and G-Style, improve multi-view stylization but typically require optimized scene representations, mesh-specific processing, or additional feature stages, limiting scalability [12,15,30]. LRM-based stylization offers a training-free alternative by injecting style keys and values into late decoder cross-attention blocks [21]. However, because decoder queries share the same style tokens, this interface is inherently global and struggles with precise part-level stylization. Inspired by attention-based image-editing control [7, 32], Owner3D introduces ownership-guided style writing to localize reference-style injection during LRM reconstruction. 
+
+2.3 Ownership-Guided Local Editing 
+
+Ownership estimation provides essential spatial guidance for localized 3D editing by identifying regions to modify or preserve. Recent promptable segmentation methods obtain object and part masks from image evidence [1, 14], while related approaches lift 2D ownership information into 3D through multi-view aggrega-tion, open-vocabulary instance proposals, or radiance-field propagation [2, 27]. However, ownership signals only indicate where an edit should occur and do not determine how appearance changes should be introduced or maintained within a compact 3D representation. Existing instruction-driven 3D editing approaches leverage 2D generative priors to modify 3D assets, but often rely on iterative optimization of scene representations [6]. Recent feed-forward and training-free editors improve efficiency through voxel flows, region-aware merging, or unified scene representations [9, 29, 33]. Nevertheless, these approaches typically perform editing on reconstructed assets or external representations, rather than control-ling how appearance is formed inside a feed-forward reconstruction model. In contrast, Owner3D integrates ownership guidance into fixed LRM reconstruction to regulate pre-rendering style writing and appearance readout, mitigating style propagation and unreliable appearance selection under incomplete visibility for efficient part-level stylization. 
+
+## 3 Method 
+
+Owner3D is an LRM-based framework for training-free localized 3D stylization. As shown in Fig. 2, the framework takes a content image, a style image, and a target prompt as inputs. Zero123++ [24] expands the content image into six Owner3D 5 
+
+> Fig. 2: Our framework. Given a content image, a style image, and a target prompt, a frozen LRM first reconstructs the object to estimate surface, 3D, and triplane ownership. Ownership-guided style writing then localizes style injection during appearance decoding to produce a localized stylized triplane. Boundary dual slots provide separate target and preserve features near semantic boundaries, and surface-first texture readout hierarchically integrates ownership evidence to retrieve the appropriate appearance features for rendering.
+
+source views, which the frozen LRM encodes into image tokens for triplane reconstruction. The style encoder extracts style features from the style image, while SAM 3 [1] segments the target region in the source views according to the target prompt. A content-only LRM pass first reconstructs the object to recover the geometry, depth, and visibility required for ownership estimation. A second pass then preserves the original content pathway in the early layers and injects ownership-gated style information only into the final 6 appearance-decoder layers, without updating the pretrained model weights. More specifically, the framework consists of three main modules: Ownership-guided style writing restricts style injection to decoder queries associated with the target part, producing a single localized stylized triplane. Boundary dual slots provide separate local style and preserved features where target and non-target surfaces share triplane support. Surface-first texture readout then uses the most reliable available ownership evidence to select the appropriate appearance feature for each surface query before final color decoding. Next, we will elaborate the three core modules. 
+
+3.1 Ownership-Guided Style Writing 
+
+This stage localizes style writing to target-owned decoder queries. A content-only LRM pass first reconstructs the geometry and provides the depth and visibility cues used to estimate surface ownership. The resulting ownership is projected onto the triplanes to gate decoder queries as write mask and lifted into a voxelized field for later texture readout as 3D ownership. A second pass follows the content path in early layers and injects the content-relative style residual only into target-owned queries in the final six appearance layers, producing a localized stylized triplane while preserving the original reconstruction elsewhere. 6 S. Tao et al. 
+
+Surface ownership. Let p ∈ R3 be a reconstructed surface point and let 
+
+πv (p) ∈ R2 be its projection in view v. The view mask mv : R2 → [0 , 1] gives a SAM 3 target score. To simplify notations, we use mv (p) to abbreviate mv (πv (p)) .The binary visibility indicator zv (p) ∈ { 0, 1} is one only when this projection is visible and passes the depth-consistency test. We estimate whether p belongs to the target part by averaging valid binary mask votes: 
+
+osurf (p) = 
+
+P 
+
+> v
+
+zv (p)1[mv (p) ≥ τm]max(1 , P 
+
+> v
+
+zv (p)) . (1) Here the 2D mask binarization threshold τm converts each SAM 3 score into a binary target vote. Only depth-consistent visible projections participate in the voting process, and points without any valid visible projection are assigned zero ownership. Thus osurf (p) ∈ [0 , 1] represents the fraction of valid visible views that classify p as belonging to the target part. To construct the 3D ownership field M3D : R3 → [0 , 1] , we max-splat the retained surface ownership scores to their quantized 3D voxel locations. These signals are complementary: surface ownership provides the write masks and preserves visible boundary detail, while 
+
+M3D supplies spatial support for subsequent texture readout. 
+
+Write mask. The LRM decoder does not directly write colors to surface points; it writes features to triplane tokens. We therefore map surface ownership to the corresponding triplane cells. Let ϕk(p) ∈ [−1, 1] 2 project p onto plane k ∈{xy, xz, yz }, and let uk(p) = round( R−12 (ϕk(p) + 1)) be its quantized coordinate on an R × R plane. Surface ownership is mapped by a radius-based max-splat: 
+
+W k(u) = max  
+
+> p∈S ∥u−uk(p)∥∞≤rs
+
+osurf (p),gι(k,u ) = Wk(u), Wk = N  S2D (W k) .
+
+(2) Here the maximum over an empty set is zero, while S2D and N denote the spatial smoothing and normalization applied by the implementation. The decoder contains exactly 3R2 tokens arranged as three R × R triplane grids. Therefore, each token has a unique correspondence to a plane index k and a grid coordinate 
+
+u, denoted as i = ι(k, u ). The ownership map Wk thus provides one ownership gate gi ∈ [0 , 1] for each decoder token. 
+
+Local style cross-attention. Directly applying style cross-attention to all decoder queries would write reference appearance into both target and non-target triplane regions. We therefore use write mask to restrict the style-induced change to target queries. In the late appearance layers, the style encoder provides style keys ks,ℓ j ∈ Rda and values vs,ℓ j ∈ RC for Ns style tokens. For query i with query vector qℓi ∈ Rda , the style cross-attention response is: 
+
+Y s,ℓ i =
+
+> Ns
+
+X
+
+> j=1
+
+softmax (qℓi )⊤ks,ℓ j
+
+√da
+
+!
+
+> j
+
+vs,ℓ j . (3) The same query obtains a content response Y c,ℓ i ∈ RC from the original recon-struction path. We define the content-relative style residual as ∆s,ℓ i = Y s,ℓ i − Y c,ℓ i ,Owner3D 7
+
+which isolates the appearance change introduced by the style reference. Gating this residual preserves the original content response outside the target region while allowing target queries to incorporate style information. Following the layer-wise stylization strategy of 3D Stylization via LRM [21], we apply this operation only to the last few appearance cross-attention layers, which primarily refine appearance. Writing Hℓi ∈ RC as the hidden state of query i at layer ℓ, and 
+
+Fℓ(·) as the remaining decoder operations within this layer, Owner3D updates each token as: 
+
+Hℓ+1  
+
+> i
+
+= Fℓ
+
+
+
+Hℓi + Y c,ℓ i + αg i∆s,ℓ i
+
+
+
+, (4) where α controls the global style strength and gi denotes the ownership gate derived from the triplane ownership map. When gi = 0 , the query exactly follows the original content reconstruction path, while increasing gi progressively incor-porates the style residual into target-owned queries. This ownership-gated update confines style writing to the target region and produces a single localized stylized triplane Ps without maintaining separate global style and content triplanes. 
+
+3.2 Boundary Dual Slots 
+
+Ownership-guided style writing prevents global style drift, but it does not fully solve a triplane capacity problem. A triplane cell is shared by all 3D points whose projections fall near that cell. Near a semantic boundary, target and preserve surfaces may therefore read from the same local triplane support. To solve the problem, boundary dual slots add a small amount of extra memory only at these ambiguous locations. Let u ∈ { 1, . . . , H p} × { 1, . . . , W p} be a 2D grid coordinate on plane k ∈{1, 2, 3} and let N2D(u) be its radius-ρ neighborhood, where ρ sets the spatial extent used to inspect local ownership. We mark u as a boundary location when this neighborhood contains both target-owned and preserve-owned triplane cells: 
+
+Bk(u) = 1
+
+
+
+max   
+
+> v∈N 2D(u)
+
+Wk(v) ≥ τo ∧ min   
+
+> v∈N 2D(u)
+
+Wk(v) < τ o
+
+
+
+. (5) Here τo separates target-owned from preserve-owned cells, and Bk ∈ { 0, 1}Hp×Wp
+
+is a sparse boundary mask. It is active only where the local triplane neighborhood crosses the interface between target and preserve regions. For each active boundary location, we keep two local feature sources. The style slot stores the locally stylized feature from Ps,k , while the preserve slot stores the corresponding reconstruction feature before style writing. Let Lck ∈ RHp×Wp×C
+
+denote this cached reconstruction feature, with non-boundary entries discarded after slot construction. The product with Bk is broadcast along the channel dimension, and the sparse slots are: 
+
+P style  
+
+> k
+
+= Bk ⊙ Ps,k , (6) 
+
+P preserve  
+
+> k
+
+= Bk ⊙ Lck. (7) Both slots have the same channel dimension C as the triplane, but are used only at active boundary locations. Interior target regions still read from the default stylized triplane, and far-away preserve regions do not allocate extra memory. 8 S. Tao et al. 
+
+3.3 Surface-First Texture Readout 
+
+After the stylized triplane and boundary slots are built, the renderer queries appearance features for 3D surface locations. Let x ∈ S ⊂ R3 be such a texture query. We first decide whether x should behave as target or preserve. Surface ownership from visible source views provides the primary evidence; when it is unavailable, we successively fall back to the 3D ownership field and the triplane write masks: 
+
+o(x) = 
+
+
+
+osurf (x), with valid surface support ,M3D (x), with valid 3D owner support ,oplane (x), otherwise .
+
+(8) Valid surface support requires at least one depth-consistent visible projection, whereas valid 3D support requires x to lie within the observed support of M3D.For x ∈ S , osurf (x) follows the surface ownership definition above. As a final fallback, we compute oplane (x) = 13
+
+P3 
+
+> k=1
+
+sample( Wk, π k(x)) by projecting x onto each plane with πk and bilinearly sampling the corresponding write mask Wk.For plane k, let fk(x) ∈ RC be the feature sampled from the default stylized plane Ps,k , and let f style  
+
+> k
+
+(x), f preserve  
+
+> k
+
+(x) ∈ RC be features sampled from the two boundary slots. We use bk(x) = 1[sample( Bk, π k(x)) > 0] to indicate whether the query falls on a boundary slot. With target threshold τs and preserve threshold 
+
+τp satisfying τp < τ s, the per-plane readout is: 
+
+f read  
+
+> k
+
+(x) = 
+
+
+
+f style  
+
+> k
+
+(x), bk(x) = 1 ∧ o(x) ≥ τs,f preserve  
+
+> k
+
+(x), bk(x) = 1 ∧ o(x) ≤ τp,fk(x), otherwise .
+
+(9) The interval τp < o (x) < τ s is intentionally left undecided: at a boundary with uncertain ownership, the default feature fk(x) avoids a hard switch to either slot. The original LRM aggregation operator Agg then combines the three selected plane features into one query feature f read (x). Finally, the aggregated feature 
+
+f read (x) is passed to the texture decoder to produce the rendered color. 
+
+## 4 Experiments 
+
+4.1 Datasets 
+
+Two datasets are used for the evaluation. The first consists of real-world textured objects from Google Scanned Objects (GSO) [4], providing realistic geometry and appearance variations for evaluating localized stylization in scanned assets. The second is derived from PartNet [20], whose fine-grained part annotations are adapted to define editable semantic targets. From these 3D assets, we construct a unified evaluation benchmark that supports the input formats required by all the categories of evaluated methods. Source views are rendered using a fixed camera protocol, while a target-part prompt and the corresponding view masks are prepared for each evaluation case. In total, our evaluation includes 49 3D objects and 16 style references. Owner3D 9
+
+4.2 Implementation Details 
+
+We use the publicly released pretrained InstantMesh-Large checkpoint as the frozen reconstruction backbone, following the LRM stylization setting of 3D Stylization [21]. Owner3D operates entirely at inference time by modifying the late appearance-decoder cross-attention and query-time texture readout, without object-specific fine-tuning. All experiments use single input view, fixed rendering cameras, and the same pretrained InstantMesh parameters. Zero123++ [24] synthesizes the source views for reconstruction, while SAM 3 generates the corresponding target-part masks, which are lifted into routing signals for style writing and texture readout. Unless otherwise specified, the 2D mask binarization threshold is τm = 0 .5, the triplane ownership boundary threshold is τo = 0 .5,the boundary neighborhood radius is ρ = 1 , style writing is applied to the last 6
+
+appearance-decoder cross-attention layers, and the style residual scale is α = 0 .90 .For baseline methods, we follow each model’s native input requirements and provide the corresponding ground-truth benchmark data rather than restricting all methods to the same single-view input as ours, ensuring a fair comparison across different input modalities. Image-space baselines are evaluated in both single-view and multi-view settings by applying style transfer to individual rendered views or a multi-view image grid. All experiments are conducted on a single NVIDIA RTX 5090 GPU. 
+
+4.3 Evaluation Metrics 
+
+To evaluate target-region style fidelity, following prior LRM stylization prac-tice [21], we report Style Fidelity and Target Gram Distance (T-Gram). Style Fidelity measures the distance between the channel-wise RGB means and stan-dard deviations of the masked target region and those of the style reference [23]. T-Gram adopts the Gram-matrix representation commonly used in neural style transfer [5]. To evaluate localization quality and view stability, we report Leakage and Multi-View Consistency (MV Cons.). Leakage measures the appearance discrepancy between paired clean and stylized renders over the non-target fore-ground [25]. MV Cons. is computed as the standard deviation of target-region T-Gram across rendered views, averaged over all evaluation cases. We additionally report the average wall-clock runtime for each object-style pair. Lower values indicate better performance for all metrics. More specifically, lower Style Fidelity and T-Gram indicate closer agreement with the reference style, lower Leakage indicates better preservation of non-target appearance, lower MV Cons. indicates more stable stylization across views, and lower runtime indicates higher efficiency. For the sensitivity and ablation analyses, we additionally report Content SSIM and non-target feature drift. Content SSIM is computed between the stylized and clean renders from the same view and averaged over the target mask; higher values indicate better content preservation. For ablation variant b and evaluation case n, let eJ(b) 
+
+> n
+
+and eJ(full)  
+
+> n
+
+denote the corresponding renders restricted to the 10 S. Tao et al.  
+
+> Fig. 3: Qualitative comparison on representative objects from the PartNet dataset. The figure compares Owner3D with 13 existing 3D and image-space stylization methods.
+
+same non-target foreground mask. We define 
+
+d(b) 
+
+> n
+
+= 12
+
+X
+
+> j∈{ relu3 _1,relu4 _1}
+
+mean 
+
+
+
+ψj ( eJ(b) 
+
+> n
+
+) − ψj ( eJ(full)  
+
+> n
+
+)
+
+
+
+, (10) where ψj denotes the activation of a fixed ImageNet-pretrained VGG-19 at layer 
+
+j, and mean averages over all feature entries. Across N evaluation cases, we report 1
+
+> N
+
+PNn=1 d(b) 
+
+> n
+
+and max 1≤n≤N d(b) 
+
+> n
+
+as the mean and worst-case non-target feature drift, respectively. Lower values indicate better non-target preservation. 
+
+4.4 Performance Comparisons with Previous Methods 
+
+We compare Owner3D with Gaussian-splatting-based 3D stylization, NeRF-based 3D stylization, and masked and unmasked image-space stylization methods on the complete evaluation benchmark. Fig. 3 qualitatively compares localization performance. Existing stylization methods often propagate reference appearance beyond the selected semantic region, particularly around complex boundaries, whereas Owner3D confines stylization to the target part while preserving the surrounding appearance. Tabulated in Tab. 1, Owner3D achieves the best Style Fidelity score of 
+
+0.1545 and the lowest comparable Leakage score of 0.0042 , reducing non-target appearance leakage by 86.4% and 89.9% compared with StyleSplat and LAENeRF, respectively. Leakage is not reported for masked image-space methods since per-view compositing preserves non-target pixels rather than performing localized Owner3D 11                                                                                 
+
+> Method Style Fidelity ↓T-Gram ↓MV Cons. ↓Leakage ↓Runtime ↓
+> Owner3D (Ours) 0.1545 0.892 0.00009 0.0042 31.10s
+> Gaussian-Splatting-Based 3D Stylization
+> StyleSplat [12] 0.4909 1.103 0.00010 0.0309 8.15min StylizedGS [30] 0.2211 1.058 0.00020 0.0571 1.94min G-Style [15] 0.6532 0.876 0.00029 0.0608 12.52min
+> NeRF-Based 3D Stylization
+> LAENeRF [22] 0.4009 0.966 0.00023 0.0417 15.04min
+> Masked Image-Space Stylization
+> Masked AdaIN [10] 0.3032 1.171 0.00023 /19.67s Masked WCT [16] 0.3010 1.161 0.00023 /20.00s Masked HistMatch [23] 0.3767 1.116 0.00021 /28.33s
+> Unmasked Image-Space Stylization
+> AdaIN (single-view) [10] 0.2978 1.219 0.00005 /0.24s
+> AdaIN (multi-view grid) 0.2980 1.220 0.00006 /0.24s
+> WCT (single-view) [16] 0.2972 1.213 0.00008 /0.24s
+> WCT (multi-view grid) 0.2973 1.213 0.00009 /0.24s
+> Neural Style Transfer (single-view) [5] 0.5041 1.151 0.00005 /19.80s Neural Style Transfer (multi-view grid) 0.5037 1.149 0.00005 /4.23s
+
+Table 1: Performance comparison on the PartNet dataset across different 3D and image-space stylization methods. T-Gram values are scaled by 10 4. Best results are highlighted in bold. Slash marks indicate that leakage is not directly comparable for image-space methods because they preserve non-target pixels through per-view compositing. 
+
+3D editing. Although G-Style achieves a slightly lower T-Gram value of 0.876 
+
+compared with 0.892 for Owner3D, it produces substantially higher Leakage of 
+
+0.0608 , indicating that style matching alone does not ensure accurate localized stylization. For view consistency, Owner3D achieves an MV Cons. value of 
+
+0.00009 , comparable to StyleSplat and lower than other 3D baselines. While some image-space methods report lower MV Cons. or faster runtime, they operate on rendered images and cannot produce reusable view-consistent 3D assets. Among evaluated 3D stylization methods, Owner3D is also the most efficient, requiring only 31 .10 seconds per object-style pair. These results demonstrate that Owner3D delivers superior localized 3D stylization with high style fidelity, strong appearance preservation, and consistent multi-view rendering. 
+
+4.5 Ablation Study 
+
+We perform controlled ablations by individually removing surface ownership, gated mixing, the style residual, boundary dual slots, or owner priority while keeping the input image, style reference, target prompt, camera configuration, pretrained backbone, and renderer fixed. As shown in Fig. 4, removing gated mix-ing, boundary dual slots, or owner priority causes the most evident degradation, as these components directly regulate style localization and boundary feature selection. Without gated mixing, style responses leak into preserved regions, while removing boundary dual slots or owner priority introduces ambiguity near shared 12 S. Tao et al.                         
+
+> Fig. 4: Qualitative ablation study of Owner3D. Each variant removes one component to analyze its effect on style localization and boundary appearance preservation. Variant T-Gram ↓
+> Mean Non-Target Feature Drift ↓
+> Maximum Non-Target Feature Drift ↓
+> Full model 0.831 0.000 0.000 w/o surface ownership 0.839 0.007 0.015 w/o gated mixing 0.843 0.374 0.558 w/o style residual 0.950 0.133 0.293 w/o boundary dual slots 0.874 0.353 0.630 w/o owner priority 0.873 0.277 0.549
+> Table 2: Performance comparison of ablation variants on the GSO dataset. Each variant removes one component of Owner3D to evaluate its contribution. Non-target feature drift measures the VGG-feature deviation of preserved regions from the full model, where lower values indicate better non-target appearance preservation.
+
+semantic boundaries. The quantitative results in Tab. 2 validates these obser-vations. Without gated mixing, T-Gram worsens from 0.831 to 0.843 , while the mean and maximum non-target feature drift rise to 0.374 and 0.558 , showing that the ownership gate is primarily responsible for localizing style writing rather than simply increasing style strength. Replacing the content-relative style residual with the direct style response causes the largest degradation in target style matching, increasing T-Gram to 0.950 , which confirms that subtracting the content response avoids an uncontrolled accumulation of appearance features. Boundary dual slots and owner priority are complementary at readout: removing the former yields the largest maximum non-target drift of 0.630 , while removing the latter also causes substantial feature deviation, indicating that boundary-local capacity must be paired with ownership-aware feature selection. By comparison, removing surface ownership produces a smaller change because the remaining 3D and triplane ownership evidence can still provide fallback decisions. Overall, the representative changes show that the proposed components primarily improve localization and non-target appearance preservation while maintaining target-region style transfer. Owner3D 13   
+
+> Fig. 5: Routing and readout sensitivity on a representative GSO object under different minimum visible-view requirements Kvis .
+
+4.6 Routing and Readout Sensitivity 
+
+We evaluate the sensitivity of surface-first texture readout to the minimum visible-view requirement Kvis , i.e., the minimum number of valid, depth-consistent source-view projections required before accepting surface ownership for a texture query. We vary Kvis ∈ 1, 2, 3, 4, 5 while keeping all other settings fixed, including target-support criteria, style writing, boundary slots, masks, cameras, and renderer. As shown from the lamp-shade case in Fig. 5, a lower visibility requirement 
+
+Kvis assigns more queries to the target region, expanding stylization coverage but increasing the risk of ambiguous boundary decisions. In contrast, a higher requirement produces more conservative routing that better protects preserved regions but may reject valid target areas with limited visibility. The default setting of Kvis = 2 provides a favorable balance by maintaining target coverage while reducing visible leakage, and is therefore selected in this work. 
+
+4.7 Style-Write Sensitivity 
+
+This experiment isolates style writing inside decoder cross-attention. We vary the number of style-write layers and the write strength while keeping ownership evidence and query-time readout fixed. Each cell in Tab. 3 reports T-Gram, Style Fidelity, and Content SSIM on the stylized target region from the same view demonstrated in Fig. 6. The default setting of α = 0 .90 and six-layer is a relative optimum on the observed style–content trade-off rather than the optimum of every individual metric. Increasing α to 1.20 further improves T-Gram from 
+
+0.60 to 0.52 and Style Fidelity from 0.079 to 0.066 , but reduces Content SSIM from 0.751 to 0.714 . The qualitative comparison in Fig. 6 provides an additional spatially localized criterion that is not captured by these global style statistics. As the style reference retains a coherent spatial layout rather than being spatially shuffled, the selected roof region can be aligned with the sunset-colored patch at the corresponding relative position. Under this strict alignment, α = 0 .90 
+
+with 6 layers reproduces the locally corresponding color more faithfully, whereas 
+
+α = 1 .20 or 8 layers applies a stronger global style response at the expense of this local correspondence and source structure. Hence, α = 0 .90 and 6 layers are selected in this work. 14 S. Tao et al. 
+
+Fig. 6: Style-write sensitivity on a representative GSO object. Rows vary the style-write strength α, and columns vary the number of style-write layers. Increasing either parameter strengthens style transfer but progressively weakens content preservation.                        
+
+> Cell: T-Gram ( ×10 4)↓/ Style Fidelity ↓/ Content SSIM ↑
+> α
+> Layers 2680.10 0.81 / 0.212 / 0.998 0.81 / 0.211 / 0.993 0.81 / 0.211 / 0.988 0.35 0.79 / 0.199 / 0.986 0.79 / 0.189 / 0.940 0.79 / 0.190 / 0.921 0.65 0.75 / 0.181 / 0.955 0.72 / 0.132 / 0.813 0.74 / 0.135 / 0.804 0.90 0.71 / 0.166 / 0.917 0.60 / 0.079 / 0.751 0.63 / 0.113 / 0.740 1.20 0.65 / 0.144 / 0.858 0.52 / 0.066 / 0.714 0.55 / 0.100 / 0.706
+
+Table 3: Two-dimensional style-write sensitivity. Bold indicates the best value for each metric; red marks the selected operating point. 
+
+## 5 Conclusion 
+
+We presented Owner3D, a training-free localized 3D stylization framework that integrates appearance control into the LRM reconstruction process. Ownership-guided style writing localizes reference-style injection at decoder queries and produces a single stylized triplane while preserving non-target appearance. Bound-ary dual slots and surface-first texture readout further address feature ambiguity near semantic boundaries and improve appearance selection under incomplete visibility. Extensive experiments demonstrate our reduced appearance leakage and high-fidelity target stylization compared with existing baselines, providing a practical solution for controllable appearance editing in large reconstruction mod-els. Our future work will explore improved region control and richer appearance representations for 3D stylization. Owner3D 15 
+
+## References 
+
+1. Carion, N., Gustafson, L., Hu, Y.T., Debnath, S., Hu, R., Suris, D., Ryali, C., Alwala, K.V., Khedr, H., Huang, A., et al.: SAM 3: Segment anything with concepts. arXiv preprint arXiv:2511.16719 (2025) 2. Cen, J., Fang, J., Zhou, Z., Yang, C., Xie, L., Zhang, X., Shen, W., Tian, Q.: Segment anything in 3d with radiance fields. In: NeurIPS (2023) 3. Chan, E.R., Lin, C.Z., Chan, M.A., Nagano, K., Pan, B., De Mello, S., Gallo, O., Guibas, L.J., Tremblay, J., Khamis, S., Karras, T., Wetzstein, G.: Efficient geometry-aware 3d generative adversarial networks. In: CVPR (2022) 4. Downs, L., Francis, A., Koenig, N., Kinman, B., Hickman, R., Reymann, K., McHugh, T.B., Vanhoucke, V.: Google scanned objects: A high-quality dataset of 3d scanned household items (2022), https://arxiv.org/abs/2204.11918 
+
+5. Gatys, L.A., Ecker, A.S., Bethge, M.: Image style transfer using convolutional neural networks. In: CVPR (2016) 6. Haque, A., Tancik, M., Efros, A.A., Holynski, A., Kanazawa, A.: Instruct-nerf2nerf: Editing 3d scenes with instructions. In: ICCV (2023) 7. Hertz, A., Mokady, R., Tenenbaum, J., Aberman, K., Pritch, Y., Cohen-Or, D.: Prompt-to-prompt image editing with cross attention control. In: ICLR (2023) 8. Hong, Y., Zhang, K., Gu, J., Bi, S., Zhou, Y., Liu, D., Liu, F., Sunkavalli, K., Bui, T., Tan, H.: LRM: Large reconstruction model for single image to 3d. In: ICLR (2024) 9. Hu, S., Wei, Y., Zha, F., Guo, Y., Zhang, J.: Easy3E: Feed-forward 3d asset editing via rectified voxel flow (2026), https://arxiv.org/abs/2602.21499 
+
+10. Huang, X., Belongie, S.: Arbitrary style transfer in real-time with adaptive instance normalization. In: ICCV (2017) 11. Huang, Y.H., He, Y., Yuan, Y.J., Lai, Y.K., Gao, L.: Stylizednerf: Consistent 3d scene stylization as stylized nerf via 2d–3d mutual learning. In: CVPR (2022) 12. Jain, N.D., Zhang, Y., Alías, P., Rivera, I.S., Borse, S., Bhargava, P., Ghanem, B., Wonka, P., Gool, L.V.: Stylesplat: 3d object style transfer with gaussian splatting. arXiv preprint arXiv:2407.09473 (2024) 13. Kerbl, B., Kopanas, G., Leimkühler, T., Drettakis, G.: 3d gaussian splatting for real-time radiance field rendering. ACM TOG 42 (4) (2023) 14. Kirillov, A., Mintun, E., Ravi, N., Mao, H., Rolland, C., Gustafson, L., Xiao, T., Whitehead, S., Berg, A.C., Lo, W.Y., Dollár, P., Girshick, R.: Segment anything. In: ICCV (2023) 15. Kovács, Á., Hermosilla, P., Ropinski, T.: G-style: Stylized gaussian splatting. arXiv preprint arXiv:2408.15695 (2024) 16. Li, Y., Fang, C., Yang, J., Wang, Z., Lu, X., Yang, M.H.: Universal style transfer via feature transforms. In: NeurIPS (2017) 17. Liu, K., Zhan, F., Xu, M., Theobalt, C., Shao, L., Lu, S.: Stylegaussian: Instant 3d style transfer with gaussian splatting. In: SIGGRAPH Asia Conference Papers (2024) 18. Michel, O., Bar-On, R., Liu, R., Benaim, S., Hanocka, R.: Text2mesh: Text-driven neural stylization for meshes. In: CVPR (2022) 19. Mildenhall, B., Srinivasan, P.P., Tancik, M., Barron, J.T., Ramamoorthi, R., Ng, R.: NeRF: Representing scenes as neural radiance fields for view synthesis. In: ECCV (2020) 20. Mo, K., Zhu, S., Chang, A.X., Yi, L., Tripathi, S., Guibas, L.J., Su, H.: PartNet: A large-scale benchmark for fine-grained and hierarchical part-level 3d object understanding (2018), https://arxiv.org/abs/1812.02713 16 S. Tao et al. 21. Oztas, I., Ceylan, D., Dundar, A.: 3d stylization via large reconstruction model. In: SIGGRAPH Conference Papers (2025). https://doi.org/10.1145/3721238. 3730636 
+
+22. Radl, L., Steiner, M., Kurz, A., Steinberger, M.: LAENeRF: Local appearance editing for neural radiance fields. In: CVPR. pp. 4969–4978 (2024) 23. Reinhard, E., Adhikhmin, M., Gooch, B., Shirley, P.: Color transfer between images. IEEE Computer Graphics and Applications 21 (5), 34–41 (2001) 24. Shi, R., Chen, H., Zhang, Z., Liu, M., Xu, C., Wei, X., Chen, L., Zeng, C., Su, H.: Zero123++: A single image to consistent multi-view diffusion base model (2023) 25. Simsar, E., Tonioni, A., Xian, Y., Hofmann, T., Tombari, F.: Lime: Localized image editing via attention regularization in diffusion models. In: Proceedings of the Winter Conference on Applications of Computer Vision. pp. 222–231 (2025) 26. Song, B., Huang, X., Xie, R., Wang, X., Wang, Q.: Style3D: Attention-guided multi-view style transfer for 3d object generation (2024), https://arxiv.org/abs/ 2412.03571 
+
+27. Takmaz, A., Fedele, E., Sumner, R.W., Pollefeys, M., Tombari, F., Engelmann, F.: Openmask3d: Open-vocabulary 3d instance segmentation. In: NeurIPS (2023) 28. Xu, J., Cheng, W., Gao, Y., Wang, X., Gao, S., Shan, Y.: Instantmesh: Efficient 3d mesh generation from a single image with sparse-view large reconstruction models. arXiv preprint arXiv:2404.07191 (2024) 29. Ye, J., Xie, S., Zhao, R., Wang, Z., Yan, H., Zu, W., Ma, L., Zhu, J.: NANO3D: A training-free approach for efficient 3d editing without masks (2025), https: //arxiv.org/abs/2510.15019 
+
+30. Zhang, D., Zeng, C., Guo, S., Luo, B., Dai, W., Zuo, X., Ma, P., Cheng, X., Wei, Y.: Stylizedgs: Controllable stylization for 3d gaussian splatting. arXiv preprint arXiv:2404.05220 (2024) 31. Zhang, K., Kolkin, N., Bi, S., Luan, F., Xu, Z., Shechtman, E., Snavely, N.: ARF: Artistic radiance fields. In: ECCV (2022) 32. Zhang, L., Rao, A., Agrawala, M.: Adding conditional control to text-to-image diffusion models. In: ICCV (2023) 33. Zhu, X., Xu, R., Ying, J., Dong, D., Xu, J., Xie, Y., Tan, X.: JointEdit3D: Feed-forward 3d scene editing in a unified latent space (2026), https://arxiv.org/abs/ 2606.13345
