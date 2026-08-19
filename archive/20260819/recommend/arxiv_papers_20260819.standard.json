@@ -1,0 +1,443 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-19T19:17:13.994314+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 8,
+    "quick_skim_target": 11,
+    "quick_selected": 8
+  },
+  "deep_dive": [
+    {
+      "id": "2608.16042v1",
+      "title": "TR-GS: High-Fidelity Sparse-View CT Volumetric Rendering via t-Distribution Gaussian Splatting and Ray-Confidence Modeling",
+      "abstract": "High-fidelity 3D medical visualization supports applications such as clinical assessment and surgical planning. Sparse-view computed tomography (CT) can reduce projection requirements and associated radiation exposure, but limited observations may introduce structural artifacts and reconstruction uncertainty. Although 3D Gaussian Splatting (3DGS) provides an efficient explicit representation for volumetric rendering, existing CT methods based on standard Gaussian primitives may be sensitive to unreliable observations under sparse-view acquisition. We present TR-GS, a Gaussian-splatting framework for sparse view CT volumetric rendering. TR-GS replaces standard Gaussian primitives with projectable Student's t-distribution primitives and introduces a ray-confidence model that regulates their degrees of freedom according to local ray observability. Confidence-guided 3D wavelet regularization is further used to balance high-frequency detail preservation and noise suppression. This work is licensed under a Creative Commons Attribution 4.0 International License. Experiments on synthetic and real-world datasets show that TR-GS improves over representative baselines in most evaluated settings and remains competitive in the remaining cases. The resulting volumetric representations may support downstream medical multimedia applications, including XR-based visualization and interactive clinical rendering.",
+      "authors": [
+        "Zedong Xiao",
+        "Yiren Wang",
+        "Zhou Liu",
+        "Xiaolin Liu",
+        "Zhangji Lu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-17T03:11:28+00:00",
+      "link": "https://arxiv.org/pdf/2608.16042v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Gaussian Splatting for CT volumetric rendering and ray modeling",
+      "llm_evidence_cn": "用于CT体渲染和光线建模的高斯泼溅技术",
+      "llm_evidence": "用于CT体渲染和光线建模的高斯泼溅技术",
+      "canonical_evidence": "用于CT体渲染和光线建模的高斯泼溅技术",
+      "llm_tldr_en": "Introduces TR-GS for high-fidelity CT volumetric rendering using t-distribution Gaussian Splatting.",
+      "llm_tldr_cn": "引入了TR-GS，利用t分布高斯泼溅实现高保真CT体渲染。",
+      "llm_tldr": "引入了TR-GS，利用t分布高斯泼溅实现高保真CT体渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.17298v1",
+      "title": "3D Gaussian Accelerated Ray Tracing: Fast training through particle-based backward propagation",
+      "abstract": "3D Gaussian Splatting has made Gaussian primitives a highly efficient representation for real-time novel view synthesis, but its rasterisation-based formulation relies on screen-space approximations that limit accurate view-dependent ordering and the integration of secondary ray effects such as reflections, refractions, and shadows. Gaussian ray tracing addresses these limitations by evaluating explicit ray-primitive intersections, yet it remains costly to train. We observe that the main bottleneck is not ray traversal alone, but the pixel-centric backward propagation, where many threads concurrently accumulate gradients into the same primitive parameters, causing severe atomic contention and thread serialisation.   We present 3DGART, a practical training framework for ray-traced Gaussian rendering. Our key idea is to reorganise backward propagation around primitives rather than pixels. Using conservative perspective-correct screen-space bounds, we build a compact intermediate buffer and a tile-primitive mapping that allows each thread to accumulate the contribution of one primitive over its covered pixels within a tile. This transforms gradient computation from a contention-heavy scatter operation into a structured gather-like process. On Mip-NeRF 360, 3DGART achieves an $\\approx 3-3.5\\times$ raw training speedup over per-pixel baseline and $\\approx4 \\times$ over 3DGRT on Mip-NeRF 360 while improving quality. More importantly, 3DGART makes fully ray-traced Gaussian training practical, reaching runtimes competitive with rasterisation-based pipelines while preserving benefits of ray tracing.",
+      "authors": [
+        "Laurent Vit",
+        "Oliver Batchelor",
+        "Richard Green"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.CV"
+      ],
+      "published": "2026-08-18T02:50:46+00:00",
+      "link": "https://arxiv.org/pdf/2608.17298v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "accelerated ray tracing for Gaussian primitives",
+      "llm_evidence_cn": "高斯原语的加速光线追踪",
+      "llm_evidence": "高斯原语的加速光线追踪",
+      "canonical_evidence": "高斯原语的加速光线追踪",
+      "llm_tldr_en": "Accelerates Gaussian ray tracing training by optimizing backward propagation to reduce atomic contention.",
+      "llm_tldr_cn": "通过优化反向传播减少原子竞争，加速了高斯光线追踪的训练过程。",
+      "llm_tldr": "通过优化反向传播减少原子竞争，加速了高斯光线追踪的训练过程。",
+      "llm_tags": [
+        "query:q3"
+      ],
+      "matched_query_tag": "query:q3",
+      "matched_query_text": "neural acceleration of volume ray marching",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.17969v1",
+      "title": "MetaSapiens v2: Advancing Real-Time Foveated Neural Rendering via Foveation-Aware Pruning and Stereo Warping",
+      "abstract": "Point-Based Neural Rendering (PBNR) is emerging as a promising class of rendering techniques, which are permeating all aspects of society, driven by a growing demand for real-time, photorealistic rendering in AR/VR and digital twins. However, achieving real-time PBNR on VR/AR devices is challenging. This paper proposes MetaSapiens v2, a PBNR system that delivers real-time neural rendering on VR/AR devices while maintaining human visual quality. MetaSapiens v2 combines four techniques. First, we present an efficiency-aware pruning technique to optimize rendering speed. Second, we introduce a Foveated Rendering (FR) method with an efficient primitive for PBNR, leveraging humans' low visual acuity in peripheral regions to relax rendering quality and improve rendering speed. Third, we leverage the redundancy between the two eyes and propose a selective warping method to further reduce the computation overhead in AR/VR binocular rendering. Finally, we propose an accelerator design for binocular FR, addressing the load imbalance issue in (FR-based) PBNR and supporting warping for efficient binocular rendering. Our evaluation shows that MetaSapiens v2 achieves an order of magnitude speedup over existing PBNR models while maintaining the visual quality.",
+      "authors": [
+        "Weikai Lin",
+        "Yu Feng"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR"
+      ],
+      "published": "2026-08-18T16:21:26+00:00",
+      "link": "https://arxiv.org/pdf/2608.17969v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "real-time neural rendering via foveation-aware pruning",
+      "llm_evidence_cn": "通过注视点感知剪枝实现实时神经渲染",
+      "llm_evidence": "通过注视点感知剪枝实现实时神经渲染",
+      "canonical_evidence": "通过注视点感知剪枝实现实时神经渲染",
+      "llm_tldr_en": "Optimizes point-based neural rendering for real-time performance on AR/VR devices using foveated techniques.",
+      "llm_tldr_cn": "利用注视点技术优化基于点的神经渲染，实现在AR/VR设备上的实时性能。",
+      "llm_tldr": "利用注视点技术优化基于点的神经渲染，实现在AR/VR设备上的实时性能。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.15651v1",
+      "title": "Gaussian-JEPA: Joint-Embedding Predictive Learning for 3D Gaussian Splats",
+      "abstract": "3D Gaussian Splatting (3DGS) represents 3D content with anisotropic primitives that jointly encode geometry and appearance. Fixed-budget encoders consume sampled observations of Gaussian assets, so the same object may be observed through different primitive realizations. Existing self-supervised methods mainly reconstruct masked Gaussian attributes, tying supervision to one sampled realization and requiring an input-space decoder. Latent prediction offers an alternative, but its application to Gaussian tokens requires targets that accommodate coupled attributes and heterogeneous spatial support. We introduce Gaussian-JEPA, which predicts representations of held-out Gaussian token blocks from visible context. An online encoder processes the context, while a shared exponential-moving-average encoder supplies stop-gradient features for multi-scale targets. Complementary target projections and feature-space grounding provide latent supervision without reconstructing Gaussian attributes. We evaluate the features under Gaussian resampling, partial observations, and renderable shape completion, together with transfer to part segmentation and object classification. Compared with matched reconstruction pretraining, Gaussian-JEPA is more consistent across resampled inputs, retains more instance information under partial observations, and provides stronger frozen features for Gaussian completion. These results support latent prediction as an effective objective for reusable 3D Gaussian representations. Code is on the project page (https://amazingren.github.io/Gaussian-JEPA/).",
+      "authors": [
+        "Bin Ren",
+        "Qi Ma",
+        "Yue Li",
+        "Zongyan Han",
+        "Yidi Li",
+        "Yuqian Fu",
+        "Rao Muhammad Anwer",
+        "Theo Gevers",
+        "Fahad Shahbaz Khan",
+        "Salman Khan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-16T09:43:50+00:00",
+      "link": "https://arxiv.org/pdf/2608.15651v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting representation and predictive learning for 3D content",
+      "llm_evidence_cn": "3D高斯泼溅表示与3D内容的预测学习",
+      "llm_evidence": "3D高斯泼溅表示与3D内容的预测学习",
+      "canonical_evidence": "3D高斯泼溅表示与3D内容的预测学习",
+      "llm_tldr_en": "Introduces Gaussian-JEPA for self-supervised predictive learning of 3D Gaussian Splatting representations.",
+      "llm_tldr_cn": "引入Gaussian-JEPA，用于3D高斯泼溅表示的自监督预测学习。",
+      "llm_tldr": "引入Gaussian-JEPA，用于3D高斯泼溅表示的自监督预测学习。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.17283v1",
+      "title": "UniQuery4R: Unified 4D Scene Reconstruction from a Single Query",
+      "abstract": "Reconstructing dynamic 4D scenes requires jointly estimating correspondence, geometry, object motion, and camera motion. Existing feed-forward methods typically predict dense task-specific maps or independently process source-target pairs, leading to unnecessary computation for sparse queries and limited feature reuse across different frame pairs. We present UniQuery4R, a query-conditioned framework that encodes a multi-frame clip once and selects the source view, target view, and continuous source-image coordinate only at decoding time via source-to-target cross-attention. Each query jointly predicts target correspondence, target-time 3D position, and scene flow, along with source depth, while camera parameters are estimated per view. This design allows the encoded clip to be reused across arbitrary source-target selections and supports both sparse inference and dense reconstruction through batched queries, without learned temporal embeddings tied to a fixed clip length. We further introduce a direction-magnitude parameterization of scene flow with separate supervision for moving and static points. Among the evaluated methods, UniQuery4R achieves the best macro-average results on WorldTrack for both scene-flow estimation and dynamic-point reconstruction.",
+      "authors": [
+        "Tiancheng Chen",
+        "Sheng Tang",
+        "Wenhua Jin",
+        "Weiqi Zhang",
+        "Juntong Fang",
+        "Junsheng Zhou",
+        "Zesong Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-18T02:26:38+00:00",
+      "link": "https://arxiv.org/pdf/2608.17283v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "4D scene reconstruction using query-conditioned neural representations",
+      "llm_evidence_cn": "使用查询条件神经表示进行4D场景重建",
+      "llm_evidence": "使用查询条件神经表示进行4D场景重建",
+      "canonical_evidence": "使用查询条件神经表示进行4D场景重建",
+      "llm_tldr_en": "A query-conditioned framework for efficient 4D scene reconstruction from multi-frame clips.",
+      "llm_tldr_cn": "一种用于从多帧视频片段中高效进行4D场景重建的查询条件框架。",
+      "llm_tldr": "一种用于从多帧视频片段中高效进行4D场景重建的查询条件框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.15785v1",
+      "title": "RoofGS: Roofline-Guided End-to-End Acceleration of 3D Gaussian Splatting",
+      "abstract": "3D Gaussian Splatting (3DGS) enables real-time novel-view synthesis but remains limited on GPUs at high resolutions. Through a stage-wise Roofline characterization, we identify two distinct hardware bottlenecks: global memory traffic dominates the front end, whereas instruction throughput limits rasterization. Guided by this analysis, we develop RoofGS, a rendering framework that applies bottleneck-specific optimizations rather than generic kernel acceleration. For the memory-bound front end, we design a resolution-adaptive quantized depth sorting key that compresses each key to 32 bits. For the compute-bound rasterizer, we introduce a range-aware bit-level fast exponential approximation tailored to the bounded exponent range after opacity culling, with a derived per-pixel error bound. These two core techniques are complemented by additional optimizations (kernel fusion, compact attribute storage, culling, dual-pixel evaluation) that additionally reduce memory traffic and improve instruction-level parallelism. Experiments show that RoofGS achieves a 10.1$\\times$ end-to-end speedup over 3DGS at 4K on an RTX 4090, increasing throughput from 61 to 616 FPS, with only a 0.028 dB PSNR loss.",
+      "authors": [
+        "Yang Luo",
+        "Yan Gong",
+        "Yongsheng Gao",
+        "Jie Zhao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-16T15:06:39+00:00",
+      "link": "https://arxiv.org/pdf/2608.15785v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "acceleration of 3D Gaussian Splatting rendering",
+      "llm_evidence_cn": "3D高斯喷激渲染的加速",
+      "llm_evidence": "3D高斯喷激渲染的加速",
+      "canonical_evidence": "3D高斯喷激渲染的加速",
+      "llm_tldr_en": "RoofGS optimizes 3DGS rendering by addressing memory and compute bottlenecks through quantization.",
+      "llm_tldr_cn": "RoofGS通过量化和快速近似优化了3DGS渲染中的内存和计算瓶颈。",
+      "llm_tldr": "RoofGS通过量化和快速近似优化了3DGS渲染中的内存和计算瓶颈。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.17535v1",
+      "title": "GroupForward: Building Referable 3D Scenes via Instance-Grouped Feed-Forward Gaussian Splatting",
+      "abstract": "Simultaneously reconstructing and understanding 3D environments is essential for embodied agents. Toward this goal, feed-forward semantic 3D Gaussian Splatting (3DGS) efficiently constructs semantic scene representations from sparse multi-view observations. However, existing methods lack explicit instance discrimination and mainly support category- or phrase-based semantic queries. To this end, we propose GroupForward, an instance-grouped feed-forward Gaussian splatting model that reconstructs geometry, appearance, instance structure, and semantics from sparse, unposed, and uncalibrated multi-view images. Unlike existing methods that attach high-dimensional semantic features to each Gaussian, GroupForward learns compact instance embeddings that group Gaussians into cross-view consistent 3D instances, reformulating feed-forward semantic 3DGS from per-Gaussian semantic feature rendering to instance-level semantic aggregation and propagation. Building on these instance groups, we further propose a Referential Scene Reasoning Framework (RSRF) for complex 3D referring segmentation. RSRF constructs an instance-grouped 3D scene graph and retrieves candidate instances for a given referring expression. A vision-language model then reasons over structured instance evidence and multi-view observations to identify the referred instance among the candidates. RSRF thereby extends language interaction from simple semantic querying to complex referential scene reasoning. Experiments on semantic reconstruction and referential reasoning demonstrate the effectiveness of our instance-grouped reconstruction and reasoning framework.",
+      "authors": [
+        "Qijian Tian",
+        "Zimeng Wu",
+        "Xuhong Wang",
+        "Lizhuang Ma",
+        "Xin Tan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-18T08:55:52+00:00",
+      "link": "https://arxiv.org/pdf/2608.17535v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "feed-forward neural volume representation for 3D scenes",
+      "llm_evidence_cn": "用于3D场景的前馈神经体积表示",
+      "llm_evidence": "用于3D场景的前馈神经体积表示",
+      "canonical_evidence": "用于3D场景的前馈神经体积表示",
+      "llm_tldr_en": "GroupForward reconstructs geometry and semantics from sparse images using feed-forward Gaussian splatting.",
+      "llm_tldr_cn": "GroupForward利用前馈高斯喷激从稀疏图像中重建几何、外观和语义。",
+      "llm_tldr": "GroupForward利用前馈高斯喷激从稀疏图像中重建几何、外观和语义。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.16463v1",
+      "title": "Shared-Structure 4D Spectral Gaussian Representation for Sparse-View Spectral CT Reconstruction",
+      "abstract": "Sparse-view spectral computed tomography (CT) reconstructs energy-resolved attenuation volumes from limited projection views, requiring simultaneous handling of angular undersampling and spectral coupling. We propose a SharedStructure 4D Spectral Gaussian Representation (4D-SG) that learns shared Gaussian geometry from full spectrum structural projections and uses a Gaussian-wise Spectral Density Curve Network (GSC-Net) to predict Gaussian raw density transformations. This factorization separates shared spatial structure from spectral attenuation variation, avoids independent channel geometry optimization, and establishes a continuous 4D-SG representation from discrete spectral measurements for unobserved spectral channel queries. Experiments on six synthesized, simulated projection, and real projection datasets with 50 views demonstrate the best average performance. Compared with the strongest Gaussian baseline, 4D-SG improves PSNR from 35.56 dB to 36.61 dB, increases SSIM from 0.909 to 0.914, and reduces LPIPS from 0.208 to 0.194, demonstrating its effectiveness for sparse-view spectral CT reconstruction.",
+      "authors": [
+        "Jiancheng Fang",
+        "Shaoyu Wang",
+        "Wenjun Xia",
+        "Yang Chen",
+        "Qiegen Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-17T12:00:11+00:00",
+      "link": "https://arxiv.org/pdf/2608.16463v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "reconstructs energy-resolved attenuation volumes using 4D Spectral Gaussian Representation",
+      "llm_evidence_cn": "使用4D光谱高斯表示重建能量分辨衰减体",
+      "llm_evidence": "使用4D光谱高斯表示重建能量分辨衰减体",
+      "canonical_evidence": "使用4D光谱高斯表示重建能量分辨衰减体",
+      "llm_tldr_en": "Proposes a 4D Spectral Gaussian Representation for sparse-view spectral CT volume reconstruction.",
+      "llm_tldr_cn": "提出了一种用于稀疏视图光谱CT体重建的4D光谱高斯表示方法。",
+      "llm_tldr": "提出了一种用于稀疏视图光谱CT体重建的4D光谱高斯表示方法。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.17682v1",
+      "title": "Differentiable Voronoi Ray Tracing Beyond Rasterization Speeds",
+      "abstract": "Real-time novel view synthesis is dominated by rasterized explicit primitives. These projection-based pipelines provide high throughput but require specialized extensions for non-pinhole effects such as distortion, rolling shutter, and depth of field. Ray-based rendering expresses these effects naturally but is generally assumed too slow for competitive real-time rendering. We analyze the factors governing throughput in differentiable Voronoi ray tracing and identify traversal length, per-cell work, and memory locality as principal determinants. Guided by this, we introduce VoroTracing, which co-designs the scene representation, optimization, and GPU execution to reduce these costs. Compact octahedral appearance textures reduce memory traffic, while surface-concentrated opacity promotes early termination. The fixed-budget representation is optimized without pruning or densification and rendered with a GPU implementation designed for coherent traversal. On Mip-NeRF 360, VoroTracing renders at 623 FPS on an RTX 5090, providing $3.2\\times$ the throughput of the fastest prior ray-based method and $2.8\\times$ that of 3D Gaussian Splatting, while maintaining competitive reconstruction quality. Our renderer supports fisheye, rolling-shutter, motion-blur, and depth-of-field effects through ray generation and sampling, requiring no specialized rasterization. These results show that real-time throughput can be achieved with the flexibility of ray-based rendering. We release our source code, see https://research.zenseact.com/publications/vorotracing",
+      "authors": [
+        "Bernardo Taveira",
+        "Carl Lindström",
+        "Joakim Johnander",
+        "Fredrik Kahl"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-18T11:55:58+00:00",
+      "link": "https://arxiv.org/pdf/2608.17682v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "differentiable ray tracing for novel view synthesis",
+      "llm_evidence_cn": "用于新视角合成的可微光线追踪",
+      "llm_evidence": "用于新视角合成的可微光线追踪",
+      "canonical_evidence": "用于新视角合成的可微光线追踪",
+      "llm_tldr_en": "VoroTracing co-designs scene representation and GPU execution for real-time differentiable ray tracing.",
+      "llm_tldr_cn": "VoroTracing协同设计场景表示与GPU执行，实现了实时可微光线追踪。",
+      "llm_tldr": "VoroTracing协同设计场景表示与GPU执行，实现了实时可微光线追踪。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.16863v1",
+      "title": "SplatGuide: Geometric Priors from 3D Gaussians for Pose-Free Novel View Synthesis",
+      "abstract": "Generating photorealistic novel views from unposed images requires both 3D geometric understanding and the ability to synthesize unseen content. A natural strategy combines feed-forward 3DGS reconstruction with multi-view diffusion. Yet prior pipelines extract at most one signal from the reconstruction, either pixel rendering or learned features, while none exploits per-Gaussian visibility for occlusion-aware reference selection. This *information disconnect* leaves renderable geometry, visibility cues, and learned features unused. SplatGuide closes this disconnect by reusing a single 3DGS scene across three complementary roles. Rendered images provide pixel-aligned geometric conditioning. Per-Gaussian source-view indices are rendered into a target-view voting map for occlusion-aware reference selection. Reconstruction tokens supply feature-level guidance via cross-attention. All three signals derive from the same reconstruction forward pass. Across RealEstate10K, DL3DV, Tanks-and-Temples, and Mip-NeRF 360, SplatGuide achieves state-of-the-art pose-free novel view synthesis. On RealEstate10K, with a moderate number of input views, it surpasses the ground-truth-pose baseline.",
+      "authors": [
+        "Yejun Zhang",
+        "Zihan Wang",
+        "Xu Ji",
+        "Yihao Wang",
+        "Yuxin Hou",
+        "Junyuan Fang",
+        "Juho-Matti Kilpeläinen",
+        "Arno Solin",
+        "Hamed Rezazadegan Tavakoli",
+        "Esa Rahtu",
+        "Juho Kannala"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-17T17:45:57+00:00",
+      "link": "https://arxiv.org/pdf/2608.16863v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural volume rendering via 3D Gaussian Splatting for novel view synthesis",
+      "llm_evidence_cn": "通过3D高斯泼溅进行神经体渲染以实现新视角合成",
+      "llm_evidence": "通过3D高斯泼溅进行神经体渲染以实现新视角合成",
+      "canonical_evidence": "通过3D高斯泼溅进行神经体渲染以实现新视角合成",
+      "llm_tldr_en": "Integrates 3D Gaussian Splatting with diffusion models to improve pose-free novel view synthesis.",
+      "llm_tldr_cn": "将3D高斯泼溅与扩散模型结合，以改进无位姿新视角合成。",
+      "llm_tldr": "将3D高斯泼溅与扩散模型结合，以改进无位姿新视角合成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.17988v1",
+      "title": "GS-Voxel: Fitting-Free Structured Latents for Large-Scale 3DGS Generation",
+      "abstract": "Many scalable latent 3D generators operate on structured tensors, whereas pre-optimized 3D Gaussian Splatting (3DGS) reconstructions are unordered, spatially irregular, and vary widely in primitive count. We present GS-Voxel, a fitting-free structured latent framework, and evaluate it for large-scale aerial 3D Gaussian scene generation. GS-Voxel deterministically converts a compatible pre-optimized 3DGS reconstruction into sparse active voxels without additional per-scene optimization, retaining the sub-voxel positions and rendering attributes of the selected primitives. A GS-specific factorized VAE then separately encodes voxel geometry and local Gaussian attributes into sparse 3D latents whose size grows with the number of occupied voxels rather than being limited by a fixed scene-wide primitive count. We train image-conditioned flow models in the GS-Voxel latent space to generate aerial 3DGS scenes. A key application enabled by GS-Voxel is large-area scene generation: overlap-aware tiled inference extends synthesis beyond a single training crop conditioned on satellite-view images. Our results show that GS-Voxel provides structured latents for pre-optimized aerial 3DGS reconstructions, with latent capacity that grows with the number of occupied voxels.",
+      "authors": [
+        "Ming Qian",
+        "Zijian Wang",
+        "Minchao Sun",
+        "Jincheng Xiong",
+        "Hang Zhang",
+        "Mu Xu",
+        "Chi Wang",
+        "Baoquan Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-18T16:33:49+00:00",
+      "link": "https://arxiv.org/pdf/2608.17988v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "structured latent framework for 3D Gaussian scene generation",
+      "llm_evidence_cn": "用于大规模3D高斯场景生成的结构化潜变量框架",
+      "llm_evidence": "用于大规模3D高斯场景生成的结构化潜变量框架",
+      "canonical_evidence": "用于大规模3D高斯场景生成的结构化潜变量框架",
+      "llm_tldr_en": "GS-Voxel converts 3DGS reconstructions into structured sparse voxels for scalable latent 3D generation.",
+      "llm_tldr_cn": "GS-Voxel将3D高斯喷激重建转换为结构化稀疏体素，用于可扩展的潜变量3D生成。",
+      "llm_tldr": "GS-Voxel将3D高斯喷激重建转换为结构化稀疏体素，用于可扩展的潜变量3D生成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
