@@ -1,0 +1,79 @@
+{
+  "label": "2026-08-20",
+  "date": "2026-08-20",
+  "generated_at": "2026-08-20T20:46:33",
+  "count": 5,
+  "papers": [
+    {
+      "paper_id": "202608/20/2608.18285v1-quarc-gs-quantized-anchored-residual-coding-for-compact-dynamic-scene-streaming-with-gaussian-splatting",
+      "section": "deep",
+      "title_en": "QuARC-GS: Quantized Anchored Residual Coding for Compact Dynamic Scene Streaming with Gaussian Splatting",
+      "authors": "Vu Trung Nghia Nguyen, Yuchen Wang, Kyung Chul Lee, Kevin C. Zhou",
+      "date": "2026-08-18",
+      "pdf": "https://arxiv.org/pdf/2608.18285v1",
+      "score": "8.0",
+      "evidence": "通过量化感知优化加速动态场景渲染",
+      "tldr": "针对动态3D场景流式传输中存储需求大、重建速度慢的挑战，本文提出QuARC-GS框架。该方法基于高斯泼溅技术，通过单一参考帧和高度压缩的逐帧残差来表示场景。核心贡献包括量化感知锚点变形和变化门控加密策略，在保持高质量重建和训练速度的同时，将每帧存储空间降低了高达11倍，实现了超高压缩率的自由视角视频流传输。",
+      "tags": "query:q7",
+      "abstract_en": "3D scene representation techniques such as neural radiance fields (NeRFs) and Gaussian splatting have made substantial progress in novel view synthesis, achieving high-quality renderings from arbitrary view angles. More recently, such techniques have been extended to dynamic 3D scenes; however, achieving sustainable online free-viewpoint video (FVV) streaming remains challenging, especially for longer videos, due to significant storage demands of detailed scene representations and high reconstruction/rendering speed needs. To address these challenges, we propose Quantized Anchored Residual Coding Gaussian Streaming (QuARC-GS), a quantization-aware 4D scene optimization framework for online dynamic scene reconstruction that achieves ultra-high compression while maintaining reconstruction speed and quality. QuARC-GS represents a scene using a single canonical frame and highly compressed per-frame residuals. Specifically, we compress each residual through two complementary strategies targeting motion, appearance, and densification. We introduce quantization-aware anchor deformation, which suppresses insignificant motion updates while preserving meaningful deformations, maintaining reconstruction quality under low-storage streaming. Furthermore, we design a change-gated densification strategy that allocates new Gaussians only in regions exhibiting genuine temporal changes, effectively eliminating redundant appearance updates and reducing storage overhead. Extensive experiments on widely used datasets demonstrate that QuARC-GS enables competitive reconstruction quality and training speed while cutting per-frame storage by up to 11$\\times$ compared to the state-of-the-art.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/20/2608.18388v1-depth-anything-v4-dynamic-4d-scene-reconstruction-via-riemannian-flow-matching-on-4d-gaussian-splatting",
+      "section": "quick",
+      "title_en": "Depth Anything V4: Dynamic 4D Scene Reconstruction via Riemannian Flow Matching on 4D Gaussian Splatting",
+      "authors": "Jiaming Fan, Jian Lu, Jinling Jia, Chenbin Zhang",
+      "date": "2026-08-18",
+      "pdf": "https://arxiv.org/pdf/2608.18388v1",
+      "score": "7.0",
+      "evidence": "用于动态场景重建的4D高斯泼溅技术",
+      "tldr": "DAV4 是一款针对单目视频动态4D场景重建的框架，核心贡献是将黎曼流匹配（RFM）应用于4D高斯泼溅参数。通过在非欧几里得流形上定义概率路径，确保了参数状态的有效性。在无人工深度标注的情况下，DAV4 在动态重建和新视角合成任务中表现卓越，其 F-score 较基线提升显著，超越了前代 Depth Anything 模型及单场景 4D-GS 方法。",
+      "tags": "query:q1",
+      "abstract_en": "We present Depth Anything V4 (DAV4), a framework for dynamic 4D scene reconstruction from monocular video. Our key contribution is the application of Riemannian Flow Matching (RFM) to 4D Gaussian Splatting parameters, defining probability paths directly on non-Euclidean manifolds (scale, rotation, opacity), ensuring all intermediate states are valid. Through controlled experiments, we isolate RFM's contribution from test-time optimization (TTO) and pre-training. A deterministic MLP baseline with the same data, architecture, and TTO achieves F-score 0.762; RFM achieves 0.806 - the +0.044 gain is RFM's isolated contribution. We provide corrected computational cost analysis: pre-training is 360 GPU-hours, amortizing for large-scale deployment (over 10,000 scenes). Uncertainty is quantified via Negative Gaussian Log-Likelihood and Expected Calibration Error. DAV4 outperforms prior Depth Anything models and per-scene 4D-GS on dynamic reconstruction and novel-view synthesis, while using no human-annotated depth labels as training losses.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/20/2608.18413v1-comvs-gs-collaborative-multi-view-stereo-and-3d-gaussian-splatting-for-surface-reconstruction",
+      "section": "quick",
+      "title_en": "CoMVS-GS: Collaborative Multi-View Stereo and 3D Gaussian Splatting for Surface Reconstruction",
+      "authors": "Shihan Chen, Junjing Zhang, Qingsong Yan, Haibing Liu, Haofan Ren, Fei Deng",
+      "date": "2026-08-19",
+      "pdf": "https://arxiv.org/pdf/2608.18413v1",
+      "score": "7.0",
+      "evidence": "用于高效新视角合成的3D高斯泼溅",
+      "tldr": "针对3D高斯泼溅（3DGS）在弱观测区域重建困难的问题，本文提出CoMVS-GS框架。该方法将多视图立体视觉（MVS）与3DGS结合，利用稠密MVS点云初始化并引入PatchMatch互监督机制，最后通过Delaunay图割算法提取表面。实验证明其在保持高渲染质量的同时，显著提升了室外场景的几何精度和网格紧凑性。",
+      "tags": "query:q1",
+      "abstract_en": "3D Gaussian Splatting enables efficient novel view synthesis, but accurate mesh reconstruction remains difficult in weakly observed and occluded regions, where Gaussian primitives may grow into unstable or geometrically inconsistent structures. We propose CoMVS-GS, a general surface reconstruction framework that combines Multi-View Stereo with Gaussian splatting. CoMVS-GS initializes Gaussian primitives from dense multi-view stereo points with pre-flattened scales and normal-aligned orientations, providing stronger geometric priors than sparse structure-from-motion initialization and reducing ambiguity during early optimization. It further introduces PatchMatch-3DGS Mutual Supervision, where Gaussian-rendered depths and normals initialize PatchMatch refinement, and refined PatchMatch depths supervise Gaussian optimization to improve weakly constrained geometry. For surface extraction, CoMVS-GS replaces truncated signed distance field voxel fusion with a Delaunay graph-cut meshing pipeline, reducing sensitivity to voxel resolution while preserving visibility-consistent surface evidence. Experiments on DTU, GauU-Scene V2, and MatrixCity show that CoMVS-GS remains competitive on object-level reconstruction and improves geometric accuracy and mesh compactness in outdoor scenes while maintaining high rendering quality.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/20/2608.15934v1-differentiable-voxelization-of-surface-representations",
+      "section": "quick",
+      "title_en": "Differentiable Voxelization of Surface Representations",
+      "authors": "Tobias Djuren, Ugo Finnendahl, Markus Worchel, Hendrik Meyer, Marc Alexa",
+      "date": "2026-08-16",
+      "pdf": "https://arxiv.org/pdf/2608.15934v1",
+      "score": "6.0",
+      "evidence": "用于体积表示的可微体素化",
+      "tldr": "该研究提出了一种可微体素化方法，旨在解决基于体积属性优化表面表示（如三角网格）时的梯度计算问题。通过推导绕数（winding numbers）相对于边界表面的导数，实现了在正则网格上高效计算体积值对顶点坐标的梯度。该方法支持多种优化任务，如消除网格自交、满足带锯切割制造约束以及创建空间平铺形状，为跨表示形式的几何优化提供了有效工具。",
+      "tags": "query:q1",
+      "abstract_en": "Different shape representations facilitate different computations. Surface representations, in particular meshes, are often used for modeling, whereas volume representations are useful for spatial queries such as intersection or containment. Optimizing a surface representation based on a volumetric properties by gradient descent requires the derivatives of the volume relative to its bounding surface. We derive this gradient for winding numbers and show that it can be efficiently computed for volumetric values sampled on a regular grid (voxel representation) and surface parameters based on vertex sets (triangle meshes). This enables an efficient solution for a variety of optimization problems. We demonstrate the practical use of this approach at the examples of deforming meshes to resolve intersections, being manufacturable by cutting with a bandsaw from three directions, and creating shapes that are close to tiling 3D space.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/20/2608.19036v1-usr-drive-unified-driving-scene-representation-via-joint-denoising-of-3d-gaussians-and-boxes",
+      "section": "quick",
+      "title_en": "USR-Drive: Unified Driving Scene Representation via Joint Denoising of 3D Gaussians and Boxes",
+      "authors": "Li-Heng Chen, Haokai Pang, Chengye Su, Jiarun Liu, Qifeng Chen, Ziqian Ni, Jianxin Huang, Shi-Sheng Huang, Hongbo Fu, Sheng Yang",
+      "date": "2026-08-19",
+      "pdf": "https://arxiv.org/pdf/2608.19036v1",
+      "score": "6.0",
+      "evidence": "面向渲染的3D基元与场景表示",
+      "tldr": "USR-Drive 提出了一种统一的自动驾驶场景表示框架，通过联合去噪 3D 高斯点云和 3D 边界框，将动态场景重建与实例级感知任务整合。该方法利用多模态扩散 Transformer 和统一位置编码，在共享的时空坐标系中对齐异构 Token，实现了几何信息与结构先验的互补增强。在 nuScenes 和 VKitti 数据集上，该方法在动态重建和 3D 检测任务中均达到了 SOTA 性能。",
+      "tags": "query:q1",
+      "abstract_en": "Spatial representation learning for autonomous driving aims to map raw visual signals into structured 3D scene representations, where object-centric bounding boxes and rendering-oriented 3D primitives (\\eg, 3D Gaussians) serve as two distinct yet highly complementary levels for scene understanding. Existing methods typically treat dynamic reconstruction and instance-level perception as separate tasks, despite their shared goal of estimating the underlying 3D world state. As a result, dynamic reconstruction is under-constrained while 3D detection lacks geometric grounding. To address this gap, we propose USR-Drive, a unified conditional generative framework that, given only posed multi-view driving videos, jointly recovers dense dynamic geometry and instance-level object layouts within a shared scene representation. Specifically, USR-Drive represents dense Gaussian primitives and sparse 3D bounding boxes as two aligned latent token streams and jointly denoises them with a unified multi-modal diffusion Transformer. Unlike prior paradigms that use boxes as external conditions or predict them with detached modules, USR-Drive treats them as mutually constrained state variables with a Unified Positional Encoding (UPE) that aligns heterogeneous tokens within a shared metric spatiotemporal coordinate. Via such unified representation and generative framework, the two modalities reinforce each other: geometry supplies dense metric evidence for box prediction, while boxes provide instance-level structural priors that help preserve spatial consistency and reduce ambiguity in sequential 3D geometric representation. Our approach successfully delivers state-of-the-art results for both dynamic reconstruction and 3D detection on the nuScenes and VKitti datasets.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
