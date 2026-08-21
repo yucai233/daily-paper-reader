@@ -1,0 +1,65 @@
+{
+  "label": "2026-08-21",
+  "date": "2026-08-21",
+  "generated_at": "2026-08-21T19:49:23",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202608/21/2608.18388v2-depth-anything-v4-dynamic-4d-scene-reconstruction-via-riemannian-flow-matching-on-4d-gaussian-splatting",
+      "section": "quick",
+      "title_en": "Depth Anything V4: Dynamic 4D Scene Reconstruction via Riemannian Flow Matching on 4D Gaussian Splatting",
+      "authors": "Jiaming Fan, Jian Lu, Jinling Jia, Chenbin Zhang",
+      "date": "2026-08-18",
+      "pdf": "https://arxiv.org/pdf/2608.18388v2",
+      "score": "7.0",
+      "evidence": "用于动态场景重建的4D高斯泼溅",
+      "tldr": "Depth Anything V4 (DAV4) 是一款针对单目视频的动态 4D 场景重建框架。其核心创新在于将黎曼流匹配（RFM）应用于 4D 高斯泼溅（4D-GS）参数，通过在非欧几里得流形（如旋转、尺度）上定义概率路径，确保了重建过程中的物理有效性。该方法在不依赖人工深度标注的情况下，显著提升了动态场景重建的精度和不确定性量化能力，在多项指标上超越了前代模型及传统的 4D-GS 方法。",
+      "tags": "query:q1",
+      "abstract_en": "We present Depth Anything V4 (DAV4), a framework for dynamic 4D scene reconstruction from monocular video. Our key contribution is the application of Riemannian Flow Matching (RFM) to 4D Gaussian Splatting parameters, defining probability paths directly on non-Euclidean manifolds (scale, rotation, opacity), ensuring all intermediate states are valid. Through controlled experiments, we isolate RFM's contribution from test-time optimization (TTO) and pre-training. A deterministic MLP baseline with the same data, architecture, and TTO achieves F-score 0.762; RFM achieves 0.806 - the +0.044 gain is RFM's isolated contribution. We provide corrected computational cost analysis: pre-training is 360 GPU-hours, amortizing for large-scale deployment (over 10,000 scenes). Uncertainty is quantified via Negative Gaussian Log-Likelihood and Expected Calibration Error. DAV4 outperforms prior Depth Anything models and per-scene 4D-GS on dynamic reconstruction and novel-view synthesis, while using no human-annotated depth labels as training losses.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/21/2608.20000v1-point-based-3d-reconstruction-from-sparse-views-under-known-illumination",
+      "section": "quick",
+      "title_en": "Point-Based 3D Reconstruction from Sparse Views under Known Illumination",
+      "authors": "Magnus Kaufmann Gjerde, Joakim Bruslund Haurum, Jeppe Revall Frisvad, Markus Worchel, J. Andreas Bærentzen, Thomas B. Moeslund",
+      "date": "2026-08-20",
+      "pdf": "https://arxiv.org/pdf/2608.20000v1",
+      "score": "7.0",
+      "evidence": "用于重建的可微分光线传输和含不透明度的面元",
+      "tldr": "本文针对已知光照下的稀疏视图3D重建问题，提出了一种基于不透明度Beta面元（beta surfels）的可微分点渲染方法。通过引入显式伴随光传输公式，该方法能够利用物理光传输约束来优化面元的几何与外观参数。实验表明，该方法在仅使用极少量基元（平均267个）的情况下，显著提升了重建精度，Chamfer距离较最强基准降低了28.5%，实现了高效且紧凑的表面恢复。",
+      "tags": "query:q4",
+      "abstract_en": "Sparse view 3D reconstruction is commonly addressed with neural implicit surfaces or dense point-based representations such as Gaussian splatting. Surface-aware splatting methods improve extracted geometry through oriented primitives and regularization, while RadiosityGS incorporates differentiable light transport through a radiosity inspired finite-element surfel formulation. We propose a differentiable point rendering method based on opacity-bearing beta surfels. An opacity explicit adjoint light transport formulation provides gradients for surfel geometry and appearance parameters, allowing physically based light transport to constrain reconstruction.   Across five synthetic objects reconstructed from ten posed views, our method achieves the lowest mean symmetric Chamfer distance among the evaluated baselines and reduces mean Chamfer distance by 28.5% relative to the strongest point-based baseline while using only 267 surfels on average, approximately ~161 fewer primitives. Directional Chamfer results further show improved accuracy and competitive completion relative to related point-based methods. These results show that, in the controlled direct illumination setting, compact beta surfels combined with transport-based optimization can recover surfaces without relying on the tens to hundreds of thousands of primitives used by the evaluated baselines.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/21/2608.18215v1-lumitokens-3d-relighting-via-token-space-lighting-transformation",
+      "section": "quick",
+      "title_en": "LumiTokens: 3D Relighting via Token-Space Lighting Transformation",
+      "authors": "Yiwen Chen, Matheus Gadelha, Huaizu Jiang",
+      "date": "2026-08-18",
+      "pdf": "https://arxiv.org/pdf/2608.18215v1",
+      "score": "6.0",
+      "evidence": "无需显式渲染方程的3D重光照潜场景表示",
+      "tldr": "本研究针对现有3D重光照方法依赖物理分解或扩散生成导致计算冗余的问题，提出了LumiTokens框架。该方法跳过显式3D表示和渲染方程，直接在潜场景Token空间进行光照变换。通过自注意力机制将场景Token与普吕克射线表示的光照Token融合，实现了多视角一致的重光照效果。其核心贡献在于支持渐进式编辑，允许用户在Token空间逐一叠加光源，为交互式3D光照设计提供了高效且高质量的解决方案。",
+      "tags": "query:q1",
+      "abstract_en": "Existing 3D relighting methods operate through either explicit material decomposition, diffusion-based view-space generation, or a combination of both, requiring full recomputation for each new lighting condition. We observe that recent latent scene representations, which encode multi-view images into a set of compact tokens with no fixed physical semantics, open up a novel design space for relighting. We present LumiTokens, a framework that formulates 3D relighting as a direct transformation on latent scene tokens, without explicit 3D representations, rendering equations, or physics-based decomposition. Our model introduces a Scene Token Editor that processes scene tokens jointly with light-ray tokens through self-attention, producing updated tokens that can be decoded into multi-view-consistent relit images. To support diverse lighting types through a unified interface, all lighting signals, including environment maps, point lights, and area lights, are parameterized as Plucker ray tokens, enabling native 3D user interaction with a representation that carries no explicit spatial structure. Crucially, this design supports progressive relighting: because the editor's output remains in the same latent space as its input, a user can incrementally build up illumination one light source at a time, with each edit composing in token space. Experiments demonstrate that LumiTokens achieves comparable or superior relighting quality to other methods and supports progressive, composable lighting edits. Project page: https://neu-vi.github.io/LumiTokens/",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/21/2608.20277v1-point-spread-function-engineering-using-implicit-neural-representations",
+      "section": "quick",
+      "title_en": "Point Spread Function Engineering Using Implicit Neural Representations",
+      "authors": "Suet Ying Chan, Mitchell Gilmore, Qilin Deng, Guorong Hu, Joseph Greene, Ruipeng Guo, Lei Tian",
+      "date": "2026-08-20",
+      "pdf": "https://arxiv.org/pdf/2608.20277v1",
+      "score": "6.0",
+      "evidence": "用于3D点扩散函数工程的隐式神经网络表示",
+      "tldr": "本研究针对显微成像中点扩散函数（PSF）工程的泛化性难题，提出了一种基于隐式神经表示（INR）的瞳面设计方法。该方法将PSF工程视为相位检索问题，通过神经场优化相位轮廓，以实现任意用户定义的3D PSF分布。相比传统的像素级优化，该框架具有更强的灵活性和鲁棒性，且无需特定领域的基函数，为多种成像应用提供了通用的3D PSF设计方案。",
+      "tags": "query:q1",
+      "abstract_en": "Point spread function (PSF) engineering through pupil plane modulation is a technique used in microscopy to achieve specific imaging properties, such as depth encoding or extended depth of field. Existing PSF design methods often rely on extensive domain knowledge and task-specific basis functions, making it difficult to generalize across different applications. We treat the PSF engineering task as a phase retrieval problem and propose a neural field pupil design method that optimizes a phase profile for any arbitrary, user-defined 3D PSF distribution. This provides a flexible framework for 3D PSF engineering for various applications with implicit regularization that proves robust to initialization compared to pixel-wise optimization methods",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

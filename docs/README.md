@@ -6,37 +6,35 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-20
-- 运行时间：2026-08-20 20:46:25 UTC
+- 最新运行日期：2026-08-21
+- 运行时间：2026-08-21 19:49:09 UTC
 - 运行状态：成功
-- 本次总论文数：5
-- 精读区：1
+- 本次总论文数：4
+- 精读区：0
 - 速读区：4
 
 ### 今日简报（AI）
-今日聚焦 3D 高斯泼溅（GS）在动态流传输与 4D 重建中的前沿突破。
-重点关注 QuARC-GS 带来的高效残差编码方案，以及 Depth Anything V4 结合流匹配实现的 4D 场景重构。
-建议优先探索 GS 压缩技术与多视图几何结合的工程化落地趋势。
-- 详情：[/202608/20/README](/202608/20/README)
+今日聚焦 3D 与 4D 场景重建前沿，重点探索动态高斯泼溅与光照重绘技术。
+Depth Anything V4 引入流匹配实现动态 4D 重建，而 LumiTokens 则展示了在 Token 空间进行 3D 重光照的新可能。
+建议关注高斯泼溅（GS）在处理复杂动态场景及光影变换中的跨界融合趋势。
+- 详情：[/202608/21/README](/202608/21/README)
 
 ### 精读区论文标签
-1. [QuARC-GS: Quantized Anchored Residual Coding for Compact Dynamic Scene Streaming with Gaussian Splatting](/202608/20/2608.18285v1-quarc-gs-quantized-anchored-residual-coding-for-compact-dynamic-scene-streaming-with-gaussian-splatting)  
-   标签：评分：8.0/10、query:q7
-   evidence：通过量化感知优化加速动态场景渲染
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Depth Anything V4: Dynamic 4D Scene Reconstruction via Riemannian Flow Matching on 4D Gaussian Splatting](/202608/20/2608.18388v1-depth-anything-v4-dynamic-4d-scene-reconstruction-via-riemannian-flow-matching-on-4d-gaussian-splatting)  
+1. [Depth Anything V4: Dynamic 4D Scene Reconstruction via Riemannian Flow Matching on 4D Gaussian Splatting](/202608/21/2608.18388v2-depth-anything-v4-dynamic-4d-scene-reconstruction-via-riemannian-flow-matching-on-4d-gaussian-splatting)  
    标签：评分：7.0/10、query:q1
-   evidence：用于动态场景重建的4D高斯泼溅技术
-2. [CoMVS-GS: Collaborative Multi-View Stereo and 3D Gaussian Splatting for Surface Reconstruction](/202608/20/2608.18413v1-comvs-gs-collaborative-multi-view-stereo-and-3d-gaussian-splatting-for-surface-reconstruction)  
-   标签：评分：7.0/10、query:q1
-   evidence：用于高效新视角合成的3D高斯泼溅
-3. [Differentiable Voxelization of Surface Representations](/202608/20/2608.15934v1-differentiable-voxelization-of-surface-representations)  
+   evidence：用于动态场景重建的4D高斯泼溅
+2. [Point-Based 3D Reconstruction from Sparse Views under Known Illumination](/202608/21/2608.20000v1-point-based-3d-reconstruction-from-sparse-views-under-known-illumination)  
+   标签：评分：7.0/10、query:q4
+   evidence：用于重建的可微分光线传输和含不透明度的面元
+3. [LumiTokens: 3D Relighting via Token-Space Lighting Transformation](/202608/21/2608.18215v1-lumitokens-3d-relighting-via-token-space-lighting-transformation)  
    标签：评分：6.0/10、query:q1
-   evidence：用于体积表示的可微体素化
-4. [USR-Drive: Unified Driving Scene Representation via Joint Denoising of 3D Gaussians and Boxes](/202608/20/2608.19036v1-usr-drive-unified-driving-scene-representation-via-joint-denoising-of-3d-gaussians-and-boxes)  
+   evidence：无需显式渲染方程的3D重光照潜场景表示
+4. [Point Spread Function Engineering Using Implicit Neural Representations](/202608/21/2608.20277v1-point-spread-function-engineering-using-implicit-neural-representations)  
    标签：评分：6.0/10、query:q1
-   evidence：面向渲染的3D基元与场景表示
+   evidence：用于3D点扩散函数工程的隐式神经网络表示
 
 
 <div class="dpr-home-promo-card">

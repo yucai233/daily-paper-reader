@@ -1,0 +1,169 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-21T19:48:38.421295+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.18388v2",
+      "title": "Depth Anything V4: Dynamic 4D Scene Reconstruction via Riemannian Flow Matching on 4D Gaussian Splatting",
+      "abstract": "We present Depth Anything V4 (DAV4), a framework for dynamic 4D scene reconstruction from monocular video. Our key contribution is the application of Riemannian Flow Matching (RFM) to 4D Gaussian Splatting parameters, defining probability paths directly on non-Euclidean manifolds (scale, rotation, opacity), ensuring all intermediate states are valid. Through controlled experiments, we isolate RFM's contribution from test-time optimization (TTO) and pre-training. A deterministic MLP baseline with the same data, architecture, and TTO achieves F-score 0.762; RFM achieves 0.806 - the +0.044 gain is RFM's isolated contribution. We provide corrected computational cost analysis: pre-training is 360 GPU-hours, amortizing for large-scale deployment (over 10,000 scenes). Uncertainty is quantified via Negative Gaussian Log-Likelihood and Expected Calibration Error. DAV4 outperforms prior Depth Anything models and per-scene 4D-GS on dynamic reconstruction and novel-view synthesis, while using no human-annotated depth labels as training losses.",
+      "authors": [
+        "Jiaming Fan",
+        "Jian Lu",
+        "Jinling Jia",
+        "Chenbin Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-18T23:44:19+00:00",
+      "link": "https://arxiv.org/pdf/2608.18388v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "4D Gaussian Splatting for dynamic scene reconstruction",
+      "llm_evidence_cn": "用于动态场景重建的4D高斯泼溅",
+      "llm_evidence": "用于动态场景重建的4D高斯泼溅",
+      "canonical_evidence": "用于动态场景重建的4D高斯泼溅",
+      "llm_tldr_en": "DAV4 applies Riemannian Flow Matching to 4D Gaussian Splatting for dynamic scene reconstruction.",
+      "llm_tldr_cn": "DAV4将黎曼流匹配应用于4D高斯泼溅，实现动态场景的4D重建。",
+      "llm_tldr": "DAV4将黎曼流匹配应用于4D高斯泼溅，实现动态场景的4D重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.18215v1",
+      "title": "LumiTokens: 3D Relighting via Token-Space Lighting Transformation",
+      "abstract": "Existing 3D relighting methods operate through either explicit material decomposition, diffusion-based view-space generation, or a combination of both, requiring full recomputation for each new lighting condition. We observe that recent latent scene representations, which encode multi-view images into a set of compact tokens with no fixed physical semantics, open up a novel design space for relighting. We present LumiTokens, a framework that formulates 3D relighting as a direct transformation on latent scene tokens, without explicit 3D representations, rendering equations, or physics-based decomposition. Our model introduces a Scene Token Editor that processes scene tokens jointly with light-ray tokens through self-attention, producing updated tokens that can be decoded into multi-view-consistent relit images. To support diverse lighting types through a unified interface, all lighting signals, including environment maps, point lights, and area lights, are parameterized as Plucker ray tokens, enabling native 3D user interaction with a representation that carries no explicit spatial structure. Crucially, this design supports progressive relighting: because the editor's output remains in the same latent space as its input, a user can incrementally build up illumination one light source at a time, with each edit composing in token space. Experiments demonstrate that LumiTokens achieves comparable or superior relighting quality to other methods and supports progressive, composable lighting edits. Project page: https://neu-vi.github.io/LumiTokens/",
+      "authors": [
+        "Yiwen Chen",
+        "Matheus Gadelha",
+        "Huaizu Jiang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-18T18:00:21+00:00",
+      "link": "https://arxiv.org/pdf/2608.18215v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "latent scene representations for 3D relighting without explicit rendering equations",
+      "llm_evidence_cn": "无需显式渲染方程的3D重光照潜场景表示",
+      "llm_evidence": "无需显式渲染方程的3D重光照潜场景表示",
+      "canonical_evidence": "无需显式渲染方程的3D重光照潜场景表示",
+      "llm_tldr_en": "Formulates 3D relighting as a transformation on latent scene tokens using a self-attention based editor.",
+      "llm_tldr_cn": "通过自注意力编辑器将3D重光照建模为潜场景标记的转换。",
+      "llm_tldr": "通过自注意力编辑器将3D重光照建模为潜场景标记的转换。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.20000v1",
+      "title": "Point-Based 3D Reconstruction from Sparse Views under Known Illumination",
+      "abstract": "Sparse view 3D reconstruction is commonly addressed with neural implicit surfaces or dense point-based representations such as Gaussian splatting. Surface-aware splatting methods improve extracted geometry through oriented primitives and regularization, while RadiosityGS incorporates differentiable light transport through a radiosity inspired finite-element surfel formulation. We propose a differentiable point rendering method based on opacity-bearing beta surfels. An opacity explicit adjoint light transport formulation provides gradients for surfel geometry and appearance parameters, allowing physically based light transport to constrain reconstruction.   Across five synthetic objects reconstructed from ten posed views, our method achieves the lowest mean symmetric Chamfer distance among the evaluated baselines and reduces mean Chamfer distance by 28.5% relative to the strongest point-based baseline while using only 267 surfels on average, approximately ~161 fewer primitives. Directional Chamfer results further show improved accuracy and competitive completion relative to related point-based methods. These results show that, in the controlled direct illumination setting, compact beta surfels combined with transport-based optimization can recover surfaces without relying on the tens to hundreds of thousands of primitives used by the evaluated baselines.",
+      "authors": [
+        "Magnus Kaufmann Gjerde",
+        "Joakim Bruslund Haurum",
+        "Jeppe Revall Frisvad",
+        "Markus Worchel",
+        "J. Andreas Bærentzen",
+        "Thomas B. Moeslund"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-20T13:15:27+00:00",
+      "link": "https://arxiv.org/pdf/2608.20000v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "differentiable light transport and opacity-bearing surfels for reconstruction",
+      "llm_evidence_cn": "用于重建的可微分光线传输和含不透明度的面元",
+      "llm_evidence": "用于重建的可微分光线传输和含不透明度的面元",
+      "canonical_evidence": "用于重建的可微分光线传输和含不透明度的面元",
+      "llm_tldr_en": "Proposes a differentiable point rendering method using light transport to constrain 3D reconstruction.",
+      "llm_tldr_cn": "提出了一种利用光线传输约束3D重建的可微分点渲染方法。",
+      "llm_tldr": "提出了一种利用光线传输约束3D重建的可微分点渲染方法。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "deep learning for multiple scattering in volumes",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.20277v1",
+      "title": "Point Spread Function Engineering Using Implicit Neural Representations",
+      "abstract": "Point spread function (PSF) engineering through pupil plane modulation is a technique used in microscopy to achieve specific imaging properties, such as depth encoding or extended depth of field. Existing PSF design methods often rely on extensive domain knowledge and task-specific basis functions, making it difficult to generalize across different applications. We treat the PSF engineering task as a phase retrieval problem and propose a neural field pupil design method that optimizes a phase profile for any arbitrary, user-defined 3D PSF distribution. This provides a flexible framework for 3D PSF engineering for various applications with implicit regularization that proves robust to initialization compared to pixel-wise optimization methods",
+      "authors": [
+        "Suet Ying Chan",
+        "Mitchell Gilmore",
+        "Qilin Deng",
+        "Guorong Hu",
+        "Joseph Greene",
+        "Ruipeng Guo",
+        "Lei Tian"
+      ],
+      "primary_category": "physics.optics",
+      "categories": [
+        "physics.optics"
+      ],
+      "published": "2026-08-20T17:13:05+00:00",
+      "link": "https://arxiv.org/pdf/2608.20277v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Implicit neural representations for 3D point spread function engineering",
+      "llm_evidence_cn": "用于3D点扩散函数工程的隐式神经网络表示",
+      "llm_evidence": "用于3D点扩散函数工程的隐式神经网络表示",
+      "canonical_evidence": "用于3D点扩散函数工程的隐式神经网络表示",
+      "llm_tldr_en": "Uses neural fields to optimize phase profiles for arbitrary 3D PSF distributions in microscopy.",
+      "llm_tldr_cn": "利用神经场优化相位分布，以实现显微镜中任意3D点扩散函数的工程化。",
+      "llm_tldr": "利用神经场优化相位分布，以实现显微镜中任意3D点扩散函数的工程化。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
