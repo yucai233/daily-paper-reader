@@ -1,0 +1,1052 @@
+Title: RFWM: Physics-Guided World Model for Dynamic Wireless Radiance Field Generation
+
+URL Source: https://arxiv.org/pdf/2608.19709v1
+
+Published Time: Fri, 21 Aug 2026 00:31:36 GMT
+
+Number of Pages: 10
+
+Markdown Content:
+# RFWM: Physics-Guided World Model for Dynamic Wireless Radiance Field Generation 
+
+Zijiu Yang and Qianqian Yang 
+
+College of Information Science and Electronic Engineering, Zhejiang University, Hangzhou, China Email: {zijiu yang, qianqianyang20 }@zju.edu.cn 
+
+Abstract —Radio-frequency (RF) radiance-field modeling is essential for wireless network optimization and sensing, yet remains challenging in dynamic and unseen environments. Ex-isting learning-based methods synthesize RF fields from sparse measurements, but most struggle to generalize to dynamic and unseen environments. To address this limitation, we propose RFWM, a physics-guided RF world model that maps multimodal physical conditions like visual dynamics and AP configurations to spatiotemporal RF fields. RFWM adopts a two-stage training strategy with physics-guided priors and constraints. In the first stage, RFWM adapts a pretrained visual diffusion backbone to RF trajectories to predict RF sequences from a few past RF inputs, while conditioning the backbone on a Friis-guided prior for coarse attenuation guidance. In the second stage, RFWM learns the physical-to-RF mapping by training a ControlNet from scratch and fine-tuning the RF-adapted backbone, while six physics-guided regularizers enforce fine-grained propagation consistency. Cross-height heads then jointly generate RF trajecto-ries at queried receiver heights in one forward pass. We construct a new benchmark of 7,715 sequences averaging 33 frames across 115 environments for dynamic RF-field generation. Experimental results show that RFWM improves MSE by approximately 7 dB and 3 dB over the state of the art under in-distribution and out-of-distribution settings, respectively. 
+
+Index Terms —Radio-frequency radiance field, radio-frequency world models, wireless propagation, wireless network 
+
+I. I NTRODUCTION 
+
+Wireless connectivity has become essential infrastructure supporting a broad range of modern digital systems and appli-cations, such as mobile computing, intelligent transportation and Internet-of-Things applications [1]–[3]. The reliable op-eration of these systems depends on accurate radio-frequency (RF) field modeling, which characterizes the spatial distribu-tion of received signal strength (RSS) and supports tasks such as network planning, resource allocation, and communication-aware control. Although RF propagation is fundamentally governed by Maxwell’s equations [4], accurately modeling it in realistic environments requires detailed knowledge of scene geometry, material properties, and boundary conditions. These challenges have motivated three major classes of RF modeling approaches: stochastic channel models, geometry-based propagation models, and learning-based methods. Stochastic channel models, such as COST 2100 [5] and QuaDRiGa [6], characterize RF propagation using statistical distributions derived from measurements or simulations of representative environments. Despite their computational ef-ficiency, these models abstract away detailed environmental characteristics, such as scene geometry, material properties, and object configurations, and therefore cannot capture fine-grained, site-specific RF variations. In contrast, geometry-based ray-tracing frameworks such as Sionna RT [7] explicitly model propagation paths based on the physical environment, thereby providing greater site-specific fidelity. However, trac-ing numerous propagation paths incurs substantial computa-tional overhead, requires accurate descriptions of scene geom-etry and material properties, and must be repeated whenever the environment or wireless configuration changes [4]. Learning-based approaches offer a promising alternative by learning propagation patterns directly from data. Some exist-ing methods, however, adopt a scene-specific fitting paradigm, in which model parameters or scene representations are opti-mized using RF measurements collected in a target environ-ment. For example, NeRF 2 [8] and NeWRF [9] use implicit neural fields to reconstruct wireless propagation from sparse RF measurements, while WRF-GS [10] and RadCloudSplat [11] employ explicit Gaussian representations to accelerate RF-field rendering and radiomap extrapolation. The scene-specific nature of these methods prevents their learned propa-gation representations from generalizing directly to previously unseen environments. Furthermore, their reconstructed RF fields become outdated when environmental changes occur, such as the movement of people or objects [12], [13]. More recent methods have begun to address environmental dynamics and cross-scene generalization. RFCanvas [14] up-dates generated RF fields using motion cues extracted from visual observations, whereas GRaF [15] predicts the spatial spectrum for a new AP placement using RF measurements collected at nearby AP locations in the same scene. Both meth-ods move beyond purely static reconstruction by improving adaptation to environmental changes or spatial generalization. However, these methods still represent environmental changes as discrete configurations rather than continuous temporal evolution, and remain dependent on target-scene RF measure-ments. Diffusion 2 [16] further advances dynamic RF modeling by conditioning on frame-wise 3D scene snapshots to generate RF heatmap videos across scenes. Nevertheless, it requires frame-wise 3D geometry and sparse RF measurements as in-put and is limited to generating single-height 2D RF heatmaps. These limitations motivate a fundamental question: can a arXiv:2608.19709v1 [cs.NI] 20 Aug 2026 shared model transfer propagation knowledge to an unseen environment and predict the temporal evolution of its 3D RF field without any target-scene RF measurements? Recent ad-vances in visual world models suggest a promising path toward this goal. By learning spatial structures and temporal dynamics from sequential observations, world models can predict future states and transfer learned dynamics across environments [17], [18]. One representative example is Cosmos, a family of world foundation models pretrained on large-scale physical-world videos to acquire transferable spatial and temporal priors [19]. Building on these priors, Cosmos-Transfer [20] introduces 
+
+world-to-world transfer , in which structural and temporal cues from one modality, such as depth or segmentation, guide the generation of another modality. This paradigm provides a shared-model foundation for transferring physical structure and dynamics across representations. Inspired by this, we formulate dynamic RF-field genera-tion as a physical-to-RF world transfer problem, where a shared model maps physical-world observations, including scene dynamics, static geometry, and wireless deployment, to spatiotemporal RF fields. To realize this formulation, we propose RFWM , a physics-guided RF world model that enables direct RF-field generation in both seen and unseen environments. RFWM employs a two-stage training frame-work. In the first stage, it adapts a pretrained visual world-model backbone [19], [21] to predict future RF states from historical RF trajectories and a propagation prior condition while preserving the spatiotemporal knowledge acquired from physical-world videos. The propagation prior is derived from the Friis free-space path-loss equation [22] and provides coarse guidance on large-scale signal attenuation. In the second stage, the RF-adapted backbone learns physical-to-RF generation by incorporating multimodal conditions [23], such as visual dynamics and access-point (AP) deployment, through dedicated pathways designed according to their structures and physical roles. Six physics-guided regularization terms further enforce fine-grained consistency with blockage effects, distance-dependent attenuation, and local spatial structure. RFWM further introduces cross-height heads to efficiently model the vertical structure of 3D RF fields. These heads share backbone features across receiver heights while preserv-ing height-specific propagation characteristics. Unlike existing methods that predict a single RSS value per inference [8], RFWM jointly generates complete spatiotemporal RF fields at all queried receiver heights in a single forward pass. Our main contributions are summarized as follows:  
+
+> •
+
+We formulate dynamic RF-field modeling as a physical-to-RF world transfer problem, in which a shared model maps physical-world observations to spatiotemporal RF fields and directly generalizes to unseen environments without target-scene RF measurements.  
+
+> •
+
+We propose RFWM , a physics-guided RF world model with a two-stage training framework. Stage I adapts a pretrained visual world-model backbone to predict future RF states from historical RF trajectories and a Friis-guided propagation prior. Stage II conditions the RF-adapted backbone on multimodal physical observations for physical-to-RF generation, while six physics-guided regularizers enforce consistency with blockage effects, distance-dependent attenuation, and local spatial struc-ture.  
+
+> •
+
+We develop an efficient multi-height 3D RF generation scheme based on cross-height heads. By sharing back-bone features while retaining height-specific propagation characteristics, RFWM generates complete spatiotempo-ral RF fields at all queried heights in a single forward pass.  
+
+> •
+
+We construct a multi-scene benchmark containing 7,715 dynamic RF sequences from 115 environments. Exten-sive experiments show that RFWM outperforms the state of the art by approximately 7 dB on in-distribution (ID) scenes and 3 dB on out-of-distribution (OOD) scenes, demonstrating strong generalization to unseen environ-ments. II. P RELIMINARIES 
+
+This section introduces the RF-field representation used throughout the paper, and formulates dynamic RF generation as a physical-to-RF world-transfer problem. 
+
+A. Dynamic Spatiotemporal RF Fields 
+
+Let S denote a collection of wireless environments, with 
+
+s ∈ S indexing one environment. Its three-dimensional spatial domain is Vs ⊆ R3, and a trajectory contains T time steps indexed by t ∈ { 1, . . . , T }. We write the physical state at time 
+
+t as 
+
+xs,t =  gs, ds,t 
+
+, (1) where gs describes the time-invariant scene structure and 
+
+ds,t describes time-varying humans and movable objects. The corresponding physical trajectory is Xs = ( xs,t )Tt=1 .The transmitter configuration is denoted by 
+
+ηs =  ptx  
+
+> s
+
+, otx  
+
+> s
+
+, f c,s , P tx 
+
+> s
+
+, (2) where ptx  
+
+> s
+
+and otx  
+
+> s
+
+are the transmitter position and orientation, 
+
+fc,s is the carrier frequency, and P tx  
+
+> s
+
+is the transmit power. For a receiver at r ∈ V s, let hs,t (r) denote the aggregate complex channel induced by the physical state and transmitter configuration. The received signal strength (RSS) is 
+
+ρs,t (r) = 10 log 10 
+
+ P tx  
+
+> s
+
+|hs,t (r)|2
+
+P0
+
+
+
+, (3) where P0 is a reference power. Motion in ds,t changes blockage, path visibility and multipath interactions, making the RF fields evolve over time. For learning and evaluation, we sample the RF field on an 
+
+H × W horizontal grid 
+
+Gs = {(xi, y j ) | i = 1 , . . . , H, j = 1 , . . . , W } (4) and at receiver heights Z = {zk}Kk=1 . The RF field at time t
+
+is 
+
+Rs,t [k, i, j ] = ρs,t (xi, y j , z k), Rs,t ∈ RK×H×W . (5) To leverage the pretrained visual VAE for compact latent encoding of RF tokens, we convert each RSS field into an RGB representation using a fixed rendering operator Ψ( ·). For receiver height zk, let rs,t,k (i, j ) = Rs,t [k, i, j ] denote the RSS at grid location (i, j ). The rendering process is defined as 
+
+us,t,k (i, j ) = clip 
+
+ rs,t,k (i, j ) − rmin 
+
+rmax − rmin 
+
+, 0, 1
+
+
+
+,
+
+[Ys,t ]k, :,i,j = Jjet (us,t,k (i, j )) ,
+
+Ys,t = Ψ ( Rs,t ) ∈ [0 , 1] K×3×H×W ,
+
+(6) where us,t,k (i, j ) ∈ [0 , 1] is the normalized RSS value, and 
+
+Jjet : [0 , 1] → [0 , 1] 3 maps it to RGB. We fix rmin = −70 dB 
+
+and rmax = −30 dB for all scenes and time steps. Since Ψ( ·)
+
+is applied pointwise, it changes only the value representation while preserving the temporal, spatial, and height structure of the RF field. The complete dynamic 3D RF-field trajectory is obtained by stacking the rendered fields over time: 
+
+Ys = ( Ys,t )Tt=1 ∈ [0 , 1] T ×K×3×H×W . (7) For the height-wise latent modeling used later, we further define 
+
+Rs,k = ( Rs,t [k, :, :]) Tt=1 ∈ RT ×H×W ,
+
+Ys,k = Ψ ( Rs,k ) = ( Ys,t [k, :, :, :]) Tt=1 ∈ [0 , 1] T ×3×H×W .
+
+(8) Accordingly, Ys is obtained by stacking {Ys,k }Kk=1 along the receiver-height dimension and jointly represents temporal evolution, horizontal propagation structure and cross-height variation. 
+
+B. Physical-to-RF World Transfer 
+
+Unlike scene-specific fitting methods [8]–[10], RFWM treats the observable physical world and the resulting RF field as two synchronized representations of the same dy-namic environment, as shown in Fig. 1. Let Ys denote the spatiotemporal RF field of scene s, and let Cobs  
+
+> s
+
+denote the physical observations available for that scene. We formulate physical-to-RF world transfer as learning 
+
+pθ
+
+ Ys | Cobs 
+
+> s
+
+ , (9) where a single parameter set θ is shared across diverse environments. Specifically, the physical observations for scene s are orga-nized as 
+
+Cobs  
+
+> s
+
+= ( Vs, Ms, es, As, Ws) , (10) where the synchronized visual sequence Vs records the mo-tion of humans and movable objects, the static geometry Ms
+
+describes the 3D structure of the environment and the text embedding es provides global semantic context. As stands Dynamic Environment Dynamic RF field at AP AP AP Moving Human 
+
+> !
+
+! !! !!
+
+!" #$! ! =
+
+> !
+
+! !! !!
+
+> Multi-height Slices
+> Fig. 1. Illustration of synchronized physical and RF observations in a dynamic environment.
+
+for the AP configurations with the transmitter position and horizontal orientation encoded as a spatial raster aligned with the visual and RF observations, as expressed by 
+
+As = RAP 
+
+ ptx  
+
+> s
+
+, otx 
+
+> s
+
+ = Apos  
+
+> s
+
+, Acos  
+
+> s
+
+, Asin 
+
+> s
+
+ , (11) where RAP (·) denotes the rasterization operator. Apos  
+
+> s
+
+is a Gaussian map centered at the transmitter location, while 
+
+Acos  
+
+> s
+
+and Asin  
+
+> s
+
+encode the cosine and sine of its horizontal orientation, respectively. Ws is organized over the K queried receiver heights as 
+
+Ws = ( ws,k )Kk=1 , ws,k = Bs, f c,s , z k, P tx  
+
+> s
+
+, δs, βs
+
+ ,
+
+(12) where Bs, fc,s , and P tx  
+
+> s
+
+denote the system bandwidth, carrier frequency, and transmit power, respectively, and zk denotes the k-th queried receiver height. Moreover, δs specifies the metric scale of the 3D scene, while βs contains the material parameters that characterize reflection behavior. Conditioned on these observations, RFWM generates the corresponding RF field bY according to 
+
+bYs = Fθ
+
+ Cobs 
+
+> s
+
+ , (13) where Fθ (·) represents the transfer operator. (a) Overview and Latent-RF Modeling (b) Stage Ⅰ: Physics-guided Pretraining (c) Stage Ⅱ: Physical-to-RF Transfer 
+
+> Physical Observations Propagation Prior Spatiotemporal RF fields Latent Space
+> VAE Encoder VAE Decoder
+> Reconstructed RF fields
+
+! " " " " #! ! ! ! !! " # A %!!         
+
+> Back bone
+> 3D RoPE ! " #! " #! " #! " # #
+> !"#$ % & $%&
+
+= + +! ! ! !! ! ! !
+
+> !
+
+!
+
+> ControlNet
+> Noise
+> Context Latent RF
+> Condition
+> Environment layout is ……
+> Propagation Prior
+> !
+
+!  
+
+> T5-xxl Text Embedding
+> Cross attention Static Geometry Friis Equation
+> Prior Encoder
+> RF Prefix Mask Condition
+> Noisy Latent RF Adaptive Layer Norm Multi-Head Self-Attention Adaptive Layer Norm MLP
+> DiT Backbone
+> x28
+> !
+
+!
+
+> !
+
+!
+
+> !
+
+!
+
+> !
+
+!
+
+> !
+
+!  
+
+> Visual Dynamics AP Raster
+> The walking man changes the RF propagation. Position Orientation (Cos) Orientation (Sin)
+> !
+
+!
+
+> Bandwidth Queried Heights 3D Scale Power
+> DiT Control Encoder
+> Adaptive Layer Norm Multi-Head Self-Attention MLP Adaptive Layer Norm
+> x3
+> Noisy Latent RF
+> DiT Backbone
+> Inject Transformer Block Transformer Block Transformer Block Transformer Block Transformer Block Noisy Tokens Condition Tokens
+> ++
+> MLP MLP
+> ControlNet Injection
+> Cond.
+> Cross-height Heads
+> Frequency Materials Static Geometry
+
+!" !"
+
+> !
+
+" ! " #$
+
+!!
+
+!!  
+
+> Concat Continuous Wireless Condition
+> Mesh Encoder Wireless Encoder Volume Sampling Merge/ Flatten Physics Constraint
+> Head 1 Head 2 Head 3 Head K
+
+… …
+
+> Stack Generated RF Fields
+> !"#$ %
+
+!! " 
+
+> !"#$ %
+
+!! " Fig. 2. Overview of RFWM. (a) Spatiotemporal RF fields are rendered and compressed into latent RF trajectories using a pretrained VAE, while a DiT backbone equipped with 3D RoPE models their spatial and temporal evolution. (b) Stage I adapts the pretrained visual DiT to the RF domain through RF-prefix conditioning, scene-level text cross-attention, and a Friis-guided propagation prior. (c) Stage II learns the physical-to-RF mapping from deployment-time physical observations. Cross-height heads jointly generate RF fields at all queried receiver heights, while six physics-guided regularization terms improve fine-grained physical consistency. 
+
+III. RFWM RFWM realizes physical-to-RF world transfer with a la-tent diffusion backbone initialized from a pretrained visual diffusion-based world model [20]. While visual pretraining provides general spatiotemporal modeling capabilities, it does not capture the propagation-specific characteristics of RF fields. RFWM therefore separates RF-domain adaptation from physical-to-RF conditioning with the two-stage training design as shown in Fig. 2. Stage I performs physics-guided pretrain-ing on RF trajectories to learn a shared RF-aware backbone and then Stage II learns the physical-to-RF mapping. 
+
+A. Latent-RF Modeling and Overview 1) Latent RF Representation: Directly generating RF tra-jectories would require the Diffusion Transformer (DiT) back-bone to process a prohibitively dense set of spatiotemporal RF tokens. RFWM instead leverages a pretrained visual VAE to tokenize the RF trajectories Rs,t into a compact latent space. For each height, the rendered trajectory is encoded into the VAE latent space and perturbed at diffusion noise level σ:
+
+z0,s,k = EVAE (Ys,k ) ∈ RTlat ×Clat ×Hlat ×Wlat ,
+
+zσ,s,k = z0,s,k + σϵs,k , ϵs,k ∼ N (0, I), (14) where z0,s,k denotes the latent RF representations and Ys,k 
+
+is defined in (8). All receiver-height planes within the same sample share the same noise level σ, while their noise real-izations are sampled independently. The resulting 3D latent representation is Zσ,s = Stack ( zσ,s, 1, . . . , zσ,s,K ) .
+
+After denoising, the estimated clean latent at each height is decoded to reconstruct the corresponding rendered RF sequence: bYs,k = DVAE (bz0,s,k ) . Finally, the rendered RF sequences from all K receiver heights are stacked to form the complete spatiotemporal RF field as bYs =Stack 
+
+ bYs, 1, . . . , bYs,K 
+
+
+
+.
+
+2) Spatiotemporal Position Encoding: Each latent token is indexed by (k, t, i, j ), corresponding to the receiver height, time step, and two horizontal coordinates, respectively. To model relative dependencies within each RF sequence, we apply 3D rotary position encoding [24] over the temporal and horizontal axes (t, i, j ) to the attention queries and keys. In addition, each transformer block incorporates separable learned embeddings for all four axes, as expressed by 
+
+p(ℓ) 
+
+> k,t,i,j
+
+= pZ, (ℓ) 
+
+> k
+
++ pT, (ℓ) 
+
+> t
+
++ pH, (ℓ) 
+
+> i
+
++ pW, (ℓ) 
+
+> j
+
+, (15) where ℓ indexes the DiT block. The rotary encoding captures relative spatiotemporal displacements while the learned em-beddings provide absolute height, time, and spatial informa-tion. 
+
+B. Physics-Guided RF Pretraining 
+
+As shown in Fig. 2 (b), Stage I performs physics-guided RF pretraining to adapt the pretrained visual DiT backbone to the RF domain. The backbone is conditioned on three complementary cues: an optional RF prefix, the global text embedding es encoded by T5-xxl [25], and the Friis-guided propagation prior Πs. The RF prefix provides past RF obser-vations for temporal completion, the text embedding injects scene-level semantics through cross-attention, and the propa-gation prior combines Friis-based attenuation with geometry-aware visibility information. 
+
+1) RF-Prefix Conditioning: The RF prefix exposes the backbone to varying amounts of historical RF con-text. For each training sample, we draw npre ∼
+
+Unif ( {0, . . . , ⌊Tlat /3⌋} ) and define a binary mask Bpre  
+
+> s,k
+
+that equals one on the first npre latent slices and zero elsewhere, broadcast over the channel and spatial dimensions. A small perturbation is also added to the observed slices, and the masked values are concatenated with the mask: 
+
+cpre  
+
+> s,k
+
+= Concat ch 
+
+h
+
+Bpre  
+
+> s,k
+
+⊙ (z0,s,k + σcϵc,s,k ) , Bpre 
+
+> s,k
+
+i
+
+, (16) where ϵc,s,k ∼ N (0, I) is independent of the diffusion noise and σc denotes the conditioning-noise scale. Importantly, when npre = 0 , the backbone is trained to generate RF trajec-tories without target-scene RF observations, which facilitates the operating setting of Stage II. 
+
+2) Friis-Guided Propagation Prior: The RF prefix pro-vides data-driven temporal guidance but does not explicitly contain the physical laws governing RF propagation. To complement this, we construct a Friis-guided propagation prior computed with the AP configuration and static scene geometry. For a receiver at rk,i,j = ( xi, y j , z k), the AP– receiver distance is 
+
+ds,k [i, j ] = rk,i,j − ptx   
+
+> s2
+
+, (17) where ptx  
+
+> s
+
+denotes the AP position. The corresponding free-space path loss is obtained from the Friis equation: 
+
+LFS 
+
+> s,k
+
+[i, j ] = 20 log 10 
+
+ 4πf c,s max( ds,k [i, j ], d min )
+
+c
+
+
+
+, (18) where fc,s is the carrier frequency, c is the speed of light, and 
+
+dmin > 0 prevents numerical instability near the AP. Since free-space attenuation alone cannot represent direc-tional transmission or obstruction effects, we augment the analytical prior with geometry-aware descriptors: 
+
+Qs,k = Stack   ]log ds,k , eLFS 
+
+> s,k
+
+, Dori 
+
+> s,k
+
+, BLoS  
+
+> s,k
+
+, eNwall  
+
+> s,k
+
+,
+
+eDsurf  
+
+> s,k
+
+, Bin 
+
+> s,k
+
+, (19) Here, ds,k and LFS  
+
+> s,k
+
+collect ds,k [i, j ] and LFS 
+
+> s,k
+
+[i, j ] over the receiver grid, respectively. The orientation map Dori  
+
+> s,k
+
+measures the alignment between the AP pointing direction and the AP-to-receiver direction. The binary mask BLoS  
+
+> s,k
+
+indicates whether the direct AP–receiver path is unobstructed. Nwall  
+
+> s,k
+
+counts wall intersections along that path, Dsurf  
+
+> s,k
+
+measures the distance to the nearest scene surface, and Bin  
+
+> s,k
+
+identifies valid indoor receiver locations. The height-specific descriptors are stacked and projected to the RF-token embedding using a lightweight 3D convolutional encoder: 
+
+Πs = Eprior 
+
+
+
+Stack Kk=1 Qs,k 
+
+
+
+∈ RD×K×Hlat ×Wlat . (20) Here, Eprior consists of three 3 × 3 × 3 convolutional blocks followed by a 1 × 1 × 1 projection. We denote its feature slice at height zk by Πs,k ∈ RHlat ×Wlat ×D .
+
+3) Multi-modal Conditioning: In Stage I, the RF prefix 
+
+cpre  
+
+> s,k
+
+, the propagation prior Πs,k and the text embedding 
+
+es are conditioned through separate pathways according to their structures and semantics. For receiver height zk, let 
+
+X(ℓ) 
+
+> s,k
+
+∈ RTlat ×Hlat ×Wlat ×D denote the RF token embedding before the ℓ-th DiT block. The input RF tokens are then initialized as 
+
+X(0)  
+
+> s,k
+
+= Ein 
+
+
+
+Concat ch 
+
+h
+
+zσ,s,k , cpre 
+
+> s,k
+
+i 
+
++ Repeat Tlat (Πs,k ) ,
+
+(21) where Ein (·) denotes the input projection and patchification operator, Concat ch (·) denotes channel-wise concatenation, and Repeat Tlat (·) broadcasts the static prior feature over the latent temporal axis. The text embedding es is then supplied to each DiT block through cross-attention [26], providing scene-level semantic context throughout the denoising process. 
+
+4) Training Objective: Given the noisy latent zσ,s,k and the three conditioning cues, the RF-adapted backbone predicts the complete RF latent: 
+
+bz0,s,k = fθRF 
+
+
+
+zσ,s,k , σ cpre  
+
+> s,k
+
+, es, Πs,k 
+
+
+
+, (22) where θRF denotes the trainable parameters after RF-domain adaptation. Since prefix frames are already provided to the model, the denoising error is computed only on the unob-served portion of the trajectory: 
+
+Lpre = E
+
+
+
+w(σ)
+
+
+
+1 − Bpre 
+
+> s,k
+
+
+
+⊙ (bz0,s,k − z0,s,k ) 22,mean 
+
+
+
+,
+
+(23) where w(σ) balances training samples across diffusion noise levels. 
+
+C. Physical-to-RF Transfer 
+
+As shown in Fig. 2 (c), RFWM in Stage II transfers the RF-aware backbone to physical-to-RF generation by condi-tioning it on Cobs  
+
+> s
+
+. Because these conditions differ in structure and physical role, RFWM integrates them through dedicated pathways and jointly predicts the RF trajectories at all K
+
+queried receiver heights. Additionally, the prior used in the first stage does not fully constrain the fine-grained behavior of fields generated from physical observations. We therefore introduce six physics-guided regularizers that penalize local violations in attenuation, blockage, and spatial consistency. The following describes the structured conditioning pathways, physics-guided regularization, and joint multi-height predic-tion in detail. 1) Structured Multimodal Conditioning: The observations in Cobs  
+
+> s
+
+differ in temporal resolution, spatial structure and physical meaning. As illustrated in Fig. 2 (c), RFWM pre-serves these distinctions by encoding each modality with a dedicated conditioning module. 
+
+Dynamic physical control. The visual sequence identifies when and where the environment changes, while the AP raster anchors those changes relative to the transmitter. We repeat the static raster over time and concatenate it with the visual sequence as Cdyn  
+
+> s
+
+= Concat ch (Vs, Repeat T (As)) . A DiT-based ControlNet extracts frame-aligned features and injects projected residuals into selected layers of the RF backbone, as expressed by 
+
+R(ℓ) 
+
+> s, ctrl
+
+= P (ℓ)ctrl 
+
+
+
+F (ℓ)ctrl 
+
+ Cdyn 
+
+> s
+
+
+
+, ℓ ∈ I ctrl , (24) where F (ℓ)ctrl (·) and P (ℓ)ctrl (·) represent the ControlNet operator and the MLP projection layer. Notably, the frame-aligned residual is shared across height branches. 
+
+Wireless conditioning. Receiver height is included in ws,k 
+
+and further expanded with Fourier features, as expressed by 
+
+γ(zk) = [sin (2 mπz k) , cos (2 mπz k)] Lγ −1 
+
+> m=0
+
+, (25) where Lγ denotes the number of frequency bands. A two-layer wireless encoder produces a height-specific wireless embedding: 
+
+cwire  
+
+> s,k
+
+= W2 SiLU ( W1 LN [ ws,k , γ (zk)]) ,
+
+hσ,s,k = Eσ (σ) + cwire  
+
+> s,k
+
+, (26) where LN( ·) denotes layer normalization, SiLU( ·) is the activation function, W1 and W2 are the weight matrices of the two linear layers. 
+
+Geometry and semantic conditioning. We voxelize the static geometry Ms in the latent space and encode it with a mesh encoder Emesh (·), expressed by 
+
+Fmesh  
+
+> s
+
+= Emesh (Vox ( Ms)) ,
+
+f mesh  
+
+> s,k
+
+= Slice k
+
+ Fmesh 
+
+> s
+
+ . (27) The slice f mesh  
+
+> s,k
+
+is repeated over latent time and added to the tokens at height zk. The text embedding es continues to provide scene-level context through cross-attention, com-plementing the local geometric features with global semantic information. The injection of all physical conditions can be summarized as 
+
+X(0)  
+
+> s,k
+
+= Ein (zσ,s,k ) + Repeat Tlat 
+
+ f mesh 
+
+> s,k
+
+ ,
+
+eX(ℓ) 
+
+> s,k
+
+= X(ℓ) 
+
+> s,k
+
++ I [ℓ ∈ I ctrl ] R(ℓ)
+
+> s, ctrl
+
+,
+
+X(ℓ+1)  
+
+> s,k
+
+= B(ℓ)RF 
+
+ eX(ℓ)
+
+> s,k
+
+; hσ,s,k , es
+
+
+
+.
+
+(28) where B(ℓ)RF (·) stands for the ℓ-th DiT block. The complete conditional denoising process is 
+
+bZ0,s = fθ
+
+
+
+Zσ,s , σ Cdyn  
+
+> s
+
+, cwire  
+
+> s,k
+> Kk=1
+
+, Fmesh  
+
+> s
+
+, es
+
+
+
+, (29) where the RF-backbone parameters in θ are initialized from 
+
+θRF .1) Obstacle Over-enhancement 2) Line-of-sight Monotonicity Violation 3) Far-field Under-attenuation 4) High-frequency Oscillations        
+
+> Signal unrealistically stronger behind an obstacle. Signal increases as distance grows along LoS.
+> 5) Free-space Hotspots 6) Local Spatial Inconsistency
+> Far-field signal decays too slowly. Unrealistic rapid oscillations along radial direction. Spurious isolated high-power spots. Unrealistic local variations and jitter.
+> Fig. 3. Representative physical inconsistencies in generated RF fields: obstacle over-enhancement, LoS monotonicity violation, far-field under-attenuation, high-frequency radial oscillations, free-space hotspots, and local spatial inconsistency.
+
+2) Physics-Guided Regularization: The Friis-guided prior used in Stage I primarily captures coarse and large-scale propagation trends. However, it does not explicitly constrain fine-grained local propagation behavior, and the generated RF fields may still exhibit physically implausible artifacts. As illustrated in Fig. 3, we categorize these failure cases into six representative types. To suppress these failure modes, we introduce six complementary physics-guided regularizers, each formulated as a soft penalty for the corresponding physical violation as follows. Since the VAE-decoder predicts bYs,k , we first recover the corresponding RSS trajectory through the inverse-rendering operator Φ−1 as bRs,k = Φ −1
+
+ bYs,k 
+
+
+
+∈ RT ×H×W . For a receiver location rk,i,j = ( xi, y j , z k), the predicted RSS is defined as bρs,t,k (rk,i,j ) = bRs,k [t, i, j ]. To simplify notation, we omit the indices (s, t, k ) below and write bρ(r), where a larger value indicates a stronger received signal. We further define [a]+ = max( a, 0) , such that each one-sided penalty is activated only when its corresponding physical relation is violated. Let Pobs contain ordered front–behind pairs (rf , rb) across the same obstacle. Let PLoS contain ordered near–far pairs 
+
+(ri, rj ) on the same unobstructed ray, where ds(rj ) >ds(ri), ds(r) = ∥r − ptx  
+
+> s
+
+∥2 . Finally, Pfar ⊆ PLoS 
+
+contains pairs in the far-field region. 
+
+Obstacle attenuation. For each (rf , rb) ∈ P obs , the RSS behind the obstacle should be lower than that in front by at least mobs > 0, as expressed by 
+
+Lobs =
+
+D
+
+[bρ(rb) − bρ(rf ) + mobs ]+
+
+E
+
+> Pobs
+
+. (30) 
+
+LoS monotonicity. For (ri, rj ) ∈ P LoS with ds(rj ) >ds(ri), we penalize an excessive positive radial slope: 
+
+Lmon =
+
+* bρ(rj ) − bρ(ri)
+
+ds(rj ) − ds(ri) − mmon 
+
+
+
+> +
+
++
+
+> PLoS
+
+, (31) where mmon ≥ 0 tolerates moderate multipath fluctuations. Far-field attenuation. Monotonicity alone does not ensure sufficient decay at large distances. We therefore compare the predicted attenuation rate with the Friis reference: 
+
+bαij = bρ(ri) − bρ(rj )log 10 (ds(rj )/d s(ri)) ,αFS  
+
+> ij
+
+= ρFS (ri) − ρFS (rj )log 10 (ds(rj )/d s(ri)) ,
+
+Lfar =
+
+DαFS  
+
+> ij
+
+− bαij − mfar 
+
+2+
+
+E
+
+> Pfar
+
+,
+
+(32) where ρFS (r) = −LFS (r) is the Friis-based RSS trend, and 
+
+mfar ≥ 0 allows moderate deviation from this reference. 
+
+Radial smoothness. Let QLoS contain equally spaced re-ceiver triplets (ri−1, ri, ri+1 ) along unobstructed AP rays. We suppress unsupported high-frequency oscillations using the second-order radial difference: 
+
+Lrad = ⟨| bρ(ri+1 ) − 2bρ(ri) + bρ(ri−1)|⟩ QLoS . (33) 
+
+Free-space hotspot suppression. Let F be the set of free-space receiver cells and N (r) the neighbors of r. With 
+
+ρN (r) = 1
+
+|N (r)|
+
+X 
+
+> u∈N (r)
+
+bρ(u),
+
+we penalize isolated high-power peaks: 
+
+Lhot = [bρ(r) − ρN (r) − mhot ]+ F , (34) where mhot ≥ 0 preserves legitimate local variation. 
+
+Local spatial consistency. Let E contain neighboring receiver-cell pairs (r, u). We encourage local coherence through 
+
+Lspa = ⟨ωr,u |bρ(r) − bρ(u)|⟩ E , (35) where ωr,u ∈ [0 , 1] is reduced across scene sur-faces or changes in LoS state, preventing smoothing across geometry-induced propagation boundaries. Notably, 
+
+mobs , m mon , m far , m hot are summarized from the failure cases after the training in Stage I. 
+
+3) Cross-Height RF Prediction and Training Objective: RF trajectories at neighboring receiver heights exhibit correlated temporal and vertical structure. RFWM thus models all K
+
+heights jointly rather than treating them as independent pre-diction tasks. Let X(L) 
+
+> s,k
+
+denote the final DiT feature at height 
+
+zk. The features from all height branches are stacked and provided to each height-specific output head, as expressed by 
+
+X(L) 
+
+> s
+
+= Stack Kk=1 
+
+
+
+X(L)
+
+> s,k
+
+
+
+, bz0,s,k = Hk
+
+
+
+X(L)
+
+> s
+
+
+
+, (36) where Hk(·) predicts the clean RF latent at zk. The predicted latents are decoded and stacked, yielding the complete spa-tiotemporal RF field in one forward pass. Stage II is trained with a denoising loss over all heights and a vertical consistency loss between adjacent heights: 
+
+Ldiff = E
+
+"
+
+w(σ)
+
+K
+
+> K
+
+X
+
+> k=1
+
+∥bz0,s,k − z0,s,k ∥22,mean 
+
+#
+
+,
+
+Lz = E
+
+"
+
+1
+
+K − 1
+
+> K−1
+
+X
+
+> k=1
+
+∥∆bz0,s,k − ∆z0,s,k ∥1
+
+#
+
+,
+
+(37) where ∆bz0,s,k = bz0,s,k +1 − bz0,s,k and ∆z0,s,k = z0,s,k +1 −
+
+z0,s,k . The complete training loss is 
+
+Ltransfer = Ldiff + λz Lz + Lphy , (38) where λz controls the vertical consistency term and Lphy 
+
+denotes the weighted sum of the six physics-guided regular-ization terms. IV. E XPERIMENTS 
+
+In this section, we evaluate RFWM on the constructed benchmark under both ID and OOD settings. We compare RFWM with both current scene-specific and cross-scene meth-ods in terms of reconstruction accuracy, generalization, and rendering efficiency. Finally, we assess the physical fidelity of the generated RF fields and conduct ablation studies to il-lustrate the effectiveness of the proposed physical regularizers. 
+
+A. Experimental Setup 1) Datasets and Implementation: We construct a physical-to-RF benchmark comprising 7,715 synchronized physical– RF sequences following [16]. Specifically, we first construct 115 3D environments from the large-scale 3D-FRONT dataset [27]. We then use the human locomotion algorithm DIMOS [28] to generate human walking trajectories within these envi-ronments, introducing time-varying perturbations to the scene geometry. Based on the resulting dynamic environments, Au-toMS [29] is used to generate the corresponding spatiotempo-ral RF fields. Each sample therefore consists of a synchronized physical-observation sequence and its corresponding RF-field sequence. The training set contains 7,045 sequences from 101 scenes, which are further divided into 23,139 training clips. The ID test set contains 293 sequences from 74 held-out routes in 37 scenes observed during training. All sequences belonging to these routes are excluded from the training set. The OOD test set contains 377 sequences from 14 scenes that are entirely absent from training, ensuring no scene overlap between the training and OOD sets. RFWM is trained on eight NVIDIA H100 GPUs with FSDP and BF16 precision. We use AdamW with learning rates of 1 × 10 −5 for the pretrained DiT backbone and 4.96 × 10 −5 for the newly introduced modules. Stage I is trained for 600k iterations, followed by a 10k-step conditional warm-up and 50k-step physical-to-RF transfer in Stage II. For the physics-guided regularizers, we assign relative weights of 1.0, 0.5, 1.0, 0.2, 0.5, and 0.2 to 
+
+λobs , λ mon , λ far , λ rad , λ hot and λspa respectively. 
+
+2) Baselines: We compare RFWM with five representa-tive learning-based RF-field modeling methods. Specifically, NeRF 2 [8], WRF-GS [10], RadCloudSplat [11], and RFCan-vas [14] follow a scene-specific fitting paradigm, requiring a separate model to be optimized for each environment. Diffusion 2 [16] instead uses a shared model, but its original formulation generates a 2D RF heatmap at a fixed receiver height. For a fair 3D comparison, we retrain Diffusion 2 on our benchmark with the queried receiver height as an additional condition and stack the generated height-specific slices to construct the complete 3D RF field. TABLE I RF-FIELD MODELING PERFORMANCE AND AVERAGE SCENE -LEVEL RENDERING TIME UNDER ID AND OOD EVALUATION . R ENDERING TIME MEASURES THE AVERAGE TIME REQUIRED TO GENERATE ONE COMPLETE 3D RF-FIELD FRAME OVER ALL QUERIED SPATIAL LOCATIONS .
+
+Method Modeling Paradigm Rendering Time (s) ID OOD 
+
+MSE (dB) ↓
+
+PSNR (dB) ↑ SSIM ↑ LPIPS ↓ MSE (dB) ↓
+
+PSNR (dB) ↑ SSIM ↑ LPIPS ↓
+
+NeRF 2
+
+One model per scene 4.3619 -8.6140 11.2240 0.5296 0.5032 -6.7045 6.9664 0.3859 0.6974 WRF-GS 3.0148 -11.5650 14.6860 0.6895 0.3016 -6.3990 6.5427 0.4046 0.6774 RadCloudSplat 0.2910 -11.2720 13.7130 0.5194 0.3863 -6.7582 6.8754 0.3245 0.6825 RFCanvas 0.7216 -12.8535 13.5549 0.6661 0.3897 -3.1898 3.2129 0.1882 0.9072 
+
+RFWM One model across dynamic scenes 0.7697 -18.4664 22.3067 0.8145 0.0698 -10.6225 11.1471 0.6427 0.3406 (c) Visualizations of the Generated Spatiotemporal RF fields 
+
+> (a) ID Setting (b) OOD Setting
+
+Fig. 4. Illustration of performance comparison with Diffusion 2. (a)–(b) Empirical CDFs of MSE, PSNR, SSIM, and LPIPS on the ID and OOD test sets, respectively. (c) Example of an RFWM-generated spatiotemporal RF field aligned with the 3D environment, AP configuration, and human trajectory. 
+
+3) Metrics: We evaluate RF-field generation using four complementary metrics: MSE, PSNR, SSIM, and LPIPS. MSE and PSNR are computed in the RSS domain to directly quantify the fidelity of the predicted RF values. Let S denote the number of test samples, and let bRs and Rs denote the generated and ground-truth RSS trajectories of sample s,respectively, with RSS values normalized to [0 , 1] . With N
+
+denoting the number of sampled RF points in each trajectory, MSE and PSNR are computed as 
+
+MSE dB = 10 log 10 
+
+1
+
+SN 
+
+> S
+
+X
+
+> s=1
+
+bRs − Rs
+
+> 22
+
+!
+
+,
+
+PSNR dB = − 10 
+
+S
+
+> S
+
+X
+
+> s=1
+
+log 10 
+
+ 1
+
+N bRs − Rs
+
+> 22
+
+
+
+.
+
+(39) SSIM and LPIPS are evaluated in the RGB domain to assess the structural and perceptual similarity of the rendered RF fields. Specifically, the generated and ground-truth RF fields are converted into RGB representations using the same rendering operator. SSIM measures structural similarity fol-lowing [30], while LPIPS quantifies perceptual discrepancy using AlexNet features [31]. Lower MSE and LPIPS, and higher PSNR and SSIM, indicate better performance. 
+
+B. Results 1) Comparison with Scene-Specific Methods: Table I com-pares RFWM with four scene-specific RF-field modeling methods under the ID and OOD settings. RFWM consistently achieves the best performance among these methods. On the ID set, it obtains −18 .4664 dB MSE, 22 .3067 dB PSNR, 
+
+0.0698 LPIPS, and 0.8145 SSIM. Relative to the strongest scene-specific result for each metric, RFWM reduces MSE TABLE II COMPARISON WITH DIFFUSION 2 AND ABLATION OF PHYSICS -GUIDED REGULARIZATION ON THE COMPLETE ID AND OOD TEST SETS .
+
+Setting Method Rendering Time (s) ↓
+
+MSE (dB) ↓
+
+PSNR (dB) ↑ SSIM ↑ LPIPS ↓
+
+ID 
+
+Diffusion 2 0.5092 -11.44 11.95 0.66 0.44 RFWM w/o PR 0.7697 -17.81 21.45 0.79 0.08 
+
+RFWM -18.47 22.31 0.81 0.07 OOD 
+
+Diffusion 2 0.5092 -7.67 7.80 0.55 0.60 RFWM w/o PR 0.7697 -9.87 10.12 0.61 0.37 
+
+RFWM -10.62 11.15 0.64 0.34 
+
+by 5.61 dB and LPIPS by 76 .9% , while improving PSNR by 7.62 dB and SSIM by 0.1250 . The advantage remains substantial under OOD evaluation, with improvements of 3.86 
+
+dB in MSE, 4.18 dB in PSNR, 49 .7% in LPIPS, and 0.2381 in SSIM over the best corresponding baseline. These consistent gains show that RFWM learns a transferable physical-to-RF mapping and is capable of generalizing to unseen scenes. The reported rendering time in Table I is the average time required to generate one complete 3D RF-field frame over all spatial locations and queried receiver heights. The scene-specific baselines predict one RF point per query and therefore require repeated inference to assemble the full RF field. By contrast, RFWM generates the entire spatiotemporal RF field in a single inference. Despite its large model size of approximately 8B parameters, RFWM completes scene-level rendering in only 0.7697 s, achieving a favorable balance between reconstruction accuracy and inference efficiency. 
+
+2) Comparison with Scene-adaption Baseline: As shown in Fig. 4 (a)–(b), RFWM achieves consistently better perfor-mance compared with Diffusion 2 under both ID and OOD evaluation, yielding lower MSE and LPIPS together with higher PSNR and SSIM across most test samples. Its pro-nounced advantage on unseen scenes further validates the robustness and transferability of the learned physical-to-RF mapping of RFWM. Moreover, Fig. 4 (c) shows that RFWM generates a coherent spatiotemporal RF field aligned with the 3D environment, AP configuration, and human trajectory. It highlights the benefit of jointly modeling temporal evolution and cross-height dependencies instead of assembling indepen-dently generated RF slices. 
+
+C. Physical Compliance and Ablation Study 
+
+To assess physical compliance, we sample propagation relations from the predictions of the models on the OOD set and calculate the fraction that satisfy the corresponding physical constraint. RFWM w/o PR means the model is trained without the six physics-guided regularizers. As shown in Fig. 5, RFWM achieves consistently stronger physical compliance across the six physical criteria. The most pronounced gain appears in far-field attenuation, where RFWM yields a higher and more concentrated compliance distribution than Diffusion 2, attributed to the Friis guidance RFWM RFWM w/o PR 90 93 96 99          
+
+> Obstacle Attenuation
+> Median Mean Outlier RFWM RFWM w/o PR 88 92 96 100
+> LoS Monotonicity
+> RFWM RFWM w/o PR 60 70 80 90 100 Friis-guided Far-field
+> RFWM RFWM w/o PR 90 93 96 99
+> Radial Smoothness
+> RFWM RFWM w/o PR 96 98 100
+> Hotspot Suppression
+> RFWM RFWM w/o PR 96 98 100
+> Spatial Consistency
+> Physical Compliance (%)
+> Fig. 5. Physical compliance under the six propagation criteria used by the physics-guided regularizers. Box plots compare RFWM, RFWM without physics-guided regularization (w/o PR), and Diffusion 2.
+
+used in both stages. Removing PR degrades compliance across nearly all criteria, confirming that the six fine-grained con-straints complement the coarse propagation guidance learned in Stage I and effectively suppress fine-grained physical artifacts. Additionally, the ablation results in Table II further show that this improved physical fidelity translates into better reconstruction quality. Compared with RFWM w/o PR, the full version improves MSE by 0.66 /0.75 dB and PSNR by 
+
+0.86 /1.03 dB on the ID/OOD sets, respectively. V. C ONCLUSION 
+
+This paper reformulated dynamic RF-field modeling as a physical-to-RF world transfer problem and introduced 
+
+RFWM , a physics-guided RF world model that generates spatiotemporal RF fields from physical-world observations without target-scene RF measurements. Through two-stage training, RFWM first learns RF dynamics from historical trajectories and then maps multimodal physical observations to RF fields, guided by propagation priors and physics-based regularization. Its cross-height heads efficiently gen-erate complete RF fields at all queried receiver heights in a single forward pass. Experiments on our benchmark of 7,715 dynamic RF sequences from 115 environments show that RFWM reduces MSE over the strongest baseline by approximately 7 dB on in-distribution scenes and 3 dB on out-of-distribution scenes. By enabling accurate 3D dynamic RF-field generation in unseen environments without additional RF measurements, RFWM establishes a new paradigm for scalable and transferable RF modeling. REFERENCES [1] D. Gordon, M. B. Khan, T. Zugno, Y. Wu, M. Boban, X. An, and F. Dressler, “Communication-aware robot motion planning via online estimation of radio maps,” in Proc. IEEE Conf. Comput. Commun. Workshops (INFOCOM WKSHPS) , 2026, pp. 1–6. [2] Y. Zeng, J. Chen, J. Xu, D. Wu, X. Xu, S. Jin, X. Gao, D. Gesbert, S. Cui, and R. Zhang, “A tutorial on environment-aware communications via channel knowledge map for 6G,” IEEE Commun. Surveys Tuts. ,vol. 26, no. 3, pp. 1478–1519, 2024. [3] S. Bi, J. Lyu, Z. Ding, and R. Zhang, “Engineering radio maps for wireless resource management,” IEEE Wireless Commun. Mag. , vol. 26, no. 2, pp. 133–141, 2019. [4] Z. Yun and M. F. Iskander, “Ray tracing for radio propagation modeling: Principles and applications,” IEEE Access , vol. 3, pp. 1089–1100, 2015. [5] L. Liu, C. Oestges, J. Poutanen, K. Haneda, P. Vainikainen, F. Quitin, F. Tufvesson, and P. D. Doncker, “The COST 2100 MIMO channel model,” IEEE Wireless Commun. Mag. , vol. 19, no. 6, pp. 92–99, Dec. 2012. [6] S. Jaeckel, L. Raschkowski, K. B¨ orner, and L. Thiele, “QuaDRiGa: A 3-d multi-cell channel model with time evolution for enabling virtual field trials,” IEEE Trans. Antennas Propag. , vol. 62, no. 6, pp. 3242–3256, Jun. 2014. [7] J. Hoydis, F. A. Aoudia, S. Cammerer, M. Nimier-David, N. Binder, G. Marcus, and A. Keller, “Sionna RT: Differentiable ray tracing for radio propagation modeling,” in Proc. IEEE Globecom Workshops (GC Wkshps) , 2023, pp. 317–321. [8] X. Zhao, Z. An, Q. Pan, and L. Yang, “NeRF 2: Neural radio-frequency radiance fields,” in Proc. ACM Annu. Int. Conf. Mobile Comput. Netw. (MobiCom) , 2023, pp. 393–407. [9] H. Lu, C. Vattheuer, B. Mirzasoleiman, and O. Abari, “NeWRF: A deep learning framework for wireless radiation field reconstruction and channel prediction,” in Proc. Int. Conf. Mach. Learn. (ICML) , vol. 235, 2024, pp. 33 147–33 159. [10] C. Wen, J. Tong, Y. Hu, Z. Lin, and J. Zhang, “WRF-GS: Wireless radiation field reconstruction with 3D gaussian splatting,” in Proc. IEEE Int. Conf. Comput. Commun. (INFOCOM) , 2025, pp. 1–10. [11] Y. Wang, Y. Xue, S. Zhang, H. Fan, and T.-H. Chang, “RadCloud-Splat: Scatterer-driven 3D gaussian splatting with point-cloud priors for radiomap extrapolation,” in Proc. IEEE Int. Conf. Comput. Commun. (INFOCOM) , 2026, pp. 1–10. [12] R. Levie, C ¸ . Yapar, G. Kutyniok, and G. Caire, “RadioUNet: Fast radio map estimation with convolutional neural networks,” IEEE Trans. Wirel. Commun. , vol. 20, no. 6, pp. 4001–4015, 2021. [13] C. Wu, Z. Yang, C. Xiao, C. Yang, Y. Liu, and M. Liu, “Static power of mobile devices: Self-updating radio maps for wireless indoor localization,” in Proc. IEEE Int. Conf. Comput. Commun. (INFOCOM) ,2015, pp. 2497–2505. [14] X. Chen, Z. Feng, K. Sun, K. Qian, and X. Zhang, “RFCanvas: Mod-eling rf channel by fusing visual priors and few-shot rf measurements,” in Proc. ACM Conf. Embedded Netw. Sensor Syst. (SenSys) , 2024, pp. 464–477. [15] K. Yang, Y. Chen, and W. Du, “Generalizable radio-frequency radiance fields for spatial spectrum synthesis,” in Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR) , 2026, pp. 12 533–12 543. [16] K. Park, Y. Yang, C. Ge, L. Qiu, and S. Jiang, “Diffusion 2: Turning 3D environments into radio frequency heatmaps,” in Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR) , 2026, pp. 6414–6423. [17] D. Hafner, J. Pasukonis, J. Ba, and T. Lillicrap, “Mastering diverse control tasks through world models,” Nature , vol. 640, no. 8059, pp. 647–653, Apr 2025. [18] J. Bruce, M. D. Dennis, A. Edwards et al. , “Genie: Generative interac-tive environments,” in Proc. 41st Int. Conf. Mach. Learn. (ICML) , vol. 235, 2024, pp. 4603–4623. [19] N. Agarwal, A. Ali, M. Bala, Y. Balaji, E. Barker, T. Cai, P. Chattopad-hyay et al. , “Cosmos world foundation model platform for physical AI,” 
+
+arXiv preprint arXiv:2501.03575 , 2025. [20] H. A. Alhaija, J. Alvarez, M. Bala, T. Cai, T. Cao, L. Cha, J. Chen, M. Chen, F. Ferroni, S. Fidler, D. Fox et al. , “Cosmos-Transfer1: Conditional world generation with adaptive multimodal control,” arXiv preprint arXiv:2503.14492 , 2025. [21] W. Peebles and S. Xie, “Scalable diffusion models with transformers,” in 
+
+Proc. IEEE/CVF Int. Conf. Comput. Vis. (ICCV) , 2023, pp. 4172–4182. [22] H. Friis, “A note on a simple transmission formula,” Proceedings of the IRE , vol. 34, no. 5, pp. 254–256, 1946. [23] L. Zhang, A. Rao, and M. Agrawala, “Adding conditional control to text-to-image diffusion models,” in Proc. IEEE/CVF Int. Conf. Comput. Vis. (ICCV) . IEEE, 2023, pp. 3813–3824. [24] J. Su, M. Ahmed, Y. Lu, S. Pan, W. Bo, and Y. Liu, “RoFormer: En-hanced transformer with rotary position embedding,” Neurocomputing ,vol. 568, p. 127063, 2024. [25] C. Raffel, N. Shazeer, A. Roberts, K. Lee, S. Narang, M. Matena, Y. Zhou, W. Li, and P. J. Liu, “Exploring the limits of transfer learning with a unified text-to-text transformer,” Journal of machine learning research , vol. 21, no. 140, pp. 1–67, 2020. [26] C.-F. R. Chen, Q. Fan, and R. Panda, “CrossViT: Cross-attention multi-scale vision transformer for image classification,” in Proc. IEEE/CVF Int. Conf. Comput. Vis. (ICCV) , 2021, pp. 347–356. [27] H. Fu, B. Cai, L. Gao, L.-X. Zhang, J. Wang, C. Li, Q. Zeng, C. Sun, R. Jia, B. Zhao, and H. Zhang, “3D-front: 3D furnished rooms with layouts and semantics,” in Proc. IEEE/CVF Int. Conf. Comput. Vis. (ICCV) , October 2021, pp. 10 933–10 942. [28] K. Zhao, Y. Zhang, S. Wang, T. Beeler, and S. Tang, “Synthesizing diverse human motions in 3D indoor scenes,” in Proc. IEEE/CVF Int. Conf. Comput. Vis. (ICCV) , October 2023, pp. 14 738–14 749. [29] R. Ma, S. Zheng, H. Pan, L. Qiu, X. Chen, L. Liu, Y. Liu, W. Hu, and J. Ren, “Automs: Automated service for mmwave coverage optimization using low-cost metasurfaces,” in Proc. ACM Annu. Int. Conf. Mobile Comput. Netw. (MobiCom) , 2024, pp. 62–76. [30] Z. Wang, A. C. Bovik, H. R. Sheikh, and E. P. Simoncelli, “Image quality assessment: From error visibility to structural similarity,” IEEE Trans. Image Process. , vol. 13, no. 4, pp. 600–612, 2004. [31] R. Zhang, P. Isola, A. A. Efros, E. Shechtman, and O. Wang, “The unreasonable effectiveness of deep features as a perceptual metric,” in 
+
+Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR) , 2018, pp. 586–595.

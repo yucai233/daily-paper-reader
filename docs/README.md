@@ -6,35 +6,32 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-21
-- 运行时间：2026-08-21 19:49:09 UTC
+- 最新运行日期：2026-08-22
+- 运行时间：2026-08-22 20:17:26 UTC
 - 运行状态：成功
-- 本次总论文数：4
+- 本次总论文数：3
 - 精读区：0
-- 速读区：4
+- 速读区：3
 
 ### 今日简报（AI）
-今日聚焦 3D 与 4D 场景重建前沿，重点探索动态高斯泼溅与光照重绘技术。
-Depth Anything V4 引入流匹配实现动态 4D 重建，而 LumiTokens 则展示了在 Token 空间进行 3D 重光照的新可能。
-建议关注高斯泼溅（GS）在处理复杂动态场景及光影变换中的跨界融合趋势。
-- 详情：[/202608/21/README](/202608/21/README)
+今日聚焦 3D 高斯泼溅（3DGS）在边缘计算、医疗影像及无线通信领域的跨界前沿应用。
+重点关注 S^2GS 实现的 IoT 设备高效视频重建，以及 GSToken 为 3D 医疗影像带来的紧凑几何表征。
+建议深入了解 3DGS 如何通过结构化稀疏与物理引导模型，在资源受限环境下突破三维建模与传输瓶颈。
+- 详情：[/202608/22/README](/202608/22/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Depth Anything V4: Dynamic 4D Scene Reconstruction via Riemannian Flow Matching on 4D Gaussian Splatting](/202608/21/2608.18388v2-depth-anything-v4-dynamic-4d-scene-reconstruction-via-riemannian-flow-matching-on-4d-gaussian-splatting)  
-   标签：评分：7.0/10、query:q1
-   evidence：用于动态场景重建的4D高斯泼溅
-2. [Point-Based 3D Reconstruction from Sparse Views under Known Illumination](/202608/21/2608.20000v1-point-based-3d-reconstruction-from-sparse-views-under-known-illumination)  
-   标签：评分：7.0/10、query:q4
-   evidence：用于重建的可微分光线传输和含不透明度的面元
-3. [LumiTokens: 3D Relighting via Token-Space Lighting Transformation](/202608/21/2608.18215v1-lumitokens-3d-relighting-via-token-space-lighting-transformation)  
+1. [S$^2$GS: Structured Sparse Gaussian Streaming for Efficient Free-Viewpoint Video Reconstruction on Edge-IoT Devices](/202608/22/2608.19639v1-s2gs-structured-sparse-gaussian-streaming-for-efficient-free-viewpoint-video-reconstruction-on-edge-iot-devices)  
+   标签：评分：7.0/10、query:q7
+   evidence：使用高斯残差的高效流式重建
+2. [GSToken: Geometry-Structured Gaussian Tokens for Compact 3D Medical Image Representation](/202608/22/2608.17425v1-gstoken-geometry-structured-gaussian-tokens-for-compact-3d-medical-image-representation)  
    标签：评分：6.0/10、query:q1
-   evidence：无需显式渲染方程的3D重光照潜场景表示
-4. [Point Spread Function Engineering Using Implicit Neural Representations](/202608/21/2608.20277v1-point-spread-function-engineering-using-implicit-neural-representations)  
+   evidence：用于3D医学体积表示的高斯Token
+3. [RFWM: Physics-Guided World Model for Dynamic Wireless Radiance Field Generation](/202608/22/2608.19709v1-rfwm-physics-guided-world-model-for-dynamic-wireless-radiance-field-generation)  
    标签：评分：6.0/10、query:q1
-   evidence：用于3D点扩散函数工程的隐式神经网络表示
+   evidence：射频辐射场建模
 
 
 <div class="dpr-home-promo-card">

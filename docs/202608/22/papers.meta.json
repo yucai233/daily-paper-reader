@@ -1,0 +1,51 @@
+{
+  "label": "2026-08-22",
+  "date": "2026-08-22",
+  "generated_at": "2026-08-22T20:17:49",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202608/22/2608.19639v1-s2gs-structured-sparse-gaussian-streaming-for-efficient-free-viewpoint-video-reconstruction-on-edge-iot-devices",
+      "section": "quick",
+      "title_en": "S$^2$GS: Structured Sparse Gaussian Streaming for Efficient Free-Viewpoint Video Reconstruction on Edge-IoT Devices",
+      "authors": "Yiwei Li, Jiannong Cao, Weixun Gao, Rui Cao, Songye Zhu, Yinfeng Cao, Mingjin Zhang",
+      "date": "2026-08-20",
+      "pdf": "https://arxiv.org/pdf/2608.19639v1",
+      "score": "7.0",
+      "evidence": "使用高斯残差的高效流式重建",
+      "tldr": "针对边缘物联网设备上自由视角视频（FVV）重建面临的优化耗时长和存储开销大等挑战，本文提出S$^2$GS框架。该框架利用结构感知的时空稀疏性，通过流式八叉树组织空间关联，并结合结构化门控机制实现高效率的残差更新。实验表明，S$^2$GS在保持视觉质量的同时，显著降低了计算与存储成本，在资源受限设备上表现优异。",
+      "tags": "query:q7",
+      "abstract_en": "Streaming reconstruction of Free-Viewpoint Videos (FVVs) supports immersive Internet of Things (IoT) services, such as telepresence and digital twin visualization. Existing methods suffer from high per-frame optimization time and large storage footprints, limiting deployment on resource-constrained Edge-IoT devices. To address these challenges, we propose Structured Sparse Gaussian Streaming (S$^2$GS), an FVV reconstruction framework that exploits structure-aware temporal sparsity to selectively update Gaussian residuals, enabling efficient streaming without compromising visual fidelity. In the spatial domain, a streaming octree hierarchically organizes Gaussian residuals, capturing spatial correlations that guide residual updates. In the temporal domain, a structured gating mechanism, comprising hierarchical feature propagation (HFP) and Gumbel-Sigmoid sampling, converts hierarchical dynamic cues into sparse residual update decisions under differentiable optimization. A multi-level discrete scheme is further adopted to provide fine-grained control over residual updates while preserving intricate dynamic details. Extensive experiments across consumer GPUs, industrial edge IoT devices, and a physical telepresence testbed demonstrate that S$^2$GS consistently reduces per-frame optimization time and storage footprint while maintaining competitive visual quality. Compared with QUEEN, S$^2$GS reduces per-frame optimization time by 59% and storage costs by 85% on an RTX 4090 GPU. On the Jetson AGX Orin, S$^2$GS delivers the highest rendering throughput (60+ FPS) and the lowest energy consumption among the evaluated methods, demonstrating its potential for deployment in resource-constrained systems.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/22/2608.17425v1-gstoken-geometry-structured-gaussian-tokens-for-compact-3d-medical-image-representation",
+      "section": "quick",
+      "title_en": "GSToken: Geometry-Structured Gaussian Tokens for Compact 3D Medical Image Representation",
+      "authors": "Xiaoduo Li, Quan Gu",
+      "date": "2026-08-18",
+      "pdf": "https://arxiv.org/pdf/2608.17425v1",
+      "score": "6.0",
+      "evidence": "用于3D医学体积表示的高斯Token",
+      "tldr": "针对3D医学图像表示中空间几何信息丢失的问题，本文提出GSToken。该方法通过为每个Token引入可学习的3D中心、各向异性尺度和方向，赋予其显式的几何支撑。同时，研究者设计了一种冻结Token效用评估协议，以公平衡量不同Token化方法的信息保留能力。实验表明，GSToken在多模态脑肿瘤分割任务中显著提升了表示的信息密度和分割精度。",
+      "tags": "query:q1",
+      "abstract_en": "Effective segmentation of multi-modal MRI is central to improving neural network accuracy in brain tumor recognition. Existing methods typically compress 3D volumes into token sequences via fixed patch encoding or learned attention pooling (e.g., TokenLearner). However, these compression schemes discard explicit spatial shape information; the resulting tokens convey no notion of lesion morphology or spatial extent. Meanwhile, end-to-end evaluation entangles a tokenizer's information retention with the reconstruction capacity of the downstream decoder, and the lack of a unified capacity contract across methods makes performance differences difficult to attribute. In this paper, we introduce Gaussian tokens to multi-modal brain tumor segmentation for the first time: each token carries not only a semantic feature but also a learned 3D center, anisotropic scale, and orientation, endowing the representation with explicit geometric support at negligible parameter cost. We further propose a frozen-token utility evaluation protocol: the trained tokenizer is frozen, its output is cast into a fixed-capacity serialized contract, and a shared lightweight Transformer probe independently measures each tokenizer's retained information under strictly matched conditions. Multi-seed paired statistical testing shows that GSToken consistently and substantially outperforms capacity-matched adaptive baselines under frozen probing, with uniform advantages across all tumor sub-regions, surface, and distance metrics. These results demonstrate that explicitly encoding spatial geometry within tokens significantly improves the information density of volumetric representations, offering a new design principle for compact 3D medical image representation and downstream reading.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/22/2608.19709v1-rfwm-physics-guided-world-model-for-dynamic-wireless-radiance-field-generation",
+      "section": "quick",
+      "title_en": "RFWM: Physics-Guided World Model for Dynamic Wireless Radiance Field Generation",
+      "authors": "Zijiu Yang, Qianqian Yang",
+      "date": "2026-08-20",
+      "pdf": "https://arxiv.org/pdf/2608.19709v1",
+      "score": "6.0",
+      "evidence": "射频辐射场建模",
+      "tldr": "针对动态和未知环境下无线电频率（RF）辐射场建模的泛化难题，本文提出了RFWM，一种物理引导的RF世界模型。该模型通过两阶段训练策略，将视觉动态和AP配置等物理条件映射到时空RF场。利用预训练视觉扩散模型、Friis引导先验及六种物理正则化器，RFWM实现了高精度的动态RF场生成。在包含115个环境的新基准测试中，其性能显著优于现有方法，在分布内和分布外设置下分别提升了约7dB和3dB。",
+      "tags": "query:q1",
+      "abstract_en": "Radio-frequency (RF) radiance-field modeling is essential for wireless network optimization and sensing, yet remains challenging in dynamic and unseen environments. Existing learning-based methods synthesize RF fields from sparse measurements, but most struggle to generalize to dynamic and unseen environments. To address this limitation, we propose RFWM, a physics-guided RF world model that maps multimodal physical conditions like visual dynamics and AP configurations to spatiotemporal RF fields. RFWM adopts a two-stage training strategy with physics-guided priors and constraints. In the first stage, RFWM adapts a pretrained visual diffusion backbone to RF trajectories to predict RF sequences from a few past RF inputs, while conditioning the backbone on a Friis-guided prior for coarse attenuation guidance. In the second stage, RFWM learns the physical-to-RF mapping by training a ControlNet from scratch and fine-tuning the RF-adapted backbone, while six physics-guided regularizers enforce fine-grained propagation consistency. Cross-height heads then jointly generate RF trajectories at queried receiver heights in one forward pass. We construct a new benchmark of 7,715 sequences averaging 33 frames across 115 environments for dynamic RF-field generation. Experimental results show that RFWM improves MSE by approximately 7 dB and 3 dB over the state of the art under in-distribution and out-of-distribution settings, respectively.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
