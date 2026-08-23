@@ -6,32 +6,35 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-22
-- 运行时间：2026-08-22 20:17:26 UTC
+- 最新运行日期：2026-08-23
+- 运行时间：2026-08-23 19:42:20 UTC
 - 运行状态：成功
-- 本次总论文数：3
+- 本次总论文数：4
 - 精读区：0
-- 速读区：3
+- 速读区：4
 
 ### 今日简报（AI）
-今日聚焦 3D 高斯泼溅（3DGS）在边缘计算、医疗影像及无线通信领域的跨界前沿应用。
-重点关注 S^2GS 实现的 IoT 设备高效视频重建，以及 GSToken 为 3D 医疗影像带来的紧凑几何表征。
-建议深入了解 3DGS 如何通过结构化稀疏与物理引导模型，在资源受限环境下突破三维建模与传输瓶颈。
-- 详情：[/202608/22/README](/202608/22/README)
+今日聚焦 3D 高斯驾驶世界模型与生成式重建技术，探索多模态场景理解与编辑的新边界。
+重点关注 GaussianDWM++ 在自动驾驶场景生成中的应用，以及 GenRec 如何平衡精准重建与创意生成。
+建议关注 3D 高斯技术在垂直领域的落地，尝试将语言引导的编辑能力引入自动驾驶仿真。
+- 详情：[/202608/23/README](/202608/23/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [S$^2$GS: Structured Sparse Gaussian Streaming for Efficient Free-Viewpoint Video Reconstruction on Edge-IoT Devices](/202608/22/2608.19639v1-s2gs-structured-sparse-gaussian-streaming-for-efficient-free-viewpoint-video-reconstruction-on-edge-iot-devices)  
-   标签：评分：7.0/10、query:q7
-   evidence：使用高斯残差的高效流式重建
-2. [GSToken: Geometry-Structured Gaussian Tokens for Compact 3D Medical Image Representation](/202608/22/2608.17425v1-gstoken-geometry-structured-gaussian-tokens-for-compact-3d-medical-image-representation)  
+1. [GaussianDWM++: Language-Grounded 3D Gaussian Driving World Model for Unified Scene Understanding, Editing, and Multi-Modal Generation](/202608/23/2608.16234v1-gaussiandwm-language-grounded-3d-gaussian-driving-world-model-for-unified-scene-understanding-editing-and-multi-modal-generation)  
+   标签：评分：7.0/10、query:q1
+   evidence：用于场景生成和理解的3D高斯表示
+2. [Inductively Scalable, Single-Step Neural Surrogates for Wave-Scattering Inverse Problems](/202608/23/2608.17344v1-inductively-scalable-single-step-neural-surrogates-for-wave-scattering-inverse-problems)  
+   标签：评分：6.0/10、query:q4
+   evidence：波散射正向和反向问题的神经代理模型
+3. [GenRec: Knowing Where to Reconstruct and Where to Generate](/202608/23/2608.17832v1-genrec-knowing-where-to-reconstruct-and-where-to-generate)  
    标签：评分：6.0/10、query:q1
-   evidence：用于3D医学体积表示的高斯Token
-3. [RFWM: Physics-Guided World Model for Dynamic Wireless Radiance Field Generation](/202608/22/2608.19709v1-rfwm-physics-guided-world-model-for-dynamic-wireless-radiance-field-generation)  
-   标签：评分：6.0/10、query:q1
-   evidence：射频辐射场建模
+   evidence：使用变形点云和流匹配的生成式新视角合成
+4. [GS-VLA: Plug-and-Play Viewpoint Canonicalization for Frozen VLA Policies via Gaussian Splatting](/202608/23/2608.19066v1-gs-vla-plug-and-play-viewpoint-canonicalization-for-frozen-vla-policies-via-gaussian-splatting)  
+   标签：评分：6.0/10、query:q7
+   evidence：利用高斯泼溅进行新视角合成以适应机器人观测
 
 
 <div class="dpr-home-promo-card">

@@ -1,0 +1,65 @@
+{
+  "label": "2026-08-23",
+  "date": "2026-08-23",
+  "generated_at": "2026-08-23T19:42:27",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202608/23/2608.16234v1-gaussiandwm-language-grounded-3d-gaussian-driving-world-model-for-unified-scene-understanding-editing-and-multi-modal-generation",
+      "section": "quick",
+      "title_en": "GaussianDWM++: Language-Grounded 3D Gaussian Driving World Model for Unified Scene Understanding, Editing, and Multi-Modal Generation",
+      "authors": "Tianchen Deng, Xuefeng Chen, Shuang Wu, Qu Chen, Jiajun Zhu, Bo Dai, Jianfei Yang, Hesheng Wang",
+      "date": "2026-08-17",
+      "pdf": "https://arxiv.org/pdf/2608.16234v1",
+      "score": "7.0",
+      "evidence": "用于场景生成和理解的3D高斯表示",
+      "tldr": "针对现有驾驶世界模型在3D理解、语言推理及4D编辑方面的不足，本文提出GaussianDWM++。该模型通过将视觉语言特征蒸馏至3D高斯原语，构建了开放词汇的语义场，并利用几何感知适配器和KL对齐技术，实现了场景理解、可控编辑与多模态生成的统一，在多项自动驾驶任务中达到领先水平。",
+      "tags": "query:q1",
+      "abstract_en": "Driving World Models (DWMs) have recently advanced rapidly with generative models, yet most existing methods mainly focus on conditional scene generation and lack explicit 3D scene understanding, language-grounded reasoning, and controllable 4D editing capabilities. Moreover, commonly used point cloud, occupancy, or BEV representations make it difficult to achieve fine-grained alignment between textual information and the underlying 3D scene structure. To address these limitations, we propose a foundation-feature Gaussian driving world model that unifies scene understanding, language-grounded reasoning, controllable 4D editing, and multi-modal generation within a single framework. Specifically, we introduce a foundation-feature Gaussian tokenizer that directly distills Qwen/SigLIP visual-language features into 3D Gaussian primitives, building a compact open-vocabulary Gaussian semantic field. We further design a geometry-aware Gaussian adapter that combines importance-aware hierarchical selection with text-conditioned Perceiver-style cross-attention to aggregate dense Gaussian primitives into compact world tokens. To improve representation compatibility, we introduce a KL-based Gaussian--image distribution alignment objective that aligns Gaussian world tokens with foundation image tokens. Based on the aligned Gaussian representation, our framework further supports instruction-controllable scene editing, including weather-conditioned generation and dynamic vehicle manipulation. Extensive experiments on broader driving benchmarks demonstrate that our method achieves state-of-the-art performance across scene understanding, visual grounding, planning-oriented reasoning, and controllable 4D generation tasks. We will release the code and datasets publicly on Github.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/23/2608.17344v1-inductively-scalable-single-step-neural-surrogates-for-wave-scattering-inverse-problems",
+      "section": "quick",
+      "title_en": "Inductively Scalable, Single-Step Neural Surrogates for Wave-Scattering Inverse Problems",
+      "authors": "Charles Dove, Laura Waller",
+      "date": "2026-08-18",
+      "pdf": "https://arxiv.org/pdf/2608.17344v1",
+      "score": "6.0",
+      "evidence": "波散射正向和反向问题的神经代理模型",
+      "tldr": "针对传统电磁波模拟器计算缓慢的问题，本文提出了一种可归纳缩放的单步神经代理模型。通过在训练中动态生成具有挑战性的样本，并结合梯度上升搜索、归纳泛化等技术，该模型成功处理了包含数万个变量的二维波散射问题，并能无需重训扩展至百万级变量。在光子逆向设计任务中，其速度比传统FDTD快1.29至26.5倍，且精度相当。",
+      "tags": "query:q4",
+      "abstract_en": "Neural network surrogates are an emerging alternative to traditional electromagnetic wave simulators like finite-difference time-domain (FDTD); their goal is to replace rigorous physical simulations with pre-trained neural networks that solve wave-scattering forward and inverse problems orders of magnitude faster. However, nonrecurrent, single-step surrogates have scaled only to a few tens of simulation variables. Here, we show that this barrier can be overcome by dynamically generating salient training examples during training, rather than randomly sampling the large space of possible examples. We introduce an algorithm that runs in parallel with surrogate training, using gradient ascent to search refractive-index and source configurations for cases where the surrogate disagrees with a full-wave ground-truth simulator. We also use source and ground-truth normalization with an evolving replay dataset to stabilize and accelerate learning. Using this approach, we train a fast, single-step surrogate for two-dimensional wave scattering with up to 41,772 controllable variables, including dense, freely configurable grids of refractive indices and complex-valued sources. The resulting neural surrogate is robustly accurate across diverse structured and unstructured examples and generalizes inductively to larger domains, reaching over 3 million controllable variables without retraining, a $73.8\\times$ increase. We demonstrate the surrogate on large-scale forward simulations and inverse design of freeform beam splitters and gradient-index (GRIN) lenses up to 98 wavelengths wide, showing comparable or better performance than FDTD-based designs, with speedups from $1.29\\times$ to $26.5\\times$. These results demonstrate a practical path toward fast, robustly accurate, inductively scalable neural simulators for photonic inverse design and other wave-scattering inverse problems.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/23/2608.17832v1-genrec-knowing-where-to-reconstruct-and-where-to-generate",
+      "section": "quick",
+      "title_en": "GenRec: Knowing Where to Reconstruct and Where to Generate",
+      "authors": "Ata Çelen, Jaewoo Jung, Federico Tombari, Marc Pollefeys, Sunghwan Hong, Michael Niemeyer, Daniel Barath",
+      "date": "2026-08-18",
+      "pdf": "https://arxiv.org/pdf/2608.17832v1",
+      "score": "6.0",
+      "evidence": "使用变形点云和流匹配的生成式新视角合成",
+      "tldr": "本研究针对稀疏输入下的新视角合成问题，提出GenRec模型，旨在区分“重建”与“生成”两个过程。传统方法往往混淆可见区域的几何保真度与遮挡区域的创意补全，导致结果模糊。GenRec通过多视图流匹配架构，利用观察掩码和单目深度估计，在架构、监督和梯度流中实现重建与生成的解耦，并结合像素级细化阶段。实验证明，该方法在保持观察区域高保真度的同时，显著提升了未观察区域的感知质量。",
+      "tags": "query:q1",
+      "abstract_en": "Generative novel view synthesis from sparse input images is rarely all reconstruction or all generation: pixels visible in some source view have a unique correct value modulated only by view-dependent shading, while pixels in disocclusions or beyond the captured volume admit a distribution of plausible completions. Existing generative novel-view-synthesis methods conflate these regimes under a single uniform loss, blurring the line between geometric fidelity and creative hallucinations even when scene geometry is injected through warped point clouds or projected depth. We introduce GenRec, a multi-view flow matching model that builds the reconstruction--generation split directly into its architecture, supervision, and gradient flow. Guided by an observation mask derived from the source cameras and a monocular depth estimator, a flow matching backbone jointly denoises RGB and scene-coordinate maps across all target views, while a pixel-space refinement stage restores high-frequency detail on observed pixels; the same mask gates supervision so regression signals do not contaminate the generative prior. Across RealEstate10K, DL3DV-10K, and Mip-NeRF~360, in both single-view extrapolation and two-view interpolation, GenRec attains the best reconstruction fidelity in observed regions while also surpassing purely generative baselines on perceptual quality in unobserved ones, showing the effectiveness of our approach.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/23/2608.19066v1-gs-vla-plug-and-play-viewpoint-canonicalization-for-frozen-vla-policies-via-gaussian-splatting",
+      "section": "quick",
+      "title_en": "GS-VLA: Plug-and-Play Viewpoint Canonicalization for Frozen VLA Policies via Gaussian Splatting",
+      "authors": "Yechan Park, HyunJin Kim",
+      "date": "2026-08-19",
+      "pdf": "https://arxiv.org/pdf/2608.19066v1",
+      "score": "6.0",
+      "evidence": "利用高斯泼溅进行新视角合成以适应机器人观测",
+      "tldr": "本研究针对视觉语言动作（VLA）策略对摄像头视角变化敏感的问题，提出了GS-VLA框架。该框架利用3D高斯泼溅（3DGS）技术，在不重新训练策略的情况下，通过轻量级的即插即用模块实现观测空间的视角规范化。实验表明，该方法能有效应对摄像头位移导致的性能大幅下降，在多种策略架构和任务中展现了极强的鲁棒性和泛化能力。",
+      "tags": "query:q7",
+      "abstract_en": "This paper proposes a lightweight, plug-and-play framework that improves robustness to viewpoint shifts in Vision-Language-Action (VLA) policies without policy retraining. To our knowledge, this is the first approach to directly leverage 3D Gaussian-based novel-view synthesis for observation-space adaptation in VLA policies. Current VLA performance relies on the implicit assumption that training and deployment camera configurations are identical. Our experiments show that even a small displacement of the camera mount can reduce the success rate on the LIBERO benchmark from about 90% to about 10% in the worst case. Prior approaches, such as large-scale fine-tuning or generative data augmentation, are computationally expensive and risk catastrophic forgetting. To address this, viewpoint shifts are reformulated as a localized novel-view synthesis problem. Under a Locality assumption, that camera perturbations remain within a small bounded region relative to the workspace, viewpoint normalization reduces to a scene- and policy-independent disocclusion task. Our work implements this idea with a 4M-parameter 3D-Gaussian canonicalizer prepended to a frozen VLA policy. Without modifying policy weights, GS-VLA improves performance across three orthogonal axes: (1) Policy architectures, (2) Unseen task suites, and (3) Perturbation scales. These results show that a lightweight visual module can recover a large fraction of the performance lost under viewpoint shift, without policy retraining.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
