@@ -6,26 +6,22 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-24
-- 运行时间：2026-08-24 20:34:36 UTC
+- 最新运行日期：2026-08-25
+- 运行时间：2026-08-25 19:29:03 UTC
 - 运行状态：成功
-- 本次总论文数：1
+- 本次总论文数：0
 - 精读区：0
-- 速读区：1
+- 速读区：0
 
 ### 今日简报（AI）
-今日聚焦三维重建技术闭环，TopoSurfel 成功打通了高斯面元与三角网格的转换链路。
-该方法通过优化拓扑一致性，实现了高质量表面重建与高效渲染的深度融合。
-建议关注神经渲染与几何建模交叉领域的读者重点了解其闭环优化机制。
-- 详情：[/202608/24/README](/202608/24/README)
+> 今日无新推荐，系统未产出可展示论文。
+- 详情：[/202608/25/README](/202608/25/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [TopoSurfel: Closing the Loop between Gaussian Surfels and Meshes for Surface Reconstruction](/202608/24/2608.20687v1-toposurfel-closing-the-loop-between-gaussian-surfels-and-meshes-for-surface-reconstruction)  
-   标签：评分：7.0/10、query:q1
-   evidence：使用高斯面元进行表面重建的神经体积渲染框架
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">
