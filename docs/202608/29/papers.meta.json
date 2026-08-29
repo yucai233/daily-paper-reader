@@ -1,51 +1,8 @@
 {
   "label": "2026-08-29",
   "date": "2026-08-29",
-  "generated_at": "2026-08-29T02:40:17",
-  "count": 3,
-  "papers": [
-    {
-      "paper_id": "202608/29/2608.23549v1-fixanything-3d-consistent-rendering-refinement-via-video-generative-priors",
-      "section": "quick",
-      "title_en": "FixAnything: 3D-Consistent Rendering Refinement via Video Generative Priors",
-      "authors": "Khiem Vuong, Deva Ramanan, Srinivasa Narasimhan",
-      "date": "2026-08-24",
-      "pdf": "https://arxiv.org/pdf/2608.23549v1",
-      "score": "7.0",
-      "evidence": "优化NeRF和3DGS等3D场景表示中的渲染伪影",
-      "tldr": "针对3D场景表示（如3DGS、NeRF等）在稀疏视图下渲染质量差的问题，本文提出了FixAnything。该方法利用预训练视频生成模型的先验知识，将渲染修复建模为视频到视频的转换任务。通过引入掩码控制结构保留，并利用直接偏好优化（DPO）提升3D一致性，FixAnything能以轻量化微调在多种3D表示上显著提升渲染质量，成为通用的渲染修复框架。",
-      "tags": "query:q7",
-      "abstract_en": "Rendering views using 3D scene representations such as Gaussian Splatting (3DGS), Neural Radiance Fields (NeRF), meshes, or even point clouds produces artifacts when input views are sparse or target views lie far from the input. Recent work mitigates these artifacts using diffusion-based generative priors, but is specialized to individual representations and require custom architectures or extensive retraining. We present FixAnything, a single model for fixing a wide range of rendering artifacts. It does so by repurposing a pretrained video generative model, leveraging its implicit multi-view priors with only minimal modification and lightweight finetuning. Our key insight is that even noisily-rendered sequences preserve camera motion and coarse scene structure, allowing cleanup to be formulated as video-to-video translation. To control what scene structure should be preserved, we introduce a binary mask denoting the clean pixels, enabling the model to anchor its output to high-quality inputs (e.g. training views) while refining the rest. To encourage FixAnything to produce 3D-consistent renderings that support downstream reconstruction, we use camera pose accuracy (recovered via structure-from-motion) as a reward signal for direct preference optimization (DPO). Across four distinct 3D representations, FixAnything consistently improves rendering quality with lightweight finetuning, demonstrating that a single generalist video prior can replace multiple specialist refinement pipelines. The simplicity of the framework enables immediate adoption of stronger future video models without architectural redesign.",
-      "selection_source": "fresh_fetch"
-    },
-    {
-      "paper_id": "202608/29/2608.26383v1-cross-platform-benchmark-of-neural-3d-reconstruction-for-autonomous-laboratory-robots",
-      "section": "quick",
-      "title_en": "Cross-Platform Benchmark of Neural 3D Reconstruction for Autonomous Laboratory Robots",
-      "authors": "Yongho Kim, Mengjiao Han, Victor Mateevitsi, Silvio Rizzi, Michael E. Papka, Nicola Ferrier",
-      "date": "2026-08-26",
-      "pdf": "https://arxiv.org/pdf/2608.26383v1",
-      "score": "7.0",
-      "evidence": "包含NeRF和3DGS在内的神经3D重建基准测试",
-      "tldr": "本研究针对自主实验室机器人的3D重建需求，系统性地评估了NeRF、3D高斯泼溅（3DGS）及SAM3D在从单板计算机到服务器级GPU平台上的性能表现。研究发现，虽然3DGS在质量上占优，但其计算开销较高，且现有机载设备难以支持实时全场景优化。通过对比单图重建与逐场景优化，本文揭示了延迟与精度之间的权衡，并提出了一种分层重建流水线，旨在通过结合轻量级前馈模型与高性能神经重建，优化实验室机器人的实时感知与操作能力。",
-      "tags": "query:q1",
-      "abstract_en": "Autonomous robots performing laboratory tasks depend on 3D reconstruction pipelines that can turn raw camera streams into actionable object representations within the latency budget of a physical control loop. Neural 3D reconstruction methods have demonstrated high-quality view synthesis, but their real-time viability across the compute platforms on which laboratory robots actually run remains poorly characterized. In this work, we present a systematic compute-platform benchmark of neural 3D reconstruction methods, evaluating NeRF and 3D Gaussian Splatting training and rendering on GPU-enabled computing devices ranging from single-board computers to server-class nodes, and place Meta's SAM3D single-image reconstruction on the same axes to quantify its latency and fidelity gap relative to per-scene optimization. Our results show that Gaussian Splatting yields higher rendering quality than NeRF at greater GPU cost, and that onboard compute is insufficient for full per-scene optimization at interactive rates. Our preliminary assessment on SAM3D indicates that it delivers plausible object geometry within seconds, but with detail mismatches that can compromise downstream manipulation. Together, these findings motivate tiered pipelines in which lightweight feed-forward reconstruction sustains the real-time perception-and-tracking loop for laboratory robots, while heavier neural reconstruction is scheduled selectively on suitable compute.",
-      "selection_source": "fresh_fetch"
-    },
-    {
-      "paper_id": "202608/29/2608.25454v1-physics-guided-generative-surrogates-for-parametric-rarefied-flows-with-neural-field-auto-decoders-a-pipeline-level-study-of-flow-matching-and-diffusion",
-      "section": "quick",
-      "title_en": "Physics-Guided Generative Surrogates for Parametric Rarefied Flows with Neural-Field Auto-Decoders: A Pipeline-Level Study of Flow Matching and Diffusion",
-      "authors": "Yiming Qi, Guan Zhang, Xu Wang, Yonghao Zhang, Tianbai Xiao",
-      "date": "2026-08-26",
-      "pdf": "https://arxiv.org/pdf/2608.25454v1",
-      "score": "6.0",
-      "evidence": "用于参数化稀疏流的神经场自动解码器和物理引导生成代理",
-      "tldr": "本研究提出一种用于参数化稀疏流动的物理引导生成式代理模型框架。该框架结合神经场自动解码器进行数据压缩，利用流匹配（FM）和扩散模型在潜空间进行条件生成，并引入低秩适配器进行物理约束修正。在空腔和圆柱绕流基准测试中，该方法实现了高精度的流场插值，并通过物理适配显著降低了守恒律误差，为处理多值或随机解提供了有效的生成式路径。",
-      "tags": "query:profile-1",
-      "abstract_en": "We present a conditional latent generative framework for parametric rarefied flows that separates neural-field representation, latent transport, and frozen physics adaptation. Neural-field auto-decoders compress discrete-velocity cavity solutions and direct simulation Monte Carlo cylinder solutions into shared coordinate decoders. Train-only principal-component charts support conditional flow matching (FM) and diffusion without a deterministic condition-to-latent backbone, and structured low-rank adapters correct selected decoder outputs while the upstream pipeline remains frozen. On two steady benchmarks, the frozen pipelines interpolate out-of-sample conditions with cavity kinetic relative $L_1$ errors at the $10^{-5}$ level and cylinder per-field area-weighted RMSEs of 0.038 (density), 0.041 (temperature), and below 0.01 (velocities). For the cavity, physics adaptation reduces the matched-grid Bhatnagar--Gross--Krook diagnostic by 28.65% while preserving field accuracy; for the cylinder, the analytic wall map enforces no-penetration exactly and, jointly with the learned FM adapter, reduces the inlet violation to 0.277 and the global mass-balance ratio to 0.963 of the frozen values with negligible field-error change. A five-seed controlled comparison with deterministic condition-to-chart multilayer perceptrons shows that, although the generative pipelines do not surpass the compact MLP in point accuracy on these single-valued steady problems, the results validate sampling-based conditional transport on the shared representation as an effective steady surrogate, with a natural route to multivalued or stochastic solution families.",
-      "selection_source": "fresh_fetch"
-    }
-  ],
+  "generated_at": "2026-08-29T21:49:40",
+  "count": 0,
+  "papers": [],
   "errors": []
 }
