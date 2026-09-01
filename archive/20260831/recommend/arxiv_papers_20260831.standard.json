@@ -1,0 +1,240 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-01T00:18:25.989369+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2608.26383v1",
+      "title": "Cross-Platform Benchmark of Neural 3D Reconstruction for Autonomous Laboratory Robots",
+      "abstract": "Autonomous robots performing laboratory tasks depend on 3D reconstruction pipelines that can turn raw camera streams into actionable object representations within the latency budget of a physical control loop. Neural 3D reconstruction methods have demonstrated high-quality view synthesis, but their real-time viability across the compute platforms on which laboratory robots actually run remains poorly characterized. In this work, we present a systematic compute-platform benchmark of neural 3D reconstruction methods, evaluating NeRF and 3D Gaussian Splatting training and rendering on GPU-enabled computing devices ranging from single-board computers to server-class nodes, and place Meta's SAM3D single-image reconstruction on the same axes to quantify its latency and fidelity gap relative to per-scene optimization. Our results show that Gaussian Splatting yields higher rendering quality than NeRF at greater GPU cost, and that onboard compute is insufficient for full per-scene optimization at interactive rates. Our preliminary assessment on SAM3D indicates that it delivers plausible object geometry within seconds, but with detail mismatches that can compromise downstream manipulation. Together, these findings motivate tiered pipelines in which lightweight feed-forward reconstruction sustains the real-time perception-and-tracking loop for laboratory robots, while heavier neural reconstruction is scheduled selectively on suitable compute.",
+      "authors": [
+        "Yongho Kim",
+        "Mengjiao Han",
+        "Victor Mateevitsi",
+        "Silvio Rizzi",
+        "Michael E. Papka",
+        "Nicola Ferrier"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-08-26T20:16:02+00:00",
+      "link": "https://arxiv.org/pdf/2608.26383v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "benchmark of NeRF and 3D Gaussian Splatting rendering",
+      "llm_evidence_cn": "NeRF和3D高斯泼溅渲染的基准测试",
+      "llm_evidence": "NeRF和3D高斯泼溅渲染的基准测试",
+      "canonical_evidence": "NeRF和3D高斯泼溅渲染的基准测试",
+      "llm_tldr_en": "Evaluates the real-time rendering performance of neural 3D reconstruction methods across various compute platforms.",
+      "llm_tldr_cn": "评估了神经3D重建方法在不同计算平台上的实时渲染性能。",
+      "llm_tldr": "评估了神经3D重建方法在不同计算平台上的实时渲染性能。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.27735v1",
+      "title": "ABCD: Alpha-Composited Block Coordinate Descent: Constant-VRAM Training for Large Radiance Fields",
+      "abstract": "We present ABCD (Alpha-Composited Block Coordinate Descent), an out-of-core training framework for alpha-composited radiance fields, instantiated here for 3D Gaussian Splatting. Our method reformulates training as block coordinate descent over spatial partitions: only one block of parameters is active at a time, while all others are frozen. By exploiting the associativity of alpha blending, these inactive regions can be pre-rendered and collapsed into foreground and background RGBA images.   As a result, for fixed partition size and image resolution, peak VRAM becomes O(1) with respect to total scene extent, rather than growing with full scene size. This enables GPUs with limited memory to train scenes that would otherwise not fit in core. In experiments, our method closely preserves the reconstruction quality of 3DGS, with less than 5% PSNR degradation, while ABCD with compositing ablated suffers roughly 40% degradation.   Our code can be found at https://github.com/shiukaheng/abcd",
+      "authors": [
+        "Ka Heng Shiu",
+        "Kartic Subr"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-08-27T21:51:16+00:00",
+      "link": "https://arxiv.org/pdf/2608.27735v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "accelerating training and rendering of large radiance fields",
+      "llm_evidence_cn": "加速大型辐射场的训练与渲染",
+      "llm_evidence": "加速大型辐射场的训练与渲染",
+      "canonical_evidence": "加速大型辐射场的训练与渲染",
+      "llm_tldr_en": "Introduces a block coordinate descent framework to enable constant-VRAM training for large-scale radiance fields.",
+      "llm_tldr_cn": "引入块坐标下降框架，实现大规模辐射场的恒定显存训练。",
+      "llm_tldr": "引入块坐标下降框架，实现大规模辐射场的恒定显存训练。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.28020v1",
+      "title": "3D-USE: From Image-Level to Scene-Level Underwater Enhancement",
+      "abstract": "Underwater 3D reconstruction faithfully reproduces the color shifts and visibility loss of captured views, while physical inversion may leave estimation errors in the recovered scene appearance. We formulate Underwater Scene-level Enhancement (USE) as learning a persistent, visibility-enhanced 3D scene representation from degraded multi-view underwater observations, enabling consistent enhanced rendering. Realizing USE requires both a reliable scene representation for enhancement and a consistent enhancement target without paired enhanced 3D data. Therefore, we present 3D-USE, a two-stage framework. First, the Medium Radial Basis Anchor Representation (MediumRBF) establishes a medium-aware Gaussian scene by representing water effects with shared radial-basis anchors and explicitly decomposing object and medium contributions. Based on this fixed scene representation, Appearance Transition Consensus (ATC) transfers paired 2D underwater image enhancement (UIE) knowledge into scene-global and Gaussian-local targets, avoiding direct supervision from inconsistent enhanced views. An Underwater Bilateral Appearance Field (U-BAF) then realizes these targets in Gaussian radiance and medium appearance. The scene directly renders enhanced novel views without a 2D UIE model at inference. Experiments on real underwater scenes show improved visibility and cross-view consistency while preserving reconstruction quality.",
+      "authors": [
+        "Jieyu Yuan",
+        "Yuanlin Zhang",
+        "Jihong Li",
+        "Chunle Guo",
+        "Huimin Lu",
+        "Chongyi Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-28T07:34:13+00:00",
+      "link": "https://arxiv.org/pdf/2608.28020v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "medium-aware Gaussian scene representing water effects",
+      "llm_evidence_cn": "表示水体效应的介质感知高斯场景",
+      "llm_evidence": "表示水体效应的介质感知高斯场景",
+      "canonical_evidence": "表示水体效应的介质感知高斯场景",
+      "llm_tldr_en": "Enhances underwater 3D reconstruction using a medium-aware Gaussian representation for consistent rendering.",
+      "llm_tldr_cn": "使用介质感知高斯表示增强水下3D重建，实现一致的渲染效果。",
+      "llm_tldr": "使用介质感知高斯表示增强水下3D重建，实现一致的渲染效果。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.23549v1",
+      "title": "FixAnything: 3D-Consistent Rendering Refinement via Video Generative Priors",
+      "abstract": "Rendering views using 3D scene representations such as Gaussian Splatting (3DGS), Neural Radiance Fields (NeRF), meshes, or even point clouds produces artifacts when input views are sparse or target views lie far from the input. Recent work mitigates these artifacts using diffusion-based generative priors, but is specialized to individual representations and require custom architectures or extensive retraining. We present FixAnything, a single model for fixing a wide range of rendering artifacts. It does so by repurposing a pretrained video generative model, leveraging its implicit multi-view priors with only minimal modification and lightweight finetuning. Our key insight is that even noisily-rendered sequences preserve camera motion and coarse scene structure, allowing cleanup to be formulated as video-to-video translation. To control what scene structure should be preserved, we introduce a binary mask denoting the clean pixels, enabling the model to anchor its output to high-quality inputs (e.g. training views) while refining the rest. To encourage FixAnything to produce 3D-consistent renderings that support downstream reconstruction, we use camera pose accuracy (recovered via structure-from-motion) as a reward signal for direct preference optimization (DPO). Across four distinct 3D representations, FixAnything consistently improves rendering quality with lightweight finetuning, demonstrating that a single generalist video prior can replace multiple specialist refinement pipelines. The simplicity of the framework enables immediate adoption of stronger future video models without architectural redesign.",
+      "authors": [
+        "Khiem Vuong",
+        "Deva Ramanan",
+        "Srinivasa Narasimhan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-24T17:51:33+00:00",
+      "link": "https://arxiv.org/pdf/2608.23549v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "refining artifacts in NeRF and Gaussian Splatting",
+      "llm_evidence_cn": "优化NeRF和高斯泼溅中的渲染伪影",
+      "llm_evidence": "优化NeRF和高斯泼溅中的渲染伪影",
+      "canonical_evidence": "优化NeRF和高斯泼溅中的渲染伪影",
+      "llm_tldr_en": "Uses video generative priors to refine artifacts in various neural 3D scene representations.",
+      "llm_tldr_cn": "利用视频生成先验来优化各种神经3D场景表示中的渲染伪影。",
+      "llm_tldr": "利用视频生成先验来优化各种神经3D场景表示中的渲染伪影。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.28240v1",
+      "title": "WilLaGS: Latent-Conditional 3D Appearance Fields for Robust Gaussian Splatting In-the-Wild",
+      "abstract": "3D Gaussian Splatting (3DGS) delivers real-time and high-fidelity rendering but remains challenged by unconstrained in-the-wild scenes, where drastic appearance variations and transient objects violate multi-view consistency. Existing methods are fundamentally limited by independent and discrete embeddings that struggle to capture continuous environmental changes or model spatially-varying local illumination. To address these limitations, we propose \\textbf{WilLaGS}, a unified framework for robust 3D scene reconstruction and generative appearance synthesis under unconstrained settings. Specifically, we introduce a generative appearance model where a $β$-VAE learns a structured and continuous manifold of global appearance. Conditioned on the latent code, we construct a 3D neural appearance field that generates dynamic Tri-Plane features to encode spatially-varying local illumination effects. Furthermore, to suppress transient artifacts, we present a self-supervised perceptual masking mechanism that leverages a Teacher-Student (EMA) architecture to derive a stable scene consensus, robustly identifying inconsistent regions via perceptual discrepancies. Extensive experiments on multiple datasets demonstrate that \\textbf{WilLaGS} achieves state-of-the-art performance in reconstruction quality and novel view appearance synthesis, while maintaining real-time rendering efficiency.",
+      "authors": [
+        "Yuhao Bai",
+        "Qianqiu Tan",
+        "Lilong Chen",
+        "Huanhuan Lv",
+        "Lijun Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-28T11:55:53+00:00",
+      "link": "https://arxiv.org/pdf/2608.28240v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "latent-conditional 3D appearance fields for Gaussian Splatting",
+      "llm_evidence_cn": "用于高斯泼溅的潜变量条件3D外观场",
+      "llm_evidence": "用于高斯泼溅的潜变量条件3D外观场",
+      "canonical_evidence": "用于高斯泼溅的潜变量条件3D外观场",
+      "llm_tldr_en": "Enhances Gaussian Splatting with latent-conditional appearance fields for robust in-the-wild scene reconstruction.",
+      "llm_tldr_cn": "通过潜变量条件外观场增强高斯泼溅，实现鲁棒的野外场景重建。",
+      "llm_tldr": "通过潜变量条件外观场增强高斯泼溅，实现鲁棒的野外场景重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.28272v1",
+      "title": "Non-Uniform Quantisation for 3DGS Compression",
+      "abstract": "3D Gaussian Splatting (3DGS) has emerged as a powerful technique for novel view synthesis, yet its high bitrate requirements pose significant challenges for storage and transmission. To enable practical applications and ensure interoperability within the 3DGS ecosystem, standardised compression formats are essential. In this paper, we propose a novel non-uniform quantisation scheme specifically tailored for 3DGS models. Our approach adapts to the underlying data distribution by applying importance-weighted quantisation and eliminating post-voxelisation redundancy through importance weighted merging. Extensive evaluations on benchmark datasets demonstrate that our method achieves state-of-the-art compression performance. Furthermore, the proposed scheme is compatible with any point-cloud-based representation and is intended as a formal contribution to the upcoming MPEG 3DGS compression standardisation activities.",
+      "authors": [
+        "Bert Van hauwermeiren",
+        "Patrice Rondao Alface",
+        "Adrian Munteanu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-28T12:35:51+00:00",
+      "link": "https://arxiv.org/pdf/2608.28272v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "accelerating 3DGS rendering via compression and quantization",
+      "llm_evidence_cn": "通过压缩和量化加速3DGS渲染",
+      "llm_evidence": "通过压缩和量化加速3DGS渲染",
+      "canonical_evidence": "通过压缩和量化加速3DGS渲染",
+      "llm_tldr_en": "Introduces non-uniform quantisation for 3D Gaussian Splatting to reduce storage and improve efficiency.",
+      "llm_tldr_cn": "为3D高斯泼溅引入非均匀量化，以减少存储并提高效率。",
+      "llm_tldr": "为3D高斯泼溅引入非均匀量化，以减少存储并提高效率。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "label": "2026-08-31",
+  "date": "2026-08-31",
+  "generated_at": "2026-09-01T00:24:31",
+  "count": 6,
+  "papers": [
+    {
+      "paper_id": "202608/31/2608.26383v1-cross-platform-benchmark-of-neural-3d-reconstruction-for-autonomous-laboratory-robots",
+      "section": "deep",
+      "title_en": "Cross-Platform Benchmark of Neural 3D Reconstruction for Autonomous Laboratory Robots",
+      "authors": "Yongho Kim, Mengjiao Han, Victor Mateevitsi, Silvio Rizzi, Michael E. Papka, Nicola Ferrier",
+      "date": "2026-08-26",
+      "pdf": "https://arxiv.org/pdf/2608.26383v1",
+      "score": "8.0",
+      "evidence": "NeRF和3D高斯泼溅渲染的基准测试",
+      "tldr": "本研究针对实验室自动化机器人，系统性地评估了NeRF、3D高斯泼溅（3DGS）及SAM3D等神经3D重建方法在不同计算平台（从单板机到服务器）上的性能。研究量化了这些方法在延迟和保真度方面的差异，发现当前机载计算尚不足以支持实时全场景优化。该工作为机器人视觉系统提供了重要的基准数据，并提出了结合轻量级前馈重建与重型神经重建的分层流水线方案，以平衡实时性与重建精度。",
+      "tags": "query:q7",
+      "abstract_en": "Autonomous robots performing laboratory tasks depend on 3D reconstruction pipelines that can turn raw camera streams into actionable object representations within the latency budget of a physical control loop. Neural 3D reconstruction methods have demonstrated high-quality view synthesis, but their real-time viability across the compute platforms on which laboratory robots actually run remains poorly characterized. In this work, we present a systematic compute-platform benchmark of neural 3D reconstruction methods, evaluating NeRF and 3D Gaussian Splatting training and rendering on GPU-enabled computing devices ranging from single-board computers to server-class nodes, and place Meta's SAM3D single-image reconstruction on the same axes to quantify its latency and fidelity gap relative to per-scene optimization. Our results show that Gaussian Splatting yields higher rendering quality than NeRF at greater GPU cost, and that onboard compute is insufficient for full per-scene optimization at interactive rates. Our preliminary assessment on SAM3D indicates that it delivers plausible object geometry within seconds, but with detail mismatches that can compromise downstream manipulation. Together, these findings motivate tiered pipelines in which lightweight feed-forward reconstruction sustains the real-time perception-and-tracking loop for laboratory robots, while heavier neural reconstruction is scheduled selectively on suitable compute.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/31/2608.27735v1-abcd-alpha-composited-block-coordinate-descent-constant-vram-training-for-large-radiance-fields",
+      "section": "deep",
+      "title_en": "ABCD: Alpha-Composited Block Coordinate Descent: Constant-VRAM Training for Large Radiance Fields",
+      "authors": "Ka Heng Shiu, Kartic Subr",
+      "date": "2026-08-27",
+      "pdf": "https://arxiv.org/pdf/2608.27735v1",
+      "score": "8.0",
+      "evidence": "加速大型辐射场的训练与渲染",
+      "tldr": "ABCD 是一种针对大规模辐射场（如 3D 高斯泼溅）的显存恒定训练框架。它将训练过程重新表述为空间分区上的块坐标下降，每次仅激活一个分块，并利用 Alpha 混合的结合律将非活动区域预渲染为背景/前景图像。该方法使峰值显存与场景总规模解耦，实现了在有限显存的 GPU 上训练超大规模场景，且重建质量损失极小。",
+      "tags": "query:q7",
+      "abstract_en": "We present ABCD (Alpha-Composited Block Coordinate Descent), an out-of-core training framework for alpha-composited radiance fields, instantiated here for 3D Gaussian Splatting. Our method reformulates training as block coordinate descent over spatial partitions: only one block of parameters is active at a time, while all others are frozen. By exploiting the associativity of alpha blending, these inactive regions can be pre-rendered and collapsed into foreground and background RGBA images.   As a result, for fixed partition size and image resolution, peak VRAM becomes O(1) with respect to total scene extent, rather than growing with full scene size. This enables GPUs with limited memory to train scenes that would otherwise not fit in core. In experiments, our method closely preserves the reconstruction quality of 3DGS, with less than 5% PSNR degradation, while ABCD with compositing ablated suffers roughly 40% degradation.   Our code can be found at https://github.com/shiukaheng/abcd",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/31/2608.28020v1-3d-use-from-image-level-to-scene-level-underwater-enhancement",
+      "section": "quick",
+      "title_en": "3D-USE: From Image-Level to Scene-Level Underwater Enhancement",
+      "authors": "Jieyu Yuan, Yuanlin Zhang, Jihong Li, Chunle Guo, Huimin Lu, Chongyi Li",
+      "date": "2026-08-28",
+      "pdf": "https://arxiv.org/pdf/2608.28020v1",
+      "score": "7.0",
+      "evidence": "表示水体效应的介质感知高斯场景",
+      "tldr": "针对水下3D重建中存在的色偏和能见度低等问题，本文提出了3D-USE框架，将水下增强从图像级提升到场景级。该框架通过MediumRBF表示法解耦物体与介质，并利用外观转换共识（ATC）将2D增强知识转化为一致的3D场景表示，实现了在保持重建质量的同时，生成具有跨视角一致性的高质量增强视图。",
+      "tags": "query:profile-1",
+      "abstract_en": "Underwater 3D reconstruction faithfully reproduces the color shifts and visibility loss of captured views, while physical inversion may leave estimation errors in the recovered scene appearance. We formulate Underwater Scene-level Enhancement (USE) as learning a persistent, visibility-enhanced 3D scene representation from degraded multi-view underwater observations, enabling consistent enhanced rendering. Realizing USE requires both a reliable scene representation for enhancement and a consistent enhancement target without paired enhanced 3D data. Therefore, we present 3D-USE, a two-stage framework. First, the Medium Radial Basis Anchor Representation (MediumRBF) establishes a medium-aware Gaussian scene by representing water effects with shared radial-basis anchors and explicitly decomposing object and medium contributions. Based on this fixed scene representation, Appearance Transition Consensus (ATC) transfers paired 2D underwater image enhancement (UIE) knowledge into scene-global and Gaussian-local targets, avoiding direct supervision from inconsistent enhanced views. An Underwater Bilateral Appearance Field (U-BAF) then realizes these targets in Gaussian radiance and medium appearance. The scene directly renders enhanced novel views without a 2D UIE model at inference. Experiments on real underwater scenes show improved visibility and cross-view consistency while preserving reconstruction quality.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/31/2608.28240v1-willags-latent-conditional-3d-appearance-fields-for-robust-gaussian-splatting-in-the-wild",
+      "section": "quick",
+      "title_en": "WilLaGS: Latent-Conditional 3D Appearance Fields for Robust Gaussian Splatting In-the-Wild",
+      "authors": "Yuhao Bai, Qianqiu Tan, Lilong Chen, Huanhuan Lv, Lijun Chen",
+      "date": "2026-08-28",
+      "pdf": "https://arxiv.org/pdf/2608.28240v1",
+      "score": "7.0",
+      "evidence": "用于高斯泼溅的潜变量条件3D外观场",
+      "tldr": "针对野外场景中光照变化剧烈和瞬态物体干扰导致3D高斯泼溅（3DGS）重建质量下降的问题，本文提出了WilLaGS框架。该方法通过β-VAE学习连续的外观流形，并结合动态三平面特征的神经外观场来建模局部光照。同时，引入基于教师-学生架构的自监督感知掩码机制以消除瞬态伪影。实验证明，WilLaGS在保持实时渲染的同时，显著提升了复杂场景下的重建质量和新视角合成效果。",
+      "tags": "query:q1",
+      "abstract_en": "3D Gaussian Splatting (3DGS) delivers real-time and high-fidelity rendering but remains challenged by unconstrained in-the-wild scenes, where drastic appearance variations and transient objects violate multi-view consistency. Existing methods are fundamentally limited by independent and discrete embeddings that struggle to capture continuous environmental changes or model spatially-varying local illumination. To address these limitations, we propose \\textbf{WilLaGS}, a unified framework for robust 3D scene reconstruction and generative appearance synthesis under unconstrained settings. Specifically, we introduce a generative appearance model where a $β$-VAE learns a structured and continuous manifold of global appearance. Conditioned on the latent code, we construct a 3D neural appearance field that generates dynamic Tri-Plane features to encode spatially-varying local illumination effects. Furthermore, to suppress transient artifacts, we present a self-supervised perceptual masking mechanism that leverages a Teacher-Student (EMA) architecture to derive a stable scene consensus, robustly identifying inconsistent regions via perceptual discrepancies. Extensive experiments on multiple datasets demonstrate that \\textbf{WilLaGS} achieves state-of-the-art performance in reconstruction quality and novel view appearance synthesis, while maintaining real-time rendering efficiency.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/31/2608.23549v1-fixanything-3d-consistent-rendering-refinement-via-video-generative-priors",
+      "section": "quick",
+      "title_en": "FixAnything: 3D-Consistent Rendering Refinement via Video Generative Priors",
+      "authors": "Khiem Vuong, Deva Ramanan, Srinivasa Narasimhan",
+      "date": "2026-08-24",
+      "pdf": "https://arxiv.org/pdf/2608.23549v1",
+      "score": "6.0",
+      "evidence": "优化NeRF和高斯泼溅中的渲染伪影",
+      "tldr": "针对3D场景表示（如3DGS、NeRF）在稀疏输入下产生的渲染伪影，本文提出FixAnything，一个通用的渲染修复模型。该方法将预训练视频生成模型重新利用，通过轻量级微调将其转化为视频到视频的翻译任务。利用掩码机制保留高质量像素，并引入基于相机位姿准确性的直接偏好优化（DPO）来增强3D一致性。FixAnything在多种3D表示上均能显著提升渲染质量，证明了通用视频先验在3D修复中的有效性。",
+      "tags": "query:q1",
+      "abstract_en": "Rendering views using 3D scene representations such as Gaussian Splatting (3DGS), Neural Radiance Fields (NeRF), meshes, or even point clouds produces artifacts when input views are sparse or target views lie far from the input. Recent work mitigates these artifacts using diffusion-based generative priors, but is specialized to individual representations and require custom architectures or extensive retraining. We present FixAnything, a single model for fixing a wide range of rendering artifacts. It does so by repurposing a pretrained video generative model, leveraging its implicit multi-view priors with only minimal modification and lightweight finetuning. Our key insight is that even noisily-rendered sequences preserve camera motion and coarse scene structure, allowing cleanup to be formulated as video-to-video translation. To control what scene structure should be preserved, we introduce a binary mask denoting the clean pixels, enabling the model to anchor its output to high-quality inputs (e.g. training views) while refining the rest. To encourage FixAnything to produce 3D-consistent renderings that support downstream reconstruction, we use camera pose accuracy (recovered via structure-from-motion) as a reward signal for direct preference optimization (DPO). Across four distinct 3D representations, FixAnything consistently improves rendering quality with lightweight finetuning, demonstrating that a single generalist video prior can replace multiple specialist refinement pipelines. The simplicity of the framework enables immediate adoption of stronger future video models without architectural redesign.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/31/2608.28272v1-non-uniform-quantisation-for-3dgs-compression",
+      "section": "quick",
+      "title_en": "Non-Uniform Quantisation for 3DGS Compression",
+      "authors": "Bert Van hauwermeiren, Patrice Rondao Alface, Adrian Munteanu",
+      "date": "2026-08-28",
+      "pdf": "https://arxiv.org/pdf/2608.28272v1",
+      "score": "6.0",
+      "evidence": "通过压缩和量化加速3DGS渲染",
+      "tldr": "3D高斯泼溅（3DGS）在视图合成中表现出色，但高比特率限制了其存储与传输。本文提出一种针对3DGS的非均匀量化方案，通过重要性加权量化和合并技术，有效减少了体素化后的冗余。该方法在基准测试中达到了最先进的压缩性能，且兼容多种点云表示，旨在为MPEG 3DGS压缩标准化做出贡献。",
+      "tags": "query:q7",
+      "abstract_en": "3D Gaussian Splatting (3DGS) has emerged as a powerful technique for novel view synthesis, yet its high bitrate requirements pose significant challenges for storage and transmission. To enable practical applications and ensure interoperability within the 3DGS ecosystem, standardised compression formats are essential. In this paper, we propose a novel non-uniform quantisation scheme specifically tailored for 3DGS models. Our approach adapts to the underlying data distribution by applying importance-weighted quantisation and eliminating post-voxelisation redundancy through importance weighted merging. Extensive evaluations on benchmark datasets demonstrate that our method achieves state-of-the-art compression performance. Furthermore, the proposed scheme is compatible with any point-cloud-based representation and is intended as a formal contribution to the upcoming MPEG 3DGS compression standardisation activities.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
