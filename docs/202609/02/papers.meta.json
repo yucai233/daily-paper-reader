@@ -1,0 +1,79 @@
+{
+  "label": "2026-09-02",
+  "date": "2026-09-02",
+  "generated_at": "2026-09-02T22:36:06",
+  "count": 5,
+  "papers": [
+    {
+      "paper_id": "202609/02/2609.00625v1-inverse-rendering-for-modeling-with-line-primitives",
+      "section": "quick",
+      "title_en": "Inverse Rendering for Modeling with Line Primitives",
+      "authors": "Kenji Tojo, Ariel Shamir, Nobuyuki Umetani, Bernd Bickel",
+      "date": "2026-09-01",
+      "pdf": "https://arxiv.org/pdf/2609.00625v1",
+      "score": "7.0",
+      "evidence": "用于模糊结构的半透明体积图元",
+      "tldr": "针对头发、毛皮等具有模糊各向异性结构的物体，传统体积表示法难以兼容标准图形管线。本文提出一种基于显式线段图元的逆向渲染方法，通过随机微分光栅化器优化线段的顶点、属性及连接关系。该方法在保持与体积表示相当的重建质量的同时，实现了与标准光栅化、着色模型及物理模拟的无缝集成，显著提升了复杂纤维结构的建模与渲染效率。",
+      "tags": "query:q1",
+      "abstract_en": "Faithfully capturing diverse real-world objects with fuzzy, anisotropic structures, such as hair, fur, fibers, and textiles, for efficient real-time visualization remains challenging. Recent radiance field reconstruction methods capture these structures from multi-view images using translucent volumetric primitives such as 3D Gaussians rather than opaque low-dimensional primitives (e.g., triangles, line segments, and polylines), thereby limiting compatibility with standard depth-tested rasterization, reflection modeling, and physical simulation. We present an inverse rendering method for reconstructing fuzzy geometry using explicit line segments, which are rasterized on a subpixel grid for anti-aliasing to reproduce a semi-transparent appearance. While straightforward to render, optimizing numerous line primitives to match target images poses a significant challenge. We address this by introducing a stochastic differentiable rasterizer for line segments that produces informative gradients with respect to vertex positions, attributes, and discrete connectivity. Experiments on synthetic and real-world datasets show that our method outperforms surface-based approaches in capturing fuzzy boundaries and achieves quality comparable to volumetric representations while relying entirely on explicit geometry. The resulting representation integrates seamlessly with standard graphics pipelines, enabling cross-platform rendering, various shading models, and physical simulation.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/02/2609.01306v1-meshsplatbench-a-unified-benchmark-for-triangle-based-neural-rendering",
+      "section": "quick",
+      "title_en": "MeshSplatBench: A Unified Benchmark for Triangle-Based Neural Rendering",
+      "authors": "Kaixuan Zhang, Minxian Li, Mingwu Ren, Xiatian Zhu",
+      "date": "2026-09-01",
+      "pdf": "https://arxiv.org/pdf/2609.01306v1",
+      "score": "7.0",
+      "evidence": "基于三角形的神经渲染架构基准测试",
+      "tldr": "本研究针对基于三角形的神经渲染方法在生产引擎中部署困难的问题，提出了MeshSplatBench统一基准。该基准涵盖了从原生优化到游戏引擎部署的全流程，通过标准化的评估协议和Unity部署方案，系统分析了不同渲染层级的保真度损失。此外，研究还对重建表面的拓扑结构进行了审计，揭示了现有方法在生成生产级资产方面的局限性，强调了表示、拓扑与引擎兼容性协同的重要性。",
+      "tags": "query:q1",
+      "abstract_en": "Triangle-based neural rendering bridges neural scene representations and conventional graphics pipelines by optimizing explicit geometric primitives compatible with standard rasterization hardware. However, existing approaches are evaluated almost exclusively within custom research renderers, obscuring their practical deployability in production engines. To bridge this gap, we introduce \\textbf{MeshSplatBench}, a unified benchmark that systematically investigates triangle-based neural rendering across the complete pipeline from native optimization to game-engine deployment. MeshSplatBench establishes a standardized evaluation protocol while preserving each method's native optimization semantics, reproducing published results within $0.8\\%$ PSNR deviation. Furthermore, we introduce a hierarchical Unity deployment protocol spanning three rendering tiers: native CUDA renderers, method-specific dedicated engine shaders, and standard opaque mesh pipelines, isolating the exact fidelity losses caused by engine adaptation \\textit{vs.} representation reduction. Finally, we conduct a topological audit of reconstructed surfaces, demonstrating that explicit connectivity and shared indexing alone are insufficient to guarantee production-ready assets due to prevalent non-manifold structures, fragmented components, and boundary artifacts. Overall, MeshSplatBench demonstrates that rasterizability is merely a primitive-level attribute, whereas graphics readiness requires jthe holistic alignment of representation, topology, and engine compatibility. Source code will be released.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/02/2608.25454v1-physics-guided-generative-surrogates-for-parametric-rarefied-flows-with-neural-field-auto-decoders-a-pipeline-level-study-of-flow-matching-and-diffusion",
+      "section": "quick",
+      "title_en": "Physics-Guided Generative Surrogates for Parametric Rarefied Flows with Neural-Field Auto-Decoders: A Pipeline-Level Study of Flow Matching and Diffusion",
+      "authors": "Yiming Qi, Guan Zhang, Xu Wang, Yonghao Zhang, Tianbai Xiao",
+      "date": "2026-08-26",
+      "pdf": "https://arxiv.org/pdf/2608.25454v1",
+      "score": "6.0",
+      "evidence": "用于表示和生成体积流解的神经场自动解码器",
+      "tldr": "本研究针对参数化稀疏流场，提出了一种结合神经场自动解码器与生成式潜空间传输的物理引导代理模型框架。该框架利用流匹配（FM）和扩散模型在共享的坐标解码器上进行条件采样，并引入低秩适配器进行物理约束修正。在空腔和圆柱绕流基准测试中，该方法实现了极高的插值精度，并通过物理适配显著降低了守恒律误差，为处理多值或随机流场解提供了有效的生成式路径。",
+      "tags": "query:q1",
+      "abstract_en": "We present a conditional latent generative framework for parametric rarefied flows that separates neural-field representation, latent transport, and frozen physics adaptation. Neural-field auto-decoders compress discrete-velocity cavity solutions and direct simulation Monte Carlo cylinder solutions into shared coordinate decoders. Train-only principal-component charts support conditional flow matching (FM) and diffusion without a deterministic condition-to-latent backbone, and structured low-rank adapters correct selected decoder outputs while the upstream pipeline remains frozen. On two steady benchmarks, the frozen pipelines interpolate out-of-sample conditions with cavity kinetic relative $L_1$ errors at the $10^{-5}$ level and cylinder per-field area-weighted RMSEs of 0.038 (density), 0.041 (temperature), and below 0.01 (velocities). For the cavity, physics adaptation reduces the matched-grid Bhatnagar--Gross--Krook diagnostic by 28.65% while preserving field accuracy; for the cylinder, the analytic wall map enforces no-penetration exactly and, jointly with the learned FM adapter, reduces the inlet violation to 0.277 and the global mass-balance ratio to 0.963 of the frozen values with negligible field-error change. A five-seed controlled comparison with deterministic condition-to-chart multilayer perceptrons shows that, although the generative pipelines do not surpass the compact MLP in point accuracy on these single-valued steady problems, the results validate sampling-based conditional transport on the shared representation as an effective steady surrogate, with a natural route to multivalued or stochastic solution families.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/02/2608.29177v1-dynamic-robust-photometric-semantic-reconstruction-for-open-vocabulary-3d-scene-understanding",
+      "section": "quick",
+      "title_en": "Dynamic-Robust Photometric-Semantic Reconstruction for Open-Vocabulary 3D Scene Understanding",
+      "authors": "Boyu Cai, Li Yang, Yan Xu, Wei Liu, Nian Liu, Sikui Zhang, Yan Wang, Chunfeng Yuan, Weiming Hu",
+      "date": "2026-08-29",
+      "pdf": "https://arxiv.org/pdf/2608.29177v1",
+      "score": "6.0",
+      "evidence": "3D场景的新视角合成与几何编码",
+      "tldr": "针对开放词汇3D场景理解中动态环境导致的特征对齐难题，本文提出SPAR架构。通过联合语义-几何编码显式隔离动态噪声，并引入动态感知端到端训练范式，将运动估计与多视图学习耦合。该方法在D-RE10K基准上实现了SOTA性能，证明了光度重建与语义理解间的协同效应，显著提升了动态场景下的渲染质量与语义一致性。",
+      "tags": "query:q1",
+      "abstract_en": "The integration of novel view synthesis (NVS) and open-vocabulary segmentation (OVS) has recently yielded powerful feed-forward 3D foundation models. However, their inherent reliance on static-scene assumptions leads to severe misalignment of spatial features in unconstrained dynamic environments. To bridge this critical gap, we propose SPAR, a novel joint semantic-geometric encoding architecture that explicitly isolates transient dynamic noise prior to latent space aggregation. Furthermore, we introduce a dynamic-region-aware end-to-end training paradigm that structurally couples motion estimation with multi-view visual and semantic learning. This unified approach enables the network to inherently resolve motion conflicts and distill multi-view consistent, temporally stable scene representations from dynamic inputs. Extensive experiments on the challenging D-RE10K benchmark demonstrate that SPAR achieves state-of-the-art performance. Our end-to-end approach achieves exceptional novel view synthesis quality, yielding a PSNR of 22.15 dB and 23.33 dB given only 3 and 4 input views respectively. Despite being trained in a self-supervised manner, our model achieves an mIoU of 88.5% for motion mask prediction. Furthermore, our analysis reveals a strong inter-task synergy between photometric scene reconstruction and semantic understanding, where semantic synthesis learning consistently enhances photometric fidelity in novel view rendering. Code will be available at https://github.com/dmucby/SPAR.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/02/2609.00610v1-streaming4d-accelerate-4d-world-models-via-block-wise-video-generation-and-incremental-reconstruction",
+      "section": "quick",
+      "title_en": "Streaming4D: Accelerate 4D World Models via Block-wise Video Generation and Incremental Reconstruction",
+      "authors": "Xiaoyan Liu, Jiaxin Liu, Kangrui Li, Sifan Zhou",
+      "date": "2026-09-01",
+      "pdf": "https://arxiv.org/pdf/2609.00610v1",
+      "score": "6.0",
+      "evidence": "4D世界模型的增量3D重建",
+      "tldr": "针对当前4D生成模型因视频生成与3D重建串行导致的高延迟问题，本文提出Streaming4D。该框架通过分块自回归视频生成与增量式3D重建的紧密耦合，实现了合成与几何更新的并行执行。在保持高几何保真度和多视角一致性的同时，在单张RTX 4090上实现了1.24倍的加速，显著提升了交互式实时场景下的4D世界模型生成效率。",
+      "tags": "query:q1",
+      "abstract_en": "Current 4D generation paradigms are often bottlenecked by a sequential decoupling design: video is generated first, followed by 3D reconstruction, leading to high interaction latency. This limits applications in interactive real-time scenarios. To this end, we propose \\textbf{Streaming4D}, a tightly coupled synchronous pipeline that integrates block-wise autoregressive video generation with incremental 3D reconstruction. Unlike traditional frame-by-frame emission and delayed geometry recovery, Streaming4D generates temporal video blocks and immediately triggers reconstruction for each completed block, enabling parallel execution between synthesis and geometric updates. This approach allows the world representation to evolve online with the video stream, reducing feedback latency while preserving geometric fidelity. We instantiate \\textbf{Streaming4D} using a Self-Forcing-style autoregressive generator and an incremental reconstruction backend. Experiments show consistent runtime improvements across resolutions on a single RTX 4090 (1.24$\\times$ speedup), while maintaining high-quality 4D geometry and multi-view consistency.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

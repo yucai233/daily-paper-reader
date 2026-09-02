@@ -1,0 +1,210 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-02T22:31:56.974692+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.00625v1",
+      "title": "Inverse Rendering for Modeling with Line Primitives",
+      "abstract": "Faithfully capturing diverse real-world objects with fuzzy, anisotropic structures, such as hair, fur, fibers, and textiles, for efficient real-time visualization remains challenging. Recent radiance field reconstruction methods capture these structures from multi-view images using translucent volumetric primitives such as 3D Gaussians rather than opaque low-dimensional primitives (e.g., triangles, line segments, and polylines), thereby limiting compatibility with standard depth-tested rasterization, reflection modeling, and physical simulation. We present an inverse rendering method for reconstructing fuzzy geometry using explicit line segments, which are rasterized on a subpixel grid for anti-aliasing to reproduce a semi-transparent appearance. While straightforward to render, optimizing numerous line primitives to match target images poses a significant challenge. We address this by introducing a stochastic differentiable rasterizer for line segments that produces informative gradients with respect to vertex positions, attributes, and discrete connectivity. Experiments on synthetic and real-world datasets show that our method outperforms surface-based approaches in capturing fuzzy boundaries and achieves quality comparable to volumetric representations while relying entirely on explicit geometry. The resulting representation integrates seamlessly with standard graphics pipelines, enabling cross-platform rendering, various shading models, and physical simulation.",
+      "authors": [
+        "Kenji Tojo",
+        "Ariel Shamir",
+        "Nobuyuki Umetani",
+        "Bernd Bickel"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.CV"
+      ],
+      "published": "2026-09-01T03:05:52+00:00",
+      "link": "https://arxiv.org/pdf/2609.00625v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "translucent volumetric primitives for fuzzy structures",
+      "llm_evidence_cn": "用于模糊结构的半透明体积图元",
+      "llm_evidence": "用于模糊结构的半透明体积图元",
+      "canonical_evidence": "用于模糊结构的半透明体积图元",
+      "llm_tldr_en": "Uses line primitives and inverse rendering to capture fuzzy, semi-transparent volumetric structures like hair.",
+      "llm_tldr_cn": "使用线图元和逆渲染技术来捕捉头发等模糊、半透明的体积结构。",
+      "llm_tldr": "使用线图元和逆渲染技术来捕捉头发等模糊、半透明的体积结构。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.25454v1",
+      "title": "Physics-Guided Generative Surrogates for Parametric Rarefied Flows with Neural-Field Auto-Decoders: A Pipeline-Level Study of Flow Matching and Diffusion",
+      "abstract": "We present a conditional latent generative framework for parametric rarefied flows that separates neural-field representation, latent transport, and frozen physics adaptation. Neural-field auto-decoders compress discrete-velocity cavity solutions and direct simulation Monte Carlo cylinder solutions into shared coordinate decoders. Train-only principal-component charts support conditional flow matching (FM) and diffusion without a deterministic condition-to-latent backbone, and structured low-rank adapters correct selected decoder outputs while the upstream pipeline remains frozen. On two steady benchmarks, the frozen pipelines interpolate out-of-sample conditions with cavity kinetic relative $L_1$ errors at the $10^{-5}$ level and cylinder per-field area-weighted RMSEs of 0.038 (density), 0.041 (temperature), and below 0.01 (velocities). For the cavity, physics adaptation reduces the matched-grid Bhatnagar--Gross--Krook diagnostic by 28.65% while preserving field accuracy; for the cylinder, the analytic wall map enforces no-penetration exactly and, jointly with the learned FM adapter, reduces the inlet violation to 0.277 and the global mass-balance ratio to 0.963 of the frozen values with negligible field-error change. A five-seed controlled comparison with deterministic condition-to-chart multilayer perceptrons shows that, although the generative pipelines do not surpass the compact MLP in point accuracy on these single-valued steady problems, the results validate sampling-based conditional transport on the shared representation as an effective steady surrogate, with a natural route to multivalued or stochastic solution families.",
+      "authors": [
+        "Yiming Qi",
+        "Guan Zhang",
+        "Xu Wang",
+        "Yonghao Zhang",
+        "Tianbai Xiao"
+      ],
+      "primary_category": "physics.flu-dyn",
+      "categories": [
+        "physics.flu-dyn"
+      ],
+      "published": "2026-08-26T07:18:12+00:00",
+      "link": "https://arxiv.org/pdf/2608.25454v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Neural-field auto-decoders for representing and generating volumetric flow solutions",
+      "llm_evidence_cn": "用于表示和生成体积流解的神经场自动解码器",
+      "llm_evidence": "用于表示和生成体积流解的神经场自动解码器",
+      "canonical_evidence": "用于表示和生成体积流解的神经场自动解码器",
+      "llm_tldr_en": "Develops a neural-field framework for generative modeling and interpolation of complex volumetric fluid flows.",
+      "llm_tldr_cn": "开发了一个神经场框架，用于复杂体积流体的生成建模和插值。",
+      "llm_tldr": "开发了一个神经场框架，用于复杂体积流体的生成建模和插值。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.01306v1",
+      "title": "MeshSplatBench: A Unified Benchmark for Triangle-Based Neural Rendering",
+      "abstract": "Triangle-based neural rendering bridges neural scene representations and conventional graphics pipelines by optimizing explicit geometric primitives compatible with standard rasterization hardware. However, existing approaches are evaluated almost exclusively within custom research renderers, obscuring their practical deployability in production engines. To bridge this gap, we introduce \\textbf{MeshSplatBench}, a unified benchmark that systematically investigates triangle-based neural rendering across the complete pipeline from native optimization to game-engine deployment. MeshSplatBench establishes a standardized evaluation protocol while preserving each method's native optimization semantics, reproducing published results within $0.8\\%$ PSNR deviation. Furthermore, we introduce a hierarchical Unity deployment protocol spanning three rendering tiers: native CUDA renderers, method-specific dedicated engine shaders, and standard opaque mesh pipelines, isolating the exact fidelity losses caused by engine adaptation \\textit{vs.} representation reduction. Finally, we conduct a topological audit of reconstructed surfaces, demonstrating that explicit connectivity and shared indexing alone are insufficient to guarantee production-ready assets due to prevalent non-manifold structures, fragmented components, and boundary artifacts. Overall, MeshSplatBench demonstrates that rasterizability is merely a primitive-level attribute, whereas graphics readiness requires jthe holistic alignment of representation, topology, and engine compatibility. Source code will be released.",
+      "authors": [
+        "Kaixuan Zhang",
+        "Minxian Li",
+        "Mingwu Ren",
+        "Xiatian Zhu"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.CV"
+      ],
+      "published": "2026-09-01T14:32:54+00:00",
+      "link": "https://arxiv.org/pdf/2609.01306v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "benchmarking triangle-based neural rendering architectures",
+      "llm_evidence_cn": "基于三角形的神经渲染架构基准测试",
+      "llm_evidence": "基于三角形的神经渲染架构基准测试",
+      "canonical_evidence": "基于三角形的神经渲染架构基准测试",
+      "llm_tldr_en": "Introduces a benchmark for triangle-based neural rendering to evaluate production-ready graphics pipelines.",
+      "llm_tldr_cn": "引入了基于三角形的神经渲染基准，用于评估生产级图形管线。",
+      "llm_tldr": "引入了基于三角形的神经渲染基准，用于评估生产级图形管线。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.29177v1",
+      "title": "Dynamic-Robust Photometric-Semantic Reconstruction for Open-Vocabulary 3D Scene Understanding",
+      "abstract": "The integration of novel view synthesis (NVS) and open-vocabulary segmentation (OVS) has recently yielded powerful feed-forward 3D foundation models. However, their inherent reliance on static-scene assumptions leads to severe misalignment of spatial features in unconstrained dynamic environments. To bridge this critical gap, we propose SPAR, a novel joint semantic-geometric encoding architecture that explicitly isolates transient dynamic noise prior to latent space aggregation. Furthermore, we introduce a dynamic-region-aware end-to-end training paradigm that structurally couples motion estimation with multi-view visual and semantic learning. This unified approach enables the network to inherently resolve motion conflicts and distill multi-view consistent, temporally stable scene representations from dynamic inputs. Extensive experiments on the challenging D-RE10K benchmark demonstrate that SPAR achieves state-of-the-art performance. Our end-to-end approach achieves exceptional novel view synthesis quality, yielding a PSNR of 22.15 dB and 23.33 dB given only 3 and 4 input views respectively. Despite being trained in a self-supervised manner, our model achieves an mIoU of 88.5% for motion mask prediction. Furthermore, our analysis reveals a strong inter-task synergy between photometric scene reconstruction and semantic understanding, where semantic synthesis learning consistently enhances photometric fidelity in novel view rendering. Code will be available at https://github.com/dmucby/SPAR.",
+      "authors": [
+        "Boyu Cai",
+        "Li Yang",
+        "Yan Xu",
+        "Wei Liu",
+        "Nian Liu",
+        "Sikui Zhang",
+        "Yan Wang",
+        "Chunfeng Yuan",
+        "Weiming Hu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-29T09:58:24+00:00",
+      "link": "https://arxiv.org/pdf/2608.29177v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "novel view synthesis and geometric encoding for 3D scenes",
+      "llm_evidence_cn": "3D场景的新视角合成与几何编码",
+      "llm_evidence": "3D场景的新视角合成与几何编码",
+      "canonical_evidence": "3D场景的新视角合成与几何编码",
+      "llm_tldr_en": "Proposes a joint semantic-geometric encoding for robust 3D scene understanding in dynamic environments.",
+      "llm_tldr_cn": "提出了一种联合语义-几何编码，用于动态环境下的鲁棒3D场景理解。",
+      "llm_tldr": "提出了一种联合语义-几何编码，用于动态环境下的鲁棒3D场景理解。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.00610v1",
+      "title": "Streaming4D: Accelerate 4D World Models via Block-wise Video Generation and Incremental Reconstruction",
+      "abstract": "Current 4D generation paradigms are often bottlenecked by a sequential decoupling design: video is generated first, followed by 3D reconstruction, leading to high interaction latency. This limits applications in interactive real-time scenarios. To this end, we propose \\textbf{Streaming4D}, a tightly coupled synchronous pipeline that integrates block-wise autoregressive video generation with incremental 3D reconstruction. Unlike traditional frame-by-frame emission and delayed geometry recovery, Streaming4D generates temporal video blocks and immediately triggers reconstruction for each completed block, enabling parallel execution between synthesis and geometric updates. This approach allows the world representation to evolve online with the video stream, reducing feedback latency while preserving geometric fidelity. We instantiate \\textbf{Streaming4D} using a Self-Forcing-style autoregressive generator and an incremental reconstruction backend. Experiments show consistent runtime improvements across resolutions on a single RTX 4090 (1.24$\\times$ speedup), while maintaining high-quality 4D geometry and multi-view consistency.",
+      "authors": [
+        "Xiaoyan Liu",
+        "Jiaxin Liu",
+        "Kangrui Li",
+        "Sifan Zhou"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-01T02:49:45+00:00",
+      "link": "https://arxiv.org/pdf/2609.00610v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "incremental 3D reconstruction for 4D world models",
+      "llm_evidence_cn": "4D世界模型的增量3D重建",
+      "llm_evidence": "4D世界模型的增量3D重建",
+      "canonical_evidence": "4D世界模型的增量3D重建",
+      "llm_tldr_en": "Integrates video generation with incremental 3D reconstruction to accelerate 4D world model creation.",
+      "llm_tldr_cn": "将视频生成与增量3D重建相结合，以加速4D世界模型的创建。",
+      "llm_tldr": "将视频生成与增量3D重建相结合，以加速4D世界模型的创建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
