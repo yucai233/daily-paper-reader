@@ -1,0 +1,79 @@
+{
+  "label": "2026-09-03",
+  "date": "2026-09-03",
+  "generated_at": "2026-09-03T22:30:07",
+  "count": 5,
+  "papers": [
+    {
+      "paper_id": "202609/03/2609.02184v1-cc-4dgs-computational-deformation-and-point-cloud-compression-for-storage-efficient-dynamic-gaussian-splatting",
+      "section": "deep",
+      "title_en": "CC-4DGS: Computational Deformation and Point-Cloud Compression for Storage-Efficient Dynamic Gaussian Splatting",
+      "authors": "Kyungdae Park, Chae Eun Rhee",
+      "date": "2026-09-02",
+      "pdf": "https://arxiv.org/pdf/2609.02184v1",
+      "score": "8.0",
+      "evidence": "利用神经解码器和压缩技术加速动态高斯泼溅",
+      "tldr": "动态4D高斯溅射（4DGS）因大量可学习哈希表和高维属性导致存储开销巨大。本文提出CC-4DGS框架，通过计算形变场（CDF）替代大型哈希表，并结合规范点云属性压缩（CCA）管线，对形变特征与高斯属性进行高效压缩。在保持实时渲染与高重建质量的同时，将单场景存储降至20-30MB。",
+      "tags": "query:q7",
+      "abstract_en": "Dynamic four-dimensional (4D) Gaussian Splatting has emerged as a powerful explicit representation for high-quality view synthesis, yet existing methods still require tens to hundreds of megabytes per scene due to their heavy reliance on large multi-resolution hash tables and high-dimensional Gaussian attributes. This paper presents CC-4DGS, a storage-efficient and scalable framework that rethinks both deformation modeling and canonical attribute storage. First, we introduce a computational deformation field (CDF) that replaces large multi-resolution learnable hash tables with deterministic dense hash encoding and compact neural decoders, enabling on-the-fly synthesis of deformation features while reducing deformation storage to only 1--3 MB per scene. Second, we propose a compression of canonical point-cloud attributes (CCA) pipeline that compresses high-dimensional spherical harmonic appearance terms and auxiliary Gaussian attributes via conditional autoencoding, selective quantization, and residual codebooks, achieving 3--5$\\times$ point-cloud reduction with negligible quality loss. Together, these components yield a unified representation that preserves real-time rendering performance while reducing total storage to 20--30 MB. Extensive experiments across the N3DV and Technicolor Light Field datasets demonstrate that CC-4DGS achieves reconstruction accuracy comparable to state-of-the-art methods such as Swift4D, while offering significantly improved storage efficiency and favorable runtime-memory trade-offs.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/03/2609.02352v1-atlas-algorithm-hardware-co-design-for-on-device-city-scale-3d-gaussian-splatting-in-vr",
+      "section": "deep",
+      "title_en": "Atlas: Algorithm-Hardware Co-Design for On-Device City-Scale 3D Gaussian Splatting in VR",
+      "authors": "He Zhu, Zheng Liu, Xingyang Li, Anbang Wu, Zihan Liu, Ruyang Li, Hui Wei, Yaqian Zhao, Jingwen Leng, Minyi Guo, Yu Feng",
+      "date": "2026-09-02",
+      "pdf": "https://arxiv.org/pdf/2609.02352v1",
+      "score": "8.0",
+      "evidence": "设备端城市级3D高斯泼溅渲染框架",
+      "tldr": "针对移动VR设备显存无法支撑城市级3D高斯溅射（3DGS）大规模场景渲染的问题，本文提出了一种软硬件协同设计的端侧渲染框架Atlas。Atlas基于每帧仅需部分高斯数据的洞察，引入分层内存卸载机制按需加载数据，并结合时域感知LoD搜索与立体光栅化减少计算冗余，实现了离线高效渲染。",
+      "tags": "query:q7",
+      "abstract_en": "3D Gaussian splatting (3DGS) has drawn significant attention in the architectural community recently. However, enabling city scale 3DGS on mobile VR devices remains challenging, as the memory requirement of large scale scenes far exceeds the memory capacity of today's mobile GPUs. This paper presents Atlas, an on device city scale 3DGS rendering framework that enables scalable rendering without runtime Internet access. The key insight is that although the full 3DGS model is massive, each frame only requires a small subset of Gaussians under the current pose and level of detail requirement. Based on this insight, Atlas introduces a hierarchical memory offloading mechanism that dynamically loads only necessary Gaussian data into device memory. To further improve performance, Atlas proposes temporal aware LoD search and stereo rasterization to avoid redundant computation in VR. We further show that our technique can be integrated with existing 3DGS accelerators with negligible hardware overhead. Overall, Atlas achieves 18.5x speedup over the GPU baseline and 3.9x speedup over the state of the art 3DGS accelerators, with 92.4% energy savings.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/03/2609.02543v1-lightbridge-feed-forward-generative-relighting-for-3d-gaussian-splatting",
+      "section": "quick",
+      "title_en": "LightBridge: Feed-Forward Generative Relighting for 3D Gaussian Splatting",
+      "authors": "Hezhi Cao, Panhao Cheng, huangsheng du, Qibiao Li, Youcheng Cai, Ligang Liu",
+      "date": "2026-09-02",
+      "pdf": "https://arxiv.org/pdf/2609.02543v1",
+      "score": "7.0",
+      "evidence": "3D高斯泼溅的生成式重光照",
+      "tldr": "针对3D高斯泼溅（3DGS）无法直接重光照且现有生成式方法需繁重逐场景优化的难题，本文提出前馈生成框架LightBridge。该方法结合潜空间桥接扩散模型与高斯传播Transformer，构建大规模多光照数据集，无需逐场景优化即可单次前馈生成高质量的重光照3DGS资产。",
+      "tags": "query:q1",
+      "abstract_en": "3D Gaussian Splatting (3DGS) achieves high-quality, real-time novel view synthesis, but the resulting assets have baked-in illumination and cannot be easily relit. Inverse rendering methods optimize simplified reflectance and illumination models for each scene, limiting efficiency and relighting quality. Recent generative approaches leverage large diffusion models for realistic lighting edits, but applying them to 3DGS typically requires an additional per-scene optimization stage to bake the edited appearance into the representation. We present LightBridge, a feed-forward generative framework for controllable relighting of complete 3DGS assets in a single pass. To enable feed-forward training, we construct a large-scale Multi-Illumination Relighting Dataset with paired source and target observations of the same scenes. Latent Bridge Relighting Diffusion models relighting as source-to-target transport in latent space, enabling one-step extraction of 2D visual tokens without iterative diffusion sampling. A Gaussian Propagation Transformer uses a point transformer with sparse image-to-point self-attention followed by point-to-image cross-attention to efficiently propagate these cues across the complete 3DGS, while avoiding full attention over all image and Gaussian tokens. Experiments validate these designs, demonstrating competitive relighting quality and efficient single-pass prediction of complete relit 3DGS assets without scene-specific optimization. The code and dataset will be made publicly available upon acceptance.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/03/2608.29187v1-opus-v2-bridging-the-gap-between-sparse-points-and-dense-voxels",
+      "section": "quick",
+      "title_en": "OPUS-V2: Bridging the Gap between Sparse Points and Dense Voxels",
+      "authors": "Jiabao Wang, Qiang Meng, Liujiang Yan, Ke Wang, Qibin Hou, Ming-Ming Cheng",
+      "date": "2026-08-29",
+      "pdf": "https://arxiv.org/pdf/2608.29187v1",
+      "score": "6.0",
+      "evidence": "将稀疏预测映射到稠密体素空间",
+      "tldr": "针对基于点的稀疏占用预测与自动驾驶所需密集体素预测存在不匹配、依赖人工启发式规则的问题，论文提出了OPUS-V2框架。该框架引入轻量级点-体素转换（PVT）模块自适应映射稀疏预测至密集体素空间，并解耦特征与占用生成过程以适应任意分辨率，在Occ3D和OpenOccupancy数据集上实现了领先性能与实时推理速度。",
+      "tags": "query:q1",
+      "abstract_en": "The point-based occupancy prediction paradigm has achieved an attractive trade-off between accuracy and efficiency by modeling 3D space sparsely. However, its predictions inherently mismatch the dense voxel-based occupancy required by self-driving systems, necessitating hand-crafted heuristics during training and inference that limit final performance. To overcome these limitations, we propose OPUS-V2, a novel framework built upon the pioneering OPUS (occupancy prediction using a sparse set) point-based approach. OPUS-V2 incorporates a lightweight point-voxel transformation (PVT) module behind the decoder to adaptively map sparse predictions into the dense voxel space, eliminating the need for suboptimal operations and improving model accuracy. Furthermore, our architecture decouples feature and occupancy generation processes, allowing OPUS-V2 to adapt to arbitrary occupancy resolutions. OPUS-V2 achieves a state-of-the-art rayIoU of 44.0 on the Occ3D dataset. On the more challenging OpenOccupancy dataset, it attains a competitive 16.4 mIoU while running in real time at 20.6 FPS.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/03/2609.02747v1-inceptiongs-generative-bootstrapping-for-large-scale-gaussian-splatting-under-unstructured-view-sampling",
+      "section": "quick",
+      "title_en": "InceptionGS: Generative Bootstrapping for Large-Scale Gaussian Splatting under Unstructured View Sampling",
+      "authors": "Tianheng Lu, Guangyu Wang, Ruqi Huang, Lu Fang",
+      "date": "2026-09-02",
+      "pdf": "https://arxiv.org/pdf/2609.02747v1",
+      "score": "6.0",
+      "evidence": "大规模高斯泼溅与神经渲染",
+      "tldr": "本文针对大规模场景数字化中视角采样非结构化、部分区域观测缺失的问题，提出了InceptionGS。该方法巧妙平衡了重建与生成，通过在初始3D高斯溅射中融合场景与视角自适应的生成先验来修补缺陷区域，显著提升了高保真3D场景渲染质量。",
+      "tags": "query:q1",
+      "abstract_en": "Achieving truly immersive large-scale scene digitization necessitates consistent and visually pleasing rendering across all possible viewing perspectives. However, collecting multi-view images covering every fine detail of a large-scale scene is prohibitive due to scene complexity, capture cost, negligence, or accessibility constraints. As a result, the sampled views tend to be highly unstructured -- the majority of the scene is well covered yet certain regions inevitably lack sufficient observations. Existing reconstruction based methods are vulnerable to view scarcity while generation based approaches suffer from generalization, controllability, and 3D consistency issues. To address this challenge, we propose InceptionGS, which bootstraps Gaussian splatting by subtly balancing reconstruction and generation. Starting from an initial Gaussian splatting, InceptionGS reasonably rethinks and repairs problematic regions caused by view scarcity while preserving the quality elsewhere, by softly incorporating scene- and view-adaptive generative priors. Extensive experiments on real-world large-scale scenes demonstrate the superiority and broad applicability of our approach in handling unstructured imagery and boosting high-fidelity Gaussian splatting. Please refer to the supplementary video for better visual demonstrations.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

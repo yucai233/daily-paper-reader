@@ -1,0 +1,463 @@
+Title: OPUS-V2: Bridging the Gap between Sparse Points and Dense Voxels
+
+URL Source: https://arxiv.org/pdf/2608.29187v1
+
+Published Time: Tue, 01 Sep 2026 00:39:33 GMT
+
+Number of Pages: 14
+
+Markdown Content:
+# Computational Visual Media https://doi.org/10.26599/CVM.XXXX 
+
+Research/Review Article 
+
+# OPUS-V2: Bridging the Gap between Sparse Points and Dense Voxels 
+
+Jiabao Wang 1, Qiang Meng 2, Liujiang Yan 3, Ke Wang 3, Qibin Hou 1(B), Ming-Ming Cheng 1
+
+© The Author(s) 
+
+Abstract The point-based occupancy prediction paradigm has achieved an attractive trade-off between accuracy and efficiency by modeling 3D space sparsely. However, its predic-tions inherently mismatch the dense voxel-based occupancy required by self-driving systems, necessitating hand-crafted heuristics during training and inferencing that limit final performance. To overcome these limitations, we propose OPUS-V2, a novel framework built upon the pioneering OPUS (occupancy prediction using a sparse set) point-based approach. OPUS-V2 incorporates a lightweight point-voxel transformation module behind the decoder to adaptively map sparse predictions into the dense voxel space, elimi-nating the need for suboptimal operations and improving model accuracy. Furthermore, our architecture decouples feature and occupancy generation processes, allowing OPUS-V2 to adapt to arbitrary occupancy resolutions. OPUS-V2 achieves a state-of-the-art rayIoU of 44.0 on the Occ3D dataset. On the more challenging OpenOccupancy dataset, it attains a competitive 16.4 mIoU while running in real-time at 20.6 FPS. Our code and models are publicly available at https://github.com/NK-JittorCV/nk-occupancy. 
+
+Keywords autonomous driving, occupancy prediction, sparse prediction, transformer 
+
+# 1 Introduction 
+
+Predicting the occupancy status within a voxelized 3D envi-ronment [1, 2] facilitates the recognition of unconventional 
+
+1 VCIP, Nankai University, Tianjin, 300350, China. E-mail: Jiabao Wang, jbwang@mail.nankai.edu.cn; Qibin Hou, houqb@nankai.edu.cn; Ming-Ming Cheng, cmm@nankai.edu.cn. 
+
+2 Momenta, Beijing, 102200, China. E-mail: Qiang Meng, qiang.meng@momenta.ai. 
+
+3 KargoBot, Beijing, 102200, China. E-mail: Liujiang Yan, yanli-ujiang@kargobot.ai; Ke Wang, wangke@kargobot.ai. Manuscript received: 2025-01-01; accepted: 2025-01-01 (b) OPUS-V2 
+
+testing &training 
+
+dense voxels sparse points 
+
+dense voxels 
+
+testing training 
+
+(a) OPUS 
+
+sparse points 
+
+Point-Voxel Transformation (PVT) 
+
+dense voxels 
+
+nearest-neighbor 
+
+post-processing 
+
+predictions ground truths predictions ground truths 
+
+Fig. 1 Comparison of OPUS and OPUS-V2 pipelines. (a) OPUS needs suboptimal operations, such as a nearest-neighbor strategy in training and handcrafted post-processing in testing. In contrast, (b) OPUS-V2 leverages PVT to adaptively transform sparse predictions into the voxel space, facilitating direct interaction between predic-tions and ground truth. 
+
+obstacles, thereby significantly enhancing the safety of au-tonomous driving systems. For a long time, this task has been treated as voxel-wise dense semantic segmentation [3–6], which is widely criticized for massively wasting computa-tional resources in unoccupied regions [7]. Recent advances have moved beyond the voxel-based paradigm to model the 3D world using sparse descriptors, including point sets [8–10], Gaussians [11–13], and superquadrics [14]. Among these representations, point-based modeling provides precise occu-pancy boundaries while maintaining high sparsity, enabling an effective trade-off between accuracy and efficiency. However, autonomous driving systems ultimately re-quire dense voxel-based predictions for downstream plan-ning [16, 17], necessitating a conversion between point and voxel representations. As illustrated in Fig. 1(a), current point-based approaches utilize deficient heuristics to bridge this representation gap, causing several problems. (i) The one-to-one correspondence between the predictions and the ground truth no longer exists. Models must employ a hand-crafted la-bel assignment strategy during training, e.g. nearest-neighbor arXiv:2608.29187v1 [cs.CV] 29 Aug 2026 2 Jiabao Wang, Qiang Meng, Liujiang Yan, Ke Wang, Qibin Hou, Ming-Ming Cheng FB-Occ BEVFormer 
+
+> OPUS-V2
+> ALOcc BEVDet-Occ OPUS SparseOcc FlashOcc
+
+(a) 
+
+> OPUS-V2
+> ALOcc OPUS FlashOcc SparseOcc FB-Occ BEVFormer BEVDet-Occ
+
+(b) (c)  
+
+> Fig. 2 Comparison between OPUS-V2 and previous methods on the Occ3D and OpenOccupancy datasets, evaluated using both mIoU and rayIoU metrics. FPS measurements were conducted on an A100 GPU with PyTorch FP32 precision, except for ALOcc [15], for which FPS was measured on a 4090 GPU and is included for reference.
+
+matching, which typically leads to erroneous supervisory signals and renders the learning process vulnerable to noise. 2) During inferencing, transforming point predictions into the dense voxel grid requires additional manual post-processing, such as voxelization, dilation, and erosion. These operations are inherently approximate and may degrade the fidelity of the reconstructed spatial occupancy. As a result, direct interaction between predictions and annotation is obstructed by heuristic operations in both training and inferencing stages, implicitly limiting the attainable performance of the model. To overcome these limitations, we propose OPUS-V2, a new point-based approach which integrates the pioneer-ing OPUS (occupancy prediction using a sparse set) with direct voxel-based occupancy generation, enabling seam-less interaction with voxel-based ground truth. Inspired by point cloud processing techniques [18, 19], OPUS-V2 in-troduces a new point-voxel transformation (PVT) module to convert 3D points and their corresponding features into voxel-based occupancy in a learnable manner. The PVT module is lightweight, consisting only of two VFE layers [19] and two sparse convolution layers [20], ensuring the overall efficiency of OPUS-V2. Despite its simplicity, the PVT module provides two key advantages. First, as illustrated in Fig. 1(b), the uni-form representation of predictions and ground truth eliminates all manual operations required in the original OPUS, thus increasing the upper performance bound of the model. Sec-ond, OPUS-V2 decouples feature extraction and occupancy generation into decoders and PVT, respectively. This design confines resolution scaling of occupancy predictions within PVT, enabling OPUS-V2 to expand its perceptual range and granularity effortlessly. We have conducted comprehensive experiments on the Occ3D [1] and OpenOccupancy [2] datasets. As Figs. 2(a) and 2(b) show, on Occ3D, our lightest OPUS-V2 outperforms all original OPUS models in both accuracy and speed, un-derscoring the importance of the PVT module. Our largest OPUS-V2 achieves a remarkable mIoU of 38.6 and the highest rayIoU of 44.0, setting a new state-of-the-art using Occ3D. To further validate OPUS-V2’s flexibility in spatial scaling, we evaluated it on OpenOccupancy, which features annota-tions with broader coverage and finer granularity. Despite generating significantly more voxels, OPUS-V2 maintained real-time performance at 20.6 FPS and achieved a leading mIoU of 16.4, as demonstrated in Fig. 2(c), highlighting its efficiency in large-scale occupancy generation. In summary, the contributions of this paper are as follows: 
+
+• The point-based paradigm requires manual alignment of sparse point-based predictions and dense voxel-based ground truth. In this paper, we propose OPUS-V2, a novel architecture equipped with a lightweight PVT module that seamlessly converts sparse points into voxel space, removing the need for manual operations while facilitating occupancy spatial scaling. 
+
+• Extensive experiments on the Occ3D-nuScenes dataset reveal that PVT significantly improves model perfor-mance. Our lightest variant surpasses all original OPUS models of every size. Furthermore, OPUS-V2 achieves state-of-the-art results on the OpenOccupancy dataset with a real-time inference speed of 20.6 FPS, underscor-ing its exceptional efficiency and scalability. OPUS-V2: Bridging the Gap between Sparse Points and Dense Voxels 3
+
+# 2 Related Work 
+
+2.1 Voxel-based Occupancy Prediction 
+
+The occupancy prediction task requires the model to perceive 3D spatial geometry and semantics based on voxels, which are intuitive for analysis and convenient for planning use. Following Tesla AI Day 2022 [21], this task has recently attracted significant interest from both academic and indus-trial communities. Many benchmarks [1, 2, 22, 23] have been proposed by voxelizing LiDAR points in standard self-driving datasets [24–27]. Meanwhile, a series of advances have achieved occupancy prediction by constructing dense 3D features for voxel grids. However, this dense voxel-based paradigm suffers severely from high computational complexity. To alleviate this prob-lem, many works explore more efficient voxel representations. In particular, FlashOcc [28, 29] and TPVFormer [6] compress the dense feature using the bird’s-eye view (BEV) and tri-perspective view (TPV) representation for model efficiency. COTR [30] down-samples the large 3D features and restores the original resolution in the final stage. Recently, several works have leveraged transformers to refine complex geomet-ric information. For instance, VoxFormer [31] initiates sparse queries through a pre-task of depth estimation to focus on feature refinement at occupied regions. SparseOcc proposed by Liu et al. [7] uses a series of decoders to filter out empty cells and only predicts the occupation statuses of the retained voxels. While these approaches have succeeded in reducing computational costs, they either sacrifice 3D features or re-quire intricate space modeling, leading to an inferior trade-off between accuracy and efficiency. 
+
+2.2 Sparse Representation of Occupancy 
+
+Recently, many works have proposed alternative sparse oc-cupancy representations to achieve greater efficiency. Some of them describe occupancy as Gaussian kernels, inspired by the popular Gaussian splatting method [13]. In particular, GaussianFormer [11] first uses queries to aggregate image in-formation via attention, then generates Gaussian kernels. The subsequent GaussianFormer-2 [12] further reduces the num-ber of kernels, thus improving its efficiency. GaussianAD [32] finally provided the first Gaussian-based end-to-end driving model. In addition, the Gaussian representation is widely used in the weakly supervised and self-supervised occupancy pre-diction tasks, due to its ability to connect 3D and 2D spaces. For example, GSRender [33] generates Gaussian kernels in each voxel and weakly supervises them using 2D depth and semantic maps. The Gaussian-based representation is more flexible than voxels, but its inductive ellipsoidal shape limits the modeling of diverse structures. Meanwhile, OPUS [8] formulates occupancy prediction as a point set prediction task, establishing a new point-based paradigm. Sparse points can express arbitrary shapes, therefore eliminating the need for complex space modeling or sparsification procedures. Following this paradigm, ODG [34] combines point and Gaussian representations and further divided queries into dynamic and static components to process movable objects. SparseWorld [9] builds a 4D occupancy world model by modeling occupancy as points. DiScene [10] extends the point-based paradigm to the indoor occupancy prediction task. Despite these successes, the point-based paradigm contains many manual operations, which limit their accuracy. 
+
+2.3 Set Prediction with Transformers 
+
+Our method is based on the point-based occupancy prediction paradigm OPUS, which inherits the end-to-end set prediction framework of SparseBEV [35]. The set prediction framework was first introduced by DETR [36], in which a collection of sparse queries produces an unordered set of outputs through feature interactions in transformer decoders. Leveraging the strong modeling capacity of transformers, DETR dispenses with laborious post-processing steps such as NMS, achieving a clean end-to-end pipeline. Following DETR, many vari-ants [37–43] have been proposed to enhance performance and training efficiency. This sparse-query paradigm has also demonstrated its effectiveness in 3D object detection [35, 44– 47], where each query represents the 3D attributes of a specific object. However, transformer-based set prediction has been largely restricted to object detection scenarios, primarily due to constraints on number of queries. OPUS effectively reduces the number of queries by predicting multiple points within a single query, marking the first introduction of set prediction into occupancy tasks. 
+
+# 3 Method 
+
+3.1 Preliminaries 
+
+In this section, we first briefly revisit the point-based paradigm proposed by OPUS and then analyze the inherent problem of heuristic operations. 
+
+3.1.1 Point-based occupancy prediction paradigm 
+
+To reduce redundancy in voxel-based methods, OPUS re-formulates occupancy prediction as a point set prediction task. Given voxel-based annotations Og ∈ RH×W ×Z , the model first collects occupied voxels as a set of points 4 Jiabao Wang, Qiang Meng, Liujiang Yan, Ke Wang, Qibin Hou, Ming-Ming Cheng 
+
+Vg = {(pn 
+
+> g
+
+, cn 
+
+> g
+
+)}Vg
+
+> n=1
+
+. In each entry (pg, cg) ∈ V g, pg repre-sents the 3D coordinates of a voxel center, while cg stores the semantic class of the voxel. Consequently, the goal of OPUS is to generate V = {(pn, cn)}Vn=1 to mimic the distribution of Vg.In pursuit of training efficiency, OPUS decouples the task into separate regression and classification objectives. Specifically, V and Vg are divided into the set of positions 
+
+P = {pn}Vn=1 and semantic labels C = {cn}Vn=1 , respec-tively. For regression, OPUS employs the well-proven chamfer distance loss to minimize discrepancy, formulated as: CD (P, Pg) = 1
+
+V
+
+X
+
+> p∈P
+
+D(p, Pg) + 1
+
+Vg
+
+X
+
+> pg∈P g
+
+D(pg, P),
+
+where D(x, Y) = min  
+
+> y∈Y
+
+|| x − y|| 1. (1) Regarding the classification objective, OPUS leverages the nearest-neighbor strategy to construct a proxy ˆVg, where 
+
+ˆVg =
+
+(
+
+(p, ˆc) p ∈ P p, (ˆ p, ˆc) = arg min 
+
+> (pg,cg)∈V g
+
+∥pg − p∥2
+
+)
+
+.
+
+(2) The ˆCg = {ˆcn}Vn=1 are used to supervise the learning of C.During testing, OPUS applies a series of post-processing steps to convert sparse point-based predictions into voxel-based occupancy. The model first removes low-quality points from V and then voxelizes the remainder into a dense oc-cupancy ˆO ∈ RH×W ×Z . A denser prediction is produced by performing 3D dilation and erosion through max-pooling operations, which can be described as 
+
+ˆO′ = MaxPool3D ( ˆO) (dilation) ,
+
+ˆO′ = 1 − MaxPool3D (1 − ˆO′) (erosion) . (3) Finally, the evaluation process compares the post-processed predictions ˆO with the ground truths Og.
+
+3.1.2 The problem of heuristic operations 
+
+By reformulating occupancy prediction as a point set predic-tion task, OPUS avoids complex model design and signifi-cantly improves efficiency. However, this task reformulation also leads to a gap between predictions and ground truths. As stated above, OPUS predicts a set of sparse points V,which cannot be directly associated with dense Og. There-fore, the model must utilize hand-crafted operations, such as the nearest-neighbor strategy to construct the proxy ˆVg in training and the post-processing for producing ˆOp, to align the format of predictions and ground truths, so that training and testing can proceed. However, these hand-made operations are inherently sub-optimal: the nearest-neighbor strategy only takes into account  
+
+> Fig. 3 Numbers of mislabeled voxels in post-processing on the Occ3D dataset. We count mislabeled voxels whose occupancy status is correctly represented by predicted points but misclassified in post-processing.
+
+the label of the closest occupied voxel, and ignores the sur-rounding information. Moreover, its local optimum property makes the proxy ˆVg sensitive to prediction variants, leading to training instability. The post-processing pipeline is also approximate and inaccurate. We analyze the number of voxels whose occupancy status can be correctly represented by point predictions of OPUS-L but incorrectly stated in the final ˆOin Fig. 3: the post-processing mislabels more than 2K voxels in most scenes and, in some cases, over 10K voxels, hindering OPUS from performing better. 
+
+3.2 Design of OPUS-V2 
+
+To mitigate this problem, we introduce OPUS-V2, which integrates the newly proposed point-voxel transformation (PVT) module to transform sparse point predictions into dense voxel-based occupancy. As Fig. 4 shows, OPUS-V2 has three main parts. Initially, multi-view images are delivered to the image encoder to produce image features. Subsequently, a set of queries Q and corresponding positions P are initiated to iteratively aggregate geometry and semantic information from image features through a sequence of decoder layers. Instead of predicting explicit classification scores in OPUS, each decoder in OPUS-V2 generates a set of points with latent features F. Finally, P and F are fed into PVT to generate voxel-based occupancy predictions O. We next provide a detailed description of the decoder and PVT in OPUS-V2. 
+
+3.2.1 Notation 
+
+We denote the queries and point positions before feeding into decoders as Q0, P0, which are separately zero and uniformly initialized at the beginning of the training stage. In the i-th decoder, query features and point positions are updated to 
+
+Qi, Pi, and meanwhile a set of latent features Fi is produced. OPUS-V2: Bridging the Gap between Sparse Points and Dense Voxels 5`
+
+# ``
+
+Consistent Point Sampling Adaptive Mixing Add & Norm Add & Norm & MLP 
+
+Adaptive Self Attention Add & Norm Feed-Forward Network multi-camera images 
+
+Image Encoder Previous Layer Next Layer image features Decoder Layer i 
+
+PVT Module   
+
+> sparse dense
+> sparse dense
+
+SparseConv3D 
+
+SubMConv3D 
+
+𝑄 × 𝑅௜ × 𝐶ௗ 
+
+sparse features sparse points 
+
+𝑄 × 𝑅௜ × 3 
+
+sparse voxel features voxel-based predictions 
+
+VFE Layers 2densified features 
+
+PVT Module  
+
+> Fig. 4 OPUS-V2 employs a three-stage pipeline: (1) an image encoder to extract multi-view image features, (2) a series of decoders to produce 3D sparse points with corresponding latent features, and (3) a lightweight PVT module that adaptively transforms these sparse features into dense voxel space to produce the final occupancy predictions.
+
+The length of these sets is Q, corresponding to the number of queries. Each query feature qi ∈ Q i, i ∈ { 0, · · · , 5} is a vector of length 256. Following OPUS, each qi in OPUS-V2 predicts Ri points. Therefore, pi ∈ P i and fi ∈ F i have shapes of Ri × 3 and Ri × F , where F represents the channel size of each point feature. 
+
+3.2.2 Decoder structure 
+
+The decoder in OPUS-V2 inherits its main structure from OPUS, with a minor upgrade to its consistent point sampling mechanism. For a given query qi−1 ∈ Q i−1 and correspond-ing point predictions pi−1 ∈ P i−1, the i-th decoder first extracts image features related to qi−1 by consistent point sampling. Specifically, the model samples S points using: 
+
+si−1 = μ(pi−1) + t · σ(pi−1) + ϕ(qi−1), (4) where μ(·) and σ(·) calculate the mean and standard deviation of the input positions, and ϕ(·) is a linear layer to generate sampling offsets from the query features. Instead of directly multiplying ϕ(qi−1) and σ(pi−1) as in OPUS, OPUS-V2 employs S learnable prototype sampling points t re-weighted by σ(pi−1) to inherit the dispersion degree from pi−1, which prevents gradient vanishing in ϕ(·). These sampled points are finally projected into the 2D image space to interpolate the related features. Subsequently, the query feature is updated to qi with adaptive mixing of the sampled features and queries, self-attention between all queries, and FFN, which are analogous to those in SparseBEV [35]. In the end, two branches of MLP applied to qi generate the offsets ∆pi
+
+(of size Ri × 3) used to update point positions through 
+
+pi = μ(pi−1) + ∆ pi, and the latent features of each point 
+
+fi (size Ri × F ). 
+
+3.2.3 The point-voxel transformation module 
+
+The sparse points predicted by the decoder cannot be directly associated with the ground truth. In OPUS-V2, we place the point-voxel transformation (PVT) module after the decoder to adaptively transform sparse point predictions into voxel-based occupancy. For given predictions pi ∈ P i and fi ∈ F i of the i-th decoder, we first construct point features f ′ 
+
+> i
+
+∈ F ′
+
+> i
+
+that contain position and semantic information. These can be formulated as: 
+
+f ′ 
+
+> i
+
+= [ pi − μ(pi), pi − d(pi), fi]. (5) Here, we incorporate relative positions from the query center 
+
+μ(pi) and the corresponding voxel center d(pi) into the point features, which has been shown to be beneficial in experi-ments. Subsequently, a series of dynamic VFE [19] layers aggregate the point features F′ 
+
+> i
+
+into voxel-wise represen-tations. For points within the same voxel, these layers first 6 Jiabao Wang, Qiang Meng, Liujiang Yan, Ke Wang, Qibin Hou, Ming-Ming Cheng sparse points 
+
+ground truths 
+
+regression supervision (CD Loss) classification supervision (Focal Loss) 
+
+OPUS-V2 predictions 
+
+center positions dense voxels semantic labels 
+
+Decoder PVT  
+
+> Fig. 5 Training objectives in OPUS-V2. We separately supervise the sparse and dense predictions of decoders and PVT by the center points of occupied voxels and semantic labels of voxelized annotations.
+
+refine individual point features using a fully connected net-work (FCN) and then apply max-pooling to generate a single feature vector per voxel. The generated voxel features are organized as a sparse tensor. Ultimately, to efficiently generate the final voxel-based predictions Oi, we employ two sparse convolution layers [20] with a kernel size of 3. The first layer is a SparseConv3D, which propagates information to empty voxels, analogous to the densification step in OPUS. This is followed by a SubMConv3D layer that performs computations only on non-empty voxels, thereby conserving computational resources. The PVT module serves as a bridge between the sparse point predictions of decoders and the dense voxel-based occupancy required for self-driving systems, which assists OPUS-V2 in two ways. 
+
+• Omitting manual operations. With the help of the PVT module, OPUS-V2 can generate voxel-based occupancy, enabling direct interaction between predictions and ground truth rather than building handcrafted inter-mediates, thus improving model accuracy. For example, OPUS-V2 no longer needs to construct a proxy ˆVg for classification training. The sparse point predictions are voxelized and densified in a learnable manner, eliminat-ing the need for hand-crafted post-processing. 
+
+• Flexibility in spatial scaling of occupancy. In addition, OPUS-V2 decouples feature extraction and dense occu-pancy generation. The perceptual range and granularity of occupancy only affect the process of dense-occupancy generation in PVT. In other words, while keeping the number of sparse points, OPUS-V2 can easily increase the occupancy resolution by modifying hyperparameters in the lightweight PVT module. 
+
+3.2.4 Training objectives 
+
+We simultaneously supervise the sparse and dense predictions of OPUS-V2 with the geometric and semantic ground truth in-formation as illustrated in Fig. 5. For sparse point predictions, following the operation in OPUS, we implement a re-weighted chamfer distance loss between the sets of predicted points P
+
+and occupied voxel centers Pg so that the predictions have a similar geometric distribution to the ground truth, which can be described as: CD R(P, Pg) = 1
+
+V
+
+X
+
+> p∈P
+
+DR(p, Pg) + 1
+
+Vg
+
+X
+
+> pg∈P g
+
+DR(pg, P),
+
+where DR(x, Y) = W (d)d, d = min  
+
+> y∈Y
+
+|| x − y|| 1. (6) Here, W (d) is a re-weighting function penalizing points with large errors. The specific design of W (d) is provided later. On the other hand, the dense voxel-based predictions O
+
+correspond one-to-one to ground truth values Og. Therefore, we directly employ a focal loss with class balance weights to optimize the learning of dense voxel-based predictions. In the end, the training objectives of OPUS-V2 become: 
+
+L =
+
+> 5
+
+X
+
+> i=1
+
+(CD R(Pi, Pg) + FocalLoss R(Oi, Og)) + CD R(P0, Pg), (7) which includes regression and classification losses at every stage, along with an additional CD R(P0, Pg) term to optimize the distribution of initial positions P0.
+
+3.2.5 PVT and other sparse voxel-based models 
+
+The PVT module, as a sparse voxel-based network, is struc-turally similar to previous sparse voxel-based occupancy predictors, like SparseOcc proposed by Tang et al. [48]. However, their underlying approaches differ significantly. Specifically, for occupancy prediction, OPUS-V2 focuses on generating 3D points from 2D image features using trans-former decoders. With guidance from chamfer distance loss, these points can already accurately capture scene geometry and corresponding semantic information. In contrast to heavy decoders, PVT consists only of two VFE layers and two OPUS-V2: Bridging the Gap between Sparse Points and Dense Voxels 7                                                
+
+> Table 1 Configurations for different models. Q,S,Frepresent the numbers of queries, sampling points in each query, and channel size of predicted point features. Riindicates the number of points predicted by a single query in the i-th decoder. Model QSF#points in each stage
+> R1R2R3R4R5
+> OPUS-V2-T 600 432 816 32 64 128 OPUS-V2-S 1200 232 4816 32 64 OPUS-V2-M 2400 232 24816 32 OPUS-V2-L 4800 232 124816
+
+sparse convolutional layers. Due to its limited capacity, it acts merely as a learnable post-processing step that refines the decoders’ outputs into dense voxel-based predictions. This stands in contrast to previous sparse voxel-based methods, which typically employ complex sparse voxel-based heads to extract per-voxel information from 3D dense features. Their contribution lies in designing the head structure, rather than learning explicit geometry as OPUS-V2 does. 
+
+# 4 Experiments 
+
+4.1 Experimental Setup 
+
+4.1.1 Datasets 
+
+We have evaluated our model on two large-scale driving benchmarks: Occ3D [1] and OpenOccupancy [2]. Occ3D provides occupancy labels with a voxel size of 0.4 m and a perceptual range of ±40 m for 18 classes (1 free class and 17 semantic classes) on the nuScenes [24] benchmark. In contrast, OpenOccupancy provides much finer occupancy annotations for 17 classes (1 free class and 16 semantic classes), extending the perceptual range to ±51 .4 m and reducing the voxel size to 0.2 m. Following nuScenes, both datasets are split into 750, 150, and 150 driving scenes for training, validation, and testing, respectively. 
+
+4.1.2 Metrics 
+
+The commonly used mIoU metric was utilized for evaluation on both datasets. In particular, Occ3D ignores unseen regions through camera masks, while OpenOccupancy removes areas labeled as ‘noise’. Recently, a new rayIoU [7] has been proposed as a remedy, as the mIoU metric can be easily overestimated. Therefore, we also report rayIoU results for different distance thresholds (1 m, 2 m, and 4 m) on the Occ3D dataset, denoted rayIoU 1m , rayIoU 2m , and rayIoU 4m ,respectively. The final rayIoU score is the average of these three values. 
+
+4.1.3 Implementation details 
+
+Following the common setting of the previous work [7], we resized images to 704 × 256 and extracted features using a ResNet50 [60] backbone. In addition to resizing and flipping image augmentations, a random occupancy flipping was implemented to enhance the diversity of the ground truth. Like OPUS, we set up a series of models with 0.6K, 1.2K, 2.4K, and 4.8K queries (see Tab. 1), denoted OPUS-V2-T, OPUS-V2-S, OPUS-V2-M, and OPUS-V2-L, respectively. Queries at the same stage of one model predict an equal number of points. The predicted number of points increases gradually across stages, totaling 76.8K points in the final stage. Except for OPUS-V2-T, all models sampled 2 points in each query in consistent point sampling. All models were trained on 8 Nvidia A100-40G GPUs with a batch size of 8 using the AdamW [61] optimizer. The learning rate increased to 1×10 −4 over the first 500 iterations and then decayed using a cosine annealing [62] scheme. Unless otherwise stated, we trained all models for 50 epochs. 
+
+4.1.4 Loss reweighting 
+
+We adopted two reweighting strategies for the chamfer dis-tance loss. First, if a ground truth voxel was not occupied by any predicted point, we increased its weight by 5 to ensure that all ground truth voxels were covered by predicted points. Then, for voxels belonging to categories with very low ap-pearance frequency, such as ‘others’, ‘bicycle’, ‘construction vehicle’, and ‘traffic cone’, we also increase their weight by 5. For the focal Loss, we assigned different weights to voxels based on category frequency. Voxels from the most frequent categories, e.g. , ‘drivable surface’, ‘sidewalk’, ‘manmade’, and ‘terrain’ received a weight of 1. Categories with relatively low frequency, including ‘barrier’, ‘bus’, ‘car’, ‘pedestrian’, ‘trailer’, ‘truck’, and ‘other flat’, were assigned a weight of 5. The remaining infrequent categories, including ‘others’, ‘bicycle’, ‘construction vehicle’, ‘motorcycle’, and ‘traffic cone’, were given a weight of 10. 
+
+4.2 Main Results 
+
+4.2.1 Results on the Occ3D dataset 
+
+We first compared the newly proposed OPUS-V2 to the original OPUS on the Occ3D-nuScenes dataset. As reported in Tab. 2, OPUS-V2 achieved much better results than the original OPUS, where even the lightest OPUS-V2-T attained an mIoU of 36.5 and a rayIoU of 42.0, outperforming the heaviest original OPUS model. The heaviest OPUS-V2-L model achieved an mIoU of 38.6 and a rayIoU of 44.0, exceeding the performance of OPUS-L by 2.4 in mIoU and 2.8 in rayIoU. In addition, due to the reduction of the decoders (5 in OPUS-V2, 6 in OPUS) as reported in Tab. 1, the inferencing speed of OPUS-V2 is also greater. Currently, OPUS-V2-T can reach 25.8 FPS, faster than OPUS-T by a large margin, and even OPUS-V2-L with 4.8K queries can run at 8.6 FPS. 8 Jiabao Wang, Qiang Meng, Liujiang Yan, Ke Wang, Qibin Hou, Ming-Ming Cheng 
+
+Table 2 Occupancy prediction performance on the Occ3D dataset. The best result in each column is highlighted in bold. Models using temporal fusion over 8 and 16 frames are denoted by ‘8f’ and ‘16f,’ respectively. Some models implement CBGS [49], which extends the training duration by nearly 4.5 times (marked with ∗). All FPS results are sourced from their corresponding papers. Most were measured on an A100 GPU unless otherwise noted; ALOcc (marked with †) was measured on an RTX 4090. Methods Input Backbone Image Size Epoch Vis. Mask mIoU rayIoU 1m rayIoU 2m rayIoU 4m rayIoU FPS RenderOcc [50] C Swin-B 1408 × 512 12 ✓ 24.5 13.4 19.6 25.5 19.5 -BEVFormer [51] C R101 1600 × 900 24 ✓ 39.3 26.1 32.9 38.0 32.4 3.0 BEVDet-Occ [52] C R50 704 × 256 90 ✓ 36.1 23.6 30.0 35.1 29.6 2.6 BEVDet-Occ (8f) [52] C R50 704 × 384 90 ✓ 39.3 26.6 33.1 38.2 32.6 0.8 FB-Occ (16f) [4] C R50 704 × 256 80 ∗ ✓ 39.1 26.7 34.1 39.7 33.5 10.3 SparseOcc (8f) [7] C R50 704 × 256 12 - 30.9 28.0 34.7 39.4 34.0 17.3 SparseOcc (8f) [7] C R50 704 × 256 60 - - - - - 37.7 17.3 SparseOcc (16f) [7] C R50 704 × 256 12 - 30.6 29.1 35.8 40.3 35.1 12.5 P-FlashOcc-Tiny (1f) [29] C R50 704 × 256 24 - 29.1 29.1 35.7 39.7 34.8 43.9 
+
+P-FlashOcc (1f) [29] C R50 704 × 256 24 - 29.4 29.4 36.0 40.1 35.2 38.7 P-FlashOcc (2f) [29] C R50 704 × 256 24 - 30.3 31.2 37.6 41.5 36.8 35.9 P-FlashOcc (8f) [29] C R50 704 × 256 24 - 31.6 32.8 39.3 43.4 38.5 35.6 ODG-T (8f) [34] C R50 704 × 256 100 - 35.5 - - - 39.2 20.1 ODG-L (8f) [34] C R50 704 × 256 100 - 38.2 - - - 42.3 4.9 STCOcc (8f) [53] C R50 704 × 256 36 - - 36.2 42.7 46.4 41.7 -ALOcc-2D-mini (16f) [15] C R50 704 × 256 54 ∗ - 33.4 32.9 40.1 44.8 39.3 30.5 †
+
+ALOcc-2D (16f) [15] C R50 704 × 256 54 ∗ - 37.4 37.1 43.8 48.2 43.0 8.2 †
+
+ALOcc-3D (16f) [15] C R50 704 × 256 54 ∗ - 38.0 37.8 44.7 48.8 43.7 6.0 †
+
+DAOcc [54] C&L R50 704 × 256 27 ∗ - - - - - 48.4 7.8 †
+
+SGDOcc [55] C&L R50 704 × 256 36 ✓ 51.7 - - - - -OPUS-T (8f) [8] C R50 704 × 256 100 - 33.2 31.7 39.2 44.3 38.4 22.4 OPUS-S (8f) [8] C R50 704 × 256 100 - 34.2 32.6 39.9 44.7 39.1 20.7 OPUS-M (8f) [8] C R50 704 × 256 100 - 35.6 33.7 41.1 46.0 40.3 13.4 OPUS-L (8f) [8] C R50 704 × 256 100 - 36.2 34.7 42.1 46.7 41.2 7.2 OPUS-V2-T (8f) C R50 704 × 256 50 - 35.6 34.6 41.7 46.5 41.0 25.8 OPUS-V2-S (8f) C R50 704 × 256 50 - 36.6 35.7 42.9 47.3 42.0 23.7 OPUS-V2-M (8f) C R50 704 × 256 50 - 37.2 36.3 43.4 47.8 42.5 16.0 OPUS-V2-L (8f) C R50 704 × 256 50 - 38.4 37.5 44.4 48.7 43.6 8.6 OPUS-V2-T (8f) C R50 704 × 256 100 - 36.5 35.8 42.8 47.3 42.0 25.8 OPUS-V2-S (8f) C R50 704 × 256 100 - 37.3 36.7 43.5 47.8 42.7 23.7 OPUS-V2-M (8f) C R50 704 × 256 100 - 37.7 37.2 44.3 48.5 43.3 16.0 OPUS-V2-L (8f) C R50 704 × 256 100 - 38.6 38.0 45.0 49.2 44.0 8.6 
+
+A known limitation of the original OPUS is its slow con-vergence. Our experiments indicated that this issue was sig-nificantly mitigated in OPUS-V2, which achieved strong performance after only 50 epochs of training. As Tab. 2 shows, a 50-epoch OPUS-V2 achieved a rayIoU of 43.6, which is only 0.4 lower than its 100-epoch counterpart. We attribute this improved training efficiency to the removal of the unstable nearest-neighbor matching strategy. We further compared OPUS-V2 to prior state-of-the-art methods. Our method not only achieved superior performance in terms of rayIoU at real-time speed, but also achieved com-petitive results in terms of mIoU. Specifically, the OPUS-V2-T variant achieved 25.8 FPS, outperforming most methods in speed except for the speed-optimized FlashOcc series, while surpassing FlashOcc in accuracy by up to 3.5 rayIoU. As the number of queries increased, OPUS-V2 outperformed all previous camera-only models while maintaining a com-mendable speed. The largest variant, OPUS-V2-L, achieved a state-of-the-art rayIoU of 44.0, surpassing the best prior model, ALOcc [15], in both accuracy and speed. Notably, although trained without camera masks, OPUS-V2 achieves an mIoU of 38.6, a significant improvement over the original OPUS and only marginally lower (by less than 1 mIoU) than models that utilize masks. 
+
+4.2.2 Results on the OpenOccupancy dataset 
+
+Compared to Occ3D, OpenOccupancy features a wider per-ceptual range and finer voxel granularity, presenting a signifi-cant challenge to model efficiency. We next tested OPUS-V2 on the OpenOccupancy dataset to further prove its flexibility in spatial scaling. As Tab. 3 shows, the lightest OPUS-V2-T attained an mIoU of 16.4, even surpassing some previ-ous LiDAR-based methods, including AICNet [57], LM-OPUS-V2: Bridging the Gap between Sparse Points and Dense Voxels 9
+
+Table 3 Occupancy prediction performance on the OpenOccupancy dataset. The best result in each column is highlighted in bold. The results of previous methods are taken from the papers of OpenOccupancy and SparseOcc proposed by Tang et al. FPS results of OPUS-V2 are measured on an A100 GPU. Method Input IoU mIoU barrier bicycle bus car const. veh. motorcycle pedestrian traffic cone trailer truck drive. suf. other flat sidewalk terrain manmade vegetation FPS MonoScene [3] C 18.4 6.9 7.1 3.9 9.3 7.2 5.6 3.0 5.9 4.4 4.9 4.2 14.9 6.3 7.9 7.4 10.0 7.6 -TPVFormer [6] C 15.3 7.8 9.3 4.1 11.3 10.1 5.2 4.3 5.9 5.3 6.8 6.5 13.6 9.0 8.3 8.0 9.2 8.2 -C-CONet [2] C 20.1 12.8 13.2 8.1 15.4 17.2 6.3 11.2 10.0 8.3 4.7 12.1 31.4 18.8 18.7 16.3 4.8 8.2 -SparseOcc [48] C 21.8 14.1 16.1 9.3 15.1 18.6 7.3 9.4 11.2 9.4 7.2 13.0 31.8 21.7 20.7 18.8 6.1 10.6 -3DSketch [56] C&D 25.6 10.7 12.0 5.1 10.7 12.4 6.5 4.0 5.0 6.3 8.0 7.2 21.8 14.8 13.0 11.8 12.0 21.2 -AICNet [57] C&D 23.8 10.6 11.5 4.0 11.8 12.3 5.1 3.8 6.2 6.0 8.2 7.5 24.1 13.0 12.8 11.5 11.6 20.2 -LMSCNet [58] L 27.3 11.5 12.4 4.2 12.8 12.1 6.2 4.7 6.2 6.3 8.8 7.2 24.2 12.3 16.6 14.1 13.9 22.2 -LS3C-Net [59] L 30.2 12.5 14.2 3.4 13.6 12.0 7.2 4.3 7.3 6.8 9.2 9.1 27.9 15.3 14.9 16.2 14.0 24.9 -L-CONet [2] L 30.9 15.8 17.5 5.2 13.3 18.1 7.8 5.4 9.6 5.6 13.2 13.6 34.9 21.5 22.4 21.7 19.2 23.5 -OPUS-V2-T C 27.4 16.4 17.5 7.5 16.2 18.9 10.4 11.7 6.9 6.5 8.2 14.9 39.3 27.3 25.4 23.2 11.7 16.4 20.6 
+
+OPUS-V2-S C 27.6 16.7 17.0 9.1 15.8 19.2 10.1 12.7 8.1 8.0 8.1 14.9 39.6 27.0 25.8 23.8 11.6 16.6 19.2 OPUS-V2-M C 27.9 17.4 18.5 11.2 15.9 19.5 10.5 13.8 9.4 9.3 8.2 15.3 39.8 27.5 26.2 23.8 12.4 17.1 13.7 OPUS-V2-L C 28.7 18.1 19.3 11.5 16.4 19.9 11.8 15.0 10.0 10.6 8.4 15.8 39.9 27.7 26.8 24.5 13.9 18.0 8.0 
+
+Table 4 Comparison of the sparse voxel-based method for different input image resolutions. The results of SparseOcc by Tang et al. were obtained from their original paper. FPS results were measured on a RTX 4090 GPU. models Image Size IoU mIoU Mem. (GB) FPS SparseOcc [48] 704 × 256 21.8 14.1 13.0 -
+
+1600 × 900 20.4 14.6 - -OPUS-V2-T 704 × 256 24.8 15.1 2.3 24.2 
+
+1600 × 900 26.2 15.7 11.6 6.9 
+
+SCNet [58], and L-CONet [2]. The heaviest model reached 18.1 mIoU, establishing a new maximum for camera-based methods with a 4 mIoU advantage. OPUS-V2 divides the processes of feature extraction and occupancy prediction into decoders and PVT modules, allow-ing the model to increase the resolution of predicted occu-pancy at low cost. In experiments, we transferred OPUS-V2 models from Occ3D to OpenOccupancy only by enlarging the PVT module. Despite the volume of occupancy predictions increasing by more than 8 times, OPUS-V2 still maintained real-time performance, with OPUS-V2-T reaching 20.6 FPS and OPUS-V2-L reaching 8.0 FPS, further demonstrating the high efficiency of OPUS-V2. 
+
+4.3 Ablation and Related Studies 
+
+We next present some ablation and related studies of OPUS-V2. 
+
+4.3.1 Comparison of sparse voxel-based methods 
+
+We compared the results of OPUS-V2-T and SparseOcc proposed by Tang et al. on the OpenOccupancy-nuScenes dataset under different input image resolutions. To ensure 
+
+Table 5 Ablation studies for different training and testing strategies. ‘NN’ means using the proxy constructed by the nearest-neighbor in classification training. ‘PVT’ means employing the PVT module in model. index NN PVT rayIoU 1m rayIoU 2m rayIoU 4m rayIoU (I) ✓ 30.3 38.0 43.1 37.2 (II) ✓ ✓ 34.0 41.3 46.2 40.6 (III) ✓ 34.6 41.7 46.5 41.0 
+
+Table 6 Ablation studies for components in point features. f
+
+denotes the semantic features predicted by decoders; pc and pv
+
+denote relative positions from corresponding query centers and voxel centers, respectively. 
+
+f pc pv rayIoU 1m rayIoU 2m rayIoU 4m rayIoU 
+
+✓ 33.6 41.0 45.9 40.2 
+
+✓ ✓ 34.5 41.6 46.5 40.9 
+
+✓ ✓ ✓ 34.6 41.7 46.5 41.0 
+
+fairness, our model was also trained for 30 epochs using single-frame input. Our experimental results are shown in Table 4. With the same training strategy, OPUS-V2-T achieved 15.1 mIoU, outperforming SparseOcc, demonstrating the advantage of OPUS-V2 over standard sparse voxel-based methods. As we increased the resolution of the input image, the performance of OPUS-V2-T further improved to 15.7, indicating that OPUS-V2-T benefits from higher-resolution inputs. Meanwhile, even with the large input size of 1900 ×
+
+600 , OPUS-V2-T maintained 6.9 FPS, further demonstrating its efficiency. 
+
+4.3.2 Influence of manual operations 
+
+We established three models with different training and testing on Occ3D to explore the influence of manual operations. 10 Jiabao Wang, Qiang Meng, Liujiang Yan, Ke Wang, Qibin Hou, Ming-Ming Cheng Model (I), like the original OPUS, only generated sparse point predictions and required manual operations in both training and testing. In contrast, models (II) and (III) employed PVT to directly generate voxel-based occupancy, eliminating the need for hand-crafted post-processing during testing. As Tab. 5 shows, the accuracies of models (II) and (III) are much better than that of model (I), demonstrating the effectiveness of replacing hand-crafted post-processing with the learning-based PVT. In addition, compared to model (II), model (III) further abandoned the proxy built by the nearest-neighbor strategy, leading to a slight improvement in the final result. These results demonstrate that manual operations during training also hinder model performance. 
+
+4.3.3 Influence of components in point features 
+
+Tab. 6 lists the results of models with point features composed of different elements. Using only semantic features yielded a rayIoU of 40.2, while incorporating both semantic and positional features improved the score to 41.0, underscoring the benefit of multi-modal information. Further adding both the relative positions from query centers and voxel centers provided an additional gain of 0.1 rayIoU. Based on these findings, our final configuration integrates all semantic and positional information to construct the point features. 
+
+4.3.4 Effect of the number of decoders 
+
+We conducted a study on the Occ3D dataset using OPUS-V2-T with different numbers of decoder layers, while keeping the final output point count constant for a fair comparison. As Fig. 6 shows, increasing the number of decoders from 3 to 7 leads to a consistent improvement in accuracy at the cost of reduced inferencing speed. This trend indicates that OPUS-V2’s performance has not yet saturated, suggesting potential for further gains. However, we found that a 5-decoder OPUS-V2 already surpasses all 6-decoder variants of the original OPUS. We therefore adopted this as the default configuration, achieving an optimal balance between speed and accuracy. 
+
+4.3.5 Interaction between and sensitivity of different losses 
+
+To analyze the interaction between and sensitivity of the different loss components of OPUS-V2, we plotted curves of chamfer distance loss applied to the sparse predictions and focal loss applied to the dense predictions from the final decoder layer, for varying chamfer distance loss weights. As Fig. 7 shows, both losses decreased smoothly as training progressed. To investigate their mutual influence, we doubled the weight of the chamfer distance loss. In response, the focal loss curve exhibited only a modest increase. This suggests a certain degree of competition between those losses, yet neither exerts a significant adverse impact on the other.   
+
+> Fig. 6 Varying the number of decoders. All models were trained for 50 epochs. FPS results were measured on an A100 GPU.
+> Fig. 7 Convergence of focal loss and chamfer distance loss with weights of chamfer distance loss set to 0.5 and 1.0.
+
+4.4 Visualization 
+
+In this section, we visualize results of OPUS-V2. 
+
+4.4.1 Sparse and dense predictions 
+
+We visualize sparse point-based and dense voxel-based pre-dictions of OPUS-V2 in Fig. 8. For sparse predictions, we illustrate the positions of the set of points. As Fig. 8(above) shows, the predicted points roughly outlined the geometry of the environment, attributed to the supervision of the chamfer distance loss. This allowed the model to focus on occupied re-gions, thereby notably improving its accuracy and efficiency. However, the flexibility of the points also led to uneven den-sity and edge noise. Those problems were alleviated by the subsequent PVT module. The dense predictions illustrated OPUS-V2: Bridging the Gap between Sparse Points and Dense Voxels 11 sparse point-based predictions dense voxel-based predictions      
+
+> Fig. 8 Visualizations of the sparse point-based and dense voxel-based predictions of OPUS-V2. OPUS OPUS-V2 (Occ3D) OPUS-V2 (OpenOcc) ground truth (Occ3D)
+> Fig. 9 Results of the original OPUS and OPUS-V2 trained on Occ3D and OpenOccupancy.
+
+in Fig. 8(below) indicate that PVT is able to suppress noisy points in the sparse predictions and thereby produce improved results. 
+
+4.4.2 Comparison 
+
+We visualize predictions of OPUS and OPUS-V2 within a 
+
+±40 m range. As Fig. 9 shows, OPUS-V2 produced more accurate results, reducing surface holes and edge noise, demonstrating the effectiveness of the PVT. Furthermore, we compare the results of OPUS-V2 trained on Occ3D and OpenOccupancy. The results in the second and third columns of Fig. 9 show that the model trained on OpenOccupancy produced sharper and more precise occupancy predictions, indicating its ability to learn finer geometric details from higher-resolution ground truth. 
+
+# 5 Conclusion 
+
+In this paper, we have introduced OPUS-V2, which further extends the point-based paradigm for occupancy prediction. The core of OPUS-V2 is the PVT module, a learnable module that bridges the representation gap by transforming sparse decoder predictions into dense voxel-based occupancy. This approach enables direct, end-to-end generation of the required dense outputs, eliminating manual post-processing and sig-nificantly boosting performance. Furthermore, by decoupling feature extraction in the decoders from occupancy generation in the PVT module, OPUS-V2 gains the flexibility to readily adapt its output resolution. Extensive experiments on the 12 Jiabao Wang, Qiang Meng, Liujiang Yan, Ke Wang, Qibin Hou, Ming-Ming Cheng Occ3D and OpenOccupancy benchmarks show that OPUS-V2 outperforms prior state-of-the-art methods in accuracy and efficiency, while demonstrating superior scalability. Currently, OPUS-V2 also faces some new challenges. The sparse convolutions in the PVT module make edge device deployment more difficult. In future , we plan to replace the sparse convolutions with 2D convolutions, as in FlashOcc, to facilitate deployment on edge devices. 
+
+References 
+
+[1] Tian X, Jiang T, Yun L, Mao Y, Yang H, Wang Y, Wang Y, Zhao H. Occ3d: A large-scale 3d occupancy prediction bench-mark for autonomous driving. Advances in Neural Information Processing Systems , 2024, 36. [2] Wang X, Zhu Z, Xu W, Zhang Y, Wei Y, Chi X, Ye Y, Du D, Lu J, Wang X. Openoccupancy: A large scale benchmark for surrounding semantic occupancy perception. In Proceedings of the IEEE/CVF International Conference on Computer Vision ,2023, 17850–17859. [3] Cao AQ, De Charette R. Monoscene: Monocular 3d semantic scene completion. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2022, 3991– 4001. [4] Li Z, Yu Z, Austin D, Fang M, Lan S, Kautz J, Alvarez JM. Fb-occ: 3d occupancy prediction based on forward-backward view transformation. arXiv preprint arXiv:2307.01492 , 2023. [5] Zhang Y, Zhu Z, Du D. Occformer: Dual-path transformer for vision-based 3d semantic occupancy prediction. In Proceed-ings of the IEEE/CVF International Conference on Computer Vision , 2023, 9433–9443. [6] Huang Y, Zheng W, Zhang Y, Zhou J, Lu J. Tri-perspective view for vision-based 3d semantic occupancy prediction. In 
+
+Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 2023, 9223–9232. [7] Liu H, Chen Y, Wang H, Yang Z, Li T, Zeng J, Chen L, Li H, Wang L. Fully sparse 3d occupancy prediction. In European Conference on Computer Vision , 2024, 54–71. [8] Wang J, Liu Z, Meng Q, Yan L, Wang K, Yang J, Liu W, Hou Q, Cheng MM. Opus: occupancy prediction using a sparse set. 
+
+Advances in Neural Information Processing Systems , 2024, 37: 119861–119885. [9] Dang C, Liu H, Bao G, An P, Tang X, Ma J, Sun B, Wang Y. SparseWorld: A Flexible, Adaptive, and Efficient 4D Occu-pancy World Model Powered by Sparse and Dynamic Queries. 
+
+arXiv preprint arXiv:2510.17482 , 2025. [10] Li X, Zheng Y, Li P, Chen Y, Zhang YQ, Ding W. Enhancing Indoor Occupancy Prediction via Sparse Query-Based Multi-Level Consistent Knowledge Distillation. IEEE Robotics and Automation Letters , 2025. [11] Huang Y, Zheng W, Zhang Y, Zhou J, Lu J. Gaussianformer: Scene as gaussians for vision-based 3d semantic occupancy prediction. In European Conference on Computer Vision , 2024, 376–393. [12] Huang Y, Thammatadatrakoon A, Zheng W, Zhang Y, Du D, Lu J. Gaussianformer-2: Probabilistic gaussian superposition for efficient 3d occupancy prediction. In Proceedings of the Computer Vision and Pattern Recognition Conference , 2025, 27477–27486. [13] Kerbl B, Kopanas G, Leimk¨ uhler T, Drettakis G. 3D Gaus-sian Splatting for Real-Time Radiance Field Rendering. ACM Transactions on Graphics , 2023, 42(4). [14] Barr AH. Superquadrics and angle-preserving transformations. 
+
+IEEE Computer graphics and Applications , 1981, 1(1): 11–23. [15] Chen D, Fang J, Han W, Cheng X, Yin J, Xu C, Khan FS, Shen J. ALOcc: Adaptive Lifting-Based 3D Semantic Occupancy and Cost Volume-Based Flow Predictions. In Proceedings of the IEEE/CVF International Conference on Computer Vision ,2025, 4156–4166. [16] Elfes A. Using occupancy grids for mobile robot perception and navigation. Computer , 2002, 22(6): 46–57. [17] Moravec H, Elfes A. High resolution maps from wide angle sonar. In Proceedings. 1985 IEEE international conference on robotics and automation , volume 2, 1985, 116–121. [18] Zhou Y, Tuzel O. Voxelnet: End-to-end learning for point cloud based 3d object detection. In Proceedings of the IEEE conference on computer vision and pattern recognition , 2018, 4490–4499. [19] Yan Y, Mao Y, Li B. Second: Sparsely embedded convolutional detection. Sensors , 2018, 18(10): 3337. [20] Graham B. Spatially-sparse convolutional neural networks. 
+
+arXiv preprint arXiv:1409.6070 , 2014. [21] Tesla. Tesla AI Day 2022. YouTube: https://www.youtube.co m/watch?v=ODSJsviD SU, 2022. [22] Wei Y, Zhao L, Zheng W, Zhu Z, Zhou J, Lu J. Surroundocc: Multi-camera 3d occupancy prediction for autonomous driving. In Proceedings of the IEEE/CVF International Conference on Computer Vision , 2023, 21729–21740. [23] Tong W, Sima C, Wang T, Chen L, Wu S, Deng H, Gu Y, Lu L, Luo P, Lin D, et al.. Scene as occupancy. In Proceedings of the IEEE/CVF International Conference on Computer Vision ,2023, 8406–8415. [24] Caesar H, Bankiti V, Lang AH, Vora S, Liong VE, Xu Q, Krishnan A, Pan Y, Baldan G, Beijbom O. nuscenes: A mul-timodal dataset for autonomous driving. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 2020, 11621–11631. [25] Sun P, Kretzschmar H, Dotiwalla X, Chouard A, Patnaik V, Tsui P, Guo J, Zhou Y, Chai Y, Caine B, Vasudevan V, Han W, Ngiam J, Zhao H, Timofeev A, Ettinger S, Krivokon M, Gao A, Joshi A, Zhang Y, Shlens J, Chen Z, Anguelov D. Scalability in Perception for Autonomous Driving: Waymo Open Dataset. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2020, 2446–2454. OPUS-V2: Bridging the Gap between Sparse Points and Dense Voxels 13 
+
+[26] Behley J, Garbade M, Milioto A, Quenzel J, Behnke S, Stachniss C, Gall J. Semantickitti: A dataset for semantic scene understanding of lidar sequences. In Proceedings of the IEEE/CVF international conference on computer vision , 2019, 9297–9307. [27] Caesar H, Kabzan J, Tan KS, Fong WK, Wolff E, Lang A, Fletcher L, Beijbom O, Omari S. nuplan: A closed-loop ml-based planning benchmark for autonomous vehicles. arXiv preprint arXiv:2106.11810 , 2021. [28] Yu Z, Shu C, Deng J, Lu K, Liu Z, Yu J, Yang D, Li H, Chen Y. Flashocc: Fast and memory-efficient occupancy prediction via channel-to-height plugin. arXiv preprint arXiv:2311.12058 ,2023. [29] Yu Z, Shu C, Sun Q, Bian Y, Wei X, Yu J, Liu Z, Yang D, Li H, Chen Y. Panoptic-flashocc: An efficient baseline to marry semantic occupancy with panoptic via instance center. arXiv preprint arXiv:2406.10527 , 2024. [30] Ma Q, Tan X, Qu Y, Ma L, Zhang Z, Xie Y. Cotr: Compact oc-cupancy transformer for vision-based 3d occupancy prediction. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2024, 19936–19945. [31] Li Y, Yu Z, Choy C, Xiao C, Alvarez JM, Fidler S, Feng C, Anandkumar A. Voxformer: Sparse voxel transformer for camera-based 3d semantic scene completion. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 2023, 9087–9098. [32] Zheng W, Wu J, Zheng Y, Zuo S, Xie Z, Yang L, Pan Y, Hao Z, Jia P, Lang X, et al.. Gaussianad: Gaussian-centric end-to-end autonomous driving. arXiv preprint arXiv:2412.10371 , 2024. [33] Sun Q, Shu C, Zhou S, Yu Z, Chen Y, Yang D, Chun Y. Gsren-der: Deduplicated occupancy prediction via weakly supervised 3d gaussian splatting. arXiv preprint arXiv:2412.14579 , 2024. [34] Shi Y, Zhu Y, Han S, Jeong J, Ansari A, Cai H, Porikli F. ODG: Occupancy Prediction Using Dual Gaussians. arXiv preprint arXiv:2506.09417 , 2025. [35] Liu H, Teng Y, Lu T, Wang H, Wang L. Sparsebev: High-performance sparse 3d object detection from multi-camera videos. In Proceedings of the IEEE/CVF International Con-ference on Computer Vision , 2023, 18580–18590. [36] Carion N, Massa F, Synnaeve G, Usunier N, Kirillov A, Zagoruyko S. End-to-end object detection with transformers. In European conference on computer vision , 2020, 213–229. [37] Zhu X, Su W, Lu L, Li B, Wang X, Dai J. Deformable detr: Deformable transformers for end-to-end object detection. In 
+
+International Conference on Learning Representations , 2021, 1–xxx. [38] Meng D, Chen X, Fan Z, Zeng G, Li H, Yuan Y, Sun L, Wang J. Conditional detr for fast training convergence. In Proceedings of the IEEE/CVF international conference on computer vision ,2021, 3651–3660. [39] Liu S, Li F, Zhang H, Yang X, Qi X, Su H, Zhu J, Zhang L. DAB-DETR: Dynamic Anchor Boxes are Better Queries for DETR. In International Conference on Learning Representations ,2022, 1–xxx. [40] Li F, Zhang H, Liu S, Guo J, Ni LM, Zhang L. Dn-detr: Accelerate detr training by introducing query denoising. In 
+
+Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 2022, 13619–13627. [41] Wang Y, Zhang X, Yang T, Sun J. Anchor detr: Query design for transformer-based detector. In Proceedings of the AAAI conference on artificial intelligence , volume 36, 2022, 2567– 2575. [42] Zhang H, Li F, Liu S, Zhang L, Su H, Zhu J, Ni LM, Shum HY. Dino: Detr with improved denoising anchor boxes for end-to-end object detection. In International Conference on Learning Representations , 2023, 1–xxx. [43] Sun Z, Cao S, Yang Y, Kitani KM. Rethinking transformer-based set prediction for object detection. In Proceedings of the IEEE/CVF international conference on computer vision , 2021, 3611–3620. [44] Wang Y, Guizilini VC, Zhang T, Wang Y, Zhao H, Solomon J. Detr3d: 3d object detection from multi-view images via 3d-to-2d queries. In Conference on Robot Learning , 2022, 180–191. [45] Liu Y, Wang T, Zhang X, Sun J. Petr: Position embedding transformation for multi-view 3d object detection. In European Conference on Computer Vision , 2022, 531–548. [46] Lin X, Lin T, Pei Z, Huang L, Su Z. Sparse4d: Multi-view 3d object detection with sparse spatial-temporal fusion. arXiv preprint arXiv:2211.10581 , 2022. [47] Wang S, Liu Y, Wang T, Li Y, Zhang X. Exploring object-centric temporal modeling for efficient multi-view 3d object detection. In Proceedings of the IEEE/CVF International Conference on Computer Vision , 2023, 3621–3631. [48] Tang P, Wang Z, Wang G, Zheng J, Ren X, Feng B, Ma C. Sparseocc: Rethinking sparse latent representation for vision-based semantic occupancy prediction. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recog-nition , 2024, 15035–15044. [49] Zhu B, Jiang Z, Zhou X, Li Z, Yu G. Class-balanced Grouping and Sampling for Point Cloud 3D Object Detection. arXiv e-prints , 2019: arXiv:1908.09492. [50] Pan M, Liu J, Zhang R, Huang P, Li X, Xie H, Wang B, Liu L, Zhang S. Renderocc: Vision-centric 3d occupancy prediction with 2d rendering supervision. In 2024 IEEE International Conference on Robotics and Automation (ICRA) , 2024, 12404– 12411. [51] Li Z, Wang W, Li H, Xie E, Sima C, Lu T, Qiao Y, Dai J. Bevformer: Learning bird’s-eye-view representation from multi-camera images via spatiotemporal transformers. In Eu-ropean conference on computer vision , 2022, 1–18. [52] Huang J, Huang G, Zhu Z, Ye Y, Du D. Bevdet: High-performance multi-camera 3d object detection in bird-eye-view. arXiv preprint arXiv:2112.11790 , 2021. 14 Jiabao Wang, Qiang Meng, Liujiang Yan, Ke Wang, Qibin Hou, Ming-Ming Cheng 
+
+[53] Liao Z, Wei P, Chen S, Wang H, Ren Z. Stcocc: Sparse spatial-temporal cascade renovation for 3d occupancy and scene flow prediction. In Proceedings of the Computer Vision and Pattern Recognition Conference , 2025, 1516–1526. [54] Yang Z, Dong Y, Wang J, Wang H, Ma L, Cui Z, Liu Q, Pei H, Zhang K, Zhang C. DAOcc: 3D Object Detection Assisted Multi-Sensor Fusion for 3D Occupancy Prediction. IEEE Transactions on Circuits and Systems for Video Technology ,2024, 36: 1742–1753. [55] Duan Z, Dang C, Hu X, An P, Ding J, Zhan J, Xu Y, Ma J. SDGOCC: Semantic and Depth-Guided Bird’s-Eye View Transformation for 3D Multimodal Occupancy Prediction. In 
+
+Proceedings of the Computer Vision and Pattern Recognition Conference , 2025, 6751–6760. [56] Chen X, Lin KY, Qian C, Zeng G, Li H. 3d sketch-aware semantic scene completion via semi-supervised structure prior. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2020, 4193–4202. [57] Li J, Han K, Wang P, Liu Y, Yuan X. Anisotropic convolutional networks for 3d semantic scene completion. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2020, 3351–3359. [58] Roldao L, De Charette R, Verroust-Blondet A. Lmscnet: Lightweight multiscale 3d semantic completion. In 2020 In-ternational Conference on 3D Vision (3DV) , 2020, 111–119. [59] Yan X, Gao J, Li J, Zhang R, Li Z, Huang R, Cui S. Sparse single sweep lidar point cloud segmentation via learning contextual shape priors from scene completion. In Proceedings of the AAAI conference on artificial intelligence , 2021, 3101–3109. [60] He K, Zhang X, Ren S, Sun J. Deep residual learning for image recognition. In Proceedings of the IEEE conference on computer vision and pattern recognition , 2016, 770–778. [61] Loshchilov I, Hutter F. Decoupled Weight Decay Regulariza-tion. In International Conference on Learning Representations ,2018, 1–xxx. [62] Loshchilov I, Hutter F. SGDR: STOCHASTIC GRADIENT DESCENT WITH WARM RESTARTS. In International Con-ference on Learning Representations , 2017, 1–xxx.

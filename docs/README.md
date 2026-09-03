@@ -6,38 +6,38 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-09-02
-- 运行时间：2026-09-02 22:35:19 UTC
+- 最新运行日期：2026-09-03
+- 运行时间：2026-09-03 22:30:03 UTC
 - 运行状态：成功
 - 本次总论文数：5
-- 精读区：0
-- 速读区：5
+- 精读区：2
+- 速读区：3
 
 ### 今日简报（AI）
-今日聚焦神经渲染基准与物理仿真生成，涵盖从线原语建模到三角形渲染的最新进展。
-重点推荐 MeshSplatBench 统一基准的发布，以及扩散模型在稀薄流物理模拟中的跨界应用。
-建议关注 3D 重构领域的基准工具更新，以便在快速迭代的技术浪潮中精准评估模型性能。
-- 详情：[/202609/02/README](/202609/02/README)
+性能优化的最新突破。
+        *   *Check:* Direct recommendation, tailored to general audience, within bounds.
+
+3.  **Refining
+- 详情：[/202609/03/README](/202609/03/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [CC-4DGS: Computational Deformation and Point-Cloud Compression for Storage-Efficient Dynamic Gaussian Splatting](/202609/03/2609.02184v1-cc-4dgs-computational-deformation-and-point-cloud-compression-for-storage-efficient-dynamic-gaussian-splatting)  
+   标签：评分：8.0/10、query:q7
+   evidence：利用神经解码器和压缩技术加速动态高斯泼溅
+2. [Atlas: Algorithm-Hardware Co-Design for On-Device City-Scale 3D Gaussian Splatting in VR](/202609/03/2609.02352v1-atlas-algorithm-hardware-co-design-for-on-device-city-scale-3d-gaussian-splatting-in-vr)  
+   标签：评分：8.0/10、query:q7
+   evidence：设备端城市级3D高斯泼溅渲染框架
 
 ### 速读区论文标签
-1. [Inverse Rendering for Modeling with Line Primitives](/202609/02/2609.00625v1-inverse-rendering-for-modeling-with-line-primitives)  
+1. [LightBridge: Feed-Forward Generative Relighting for 3D Gaussian Splatting](/202609/03/2609.02543v1-lightbridge-feed-forward-generative-relighting-for-3d-gaussian-splatting)  
    标签：评分：7.0/10、query:q1
-   evidence：用于模糊结构的半透明体积图元
-2. [MeshSplatBench: A Unified Benchmark for Triangle-Based Neural Rendering](/202609/02/2609.01306v1-meshsplatbench-a-unified-benchmark-for-triangle-based-neural-rendering)  
-   标签：评分：7.0/10、query:q1
-   evidence：基于三角形的神经渲染架构基准测试
-3. [Physics-Guided Generative Surrogates for Parametric Rarefied Flows with Neural-Field Auto-Decoders: A Pipeline-Level Study of Flow Matching and Diffusion](/202609/02/2608.25454v1-physics-guided-generative-surrogates-for-parametric-rarefied-flows-with-neural-field-auto-decoders-a-pipeline-level-study-of-flow-matching-and-diffusion)  
+   evidence：3D高斯泼溅的生成式重光照
+2. [OPUS-V2: Bridging the Gap between Sparse Points and Dense Voxels](/202609/03/2608.29187v1-opus-v2-bridging-the-gap-between-sparse-points-and-dense-voxels)  
    标签：评分：6.0/10、query:q1
-   evidence：用于表示和生成体积流解的神经场自动解码器
-4. [Dynamic-Robust Photometric-Semantic Reconstruction for Open-Vocabulary 3D Scene Understanding](/202609/02/2608.29177v1-dynamic-robust-photometric-semantic-reconstruction-for-open-vocabulary-3d-scene-understanding)  
+   evidence：将稀疏预测映射到稠密体素空间
+3. [InceptionGS: Generative Bootstrapping for Large-Scale Gaussian Splatting under Unstructured View Sampling](/202609/03/2609.02747v1-inceptiongs-generative-bootstrapping-for-large-scale-gaussian-splatting-under-unstructured-view-sampling)  
    标签：评分：6.0/10、query:q1
-   evidence：3D场景的新视角合成与几何编码
-5. [Streaming4D: Accelerate 4D World Models via Block-wise Video Generation and Incremental Reconstruction](/202609/02/2609.00610v1-streaming4d-accelerate-4d-world-models-via-block-wise-video-generation-and-incremental-reconstruction)  
-   标签：评分：6.0/10、query:q1
-   evidence：4D世界模型的增量3D重建
+   evidence：大规模高斯泼溅与神经渲染
 
 
 <div class="dpr-home-promo-card">
