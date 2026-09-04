@@ -1,0 +1,439 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-04T22:20:14.506744+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 10,
+    "quick_skim_target": 11,
+    "quick_selected": 10
+  },
+  "deep_dive": [
+    {
+      "id": "2609.03657v1",
+      "title": "Rethinking 3D Noise: Learning 3D-Aware Video Priors via Optimization-Free Morphological Perturbations",
+      "abstract": "3D scene representations like NeRF and 3D Gaussian Splatting (3DGS) suffer severe artifacts in sparse-view settings. Recent generative 3D artifact fixers attempt to address this, but rely on paired corrupted and clean renders requiring costly, per-scene reconstructions across varying view configurations. While 2D image augmentations act as instant regularizers, no explicit equivalents exist for 3D representations to preserve spatial consistency across views, an essential property for 3D-aware training. We propose 3D Morphological Perturbations as an optimization-free regularizer that preserves spatial consistency. Leveraging explicit 3DGS, we treat each Gaussian as a fundamental building block - analogous to a 2D pixel - and apply perturbations across its morphological parameter space via scale, rotation, and pruning. Our method eliminates per-scene 3DGS optimization loops from dataset curation while enabling models to learn stronger geometric priors than sparse-view baselines in diagnostic ablations conducted on a lightweight video diffusion sandbox. Scaled to a 14B-parameter video model via ControlNet, our approach maintains visual fidelity while reducing mean depth error by 12.5% over state-of-the-art image-to-image 3D artifact refiners, ultimately boosting downstream robotics policy success rates by up to 8.0% across 3 of 4 manipulation tasks.",
+      "authors": [
+        "Onat Şahin",
+        "Mohammad Altillawi",
+        "George Eskandar",
+        "Carlos Carbone",
+        "Ziyuan Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-03T10:54:49+00:00",
+      "link": "https://arxiv.org/pdf/2609.03657v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "3D scene representations like NeRF and 3DGS",
+      "llm_evidence_cn": "NeRF和3DGS等3D场景表示",
+      "llm_evidence": "NeRF和3DGS等3D场景表示",
+      "canonical_evidence": "NeRF和3DGS等3D场景表示",
+      "llm_tldr_en": "Proposes 3D Morphological Perturbations as a regularizer for sparse-view NeRF and 3DGS training.",
+      "llm_tldr_cn": "提出3D形态学扰动作为稀疏视图下NeRF和3DGS训练的正规化器。",
+      "llm_tldr": "提出3D形态学扰动作为稀疏视图下NeRF和3DGS训练的正规化器。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.26737v1",
+      "title": "Generative Semantic Scene Completion",
+      "abstract": "Outdoor LiDAR semantic scene completion (SSC) recovers a dense semantic voxel grid from a scan observing 1% of the target volume, under class imbalance beyond 7,000x. We recast SSC as generative semantic scene completion (GSSC): a single discrete-diffusion formulation in three roles. First, paired sparse-dense scene synthesis (PS$^3$) generates matched sparse LiDAR observations with their dense semantic completions, addressing the long tail at its source and yielding the PS$^3$-SemanticKITTI corpus we train on alongside SemanticKITTI. Second, semantic-guided generative scene completion (SGSC) generates the scene from noise with multinomial discrete diffusion, conditioned on the sparse scan through a bird's-eye-view semantic map and a sparse 3D feature stream. Third, the same framework instead refines an existing completion in one flow-matching step: structured source discrete diffusion (S$^2$D$^2$). S$^2$D$^2$ improves the mIoU of SGSC's own output and every external SSC base tested, without base retraining or test-time adaptation. On the strongest base, one step without test-time augmentation reaches 38.8% mIoU on the SemanticKITTI hidden test. To our knowledge that is the best causal, single-sweep, single-sample result on that leaderboard, +2.1 pp over the previous best published score under the same restriction. Four correction steps with eight-view test-time augmentation reach 39.2%, outside that restriction.",
+      "authors": [
+        "Shi Chen",
+        "Weifeng Ge"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG",
+        "cs.RO"
+      ],
+      "published": "2026-08-27T07:29:15+00:00",
+      "link": "https://arxiv.org/pdf/2608.26737v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "generative semantic scene completion in dense voxel grids",
+      "llm_evidence_cn": "稠密体素网格中的生成式语义场景补全",
+      "llm_evidence": "稠密体素网格中的生成式语义场景补全",
+      "canonical_evidence": "稠密体素网格中的生成式语义场景补全",
+      "llm_tldr_en": "Recasts semantic scene completion as a generative diffusion task for dense volumetric voxel grids.",
+      "llm_tldr_cn": "将语义场景补全重塑为针对稠密体积体素网格的生成式扩散任务。",
+      "llm_tldr": "将语义场景补全重塑为针对稠密体积体素网格的生成式扩散任务。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.03117v1",
+      "title": "Kernel Reboot: Breaking the Boundaries of Neural Tangent Kernels for Neural Fields",
+      "abstract": "Neural fields (NFs) map continuous coordinates to signals such as color or density, but fast high-quality reconstruction from sparse observations remains difficult. Classical Neural Tangent Kernel (NTK) regression gives closed-form fits, yet it is fundamentally linear and cannot accumulate reusable task priors. We develop three algorithms that address these gaps. NTK-KIP learns a distilled support set of coordinates (and optional labels) so that a finite NTK can inpaint large missing regions from little observed data, yielding a compact non-linear representation instead of a raw kernel solve. MetaQuill meta-learns a shared initialization for an INR so that new scenes can be adapted by updating only a small task-specific weight offset, which provides true feature learning and a reusable prior. Finally, MetaQuill-KIP fuses both ideas: it seeds the task with a KIP-style non-linear warm start, then refines only that small offset around the meta-learned initialization. MetaQuill-KIP achieves high-PSNR reconstructions and semantically plausible inpainting under very sparse observations, while requiring only lightweight per-instance adaptation, whereas diffusion-style baselines typically depend on large pretrained generative priors and costly per-image tuning. This shows that NTK-driven neural fields can be made both non-linear and meta-learnable, narrowing the gap between analytic kernels and practical few-shot reconstruction.",
+      "authors": [
+        "Amir Mallak",
+        "Alaa Maalouf",
+        "Lior Wolf",
+        "Daniela Rus",
+        "Dan Rosenbaum"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CV"
+      ],
+      "published": "2026-09-02T19:53:32+00:00",
+      "link": "https://arxiv.org/pdf/2609.03117v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "neural fields for signal reconstruction from sparse observations",
+      "llm_evidence_cn": "用于从稀疏观测中重建信号的神经场",
+      "llm_evidence": "用于从稀疏观测中重建信号的神经场",
+      "canonical_evidence": "用于从稀疏观测中重建信号的神经场",
+      "llm_tldr_en": "Develops algorithms to improve neural field reconstruction and adaptation using Neural Tangent Kernels.",
+      "llm_tldr_cn": "开发了利用神经切线核改进神经场重建与场景自适应的算法。",
+      "llm_tldr": "开发了利用神经切线核改进神经场重建与场景自适应的算法。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.02847v1",
+      "title": "RoGe: Novel View Synthesis via End-to-End Implicit Reconstruction and Generation",
+      "abstract": "Novel view synthesis from sparse inputs requires both geometric grounding from the observed views and generative priors of unobserved regions, motivating recent hybrid methods that combine reconstruction and generation. However, existing methods bridge the two with rendered images or explicit 3D representations such as point maps or 3D Gaussians. Generation is thus conditioned on a lossy and imperfect projection of the scene, inheriting its errors, and reconstruction receives no signal from generation to correct them. We present RoGe, an end-to-end unified reconstruction and generation framework that removes this explicit bridge. It targets roaming within a scene anchored by sparse views: given a few posed images and a camera trajectory, it synthesizes a temporally coherent video along that trajectory. From the sparse input views, RoGe builds an implicit scene representation with a feed-forward reconstruction model, and queries it with target camera rays to obtain per-view geometric features. These features are injected into a video diffusion model as conditioning, without any 3D intermediate. Both modules are trained jointly, so the generation objective directly shapes its own geometric conditioning. We conduct experiments on DL3DV, where RoGe outperforms reconstruction-based, generation-based, and hybrid baselines on image-level metrics and video-level temporal consistency. Ablations confirm that ray-queried implicit features outperform both raw reconstruction tokens and rendered RGB as conditioning, and that joint training brings further gains.",
+      "authors": [
+        "Xiaolei Lang",
+        "Ze Kang",
+        "Zehao Huang",
+        "Naiyan Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-02T17:32:35+00:00",
+      "link": "https://arxiv.org/pdf/2609.02847v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "implicit reconstruction and 3D Gaussian representations",
+      "llm_evidence_cn": "隐式重建与3D高斯表示",
+      "llm_evidence": "隐式重建与3D高斯表示",
+      "canonical_evidence": "隐式重建与3D高斯表示",
+      "llm_tldr_en": "A unified framework for reconstruction and generation in novel view synthesis without explicit 3D bridges.",
+      "llm_tldr_cn": "一种统一的新视图合成重建与生成框架，无需显式的3D桥接。",
+      "llm_tldr": "一种统一的新视图合成重建与生成框架，无需显式的3D桥接。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.03304v1",
+      "title": "AnyGS2Mesh: Feed-Forward Mesh Reconstruction from 3D Gaussian Splatting with Arbitrary-Resolution Views",
+      "abstract": "Existing 3D mesh reconstruction methods from Gaussian scene representations predominantly rely on iterative optimization, resulting in slow inference and limited scalability to high-resolution inputs. In this paper, we present AnyGS2Mesh, the first feed-forward framework for directly reconstructing 3D meshes from 3D Gaussian Splatting representations with support for arbitrary input image resolutions. Our approach incorporates a Gaussian-Guided Transformer architecture that exploits explicit 3D geometric priors for efficient mesh generation. We introduce three key components: (1) a Gaussian-Guided Spatial Reasoning Transformer represents Gaussian primitives as structured 3D tokens and jointly reasons over Gaussian and image features; (2) a Streaming and Patchwise Geometry Encoder processes native-resolution views sequentially and aggregates information across variable-length view sets; (3) a Scale-Aligned Hybrid Depth Refiner uses a PatchFusion-style encoder--decoder to fuse RGB-conditioned predicted depth with Gaussian-rendered metric depth, combining fine local structures with globally consistent metric scale. The refined depth maps are integrated through TSDF fusion, followed by Marching Cubes for deterministic mesh extraction. Extensive experiments show that AnyGS2Mesh achieves state-of-the-art reconstruction quality while significantly reducing inference time compared with optimization-based baselines, enabling near-real-time, high-quality mesh reconstruction. Our results demonstrate the potential of combining Gaussian representations and feed-forward Transformer architectures for scalable 3D geometry reconstruction. The code will be made publicly available upon acceptance.",
+      "authors": [
+        "Yuxuan Song",
+        "Fan Gao",
+        "Yibo Zhao",
+        "Jiarui Wen",
+        "Youcheng Cai",
+        "Ligang Liu"
+      ],
+      "primary_category": "cs.CG",
+      "categories": [
+        "cs.CG"
+      ],
+      "published": "2026-09-03T02:53:45+00:00",
+      "link": "https://arxiv.org/pdf/2609.03304v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Reconstructing meshes from 3D Gaussian Splatting volumetric representations",
+      "llm_evidence_cn": "从3D高斯泼溅体积表示中重建网格",
+      "llm_evidence": "从3D高斯泼溅体积表示中重建网格",
+      "canonical_evidence": "从3D高斯泼溅体积表示中重建网格",
+      "llm_tldr_en": "Introduces a feed-forward Transformer framework to reconstruct 3D meshes from Gaussian Splatting representations.",
+      "llm_tldr_cn": "引入了一种前馈Transformer框架，用于从高斯泼溅表示中直接重建3D网格。",
+      "llm_tldr": "引入了一种前馈Transformer框架，用于从高斯泼溅表示中直接重建3D网格。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.03334v1",
+      "title": "Laplacian Frequency Hierarchies for Efficient 3D Gaussian Splatting Training",
+      "abstract": "A key bottleneck in 3D Gaussian Splatting training is the continual growth of Gaussian primitives, which increases optimization cost and slows convergence, especially at high resolutions. We propose Laplacian Frequency Hierarchies, a simple yet efficient 3DGS scheme that combines Laplacian image decomposition with coarse-to-fine, frequency-staged training. After fitting lower-frequency structure, we archive the corresponding Gaussian field so that subsequent fields can optimize higher-frequency residuals without carrying the full primitive burden, and we compose the rendered components in the image domain via a Laplacian-style reconstruction at inference time. This design reduces the number of active Gaussians during training, thereby lowering optimization overhead and accelerating training. The proposed scheme is plug-and-play and orthogonal to prior 3DGS accelerations: it can be directly combined with strong backbones such as Taming-3DGS and FastGS to improve training speed with competitive reconstruction quality. It achieves average speedups of 1.73x and 1.21x at 1K setting, and 1.74x and 1.33x at 4K setting on Taming-3DGS and FastGS, with larger gains on more challenging scenes and increasingly pronounced benefits at higher resolutions.",
+      "authors": [
+        "Yixiong Yang",
+        "Sisheng Zhang",
+        "Qingsong Yan",
+        "Shaohuai Shi",
+        "Qiang Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-03T03:46:49+00:00",
+      "link": "https://arxiv.org/pdf/2609.03334v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "efficient 3D Gaussian Splatting training using frequency hierarchies",
+      "llm_evidence_cn": "使用频率分层的高效3D高斯泼溅训练",
+      "llm_evidence": "使用频率分层的高效3D高斯泼溅训练",
+      "canonical_evidence": "使用频率分层的高效3D高斯泼溅训练",
+      "llm_tldr_en": "Introduces Laplacian Frequency Hierarchies to reduce optimization costs in neural point-based rendering.",
+      "llm_tldr_cn": "引入拉普拉斯频率分层技术，降低了基于点的神经渲染中的优化成本。",
+      "llm_tldr": "引入拉普拉斯频率分层技术，降低了基于点的神经渲染中的优化成本。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.03349v1",
+      "title": "P-CORE: Self-Supervised Surface Consistency for Point-Based Neural Editing",
+      "abstract": "Advances in neural rendering have enabled high-fidelity multi-view reconstruction of 3D scenes. However, free-form non-rigid shape editing remains a significant challenge. Point-based neural representations are highly desirable for multi-view reconstruction because they lack fixed connectivity, which does not constrain the learned surface topology to that of the initialization. Yet this same property causes point-based representations to struggle with holes and surface discontinuities under large deformations. To address this, we propose a novel self-supervised method to enable point-based representations to adapt to large deformations without requiring ground truth multi-view images of deformed geometry. The key idea is to generate random deformations and to ensure consistency in the predicted surface before and after deformation. In particular, the surface prediction from the deformed point cloud should be the same as the deformation applied to the surface prediction from the original point cloud. We incorporate our approach into attention-based point representations, which differ from splatting-based point representations in their use of a learned interpolation kernel between points as opposed to a Gaussian kernel around each point. This learned interpolation kernel can learn to adapt to large deformations, without requiring addition or removal of points. We show that our framework significantly enhances its robustness to large deformations. Experiments on synthetic geometry editing benchmarks (Neural Editor, Objaverse) demonstrate that our approach outperforms existing point-based methods in zero-shot editing and significantly reduces artifacts. Furthermore, qualitative results on the DTU and Mip-NeRF 360 datasets demonstrate our method's effectiveness on real-world scenes.",
+      "authors": [
+        "Yanshu Zhang",
+        "Shichong Peng",
+        "Mehran Aghabozorgi",
+        "Alireza Moazeni",
+        "Ke Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-09-03T04:12:39+00:00",
+      "link": "https://arxiv.org/pdf/2609.03349v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "point-based neural representations for reconstruction",
+      "llm_evidence_cn": "用于重建的基于点的神经表示",
+      "llm_evidence": "用于重建的基于点的神经表示",
+      "canonical_evidence": "用于重建的基于点的神经表示",
+      "llm_tldr_en": "Develops P-CORE, a self-supervised method for consistent non-rigid editing of point-based neural scenes.",
+      "llm_tldr_cn": "开发了P-CORE，一种用于点基神经场景一致性非刚性编辑的自监督方法。",
+      "llm_tldr": "开发了P-CORE，一种用于点基神经场景一致性非刚性编辑的自监督方法。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.03341v1",
+      "title": "PointGT: Simultaneous Geometry and Texture Editing for Point-Based Representations",
+      "abstract": "We present PointGT, a point-based 3D representation that enables simultaneous editing of object geometry and appearance. Existing reconstruction and view synthesis techniques produce volumetric 3D representations that are high-quality and photorealistic, but are difficult to edit. In particular, recent efforts to enable texture editing for 3D Gaussian Splatting representations are not compatible with geometry edits and deformations. Our method combines a point-based representation that is well-suited for geometry deformations with a learned UV mapping technique that enables high-resolution texture editing. We show that PointGT enables fine-grained editing of both geometry and texture in point-based neural representations with high rendering quality.",
+      "authors": [
+        "Yanshu Zhang",
+        "George Shramko",
+        "Pratul P. Srinivasan",
+        "Ke Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-09-03T03:57:44+00:00",
+      "link": "https://arxiv.org/pdf/2609.03341v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "point-based neural representation for geometry and texture editing",
+      "llm_evidence_cn": "用于几何和纹理编辑的基于点的神经表示",
+      "llm_evidence": "用于几何和纹理编辑的基于点的神经表示",
+      "canonical_evidence": "用于几何和纹理编辑的基于点的神经表示",
+      "llm_tldr_en": "PointGT enables simultaneous geometry and texture editing for high-quality neural point-based rendering.",
+      "llm_tldr_cn": "PointGT实现了高质量神经点云渲染中几何与纹理的同时编辑。",
+      "llm_tldr": "PointGT实现了高质量神经点云渲染中几何与纹理的同时编辑。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.03919v1",
+      "title": "OctWorld: Long-Range World-Consistent Video Generation with Octree-Based 3D Mapping",
+      "abstract": "We present OctWorld, a video diffusion framework with persistent 3D memory for generating explorable, world-consistent, and high-fidelity visual scenes. Given a single image, OctWorld performs stable autoregressive world generation along user-specified camera trajectories. We focus on long-range generation, characterized by extended camera paths and wide viewpoint coverage, where preserving spatial consistency is particularly challenging when previously generated regions are revisited. To address this problem, we introduce OctMap, an extensible and spatially adaptive 3D memory that progressively fuses generated visual observations and their corresponding depth maps into a global representation. OctMap employs TSDF fusion within a dynamic sparse octree whose spatial resolution adapts to image evidence. This design preserves geometric and appearance details across diverse scene scales while maintaining low memory overhead. Experiments demonstrate that OctWorld generates long-range, spatially consistent videos and outperforms prior methods on both existing benchmarks and challenging long-range generation settings. OctMap also provides clear advantages over point-based caches and fixed-resolution TSDF volumes. Project page: https://maxtirerror.github.io/octworldpage/",
+      "authors": [
+        "Zelong Lv",
+        "Sicheng Xu",
+        "Jianfeng Xiang",
+        "Ruicheng Wang",
+        "Yue Dong",
+        "Yu Deng",
+        "Guangzhong Sun",
+        "Jiaolong Yang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-03T14:35:38+00:00",
+      "link": "https://arxiv.org/pdf/2609.03919v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "octree-based 3D mapping and TSDF fusion",
+      "llm_evidence_cn": "基于八叉树的3D映射与TSDF融合",
+      "llm_evidence": "基于八叉树的3D映射与TSDF融合",
+      "canonical_evidence": "基于八叉树的3D映射与TSDF融合",
+      "llm_tldr_en": "Introduces OctWorld, using octree-based 3D memory for world-consistent video generation and mapping.",
+      "llm_tldr_cn": "引入OctWorld，使用基于八叉树的3D记忆进行世界一致的视频生成与映射。",
+      "llm_tldr": "引入OctWorld，使用基于八叉树的3D记忆进行世界一致的视频生成与映射。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.03897v1",
+      "title": "Reparametrizing 3D Gaussian Splatting for Real-Time Palette-based Color and Luminance Editing",
+      "abstract": "Professional color editing requires precise control over both color (hue and saturation) and lightness, ideally through separate, independent controls. We present a real-time interactive color editing framework for 3D Gaussian Splatting that supports palette-based recoloring, per-palette tone curves for color-aware luminance adjustment, and pixel-level color constraints. Rather than training a new representation from scratch, we reparameterize the spherical harmonics of a pretrained vanilla 3DGS to encode view-dependent palette weights. We simultaneously solve for weights and palette colors via a loss based on image-space sparsity. Luminance editing is realized as a per-pixel weight shift along the achromatic axis, which we show is equivalent to a per-pixel palette-aware luminance edit. This view-space formulation addresses a core limitation of prior primitive-space methods, where alpha-blending breaks per-Gaussian sparsity and causes edits to bleed into unintended regions. Our edits run in tens of milliseconds via an iteratively reweighted least squares and damped block-coordinate descent that couples tone curves and palette shifts under view-space sparsity. Our representation can be efficiently baked back into a vanilla 3DGS, preserving compatibility with standard viewers. We demonstrate sparser, more localized edits than prior palette-based 3DGS methods, while enabling independent luminance control per palette color and view-consistent pixel-level constraints, capabilities previously unavailable for 3DGS.",
+      "authors": [
+        "Cheng-Kang Ted Chao",
+        "Yotam Gingold"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR"
+      ],
+      "published": "2026-09-03T14:17:55+00:00",
+      "link": "https://arxiv.org/pdf/2609.03897v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "real-time interactive editing for 3D Gaussian Splatting",
+      "llm_evidence_cn": "3D高斯泼溅的实时交互式编辑",
+      "llm_evidence": "3D高斯泼溅的实时交互式编辑",
+      "canonical_evidence": "3D高斯泼溅的实时交互式编辑",
+      "llm_tldr_en": "Reparameterizes 3DGS spherical harmonics to enable real-time palette-based color and luminance editing.",
+      "llm_tldr_cn": "重新参数化3DGS球谐函数，实现基于调色板的实时颜色和亮度编辑。",
+      "llm_tldr": "重新参数化3DGS球谐函数，实现基于调色板的实时颜色和亮度编辑。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.03931v1",
+      "title": "Sparse auto-regressive modeling for scene generation from multi-view images",
+      "abstract": "Generating complete 3D scenes from sparse, unconstrained views is a fundamental challenge in 3D vision which requires reasoning beyond observed content while remaining computationally tractable. Existing feed-forward reconstruction methods are inherently limited to content visible in the input images, while 3D generative modeling is hindered by the high computational cost of dense volumetric representations and the scarcity of large-scale 3D supervision. We introduce SPAR3S, a sparse voxel-aligned 3D latent generative model for conditional scene completion without requiring ground-truth 3D data for supervision. Our key insight is to formulate 3D scene generation in a structured, compact, voxel-aligned 3D latent space where only occupied voxels are represented. We learn this sparse latent space directly from multi-view images using photometric supervision via differentiable 3D Gaussian Splatting. Given a partial set of observed voxels encoded from sparse input views, scene completion reduces to predicting the missing latent tokens and their spatial support within the voxel grid. To this end, we train a masked autoregressive transformer that jointly models voxel occupancy and latent token values, enabling efficient and spatially consistent generation of unseen regions. We demonstrate the effectiveness of our method on synthetic indoor scenes, achieving higher novel-view quality than prior work. We further validate its generalization on RealEstate10k, highlighting its applicability to real-world data.",
+      "authors": [
+        "Thomas Lucas",
+        "Maxime Pietrantoni",
+        "Philippe Weinzaepfel",
+        "Wonjune Cho",
+        "Bardienus Pieter Duisterhof",
+        "Vincent Leroy",
+        "Jerome Revaud"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-09-03T14:41:34+00:00",
+      "link": "https://arxiv.org/pdf/2609.03931v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "sparse voxel-aligned 3D latent generative model",
+      "llm_evidence_cn": "稀疏体素对齐的3D潜空间生成模型",
+      "llm_evidence": "稀疏体素对齐的3D潜空间生成模型",
+      "canonical_evidence": "稀疏体素对齐的3D潜空间生成模型",
+      "llm_tldr_en": "Proposes SPAR3S, a sparse voxel-aligned generative model for 3D scene completion from multi-view images.",
+      "llm_tldr_cn": "提出SPAR3S，一种用于多视图图像3D场景补全的稀疏体素对齐生成模型。",
+      "llm_tldr": "提出SPAR3S，一种用于多视图图像3D场景补全的稀疏体素对齐生成模型。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
