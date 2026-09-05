@@ -1,0 +1,37 @@
+{
+  "label": "2026-09-05",
+  "date": "2026-09-05",
+  "generated_at": "2026-09-05T20:59:21",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202609/05/2609.03613v1-tilegs-tile-local-depth-binning-for-gaussian-splatting-rasterization",
+      "section": "deep",
+      "title_en": "TileGS: Tile-Local Depth Binning for Gaussian Splatting Rasterization",
+      "authors": "Wei Tan, Matias Turkulainen, Lauri Ilola, Hamed Rezazadegan Tavakoli, Juho Kannala",
+      "date": "2026-09-03",
+      "pdf": "https://arxiv.org/pdf/2609.03613v1",
+      "score": "8.0",
+      "evidence": "加速高斯泼溅光栅化",
+      "tldr": "针对3D高斯泼溅（3DGS）中全局排序图块流导致的遍历过长与内存开销问题，本文提出TileGS。该方法通过图块局部的深度分箱将长遍历范围切分为从前向后的短深度范围，并辅以选择性修复。TileGS在保证零画质损失的前提下显著减少了遍历指令，取得了最高1.44倍的光栅内核加速。",
+      "tags": "query:q7",
+      "abstract_en": "Real-time 3D Gaussian Splatting (3DGS) achieves high rendering quality, but standard rasterization still traverses a globally sorted tile stream that creates long per-tile ranges and heavy geometry-attribute traffic. We present TileGS, a tile-local reorganization of Gaussian splatting. TileGS turns each long tile range into a sequence of shorter depth-local ranges, rasterizes those ranges in front-to-back order, and applies selective repair where coarse ordering is insufficient to match baseline compositing. Across a 9-scene benchmark on desktop and laptop Ada GPUs, our default No-GW (No Geometry-Write) variant delivers a mean 1.44x raster-kernel speedup on RTX 4090 and mean end-to-end frame speedups of 1.069x on RTX 4090 and 1.094x on RTX 1000 Ada over gsplat--a widely used optimized open-source 3DGS implementation--while matching the gsplat output up to numerical noise (|Delta PSNR| < 0.001 dB, |Delta SSIM| < 0.001, |Delta LPIPS| < 0.001). Full-suite RTX 4090 Nsight Compute profiling reveals TileGS is faster despite lower SM throughput, lower active-warp occupancy, and higher DRAM traffic, while total SASS thread instructions fall by 1.26x. Source-attributed profiling confirms that geometry attributes dominate the remaining memory pressure (85.8% of total raster traffic and 88.6% of excess sectors). Together, these counters support the interpretation that TileGS improves raster performance by reducing effective raster traversal work, rather than by reducing byte volume, improving coalescing, increasing occupancy, or directly reducing measured warp divergence.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/05/2609.03563v1-flashrender-few-step-generative-rendering-via-camera-controlled-video-meanflow",
+      "section": "quick",
+      "title_en": "FlashRender: Few-Step Generative Rendering via Camera-Controlled Video MeanFlow",
+      "authors": "Byeongjun Park, Byung-Hoon Kim, Hyungjin Chung",
+      "date": "2026-09-03",
+      "pdf": "https://arxiv.org/pdf/2609.03563v1",
+      "score": "6.0",
+      "evidence": "生成式渲染框架",
+      "tldr": "FlashRender提出了一个少步数生成式渲染框架，能在数秒内根据目标相机轨迹重拍源视频。针对多步模型中采样步数依赖的控制不一致问题，论文引入表示转换与对齐（RETA）、MeanFlow微调及在线策略流图蒸馏，大幅降低去噪轨迹曲率与采样开销，在保证视频质量与几何一致性的前提下实现了25倍加速。",
+      "tags": "query:q1",
+      "abstract_en": "We present FlashRender, a few-step generative rendering framework that retakes a source video along a target camera trajectory in seconds. We identify sampling-step-dependent camera control as a prominent manifestation of discretization error in existing multi-step generative rendering models and show that resolving this inconsistency substantially lowers denoising trajectory curvature, facilitating subsequent step distillation. To this end, we introduce Representation Transformation and Alignment (RETA), which aligns hidden source-video representations with target-video features from a frozen visual geometry model. This directly encodes the geometric transformation within the source-video stream, enabling sampling-step-consistent camera control. We then fine-tune the model with the MeanFlow objective on the lower-curvature denoising trajectory induced by RETA, allowing the model to more effectively address discretization error. Finally, we apply on-policy flow map distillation to correct self-rollout errors under fixed few-step sampling. Extensive experiments show that RETA, MeanFlow, and on-policy flow map distillation play complementary roles in few-step generative rendering. Together, they enable our approach to match multi-step baselines in video quality and geometric consistency at 25x lower sampling cost while achieving superior camera controllability, even under out-of-distribution target camera trajectories.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
