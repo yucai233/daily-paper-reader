@@ -6,26 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-09-05
-- 运行时间：2026-09-05 20:59:15 UTC
+- 最新运行日期：2026-09-06
+- 运行时间：2026-09-06 21:47:50 UTC
 - 运行状态：成功
-- 本次总论文数：2
-- 精读区：1
+- 本次总论文数：1
+- 精读区：0
 - 速读区：1
 
 ### 今日简报（AI）
-今日精选 2 篇最新渲染技术论文，重点攻坚高斯溅射光栅化与少步生成式渲染
-- 详情：[/202609/05/README](/202609/05/README)
+今日为您速递 1 篇聚焦多模态前沿的速读论文。
+最值得关注的是《Puffin-World》，该研究探索了如何利用原生 3D 世界状态扩展统一多模态模型。
+建议关注 3D 世界建模与多模态融合方向的读者花几分钟速览了解。
+- 详情：[/202609/06/README](/202609/06/README)
 
 ### 精读区论文标签
-1. [TileGS: Tile-Local Depth Binning for Gaussian Splatting Rasterization](/202609/05/2609.03613v1-tilegs-tile-local-depth-binning-for-gaussian-splatting-rasterization)  
-   标签：评分：8.0/10、query:q7
-   evidence：加速高斯泼溅光栅化
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [FlashRender: Few-Step Generative Rendering via Camera-Controlled Video MeanFlow](/202609/05/2609.03563v1-flashrender-few-step-generative-rendering-via-camera-controlled-video-meanflow)  
+1. [Puffin-World: Scaling a Unified Multimodal Model with Native 3D World States](/202609/06/2609.04196v1-puffin-world-scaling-a-unified-multimodal-model-with-native-3d-world-states)  
    标签：评分：6.0/10、query:q1
-   evidence：生成式渲染框架
+   evidence：用于 3D 世界生成和重建的统一多模态架构
 
 
 <div class="dpr-home-promo-card">

@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-09-06 <!--dpr-date:20260906-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/06/2609.04196v1-puffin-world-scaling-a-unified-multimodal-model-with-native-3d-world-states" data-sidebar-item="{&quot;title&quot;: &quot;Puffin-World: Scaling a Unified Multimodal Model with Native 3D World States&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.04196v1-puffin-world-scaling-a-unified-multimodal-model-with-native-3d-world-states&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;q1&quot;}], &quot;evidence&quot;: &quot;用于 3D 世界生成和重建的统一多模态架构&quot;}">Puffin-World: Scaling a Unified Multimodal Model with Native 3D World States</a>
   * 2026-09-05 <!--dpr-date:20260905-->
     * 精读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/05/2609.03613v1-tilegs-tile-local-depth-binning-for-gaussian-splatting-rasterization" data-sidebar-item="{&quot;title&quot;: &quot;TileGS: Tile-Local Depth Binning for Gaussian Splatting Rasterization&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.03613v1-tilegs-tile-local-depth-binning-for-gaussian-splatting-rasterization&quot;, &quot;score&quot;: &quot;8.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;q7&quot;}], &quot;evidence&quot;: &quot;加速高斯泼溅光栅化&quot;}">TileGS: Tile-Local Depth Binning for Gaussian Splatting Rasterization</a>

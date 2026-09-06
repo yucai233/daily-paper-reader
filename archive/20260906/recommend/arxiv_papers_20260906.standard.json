@@ -1,0 +1,60 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-06T21:47:35.413500+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.04196v1",
+      "title": "Puffin-World: Scaling a Unified Multimodal Model with Native 3D World States",
+      "abstract": "We propose Puffin-World, a unified multimodal architecture that integrates physical understanding, spatial simulation, and 3D world generation and reconstruction without relying on external offline modules. To reliably construct and interact with 3D worlds, our framework jointly models three native world states: physics (gravity field and latitude), geometry (depth), and appearance (image), together with a unified Omni-Camera representation that supports diverse tasks and flexible motions. Beyond modeling these states, we introduce a strategy for propagating physical dynamics across future frames. By grounding absolute camera properties in the real world, Puffin-World enables physically consistent and visually stable world generation. We further couple appearance and geometry within a single generative process, jointly synthesizing each future view and reconstructing its underlying geometry. This unified paradigm enables interleaved closed-loop applications requiring synergy across multiple tasks, including mimic and self-calibrated world exploration. To scale Puffin-World to complex scenarios, we construct Puffin-16M, comprising 15 million vision-language-camera triplets and 1 million trajectories featuring various and challenging motions. To foster further research in this area, we released the code, models, and datasets.",
+      "authors": [
+        "Kang Liao",
+        "Yihang Luo",
+        "Xiao-Ming Wu",
+        "Linyi Jin",
+        "Size Wu",
+        "Chunyu Lin",
+        "Yao Zhao",
+        "Fei Wang",
+        "Wei Li",
+        "Chen Change Loy"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-03T17:59:13+00:00",
+      "link": "https://arxiv.org/pdf/2609.04196v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Unified multimodal architecture for 3D world generation and reconstruction",
+      "llm_evidence_cn": "用于 3D 世界生成和重建的统一多模态架构",
+      "llm_evidence": "用于 3D 世界生成和重建的统一多模态架构",
+      "canonical_evidence": "用于 3D 世界生成和重建的统一多模态架构",
+      "llm_tldr_en": "Puffin-World integrates physical dynamics and geometry for stable 3D world generation and simulation.",
+      "llm_tldr_cn": "Puffin-World 集成了物理动力学和几何信息，用于稳定的 3D 世界生成与模拟。",
+      "llm_tldr": "Puffin-World 集成了物理动力学和几何信息，用于稳定的 3D 世界生成与模拟。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

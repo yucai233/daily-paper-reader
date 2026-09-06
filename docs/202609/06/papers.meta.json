@@ -1,0 +1,23 @@
+{
+  "label": "2026-09-06",
+  "date": "2026-09-06",
+  "generated_at": "2026-09-06T21:47:58",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202609/06/2609.04196v1-puffin-world-scaling-a-unified-multimodal-model-with-native-3d-world-states",
+      "section": "quick",
+      "title_en": "Puffin-World: Scaling a Unified Multimodal Model with Native 3D World States",
+      "authors": "Kang Liao, Yihang Luo, Xiao-Ming Wu, Linyi Jin, Size Wu, Chunyu Lin, Yao Zhao, Fei Wang, Wei Li, Chen Change Loy",
+      "date": "2026-09-03",
+      "pdf": "https://arxiv.org/pdf/2609.04196v1",
+      "score": "6.0",
+      "evidence": "用于 3D 世界生成和重建的统一多模态架构",
+      "tldr": "针对现有3D世界生成与物理仿真缺乏原生统一建模的问题，本文提出了Puffin-World。这是一个统一的多模态模型，无需外部模块即可融合物理、几何与外观三大原生世界状态，并结合全景相机表示与物理动态传播机制，实现了物理一致且视觉稳定的3D世界生成与交互探索。",
+      "tags": "query:q1",
+      "abstract_en": "We propose Puffin-World, a unified multimodal architecture that integrates physical understanding, spatial simulation, and 3D world generation and reconstruction without relying on external offline modules. To reliably construct and interact with 3D worlds, our framework jointly models three native world states: physics (gravity field and latitude), geometry (depth), and appearance (image), together with a unified Omni-Camera representation that supports diverse tasks and flexible motions. Beyond modeling these states, we introduce a strategy for propagating physical dynamics across future frames. By grounding absolute camera properties in the real world, Puffin-World enables physically consistent and visually stable world generation. We further couple appearance and geometry within a single generative process, jointly synthesizing each future view and reconstructing its underlying geometry. This unified paradigm enables interleaved closed-loop applications requiring synergy across multiple tasks, including mimic and self-calibrated world exploration. To scale Puffin-World to complex scenarios, we construct Puffin-16M, comprising 15 million vision-language-camera triplets and 1 million trajectories featuring various and challenging motions. To foster further research in this area, we released the code, models, and datasets.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
