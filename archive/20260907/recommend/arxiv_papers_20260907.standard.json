@@ -1,0 +1,169 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-07T22:34:06.382092+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2609.04984v1",
+      "title": "Temporal Residual Neural Radiance Fields for Monocular Video Dynamic Human Body Reconstruction",
+      "abstract": "In the field of computer vision and graphics, high-quality reconstruction of the human body in static scenes has been achieved in recent years by a single multilayer perceptron (MLP) in a number of approaches. However, MLPs have capacity limitations, requiring substantial training time and computational resources for dynamic scene reconstruction. And the quality of reconstruction is significantly constrained. This paper proposes a method for effectively processing complex spatiotemporal signals in dynamic scene human 3D modeling. The proposed method uses Temporal Residual Neural Radiance Fields to achieve novel view rendering and new pose synthesis of human bodies.To address the problem of representing temporal signals in video sequences, we construct a temporal residual field which is not related to the MLP architecture. Secondly, to improve reconstruction efficiency, we propose an integrated approach that reduces trainable parameters and accelerates rendering, thereby enhancing the network's feature representation capability. Finally, we design a multi-dimensional loss function to accurately measure the loss between predicted and actual spatial pixel values. The experimental results show that our proposed approach improves the peak signal-to-noise ratio (PSNR) and structural similarity index (SSIM) accuracy metrics compared to the latest representative methods. It maintains similar accuracy to Anim-NeRF and Neural Body while achieving a nearly 780-fold increase in time efficiency.",
+      "authors": [
+        "Tianle Du",
+        "Jie Wang",
+        "Xiaolong Xie",
+        "Wei Li",
+        "Pengxiang Su",
+        "Jie Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-04T10:40:30+00:00",
+      "link": "https://arxiv.org/pdf/2609.04984v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Temporal Residual Neural Radiance Fields for novel view rendering",
+      "llm_evidence_cn": "用于新视角渲染的时间残差神经辐射场",
+      "llm_evidence": "用于新视角渲染的时间残差神经辐射场",
+      "canonical_evidence": "用于新视角渲染的时间残差神经辐射场",
+      "llm_tldr_en": "Uses Temporal Residual NeRF to improve dynamic human body reconstruction and novel view synthesis.",
+      "llm_tldr_cn": "利用时间残差神经辐射场（NeRF）改进动态人体重建与新视角合成。",
+      "llm_tldr": "利用时间残差神经辐射场（NeRF）改进动态人体重建与新视角合成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.05255v1",
+      "title": "Compact Neural Appearance Models for Efficient Gaussian Splatting",
+      "abstract": "Explicit primitive-based radiance fields such as 3D Gaussian Splatting typically model view-dependent appearance using low-order spherical harmonics (SH). Although efficient to evaluate, SH coefficients dominate per-primitive storage and memory traffic, while their band-limited basis restricts angular detail. We present a thorough, end-to-end comparison of SH and recent spherical appearance models and introduce an implicit alternative that decodes compact per-primitive latent codes using a tiny shared MLP. We integrate all models into the same optimized pipeline, fusing their forward and backward passes into a differentiable CUDA rasterizer and provide a portable WebGL viewer for laptop and mobile GPUs. Our evaluation across reconstruction quality, memory use, and optimization and rendering performance shows that recent spherical models offer the strongest overall quality-efficiency trade-off. Our neural representation is the most compact model evaluated and, compared to third-degree SH, reduces the per-primitive appearance footprint from 192 to 28 bytes, accelerates optimization by 1.3$\\times$, while improving reconstruction quality. We further analyze how appearance parametrization shapes optimization, identifying differences in recovered geometry and the tendency of expressive models to absorb non-static scene content. Together, our framework and analysis provide practical guidance for replacing SH beyond what image metrics alone can capture.",
+      "authors": [
+        "Florian Hahlbohm",
+        "Jorge Condor",
+        "Linus Franke",
+        "Martin Eisemann",
+        "Marcus Magnor"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-09-04T15:18:54+00:00",
+      "link": "https://arxiv.org/pdf/2609.05255v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "neural appearance models and implicit decoders for radiance fields",
+      "llm_evidence_cn": "用于辐射场的神经外观模型和隐式解码器",
+      "llm_evidence": "用于辐射场的神经外观模型和隐式解码器",
+      "canonical_evidence": "用于辐射场的神经外观模型和隐式解码器",
+      "llm_tldr_en": "Introduces compact neural appearance models to replace spherical harmonics in Gaussian Splatting for efficiency.",
+      "llm_tldr_cn": "引入紧凑的神经外观模型来替代高斯泼溅中的球谐函数，以提高存储和渲染效率。",
+      "llm_tldr": "引入紧凑的神经外观模型来替代高斯泼溅中的球谐函数，以提高存储和渲染效率。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.00899v1",
+      "title": "Direct Optimization of a 3D Finite-Source Reflector via Neural-Network Parameterization",
+      "abstract": "We present a direct optimization method for three-dimensional freeform reflectors that transform the light of a finite-étendue source into a prescribed far-field angular intensity distribution. The reflector profile is represented by a small neural network (a multilayer perceptron), which is trained end-to-end through a differentiable ray-tracing objective. We furthermore parameterize the emission directions in gnomonic coordinates, and show how we use this to ensure that every emitted ray intersects the reflector. At each iteration, the network is converted to a bicubic spline representation for ray-tracing efficiency, and intersections with this smooth surface are solved by a damped Newton solve, with gradients computed via the implicit function theorem. The traced output distribution is compared with the desired target on a 'soft' histogram, under an $H^{-1}$-type spectral weighting that emphasizes long-range transport of flux to improve convergence. Optimization is performed using a BFGS method with self-scaled Broyden updates and a plateau-perturbation rule to prevent stalling. The method converges reliably within seconds on a single GPU for all examples tested.",
+      "authors": [
+        "Roel Hacking",
+        "Lisa Kusch",
+        "Martijn Anthonissen",
+        "Wilbert IJzerman"
+      ],
+      "primary_category": "physics.optics",
+      "categories": [
+        "physics.optics",
+        "cs.LG"
+      ],
+      "published": "2026-09-01T08:24:25+00:00",
+      "link": "https://arxiv.org/pdf/2609.00899v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "neural-network parameterization and differentiable ray-tracing",
+      "llm_evidence_cn": "神经网络参数化和可微光线追踪",
+      "llm_evidence": "神经网络参数化和可微光线追踪",
+      "canonical_evidence": "神经网络参数化和可微光线追踪",
+      "llm_tldr_en": "Optimizes 3D reflectors using neural network parameterization and differentiable ray-tracing.",
+      "llm_tldr_cn": "利用神经网络参数化和可微光线追踪优化3D反射器。",
+      "llm_tldr": "利用神经网络参数化和可微光线追踪优化3D反射器。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.05382v1",
+      "title": "Reflection-aware Generative Novel View Synthesis",
+      "abstract": "We propose Ref-GeNVS, a training-free, reflection-aware method for generative novel view synthesis (NVS) in mirror scenes. Existing multi-view diffusion models often fail to recognize the mirror in the scene and cannot exploit reflected content for scene generation. To fix this issue without additional training, our key idea is to treat a mirror image as two complementary views. From input images, we estimate the mirror plane and reflect camera poses to form virtual views. Based on this virtual view setup, we propose a two-stage generation method consisting of Mirror-gated attention and Reflection injection, which enables reflection-consistent NVS by explicitly leveraging reflection relationships in a multi-view diffusion model. Ref-GeNVS inherits the strong generalizability of the multi-view diffusion backbone, while it does not require finetuning. On synthetic and real scenes including mirrors, Ref-GeNVS outperforms recent generative NVS methods by generating reflection-consistent and contextually coherent novel views, revealing scene structure visible only through mirrors. Project page: https://kim-geonu.github.io/Ref-GeNVS/",
+      "authors": [
+        "GeonU Kim",
+        "Shin Dong-Yeon",
+        "Tae-Hyun Oh"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-09-04T17:33:45+00:00",
+      "link": "https://arxiv.org/pdf/2609.05382v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Generative novel view synthesis using multi-view diffusion models",
+      "llm_evidence_cn": "使用多视图扩散模型的生成式新视角合成",
+      "llm_evidence": "使用多视图扩散模型的生成式新视角合成",
+      "canonical_evidence": "使用多视图扩散模型的生成式新视角合成",
+      "llm_tldr_en": "Introduces a reflection-aware method for generative novel view synthesis in mirror scenes without extra training.",
+      "llm_tldr_cn": "引入一种反射感知的生成式新视角合成方法，无需额外训练即可处理镜像场景。",
+      "llm_tldr": "引入一种反射感知的生成式新视角合成方法，无需额外训练即可处理镜像场景。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

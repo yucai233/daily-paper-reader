@@ -1,0 +1,65 @@
+{
+  "label": "2026-09-07",
+  "date": "2026-09-07",
+  "generated_at": "2026-09-07T22:35:33",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202609/07/2609.04984v1-temporal-residual-neural-radiance-fields-for-monocular-video-dynamic-human-body-reconstruction",
+      "section": "deep",
+      "title_en": "Temporal Residual Neural Radiance Fields for Monocular Video Dynamic Human Body Reconstruction",
+      "authors": "Tianle Du, Jie Wang, Xiaolong Xie, Wei Li, Pengxiang Su, Jie Liu",
+      "date": "2026-09-04",
+      "pdf": "https://arxiv.org/pdf/2609.04984v1",
+      "score": "8.0",
+      "evidence": "用于新视角渲染的时间残差神经辐射场",
+      "tldr": "该论文针对单目视频动态人体三维重建中MLP容量限制及计算效率低的问题，提出了一种时间残差神经辐射场（Temporal Residual NeRF）方法。通过构建独立于MLP架构的时间残差场，并结合参数优化与多维损失函数，在保持高重建精度的同时，实现了比现有主流方法（如Anim-NeRF和Neural Body）快约780倍的渲染效率，显著提升了动态场景建模的性能。",
+      "tags": "query:q1",
+      "abstract_en": "In the field of computer vision and graphics, high-quality reconstruction of the human body in static scenes has been achieved in recent years by a single multilayer perceptron (MLP) in a number of approaches. However, MLPs have capacity limitations, requiring substantial training time and computational resources for dynamic scene reconstruction. And the quality of reconstruction is significantly constrained. This paper proposes a method for effectively processing complex spatiotemporal signals in dynamic scene human 3D modeling. The proposed method uses Temporal Residual Neural Radiance Fields to achieve novel view rendering and new pose synthesis of human bodies.To address the problem of representing temporal signals in video sequences, we construct a temporal residual field which is not related to the MLP architecture. Secondly, to improve reconstruction efficiency, we propose an integrated approach that reduces trainable parameters and accelerates rendering, thereby enhancing the network's feature representation capability. Finally, we design a multi-dimensional loss function to accurately measure the loss between predicted and actual spatial pixel values. The experimental results show that our proposed approach improves the peak signal-to-noise ratio (PSNR) and structural similarity index (SSIM) accuracy metrics compared to the latest representative methods. It maintains similar accuracy to Anim-NeRF and Neural Body while achieving a nearly 780-fold increase in time efficiency.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/07/2609.05255v1-compact-neural-appearance-models-for-efficient-gaussian-splatting",
+      "section": "deep",
+      "title_en": "Compact Neural Appearance Models for Efficient Gaussian Splatting",
+      "authors": "Florian Hahlbohm, Jorge Condor, Linus Franke, Martin Eisemann, Marcus Magnor",
+      "date": "2026-09-04",
+      "pdf": "https://arxiv.org/pdf/2609.05255v1",
+      "score": "8.0",
+      "evidence": "用于辐射场的神经外观模型和隐式解码器",
+      "tldr": "针对3D高斯泼溅（3DGS）中球谐函数（SH）存储开销大且细节表达受限的问题，本文提出了一种紧凑的神经外观模型。通过使用微型共享MLP解码每基元的潜在编码，该方法在显著降低存储占用（从192字节降至28字节）的同时，提升了重建质量并加速了优化过程，为高效外观建模提供了新的实践方案。",
+      "tags": "query:q1",
+      "abstract_en": "Explicit primitive-based radiance fields such as 3D Gaussian Splatting typically model view-dependent appearance using low-order spherical harmonics (SH). Although efficient to evaluate, SH coefficients dominate per-primitive storage and memory traffic, while their band-limited basis restricts angular detail. We present a thorough, end-to-end comparison of SH and recent spherical appearance models and introduce an implicit alternative that decodes compact per-primitive latent codes using a tiny shared MLP. We integrate all models into the same optimized pipeline, fusing their forward and backward passes into a differentiable CUDA rasterizer and provide a portable WebGL viewer for laptop and mobile GPUs. Our evaluation across reconstruction quality, memory use, and optimization and rendering performance shows that recent spherical models offer the strongest overall quality-efficiency trade-off. Our neural representation is the most compact model evaluated and, compared to third-degree SH, reduces the per-primitive appearance footprint from 192 to 28 bytes, accelerates optimization by 1.3$\\times$, while improving reconstruction quality. We further analyze how appearance parametrization shapes optimization, identifying differences in recovered geometry and the tendency of expressive models to absorb non-static scene content. Together, our framework and analysis provide practical guidance for replacing SH beyond what image metrics alone can capture.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/07/2609.00899v1-direct-optimization-of-a-3d-finite-source-reflector-via-neural-network-parameterization",
+      "section": "quick",
+      "title_en": "Direct Optimization of a 3D Finite-Source Reflector via Neural-Network Parameterization",
+      "authors": "Roel Hacking, Lisa Kusch, Martijn Anthonissen, Wilbert IJzerman",
+      "date": "2026-09-01",
+      "pdf": "https://arxiv.org/pdf/2609.00899v1",
+      "score": "6.0",
+      "evidence": "神经网络参数化和可微光线追踪",
+      "tldr": "针对有限扩展光源的三维自由曲面反射镜设计难题，本文提出了一种基于神经网络参数化的直接优化方法。该方法利用多层感知机表示反射镜轮廓，并结合可微光线追踪、双三次样条表面转换及$H^{-1}$谱加权损失函数，在单GPU上数秒内即可实现高效、稳健的端到端优化。",
+      "tags": "query:q7",
+      "abstract_en": "We present a direct optimization method for three-dimensional freeform reflectors that transform the light of a finite-étendue source into a prescribed far-field angular intensity distribution. The reflector profile is represented by a small neural network (a multilayer perceptron), which is trained end-to-end through a differentiable ray-tracing objective. We furthermore parameterize the emission directions in gnomonic coordinates, and show how we use this to ensure that every emitted ray intersects the reflector. At each iteration, the network is converted to a bicubic spline representation for ray-tracing efficiency, and intersections with this smooth surface are solved by a damped Newton solve, with gradients computed via the implicit function theorem. The traced output distribution is compared with the desired target on a 'soft' histogram, under an $H^{-1}$-type spectral weighting that emphasizes long-range transport of flux to improve convergence. Optimization is performed using a BFGS method with self-scaled Broyden updates and a plateau-perturbation rule to prevent stalling. The method converges reliably within seconds on a single GPU for all examples tested.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/07/2609.05382v1-reflection-aware-generative-novel-view-synthesis",
+      "section": "quick",
+      "title_en": "Reflection-aware Generative Novel View Synthesis",
+      "authors": "GeonU Kim, Shin Dong-Yeon, Tae-Hyun Oh",
+      "date": "2026-09-04",
+      "pdf": "https://arxiv.org/pdf/2609.05382v1",
+      "score": "6.0",
+      "evidence": "使用多视图扩散模型的生成式新视角合成",
+      "tldr": "Ref-GeNVS是一种无需训练的反射感知生成式新视角合成方法，专门解决多视角扩散模型在镜面场景中无法识别反射内容的问题。该方法通过估计镜面平面并构建虚拟视角，利用镜像门控注意力和反射注入机制，在不进行微调的情况下，实现了反射一致且上下文连贯的新视角生成，有效揭示了仅通过镜面可见的场景结构。",
+      "tags": "query:q1",
+      "abstract_en": "We propose Ref-GeNVS, a training-free, reflection-aware method for generative novel view synthesis (NVS) in mirror scenes. Existing multi-view diffusion models often fail to recognize the mirror in the scene and cannot exploit reflected content for scene generation. To fix this issue without additional training, our key idea is to treat a mirror image as two complementary views. From input images, we estimate the mirror plane and reflect camera poses to form virtual views. Based on this virtual view setup, we propose a two-stage generation method consisting of Mirror-gated attention and Reflection injection, which enables reflection-consistent NVS by explicitly leveraging reflection relationships in a multi-view diffusion model. Ref-GeNVS inherits the strong generalizability of the multi-view diffusion backbone, while it does not require finetuning. On synthetic and real scenes including mirrors, Ref-GeNVS outperforms recent generative NVS methods by generating reflection-consistent and contextually coherent novel views, revealing scene structure visible only through mirrors. Project page: https://kim-geonu.github.io/Ref-GeNVS/",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

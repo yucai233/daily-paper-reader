@@ -1,0 +1,649 @@
+Title: Direct Optimization of a 3D Finite-Source Reflector via Neural-Network Parameterization
+
+URL Source: https://arxiv.org/pdf/2609.00899v1
+
+Published Time: Wed, 02 Sep 2026 00:58:29 GMT
+
+Number of Pages: 16
+
+Markdown Content:
+# Direct Optimization of a 3D Finite-Source Reflector via Neural-Network Parameterization 
+
+## ROEL HACKING ,1,* LISA KUSCH ,1 MARTIJN ANTHONISSEN ,1 AND 
+
+## WILBERT IJ ZERMAN 1,2 
+
+> 1
+
+Eindhoven University of Technology, PO Box 513, 5600 MB Eindhoven, The Netherlands 
+
+> 2
+
+Signify, High Tech Campus 7, 5656 AE Eindhoven, The Netherlands 
+
+> *r.g.j.hacking@tue.nl
+
+Abstract: We present a direct optimization method for three-dimensional freeform reflectors that transform the light of a finite-étendue source into a prescribed far-field angular intensity distribution. The reflector profile is represented by a small neural network (a multilayer perceptron), which is trained end-to-end through a differentiable ray-tracing objective. We furthermore parameterize the emission directions in gnomonic coordinates, and show how we use this to ensure that every emitted ray intersects the reflector. At each iteration, the network is converted to a bicubic spline representation for ray-tracing efficiency, and intersections with this smooth surface are solved by a damped Newton solve—with gradients computed via the implicit function theorem. The traced output distribution is compared with the desired target on a ‘soft’ histogram, under an 𝐻 −1-type spectral weighting that emphasizes long-range transport of flux to improve convergence. Optimization is performed using a BFGS method with self-scaled Broyden updates and a plateau-perturbation rule to prevent stalling. The method converges reliably within seconds on a single GPU for all examples tested. 
+
+1. Introduction 
+
+Many optical applications—including illumination, beam shaping, and solar concentration— depend on precise transformation of some source light distribution into some desired target distribution [1–3]. To produce such transformation, we wish to design optical components, such as reflectors and lenses with freeform surfaces, that effectively realize these desired light transformations. Most commonly, these components are designed under the simplifying assumption of zero-étendue sources, i.e., point or parallel sources. Under these simpler, idealized assumptions, the reflector design problem can be cast as an optimal transport problem: Glimm and Oliker [4] formulated the single-reflector problem as a Monge–Kantorovich mass transfer problem, and Gangbo and Oliker [5] showed the existence of optimal maps for reflector-type problems. Romijn et al. [6, 7] developed numerical methods for freeform lens and reflector design, under the assumption of point sources and far-field targets, while Bösel et al. [8, 9] contributed ray-mapping techniques for the design of freeform surfaces for collimated beams. Neural networks have also been used to solve the Monge–Ampère equation—the partial differential equation characterizing these zero-étendue formulations—with its transport boundary condition [10], and to directly predict freeform surface topologies that produce a prescribed irradiance distribution [11]. In practice, however, most light sources—such as LEDs—have non-zero étendue . That is, they have both spatial and angular extent. The resulting target distribution becomes a blurred version of the ideal point or parallel source response [12]. Due to the conservation of étendue, this blurring imposes a fundamental limit on the achievable sharpness of any target distribution, and the simpler optimal transport formulation no longer applies—at least not directly. Several methods have been proposed to account for this finite-étendue blurring resulting from real-world light sources. For example, Fournier et al. [13] construct the reflector as a point-source solution—via the supporting-ellipsoid method of Kochengin and Oliker [14]—for a ‘virtual’ target distribution. They then iteratively adjust this virtual target until a finite-source ray trace reproduces the prescribed target distribution. Benamou et al. [15] later made this search over arXiv:2609.00899v1 [physics.optics] 1 Sep 2026 virtual targets gradient-based, minimizing an entropic optimal-transport error through the same type of point-source parameterization—though at the cost of an entropic transport solve in every loss evaluation, a restriction to convex reflectors, and, so far, a restriction to the two-dimensional setting. Another, related, strategy comes from signal processing; we treat the finite-source effect as a black-box convolution and use generic iterative deconvolution methods to counteract the smearing effects imposed by the finite source. For example, we might use additive iterative deconvolution methods—such as van Cittert [16, 17]—or multiplicative iterative methods—such as Richardson–Lucy [18, 19]. Kronberg [20] designed an inverse freeform reflector design framework which uses such iterative deconvolution methods to account for scattering-surface effects, which are similar to the blurring effects of finite sources. The general framework used by Kronberg [20] can also be applied to finite-source effects, as shown for the two-dimensional case in [21] and, via a hybrid neural–deconvolution scheme, for the three-dimensional case in [22]. However, such deconvolution methods require solving a zero-étendue subproblem in every iteration, which is a one-dimensional ordinary differential equation in the two-dimensional setting [21], but becomes a two-dimensional optimal transport or partial differential equation (PDE) problem in the fully three-dimensional case, unless we assume rotational symmetry. Thus, the deconvolution route becomes less attractive in the fully three-dimensional setting, due to the high per-iteration cost of solving the zero-étendue subproblem. Moreover, we have no guarantee that the deconvolution will converge to a solution within this setting, and may even diverge for certain problems. A third line of work applies differentiable ray tracing to optical design problems. This approach formulates the forward ray-tracing pipeline as a differentiable function, and uses some combination of automatic differentiation and manual adjoint derivation to compute gradients of the optical design objective with respect to the surface parameters. This then allows us to use first- or second-order optimization methods to optimize the surface parameters directly, though the resulting optimization problem may be highly non-convex. Much of the research within this differentiable ray tracing and rendering framework has come from the computer graphics community [23, 24]. Here, the goal is generally to optimize a variety of scene parameters—such as geometry, light positions, and material parameters—to match some desired rendered image. This general approach can also be applied to optical design problems. For example, de Koning et al. [25] and Heemels et al. [26] combined automatic differentiation with B-splines for freeform optical optimization with finite sources, with the former using a custom differentiable ray tracer and the latter using the Mitsuba 3 renderer [27]. Closer to our setting, Sun et al. [28] optimized mesh-based reflectors and lenses end to end through differentiable ray tracing, with face-based optimal-transport updates that pull the surface out of poor local optima, and the DiffRayFlow engine [29] combines discrete optimal transport with differentiable ray tracing for freeform design. This paper presents a fully three-dimensional method for finite-source reflector design with a far-field target distribution. Our main contributions are as follows: 1. A fully three-dimensional formulation treating the four-dimensional source phase space (2D spatial × 2D angular) directly, parameterized so that every emitted ray is guaranteed to intersect the reflector. 2. A mesh-free differentiable forward ray-tracing pipeline : the reflector profile, parameter-ized by a multilayer perceptron (MLP), is converted to a bicubic spline representation each iteration, rays are intersected with this smooth surface by a damped Newton solve, and gradients are propagated back through the intersection via the implicit function theorem. 3. An 𝐻 −1-weighted soft-histogram loss : ‘soft’ histograms of the desired target distribution and of the ray-traced output distribution are compared in the frequency domain, in a way that emphasizes long-range transport of flux to improve convergence. 4. Three numerical examples , every solve completing in 2 to 8 seconds of wall-clock time on a single GPU, demonstrating the method’s performance and robustness. The remainder of the paper is organized as follows. Section 2 formulates the problem, Section 3 explains the method, Section 4 presents some numerical results, Section 5 discusses our findings, and we finally conclude in Section 6. 
+
+2. Problem formulation 
+
+We formulate the reflector design problem in the geometric-optics regime: we model light as rays that propagate in straight lines and reflect off specular surfaces according to the law of reflection. The source model and the coordinate conventions that we use are introduced in Section 2.1, the way we parameterize the reflector is described in Section 2.2, the ray–reflector intersection and the guarantee that every emitted ray hits the reflector are discussed in Section 2.3, and the forward ray-tracing routine and optimization objective are presented in Section 2.4. 
+
+2.1. Physical setting and source model 
+
+We model the light source and the reflector in a Cartesian coordinate system, with the source plane at 𝑧 = 0. The reflector is a specular surface above this source plane, and our goal is to design it such that the resulting far-field angular intensity distribution matches some prescribed target distribution. We follow some of the notation of [21, 22], and an overview of the symbols used in this paper is given in Table 1. The planar source occupies a compact region Ω ⊂ R2 on the 𝑧 = 0 plane. Each point q𝑠 =
+
+(𝑞 𝑠, 1, 𝑞 𝑠, 2) ∈ Ω emits light into a set of directions ˆ s ∈ S2
+
+> +
+
+, where S2 
+
+> +
+
+= {ˆs ∈ R3 : |ˆs| = 1, 𝑠 3 > 0}
+
+is the open upper unit hemisphere. We represent these emission directions by their gnomonic coordinates 
+
+p𝑠 = 𝐺 (ˆs) := (𝑠 1, 𝑠 2)
+
+𝑠 3
+
+∈ R2, (1) with the inverse 
+
+𝐺 −1 (p𝑠 ) = ( 𝑝 𝑠, 1, 𝑝 𝑠, 2, 1)√︁ 
+
+1 + | p𝑠 |2 . (2) Geometrically, p𝑠 is the central projection of ˆ s from the origin onto the tangent plane 𝑧 = 1, such that |p𝑠 | = tan 𝛼 where 𝛼 is the polar angle between ˆ s and the 𝑧 -axis. The set of admissible emission directions, expressed in gnomonic coordinates, forms the angular source domain 𝐴 ⊂ R2. The domain 𝐴 represents the angular extent of the source: a small 𝐴 corresponds to a nearly collimated beam, whereas a large 𝐴 corresponds to a wide-angle emitter. The étendue of the source is determined jointly by Ω and 𝐴 . The full source phase space is S = Ω × 𝐴 ⊂ R4, and the source radiance is described by a normalized distribution function 
+
+𝑓 : S → R≥0 satisfying ∫ 
+
+> S
+
+𝑓 (q𝑠 , p𝑠 ) dq𝑠 dp𝑠 = 1. In related finite-source formulations [22], source emission directions were parameterized by stereographic projections from the south pole. Here we adopt gnomonic coordinates because the ray–reflector intersection equation (7) becomes affine in the emission angular coordinate p𝑠 , which considerably simplifies the ray-coverage analysis of Section 2.3 and the boundary conditions. Stereographic and gnomonic coordinates are related by a smooth, invertible change of coordinates on S2
+
+> +
+
+; they therefore represent the same physical ray directions. For the reflected (output) directions, we retain the north-pole stereographic projection. 
+
+2.2. Reflector surface 
+
+A reflector over Ω is given by the parametric map (cf. [21, 22]) 
+
+r(q𝑡 ) = (q𝑡 , 0) + 𝑢 (q𝑡 ) ˆd(q𝑡 ), (3) where q𝑡 = (𝑞 𝑡 , 1, 𝑞 𝑡 , 2) ∈ Ω is the reflector surface parameter, 𝑢 : Ω → R>0 is the unknown profile function, and ˆ d : Ω → S2 
+
+> +
+
+is a prescribed field of unit directions. The direction field is constructed from its gnomonic representation 𝜷 (q𝑡 ) = (𝑑 1/𝑑 3, 𝑑 2/𝑑 3) ∈ R2 via ˆd(q𝑡 ) = 𝐺 −1 ( 𝜷 (q𝑡 )) = (𝛽 1, 𝛽 2, 1)√︁ 
+
+1 + | 𝜷 |2 . (4) Note that 𝑢 is not a simple height function: the reflector point r lies at distance 𝑢 from the source plane along the direction ˆd, not vertically. The vertical component of the reflector point is 
+
+𝑢 (q𝑡 ) · 𝑑 3 (q𝑡 ).Let [𝑞 1,min , 𝑞 1,max ] × [ 𝑞 2,min , 𝑞 2,max ] and [ 𝑝 1,min , 𝑝 1,max ] × [ 𝑝 2,min , 𝑝 2,max ] be the axis-aligned bounding boxes of Ω and 𝐴 ; we define the direction field via the componentwise affine map 
+
+𝛽 𝑖 (q𝑡 ) = 𝑝 𝑖, min + 𝑝 𝑖, max − 𝑝 𝑖, min 
+
+𝑞 𝑖, max − 𝑞 𝑖, min 
+
+(𝑞 𝑡 ,𝑖 − 𝑞 𝑖, min ), 𝑖 = 1, 2, (5) which linearly maps the spatial bounding box to the angular bounding box. The geometric significance of this construction is explained in Section 2.3. 
+
+2.3. Ray–reflector intersection and coverage condition 
+
+Consider a ray emitted from (q𝑠 , 0) in unit direction ˆ s = 𝐺 −1 (p𝑠 ), described by the ray equation 
+
+x(𝜏 ) = (q𝑠 , 0) + 𝜏 ˆs, 𝜏 ≥ 0. (6) The ray hits the reflector at parameter point q𝑡 if x(𝜏 ) = r(q𝑡 ) for some 𝜏 ≥ 0. The third component of this equality determines the ray parameter, 𝜏 = 𝑢 (q𝑡 ) 𝑑 3 (q𝑡 )/ 𝑠 3; substituting 𝜏 
+
+into the first two components and using (𝑠 1, 𝑠 2) = 𝑠 3 p𝑠 from (1) gives 
+
+q𝑠 = q𝑡 + 𝑢 (q𝑡 ) 𝑑 3 (q𝑡 ) ( 𝜷 (q𝑡 ) − p𝑠 ). (7) This is the key geometric relation. It is affine in p𝑠 for fixed q𝑡 ; this is the reason for working in gnomonic coordinates, since in stereographic or other nonlinear angular coordinates the corresponding equation would be nonlinear in the angular variable. We define the shadow map 
+
+𝐹 p𝑠 (q𝑡 ) = q𝑡 + 𝑢 (q𝑡 ) 𝑑 3 (q𝑡 ) ( 𝜷 (q𝑡 ) − p𝑠 ), which gives the source-plane footprint of a reflector point q𝑡 as seen from emission direction p𝑠 .For the degenerate profile 𝑢 ≡ 0 the shadow map reduces to the identity, 𝐹 p𝑠 = id, which trivially covers every source point, regardless of p𝑠 . As the profile grows continuously from zero to 𝑢 , the shadow map keeps covering all of Ω as long as the image of the boundary 𝜕 Ω never folds inward across Ω. This requirement yields the outward-lean boundary condition : for every q𝑏 ∈ 𝜕 Ω with outward unit normal n,
+
+n · 𝜷 (q𝑏 ) ≥ sup   
+
+> p𝑠 ∈𝐴
+
+n · p𝑠 . (8) The interpretation is that the reflector direction at each boundary point must lean at least as far outward (in gnomonic coordinates) as the most oblique incoming ray in that normal direction. When this condition holds, every emitted ray—from any source point q𝑠 ∈ Ω in any direction 
+
+p𝑠 ∈ 𝐴 —is guaranteed to hit the reflector. On rectangular domains, the affine map (5) meets the condition exactly. If Ω or 𝐴 is not rectangular (e.g., a disk), we simply apply the affine map to their axis-aligned bounding boxes; the direction field then leans somewhat farther outward than strictly necessary, but coverage is guaranteed, which is what we actually care about for the sake of optimization. 2.4. Forward ray tracing and the design problem 
+
+Given a source sample (q𝑠 , p𝑠 ) ∈ S , the forward ray-tracing pipeline proceeds as follows. 1. Emit: ray origin (q𝑠 , 0), direction ˆ s = 𝐺 −1 (p𝑠 ).2. Intersect: find the intersection of the ray with the reflector surface r.3. Reflect: ˆt = ˆs − 2(ˆs · ˆn) ˆn, where ˆ n is the unit surface normal at the intersection point; since |ˆs| = 1, the reflected direction ˆ t is again a unit vector. 4. Project: compute the output angular coordinate p𝑡 = 𝑃 𝑁 (ˆt) via north-pole stereographic projection (since reflected rays have 𝑡 3 < 0): 
+
+p𝑡 = (𝑡 1, 𝑡 2)
+
+1 − 𝑡 3
+
+. (9) This defines the forward map T𝜽 : S → T , (q𝑠 , p𝑠 ) ↦ → ( q𝑡 , p𝑡 ), where 𝜽 denotes the parameters of 𝑢 (specified in Section 3.1), 𝐵 ⊂ R2 is the far-field angular target domain (in north-pole stereographic coordinates), and T := Ω × 𝐵 is the full target domain. The map T𝜽 pushes the source distribution 𝑓 on S forward to a joint distribution ˜ 𝑔 𝜽 (q𝑡 , p𝑡 )
+
+on T . The physically relevant quantity is the marginal far-field angular distribution 𝑔 𝜽 (p𝑡 ),obtained by integrating out the spatial reflector coordinate q𝑡 . Via the change-of-variables formula applied to T−1 
+
+> 𝜽
+
+(cf. [22, Eq. (1)] and [21, Eq. (7)]), 
+
+𝑔 𝜽 (p𝑡 ) =
+
+∫
+
+> Ω
+
+𝑓  T−1 
+
+> 𝜽
+
+(q𝑡 , p𝑡 ) det 𝜕 T−1
+
+> 𝜽
+
+𝜕 (q𝑡 , p𝑡 ) dq𝑡 . (10) This 𝑔 𝜽 (p𝑡 ) represents the far-field angular intensity distribution produced by the reflector with profile 𝑢 𝜽 . The design problem is to find 𝑢 (parameterized by 𝜽 ) such that 𝑔 𝜽 (p𝑡 ) ≈ ˆ𝑔 (p𝑡 ) for a prescribed target distribution ˆ 𝑔 . Evaluating (10) directly requires the inverse map T−1 
+
+> 𝜽
+
+and a two-dimensional quadrature over Ω for each target point p𝑡 ; Section 3.5 discusses this approach and its limitations. Instead, we adopt a sample-based forward approach : the source phase space is covered by 𝑁 fixed quasi-Monte Carlo samples, each carrying the local source density 𝑓 
+
+as a weight, and these are ray-traced through the reflector via T𝜽 ; the resulting weighted output distribution is compared to ˆ 𝑔 via a differentiable loss (Section 3.3).                       
+
+> Fig. 1. Schematic diagram of the 3D finite-source reflector problem. A planar source on 𝑧 =0 emits rays from spatial points q𝑠 =(𝑞 𝑠, 1, 𝑞 𝑠, 2)in directions ˆ s. Each ray strikes the reflector surface r(q𝑡 )=(q𝑡 ,0) + 𝑢 (q𝑡 )ˆd(q𝑡 ), reflects about the surface normal ˆ n,and propagates to the far field. The reflected direction ˆ tis projected stereographically to give the far-field angular coordinate p𝑡 =(𝑝 𝑡 , 1, 𝑝 𝑡 , 2).
+
+3. Method 
+
+This section details the four components of our approach: the neural-network parameterization of the reflector profile (Section 3.1), the spline-compiled surface and GPU ray tracing (Section 3.2), Table 1. Notation and symbols. Symbol Meaning 
+
+Ω Spatial support of the planar source (source base domain) 
+
+𝐴 Angular source domain (gnomonic coordinates) 
+
+S := Ω × 𝐴 Full source domain 
+
+𝐵 Far-field angular target domain (north-pole stereographic coordi-nates) 
+
+T := Ω × 𝐵 Full target domain 
+
+𝑓 (q𝑠 , p𝑠 ) Normalized source distribution function over S
+
+𝜽 Parameters of the profile function 𝑢 (e.g., MLP weights and biases) ˜𝑔 𝜽 (q𝑡 , p𝑡 ) Pushforward of 𝑓 under T𝜽 ; joint distribution over T
+
+𝑔 𝜽 (p𝑡 ) Marginal far-field angular distribution (integral of ˜ 𝑔 𝜽 over q𝑡 )ˆ𝑔 (p𝑡 ) Prescribed (desired) far-field angular target distribution 
+
+q𝑠 Source spatial coordinate in Ω
+
+q𝑡 Reflector surface parameter in Ω
+
+p𝑠 Gnomonic emission coordinate in 𝐴 
+
+p𝑡 Stereographic far-field coordinate in 𝐵 
+
+ˆs Unit emission direction ( ∈ S2
+
+> +
+
+)ˆt Unit reflected direction ( 𝑡 3 < 0) 
+
+r(q𝑡 ) Reflector surface point for parameter q𝑡 
+
+𝑢 (q𝑡 ) Reflector profile function ˆd(q𝑡 ) Unit direction field of the reflector ( ∈ S2
+
+> +
+
+)
+
+𝜷 (q𝑡 ) Gnomonic representation of the direction field ˆn Unit normal to the reflector surface 
+
+T Forward map from source to target, S → T ; written T𝜽 when emphasizing dependence on the profile parameters 
+
+𝐺, 𝐺 −1 Gnomonic projection and its inverse 
+
+𝑃 𝑁 North-pole stereographic projection the 𝐻 −1-weighted soft-histogram loss (Section 3.3), and the quasi-Newton optimizer (Section 3.4). Section 3.5 discusses the relationship to prior lower-dimensional formulations. 
+
+3.1. Neural-network parameterization of the profile function 
+
+We parameterize the profile function 𝑢 by an MLP with parameters 𝜽 . The network takes as input the two-dimensional reflector coordinate (𝑞 𝑡 , 1, 𝑞 𝑡 , 2), passes it through two hidden layers of 24 units each with the activation function 𝜙 (𝑥 ) := tanh 2 (𝑥 ), and produces a single scalar output. The raw network output is combined with learnable scale, quadratic, and bias terms and passed through a sigmoid function to ensure 𝑢 ∈ [ 𝑢 min , 𝑢 max ]:
+
+𝑢 𝜽 (q𝑡 ) = 𝑢 min + ( 𝑢 max − 𝑢 min ) 𝜎  𝜆 MLP 𝜽 (q𝑡 ) + 𝛾 |q𝑡 |2 + ℎlogit 
+
+, (11) where 𝜎 is the sigmoid function, 𝜆 (initialized to 0.1) is a learnable linear scale, 𝛾 (initialized to 0.5) is a learnable quadratic scale, and ℎlogit is initialized so that 𝜎 (ℎlogit ) = (𝑢 init −𝑢 min )/( 𝑢 max −𝑢 min ).Together with the network’s 697 weights and biases, 𝜽 comprises 700 trainable parameters. In all experiments we set 𝑢 min = 0.1, 𝑢 max = 8.0, and 𝑢 init = 2.0; the same initial profile value is used for every example. At initialization, MLP 𝜽 (q𝑡 ) ≈ 0 across Ω and 𝜆 is small, so 𝑢 𝜽 (q𝑡 ) ≈ 𝑢 init up to a small quadratic perturbation. This yields a near-constant profile that places the reflector at approximately uniform distance from the source plane along the direction field, providing a physically reasonable starting point for the optimization. 
+
+3.2. Spline-compiled surface and GPU ray tracing 
+
+Instead of triangulating the surface, the MLP profile 𝑢 𝜽 is compiled each iteration: it is evaluated on a regular 64 × 64 grid over the padded bounding box of Ω, and the resulting values define a bicubic B-spline interpolant of the profile. All ray tracing is performed against this smooth approximation surface directly. Because the intersection relation (7) is affine in p𝑠 and only slightly nonlinear in q𝑡 , the intersection parameter q𝑡 of each ray is found by a damped two-dimensional Newton iteration. This requires relatively few iterations to converge to a solution that is sufficiently accurate for our applications. The surface normal at the hit point then comes directly from the analytic gradient of the spline interpolant—though it is of course only an approximation of the MLP’s normal at that point. Gradient flow through the intersection uses the implicit function theorem: differentiating (7) at the converged point yields the sensitivity of q𝑡 (and thus the reflected direction) to local perturbations of the reflector profile and its normal in closed form. Simply using automatic differentiation here—which would differentiate through the iterative algorithm—might still be sufficient as well, but the implicit function approach should be faster and more accurate, especially as the number of inner Newton iterations is increased. The complete pipeline—reflector profile compilation, Newton intersection, reflection, histogram accumulation—runs on a single GPU. On our hardware, a full loss-and-gradient evaluation with 𝑁 = 222 rays takes well under a millisecond. 
+
+3.3. 𝐻 −1-weighted soft-histogram loss 
+
+We require a differentiable loss that compares the weighted empirical distribution of the 𝑁 
+
+ray-traced output samples {p(𝑖 ) 
+
+> 𝑡
+
+}𝑁 𝑖 =1 against a target distribution ˆ 𝑔 . Standard histograms with hard indicator-function bins are non-differentiable at the bin boundaries. We therefore accumulate rays in a ‘soft’ histogram: each sample deposits its source weight onto a grid of 𝑀 × 𝑀 bins (𝑀 = 128) through compactly supported B-spline kernels, such that the bin contents ℎ 𝑗 𝑘 (𝜽 ) are smooth functions of the sample positions. This is necessary in order for the objective function to be optimized through gradient-based optimization algorithms. We choose this B-spline kernel as it is both smooth and compactly supported, which keeps the computation relatively cheap and comparable to a standard histogram. Related differentiable histogram constructions have been explored by Avi-Aharon et al. [30], and B-spline-based density estimation by Kirkby et al. [31] and Zhao et al. [32]. A reference histogram ℎref is precomputed once from the target distribution using the same binning and B-spline kernel, such that both sides of the comparison carry the same kernel smoothing. This ensures that an exact solution—if possible—would obtain a discrepancy of exactly 0. Rather than penalizing the residual ℎ − ℎref uniformly across frequencies, we measure it under an 𝐻 −1-type spectral weighting (a weighting that emphasizes low spatial frequencies), 
+
+L( 𝜽 ) = 1
+
+∥ℎref ∥22 𝑀 2∑︁ k
+
+11 + | k|2/𝑘 20
+
++ 𝜖 0
+
+!(ℎ − ℎref )( k) 2, (12) where b· denotes the discrete Fourier transform over the bin grid, k the spatial frequency, 𝑘 0 = 1(one cycle across the histogram window), and 𝜖 0 = 0.02 a small flat floor. The low-pass factor is the discrete analogue of a squared 𝐻 −1 norm and encodes the transport nature of the problem, without requiring expensive Wasserstein distance or Sinkhorn divergence computations to be performed repeatedly. This formulation ensures that, even when the achieved and desired distributions are far apart in terms of Wasserstein distance, there is still a good gradient signal pushing the ray-traced distribution in the right direction by allowing it to consider longer-range transport, which more standard losses might miss. The final auxiliary loss term simply encourages the optimizer to push as much reflected flux as possible into the desired domain, which the main histogram loss is blind to. Each ray that fails to reach the desired target domain contributes to an escaping-flux fraction, with a weight that grows smoothly from zero with the distance by which that ray overshoots the domain boundary. This squared fraction is then added to the loss. For evaluation purposes (as opposed to training), we use a standard hard histogram with 
+
+𝑀 eval = 128 bins per axis and report the relative 𝐿 2 error 
+
+𝜀 𝐿 2 = ∥ℎ − ℎref ∥2
+
+∥ℎref ∥2
+
+, (13) where ℎ and ℎref now denote the hard histograms at resolution 𝑀 eval , computed from 2 26 fresh quasi-Monte Carlo samples independent of those used during training. 
+
+3.4. Quasi-Newton optimization 
+
+The quasi-Newton update uses a self-scaled Broyden family method. Self-scaled quasi-Newton methods, introduced by Oren and Luenberger [33] and further developed by Al-Baali [34], multiply the current Hessian-inverse approximation by a scalar factor before performing the standard secant update. We use the self-scaled Broyden variant of Urbán et al. [35], which performed best in their study of quasi-Newton training for physics-informed neural networks, where such methods substantially outperformed first-order optimizers such as Adam [36]. Step sizes come from the bracketing weak-Wolfe line search of Lewis and Overton [37]. The initial step size is warm-started from the previously accepted line-search step size, and the gradients of line-search trial points are computed only when the sufficient-decrease (Armijo) condition is satisfied to avoid unnecessary gradient evaluations for rejected trials. When the search fails, which happens on non-convex landscapes, the optimizer falls back to a Hessian reset, then Armijo backtracking, then a fixed step. Two mechanisms improve the reliability of the optimization on this non-convex landscape. First, a plateau-perturbation (basin-hopping) rule: whenever progress stalls, the iterate is perturbed by a small random step (with amplitude decreasing over successive perturbations, on a deterministic schedule) and the Hessian approximation is reset; each perturbation launches from—and the run finally returns to—the best iterate encountered, so the best solution found is never lost. This reliably restores progress where plain descent otherwise stalls. Runs initialized from the solution at a previous radius (the continuation strategy of Section 4.4) skip these perturbations: the continuation exists to keep the solution in the inherited basin, and perturbing a near-converged solution tends to find basins that improve the training loss only by exploiting the particular fixed sample set. Second, we penalize large pre-sigmoid values in (11): a profile pushed against 𝑢 min 
+
+or 𝑢 max saturates the sigmoid, so gradients through it vanish and the optimizer cannot pull the profile back from the bound. Because the penalty acts on the pre-sigmoid values directly, it keeps pushing the profile away from the bounds even where the sigmoid has saturated. Source samples are generated once from a deterministic low-discrepancy point set (a rank-one lattice with a seed-dependent random shift) and held fixed throughout optimization. This deterministic sampling is necessary for standard quasi-Newton methods, as they assume deter-ministic objectives; stochastic objectives would corrupt the curvature information and break the assumptions of the line search. Stochastic quasi-Newton variants [38] do exist, but we opted here for determinism as the ray tracer is sufficiently fast to allow for large sample sizes, and the deterministic objective then allows us to converge faster and more reliably. 
+
+3.5. Relation to lower-dimensional formulations 
+
+Earlier lower-dimensional formulations [21] can—to some extent—exploit symmetry to reduce the source and target phase spaces from four dimensions (2D spatial × 2D angular) to two dimensions (1D spatial × 1D angular), which enables inverse-mapping- and quadrature-based losses at manageable cost. In the fully three-dimensional setting treated here, those constructions get expensive: the marginal far-field distribution in (10) needs a two-dimensional integral over Ω
+
+for each target location, and constructions based on intersecting source and target cells would have to operate in the four-dimensional phase space. Such constructions may still be extended to 3D, but would require more careful attention to the computational cost and efficiency of the quadrature algorithms to avoid excessive runtime. The present method therefore takes a different route: a forward, sample-based pipeline with hardware-accelerated ray tracing and a smooth soft-histogram discrepancy. It evaluates no inverse maps and no four-dimensional cell intersections, has no trouble with discontinuous source distributions, and suits GPU-based quasi-Newton optimization. Both lines of work use compact neural parameterizations and quasi-Newton updates, but the objective construction and the optimization loop have little else in common. 
+
+4. Numerical results 
+
+We demonstrate the method on three examples of increasing complexity: a Gaussian-to-uniform redistribution (Section 4.2), a yin-yang image projection (Section 4.3), and a systematic sweep over the angular source extent (Section 4.4). Implementation details common to all examples are given in Section 4.1. 
+
+4.1. Implementation details 
+
+The method is implemented in CUDA C++: profile compilation, Newton intersection, reflection, histogram accumulation, the adjoint, and the network itself all execute on the GPU, with the optimizer state held in double precision on the host. Surface and ray computations use single precision (float32) on a single NVIDIA RTX 4090 GPU. All examples use 𝑁 = 222 quasi-Monte Carlo source samples and 128 × 128 soft-histogram bins, and there are no per-example settings: every hyperparameter, including the initial profile value and the loss-histogram resolution, is identical across the three examples. The only per-example difference is the wall-clock budget, which serves as the stopping criterion: 2 seconds per run for Examples A and B, and 8 seconds per radius for Example C. Because the order of parallel floating-point additions varies from run to run on a GPU, histogram and adjoint sums are accumulated in fixed-point integer arithmetic (integer addition is exactly associative), so the objective—and with it the entire optimization trajectory—is bitwise reproducible across runs on a given GPU. 
+
+4.2. Example A: truncated Gaussian source, uniform target 
+
+The first example uses a square spatial domain Ω = [− 0.3, 0.3]2 and a circular angular domain 
+
+𝐴 of gnomonic radius 0 .75 (cone half-angle arctan 0 .75 ≈ 37 ◦). The source distribution is a truncated Gaussian with zero mean and covariance matrix 0 .2 𝐼 4 on Ω × 𝐴 , and the target is a uniform distribution ˆ 𝑔 on [− 0.3, 0.3]2 in north-pole stereographic coordinates. The optimizer reaches a relative 𝐿 2 error of 𝜀 𝐿 2 = 3.6% within the 2-second budget. Figure 2 shows the convergence history, the evolution of the reflector surface and the ray-traced far-field distribution at selected times, and the pointwise signed error with respect to the target. The error drops below 7% within the first quarter second and continues to improve steadily until the budget is exhausted. Throughout the optimization, the optimizer adapts the curvature of the reflector to redistribute flux from the center—where the Gaussian source is densest—toward the edges, in order to match the prescribed uniform target. 
+
+4.3. Example B: uniform source, yin-yang image target 
+
+The second example uses a circular spatial domain Ω of radius 0 .3 and the same circular angular domain 𝐴 of gnomonic radius 0 .75 as Example A, with a uniform source distribution on 
+
+Ω × 𝐴 . The target distribution ˆ 𝑔 is a yin-yang image (512 × 512 grayscale, piecewise-constant interpolation) defined on [− 0.3, 0.3]2.The optimizer converges to 𝜀 𝐿 2 = 6.4% within the 2-second budget. The results are shown in Figure 3. The yin-yang pattern emerges progressively from the initial near-uniform distribution as the reflector surface is shaped by the optimizer. The final result captures the main features of the prescribed yin-yang target, namely the two interlocking regions and the small dots contained within, though with visible blurring and some ringing artifacts, which we believe are inevitable given the non-zero étendue of the source. As an exact match is likely impossible, the optimizer instead finds a solution that minimizes the specified objective. Alternative objectives may therefore yield different trade-offs between the various features of the target, though we leave such exploration to future work. 
+
+4.4. Example C: angular domain radius sweep 
+
+Examples A and B both use a fixed angular domain radius of 𝑟 𝐴 = 0.75. To study how the optimization result depends on the angular source extent, Example C systematically varies this angular radius over a wide range. The spatial domain is a disk Ω of radius 0 .3, the source distribution is uniform on Ω × 𝐴 (𝑟 𝐴 ) where 𝐴 (𝑟 𝐴 ) denotes a disk of gnomonic radius 𝑟 𝐴 , and the target is uniform on [− 0.3, 0.3]2. The radius is swept over ten equally spaced values 𝑟 𝐴 = 2𝑘 /9, 
+
+𝑘 = 0, . . . , 9, from the collimated limit 𝑟 𝐴 = 0 up to 𝑟 𝐴 = 2 (cone half-angle ≈ 63 ◦). Apart from the collimated case, which is solved independently, we proceed by continuation: we first optimize at the smallest non-zero radius, then sweep outward, initializing each solve from the solution at the preceding radius. The results are shown in Figure 4 and summarized in Table 2. At 𝑟 𝐴 = 0 (a parallel source in which all rays travel in the same direction), the relative 𝐿 2 error is 𝜀 𝐿 2 = 2.9%, the smallest across the sweep, consistent with the fact that the parallel case approaches a collimated-beam reflector problem for which highly accurate solutions are known to exist [8, 9]. As 𝑟 𝐴 increases, the error grows monotonically and gently, from 3 .0% at 𝑟 𝐴 = 0.22 to 4 .0% at 𝑟 𝐴 = 2.0—a factor of only 1 .3 while the angular source extent grows by an order of magnitude. The monotone growth of the error is consistent with our physical expectation: as the angular extent of the 0.00 0.25 0.50 0.75 1.00 1.25 1.50 1.75 2.00 
+
+Time (s) 
+
+10 −1
+
+10 0  
+
+> Relative  L2 error
+> −0.20.00.2
+
+pt, 1
+
+> −0.3
+> −0.2
+> −0.10.00.10.20.3
+> pt, 2
+
+Target 
+
+> 0.00.20.40.60.81.0
+> ×10 −4
+> −1.50.01.5
+
+x −1.50.01.5
+
+y
+
+> 0.01.5
+
+zt = 0 .0 s 
+
+> −404
+
+x −404
+
+y
+
+> 048
+
+zt = 0 .5 s 
+
+> −404
+
+x −404
+
+y 
+
+> 05
+
+zt = 1 .0 s 
+
+> −404
+
+x −404
+
+y 
+
+> 05
+
+zt = 1 .4 s 
+
+> −404
+
+x −404
+
+y 
+
+> 05
+
+zt = 1 .9 s      
+
+> −0.20.00.2
+> pt, 2
+> peak: 1.3×10 −3
+> 0.00.20.40.60.81.0
+> ×10 −4
+> −0.20.00.2
+
+pt, 1    
+
+> −0.20.00.2
+> pt, 2
+> ±1.2×10 −3
+> −0.20.00.2
+
+pt, 1    
+
+> ±4.7×10 −5
+> −0.20.00.2
+
+pt, 1    
+
+> ±3.9×10 −5
+> −0.20.00.2
+
+pt, 1    
+
+> ±3.5×10 −5
+> −0.20.00.2
+
+pt, 1  
+
+> ±2.4×10 −5
+> −
+> 0+
+
+(a) (b) (c) (d) (e) Fig. 2. Example A: truncated-Gaussian source, uniform target. (a) Relative 𝐿 2 error over wall-clock time; the vertical dotted lines mark the snapshot times shown below. (b) Target distribution. (c) Reflector surface at selected times. (d) Ray-traced far-field distributions; the first panel uses its own color scale (peak annotated), while the remaining panels share a common scale with (b). (e) Signed error 𝑒 = ℎ − ℎref ,individually scaled to ± max |𝑒 | per panel. 0.00 0.25 0.50 0.75 1.00 1.25 1.50 1.75 2.00 
+
+Time (s) 
+
+10 −1
+
+10 0
+
+> Relative  L2 error
+
+−0.3 −0.2 −0.1 0.0 0.1 0.2 0.3
+
+pt, 1
+
+−0.3
+
+−0.2
+
+−0.10.00.10.20.3
+
+> pt, 2
+
+Target 
+
+0.00 0.25 0.50 0.75 1.00 1.25 1.50 1.75 
+
+×10 −4
+
+> −1.50.01.5
+
+x −1.50.01.5
+
+y
+
+> 0.01.5
+
+zt = 0 .0 s 
+
+> −303
+
+x −303
+
+y 
+
+> 03
+
+zt = 0 .5 s 
+
+> −404
+
+x −404
+
+y 
+
+> 04
+
+zt = 1 .0 s 
+
+> −404
+
+x −404
+
+y 
+
+> 04
+
+zt = 1 .4 s 
+
+> −404
+
+x −404
+
+y 
+
+> 04
+
+zt = 1 .9 s 
+
+−0.3
+
+−0.2
+
+−0.10.00.10.20.3   
+
+> pt, 2
+> peak: 1.2×10 −3
+
+0.00.51.01.5
+
+×10 −4
+
+−0.2 0.0 0.2
+
+pt, 1
+
+−0.3
+
+−0.2
+
+−0.10.00.10.20.3  
+
+> pt, 2
+> ±1.1×10 −3
+
+−0.2 0.0 0.2
+
+pt, 1  
+
+> ±7.6×10 −5
+
+−0.2 0.0 0.2
+
+pt, 1  
+
+> ±6.6×10 −5
+
+−0.2 0.0 0.2
+
+pt, 1  
+
+> ±6.2×10 −5
+
+−0.2 0.0 0.2
+
+pt, 1  
+
+> ±6.2×10 −5
+
+−
+
+0+
+
+(a) (b) (c) (d) (e) Fig. 3. Example B: uniform source, yin-yang image target. (a) Relative 𝐿 2 error over wall-clock time; the vertical dotted lines mark the snapshot times shown below. (b) Target distribution. (c) Reflector surface at selected times. (d) Ray-traced far-field distributions; the first panel uses its own color scale (peak annotated), while the remaining panels share a common scale with (b). (e) Signed error, individually scaled to ± max |𝑒 | per panel. source is increased, the attainable sharpness of the target is limited by the source étendue, and the optimizer must find solutions that are near this limit across the entire sweep.                                                               
+
+> Table 2. Summary of numerical results.
+> Example Ω𝐴 Source Target 𝑁 𝜀 𝐿 2Time (s) Abox [− 0.3,0.3]2disk, 𝑟 =0.75 Trunc. Gauss. Uniform 222 3.6% 2.0 Bdisk, 𝑟 =0.3disk, 𝑟 =0.75 Uniform Yin-yang 222 6.4% 2.0 C ( 𝑟 𝐴 =0) disk, 𝑟 =0.3disk, 𝑟 𝐴 =0Uniform Uniform 222 2.9% 8.0 C ( 𝑟 𝐴 =2) disk, 𝑟 =0.3disk, 𝑟 𝐴 =2Uniform Uniform 222 4.0% 8.0
+
+5. Discussion 
+
+In the numerical experiments the method converges within 2 to 8 seconds of wall-clock time on a single GPU. Three things make this possible: the spline-compiled surface with its cheap Newton intersection (a full loss-and-gradient evaluation with 2 22 rays takes well under a millisecond), the fully GPU-resident pipeline, and the compactly supported soft-histogram accumulation. While those three components ensure that objective and gradient computations are fast, it is also important that our optimization can converge reliably in relatively few iterations. We believe there are three main components that allow for this. Firstly, our use of gnomonic coordinates yields an affine ray–reflector intersection equation, which ensures all rays intersect the reflector regardless of the current neural network parameter vector, and avoids any potential discontinuities in the objective function resulting from varying visibility. Secondly, the 𝐻 −1-weighted loss additionally improves the reliability of the optimization by supplying a long-range transport signal, which dominates during early optimization (when there is a greater mismatch between achieved and desired target distributions). Finally, our use of plateau-perturbation helps to eliminate any further failures or premature optimizer terminations which we otherwise sometimes observed. Compared with prior lower-dimensional inverse-mapping formulations, the present approach uses a forward ray-tracing pipeline combined with a soft-histogram loss. This change is motivated by the increased dimensionality: in 3D without rotational symmetry, evaluating the marginal far-field distribution 𝑔 𝜽 (p𝑡 ) via (10) requires repeated two-dimensional quadrature over Ω for each far-field point, and the integrand develops singular behavior as the angular source domain shrinks. The forward approach avoids these issues entirely and, being based on sample statistics rather than pointwise density evaluation, naturally handles discontinuous source distributions. Compact MLP parameterizations (approximately 700 parameters) remain effective in this fully three-dimensional setting. As noted previously, efficient inverse-mapping constructions may still be effective, but would require carefully designed domain-specific quadrature methods to reduce the number of evaluation points if we wish to achieve performance similar to or better than that of the present forward map approach. Several limitations of the current method should be noted. The optimization landscape is non-convex, and the quality of the reached optimum can still depend on the basin entered early in the run; the bitwise-reproducible pipeline implemented here makes this dependence deterministic rather than stochastic (at least within the same environment), but it surfaces as sensitivity to the initial profile height: in Example A, different choices of 𝑢 init reach local optima with errors between 3 .2% and 6 .5%. In the collimated limit of Example C, the residual error concentrates at the corners of the target, where the ray mapping must carry the smooth circular boundary of the source disk into the sharp corners of the square. The smooth neural network struggles to represent such examples accurately, though for larger étendue cases this is less relevant, as it is 0.00 0.25 0.50 0.75 1.00 1.25 1.50 1.75 2.00 
+
+Angular domain radius 
+
+3 × 10 −2
+
+4 × 10 −2  
+
+> Relative  L2 error
+> −0.20.00.2
+
+pt, 1
+
+> −0.3
+> −0.2
+> −0.10.00.10.20.3
+> pt, 2
+
+Target 
+
+> 0.00.20.40.60.81.0
+> ×10 −4
+> −0.25 0.00 0.25
+
+x −0.25 0.00 0.25 
+
+y 
+
+> 0.00.2
+
+zr = 0 .00 
+
+> −303
+
+x −303
+
+y 
+
+> 05
+
+zr = 0 .44 
+
+> −505
+
+x −505
+
+y 
+
+> 05
+
+zr = 0 .89 
+
+> −606
+
+x −606
+
+y 
+
+> 04
+
+zr = 1 .56 
+
+> −606
+
+x −606
+
+y 
+
+> 04
+
+zr = 2 .00   
+
+> −0.20.00.2
+> pt, 2
+> 0.00.20.40.60.81.0
+> ×10 −4
+> −0.20.00.2
+
+pt, 1    
+
+> −0.20.00.2
+> pt, 2
+> ±7.5×10 −5
+> −0.20.00.2
+
+pt, 1    
+
+> ±3.8×10 −5
+> −0.20.00.2
+
+pt, 1    
+
+> ±4.2×10 −5
+> −0.20.00.2
+
+pt, 1    
+
+> ±4.7×10 −5
+> −0.20.00.2
+
+pt, 1  
+
+> ±4.5×10 −5
+> −
+> 0+
+
+(a) (b) (c) (d) (e) Fig. 4. Example C: angular domain radius sweep. (a) Relative 𝐿 2 error versus angular radius; the vertical dotted lines mark the radii shown below. (b) Target distribution. (c) Reflector surface at selected radii, sampled over the illuminated source disk; each panel uses its own 𝑧 -axis scale (annotated). (d) Ray-traced far-field distributions (common color scale). (e) Signed error, individually scaled to ± max |𝑒 | per panel. no longer the dominant error. Finally, the profile is represented through a fixed 64 × 64 spline compilation grid, which bounds the finest surface detail the optimizer can express. We see several directions for future work. An adaptive spline compilation grid, concentrating resolution where the reflector curvature is highest, could improve accuracy at little extra cost, though at increased implementational complexity. Convexity-structured parameterizations, in the spirit of the convexity-constrained neural Monge–Ampère solver of [10], could reduce the remaining basin dependence of the non-convex landscape. Additionally, the currently unconstrained reflector shape may develop geometries that result in rays bouncing multiple times within the reflector, which the current model does not account for. Though we have not observed this problem during our experiments, constrained geometries (such as convexity constraints) may still be useful for more formally ensuring that rays may not bounce multiple times within the reflector. Finally, as noted previously, non-zero étendue sources may no longer admit exact solutions, and our choice of objective function therefore influences how we distribute this irreducible error. For example, we may wish to reduce the ringing observed in some of our results, and future research might therefore investigate alternative distribution discrepancies to distribute the error in a more desirable fashion. 
+
+6. Conclusion 
+
+We have presented a direct optimization method for fully three-dimensional finite-source reflector design, built on a neural surface parameterization compiled to smooth spline surfaces. The efficient differentiable ray-tracing formulation we developed around this representation, based on an 𝐻 −1-weighted soft-histogram loss, allows us to efficiently optimize close-to-zero étendue sources, as well as sources with both significant spatial and angular extent. Our method converges within just a few seconds on a single GPU across several examples, using a deterministic and exactly reproducible pipeline. 
+
+Funding. This work in the project MALIOD is funded by Holland High Tech—TKI HSTM via the PPS allowance scheme for public–private partnerships. 
+
+Disclosures. The authors declare no conflicts of interest. 
+
+Data availability. Data underlying the results presented in this paper are not publicly available at this time but may be obtained from the authors upon reasonable request. 
+
+References                         
+
+> 1. W. T. Welford and R. Winston, High Collection Nonimaging Optics (Academic Press, 1989). 2. R. Winston, J. C. Miñano, and P. Benítez, Nonimaging Optics (Elsevier Academic Press, 2005). 3. J. Chaves, Introduction to Nonimaging Optics (CRC Press, 2015), 2nd ed. 4. T. Glimm and V. Oliker, “Optical design of single reflector systems and the Monge–Kantorovich mass transfer problem,” J. Math. Sci. 117 , 4096–4108 (2003). 5. W. Gangbo and V. Oliker, “Existence of optimal maps in the reflector-type problems,” ESAIM: Control. Optimisation Calc. Var. 13 , 93–106 (2007). 6. L. B. Romijn, J. H. M. ten Thije Boonkkamp, and W. L. IJzerman, “Freeform lens design for a point source and far-field target,” J. Opt. Soc. Am. A 36 , 1926 (2019). 7. L. B. Romijn, J. H. M. ten Thije Boonkkamp, and W. L. IJzerman, “Inverse reflector design for a point source and far-field target,” J. Comput. Phys. 408 , 109283 (2020). 8. C. Bösel and H. Gross, “Ray mapping approach for the efficient design of continuous freeform surfaces,” Opt. Express
+> 24 , 14271 (2016). 9. C. Bösel, N. G. Worku, and H. Gross, “Ray-mapping approach in double freeform surface design for collimated beam shaping beyond the paraxial approximation,” Appl. Opt. 56 , 3679 (2017). 10. R. Hacking, L. Kusch, K. Mitra, et al. , “A neural network approach for solving the Monge–Ampère equation with transport boundary condition,” J. Comput. Math. Data Sci. 15 , 100119 (2025). 11. J. Cerpentier and Y. Meuret, “Freeform surface topology prediction for prescribed illumination via semi-supervised learning,” Opt. Express 32 , 6350 (2024). 12. S. Wei, Z. Zhu, W. Li, and D. Ma, “Compact freeform illumination optics design by deblurring the response of extended sources,” Opt. Lett. 46 , 2770 (2021).
+
+13. F. R. Fournier, W. J. Cassarly, and J. P. Rolland, “Designing freeform reflectors for extended sources,” in Proceedings of SPIE, vol. 7423 (2009), p. 742302. 14. S. A. Kochengin and V. I. Oliker, “Determination of reflector surfaces from near-field scattering data,” Inverse Probl. 
+
+13 , 363–373 (1997). 15. J.-D. Benamou, G. Chazareix, W. L. IJzerman, and G. Rukhaia, “Point source regularization of the finite source reflector problem,” J. Comput. Phys. 456 , 111032 (2022). 16. P. H. van Cittert, “Zum Einfluß der Spaltbreite auf die Intensitätsverteilung in Spektrallinien. II,” Zeitschrift für Physik 69 , 298–308 (1931). 17. H. C. Burger and P. H. van Cittert, “Wahre und scheinbare Intensitätsverteilung in Spektrallinien,” Zeitschrift für Physik 79 , 722–730 (1932). 18. W. H. Richardson, “Bayesian-based iterative method of image restoration,” J. Opt. Soc. Am. 62 , 55 (1972). 19. L. B. Lucy, “An iterative technique for the rectification of observed distributions,” The Astron. J. 79 , 745 (1974). 20. V. C. E. Kronberg, “Inverse freeform reflector design with a scattering surface,” Ph.D. thesis, Eindhoven University of Technology (2024). 21. R. Hacking, L. Kusch, K. Mitra, et al. , “Neural-network methods for two-dimensional finite-source reflector design,” arXiv:2604.02184 (2026). Submitted to Machine Learning: Science and Technology. 22. R. Hacking, L. Kusch, K. Mitra, et al. , “Hybrid neural and deconvolution approach for finite-source reflector design,” EPJ Web Conf. 335 , 02011 (2025). 23. T.-M. Li, M. Aittala, F. Durand, and J. Lehtinen, “Differentiable Monte Carlo ray tracing through edge sampling,” ACM Trans. on Graph. 37 , 1–11 (2018). 24. M. Nimier-David, D. Vicini, T. Zeltner, and W. Jakob, “Mitsuba 2: a retargetable forward and inverse renderer,” ACM Trans. on Graph. 38 , 1–17 (2019). 25. B. de Koning, A. Heemels, A. Adam, and M. Möller, “Gradient descent-based freeform optics design for illumination using algorithmic differentiable non-sequential ray tracing,” Optim. Eng. 25 , 1203–1235 (2024). 26. A. Heemels, B. de Koning, M. Möller, and A. Adam, “Optimizing freeform lenses for extended sources with algorithmic differentiable ray tracing and truncated hierarchical B-splines,” Opt. Express 32 , 9730 (2024). 27. W. Jakob, S. Speierer, N. Roussel, et al. , “Mitsuba 3 renderer,” https://mitsuba-renderer.org (2022). 28. Y. Sun, B. Deng, and J. Zhang, “End-to-end surface optimization for light control,” ACM Trans. on Graph. 44 , 1–19 (2025). 29. L. Wang, J. Chang, Y. Wu, et al. , “DiffRayFlow: A differentiable freeform optical design engine based on discrete optimal transport,” Photonics 12 , 1243 (2025). 30. M. Avi-Aharon, A. Arbelle, and T. Riklin Raviv, “Differentiable histogram loss functions for intensity-based image-to-image translation,” IEEE Trans. on Pattern Anal. Mach. Intell. 45 , 11642–11653 (2023). 31. J. L. Kirkby, Á. Leitao, and D. Nguyen, “Nonparametric density estimation and bandwidth selection with B-spline bases: A novel Galerkin method,” Comput. Stat. & Data Anal. 159 , 107202 (2021). 32. Y. Zhao, M. Zhang, Q. Ni, and X. Wang, “Adaptive nonparametric density estimation with B-spline bases,” Mathematics 11 , 291 (2023). 33. S. S. Oren and D. G. Luenberger, “Self-scaling variable metric (SSVM) algorithms, Part I: Criteria and sufficient conditions for scaling a class of algorithms,” Manag. Sci. 20 , 845–862 (1974). 34. M. Al-Baali, “Numerical experience with a class of self-scaling quasi-Newton algorithms,” J. Optim. Theory Appl. 
+
+96 , 533–553 (1998). 35. J. F. Urbán, P. Stefanou, and J. A. Pons, “Unveiling the optimization process of physics informed neural networks: How accurate and competitive can PINNs be?” J. Comput. Phys. 523 , 113656 (2025). 36. D. P. Kingma and J. Ba, “Adam: A method for stochastic optimization,” in International Conference on Learning Representations (ICLR), (2015). 37. A. S. Lewis and M. L. Overton, “Nonsmooth optimization via quasi-Newton methods,” Math. Program. 141 , 135–163 (2013). 38. P. Moritz, R. Nishihara, and M. I. Jordan, “A linearly-convergent stochastic L-BFGS algorithm,” in International Conference on Artificial Intelligence and Statistics (AISTATS), (2016), pp. 249–258.
