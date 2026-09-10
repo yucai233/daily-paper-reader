@@ -1,0 +1,245 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-10T21:46:03.779133+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2609.09606v1",
+      "title": "RouteBridge: Reliability-Routed Bidirectional Distillation Between Neural Radiance Fields and 3D Gaussian Splatting",
+      "abstract": "Neural radiance fields (NeRFs) and 3D Gaussian Splatting (3DGS) encode a scene with complementary inductive biases, but existing cross-representation distillation typically fixes one representation as teacher for the entire scene. A globally fixed teacher can propagate local reconstruction errors. We present RouteBridge, a bidirectional framework that selects the teaching direction for each ray. Its reliability estimator combines photometric residuals with representation-specific geometric evidence and routes supervision from NeRF to 3DGS, from 3DGS to NeRF, or abstains. A renderer-independent interface transfers color, opacity, and normalized depth without shared features or point correspondence. On mip-NeRF 360, the NeRF and 3DGS exports reach 28.56 and 28.77 dB, respectively. The 3DGS export improves over 3DGS by 1.56 dB and over NeRF-GS by 0.45 dB while reducing LPIPS to 0.207. On static three-view DTU, RouteBridge obtains 21.12 dB. Ablations show that both adaptive routing and geometric ray targets contribute to the improvement.",
+      "authors": [
+        "YuanHang Wang",
+        "Xin Cao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-09-09T02:00:17+00:00",
+      "link": "https://arxiv.org/pdf/2609.09606v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "distillation between NeRF and 3D Gaussian Splatting",
+      "llm_evidence_cn": "NeRF与3D高斯泼溅之间的蒸馏",
+      "llm_evidence": "NeRF与3D高斯泼溅之间的蒸馏",
+      "canonical_evidence": "NeRF与3D高斯泼溅之间的蒸馏",
+      "llm_tldr_en": "Proposes a bidirectional distillation framework between NeRF and 3DGS to improve reconstruction quality.",
+      "llm_tldr_cn": "提出NeRF与3DGS之间的双向蒸馏框架，以提高重建质量。",
+      "llm_tldr": "提出NeRF与3DGS之间的双向蒸馏框架，以提高重建质量。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.06948v1",
+      "title": "PRG-Fusion: Orchestrating Generative Priors with Reconstruction Evidence for Driving View Synthesis",
+      "abstract": "Synthesizing photorealistic driving videos along specified trajectories is essential for scalable closed-loop simulation. Reconstruction-based methods leverage neural rendering to synthesize geometrically consistent views, but often exhibit diverse artifacts and missing content when the viewpoint deviates from the training trajectory. In contrast, generative models can synthesize realistic views along arbitrary trajectories from vehicle sensor data, yet often struggle to maintain temporal and geometric consistency across frames. To combine the strengths of both, we propose PRG-Fusion, a framework for driving view synthesis that uses reconstruction evidence to orchestrate generative priors across regions. Specifically, we extract region-wise degradation evidence from reconstructed driving scenes and convert it into Preserve, Repair, and Generate (PRG) labels. At inference, these labels serve as a unified routing policy for region-aware spatiotemporal synthesis, orchestrating 3DGS appearance preservation, LiDAR-guided structural correction, and video-prior-driven content completion across Preserve, Repair, and Generate regions, respectively. We then follow a two-stage training paradigm, first establish geometric control from sparse LiDAR projections and subsequently learning appearance control from dense 3DGS renderings. Extensive experiments on Waymo demonstrate that PRG-Fusion achieves state-of-the-art overall performance in novel trajectory video synthesis, with superior visual quality and geometric fidelity while maintaining competitive view consistency under large trajectory shifts.",
+      "authors": [
+        "Sipeng He",
+        "Jialei Chen",
+        "Zhen Fang",
+        "Dongchun Ren",
+        "Feng Zhao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-07T02:34:51+00:00",
+      "link": "https://arxiv.org/pdf/2609.06948v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural rendering for view synthesis in driving simulation",
+      "llm_evidence_cn": "驾驶模拟中用于视图合成的神经渲染",
+      "llm_evidence": "驾驶模拟中用于视图合成的神经渲染",
+      "canonical_evidence": "驾驶模拟中用于视图合成的神经渲染",
+      "llm_tldr_en": "Combines neural rendering with generative priors for photorealistic driving video synthesis.",
+      "llm_tldr_cn": "结合神经渲染与生成先验，用于合成逼真的驾驶视频。",
+      "llm_tldr": "结合神经渲染与生成先验，用于合成逼真的驾驶视频。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.04846v2",
+      "title": "LetOccVote: Learning Weakly Supervised 3D Occupancy through Consensus",
+      "abstract": "Weakly supervised 3D occupancy prediction reduces the reliance on costly 3D annotations by learning from 2D pseudo-labels generated by vision foundation models. However, existing methods typically use these imperfect pseudo-labels directly as supervision, making occupancy learning vulnerable to erroneous geometric and semantic targets. We observe that agreement across repeated observations provides an inexpensive and reliable cue for assessing pseudo-label reliability. Based on this observation, we propose \\textbf{LetOccVote}, a weakly supervised Gaussian-based occupancy framework that leverages cross-frame voting to improve both geometric and semantic supervision. For geometry, Depth Vote exploits cross-frame geometric agreement to refine supported pseudo depth and reject contradictory estimates before volumetric lifting and depth supervision. For semantics, Semantic Vote aggregates pseudo-semantic observations in a shared 3D space to identify reliable and contested evidence, strengthening reliable semantic supervision while filtering unreliable pseudo-label segments. The entire framework is trained solely with 2D pseudo-label supervision without requiring 3D occupancy annotations. On Occ3D-nuScenes, LetOccVote achieves 53.27 IoU and 20.39 mIoU, establishing state-of-the-art performance among methods with 2D pseudo-label supervision.",
+      "authors": [
+        "Chi Zhang",
+        "Qi Song",
+        "Feifei Li",
+        "Jie Li",
+        "Rui Huang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-04T08:03:57+00:00",
+      "link": "https://arxiv.org/pdf/2609.04846v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "weakly supervised 3D occupancy prediction using Gaussian-based framework",
+      "llm_evidence_cn": "基于高斯的弱监督3D占据预测",
+      "llm_evidence": "基于高斯的弱监督3D占据预测",
+      "canonical_evidence": "基于高斯的弱监督3D占据预测",
+      "llm_tldr_en": "A framework for learning 3D occupancy from 2D labels using cross-frame voting and Gaussians.",
+      "llm_tldr_cn": "一种利用跨帧投票和高斯从2D标签学习3D占据的框架。",
+      "llm_tldr": "一种利用跨帧投票和高斯从2D标签学习3D占据的框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.10095v1",
+      "title": "LinearMask-GS: Stable-Mask Importance Pruning for Compact 3D Gaussian Splatting",
+      "abstract": "3D Gaussian Splatting (3DGS) enables real-time novel view synthesis but produces millions of primitives through adaptive densification, leading to significant storage overhead. Learned-mask pruning methods such as LP-3DGS address this by assigning each Gaussian a learnable mask to identify and prune redundant primitives. However, we identify a limitation of this paradigm: the steep slope of the Gumbel-Sigmoid activation drives mask values to the extremes within the short mask-training window, before the importance ranking has stabilized, producing a sharply bimodal distribution from which that ranking can no longer be reliably recovered. We propose LinearMask-GS, which replaces Gumbel-Sigmoid with a linear increment activation that keeps mask values in a mid-confidence regime throughout mask training, producing a stable, unimodal mask distribution whose ranking tracks importance. On Mip-NeRF 360, our method achieves 3.6x and 1.6x Gaussian reductions over 3DGS and LP-3DGS, respectively, while maintaining or improving rendering quality. For outdoor scenes, it yields a 1.6x reduction (from 2.18M to 1.36M) with notable gains in PSNR (+0.38 dB), SSIM (+0.025), and LPIPS (-0.029).",
+      "authors": [
+        "Donghun Ryu",
+        "Minhyeok Lee"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-09T12:19:34+00:00",
+      "link": "https://arxiv.org/pdf/2609.10095v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "accelerating rendering by pruning redundant primitives",
+      "llm_evidence_cn": "通过剪枝冗余基元加速渲染",
+      "llm_evidence": "通过剪枝冗余基元加速渲染",
+      "canonical_evidence": "通过剪枝冗余基元加速渲染",
+      "llm_tldr_en": "Improves 3DGS efficiency through a stable-mask importance pruning method for compact representations.",
+      "llm_tldr_cn": "通过稳定掩码重要性剪枝方法提高3DGS效率，实现紧凑表示。",
+      "llm_tldr": "通过稳定掩码重要性剪枝方法提高3DGS效率，实现紧凑表示。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.07346v1",
+      "title": "From Explicit References to Scene Manifolds: Distributional Fidelity and Realism for Radiance Field Quality Assessment",
+      "abstract": "Radiance field representations such as 3D Gaussian Splatting (3DGS) enable high-quality novel view synthesis but can introduce complex, view-dependent artifacts from reconstruction, rendering, and compression. Reliable perceptual quality assessment (QA) is thus essential for evaluating rendered views and guiding the design of perceptually faithful scene representations. Existing full-reference QA metrics require an aligned reference image, while recent cross-reference metrics relax this requirement by comparing a test view with non-aligned references. However, under wide-baseline radiance field settings, selecting a reliable nearby reference can be difficult, particularly when evaluating views along arbitrary trajectories and poses. We propose SCODA, a lightweight scene-conditioned objective QA method that shifts QA from explicit image-to-image comparison to scene-manifold modeling. High-quality observations of each scene are represented as a multivariate Gaussian distribution in deep feature space, producing a semantic fidelity score that measures deviation from the scene distribution. A weakly-supervised distortion-aware patch discriminator provides a complementary realism signal, and both cues are combined through an unsupervised bounded fusion strategy. Experiments on multiple benchmarks show strong agreement with human judgments and robust generalization across GS- and NeRF-generated views and trajectories. Code is publicly available at https://gitlab.com/saeedmp/scoda.",
+      "authors": [
+        "Saeed Mahmoudpour",
+        "Gi-Mun Um",
+        "Hyon-Gon Choo",
+        "Peter Schelkens"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-07T11:09:30+00:00",
+      "link": "https://arxiv.org/pdf/2609.07346v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "quality assessment for radiance field and Gaussian Splatting rendering",
+      "llm_evidence_cn": "辐射场与高斯泼溅渲染的质量评估",
+      "llm_evidence": "辐射场与高斯泼溅渲染的质量评估",
+      "canonical_evidence": "辐射场与高斯泼溅渲染的质量评估",
+      "llm_tldr_en": "A perceptual quality assessment metric for evaluating artifacts in neural radiance field rendering.",
+      "llm_tldr_cn": "一种用于评估神经辐射场渲染中伪影的感知质量评估指标。",
+      "llm_tldr": "一种用于评估神经辐射场渲染中伪影的感知质量评估指标。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.07414v1",
+      "title": "RelightFormer: Feed-forward Generative Transformer for Multiview Object Relighting",
+      "abstract": "Image relighting is traditionally tackled via complex inverse rendering pipelines, which suffer from ill-posed optimization, or single-image generative models that ignore crucial multi-view cues necessary for understanding 3D geometry and material interactions. To address these limitations, we introduce a feed-forward generative Transformer for direct single- and multi-view image relighting that entirely bypasses explicit intrinsic property estimation. Adapted from a video foundation model, our architecture features a latent illumination module that dynamically injects target environment maps into spatial features via cross-attention. Furthermore, we employ permutation-invariant positional encodings to symmetrically process unordered multi-view inputs without sequential bias. To train this robust data-driven model, we construct the massive Laval Objaverse Dataset (LOD), comprising 90K objects and 39K unique illuminations. Extensive experiments demonstrate state-of-the-art visual quality, photorealistic relighting quality, and strong zero-shot generalization across single-view, multi-view, and novel-view relighting tasks.",
+      "authors": [
+        "Hejun Wang",
+        "Jinxi Li",
+        "Junwei Jiang",
+        "Shiwei Mao",
+        "Hu Cheng",
+        "Shouwang Huang",
+        "Bo Yang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.GR",
+        "cs.LG",
+        "cs.MM"
+      ],
+      "published": "2026-09-07T12:25:58+00:00",
+      "link": "https://arxiv.org/pdf/2609.07414v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "generative Transformer for direct multi-view image relighting",
+      "llm_evidence_cn": "用于直接多视图图像重光照的生成式Transformer",
+      "llm_evidence": "用于直接多视图图像重光照的生成式Transformer",
+      "canonical_evidence": "用于直接多视图图像重光照的生成式Transformer",
+      "llm_tldr_en": "A feed-forward Transformer for multi-view relighting bypassing explicit intrinsic property estimation.",
+      "llm_tldr_cn": "一种绕过显式内在属性估计的多视图重光照前馈Transformer。",
+      "llm_tldr": "一种绕过显式内在属性估计的多视图重光照前馈Transformer。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

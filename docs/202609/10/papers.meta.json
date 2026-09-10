@@ -1,0 +1,93 @@
+{
+  "label": "2026-09-10",
+  "date": "2026-09-10",
+  "generated_at": "2026-09-10T21:46:31",
+  "count": 6,
+  "papers": [
+    {
+      "paper_id": "202609/10/2609.09606v1-routebridge-reliability-routed-bidirectional-distillation-between-neural-radiance-fields-and-3d-gaussian-splatting",
+      "section": "deep",
+      "title_en": "RouteBridge: Reliability-Routed Bidirectional Distillation Between Neural Radiance Fields and 3D Gaussian Splatting",
+      "authors": "YuanHang Wang, Xin Cao",
+      "date": "2026-09-09",
+      "pdf": "https://arxiv.org/pdf/2609.09606v1",
+      "score": "9.0",
+      "evidence": "NeRF与3D高斯泼溅之间的蒸馏",
+      "tldr": "RouteBridge是一种用于NeRF与3DGS之间双向蒸馏的框架。针对现有方法固定单一教师模型导致误差传播的问题，该研究提出了一种基于可靠性评估的自适应路由机制，能够根据光线特征动态选择监督方向。通过在NeRF和3DGS间双向传递颜色、不透明度和深度信息，该方法显著提升了两种表示形式的重建质量，在mip-NeRF 360等数据集上表现优于现有主流蒸馏方案。",
+      "tags": "query:profile-1",
+      "abstract_en": "Neural radiance fields (NeRFs) and 3D Gaussian Splatting (3DGS) encode a scene with complementary inductive biases, but existing cross-representation distillation typically fixes one representation as teacher for the entire scene. A globally fixed teacher can propagate local reconstruction errors. We present RouteBridge, a bidirectional framework that selects the teaching direction for each ray. Its reliability estimator combines photometric residuals with representation-specific geometric evidence and routes supervision from NeRF to 3DGS, from 3DGS to NeRF, or abstains. A renderer-independent interface transfers color, opacity, and normalized depth without shared features or point correspondence. On mip-NeRF 360, the NeRF and 3DGS exports reach 28.56 and 28.77 dB, respectively. The 3DGS export improves over 3DGS by 1.56 dB and over NeRF-GS by 0.45 dB while reducing LPIPS to 0.207. On static three-view DTU, RouteBridge obtains 21.12 dB. Ablations show that both adaptive routing and geometric ray targets contribute to the improvement.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/10/2609.06948v1-prg-fusion-orchestrating-generative-priors-with-reconstruction-evidence-for-driving-view-synthesis",
+      "section": "quick",
+      "title_en": "PRG-Fusion: Orchestrating Generative Priors with Reconstruction Evidence for Driving View Synthesis",
+      "authors": "Sipeng He, Jialei Chen, Zhen Fang, Dongchun Ren, Feng Zhao",
+      "date": "2026-09-07",
+      "pdf": "https://arxiv.org/pdf/2609.06948v1",
+      "score": "7.0",
+      "evidence": "驾驶模拟中用于视图合成的神经渲染",
+      "tldr": "PRG-Fusion 是一种用于自动驾驶场景视频合成的新框架，旨在解决重建方法在视角偏移时出现的伪影问题，以及生成模型在时空一致性上的不足。该方法通过提取重建场景的退化证据，生成“保留、修复、生成”（PRG）标签，并据此协同 3DGS 外观保留、LiDAR 结构校正和视频先验内容补全，实现了高质量、几何一致的轨迹视频合成。",
+      "tags": "query:q1",
+      "abstract_en": "Synthesizing photorealistic driving videos along specified trajectories is essential for scalable closed-loop simulation. Reconstruction-based methods leverage neural rendering to synthesize geometrically consistent views, but often exhibit diverse artifacts and missing content when the viewpoint deviates from the training trajectory. In contrast, generative models can synthesize realistic views along arbitrary trajectories from vehicle sensor data, yet often struggle to maintain temporal and geometric consistency across frames. To combine the strengths of both, we propose PRG-Fusion, a framework for driving view synthesis that uses reconstruction evidence to orchestrate generative priors across regions. Specifically, we extract region-wise degradation evidence from reconstructed driving scenes and convert it into Preserve, Repair, and Generate (PRG) labels. At inference, these labels serve as a unified routing policy for region-aware spatiotemporal synthesis, orchestrating 3DGS appearance preservation, LiDAR-guided structural correction, and video-prior-driven content completion across Preserve, Repair, and Generate regions, respectively. We then follow a two-stage training paradigm, first establish geometric control from sparse LiDAR projections and subsequently learning appearance control from dense 3DGS renderings. Extensive experiments on Waymo demonstrate that PRG-Fusion achieves state-of-the-art overall performance in novel trajectory video synthesis, with superior visual quality and geometric fidelity while maintaining competitive view consistency under large trajectory shifts.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/10/2609.10095v1-linearmask-gs-stable-mask-importance-pruning-for-compact-3d-gaussian-splatting",
+      "section": "quick",
+      "title_en": "LinearMask-GS: Stable-Mask Importance Pruning for Compact 3D Gaussian Splatting",
+      "authors": "Donghun Ryu, Minhyeok Lee",
+      "date": "2026-09-09",
+      "pdf": "https://arxiv.org/pdf/2609.10095v1",
+      "score": "7.0",
+      "evidence": "通过剪枝冗余基元加速渲染",
+      "tldr": "针对3D高斯泼溅（3DGS）模型存储开销大的问题，本文提出LinearMask-GS。研究发现现有基于Gumbel-Sigmoid的剪枝方法因激活函数过陡导致掩码分布过早二值化，难以准确评估重要性。为此，作者引入线性增量激活机制，保持掩码在训练期间处于中等置信度，从而实现更稳定的重要性排序与剪枝，在大幅减少高斯基元数量的同时提升了渲染质量。",
+      "tags": "query:q7",
+      "abstract_en": "3D Gaussian Splatting (3DGS) enables real-time novel view synthesis but produces millions of primitives through adaptive densification, leading to significant storage overhead. Learned-mask pruning methods such as LP-3DGS address this by assigning each Gaussian a learnable mask to identify and prune redundant primitives. However, we identify a limitation of this paradigm: the steep slope of the Gumbel-Sigmoid activation drives mask values to the extremes within the short mask-training window, before the importance ranking has stabilized, producing a sharply bimodal distribution from which that ranking can no longer be reliably recovered. We propose LinearMask-GS, which replaces Gumbel-Sigmoid with a linear increment activation that keeps mask values in a mid-confidence regime throughout mask training, producing a stable, unimodal mask distribution whose ranking tracks importance. On Mip-NeRF 360, our method achieves 3.6x and 1.6x Gaussian reductions over 3DGS and LP-3DGS, respectively, while maintaining or improving rendering quality. For outdoor scenes, it yields a 1.6x reduction (from 2.18M to 1.36M) with notable gains in PSNR (+0.38 dB), SSIM (+0.025), and LPIPS (-0.029).",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/10/2609.04846v2-letoccvote-learning-weakly-supervised-3d-occupancy-through-consensus",
+      "section": "quick",
+      "title_en": "LetOccVote: Learning Weakly Supervised 3D Occupancy through Consensus",
+      "authors": "Chi Zhang, Qi Song, Feifei Li, Jie Li, Rui Huang",
+      "date": "2026-09-04",
+      "pdf": "https://arxiv.org/pdf/2609.04846v2",
+      "score": "6.0",
+      "evidence": "基于高斯的弱监督3D占据预测",
+      "tldr": "LetOccVote 是一种弱监督 3D 占用预测框架，旨在解决现有方法过度依赖不准确 2D 伪标签的问题。该方法通过跨帧投票机制评估伪标签的可靠性，在几何上利用深度一致性优化深度估计，在语义上通过 3D 空间聚合过滤噪声。该框架无需 3D 标注，仅依赖 2D 伪标签即可实现高精度的 3D 占用预测，在 Occ3D-nuScenes 数据集上达到了当前弱监督方法的最优性能。",
+      "tags": "query:q1",
+      "abstract_en": "Weakly supervised 3D occupancy prediction reduces the reliance on costly 3D annotations by learning from 2D pseudo-labels generated by vision foundation models. However, existing methods typically use these imperfect pseudo-labels directly as supervision, making occupancy learning vulnerable to erroneous geometric and semantic targets. We observe that agreement across repeated observations provides an inexpensive and reliable cue for assessing pseudo-label reliability. Based on this observation, we propose \\textbf{LetOccVote}, a weakly supervised Gaussian-based occupancy framework that leverages cross-frame voting to improve both geometric and semantic supervision. For geometry, Depth Vote exploits cross-frame geometric agreement to refine supported pseudo depth and reject contradictory estimates before volumetric lifting and depth supervision. For semantics, Semantic Vote aggregates pseudo-semantic observations in a shared 3D space to identify reliable and contested evidence, strengthening reliable semantic supervision while filtering unreliable pseudo-label segments. The entire framework is trained solely with 2D pseudo-label supervision without requiring 3D occupancy annotations. On Occ3D-nuScenes, LetOccVote achieves 53.27 IoU and 20.39 mIoU, establishing state-of-the-art performance among methods with 2D pseudo-label supervision.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/10/2609.07346v1-from-explicit-references-to-scene-manifolds-distributional-fidelity-and-realism-for-radiance-field-quality-assessment",
+      "section": "quick",
+      "title_en": "From Explicit References to Scene Manifolds: Distributional Fidelity and Realism for Radiance Field Quality Assessment",
+      "authors": "Saeed Mahmoudpour, Gi-Mun Um, Hyon-Gon Choo, Peter Schelkens",
+      "date": "2026-09-07",
+      "pdf": "https://arxiv.org/pdf/2609.07346v1",
+      "score": "6.0",
+      "evidence": "辐射场与高斯泼溅渲染的质量评估",
+      "tldr": "针对辐射场（如3DGS）渲染质量评估中难以获取对齐参考图的问题，本文提出了SCODA方法。该方法摒弃了传统的图像间对比，转而通过场景流形建模，利用深度特征空间的多变量高斯分布衡量语义保真度，并结合弱监督的失真感知判别器评估真实感，实现了无需参考图的高效质量评估，在多种基准测试中表现出与人类感知的高度一致性。",
+      "tags": "query:q1",
+      "abstract_en": "Radiance field representations such as 3D Gaussian Splatting (3DGS) enable high-quality novel view synthesis but can introduce complex, view-dependent artifacts from reconstruction, rendering, and compression. Reliable perceptual quality assessment (QA) is thus essential for evaluating rendered views and guiding the design of perceptually faithful scene representations. Existing full-reference QA metrics require an aligned reference image, while recent cross-reference metrics relax this requirement by comparing a test view with non-aligned references. However, under wide-baseline radiance field settings, selecting a reliable nearby reference can be difficult, particularly when evaluating views along arbitrary trajectories and poses. We propose SCODA, a lightweight scene-conditioned objective QA method that shifts QA from explicit image-to-image comparison to scene-manifold modeling. High-quality observations of each scene are represented as a multivariate Gaussian distribution in deep feature space, producing a semantic fidelity score that measures deviation from the scene distribution. A weakly-supervised distortion-aware patch discriminator provides a complementary realism signal, and both cues are combined through an unsupervised bounded fusion strategy. Experiments on multiple benchmarks show strong agreement with human judgments and robust generalization across GS- and NeRF-generated views and trajectories. Code is publicly available at https://gitlab.com/saeedmp/scoda.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/10/2609.07414v1-relightformer-feed-forward-generative-transformer-for-multiview-object-relighting",
+      "section": "quick",
+      "title_en": "RelightFormer: Feed-forward Generative Transformer for Multiview Object Relighting",
+      "authors": "Hejun Wang, Jinxi Li, Junwei Jiang, Shiwei Mao, Hu Cheng, Shouwang Huang, Bo Yang",
+      "date": "2026-09-07",
+      "pdf": "https://arxiv.org/pdf/2609.07414v1",
+      "score": "6.0",
+      "evidence": "用于直接多视图图像重光照的生成式Transformer",
+      "tldr": "RelightFormer 是一款基于 Transformer 的前馈生成模型，旨在解决单视图及多视图物体的重光照问题。该模型摒弃了复杂的逆渲染流程，通过引入潜在光照模块和置换不变位置编码，实现了对目标环境光照的动态注入与多视角一致性处理。配合大规模 Laval Objaverse 数据集（LOD）训练，该模型在单/多视图及新视角重光照任务中展现了卓越的视觉质量与零样本泛化能力。",
+      "tags": "query:q1",
+      "abstract_en": "Image relighting is traditionally tackled via complex inverse rendering pipelines, which suffer from ill-posed optimization, or single-image generative models that ignore crucial multi-view cues necessary for understanding 3D geometry and material interactions. To address these limitations, we introduce a feed-forward generative Transformer for direct single- and multi-view image relighting that entirely bypasses explicit intrinsic property estimation. Adapted from a video foundation model, our architecture features a latent illumination module that dynamically injects target environment maps into spatial features via cross-attention. Furthermore, we employ permutation-invariant positional encodings to symmetrically process unordered multi-view inputs without sequential bias. To train this robust data-driven model, we construct the massive Laval Objaverse Dataset (LOD), comprising 90K objects and 39K unique illuminations. Extensive experiments demonstrate state-of-the-art visual quality, photorealistic relighting quality, and strong zero-shot generalization across single-view, multi-view, and novel-view relighting tasks.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
