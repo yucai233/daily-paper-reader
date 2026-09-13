@@ -1,0 +1,37 @@
+{
+  "label": "2026-09-13",
+  "date": "2026-09-13",
+  "generated_at": "2026-09-13T21:29:37",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202609/13/2609.08332v1-edmcgs-event-driven-markov-chain-gaussian-splatting-for-extreme-low-frame-rate-dynamic-scene-reconstruction",
+      "section": "quick",
+      "title_en": "EdMCGS: Event-Driven Markov Chain Gaussian Splatting for Extreme-Low-Frame-Rate Dynamic Scene Reconstruction",
+      "authors": "Yuzhong Wang, Wenmin Wang, Xinxing Yu",
+      "date": "2026-09-08",
+      "pdf": "https://arxiv.org/pdf/2609.08332v1",
+      "score": "6.0",
+      "evidence": "使用高斯泼溅进行动态3D场景重建与渲染",
+      "tldr": "EdMCGS是一种用于极低帧率动态场景重建的端到端方法，通过结合稀疏RGB帧与事件流，利用事件驱动的马尔可夫链建模场景运动。该方法将3D高斯分布锚定在RGB帧上，并由事件流驱动其在帧间的状态转换，实现了无需插值的实时动态渲染，显著提升了重建质量与效率。",
+      "tags": "query:q1",
+      "abstract_en": "We present EdMCGS (Event-driven Markov chain Gaussian Splatting), an end-to-end method for reconstructing dynamic 3D scenes from extreme-low-frame-rate RGB together with an event stream, which can then be rendered at any intermediate timestamp. Methods relying solely on RGB images generate numerous artifacts due to the lack of evidence from between consecutive frames. To supply this missing evidence, we model the scene motion as an event-driven Markov chain, in which the sparse RGB frames anchor the state at their own timestamps while the events recorded within an interval drive the transition across it. Since the transition reads the events of the current interval, it remains active at inference and produces the in-between motion of the 3D Gaussians directly from the events rather than by interpolation, which sets our method apart from prior work that uses events only as training-time supervision. The state is carried by a compact set of control points, each driven by the events sampled in the neighborhood of its own image projection, and a temporal local isometry term keeps the propagated motion locally rigid. Experiments on synthetic and real-world scenes show that EdMCGS outperforms both RGB-based and event-based baselines, while rendering in real time with far fewer Gaussians than the strongest event-based baseline. We release our source code and a new dataset at https://github.com/joseclipse/EdMCGS.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/13/2609.08594v1-multi-level-set-based-physics-driven-neural-network-to-solve-3-d-inverse-scattering-problems",
+      "section": "quick",
+      "title_en": "Multi-Level-Set-Based Physics-Driven Neural Network to Solve 3-D Inverse Scattering Problems",
+      "authors": "Yutong Du, Zicheng Liu, Bo Qi, Yali Zong, Peixian Han",
+      "date": "2026-09-08",
+      "pdf": "https://arxiv.org/pdf/2609.08594v1",
+      "score": "6.0",
+      "evidence": "用于3D逆散射的物理驱动神经网络",
+      "tldr": "本文提出了一种基于多水平集物理驱动神经网络（LSPDNN）的3D电磁逆散射求解器。针对传统体素重建中边界模糊和伪影问题，该方法利用多个神经水平集组件描述目标形状与材料分布，结合软并集模型与模型一致性全变分正则化，实现了复杂场景下高精度、边界清晰的散射体重建，显著提升了多材料、不规则形状目标的成像质量。",
+      "tags": "query:q4",
+      "abstract_en": "This paper proposes a level-set-based physics-driven neural network solver (LSPDNN) for 3-D electromagnetic inverse scattering. To mitigate boundary blurring and reconstruction artifacts in voxel-wise contrast reconstruction, the proposed solver exploits the piecewise homogeneity of practical scatterers by representing unknown targets with multiple coordinate-dependent neural level-set components. Specifically, a soft-union multi-material model is proposed to separately describe the object support and material distribution. The global support is formed by the union of multiple level-set components, while the local contrast is determined by normalized component weights and learnable complex permittivity candidates. In addition, a model-consistent total variation (TV) regularization is imposed on the material-region indicators, rather than directly on the reconstructed contrast, to suppress fragmented material assignments without excessively smoothing material interfaces. An adaptive loss balancing strategy is further introduced to reduce the dependence on manually selected regularization weights. For each measurement instance, the neural level-set parameters and material candidates are optimized by minimizing a physics-consistent objective function. Numerical and experimental results demonstrate that LSPDNN can reconstruct scatterers with clear boundaries, more uniform material regions, and substantially reduced background artifacts. The results highlight the advantage of the neural level-set parameterization in challenging 3-D inverse scattering cases involving irregular shapes, closely spaced objects, multiple materials, and measurement noise.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

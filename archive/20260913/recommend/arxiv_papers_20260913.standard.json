@@ -1,0 +1,92 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-13T21:29:28.631273+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.08332v1",
+      "title": "EdMCGS: Event-Driven Markov Chain Gaussian Splatting for Extreme-Low-Frame-Rate Dynamic Scene Reconstruction",
+      "abstract": "We present EdMCGS (Event-driven Markov chain Gaussian Splatting), an end-to-end method for reconstructing dynamic 3D scenes from extreme-low-frame-rate RGB together with an event stream, which can then be rendered at any intermediate timestamp. Methods relying solely on RGB images generate numerous artifacts due to the lack of evidence from between consecutive frames. To supply this missing evidence, we model the scene motion as an event-driven Markov chain, in which the sparse RGB frames anchor the state at their own timestamps while the events recorded within an interval drive the transition across it. Since the transition reads the events of the current interval, it remains active at inference and produces the in-between motion of the 3D Gaussians directly from the events rather than by interpolation, which sets our method apart from prior work that uses events only as training-time supervision. The state is carried by a compact set of control points, each driven by the events sampled in the neighborhood of its own image projection, and a temporal local isometry term keeps the propagated motion locally rigid. Experiments on synthetic and real-world scenes show that EdMCGS outperforms both RGB-based and event-based baselines, while rendering in real time with far fewer Gaussians than the strongest event-based baseline. We release our source code and a new dataset at https://github.com/joseclipse/EdMCGS.",
+      "authors": [
+        "Yuzhong Wang",
+        "Wenmin Wang",
+        "Xinxing Yu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-08T06:59:27+00:00",
+      "link": "https://arxiv.org/pdf/2609.08332v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Dynamic 3D scene reconstruction and rendering using Gaussian Splatting",
+      "llm_evidence_cn": "使用高斯泼溅进行动态3D场景重建与渲染",
+      "llm_evidence": "使用高斯泼溅进行动态3D场景重建与渲染",
+      "canonical_evidence": "使用高斯泼溅进行动态3D场景重建与渲染",
+      "llm_tldr_en": "EdMCGS combines RGB and event streams for high-quality dynamic scene reconstruction and rendering.",
+      "llm_tldr_cn": "EdMCGS结合RGB和事件流，实现了高质量的动态场景重建与任意时间点渲染。",
+      "llm_tldr": "EdMCGS结合RGB和事件流，实现了高质量的动态场景重建与任意时间点渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.08594v1",
+      "title": "Multi-Level-Set-Based Physics-Driven Neural Network to Solve 3-D Inverse Scattering Problems",
+      "abstract": "This paper proposes a level-set-based physics-driven neural network solver (LSPDNN) for 3-D electromagnetic inverse scattering. To mitigate boundary blurring and reconstruction artifacts in voxel-wise contrast reconstruction, the proposed solver exploits the piecewise homogeneity of practical scatterers by representing unknown targets with multiple coordinate-dependent neural level-set components. Specifically, a soft-union multi-material model is proposed to separately describe the object support and material distribution. The global support is formed by the union of multiple level-set components, while the local contrast is determined by normalized component weights and learnable complex permittivity candidates. In addition, a model-consistent total variation (TV) regularization is imposed on the material-region indicators, rather than directly on the reconstructed contrast, to suppress fragmented material assignments without excessively smoothing material interfaces. An adaptive loss balancing strategy is further introduced to reduce the dependence on manually selected regularization weights. For each measurement instance, the neural level-set parameters and material candidates are optimized by minimizing a physics-consistent objective function. Numerical and experimental results demonstrate that LSPDNN can reconstruct scatterers with clear boundaries, more uniform material regions, and substantially reduced background artifacts. The results highlight the advantage of the neural level-set parameterization in challenging 3-D inverse scattering cases involving irregular shapes, closely spaced objects, multiple materials, and measurement noise.",
+      "authors": [
+        "Yutong Du",
+        "Zicheng Liu",
+        "Bo Qi",
+        "Yali Zong",
+        "Peixian Han"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "physics.comp-ph"
+      ],
+      "published": "2026-09-08T11:30:32+00:00",
+      "link": "https://arxiv.org/pdf/2609.08594v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "physics-driven neural network for 3D inverse scattering",
+      "llm_evidence_cn": "用于3D逆散射的物理驱动神经网络",
+      "llm_evidence": "用于3D逆散射的物理驱动神经网络",
+      "canonical_evidence": "用于3D逆散射的物理驱动神经网络",
+      "llm_tldr_en": "Solves 3D electromagnetic inverse scattering using a level-set-based physics-driven neural network.",
+      "llm_tldr_cn": "利用基于水平集的物理驱动神经网络解决3D电磁逆散射问题。",
+      "llm_tldr": "利用基于水平集的物理驱动神经网络解决3D电磁逆散射问题。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "deep learning for multiple scattering in volumes",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
