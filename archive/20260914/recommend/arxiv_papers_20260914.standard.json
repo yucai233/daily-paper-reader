@@ -1,0 +1,239 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-14T22:50:26.861747+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2609.12395v1",
+      "title": "Is Gaussian Splatting Becoming Neural Again? A Taxonomy and Controlled Study of Learned Parameterization",
+      "abstract": "Three-dimensional Gaussian Splatting (3DGS) combines explicit primitives with efficient rasterization, yet recent systems increasingly use neural networks to generate or share Gaussian parameters. We characterize this trend along five axes: attribute decoding, spatial sharing, view-conditioned decoding, topology generation, and amortized inference. An analysis of 19 representative methods shows that these choices address different limitations and cannot be reduced to a binary neural label. We also isolate three forms of neural parameterization in a controlled mip-NeRF 360 study. Sharing appearance and opacity improves reconstruction quality, while decoding geometric structure offers no further gain. The evidence favors selective neuralization: shared functions help when they capture reusable correlations without sacrificing the local geometric freedom of explicit splats.",
+      "authors": [
+        "YuanHang Wang",
+        "Xin Cao",
+        "Yi Zhang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-11T03:37:31+00:00",
+      "link": "https://arxiv.org/pdf/2609.12395v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "taxonomy of neural parameterization in Gaussian Splatting and NeRF",
+      "llm_evidence_cn": "高斯泼溅与NeRF中神经参数化方法的分类研究",
+      "llm_evidence": "高斯泼溅与NeRF中神经参数化方法的分类研究",
+      "canonical_evidence": "高斯泼溅与NeRF中神经参数化方法的分类研究",
+      "llm_tldr_en": "Analyzes the trend of using neural networks to parameterize 3D Gaussian Splatting for scene representation.",
+      "llm_tldr_cn": "分析了在3D高斯泼溅中使用神经网络进行参数化的趋势，探讨其对重建质量的影响。",
+      "llm_tldr": "分析了在3D高斯泼溅中使用神经网络进行参数化的趋势，探讨其对重建质量的影响。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.10531v1",
+      "title": "Guiding Image-to-3D Generation with Test-Time Partial Observations",
+      "abstract": "Image-to-3D models can generate visually compelling 3D assets from a single RGB image, but their geometry is often only loosely constrained by the available observations, limiting their use in applications that require geometric fidelity. In many real-world settings, however, partial geometric observations of the object may be available at test time. We introduce a training-free framework for incorporating such evidence into pretrained image-to-3D generative models without retraining or finetuning. To do this, we guide generation using a ray-consistent observation likelihood defined over the model's occupancy representation, combining surface occupancy and free-space evidence. Applied to SAM 3D and its multi-view extension, our approach substantially improves geometric fidelity across different levels of observability, as well as visual quality. Our results demonstrate that pretrained image-to-3D models can effectively integrate partial geometric observations through explicit test-time guidance, complementing their learned generative priors without modifying the underlying model.",
+      "authors": [
+        "Jerred Chen",
+        "Simon Weber",
+        "Ronald Clark"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-09T17:58:04+00:00",
+      "link": "https://arxiv.org/pdf/2609.10531v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Ray-consistent observation likelihood over occupancy representation",
+      "llm_evidence_cn": "占用表示上的射线一致性观测似然",
+      "llm_evidence": "占用表示上的射线一致性观测似然",
+      "canonical_evidence": "占用表示上的射线一致性观测似然",
+      "llm_tldr_en": "Integrates partial geometric observations into image-to-3D models using ray-consistent occupancy guidance.",
+      "llm_tldr_cn": "利用射线一致性占用引导，将局部几何观测集成到图像转3D模型中。",
+      "llm_tldr": "利用射线一致性占用引导，将局部几何观测集成到图像转3D模型中。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.09394v1",
+      "title": "OmniPoint: Universal Monocular Metric Pointcloud from Any Camera",
+      "abstract": "Recovering metric 3D geometry from monocular images is a fundamental computer vision task, yet current methods remain heavily fragmented by fixed camera model assumptions and inflexible input schemes. We present OmniPoint, a unified framework designed to generalize metric reconstruction across diverse imaging sensors, including pinhole, fisheye, and equirectangular projections, while accommodating varying geometric priors. To overcome projection rigidity, OmniPoint abandons conventional planar depth regression. It instead adopts a decoupled ray and distance representation alongside a decoupled training objective, explicitly separating the camera projection model from the scene structure. To address the severe scarcity of training data for alternative cameras, we introduce a bidirectional augmentation strategy that explicitly bridges labeled perspective data and unlabeled omnidirectional domains in 3D space. Furthermore, to seamlessly integrate optional inputs like camera intrinsics or sparse depth without destabilizing the network through feature distribution shifts, we propose a robust information injection mechanism. This mechanism utilizes learnable input state embeddings to resolve architectural ambiguity and applies vectorized Gaussian smoothing to densify irregular measurements. Extensive experiments demonstrate that OmniPoint achieves state-of-the-art zero-shot performance across multiple benchmarks, establishing a robust new standard for unified monocular 3D reconstruction.",
+      "authors": [
+        "Botao Ye",
+        "Marc Pollefeys",
+        "Ming-Hsuan Yang",
+        "Abhijit Kundu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-08T19:45:58+00:00",
+      "link": "https://arxiv.org/pdf/2609.09394v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Decoupled ray and distance representation for metric reconstruction",
+      "llm_evidence_cn": "用于度量重建的解耦射线与距离表示",
+      "llm_evidence": "用于度量重建的解耦射线与距离表示",
+      "canonical_evidence": "用于度量重建的解耦射线与距离表示",
+      "llm_tldr_en": "A unified framework for metric 3D reconstruction using a decoupled ray and distance representation across camera types.",
+      "llm_tldr_cn": "一个使用解耦射线和距离表示的统一框架，用于跨相机类型的度量3D重建。",
+      "llm_tldr": "一个使用解耦射线和距离表示的统一框架，用于跨相机类型的度量3D重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.11079v1",
+      "title": "RIDE: Relocalization-Informed Depth Estimation with 3D Gaussian Splatting",
+      "abstract": "Render--match--PnP relocalization establishes correspondences between query image pixels and 3D map points for camera pose recovery, but their potential to support dense depth estimation is often overlooked. To exploit this geometric information, we present RIDE, which estimates dense metric depth from a robot's RGB stream. Given a metrically scaled 3D Gaussian Splatting (3DGS) model, RIDE combines sparse metric depth observations derived from PnP-RANSAC inlier correspondences with the geometric prior of a pretrained video-depth model. To handle uneven and intermittent observations, it integrates global and local depth correction with temporal memory, supporting depth estimation through short observation gaps after metric scale initialization. Trained on public RGB-D videos, RIDE is evaluated on robot sequences without fine tuning. Experiments show improved depth accuracy and temporal consistency over scale-only calibration, demonstrating how localization geometry can support both pose recovery and dense robot perception.",
+      "authors": [
+        "Jiarong Lian",
+        "Zhe Xiao",
+        "Zhaoyang Zhang",
+        "Wei Li",
+        "Ruizhi Chen"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-10T04:36:58+00:00",
+      "link": "https://arxiv.org/pdf/2609.11079v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting for rendering and depth estimation",
+      "llm_evidence_cn": "用于渲染和深度估计的3D高斯泼溅技术",
+      "llm_evidence": "用于渲染和深度估计的3D高斯泼溅技术",
+      "canonical_evidence": "用于渲染和深度估计的3D高斯泼溅技术",
+      "llm_tldr_en": "Integrates 3D Gaussian Splatting with depth estimation for robot relocalization and rendering.",
+      "llm_tldr_cn": "将3D高斯泼溅与深度估计结合，用于机器人重定位和渲染。",
+      "llm_tldr": "将3D高斯泼溅与深度估计结合，用于机器人重定位和渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.12343v1",
+      "title": "VS-Splat: Voxel-Selective feed-forward Gaussian Splatting for end-to-end 3D object reconstruction from sparse-views",
+      "abstract": "Feed-forward Gaussian splatting models have demonstrated remarkable effectiveness in reconstructing three-dimensional (3D) objects from a few two-dimensional (2D) images, even if they are unseen. As existing methods typically predict Gaussian primitives uniformly across the 3D space, most primitives are placed in non-object regions. This may hinder the representation of fine object details. This paper proposes a Voxel-Selective Gaussian Splatting model (VS-Splat), a new end-to-endfeed-forward Gaussian splatting framework that predicts many primitives only within selected voxels that are likely to belong to an object, without 3D structural supervision. To achieve this, we propose a new learnable voxel selection approach that identifies object-centric voxels only with 2D rendering supervision. Our sparse-view rendering experiments with three benchmark datasets show that proposed VS-Splat outperforms several state-of-the-art methods. We further demonstrate its effectiveness as a backbone for an existing densification method and show that anoptional extension improves its robustness to inaccurate camera pose estimates.",
+      "authors": [
+        "Yunsu Jeong",
+        "Hyuk Heo",
+        "Youngsang Kwak",
+        "Jaehwa Kwak",
+        "Il Yong Chun"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-11T02:08:55+00:00",
+      "link": "https://arxiv.org/pdf/2609.12343v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Voxel-selective Gaussian Splatting for 3D reconstruction",
+      "llm_evidence_cn": "用于3D重建的体素选择性高斯泼溅",
+      "llm_evidence": "用于3D重建的体素选择性高斯泼溅",
+      "canonical_evidence": "用于3D重建的体素选择性高斯泼溅",
+      "llm_tldr_en": "Proposes a voxel-selective Gaussian Splatting framework for efficient 3D object reconstruction from sparse views.",
+      "llm_tldr_cn": "提出了一种体素选择性高斯泼溅框架，用于从稀疏视图中高效进行3D物体重建。",
+      "llm_tldr": "提出了一种体素选择性高斯泼溅框架，用于从稀疏视图中高效进行3D物体重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.12682v1",
+      "title": "NOVA-GS: Noise-Aware View-Consistent Gaussian Splatting for Low-Light Novel View Synthesis",
+      "abstract": "Reconstructing 3D scenes under real-world low-light conditions remains challenging due to severe sensor noise, low signal-to-noise ratios, and degraded photometric consistency, which destabilize geometry estimation and novel view synthesis. Existing approaches often rely on well-lit reference data for reliable Structure-from-Motion (SfM) initialization under degraded inputs or apply per-view enhancement methods that introduce cross-view inconsistencies. To address these limitations, we propose \\textbf{NOVA-GS}, a unified noise-aware framework for low-light 3D Gaussian Splatting that subsumes enhancement, denoising, and geometry optimization within a single process. Our method leverages VGGT-based feed-forward estimation to obtain robust camera poses and geometry directly from degraded inputs, eliminating the need for SfM. Building on this initialization, NOVA-GS integrates three coupled components: a structure-aware enhancement module for exposure correction, a self-supervised denoising module with blind-spot masking for pseudo-supervision, and a consistency-driven Gaussian Splatting optimization enforcing cross-view geometric coherence. We further introduce a noise-guided spherical harmonic regularization to suppress view-dependent artifacts in noisy regions. Extensive experiments on diverse real-world low-light datasets demonstrate improved geometric fidelity, color consistency, and robustness without requiring paired supervision or well-lit references. https://shaurya2524.github.io/nova-gs/",
+      "authors": [
+        "Shaurya Pavan A",
+        "Vemunuri Divya Madhuri",
+        "Yash Pradeep Gawande",
+        "Kaushik Mitra"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-11T10:26:36+00:00",
+      "link": "https://arxiv.org/pdf/2609.12682v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Noise-aware 3D Gaussian Splatting for novel view synthesis",
+      "llm_evidence_cn": "用于新视角合成的噪声感知3D高斯泼溅",
+      "llm_evidence": "用于新视角合成的噪声感知3D高斯泼溅",
+      "canonical_evidence": "用于新视角合成的噪声感知3D高斯泼溅",
+      "llm_tldr_en": "Introduces a noise-aware Gaussian Splatting framework for high-quality 3D reconstruction in low-light conditions.",
+      "llm_tldr_cn": "引入了一种噪声感知的高斯泼溅框架，用于低光照条件下的高质量3D重建。",
+      "llm_tldr": "引入了一种噪声感知的高斯泼溅框架，用于低光照条件下的高质量3D重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
