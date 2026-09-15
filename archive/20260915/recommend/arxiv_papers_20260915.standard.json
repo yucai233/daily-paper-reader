@@ -1,0 +1,90 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-15T21:56:39.354852+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2609.14695v1",
+      "title": "Gaussian Process Implicit Surfaces as Participating Media: Realization-Free Rendering from Level-Crossing Statistics",
+      "abstract": "We present a theory of light scattering that connects Gaussian Process Implicit Surfaces (GPISes) and participating media in both directions. Applying the Kac--Rice level-crossing formula under a local-conditioning approximation yields a complete anisotropic radiative transfer equation (RTE) directly from pointwise GPIS statistics. A shared projected area couples extinction and scattering, ensuring geometric consistency between the GPIS and its volumetric representation. The framework spans rough surfaces, porous and non-height-field geometries, and participating media. From the same statistical structure, we derive full-sphere Beckmann and GGX normal distribution functions supporting in-plane and out-of-plane anisotropy. These families provably recover SGGX, Beckmann, and GGX as special cases and admit exact visible-normal importance sampling. We also derive analytic masking--shadowing functions and single-scattering surface models for specular microsurfaces, with extensions to multiple scattering. In the height-field limit, we prove that the local-conditioning approximation reduces to Smith's independence assumption. Our realization-free approach improves rendering efficiency over realization-based methods and can be implemented within a standard volume renderer. In the inverse direction, we characterize families of GPISes corresponding to compatible RTE parameters and develop practical lifts for heterogeneous density fields. Existing volumetric assets thereby become renderable as GPISes, while trained radiance-field reconstructions yield surface geometry and shading normals without mesh extraction and provide a density-based representation of geometric uncertainty.",
+      "authors": [
+        "Jack Cui",
+        "Kehan Xu",
+        "Eugene d'Eon",
+        "Wojciech Jarosz"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR"
+      ],
+      "published": "2026-09-13T17:52:57+00:00",
+      "link": "https://arxiv.org/pdf/2609.14695v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Theory of light scattering and participating media for volumetric rendering",
+      "llm_evidence_cn": "用于体积渲染的光散射和参与介质理论",
+      "llm_evidence": "用于体积渲染的光散射和参与介质理论",
+      "canonical_evidence": "用于体积渲染的光散射和参与介质理论",
+      "llm_tldr_en": "Connects implicit surfaces to participating media for realization-free volumetric light scattering rendering.",
+      "llm_tldr_cn": "将隐式表面与参与介质联系起来，实现无需实例化的体积光散射渲染。",
+      "llm_tldr": "将隐式表面与参与介质联系起来，实现无需实例化的体积光散射渲染。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "deep learning for multiple scattering in volumes",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.14129v1",
+      "title": "Deformable 2D Gaussian Splatting for Efficient 4K Video Compression",
+      "abstract": "Ultra-High-Definition (UHD) video presents significant challenges for efficient storage and real-time decoding. Learning-based methods, such as Neural Video Compression (NVC) and Implicit Neural Representations (INR), achieve competitive rate-distortion performance but suffer from high decoding latency and excessive memory usage. Meanwhile, Gaussian Splatting has recently attracted attention in the computer graphics community due to its ultra-fast rendering and high-fidelity visual quality. Despite these advantages, its application in video compression remains largely unexplored. To bridge this gap, we propose a real-time video compression framework that represents and compresses a Group of Pictures (GOP) using a coarse-to-fine multi-scale 2D Gaussian Splatting (2DGS) structure coupled with a lightweight deformation network. Experiments demonstrate that our method delivers rate-distortion performance in LPIPS that surpasses H.265 and other state-of-the-art learning-based video compression methods. Our work demonstrates the potential of Gaussian Splatting as a practical solution for efficient high-resolution video compression.",
+      "authors": [
+        "Chenhao Zhang",
+        "Fengqing Zhu"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.CV"
+      ],
+      "published": "2026-09-12T20:18:25+00:00",
+      "link": "https://arxiv.org/pdf/2609.14129v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Gaussian Splatting for neural rendering and video compression",
+      "llm_evidence_cn": "用于神经渲染和视频压缩的高斯泼溅技术",
+      "llm_evidence": "用于神经渲染和视频压缩的高斯泼溅技术",
+      "canonical_evidence": "用于神经渲染和视频压缩的高斯泼溅技术",
+      "llm_tldr_en": "Uses deformable 2D Gaussian Splatting for high-fidelity neural rendering and efficient video compression.",
+      "llm_tldr_cn": "利用可变形2D高斯泼溅技术实现高保真神经渲染和高效视频压缩。",
+      "llm_tldr": "利用可变形2D高斯泼溅技术实现高保真神经渲染和高效视频压缩。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

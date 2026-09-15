@@ -1,0 +1,37 @@
+{
+  "label": "2026-09-15",
+  "date": "2026-09-15",
+  "generated_at": "2026-09-15T21:57:21",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202609/15/2609.14695v1-gaussian-process-implicit-surfaces-as-participating-media-realization-free-rendering-from-level-crossing-statistics",
+      "section": "deep",
+      "title_en": "Gaussian Process Implicit Surfaces as Participating Media: Realization-Free Rendering from Level-Crossing Statistics",
+      "authors": "Jack Cui, Kehan Xu, Eugene d'Eon, Wojciech Jarosz",
+      "date": "2026-09-13",
+      "pdf": "https://arxiv.org/pdf/2609.14695v1",
+      "score": "9.0",
+      "evidence": "用于体积渲染的光散射和参与介质理论",
+      "tldr": "该论文提出了一种将高斯过程隐式曲面（GPIS）与参与介质渲染相结合的理论框架。通过应用Kac-Rice水平穿越公式，研究者直接从GPIS统计量推导出各向异性辐射传输方程（RTE），实现了无需几何实现的体积渲染。该方法不仅统一了粗糙表面与参与介质的建模，还推导出了包含SGGX、Beckmann和GGX在内的通用法线分布函数，显著提升了渲染效率并支持从体积数据中提取几何信息。",
+      "tags": "query:q4",
+      "abstract_en": "We present a theory of light scattering that connects Gaussian Process Implicit Surfaces (GPISes) and participating media in both directions. Applying the Kac--Rice level-crossing formula under a local-conditioning approximation yields a complete anisotropic radiative transfer equation (RTE) directly from pointwise GPIS statistics. A shared projected area couples extinction and scattering, ensuring geometric consistency between the GPIS and its volumetric representation. The framework spans rough surfaces, porous and non-height-field geometries, and participating media. From the same statistical structure, we derive full-sphere Beckmann and GGX normal distribution functions supporting in-plane and out-of-plane anisotropy. These families provably recover SGGX, Beckmann, and GGX as special cases and admit exact visible-normal importance sampling. We also derive analytic masking--shadowing functions and single-scattering surface models for specular microsurfaces, with extensions to multiple scattering. In the height-field limit, we prove that the local-conditioning approximation reduces to Smith's independence assumption. Our realization-free approach improves rendering efficiency over realization-based methods and can be implemented within a standard volume renderer. In the inverse direction, we characterize families of GPISes corresponding to compatible RTE parameters and develop practical lifts for heterogeneous density fields. Existing volumetric assets thereby become renderable as GPISes, while trained radiance-field reconstructions yield surface geometry and shading normals without mesh extraction and provide a density-based representation of geometric uncertainty.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/15/2609.14129v1-deformable-2d-gaussian-splatting-for-efficient-4k-video-compression",
+      "section": "quick",
+      "title_en": "Deformable 2D Gaussian Splatting for Efficient 4K Video Compression",
+      "authors": "Chenhao Zhang, Fengqing Zhu",
+      "date": "2026-09-12",
+      "pdf": "https://arxiv.org/pdf/2609.14129v1",
+      "score": "6.0",
+      "evidence": "用于神经渲染和视频压缩的高斯泼溅技术",
+      "tldr": "针对超高清视频存储与解码的挑战，本文提出了一种基于可变形2D高斯溅射（2DGS）的实时视频压缩框架。该方法通过粗到细的多尺度2DGS结构与轻量级形变网络对图像组进行建模，在实现高效压缩的同时保持了高保真视觉质量，在LPIPS指标上超越了H.265及现有主流神经视频压缩方法，展示了高斯溅射在视频压缩领域的巨大潜力。",
+      "tags": "query:q1",
+      "abstract_en": "Ultra-High-Definition (UHD) video presents significant challenges for efficient storage and real-time decoding. Learning-based methods, such as Neural Video Compression (NVC) and Implicit Neural Representations (INR), achieve competitive rate-distortion performance but suffer from high decoding latency and excessive memory usage. Meanwhile, Gaussian Splatting has recently attracted attention in the computer graphics community due to its ultra-fast rendering and high-fidelity visual quality. Despite these advantages, its application in video compression remains largely unexplored. To bridge this gap, we propose a real-time video compression framework that represents and compresses a Group of Pictures (GOP) using a coarse-to-fine multi-scale 2D Gaussian Splatting (2DGS) structure coupled with a lightweight deformation network. Experiments demonstrate that our method delivers rate-distortion performance in LPIPS that surpasses H.265 and other state-of-the-art learning-based video compression methods. Our work demonstrates the potential of Gaussian Splatting as a practical solution for efficient high-resolution video compression.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -6,40 +6,28 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-09-14
-- 运行时间：2026-09-14 22:50:48 UTC
+- 最新运行日期：2026-09-15
+- 运行时间：2026-09-15 21:57:18 UTC
 - 运行状态：成功
-- 本次总论文数：6
+- 本次总论文数：2
 - 精读区：1
-- 速读区：5
+- 速读区：1
 
 ### 今日简报（AI）
-今日聚焦 3D 高斯泼溅（Gaussian Splatting）的前沿演进，精选 6 篇论文深度解析。
-核心关注参数化学习与 3D 重建技术的融合，重点推荐《Is Gaussian Splatting Becoming Neural Again?》以洞察技术范式转变。
-建议优先阅读精读论文，快速掌握高斯泼溅从显式表达向神经化演进的最新趋势。
-- 详情：[/202609/14/README](/202609/14/README)
+今日聚焦高斯过程隐式曲面渲染与 4K 视频压缩技术，探索图形学前沿进展。
+重点推荐高斯过程隐式曲面在参与介质渲染中的应用，其在无实现渲染方面表现卓越。
+建议关注渲染算法的数学底层逻辑，并对比视频压缩在 2D 高斯溅射中的效率优化。
+- 详情：[/202609/15/README](/202609/15/README)
 
 ### 精读区论文标签
-1. [Is Gaussian Splatting Becoming Neural Again? A Taxonomy and Controlled Study of Learned Parameterization](/202609/14/2609.12395v1-is-gaussian-splatting-becoming-neural-again-a-taxonomy-and-controlled-study-of-learned-parameterization)  
-   标签：评分：8.0/10、query:q1
-   evidence：高斯泼溅与NeRF中神经参数化方法的分类研究
+1. [Gaussian Process Implicit Surfaces as Participating Media: Realization-Free Rendering from Level-Crossing Statistics](/202609/15/2609.14695v1-gaussian-process-implicit-surfaces-as-participating-media-realization-free-rendering-from-level-crossing-statistics)  
+   标签：评分：9.0/10、query:q4
+   evidence：用于体积渲染的光散射和参与介质理论
 
 ### 速读区论文标签
-1. [Guiding Image-to-3D Generation with Test-Time Partial Observations](/202609/14/2609.10531v1-guiding-image-to-3d-generation-with-test-time-partial-observations)  
-   标签：评分：7.0/10、query:q1
-   evidence：占用表示上的射线一致性观测似然
-2. [RIDE: Relocalization-Informed Depth Estimation with 3D Gaussian Splatting](/202609/14/2609.11079v1-ride-relocalization-informed-depth-estimation-with-3d-gaussian-splatting)  
-   标签：评分：7.0/10、query:q1
-   evidence：用于渲染和深度估计的3D高斯泼溅技术
-3. [VS-Splat: Voxel-Selective feed-forward Gaussian Splatting for end-to-end 3D object reconstruction from sparse-views](/202609/14/2609.12343v1-vs-splat-voxel-selective-feed-forward-gaussian-splatting-for-end-to-end-3d-object-reconstruction-from-sparse-views)  
-   标签：评分：7.0/10、query:q1
-   evidence：用于3D重建的体素选择性高斯泼溅
-4. [NOVA-GS: Noise-Aware View-Consistent Gaussian Splatting for Low-Light Novel View Synthesis](/202609/14/2609.12682v1-nova-gs-noise-aware-view-consistent-gaussian-splatting-for-low-light-novel-view-synthesis)  
-   标签：评分：7.0/10、query:q1
-   evidence：用于新视角合成的噪声感知3D高斯泼溅
-5. [OmniPoint: Universal Monocular Metric Pointcloud from Any Camera](/202609/14/2609.09394v1-omnipoint-universal-monocular-metric-pointcloud-from-any-camera)  
+1. [Deformable 2D Gaussian Splatting for Efficient 4K Video Compression](/202609/15/2609.14129v1-deformable-2d-gaussian-splatting-for-efficient-4k-video-compression)  
    标签：评分：6.0/10、query:q1
-   evidence：用于度量重建的解耦射线与距离表示
+   evidence：用于神经渲染和视频压缩的高斯泼溅技术
 
 
 <div class="dpr-home-promo-card">
