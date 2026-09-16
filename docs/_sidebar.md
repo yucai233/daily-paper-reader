@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-09-16 <!--dpr-date:20260916-->
+    * 精读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/16/2609.13397v1-conegaussian-anti-aliased-gaussian-ray-tracing-for-generic-central-cameras" data-sidebar-item="{&quot;title&quot;: &quot;ConeGaussian: Anti-Aliased Gaussian Ray-Tracing for Generic Central Cameras&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.13397v1-conegaussian-anti-aliased-gaussian-ray-tracing-for-generic-central-cameras&quot;, &quot;score&quot;: &quot;8.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;q7&quot;}], &quot;evidence&quot;: &quot;用于神经渲染的抗锯齿高斯射线追踪&quot;}">ConeGaussian: Anti-Aliased Gaussian Ray-Tracing for Generic Central Cameras</a>
   * 2026-09-15 <!--dpr-date:20260915-->
     * 精读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/15/2609.14695v1-gaussian-process-implicit-surfaces-as-participating-media-realization-free-rendering-from-level-crossing-statistics" data-sidebar-item="{&quot;title&quot;: &quot;Gaussian Process Implicit Surfaces as Participating Media: Realization-Free Rendering from Level-Crossing Statistics&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.14695v1-gaussian-process-implicit-surfaces-as-participating-media-realization-free-rendering-from-level-crossing-statistics&quot;, &quot;score&quot;: &quot;9.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;q4&quot;}], &quot;evidence&quot;: &quot;用于体积渲染的光散射和参与介质理论&quot;}">Gaussian Process Implicit Surfaces as Participating Media: Realization-Free Rendering from Level-Crossing Statistics</a>

@@ -1,0 +1,58 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-16T22:20:22.396465+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 0,
+    "quick_skim_target": 11,
+    "quick_selected": 0
+  },
+  "deep_dive": [
+    {
+      "id": "2609.13397v1",
+      "title": "ConeGaussian: Anti-Aliased Gaussian Ray-Tracing for Generic Central Cameras",
+      "abstract": "In rendering, a camera is a sampling operator that maps each finite pixel to a bundle of rays. Different camera models change the geometry of this bundle, thus making a unified and faithful rendering formulation challenging. Consequently, Gaussian ray tracing supports generic cameras (with optical center) through their inverse ray mappings, yet typically reduces every pixel to a single center ray. This ignores the camera-dependent pixel footprint, causing aliasing under minification, while unconstrained Gaussians expose unsupported frequencies under magnification. We present ConeGaussian, a camera-model-agnostic anti-aliasing framework for Gaussian ray-based rendering. Instead of defining the pixel filter on a camera-specific image plane, ConeGaussian constructs an anisotropic footprint directly from neighboring rays produced by the camera's native inverse mapping. We derive a closed-form response under a locally linear, depth-local, moment-matched approximation of the finite pixel footprint, while the same geometry defines a per-Gaussian training-frequency floor. Notably, by construction, our filtering principle can be used unmodified across calibrated central camera models and multiple Gaussian ray-rendering backbones. Additionally, unlike in mip-splatting, our scene-space frequency floor and filtering enable trivial composition at render time, allowing us to remove excess blurring. On pinhole and strongly distorted fisheye captures, ConeGaussian consistently improves two distinct ray-based backbones, by up to 4.3 dB at 1/8 resolution, and reduces fisheye LPIPS by 30% where perspective screen-plane footprint formulations are not directly applicable.",
+      "authors": [
+        "Deheng Zhang",
+        "Letian Shi",
+        "Runyi Yang",
+        "Zhendong Li",
+        "Lei Sun",
+        "Kanzhi Wu",
+        "Ajad Chhatkuli",
+        "Danda Pani Paudel",
+        "Luc Van Gool"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-11T18:05:07+00:00",
+      "link": "https://arxiv.org/pdf/2609.13397v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Anti-aliased Gaussian ray-tracing for neural rendering",
+      "llm_evidence_cn": "用于神经渲染的抗锯齿高斯射线追踪",
+      "llm_evidence": "用于神经渲染的抗锯齿高斯射线追踪",
+      "canonical_evidence": "用于神经渲染的抗锯齿高斯射线追踪",
+      "llm_tldr_en": "Introduces an anti-aliasing framework for Gaussian ray-based rendering across generic camera models.",
+      "llm_tldr_cn": "为通用相机模型引入了一种用于高斯射线渲染的抗锯齿框架。",
+      "llm_tldr": "为通用相机模型引入了一种用于高斯射线渲染的抗锯齿框架。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": []
+}

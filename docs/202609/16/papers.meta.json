@@ -1,0 +1,23 @@
+{
+  "label": "2026-09-16",
+  "date": "2026-09-16",
+  "generated_at": "2026-09-16T22:20:38",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202609/16/2609.13397v1-conegaussian-anti-aliased-gaussian-ray-tracing-for-generic-central-cameras",
+      "section": "deep",
+      "title_en": "ConeGaussian: Anti-Aliased Gaussian Ray-Tracing for Generic Central Cameras",
+      "authors": "Deheng Zhang, Letian Shi, Runyi Yang, Zhendong Li, Lei Sun, Kanzhi Wu, Ajad Chhatkuli, Danda Pani Paudel, Luc Van Gool",
+      "date": "2026-09-11",
+      "pdf": "https://arxiv.org/pdf/2609.13397v1",
+      "score": "8.0",
+      "evidence": "用于神经渲染的抗锯齿高斯射线追踪",
+      "tldr": "ConeGaussian 是一种通用的抗锯齿高斯射线追踪框架，旨在解决现有高斯渲染在不同相机模型下因忽略像素足迹导致的锯齿问题。该方法通过相机原生逆映射构建各向异性足迹，并推导出闭式解进行滤波，同时引入场景空间频率下限以优化渲染质量。它不仅适用于多种中心相机模型，还能在保持清晰度的同时显著提升渲染性能，在针孔和鱼眼相机上均表现出优异的抗锯齿效果。",
+      "tags": "query:q7",
+      "abstract_en": "In rendering, a camera is a sampling operator that maps each finite pixel to a bundle of rays. Different camera models change the geometry of this bundle, thus making a unified and faithful rendering formulation challenging. Consequently, Gaussian ray tracing supports generic cameras (with optical center) through their inverse ray mappings, yet typically reduces every pixel to a single center ray. This ignores the camera-dependent pixel footprint, causing aliasing under minification, while unconstrained Gaussians expose unsupported frequencies under magnification. We present ConeGaussian, a camera-model-agnostic anti-aliasing framework for Gaussian ray-based rendering. Instead of defining the pixel filter on a camera-specific image plane, ConeGaussian constructs an anisotropic footprint directly from neighboring rays produced by the camera's native inverse mapping. We derive a closed-form response under a locally linear, depth-local, moment-matched approximation of the finite pixel footprint, while the same geometry defines a per-Gaussian training-frequency floor. Notably, by construction, our filtering principle can be used unmodified across calibrated central camera models and multiple Gaussian ray-rendering backbones. Additionally, unlike in mip-splatting, our scene-space frequency floor and filtering enable trivial composition at render time, allowing us to remove excess blurring. On pinhole and strongly distorted fisheye captures, ConeGaussian consistently improves two distinct ray-based backbones, by up to 4.3 dB at 1/8 resolution, and reduces fisheye LPIPS by 30% where perspective screen-plane footprint formulations are not directly applicable.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

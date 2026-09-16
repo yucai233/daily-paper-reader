@@ -1,0 +1,476 @@
+Title: ConeGaussian: Anti-Aliased Gaussian Ray-Tracing for Generic Central Cameras
+
+URL Source: https://arxiv.org/pdf/2609.13397v1
+
+Published Time: Tue, 15 Sep 2026 00:10:21 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# ConeGaussian: Anti-Aliased Gaussian Ray-Tracing for Generic Central Cameras 
+
+Deheng Zhang 1,*, †, Letian Shi 1,* , Runyi Yang 1, Zhendong Li 1, Lei Sun 1, Kanzhi Wu 2, Ajad Chhatkuli 1, ‡, Danda Pani Paudel 1, Luc Van Gool 1, ‡
+
+> 1
+
+INSAIT, Sofia University “St. Kliment Ohridski” 
+
+> 2
+
+vivo Mobile Communication Co., Ltd., Shenzhen, China 
+
+> *
+
+Equal contribution (co-first authors). †Project lead. ‡Equal supervision. 
+
+Abstract 
+
+In rendering, a camera is a sampling operator that maps each finite pixel to a bundle of rays. Different camera models change the geometry of this bundle, thus making a unified and faith-ful rendering formulation challenging. Consequently, gaus-sian ray tracing supports generic cameras (with optical cen-ter) through their inverse ray mappings, yet typically reduces every pixel to a single center ray. This ignores the camera-dependent pixel footprint, causing aliasing under minifica-tion, while unconstrained Gaussians expose unsupported fre-quencies under magnification. We present ConeGaussian, a camera-model-agnostic anti-aliasing framework for Gaussian ray-based rendering. Instead of defining the pixel filter on a camera-specific image plane, ConeGaussian constructs an anisotropic footprint directly from neighboring rays produced by the camera’s native inverse mapping. We derive a closed-form response under a locally linear, depth-local, moment-matched approximation of the finite pixel footprint, while the same geometry defines a per-Gaussian training-frequency floor. Notably, by construction, our filtering principle can be used unmodified across calibrated central camera models and multiple Gaussian ray-rendering backbones. Additionally, un-like in mip-splatting, our scene-space frequency floor and filtering enable trivial composition at render time allowing us to remove excess blurring. On pinhole and strongly dis-torted fisheye captures, ConeGaussian consistently improves two distinct ray-based backbones, by up to 4.3 dB at 1/8 reso-lution, and reduces fisheye LPIPS by 30% where a perspective screen-plane footprint formulations are not directly applica-ble. Code and checkpoints will be publicly available. 
+
+## 1 Introduction 
+
+An effective 3D scene representation should support the ren-dering of the same scene across different camera types in good quality. Perspective, fisheye and omnidirectional cam-eras offer different trade-offs in angular resolution, field of view, and blind-spot coverage (Liao et al. 2024; Li et al. 2024). 3D Gaussian Splatting (3DGS) (Kerbl et al. 2023) is attractive for this purpose, providing photorealistic rendering at interactive rates and supporting large-scale reconstruction and robotic navigation (Yan et al. 2024a; Lei et al. 2024; Chen et al. 2024). However, its standard renderer projects each anisotropic Gaussian onto a perspective image plane us-ing a local affine EWA approximation (Zwicker et al. 2001), coupling the renderer to a specific projection model and degrading under wide-angle or strongly distorted cameras. GT  3DGEER  ConeGaussian       
+
+> 1/8 Zoom Out
+> GT 3DGEER ConeGaussian
+> 8x Zoom In
+> (a) PINHOLE Comparison
+> GT 3DGEER ConeGaussian
+> 8x Zoom In
+> (b) Fisheye Comparison
+> GT 3DGEER ConeGaussian
+> 1/8 Zoom Out
+> (c) Fisheye Showcase
+> 1/8 Zoom Out
+> Original Resolution
+> 8x Zoom In
+
+Figure 1: ConeGaussian suppresses aliasing at 18 minifica-tion and preserves detail at ×8 magnification for both pinhole and fisheye cameras. More fundamentally, each pixel integrates a finite, camera-dependent bundle of rays rather than only its center ray, and this footprint can become elongated and sheared toward the image periphery. Generic-camera rendering and anti-aliasing must therefore be addressed together using the camera’s na-tive rays and their finite pixel footprints. Recent Gaussian renderers bypass this screen-space de-pendence by evaluating primitives directly in 3D or along camera rays (Moenne-Loccoz et al. 2024; Wu et al. 2025; Huang et al. 2025). In particular, 3DGEER (Huang et al. 2025) provides a closed-form ray response, allowing cali-brated central cameras to share the same renderer and dif-fer only in their inverse projection. However, it still treats each finite pixel as a single center-ray sample. Conversely, anti-aliasing methods such as Mip-Splatting and Analytic-Splatting (Yu et al. 2024; Liang et al. 2024) model the pixel footprint only after projection onto a perspective image plane. VKRayGS (Rota Bulò et al. 2025) introduces filtering into ray-based rendering, but approximates the footprint isotrop-ically, discarding its shear and sizes with the paraxial z/f ,which over-dilates an off-axis pixel. Thus, existing methods support either generic-camera ray evaluation or finite-pixel filtering, but not an anisotropic footprint derived directly from the camera’s native rays. We introduce ConeGaussian , an anti-aliased Gaussian arXiv:2609.13397v1 [cs.CV] 11 Sep 2026 ray-tracing framework that derives each pixel filter directly from the camera’s native rays. For every pixel–Gaussian pair, neighboring-ray differentials are transported to the Gaussian’s maximum-response depth and represented as an anisotropic rank-two covariance in the Gaussian-whitened, ray-orthogonal plane. A moment-matched Gaussian then yields a closed-form filtered response. Since the construction requires only an inverse ray mapping, the same formulation applies to any calibrated central camera. To additionally sup-press unsupported frequencies under magnification, we de-rive a per-Gaussian training-frequency floor from the same footprint geometry and add only the render-time variance not already covered by this floor, jointly handling minifica-tion and magnification without redundant smoothing. We validate ConeGaussian against densely supersam-pled pixel responses and on pinhole and strongly distorted fisheye benchmarks. As shown in Fig. 1, ConeGaussian re-duces aliasing under 1/8× downsampling while preserving fine structures under 8× magnification for both pinhole and fisheye cameras, including near the highly distorted fisheye periphery. The zoom in/out settings are further introduced in Sec. 5. Its anisotropic footprint more accurately approx-imates finite-pixel integration than center-ray or isotropic filtering, especially at large eccentricities. Across multiple settings, a single implementation consistently improves the ray-based baseline and supports cross-camera-model render-ing without changing the rendering formulation. Because the footprint is derived directly from the rendering rays rather than a backbone-specific screen-space projection, it can be incorporated into compatible Gaussian ray-based renderers. We instantiate it on both 3DGEER (Huang et al. 2025) and 3DGUT (Wu et al. 2025), demonstrating its portability across two distinct Gaussian ray-based response formulations. Our contributions are as follows: 
+
+• Ray-native anisotropic filtering across cameras and Gaussian ray renderers. We derive a ray-native anisotropic pixel footprint that enables a unified filter-ing formulation across calibrated central camera models and multiple Gaussian ray-based renderers. We provide the theoretical derivations and error bound analysis for the footprint filter in the Appendix. 
+
+• A unified treatment of sampling and representation band-limits. The same ray-footprint geometry defines a per-Gaussian training-frequency floor, while the marginal composition rule composes it with the render-time foot-print without redundant smoothing. 
+
+• A comprehensive evaluation across cameras, scales, and backbones. We validate performance improvements in multi-scale and cross-camera rendering across multiple Gaussian ray-based renderers. 
+
+## 2 Related Work 
+
+3DGS Ray-Tracing and Anti-Aliasing. Pixel-footprint filtering is a classic anti-aliasing principle: texture mapping integrates over an elliptical footprint derived from neighbor-ing ray differentials (Heckbert 1989; Igehy 1999). We extend this construction to ray–Gaussian rendering by transporting exact edge-ray differentials to each Gaussian and convolving its response with the resulting anisotropic footprint. EWA splatting (Zwicker et al. 2001) introduced footprint filter-ing for point rendering, whereas 3DGS omits its screen-space band-limiting filter for efficiency. Related methods in-clude conical-frustum integration in Mip NeRF (Barron et al. 2021, 2022, 2023), scale-specific primitives in Multi-Scale 3DGS (Yan et al. 2024b), 3D frequency constraints and 2D mip filtering in Mip-Splatting (Yu et al. 2024), and analytic pixel integration in Analytic-Splatting (Liang et al. 2024). Closest to ours, VKRayGS (Rota Bulò et al. 2025) approxi-mates the pixel footprint using isotropic world-space dilation based on the paraxial z/f interval, sacrificing anisotropy for hardware efficiency while remaining tied to perspective ras-terization. In contrast, our anisotropic footprint supports a broad range of calibrated central camera models. 
+
+Exact / Generic-Camera Gaussian Rendering. Screen-space methods inherit 3DGS’s local affine projection, which degrades under wide fields of view and strong distor-tion. Ray-based methods avoid this approximation and dif-fer mainly in how they define the ray–Gaussian response. Maximum-response approaches evaluate the Gaussian at the point of minimum Mahalanobis distance: RayGauss (Blanc, Deschaud, and Paljic 2025) and 3DGRT (Moenne-Loccoz et al. 2024) uses BVH-based ray tracing, 3DGUT (Wu et al. 2025) applies an unscented transform, and Gaussian Opac-ity Fields (Yu, Sattler, and Geiger 2024) evaluate opacity at ray–Gaussian intersections. Integral-based methods in-stead compute the response along the ray in closed form: VKRayGS (Rota Bulò et al. 2025) marginalizes Gaussians onto the ray-orthogonal plane, while 3DGEER (Huang et al. 2025) derives the exact ray integral from the minimum Mahalanobis distance and uses Particle Bounding Frus-tums to support generic cameras without BVH intersections. EVER (Mai et al. 2024) exactly renders constant-density el-lipsoids, whereas FisheyeGS (Liao et al. 2024) adapts splat-ting to fisheye projection. None models the anisotropic pixel footprint, thus, we introduce it while preserving its exactness and camera generality. 
+
+## 3 Preliminaries: Ray-Tracing 3DGS 
+
+Previous Gaussian ray-based rendering methods, such as 3DGUT (Wu et al. 2025) and 3DGEER (Huang et al. 2025), evaluate Gaussian primitives directly along camera rays, with 3DGEER further deriving a closed-form solution for the Gaussian ray integral. Rays are cast from the camera’s opti-cal center o ∈ R3: any pixel (x, y ) of a camera with inverse projection Π−1 yields a world ray (o, d) with direction unit vector d, written in world coordinates as r(t) = o + td. A Gaussian Gk has mean μ ∈ R3, covariance Σ = R S 2R⊤
+
+(rotation R, scales S = diag( s1, s 2, s 3)) and opacity σ. A world-space point x is mapped to the whitened Gaussian co-ordinate u by u = W(x − μ) with W = S−1R⊤, which maps the Gaussian to the unit isotropic ball. Whitening the ray with direction du = Wd and center ou = W(o − μ)
+
+gives 
+
+ru(t) = ou + t du. (1) Because whitening maps Σ to the identity, the Gaussian response along the transformed ray ru(t) = ou + tdu is a 4 2 0 2 4                       
+
+> e1
+> 2
+> 1
+> 012345
+> e2
+> q00
+> q10
+> q11
+> q01
+> pixel footprint (corner rays q)ours (Σ u
+> fp )
+> whitened Gaussian ( I)ConeGaussian (I+ Σ u
+> fp )
+> isotropic reduction (I+12tr Σ u
+> fp )
+> single-ray sample t
+> ex
+> ey
+> 10 20 30 40 50 60
+> pixel offset from optical axis (px)
+> 10 0
+> 10 1
+> relative  T error (%)  ↓
+> z/f over-dilates: worse than no footprint
+> 3DGEER (single ray) VKRayGS ( z/f 3D dil.) isotropic reduction ConeGaussian (ours)
+> 20 40 60 80 100 120
+> pixel offset from optical axis (px)
+> 10 0
+> 10 1
+> 8.5×lower
+
+(a) world-space ray geometry (b) whitened plane at t (c) T error, pinhole (d) T error, fisheye   
+
+> t
+> optical axis
+> ∆x
+> ∆y
+> pixel
+> image plane
+> d
+> o
+> N(,Σ)
+> ray-orthogonal plane
+
+Figure 2: The ConeGaussian pixel-footprint filter. (a) Pixel-edge ray differentials form a world-space footprint at the maximum-response depth t∗. (b) Whitening yields an anisotropic rank-two covariance; ConeGaussian preserves its orientation and aspect ratio, unlike single-ray 3DGEER (Huang et al. 2025) and isotropic VKRayGS-style filtering (Rota Bulò et al. 2025). (c,d) Against a 32 ×32 supersampled reference, the anisotropic filter achieves the lowest response error for both pinhole and fisheye cameras, especially off-axis. Beyond this single-Gaussian response test, we also validate multi-Gaussian occlusion compositing against dense sub-ray references; see the Appendix for details. one-dimensional Gaussian in the ray parameter t. Its max-imum occurs at t∗ = − ⟨ou,du⟩∥du∥2 , and the corresponding minimum squared Mahalanobis distance, i.e., the squared perpendicular distance from the ray to the Gaussian centre, is 
+
+D2 = ∥ou + t∗du∥2 = ∥du × ou∥2
+
+∥du∥2 . (2) We therefore define a unified weighted ray response 
+
+T [w] = σ
+
+Z
+
+> R
+
+w(t) Gμ,Σ
+
+ o + td dt = C[w] σ e − 12 D2
+
+, (3) where Gμ,Σ(x) := 1  
+
+> ZG
+> √det Σ
+
+exp  − 12 (x − μ)⊤Σ−1(x − μ)
+
+is a Gaussian with mean μ, covariance Σ, and constant normalizer ZG, and C[w] is a longitudinal aggregation factor. Two representative instances of this formulation are 3DGUT and 3DGEER, corresponding to wGUT (t) = δ(t −
+
+t∗) and wGEER (t) = 1 , respectively. Following vanilla 3DGS, Gaussians are sorted by their max-response depths t∗ 
+
+> k
+
+and composited front-to-back: 
+
+c(x, y ) = X
+
+> k
+
+ckTk
+
+Y
+
+> j<k
+
+(1 − Tj ), (4) where Tk is the ray–Gaussian response and ck its view-dependent colour. 
+
+## 4 Methodology: ConeGaussian 
+
+Although previous Gaussian ray-tracing methods integrate each Gaussian along a viewing ray, they represent each pixel by a single center ray. Under zoom-out, where scene details are projected below the pixel sampling resolution, frequen-cies beyond the Nyquist limit are not filtered and therefore alias into the sampled image. Conversely, under zoom-in, the absence of a 3D frequency constraint allows Gaussians to encode frequencies beyond those supported by the training views, producing high-frequency artifacts when rendered at a higher sampling rate. We address scale-dependent alias-ing from two complementary directions: (1) for zoom-out, we model each pixel as a finite viewing cone rather than an infinitesimal ray and filter the Gaussian response over its lo-cal cross-section; (2) for zoom-in, we constrain the minimum 3D Gaussian scale to band-limit the scene representation and suppress unsupported high-frequency components. 
+
+4.1 Pixel-Footprint Filtering 
+
+Our method is based on three assumptions. We further de-tailed and analyzed the assumptions in the Appendix. 
+
+• Assumption 1 (Local ray-linearity). The ray-direction field is locally linear within a pixel, so its footprint is approximated by a parallelogram. 
+
+• Assumption 2 (Depth locality). The ray-orthogonal foot-print changes little over the effective ray-integration range of a Gaussian, so it can be evaluated at the maximum-response depth t∗.
+
+• Assumption 3 (Gaussian moment matching). The uni-form footprint distribution is approximated by a moment-matched Gaussian that preserves its mean and covariance. 
+
+Pixel ray bundle. A pixel represents a finite bundle of rays rather than a single center ray. Let P = [ − 12 , 12 ]2 denote the pixel domain and d(ξ) = Π −1(p + ξ) the ray direction of the offset ξ ∈ P from the pixel centre p = ( x, y ). The pixel response is the average of the Gaussian response over this ray bundle: 
+
+T = σ
+
+|P| 
+
+Z
+
+> P
+
+Z
+
+> R
+
+w(t)Gμ,Σ
+
+ o + td(ξ) dt d ξ. (5) 
+
+Footprint covariance and filtered response. To estimate Eq. 5, we define the ray-orthogonal plane and the paral-lelogram projection (detail proof in the Appendix). With 
+
+M⊥ = I − dud⊤ 
+
+> u
+
+/(d⊤ 
+
+> u
+
+du) the orthogonal projector onto the plane perpendicular to the whitened ray (ray-orthogonal plane), the differentials are in practice taken from the cam-era model rather than an analytic Jacobian: with the half-pixel offsets ∆x = ( 12 , 0) , ∆y = (0 , 12 ) (different esti-mation analysis is in Appendix) and the edge rays di =Π−1(p + ∆i), i ∈ { x, y } from the same camera model as d, the whitened and projected half-edges are vectors: 
+
+ei = t∗ M⊥W di − d, i ∈ { x, y }. (6) The half-edge vectors ex and ey span the parallelogram (Fig. 2(a)) 
+
+Ωu 
+
+> fp
+
+= {a ex + b ey | a, b ∈ [−1, 1] } . (7) A point uniformly distributed over Ωu 
+
+> fp
+
+has zero mean. Since a scalar uniformly distributed over [−1, 1] has variance 1/3,each half-edge vector e contributes the covariance ee ⊤/3.Thus, we define the footprint covariance in the whitened space Σu
+
+> fp
+
+Σu 
+
+> fp
+
+= 13
+
+ exe⊤ 
+
+> x
+
++ ey e⊤
+
+> y
+
+, Σu 
+
+> fp
+
+du = 0. (8) The inner average over Ωu 
+
+> fp
+
+is therefore a convolution with the normalized uniform footprint kernel Kfp (zu) = 
+
+1Ωu 
+
+> fp
+
+(zu)/|Ωu
+
+> fp
+
+|, i.e., eG0,I = G0,I ∗ Kfp . Following Assump-tion 3 we approximate Kfp by the Gaussian G0,Σu 
+
+> fp
+
+of the same mean and covariance, so that the convolution becomes a covariance sum, eG0,I ≈ G 0,I ∗G 0,Σu 
+
+> fp
+
+. With q = M⊥ou the vector from the Gaussian centre to the closest point of the ray, 
+
+i.e., the perpendicular ray-to-centre offset already appearing in Eq. (2) through ∥q∥2 = D2, we obtain the final Gaussian response T and the filtered covariance A of the whitened Gaussian, 
+
+T = σ
+
+√det A e− 12 q⊤A−1q, A = I + Σu
+
+> fp
+
+. (9) Since Σu 
+
+> fp
+
+lies entirely in the ray-orthogonal plane, A remains unchanged along du, allowing the filtering terms to be eval-uated without explicitly constructing a plane basis to convert the 3D representation into 2D ray-orthogonal coordinates. Our formulation therefore extends the 2D mip-filtering prin-ciple of Mip-Splatting to calibrated central camera models by expressing the pixel footprint in a ray-orthogonal frame. The isotropic reduction of Eq. (9), which applies where footprints stay near-isotropic, and a discussion of what is linearized in our construction and in 3DGS are deferred to the Appendix. 
+
+4.2 Regularizing Representation Frequencies 
+
+Eq. (9) addresses rendering-time aliasing by integrating over the pixel footprint. Independently, the Gaussian representa-tion may contain frequencies beyond the training resolution, which can appear as spurious fine structures under magnifi-cation. We therefore impose a filter floor on each Gaussian, attenuating high-frequency content beyond the finest resolu-tion observed. 
+
+Footprint floor filter. Following Mip-Splatting, we asso-ciate each Gaussian with a scalar ρ2, and apply an isotropic scene-space dilation, 
+
+Σeff = Σ + ρ2I, σeff = σ
+
+> 3
+
+Y
+
+> i=1
+
+si
+
+ps2 
+
+> i
+
++ ρ2 , (10) at both training and test time. Here, Σeff denotes the ef-fective scene-space Gaussian covariance used for training and rendering after applying the training-scale representa-tion regularization. The covariance dilation, defined as foot-print floor filter, is equivalently obtained by changing each principal-axis scale from si to ps2 
+
+> i
+
++ ρ2, while the product term compensates for the corresponding change in the 3DGaussian volume. It is evaluated from the finest footprint with which each Gaussian is observed during training, using the same ray-based footprint covariance that drives the render-time filter, 
+
+ρ2 = min  
+
+> v∈V
+> 12
+
+tr Σ(v)fp , (11) where Σ(v)fp denotes the scene-space footprint covariance associated with the pixel onto which the Gaussian cen-ter projects in training view v, obtained using the same neighbour-ray construction as Eq. (9) but before whitening, and V is the set of views in which the Gaussian is visi-ble; the half-trace is the isotropic (per-axis) reduction of that covariance. The minimum over visible training views there-fore sets the smallest representation scale supported by the training observations. Replacing Σk with Σk, eff changes the whitening transform and the corresponding ray-orthogonal geometry, and Σu 
+
+> fp
+
+is recomputed accordingly as Σu 
+
+> fp ,eff
+
+.
+
+Marginal composition. The pixel-footprint filter and the footprint-floor filter are complementary: the former adapts filtering to the sampling footprint of the current view, while the latter regularizes the Gaussian representation at the train-ing scale. Directly adding the two, however, may introduce redundant smoothing near the training resolution. We there-fore retain only the footprint variance beyond the baked floor, 
+
+Σu 
+
+> fp ,render
+
+= W W−1Σu 
+
+> fp ,eff
+
+W−⊤ − ρ2I 
+
+> +
+
+W⊤, (12) where [·]+ denotes a positive-semidefinite clamp. Since the world-space footprint covariance  W−1Σu 
+
+> fp ,eff
+
+W−⊤  is rank-2, the clamp acts direction-wise: footprint variance al-ready covered by the floor is suppressed, while only the excess variance is retained. Consequently, no additional render-time filtering is introduced along directions already covered by the floor, whereas larger footprints contribute only the additional variance required by the current view. This avoids redundant smoothing while preserving view-dependent anti-aliasing. 
+
+## 5 Experiments 
+
+Datasets. We evaluate on three real-scene benchmarks spanning indoor and outdoor scenes and two central cam-era models. For fisheye rendering, we use ScanNet++ (Yesh-wanth et al. 2023) and Zip-NeRF (Barron et al. 2023); for 
+
+pinhole rendering, we use Mip-NeRF 360 (Barron et al. 2022). We additionally report results on the synthetic Blender benchmark in the Appendix, giving four benchmarks in total. For the real-scene datasets, every eighth image is held out for evaluation. We report PSNR, SSIM, and LPIPS. On fish-eye images, all metrics are computed within a 3-pixel-eroded valid-domain mask to exclude boundary artifacts. Dataset Method 1 121418 Avg. 
+
+ScanNet++ 
+
+> fisheye
+
+3DGUT 29.33 / .915 / .248 30.38 / .934 / .193 31.47 / .954 / .112 30.24 / .953 / .078 30.36 / .939 / .158 ConeGaussian w. 3DGUT 29.67 / .921 / .239 30.61 / .938 / .185 31.66 / .956 / .108 31.65 / .963 / .059 30.90 / .944 / .148 
+
+3DGEER 27.59 / .911 / .257 28.53 / .929 / .202 28.53 / .946 / .123 28.02 / .946 / .084 28.17 / .933 / .167 ConeGaussian w. 3DGEER 27.65 / .917 / .243 28.29 / .931 / .189 29.27 / .950 / .111 29.93 / .962 / .052 28.78 / .940 / .149 
+
+Zip-NeRF 
+
+> fisheye
+
+3DGUT 23.40 / .781 / .413 24.18 / .835 / .299 24.73 / .867 / .192 24.58 / .865 / .147 24.22 / .837 / .263 ConeGaussian w. 3DGUT 23.48 / .791 / .403 24.22 / .840 / .292 24.82 / .871 / .185 25.14 / .880 / .128 24.42 / .845 / .252 3DGEER 24.32 / .806 / .388 25.02 / .854 / .268 25.64 / .893 / .162 25.45 / .895 / .121 25.11 / .862 / .235 ConeGaussian w. 3DGEER 24.42 / .815 / .377 25.16 / .860 / .261 25.89 / .898 / .153 26.37 / .915 / .094 25.46 / .872 / .221 
+
+Mip-NeRF 360 
+
+> Pinhole
+
+3DGS 26.55 / .779 / .274 28.00 / .854 / .162 28.51 / .891 / .102 27.45 / .888 / .087 27.63 / .853 / .156 Mip-Splatting † 27.20 / .802 / .244 28.74 / .870 / .146 29.90 / .915 / .090 30.66 / .944 / .056 29.12 / .883 / .134 Analytic-Splatting † 27.50 / .808 / .231 28.99 / .874 / .132 30.35 / .919 / .077 31.21 / .945 / .051 29.51 / .887 / .123 3DGUT 26.68 / .768 / .341 26.80 / .788 / .241 26.97 / .823 / .159 24.02 / .716 / .238 26.12 / .774 / .245 ConeGaussian w. 3DGUT 26.98 / .782 / .332 26.94 / .798 / .234 27.21 / .831 / .152 25.00 / .762 / .210 26.53 / .793 / .232 3DGEER 26.01 / .739 / .326 27.55 / .820 / .212 28.56 / .880 / .128 26.74 / .860 / .128 27.21 / .825 / .199 ConeGaussian w. 3DGEER 27.05 / .792 / .275 28.44 / .841 / .176 30.03 / .905 / .095 31.08 / .945 / .052 29.15 / .871 / .149 
+
+Table 1: MTMT (PSNR ↑/SSIM ↑/LPIPS ↓). Models are trained and evaluated at {1, 12 , 14 , 18 }. Gray rows are author-reported screen-space pinhole-specialized baselines that do not support generic cameras (Yu et al. 2024; Liang et al. 2024) (reported here only for references). Green /orange denote the best/second-best generalizable ray-based methods per column and metric. 
+
+Scale convention. Throughout the experiments, zoom-in 
+
+and zoom-out refer only to changes in image sampling reso-lution, rather than optical zoom or camera motion. We keep the camera model, pose, and view fixed, while scaling the camera calibration consistently with the image resolution. 
+
+Zoom-in. We train a model only at the lowest resolution and render it at ×1, ×2, and ×4, where ×1 denotes the train-ing resolution. Increasing the rendering resolution reduces the angular footprint of each pixel and evaluates the model at sampling rates finer than those observed during training. This setting primarily evaluates the training-frequency floor used to suppress unsupported representation frequencies. For the fisheye benchmarks, we additionally report Corner ×4
+
+to examine the strongly distorted image periphery. The ×8
+
+setting is used only as an additional qualitative stress test. 
+
+Zoom-out. We train a model at native resolution and render it without retraining at linear resolution factors {1, 12 , 14 , 18 }
+
+relative to the native images. As the resolution decreases, each output pixel covers a larger bundle of rays. This setting evaluates rendering under minification and primarily tests the render-time pixel-footprint filter. 
+
+Multi-scale training and multi-scale testing (MTMT). 
+
+Following the multi-scale protocol of Mip-NeRF (Barron et al. 2021), a single model is trained using images at all four resolution levels {1, 12 , 14 , 18 } and evaluated separately at each level. Because every evaluation scale is represented during training, MTMT measures joint multi-scale fitting un-der mixed-resolution supervision rather than generalization to unseen resolutions. 
+
+Single-scale training and multi-scale testing (STMT). 
+
+Following the single-scale-training protocol of Mip-Splatting (Yu et al. 2024), a model is trained at one resolution and evaluated at multiple resolutions without retraining. We instantiate STMT in two directions: native-to-coarser resolu-tions for zoom-out and lowest-to-finer resolutions for zoom-in. This protocol evaluates generalization to sampling rates that are not observed during training. 
+
+5.1 Main Results GT Ours 3DGEER 
+
+> FishEye-ScanNetpp FishEye-ZipNeRF PINHOLE-MipNeRF360
+
+Figure 3: Qualitative Results. Comparisons across Scan-Net++, Zip-NeRF, and Mip-NeRF 360, covering fisheye and pinhole cameras. 
+
+MTMT Table 1 shows that ConeGaussian improves the scale-averaged metrics of both ray-based Gaussian renderers across fisheye and pinhole datasets, confirming portability across ray–Gaussian formulations and camera models. The largest gains occur at lower resolutions, where minification is strongest. Fig. 3 illustrates two types of improvement. In the ScanNet++ window-frame crop, our result suppresses the baseline’s spurious streaks around an otherwise smooth structure. In the Zip-NeRF wall-socket and Mip-NeRF 360 foliage crops, the socket outline and leaf boundaries are more distinct and closer to the ground truth. The pinhole-specific screen-space methods use different rendering backbones and are therefore included only as references; ConeGaussian Dataset Method 1 121418 Avg. 
+
+ScanNet++ 
+
+> fisheye
+
+3DGEER (baseline) 27.89 / .921 / .243 28.18 / .930 / .198 27.10 / .930 / .155 26.58 / .918 / .131 27.44 / .925 / .182 VKRayGS z/f 26.20 / .919 / .244 25.89 / .922 / .205 21.57 / .885 / .193 20.54 / .833 / .185 23.55 / .890 / .207 ConeGaussian (isotropic) 27.96 / .921 / .242 28.45 / .932 / .194 27.34 / .937 / .137 27.37 / .938 / .089 27.78 / .932 / .165 ConeGaussian (anisotropic) 27.97 / .922 / .239 28.45 / .932 / .193 28.25 / .942 / .128 27.93 / .942 / .079 28.15 / .934 / .160 
+
+Zip-NeRF 
+
+> fisheye
+
+3DGEER (baseline) 24.13 / .787 / .409 24.92 / .845 / .278 25.87 / .899 / .150 25.82 / .906 / .104 25.19 / .859 / .235 VKRayGS z/f 23.37 / .786 / .406 24.61 / .846 / .276 26.00 / .902 / .148 25.92 / .913 / .092 24.97 / .862 / .230 ConeGaussian (isotropic) 24.16 / .794 / .401 25.01 / .850 / .271 25.97 / .901 / .148 26.41 / .918 / .089 25.39 / .866 / .227 ConeGaussian (anisotropic) 24.25 / .795 / .398 25.02 / .851 / .270 25.96 / .901 / .148 26.43 / .919 / .088 25.41 / .867 / .226 
+
+Mip-NeRF 360 
+
+> pinhole
+
+3DGEER (baseline) 27.03 / .797 / .300 27.68 / .832 / .214 27.19 / .836 / .171 25.29 / .784 / .183 26.80 / .812 / .217 VKRayGS z/f 27.14 / .798 / .298 27.25 / .832 / .219 25.68 / .839 / .175 22.96 / .786 / .183 25.76 / .814 / .219 ConeGaussian (isotropic) 27.17 / .799 / .296 28.10 / .843 / .207 28.80 / .884 / .135 28.53 / .903 / .096 28.15 / .857 / .183 ConeGaussian (anisotropic) 27.11 / .803 / .296 28.06 / .829 / .206 28.87 / .876 / .131 28.67 / .909 / .087 28.18 / .854 / .180 
+
+Table 2: Zoom-out . Models are trained at native resolution and evaluated at {1, 12 , 14 , 18 } with the STMT setting (Yu et al. 2024).                                                                                                                                          
+
+> Dataset Method ×1×2×4Avg. Corner ×4
+> ScanNet++
+> fisheye
+> 3DGEER (baseline) 27.28 / .944 / .122 27.74 / .918 / .221 27.33 / .895 / .279 27.45 / .919 / .208 22.73 / .871 / –3DGEER (+ Mip-Splatting floor) 29.49 /.951 / .111 27.19 / .918 / .216 27.25 / .896 / .272 27.98 / .922 / .200 22.40 / .872 / –3DGEER (+ footprint floor) 28.73 / .949 / .112 28.13 / .921 / .213 27.42 / .897 / .271 28.09 / .922 / .199 22.82 / .879 / –ConeGaussian (ours) 28.80 / .950 / .111 28.32 /.924 /.204 27.52 /.900 /.264 28.21 /.925 /.193 22.88 /.879 /–
+> Zip-NeRF
+> fisheye
+> 3DGEER (baseline) 25.87 / .899 / .150 24.92 / .845 / .278 24.13 / .787 / .409 24.97 / .844 / .279 21.72 / .780 / –3DGEER (+ Mip-Splatting floor) 25.88 / .899 / .150 24.92 / .845 / .279 24.13 / .787 / .409 24.98 / .844 / .279 21.73 / .779 / –3DGEER (+ footprint floor) 25.91 / .900 / .150 24.94 / .845 / .279 24.14 / .787 / .409 25.00 / .844 / .279 21.72 / .780 / –ConeGaussian (ours) 25.96 /.901 /.148 25.02 /.851 /.270 24.25 /.795 /.398 25.08 /.849 /.272 21.74 /.781 /–
+> Mip-NeRF 360
+> pinhole
+> 3DGEER (baseline) 29.73 / .898 / .128 26.92 / .790 / .255 25.62 / .720 / .379 27.42 / .803 / .254 25.77 / .718 / –3DGEER (+ Mip-Splatting floor) 29.93 / .902 / .125 27.03 / .794 / .252 25.74 / .727 / .372 27.57 / .808 / .250 25.94 / .726 / –3DGEER (+ footprint floor) 30.05 / .906 / .118 27.11 / .798 / .243 25.77 / .728 / .365 27.64 / .811 / .242 25.96 / .726 / –ConeGaussian (ours) 30.15 /.907 /.117 27.18 /.802 /.239 25.79 /.731 /.359 27.71 /.813 /.238 25.96 /.729 /–
+
+Table 3: Zoom-in . Models are trained at the lowest resolution and rendered at ×1–×4 magnification. Corner PSNR/SSIM are computed over the normalized radial band r > 0.9. reaches comparable multi-scale quality while retaining sup-port for distorted fisheye cameras. 
+
+Zoom-out The isotropic and anisotropic variants both dis-able the training-frequency floor, isolating the contribution of render-time footprint filtering under zoom-out. We addition-ally reimplement only the VKRayGS z/f footprint-sizing component within the same framework, rather than its com-plete renderer.Table 2 shows that the anisotropic footprint achieves the highest average PSNR and lowest average LPIPS on all three datasets. The z/f approximation degrades under strong minification on ScanNet++ and Mip-NeRF 360. Fig. 4 compares the baseline with our filtered rendering. In the in-door crop, the baseline breaks the thin cable into separated dark samples, whereas ours renders a more continuous curve. In the outdoor crop, ours reduces isolated bright samples in the foliage and better matches the lower-contrast appearance of the ground truth. 
+
+Zoom-in Table 3 compares the paraxial z/f floor, our ray-derived footprint floor, and its marginal composition with the render-time filter within the same ray-based renderer. The complete model achieves the best average PSNR, SSIM, and LPIPS across the evaluated datasets. Fig. 5 shows a more distinct keyhole below the door handle and a faint wall-light structure that is nearly absent in the baseline. These improve-ments preserve recognizable structure under magnification. 1/8 
+
+1/4 
+
+GT Ours 3DGEER 
+
+Figure 4: Zoom-out Qualitative Results. Highlighted cable and foliage crops compare the baseline, ours, and ground truth. More qualitative visualization is shown in the supplementary material. 
+
+5.2 Cross-camera rendering 
+
+Cross-camera rendering changes the pixel ray bundles while keeping the learned scene fixed. Table 4 evaluates whether recomputing the footprint from the target camera preserves rendering quality without retraining. In both transfer direc-tions, the gains are most evident under minification, consis-tent with the greater need for footprint integration as each pixel covers a wider bundle of rays. The VKRayGS-inspired 
+
+z/f sizing instead deteriorates in this regime for FH →PH, Setting Method 1 121418 Avg. FH → PH                                                                                                               
+
+> full img
+> 3DGEER (baseline) 27.42 /.935 / .257 29.99 / .940 / .203 29.66 / .941 / .156 28.34 / .930 / .136 28.85 / .936 / .188 VKRayGS-insp. z/f dilation 26.99 / .933 / .253 28.50 / .937 / .202 25.73 / .919 / .172 23.02 / .871 / .172 26.06 / .915 / .200 ConeGaussian (ours) 27.38 / .934 / .255 30.14 /.942 /.199 30.28 /.949 /.135 29.56 /.951 /.083 29.34 /.944 /.168
+> PH →FH
+> full img
+> 3DGEER (baseline) 27.01 / .919 / .234 27.47 /.931 / .185 27.53 / .936 / .139 26.66 / .923 / .120 27.17 / .927 / .169 ConeGaussian (ours) 27.01 /.920 /.230 27.47 /.931 /.181 27.69 /.942 /.124 27.02 /.939 /.077 27.30 /.933 /.153
+> PH →FH
+> peripheral img
+> 3DGEER (baseline) 23.82 / .892 / –24.11 / .897 / –24.32 / .901 / –24.12 / .890 / –24.09 / .895 / –ConeGaussian (ours) 23.83 /.893 /–24.15 /.898 /–24.44 /.907 /–24.36 /.904 /–24.20 /.900 /–
+
+Table 4: Cross-camera rendering on ScanNet++ (FH = fisheye, PH = pinhole). FH →PH models are trained on native fisheye views and rendered through the matched pinhole cameras without retraining; PH →FH evaluates the reverse transfer at the same four scales. Peripheral PSNR/SSIM are computed over the normalized radial band r > 0.7.                                                                 
+
+> Method ×4×2×1121418
+> ConeGaussian (ours) 27.57 /.900 /.264 28.37 /.924 /.204 28.86 /.950 / .111 28.94 /.959 /.052 29.22 /.960 /.041 27.18 / .949 / .044
+> additive combination 27.37 / .900 /.264 28.14 / .923 / .205 28.80 / .950 /.110 28.64 / .958 / .053 29.20 / .959 / .041 27.24 /.950 /.044
+> w/o 3D floor 27.47 / .898 / .272 28.24 / .923 / .207 28.79 / .949 / .113 28.14 / .956 / .056 29.10 / .958 / .044 27.02 / .947 / .046 w/o 2D filter 27.46 / .897 / .271 28.18 / .921 / .213 28.78 / .949 / .112 28.47 / .951 / .069 27.09 / .930 / .092 24.30 / .901 / .096 w/o both (3DGEER) 27.37 / .895 / .279 27.78 / .918 / .221 27.34 / .944 / .122 28.36 / .950 / .074 27.04 / .929 / .095 24.31 / .901 / .096
+
+Table 5: Joint module ablation on ScanNet++ fisheye. Models are trained at 14 native resolution and evaluated from ×4 to 18
+
+relative to the training scale. x8 
+
+> x4
+> GT Ours 3DGEER
+
+Figure 5: Zoom-in Qualitative Results. Highlighted door-handle and wall-light crops compare the baseline, ours, and ground truth. suggesting that camera transfer requires appropriate footprint sizing, not simply more smoothing. For PH →FH, improve-ments extend to the distorted peripheral band at every tested scale. This pattern supports adapting the filter to the target camera’s local ray geometry, with the clearest benefit when sampling becomes coarse. The results demonstrate transfer between the tested pinhole and fisheye cameras without mod-ifying the learned scene representation. 
+
+5.3 Ablation study 
+
+We ablate the two band-limits and the footprint construc-tion in Table 5, with the marginal-vs-additive composition analyzed further in the Appendix; we summarize the find-ings here. The render-time footprint filter and the training-frequency floor are complementary and both necessary: the filter carries the minification gains (removing it collapses zoom-out by up to 2.9 dB). The render-time filter can also affect magnification results through its effect on the learned representation during training, so these roles do not im-ply that the two modules act exclusively in separate scale regimes. Among floor sizings , the footprint floor matches Mip-Splatting’s z/f on average and is more stable in the dis-torted periphery; decoupling view selection from footprint sizing (a ray-based footprint at a single z/f -selected view) collapses the training scale, so the floor must be the mini-mum of the true footprint over training views. The anisotropic footprint is most beneficial where footprints shear: it yields 
+
+5–10 × lower closed-form error and improves performance. 
+
+## 6 Conclusion 
+
+We presented ConeGaussian , an approach for training and rendering 3DGS with ray-based central camera models while accurately modeling the pixel footprint in the scene space. Our main result is a closed-form anisotropic pixel footprint filter properly sized at the max-response depth, generated by the same camera model as the rays themselves. Importantly, because the footprint is built from the camera’s own inverse ray mapping, it ports across arbitrary central camera models. On the other hand, the footprint filter acts only across the ray, leaving the along-ray response untouched, allowing seamless inclusion of any ray-Gaussian backbone. We provide theoret-ical derivations and error-analysis of the proposed footprint filter. At render time, our scene-space footprint represen-tation allows direct composition of the footprint filter with the training-frequency floor through the proposed marginal composition rule, removing excess blurring. We validate our method in fish-eye and pin-hole camera models in multi-ple resolutions with two different ray-Gaussian backbones. Our method consistently and significantly improve each ray-Gaussian backbone in several experimental settings. Never-theless, a limitation of our formulation is that it handles only calibrated central camera models whose with single optical center. Other interesting cases, such as catadioptric cameras and rolling-shutter capture, are left to future work. References 
+
+Barron, J. T.; Mildenhall, B.; Tancik, M.; Hedman, P.; Martin-Brualla, R.; and Srinivasan, P. P. 2021. Mip-NeRF: A Multiscale Representation for Anti-Aliasing Neural Radi-ance Fields. In Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) .Barron, J. T.; Mildenhall, B.; Verbin, D.; Srinivasan, P. P.; and Hedman, P. 2022. Mip-NeRF 360: Unbounded Anti-Aliased Neural Radiance Fields. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .Barron, J. T.; Mildenhall, B.; Verbin, D.; Srinivasan, P. P.; and Hedman, P. 2023. Zip-NeRF: Anti-Aliased Grid-Based Neural Radiance Fields. In Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) .Blanc, H.; Deschaud, J.-E.; and Paljic, A. 2025. RayGauss: Volumetric Gaussian-Based Ray Casting for Photorealistic Novel View Synthesis. In 2025 IEEE/CVF Winter Confer-ence on Applications of Computer Vision (WACV) , 1808– 1817. Chen, T.; Shorinwa, O.; Bruno, J.; Swann, A.; Yu, J.; Zeng, W.; Nagami, K.; Dames, P.; and Schwager, M. 2024. Splat-Nav: Safe Real-Time Robot Navigation in Gaussian Splatting Maps. arXiv preprint arXiv:2403.02751 .Heckbert, P. S. 1989. Fundamentals of Texture Mapping and Image Warping . Ph.D. thesis, University of California, Berkeley. Master’s thesis, UCB/CSD-89-516. Huang, Z.; Wu, Y.; Guo, Y.; Huang, T.; and Ren, Z. 2025. 3DGEER: Exact and Efficient Volumetric Gaussian Render-ing for Generic Cameras. arXiv preprint arXiv:2505.24053 .ICLR 2026. Igehy, H. 1999. Tracing Ray Differentials. In Proceedings of SIGGRAPH , 179–186. Kerbl, B.; Kopanas, G.; Leimkühler, T.; and Drettakis, G. 2023. 3D Gaussian Splatting for Real-Time Radiance Field Rendering. ACM Transactions on Graphics , 42(4). Lei, X.; Wang, M.; Zhou, W.; and Li, H. 2024. GaussNav: Gaussian Splatting for Visual Navigation. arXiv preprint arXiv:2403.11625 .Li, L.; Huang, H.; Yeung, S.-K.; and Cheng, H. 2024. Om-niGS: Omnidirectional Gaussian Splatting for Fast Radiance Field Reconstruction using Omnidirectional Images. arXiv preprint arXiv:2404.03202 .Liang, Z.; Zhang, Q.; Hu, W.; Zhu, L.; Feng, Y.; and Jia, K. 2024. Analytic-Splatting: Anti-Aliased 3D Gaussian Splat-ting via Analytic Integration. In European Conference on Computer Vision (ECCV) .Liao, Z.; Zhou, S.; Fu, R.; Wang, Y.; Gao, T.; Jiang, X.; Ma, B.; Wu, X.; Zhang, Y.; Ye, X.; et al. 2024. Fisheye-GS: Lightweight and Extensible Gaussian Splatting Module for Fisheye Cameras. In European Conference on Computer Vision Workshops (ECCVW) .Mai, A.; Hedman, P.; Kopanas, G.; Verbin, D.; Futschik, D.; Xu, Q.; Kuester, F.; Barron, J. T.; and Zhang, Y. 2024. EVER: Exact Volumetric Ellipsoid Rendering for Real-time View Synthesis. arXiv preprint arXiv:2410.01804 .Moenne-Loccoz, N.; Mirzaei, A.; Perel, O.; de Lutio, R.; Martinez Esturo, J.; State, G.; Fidler, S.; Sharp, N.; and Goj-cic, Z. 2024. 3D Gaussian Ray Tracing: Fast Tracing of Par-ticle Scenes. ACM Transactions on Graphics (SIGGRAPH Asia) .Rota Bulò, S.; Porzi, L.; Kontschieder, P.; et al. 2025. Hardware-Rasterized Ray-Based Gaussian Splatting. In Pro-ceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .Wu, Q.; Martinez Esturo, J.; Mirzaei, A.; Moenne-Loccoz, N.; and Gojcic, Z. 2025. 3DGUT: Enabling Distorted Cam-eras and Secondary Rays in Gaussian Splatting. In Proceed-ings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .Yan, Y.; Lin, H.; Zhou, C.; Wang, W.; Sun, H.; Zhan, K.; Lang, X.; Zhou, X.; and Peng, S. 2024a. Street Gaussians for Modeling Dynamic Urban Scenes. In European Conference on Computer Vision (ECCV) .Yan, Z.; Low, W. F.; Chen, Y.; and Lee, G. H. 2024b. Multi-Scale 3D Gaussian Splatting for Anti-Aliased Rendering. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .Yeshwanth, C.; Liu, Y.-C.; Nießner, M.; and Dai, A. 2023. ScanNet++: A High-Fidelity Dataset of 3D Indoor Scenes. In Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) .Yu, Z.; Chen, A.; Huang, B.; Sattler, T.; and Geiger, A. 2024. Mip-Splatting: Alias-free 3D Gaussian Splatting. In Pro-ceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .Yu, Z.; Sattler, T.; and Geiger, A. 2024. Gaussian Opac-ity Fields: Efficient Adaptive Surface Reconstruction in Un-bounded Scenes. In ACM SIGGRAPH Asia .Zwicker, M.; Pfister, H.; van Baar, J.; and Gross, M. 2001. EWA Volume Splatting. In Proceedings of IEEE Visualiza-tion .

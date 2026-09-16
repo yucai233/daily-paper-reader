@@ -6,28 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-09-15
-- 运行时间：2026-09-15 21:57:18 UTC
+- 最新运行日期：2026-09-16
+- 运行时间：2026-09-16 22:20:35 UTC
 - 运行状态：成功
-- 本次总论文数：2
+- 本次总论文数：1
 - 精读区：1
-- 速读区：1
+- 速读区：0
 
 ### 今日简报（AI）
-今日聚焦高斯过程隐式曲面渲染与 4K 视频压缩技术，探索图形学前沿进展。
-重点推荐高斯过程隐式曲面在参与介质渲染中的应用，其在无实现渲染方面表现卓越。
-建议关注渲染算法的数学底层逻辑，并对比视频压缩在 2D 高斯溅射中的效率优化。
-- 详情：[/202609/15/README](/202609/15/README)
+今日聚焦 ConeGaussian，通过抗锯齿高斯光线追踪技术实现通用相机下的高质量渲染。
+该研究解决了传统高斯溅射在复杂相机模型下的锯齿问题，显著提升了渲染的清晰度与稳定性。
+建议关注三维重建与渲染领域的开发者深入阅读，探索其在复杂场景下的应用潜力。
+- 详情：[/202609/16/README](/202609/16/README)
 
 ### 精读区论文标签
-1. [Gaussian Process Implicit Surfaces as Participating Media: Realization-Free Rendering from Level-Crossing Statistics](/202609/15/2609.14695v1-gaussian-process-implicit-surfaces-as-participating-media-realization-free-rendering-from-level-crossing-statistics)  
-   标签：评分：9.0/10、query:q4
-   evidence：用于体积渲染的光散射和参与介质理论
+1. [ConeGaussian: Anti-Aliased Gaussian Ray-Tracing for Generic Central Cameras](/202609/16/2609.13397v1-conegaussian-anti-aliased-gaussian-ray-tracing-for-generic-central-cameras)  
+   标签：评分：8.0/10、query:q7
+   evidence：用于神经渲染的抗锯齿高斯射线追踪
 
 ### 速读区论文标签
-1. [Deformable 2D Gaussian Splatting for Efficient 4K Video Compression](/202609/15/2609.14129v1-deformable-2d-gaussian-splatting-for-efficient-4k-video-compression)  
-   标签：评分：6.0/10、query:q1
-   evidence：用于神经渲染和视频压缩的高斯泼溅技术
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">
