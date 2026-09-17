@@ -1,0 +1,532 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-17T22:24:21.976155+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 13,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2609.18034v1",
+      "title": "IRIS: Implicit Rendering Matters for Pose-Free Novel View Synthesis",
+      "abstract": "Novel view synthesis from unposed multi-view images remains challenging, as the model must jointly learn scene representations and camera parameters without pose supervision. Existing approaches largely fall into two extremes: implicit latent-space rendering is flexible and easy to optimize, but often yields weakly grounded camera estimation; explicit 3D representations provide stronger geometric grounding, but introduce heavier parameterization and more fragile optimization. In this paper, we present IRIS, a fully self-supervised framework that provides a practical middle ground between these two paradigms. Instead of decoding free latent tokens or reconstructing fully explicit 3D primitives, IRIS represents the scene as a latent neural field and renders novel views by querying this field under self-predicted cameras. Specifically, projected features from reference views are aggregated at sampled 3D points to form point-wise latent features, which are then composed along target rays for rendering. This design preserves the flexibility and optimization stability of implicit modeling, while introducing stronger geometric structure than unconstrained latent rendering. Extensive experiments show that IRIS achieves strong novel view synthesis quality with competitive pose accuracy under fully self-supervised learning. Our project page: https://leo-frank.github.io/IRIS",
+      "authors": [
+        "Wenyu Li",
+        "Sidun Liu",
+        "Peng Qiao",
+        "Yong Dou",
+        "Tongrui Hu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-16T02:35:22+00:00",
+      "link": "https://arxiv.org/pdf/2609.18034v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "latent neural field for implicit rendering",
+      "llm_evidence_cn": "用于隐式渲染的潜空间神经场",
+      "llm_evidence": "用于隐式渲染的潜空间神经场",
+      "canonical_evidence": "用于隐式渲染的潜空间神经场",
+      "llm_tldr_en": "Introduces a self-supervised framework using latent neural fields for pose-free novel view synthesis.",
+      "llm_tldr_cn": "引入一种利用潜空间神经场进行无位姿监督的新视角合成自监督框架。",
+      "llm_tldr": "引入一种利用潜空间神经场进行无位姿监督的新视角合成自监督框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.17230v1",
+      "title": "DecoGS: Adaptive Static-Dynamic Decoupling of 3D Gaussians for Free-Viewpoint Video Streaming",
+      "abstract": "Streaming 3D reconstruction demands both speed and temporal fidelity, goals that existing methods undermine by updating every Gaussian every frame, even in static regions. We present DecoGS, a method for efficient online training of 3D Gaussians from streaming videos. Unlike prior methods that update the entire scene indiscriminately, DecoGS introduces an adaptive mechanism that selectively focuses optimization on spatiotemporal regions exhibiting motion or photometric changes. This targeted training strategy eliminates redundant updates that cause flickering and drift in nominally static regions, while enabling fast, high-fidelity scene updates. The pipeline further integrates region-aware Gaussian management through gradient gating and efficient visibility filtering to maintain temporal coherence and a compact memory footprint. On N3DV and MeetRoom, DecoGS achieves 34.55 and 31.60 dB PSNR respectively, outperforming all streaming and offline baselines, while rendering at 261 FPS with $70\\times$ lower temporal flicker than the best prior method, requiring no large-scale pretraining.",
+      "authors": [
+        "Idil Sulo",
+        "Alexey Supikov",
+        "Ilke Demir",
+        "Sainan Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-15T14:12:16+00:00",
+      "link": "https://arxiv.org/pdf/2609.17230v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "adaptive static-dynamic decoupling of 3D Gaussians",
+      "llm_evidence_cn": "3D高斯的自适应动静解耦",
+      "llm_evidence": "3D高斯的自适应动静解耦",
+      "canonical_evidence": "3D高斯的自适应动静解耦",
+      "llm_tldr_en": "Optimizes 3D Gaussian Splatting for video streaming by selectively updating regions with motion or changes.",
+      "llm_tldr_cn": "通过选择性更新运动或变化区域，优化了用于视频流的3D高斯喷激技术。",
+      "llm_tldr": "通过选择性更新运动或变化区域，优化了用于视频流的3D高斯喷激技术。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.11487v1",
+      "title": "Tracing Warm Gas through C IV Radiative Transfer",
+      "abstract": "The C IV $λ\\lambda1548,1551$ resonance doublet is a key tracer of warm gas ($T\\sim10^5\\,{\\rm K}$) within and around galaxies. Recent observations have detected this line in both absorption and emission, revealing asymmetric profiles in galaxies and spatially extended haloes around active galactic nuclei (AGNs). Resonance scattering can strongly modify the emergent spectra and spatial distributions, complicating their interpretation. Using 3D Monte Carlo radiative transfer simulations, we study C IV resonance scattering over a broad range of column densities, intrinsic emission-line widths, and outflow velocities. We find that multiple scattering broadens the line profile and, in outflowing media, modifies the doublet ratio, $R_{\\rm CIV}$, defined as the flux ratio of the K and H components at 1548 and 1551 $\\mathrm{\\mathring{A}}$, respectively. When the outflow velocity approaches or exceeds the doublet separation ($\\simeq500\\,{\\rm km\\,s^{-1}}$), K-line photons are redistributed around the H component, driving $R_{\\rm CIV}$ below its intrinsic value and, in optically thick fast outflows, even below unity. We also combine photoionization models with resonance scattering to investigate extended C IV haloes around AGNs and compare them with He II $\\lambda1640$ emission. Simple photoionization models do not produce C IV emission more extended than He II, whereas resonance scattering redistributes locally produced and central-source C IV photons to larger radii. These results demonstrate that the C IV doublet ratio and spatial distribution provide complementary diagnostics of warm gas.",
+      "authors": [
+        "Jin Lim",
+        "Seok-Jun Chang",
+        "Max Gronke",
+        "Fabrizio Arrigoni Battaia",
+        "Hee-Won Lee",
+        "Kwang-Il Seon"
+      ],
+      "primary_category": "astro-ph.GA",
+      "categories": [
+        "astro-ph.GA"
+      ],
+      "published": "2026-09-10T12:55:12+00:00",
+      "link": "https://arxiv.org/pdf/2609.11487v1",
+      "tags": [
+        "keyword:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Monte Carlo radiative transfer and multiple scattering in volumes",
+      "llm_evidence_cn": "蒙特卡洛辐射传输与体积内的多重散射",
+      "llm_evidence": "蒙特卡洛辐射传输与体积内的多重散射",
+      "canonical_evidence": "蒙特卡洛辐射传输与体积内的多重散射",
+      "llm_tldr_en": "Uses 3D Monte Carlo simulations to study how multiple scattering affects radiative transfer in gaseous volumes.",
+      "llm_tldr_cn": "使用3D蒙特卡洛模拟研究多重散射如何影响气态体积中的辐射传输。",
+      "llm_tldr": "使用3D蒙特卡洛模拟研究多重散射如何影响气态体积中的辐射传输。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "deep learning for multiple scattering in volumes",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.10456v1",
+      "title": "Advanced Brain Tissue Imaging with Data-Consistent Diffusion Priors in Laminographic X-Ray Nanoimaging",
+      "abstract": "Nanoscale imaging of mammalian brains is critical for connectomics. X-ray laminography enables high-throughput imaging of extended, plate-like biological specimens. However, the tilted acquisition geometry leads to incomplete Fourier-space coverage, giving rise to a missing-cone of information. Conventional reconstruction methods cannot recover unmeasured information within the cone, resulting in artifacts that distort fine brain structures. While resolving these requires modeling 3D structure, direct 3D deep learning approaches are limited by data scarcity and computational cost. Here we introduce LUCID (Laminography with Unified Consistent Diffusion), a framework that combines multi-view diffusion priors with projection-domain data consistency. LUCID integrates complementary 3D structural information while enforcing strict alignment with the laminography forward model. On simulated datasets, LUCID substantially improves spatial fidelity and restores missing Fourier components, outperforming baseline methods. Applied to experimental laminography data, LUCID generalizes robustly despite being trained exclusively on fully sampled tomographic volumes, and effectively recovers unmeasured Fourier information.",
+      "authors": [
+        "Wenxuan Fang",
+        "Abraham L. Levitan",
+        "Ana Diaz",
+        "Carles Bosch",
+        "Adrian Wanner",
+        "Andreas T. Schaefer",
+        "Mirko Holler",
+        "Tomas Aidukas",
+        "Nicholas W. Phillips",
+        "Yuxin Zhang",
+        "Alexandra Pacureanu",
+        "Manuel Guizar-Sicairos",
+        "Luis Barba"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-09T17:05:00+00:00",
+      "link": "https://arxiv.org/pdf/2609.10456v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multi-view diffusion priors for 3D volume reconstruction",
+      "llm_evidence_cn": "用于3D体积重建的多视图扩散先验",
+      "llm_evidence": "用于3D体积重建的多视图扩散先验",
+      "canonical_evidence": "用于3D体积重建的多视图扩散先验",
+      "llm_tldr_en": "Uses diffusion priors to reconstruct 3D brain tissue volumes from limited X-ray laminography data.",
+      "llm_tldr_cn": "利用扩散先验从有限的X射线层析成像数据中重建3D脑组织体积。",
+      "llm_tldr": "利用扩散先验从有限的X射线层析成像数据中重建3D脑组织体积。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.13859v1",
+      "title": "GaussAnything: Semantic Intent-Driven Refinement of Evolving Gaussian Scenes for Standalone VR",
+      "abstract": "Deploying reconstructed 3D environments on standalone VR headsets are constrained by limited compute and memory, and conventional level-of-detail policies optimize for visibility without accounting for the user's explicit inspection intent. We present GaussAnything, a native OpenXR system for intent-conditioned reallocation and progressive publication of evolving semantic Gaussian+SDF scenes. GaussAnything resolves class- or instance-level queries to persistent 3D objects and reallocates a fixed Gaussian resident budget toward the selected object while retaining global context, applying incremental, stable-identity updates coordinated with the TSDF-derived mesh through a source-epoch mechanism. Across eight scenes, an object query concentrates 88-90% of the fixed client budget onto the queried object without enlarging it, on-device rendering reproduces the host render to within a small margin (up to 36.7 dB), and the standalone client renders each stereo frame at a steady-state GPU cost of roughly 10 ms within the frame budget of standard standalone panels.",
+      "authors": [
+        "Dmitrii Maliukov",
+        "Timofei Kozlov",
+        "Dmitrii Plotnikov",
+        "Miguel Altamirano Cabrera",
+        "Dzmitry Tsetserukou"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR"
+      ],
+      "published": "2026-09-12T10:22:09+00:00",
+      "link": "https://arxiv.org/pdf/2609.13859v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "evolving semantic Gaussian+SDF scenes for VR",
+      "llm_evidence_cn": "用于VR的演化语义高斯+SDF场景",
+      "llm_evidence": "用于VR的演化语义高斯+SDF场景",
+      "canonical_evidence": "用于VR的演化语义高斯+SDF场景",
+      "llm_tldr_en": "Presents a system for intent-driven refinement of 3D Gaussian scenes on standalone VR headsets.",
+      "llm_tldr_cn": "提出一种针对独立VR头显的意图驱动3D高斯场景优化系统。",
+      "llm_tldr": "提出一种针对独立VR头显的意图驱动3D高斯场景优化系统。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.12157v1",
+      "title": "Direct Topology Tracking in Continuous Implicit Models",
+      "abstract": "We present a framework for tracking topological features directly within continuous implicit models. Such models, including implicit neural representations (INRs) and multivariate functional approximations (MFAs), are increasingly adopted to represent scientific data without the resolution constraints of discrete grids. They offer compact, smooth, and differentiable representations of complex fields, enabling new opportunities for high-performance data storage, reconstruction, and analysis. Given a continuous implicit model, our method tracks the evolution of critical points by querying the model and its derivatives, thereby eliminating the need to resample onto a grid. This approach enables faithful feature tracking while avoiding discretization-induced artifacts such as aliasing. We demonstrate the generality of our framework across a range of implicit representations, including analytic functions, MFAs, and INRs, and show that it produces smooth, coherent critical point trajectories. By enabling feature tracking directly on continuous representations, our method supports a new class of feature-driven visualization workflows centered on implicit models.",
+      "authors": [
+        "Guanqun Ma",
+        "David Lenz",
+        "Kaiyuan Tang",
+        "Hanqi Guo",
+        "Chaoli Wang",
+        "Tom Peterka",
+        "Bei Wang"
+      ],
+      "primary_category": "cs.CG",
+      "categories": [
+        "cs.CG",
+        "cs.LG"
+      ],
+      "published": "2026-09-10T19:44:02+00:00",
+      "link": "https://arxiv.org/pdf/2609.12157v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "topology tracking in continuous implicit neural representations",
+      "llm_evidence_cn": "连续隐式神经表示中的拓扑跟踪",
+      "llm_evidence": "连续隐式神经表示中的拓扑跟踪",
+      "canonical_evidence": "连续隐式神经表示中的拓扑跟踪",
+      "llm_tldr_en": "A framework for tracking topological features directly within continuous implicit neural models.",
+      "llm_tldr_cn": "一种直接在连续隐式神经模型中跟踪拓扑特征的框架。",
+      "llm_tldr": "一种直接在连续隐式神经模型中跟踪拓扑特征的框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.17450v1",
+      "title": "ORCA: Occlusion-Aware Refinement and Completion for Novel View Synthesis",
+      "abstract": "Novel-view synthesis from a single image is a fundamentally ambiguous problem. As the camera moves away from the input viewpoint, previously hidden regions become visible, exposing missing geometry and holes in the reconstructed scene. Existing methods often rely on generative models to complete such regions. However, many of these artifacts are small gaps near depth boundaries and do not require generating new scene content.   In order to eliminate expensive process of generating image we introduce ORCA, an occlusion-aware method for reconstructing and completing explorable 3D scenes from a single image. ORCA first introduces 3D structure into a Gaussian-anchor representation using monocular depth while preserving the original camera-ray correspondence. During scene exploration, missing regions are handled based on their size and structure. Small disocclusions are repaired using RGB-D information already available in the reconstruction, while generative inpainting is reserved for larger regions that cannot be reliably recovered from the scene. New Gaussian anchors are added and optimized locally without modifying the existing representation. By reducing unnecessary reliance on generative inpainting, ORCA limits generation-induced hallucinations and better preserves the content and structure of the original scene.   On DIV2K, ORCA improves novel-view quality over VistaDream across all reported metrics, increasing MUSIQ from 61.60 to 68.71 and CLIP-IQA from 0.474 to 0.574. These results show that many novel-view artifacts can be repaired effectively by reusing information already present in the reconstructed scene.",
+      "authors": [
+        "Weronika Jakubowska",
+        "Maciej Zięba",
+        "Przemysław Spurek"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-15T16:53:54+00:00",
+      "link": "https://arxiv.org/pdf/2609.17450v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Gaussian-anchor representation for novel view synthesis",
+      "llm_evidence_cn": "用于新视角合成的高斯锚点表示",
+      "llm_evidence": "用于新视角合成的高斯锚点表示",
+      "canonical_evidence": "用于新视角合成的高斯锚点表示",
+      "llm_tldr_en": "Introduces ORCA, an occlusion-aware method using Gaussian-anchor representations for 3D scene completion.",
+      "llm_tldr_cn": "引入ORCA，一种使用高斯锚点表示进行3D场景补全的遮挡感知方法。",
+      "llm_tldr": "引入ORCA，一种使用高斯锚点表示进行3D场景补全的遮挡感知方法。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.14899v1",
+      "title": "What Makes a 3D Scene Editable? A Factorized Benchmark of Fidelity, Locality, Consistency, and Preservation",
+      "abstract": "Neural 3D scene editing is often evaluated by semantic alignment alone, although a convincing result may alter unrelated content or become inconsistent across views. We introduce EditBench3D, a representation-agnostic benchmark that treats editing as controlled information replacement. It evaluates four complementary properties: instruction fidelity, spatial locality, cross-view consistency, and preservation of non-target content. The protocol combines visibility-aware 3D target supports, paired descriptions, held-out cameras, and five edit families covering appearance, material, geometry, and object-level changes. We evaluate eight representative NeRF, 3D Gaussian Splatting, hybrid, and proxy-based editors on 240 scene-edit pairs. The study shows that semantic fidelity is only weakly associated with the other editing properties, and that no single method is optimal across all dimensions. Explicit Gaussian editors offer a strong overall balance, whereas direct proxy manipulation provides the most conservative edits at the cost of open-ended fidelity. These findings support reporting editability as a multi-objective profile rather than a single semantic score.",
+      "authors": [
+        "Sariah Patro",
+        "Arjun Mehra",
+        "Nikhil Bhatia"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-14T01:38:38+00:00",
+      "link": "https://arxiv.org/pdf/2609.14899v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "benchmark evaluating NeRF and 3D Gaussian Splatting editors",
+      "llm_evidence_cn": "评估NeRF和3D高斯泼溅编辑器的基准测试",
+      "llm_evidence": "评估NeRF和3D高斯泼溅编辑器的基准测试",
+      "canonical_evidence": "评估NeRF和3D高斯泼溅编辑器的基准测试",
+      "llm_tldr_en": "A benchmark for 3D scene editing evaluating fidelity and consistency across NeRF and Gaussian Splatting models.",
+      "llm_tldr_cn": "一个用于3D场景编辑的基准，评估NeRF和高斯泼溅模型在保真度和一致性方面的表现。",
+      "llm_tldr": "一个用于3D场景编辑的基准，评估NeRF和高斯泼溅模型在保真度和一致性方面的表现。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.18473v1",
+      "title": "CADSplat: Sparse-View 3D Gaussian Splatting Aided by CAD Models for Robust, Photorealistic Digital-Twin Reconstruction",
+      "abstract": "We present CADSplat, a framework that reconstructs photorealistic, geometrically accurate digital twins from sparse ($<15$ views), wide-baseline posed images of an object by regularizing 3D Gaussian Splatting (3DGS) with an explicit CAD shape prior. Using such a prior requires finding a CAD model whose shape resembles the object depicted in the images and determining the pose of each camera relative to the object. We obtain both by matching segmented object silhouettes against silhouettes rendered from a CAD library and keeping the camera-to-object poses of the best-matching model. We then anchor 3D Gaussian primitives to the surface of the retrieved model and jointly optimize the 3DGS parameters, the camera-to-object registration, and a non-rigid deformation field to account for shape differences between the physical object and the CAD model. Across two real-world datasets, CADSplat outperforms unconstrained, few-shot, and mesh-texturing baselines and degrades gracefully to as few as 3 views. Our experiments show that most of the gain in rendering quality comes from how the splats are constrained---a fixed set of splats tied to a surface and moved by a single smooth deformation field---rather than from the CAD shape itself. The CAD model adds shape knowledge where views are scarcest, in the sparsest captures and on strongly self-occluded objects, and it places every camera in the object's own frame. This enables applications beyond novel-view synthesis, such as markerless augmented reality registration, per-image object pose estimation, physical simulations, and the transfer of part labels from the design to the reconstruction.",
+      "authors": [
+        "Kristof Overdulve",
+        "Lode Jorissen",
+        "Nick Michiels"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-09-16T11:07:21+00:00",
+      "link": "https://arxiv.org/pdf/2609.18473v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "regularizing 3D Gaussian Splatting with CAD shape priors",
+      "llm_evidence_cn": "使用CAD形状先验正则化3D高斯泼溅",
+      "llm_evidence": "使用CAD形状先验正则化3D高斯泼溅",
+      "canonical_evidence": "使用CAD形状先验正则化3D高斯泼溅",
+      "llm_tldr_en": "CADSplat uses CAD priors to improve 3D Gaussian Splatting for photorealistic digital-twin reconstruction.",
+      "llm_tldr_cn": "CADSplat利用CAD先验改进3D高斯泼溅，用于逼真的数字孪生重建。",
+      "llm_tldr": "CADSplat利用CAD先验改进3D高斯泼溅，用于逼真的数字孪生重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.15659v1",
+      "title": "Kaininja: Extending Native 3D Generators to the Part Level",
+      "abstract": "Native 3D generators turn one image into a single mesh. TRELLIS.2 and its peers deliver high-fidelity non-watertight geometry with materials, but the output is one fused object, while downstream work such as editing, rigging and simulation operates on part-level assets. A naive idea is to run a 3D segmentation network on the fused mesh that TRELLIS.2 generates, but such pipelines are slow and bounded by the accuracy of the segmentation. We want a simple way to extend an existing native 3D generator to the part level. But we face a critical problem: the O-Voxel grid stores one sheet of surface per voxel, so a single volume cannot represent the interface where two parts touch, at any resolution. We introduce a dual-volume representation to solve this problem and put forward KaiNinja, a part-level extension of TRELLIS.2 built on a dual-volume form of its O-Voxel representation. KaiNinja keeps the generation speed and quality of TRELLIS.2 while extending it to the part level, with no mask or segmenter in the pipeline. Its training data come from sources of many kinds, including CAD models and assets authored by an LLM-driven agent; to our knowledge it is the first 3D generative model trained on agent-authored part data. Surprisingly, we also find that whole-object fidelity improves over the same backbone fine-tuned on the same dataset. Against part generation pipelines of different paradigms, it lowers whole-object Chamfer distance by 40% and raises strict part F-score by 16%.",
+      "authors": [
+        "Ruihan Yu",
+        "Lian Fu",
+        "Muyao Niu",
+        "Zheng-hui Huang",
+        "Yu-Ju Tsai",
+        "Sho Kuno",
+        "Fengbo Lan",
+        "Yonghao Yu",
+        "Erwin Wu",
+        "Ming-Hsuan Yang",
+        "Kaipeng Zhang",
+        "Zhixiang Wang"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-09-14T14:40:52+00:00",
+      "link": "https://arxiv.org/pdf/2609.15659v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "dual-volume representation for 3D generators",
+      "llm_evidence_cn": "3D生成器的双体积表示",
+      "llm_evidence": "3D生成器的双体积表示",
+      "canonical_evidence": "3D生成器的双体积表示",
+      "llm_tldr_en": "Introduces a dual-volume representation to enable part-level 3D generation and simulation.",
+      "llm_tldr_cn": "引入双体积表示法，以实现部件级的3D生成与模拟。",
+      "llm_tldr": "引入双体积表示法，以实现部件级的3D生成与模拟。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.18554v1",
+      "title": "CARA: Collision-Aware Resolution Adaptation for Multiresolution Hash Encoding Based Image Fitting",
+      "abstract": "Multiresolution hash encodings have recently enabled fast and high-fidelity implicit neural representations by storing multi-scale features in fixed-size hash tables along a geometric resolution schedule. However, the standard design is data-agnostic: different resolution levels receive identical hash-table capacity despite large differences in image frequency content. As a result, some levels experience severe hash collisions while others underutilize parameters, leading to inefficient capacity allocation. To address this issue, we propose Collision-Aware Resolution Adaptation (CARA), a method that assigns per-level resolutions by balancing the effective information load across hash levels. This adaptive allocation reduces capacity bottlenecks and improves parameter efficiency. In addition, we introduce an invertible pixel-shuffle transform that reduces hash load factors by redistributing spatial information, thereby mitigating collision-induced information loss without enlarging the hash tables. To support evaluation on extremely high-resolution data, we also curate, to the best of our knowledge, the first uncompressed whole-slide image dataset for academic research. Experiments on Kodak images, gigapixel natural images, and raw whole-slide images demonstrate that CARA consistently improves the fidelity-parameter trade-off. Our method matches state-of-the-art performance while using only $27.76%$ of the parameters, and achieves up to $6.11$ dB PSNR improvement at comparable parameter counts. Code is provided in the supplementary.",
+      "authors": [
+        "Linfeng Ye",
+        "Zhixiang Chi",
+        "Shayan Mohajer Hamidi",
+        "En-hui Yang",
+        "Konstantinos N. Plataniotis"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-09-16T12:17:34+00:00",
+      "link": "https://arxiv.org/pdf/2609.18554v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Multiresolution hash encoding for implicit neural representations",
+      "llm_evidence_cn": "用于隐式神经表示的多分辨率哈希编码",
+      "llm_evidence": "用于隐式神经表示的多分辨率哈希编码",
+      "canonical_evidence": "用于隐式神经表示的多分辨率哈希编码",
+      "llm_tldr_en": "Optimizes hash encoding capacity for faster and higher-fidelity implicit neural representations.",
+      "llm_tldr_cn": "优化哈希编码容量分配，以实现更快、更高保真度的隐式神经表示。",
+      "llm_tldr": "优化哈希编码容量分配，以实现更快、更高保真度的隐式神经表示。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.16233v1",
+      "title": "SceneBench: A Hierarchical Benchmark for Vision-Language Understanding of 3D Scenes",
+      "abstract": "Vision-language models excel at 2D image understanding but remain limited in 3D spatial reasoning. Progress is hindered by limitations in current benchmarks. First, 3D datasets often rely on point clouds that capture geometry but discard rich visual features like texture, text, and materials. Second, annotations treat objects in isolation while ignoring real-world hierarchical organization (scenes, rooms, functional areas, object groups). Third, evaluation tasks focus narrowly on basic recognition rather than multi-step spatial reasoning.   In this context, we introduce SceneBench, a benchmark of 966 photorealistic 3D scenes reconstructed with Gaussian Splatting and densely annotated with hierarchical semantics spanning scenes, rooms, functional areas, object groups, and individual objects. These annotations are produced through a human-in-the-loop pipeline combining vision-language models with roughly 1,500 human-hours of iterative refinement and verification, producing over 183K annotated nodes with textual descriptions and 3D bounding boxes. Building on this representation, we define three evaluation tasks: Existence-Based Questions probing object attributes, Spatial Intelligence Questions covering counting, size comparison, distance, and directional relations, and Grounded Question-Reasoning-Answer (QRA) triplets requiring multi-step reasoning across semantic levels. Experiments with state-of-the-art vision-language models show that while models perform well on basic recognition tasks (e.g., up to 85% accuracy for detection), performance drops substantially on hierarchical and compositional reasoning (e.g., down to 60% for counting), revealing limitations not captured by existing benchmarks. SceneBench provides a realistic testbed for developing and evaluating models capable of fine-grained spatial reasoning in photorealistic 3D environments.",
+      "authors": [
+        "Anubhav Khanal",
+        "Prabigya Acharya",
+        "Roshni Poudel",
+        "Sujan Kapali",
+        "Bigyan Bhatta",
+        "Pramish Paudel",
+        "Francois Rameau",
+        "Danda Pani Paudel"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-09-14T18:59:13+00:00",
+      "link": "https://arxiv.org/pdf/2609.16233v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "3D scenes reconstructed with Gaussian Splatting",
+      "llm_evidence_cn": "使用高斯喷激重建的3D场景",
+      "llm_evidence": "使用高斯喷激重建的3D场景",
+      "canonical_evidence": "使用高斯喷激重建的3D场景",
+      "llm_tldr_en": "Introduces a benchmark for 3D spatial reasoning using photorealistic scenes reconstructed via Gaussian Splatting.",
+      "llm_tldr_cn": "引入一个使用高斯喷激重建的逼真场景进行3D空间推理的基准测试。",
+      "llm_tldr": "引入一个使用高斯喷激重建的逼真场景进行3D空间推理的基准测试。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.18624v1",
+      "title": "MoQSplat: Adaptive Progressive Streaming of 3D Gaussian Splatting via MoQ",
+      "abstract": "3D Gaussian Splatting (3DGS) enables photorealistic novel view synthesis, but transmitting gigabyte-scale scene data remains challenging for immersive applications. Traditional HTTP Adaptive Streaming over TCP introduces Head-of-Line (HOL) blocking and coarse segmenting ill-suited to fine-grained 3DGS delivery. We propose MoQSplat, which maps 3DGS content onto the Media over QUIC (MoQ) transport hierarchy. MoQSplat partitions scenes into spatial Tracks, clusters splats into semantically coherent Groups, and constructs progressive-quality Subgroups mapped to independent QUIC streams to eliminate connection-level HOL blocking. Using a stateless, subscriber-driven adaptation loop, clients dynamically request spatial regions and quality tiers based on six degrees of freedom (6-DoF) frustum visibility, distance, and foveal alignment. We evaluate the core components on a prototype implementation, showing that opacity-based pruning outperforms scale-based pruning for progressive delivery. The source code is available at https://github.com/emanuele-artioli/MoQSplat.",
+      "authors": [
+        "Emanuele Artioli",
+        "Mohammadreza Ghafari",
+        "Md Tariqul Islam",
+        "Farzad Tashtarian",
+        "Christian Rothenberg",
+        "Christian Timmerer"
+      ],
+      "primary_category": "cs.MM",
+      "categories": [
+        "cs.MM",
+        "cs.GR",
+        "cs.NI"
+      ],
+      "published": "2026-09-16T13:14:01+00:00",
+      "link": "https://arxiv.org/pdf/2609.18624v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "accelerating 3DGS delivery via adaptive streaming",
+      "llm_evidence_cn": "通过自适应流传输加速3DGS交付",
+      "llm_evidence": "通过自适应流传输加速3DGS交付",
+      "canonical_evidence": "通过自适应流传输加速3DGS交付",
+      "llm_tldr_en": "Optimizes the transmission and streaming of 3D Gaussian Splatting for efficient remote rendering.",
+      "llm_tldr_cn": "优化3D高斯溅射的传输与流式处理，实现高效的远程渲染。",
+      "llm_tldr": "优化3D高斯溅射的传输与流式处理，实现高效的远程渲染。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

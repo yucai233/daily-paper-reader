@@ -1,0 +1,1005 @@
+Title: Tracing Warm Gas through C IV Radiative Transfer
+
+URL Source: https://arxiv.org/pdf/2609.11487v1
+
+Published Time: Fri, 11 Sep 2026 01:05:00 GMT
+
+Number of Pages: 18
+
+Markdown Content:
+MNRAS 000 , 1–17 (2026) Preprint 11 September 2026 Compiled using MNRAS L ATEX style file v3.3 
+
+# Tracing warm gas through C IV radiative transfer 
+
+# Jin Lim, 1,2 Seok-Jun Chang 3 ★, Max Gronke, 4 Fabrizio Arrigoni Battaia, 3 Hee-Won Lee, 5 and Kwang-Il Seon 1,2
+
+> 1
+
+Korea Astronomy & Space Science Institute, 776 Daedeokdae-ro, Yuseong-gu, Daejeon 34055, Republic of Korea 
+
+> 2
+
+Astronomy and Space Science Major, University of Science and Technology, 217, Gajeong-ro, Yuseong-gu, Daejeon 34113, Republic of Korea 
+
+> 3
+
+Max-Planck-Institut für Astrophysik, Karl-Schwarzschild-Str. 1, D-85748 Garching, Germany 
+
+> 4
+
+Astronomisches Rechen-Institut, Zentrum für Astronomie, Universität Heidelberg, Mönchhofstraße 12-14, D-69120 Heidelberg, Germany 
+
+> 5
+
+Sejong University, 209 Neungdong-ro, Gwangjin-gu, Seoul, 05006, Republic of Korea 
+
+Accepted XXX. Received YYY; in original form ZZZ 
+
+ABSTRACT 
+
+The C IV 𝜆𝜆 1548 , 1551 resonance doublet is a key tracer of warm gas ( 𝑇 ∼ 10 5 K) within and around galaxies. Recent observations have detected this line in both absorption and emission, revealing asymmetric profiles in galaxies and spatially extended haloes around active galactic nuclei (AGNs). Resonance scattering can strongly modify the emergent spectra and spatial distributions, complicating their interpretation. Using 3D Monte Carlo radiative transfer simulations, we study C IV resonance scattering over a broad range of column densities, intrinsic emission-line widths, and outflow velocities. We find that multiple scattering broadens the line profile and, in outflowing media, modifies the doublet ratio, 𝑅 CIV , defined as the flux ratio of the K and H components at 1548 and 1551 Å, respectively. When the outflow velocity approaches or exceeds the doublet separation (≃ 500 km s −1), K-line photons are redistributed around the H component, driving 𝑅 CIV below its intrinsic value and, in optically thick fast outflows, even below unity. We also combine photoionization models with resonance scattering to investigate extended C IV haloes around AGNs and compare them with He II 𝜆 1640 emission. Simple photoionization models do not produce C IV emission more extended than He II, whereas resonance scattering redistributes locally produced and central-source C IV photons to larger radii. These results demonstrate that the C IV doublet ratio and spatial distribution provide complementary diagnostics of warm gas. 
+
+Key words: radiative transfer – scattering – line: profiles – galaxies: active – galaxies: haloes 
+
+1 INTRODUCTION 
+
+Galactic winds driven by star formation and active galactic nuclei (AGNs) are ubiquitously observed across cosmic time and exhibit multiphase structure extending over several kpc (e.g., Veilleux et al. 2005). These outflows play a crucial role in galaxy evolution by mediating interactions between the host galaxy and its circumgalac-tic medium (CGM), the vast gas reservoir within the host-galaxy halo. They eject fuel for star formation into the CGM or intergalactic medium, regulate the accretion of gas from the CGM into the inter-stellar medium, and enrich the accreted material (Faucher-Giguère & Oh 2023; Thompson & Heckman 2024). Resonance doublet lines are powerful diagnostics of galactic winds and the CGM. The different ionization energies of these lines have been used to investigate the multiphase structure of gas in galactic outflows and the CGM (e.g., Steidel et al. 2010; Heckman et al. 2017). Ly 𝛼 and low-ionization atoms such as Mg II ( ∼ 15 .0 eV) trace cold gas ( 𝑇 ∼ 10 4 K), and high-ionization atoms such as C IV , N V, and O VI ( ≥ 47 .9 eV) trace warm and hot gas ( 𝑇 ≥ 10 5 K). In particular, the C IV resonance doublet at 𝜆𝜆 1548 , 1551 is a key tracer of warm gas at 𝑇 ≈ 10 5 K, where C IV fraction peaks. As a result, C IV serves as an important coolant and tracer of gas at 𝑇 ∼ 10 5 K(e.g., Tumlinson et al. 2017).  
+
+> ★
+
+Corresponding Author, E-mail: sjchang@mpa-garching.mpg.de 
+
+The C IV resonance doublet has been studied both in absorption and emission. From absorption line studies, C IV has been reported with typical column densities of 𝑁 CIV = 10 13 −15 cm −2 (e.g., Codor-eanu et al. 2018; Rudie et al. 2019; Davies et al. 2023), in reason-able agreement with cosmological simulations (Garza et al. 2024), and it has been observed out to impact parameters of ∼ 100 kpc (e.g., Bordoloi et al. 2014; Liang & Chen 2014; Dutta et al. 2021). Strong C IV emission has been detected in sources ranging from stel-lar objects (e.g., Feibelman 1983; Michalitsianos et al. 1988, 1992; Thanathibodee et al. 2024) to nebulae around star-forming galaxies and AGNs (e.g., Heckman et al. 1991; Arrigoni Battaia et al. 2015a,b; Stark et al. 2015; Berg et al. 2019a; Travascio et al. 2020; Guo et al. 2020; Fossati et al. 2021; Matthee et al. 2022; Topping et al. 2024). Through the detection of C IV emission, the spatial distribution and kinematics of diffuse warm gas can be investigated without the need for bright background sources. The detection of C IV emission raises an interesting question about the doublet ratio of C IV 𝜆 1548 and 𝜆 1551 ( 𝐹 1548 /𝐹 1551 ). In par-ticular, highly ionized star-forming galaxies exhibit strong nebular C IV emission (e.g., Berg et al. 2019b; Izotov et al. 2024), with the two doublet components clearly resolved, making them ideal targets for measuring the doublet ratio. Theoretically, the intrinsic doublet ra-tio is 2 due to their statistical weights of the transitions. However, the observed C IV spectra reveal variations in doublet ratios, with a wide range of values from 0.3 to 2.4 (e.g., Stark et al. 2015; Vanzella et al. 
+
+© 2026 The Authors arXiv:2609.11487v1 [astro-ph.GA] 10 Sep 2026 2 Lim et al. 
+
+2016; Senchyna et al. 2017; Tang et al. 2024). For instance, Topping et al. (2025) reported a ratio below unity ( 𝐹 1548 /𝐹 1551 = 0.8), where the spectrum is characterized by a strong C IV 𝜆 1551 and a weak 
+
+𝜆 1548. This is different from the intrinsic profile of the C IV doublet emission. The authors presumed that radiative transfer processes may modify the intrinsic doublet ratio during photon escape. Recently, C IV emission has also been detected as extended nebu-lae out to several tens of kpc around AGNs with extended He II 𝜆 1640 nebulae (e.g., Guo et al. 2020; Fossati et al. 2021; Sabhlok et al. 2024; Galbiati et al. 2026). Given the similar high-ionization energies of C IV and He II (47.9 and 54.4 eV, respectively), these lines are often detected together in the warm CGM at 𝑇 ≈ 10 5 K. Observations also show that C IV emission is usually brighter and more spatially extended than He II at current surface-brightness limits. For exam-ple, Galbiati et al. (2026) detected extended C IV and He II nebulae around a 𝑧 = 3.66 quasar with sizes of ≈ 55 and ≈ 45 kpc and C IV /He II ratios well above unity. In addition, Travascio et al. (2020) reported extended C IV emission out to ∼ 75 kpc in the absence of He II emission. To generate these high-ionization emission lines, a hard radiation field is required so that photoionization by a powerful central source has traditionally been considered the primary mecha-nism. However, several studies have shown that pure photoionization models fail to reproduce the observations unless crude approxima-tions of resonance scattering are taken into account (Fossati et al. 2021; Obreja et al. 2024). Given the fundamental differences in the radiative properties of C IV and He II , the observed C IV halo suggests that pure photoionization models struggle to explain these results, and that additional mechanisms are required. Resonance scattering in outflowing gas is frequently invoked as main mechanism to explain the observed C IV emission from star-forming galaxies and AGN. Given that the C IV 𝜆𝜆 1548 , 1551 dou-blet arises from a resonance transition, C IV photons can undergo multiple scatterings before escaping. In addition, C IV is produced predominantly through collisional excitation, with a minor contribu-tion from recombination, in warm ionized gas, making it a sensitive tracer of such outflows. Indeed, powerful galactic winds, with veloc-ities up to ∼ 1000 km s −1, are commonly observed in star-forming galaxies and AGN. However, current studies of radiative transfer of C IV are insufficient to fully understand its spatial distribution and spectral variations. In this paper, we use a 3D Monte Carlo radiative transfer (RT) code, RT-scat (Chang et al. 2023; Chang & Gronke 2024), to study C IV RT as a tracer of warm gas at 𝑇 ≈ 10 5 K. This paper is organized as follows. In § 2, we introduce the physics of radiative transfer and describe the details of our 3D Monte Carlo simulations for a spherical scattering medium surrounding a point emission source. In § 3, we present the simulated spectral profiles of C IV emission for both a monochromatic source and a Gaussian source, and investigate the doublet ratio of C IV 𝜆 1548 and 𝜆 1551, and the spatial distribution for the case of a Gaussian source in an outflowing medium. In § 4, we discuss the results of our C IV radiative transfer simulations. Finally, § 5 summarizes our main conclusions. 
+
+2 RADIATIVE TRANSFER SIMULATION OF C IV RESONANCE DOUBLET 
+
+We use a 3D Monte Carlo radiative transfer code RT-scat (Chang et al. 2023; Chang & Gronke 2024) to study the formation of C IV resonance doublet as a tracer of warm gas at 𝑇 ≈ 10 5 K. In this section, we introduce the atomic physics relevant to C IV radiative transfer (§ 2.1), the optical depth of C IV (§ 2.2), the model geometry and kinematics (§ 2.3), and the Monte-Carlo technique (§ 2.4).                    
+
+> Figure 1. Energy levels of the C IV resonance doublet at 𝜆𝜆 1548, 1551. As a lithium-like ion, the C IV emission exhibits a resonance doublet arising from 2𝑆 −2𝑃 transitions. The C IV 𝜆 1548 line (blue), known as the K line, arises from the 2 𝑃 3/2→2𝑆 1/2transition with wavelength 𝜆 0,K=1548 .187 Å. The C IV 𝜆 1551 line (red), referred to as the H line, arises from the 2 𝑃 1/2→2𝑆 1/2
+> transition with wavelength 𝜆 0,H=1550 .772 Å. Due to its larger statistical weight, the K component is intrinsically twice as strong as the H component.
+
+2.1 Scattering Cross Section of C IV 
+
+The C IV 𝜆𝜆 1548, 1551 resonance doublet arises from the 2 𝑆 1/2 →
+
+2𝑃 1/2,3/2 transitions. Hereafter, we refer to the C IV 𝜆 1548 and 
+
+𝜆 1551 components as the ‘K’ and ‘H’ lines, respectively. As il-lustrated in Figure 1, the two transitions have rest wavelengths 
+
+𝜆 0,K = 1548 .187 Å and 𝜆 0,H = 1550 .772 Å, corresponding to the line-center frequencies 𝜈 0,K = 1.936410 × 10 15 s−1 and 𝜈 0,H =
+
+1.933182 × 10 15 s−1. Because the K- and H-lines originate from the 2𝑃 3/2 and 2 𝑃 1/2 upper levels, they carry different statistical weights (𝑔 = 2𝐽 +1), namely 𝑔 K = 4 and 𝑔 H = 2. For this reason, the intrinsic strength of the K line is twice that of the H line, as reflected in the oscillator strengths of 𝑓 K = 0.190 and 𝑓 H = 0.0952, respectively. The scattering cross section of the C IV doublet is expressed as a sum of two Voigt–Hjerting functions 
+
+𝜎 𝜈 =
+
+√𝜋 𝑒 2
+
+𝑚 𝑒 𝑐 
+
+ 𝑓 K
+
+Δ𝜈 𝐷, K
+
+𝐻 (𝑥 K, 𝑎 K) + 𝑓 H
+
+Δ𝜈 𝐷, H
+
+𝐻 (𝑥 H, 𝑎 H)
+
+
+
+, (1) where 𝑚 𝑒 is the electron mass and 𝑐 is the speed of light. The Voigt– Hjerting function is defined as 
+
+𝐻 (𝑥, 𝑎 ) = 𝑎 𝜋 
+
+∫ ∞−∞ 
+
+𝑒 −𝑦 2
+
+(𝑥 − 𝑦 )2 + 𝑎 2 𝑑𝑦, (2) where the damping parameter 𝑎 = Γ  
+
+> 4𝜋 Δ𝜈 D
+
+is the ratio of the damping constant Γ to the thermal Doppler width Δ𝜈 D. The corresponding damping constants are ΓK = 2.65 × 10 8 s−1 and ΓH = 2.64 × 10 8 s−1.The thermal Doppler width is given by Δ𝜈 D = 𝑣 th  
+
+> 𝑐
+
+𝜈 0. Here, 𝑣 th =√︁ 
+
+2𝑘 B𝑇 /𝑚 CIV is the thermal velocity, and 𝑘 B and 𝑚 CIV denote the Boltzmann constant and the atomic mass of C IV , respectively. We also define the dimensionless frequency parameter as 
+
+𝑥 = (𝜈 − 𝜈 0) / Δ𝜈 D, (3) which measures the offset from the line-center frequency 𝜈 0 in units of the Doppler parameter. For the doublet, the dimensionless param- 
+
+> MNRAS 000 , 1–17 (2026)
+
+# Tracing warm gas with C IV 3−250 0 250 500 750 
+
+# ∆V [km s −1]
+
+10 −19 
+
+10 −17 
+
+10 −15 
+
+10 −13 
+
+> σscat  [cm 2]
+
+C IV 1548 C IV 1551 
+
+Figure 2. Scattering cross section of the C IV doublet as a function of the Doppler factor Δ𝑉 defined in Equation 4. The solid line shows the scattering cross section for the thermal velocity of C IV at a temperature 𝑇 = 10 5 K, corresponding to 𝑣 th = 11 .8 km s −1. The blue vertical dashed line indicates the line center of the K line at Δ𝑉 = 0 km s −1, and the red vertical dashed line shows that of the H line. The velocity separation of the two components is Δ𝑉 K,H = 500 .9 km s −1.
+
+eters 𝑥 K and 𝑥 H are defined relative to 𝜈 0,K and 𝜈 0,H, with Doppler widths Δ𝜈 𝐷, K and Δ𝜈 𝐷, H, respectively. Figure 2 illustrates the total scattering cross section near the C IV doublet for a medium with 𝑇 = 10 5 K using Equation (1). The horizontal axis represents the Doppler factor Δ𝑉 with respect to the K component, given by 
+
+Δ𝑉 =
+
+ 𝜈 0,K
+
+𝜈 − 1
+
+
+
+𝑐 ≃ − 𝑣 th 𝑥 K, (4) where 𝑣 th = 11 .8 km s −1 is the thermal speed of carbon at 𝑇 = 10 5 K. As shown in the figure, the velocity separation between the two com-ponents with respect to the K component is Δ𝑉 K,H = 500 .9 km s −1,which allows the C IV doublet to be clearly resolved into two distinct lines. The line center cross sections of the K and H components are 3.74 × 10 −14 and 1 .87 × 10 −14 cm 2, respectively. We note that the cross section decreases sharply, by nearly 4 orders of magnitude, once the absolute frequency parameter reaches |𝑥 𝐾 ,𝐻 | > 3. 
+
+2.2 Optical Depth at the Line Center 
+
+The optical depth of each component of the C IV doublet is given by 
+
+𝜏 𝜈 = 𝜎 𝜈 𝑁 CIV = 𝜏 0 𝐻 (𝑥, 𝑎 ), (5) where 𝜎 𝜈 is the scattering cross section from Equation 1 and 𝜏 0 is the optical depth at the line center. Since 𝐻 (0, 𝑎 ) ≃ 1 for 𝑎 ≪ 1, 𝜏 0 for the K line is given by 
+
+𝜏 0 ≡ 𝜎 𝜈 0,K 𝑁 CIV 
+
+≃√𝜋𝑒 2
+
+𝑚 𝑒 𝑐 𝑓 K
+
+Δ𝜈 D,K
+
+𝐻 (0, 𝑎 )𝑁 CIV 
+
+=
+
+ 𝑁 CIV 
+
+2.67 × 10 13 cm −2
+
+  𝜎 R
+
+11 .8 km s −1
+
+ −1
+
+,
+
+(6) where 𝜎 𝜈 0,K represents the cross section at the center of the K line and 
+
+𝜎 R is a velocity dispersion combining thermal and turbulent motions, 
+
+Figure 3. Schematic illustration of the simulation geometry. A spherical C IV halo of radius 𝑅 H, spanning from 0 .01 𝑅 H to 𝑅 H (Δ𝑅 = 0.99 𝑅 H), is uniformly filled with C IV ions (gray region) with a constant number density of 𝑛 CIV = 𝑁 CIV /Δ𝑅 . The red circle represents the central source, emit-ting monochromatic or Gaussian C IV photons. The scattering medium is characterized by two kinematic components: (i) a radial outflow velocity 
+
+𝑣 (𝑟 ) = 𝑉 out 𝑟 /𝑅 H, and (ii) velocity dispersion 𝜎 R .
+
+𝜎 R =√︃ 𝑣 2th + 𝑣 2tur . Throughout this work, we adopt 𝜎 R instead of 𝑣 th .The line-center optical depth for the H line is half that of the K line at the same column density, due to the difference in oscillator strengths. The optical depth at the line center is an important parameter in spectral line formation, as demonstrated in previous RT simula-tions for Ly 𝛼 (Neufeld 1990; Ahn et al. 2000; Dijkstra et al. 2006; Laursen et al. 2009; Smith et al. 2015; Seon & Kim 2020) and Mg II (Prochaska et al. 2011; Chang & Gronke 2024). In the optically thin regime ( 𝜏 0 < 1), most photons escape directly, or after a single scat-tering near the line center. In contrast, when the medium is optically thick ( 𝜏 0 > 1), most photons are trapped at the line center, undergoing multiple scatterings, and escape only after diffusing in frequency into the wings of the line profile. 1 We will investigate the line formation of C IV for various optical depths in Sections 3.1 and 3.2. 
+
+2.3 Geometry and C IV Emission Source 
+
+To explore the formation of C IV , we consider a simple geometry composed of a spherical C IV halo and a central point source emitting the C IV doublet photons (see Figure 3). C IV ions are uniformly distributed in the spherical halo between radii 0 .01 𝑅 H and 𝑅 H (Δ𝑅 =
+
+0.99 𝑅 H), where 𝑅 H denotes the halo radius. The ions have random velocities characterized by a velocity dispersion 𝜎 R . To model an expanding medium, we assume a radial velocity field proportional to  
+
+> 1
+
+In a clumpy medium, photons can escape via random walk between the dense clumps through surface scattering even when the covering factor of clumps, which is the average number of clumps in the line of sight, is less than its critical value (Gronke et al. 2017). MNRAS 000 , 1–17 (2026) 4 Lim et al.                                
+
+> Table 1. Parameters in our radiative transfer simulation Parameter Value/Units Meaning
+> 𝜆 0,K1548.187Å Atomic wavelength of K line
+> 𝜆 0,H1550.772 Å Atomic wavelength of H line
+> 𝑁 CIV 10 12 −17 cm −2Total C IV column density
+> 𝜎 𝑅 11 .8†−50 km s −1Velocity dispersion of scattering medium
+> 𝜎 int 0∗−3000 km s −1Width of intrinsic emission
+> 𝑉 out 0−1000 km s −1Maximum outflow velocity
+> †: thermal speed of C IV at 𝑇 =10 5K, ∗:𝜎 int =0 km s −1represents the monochromatic case.
+
+the distance from the central source (i.e., 𝑣 (𝑟 ) = 𝑉 out 𝑟 /𝑅 H, where 
+
+𝑟 is the distance from the emission source and 𝑉 out is the maximum outflow velocity at 𝑅 H). The spherical C IV halo is characterized by a C IV column density 𝑁 CIV at the outer boundary 𝑅 H, the velocity dispersion 𝜎 R , and the maximum outflow velocity 𝑉 out . We explore a range of 𝑁 CIV from 10 12 to 10 17 cm −2, which is broader than typically probed in absorption line spectroscopic studies (Davies et al. 2023; Garza et al. 2024, 2025). We also consider a wide range of 𝑉 out from 0 to 1000 km s −1, which exceeds the velocity separation between the K- and H-lines ( Δ𝑉 K,H ≈ 500 km s −1). When 𝑉 out > Δ𝑉 K,H , the K line photons can be scattered by the H line transition of C IV in outflowing gas (e.g., as in Mg II resonance doublet; Chang & Gronke 2024; Seon 2024). We assume a central point source emitting C IV doublet photons with an intrinsic K-to-H flux ratio of 2, consistent with collisional excitation of C IV or recombination of C V. We consider two types of central sources: (i) a monochromatic source for a fundamental study and (ii) a Gaussian source for a realistic case. The intrinsic profiles of the K- and H-lines are assumed to be Gaussian, with an intrinsic width 𝜎 int spanning 0 to 3000 km s −1, broad enough to cover sources from star-forming galaxies to AGNs. When 𝜎 int ≳ Δ𝑉 K,H , the K- and H-lines are intrinsically mixed and appear as a single broad emission feature that is difficult to resolve into two distinct components, even without radiative transfer effects. We investigate the formation of C IV line profiles for various intrinsic widths in Section 3.2.1. In Table 1, we summarize the parameters that characterize the scattering geometry and C IV emission, along with their adopted ranges. 
+
+2.4 Monte Carlo Radiative Transfer Simulations 
+
+Our Monte Carlo simulation is based on the methodology presented in Section 2.5 of Chang & Gronke (2024) and explores the scattering behavior of C IV doublet, following five steps: (i) The scattering gas geometry and kinematics are characterized by the physical parameters listed in Table 1. The physical properties of each cell in a 3D Cartesian grid, with 200 cells per dimension, are assigned based on the position of its center. (ii) We generate a total of 10 7 photons from the central source, assigning each photon a wavelength 𝜆 𝑖 drawn from a Gaussian profile with width 𝜎 int and an isotropically distributed propagation direction 
+
+k𝑖 .(iii) The optical depth to the next scattering event is drawn as 
+
+𝜏 𝑓 = − ln 𝑟 𝑢 , where 𝑟 𝑢 is a uniform random number between 0 and 1. Using the scattering cross section 𝜎 𝜈 defined in Equation 1, the corresponding physical free path is then obtained as 𝑙 𝑓 = 𝜏 𝑓 /𝑛 CIV 𝜎 𝜈 ,where 𝑛 CIV is the number density of C IV ions, 𝑛 CIV = 𝑁 CIV /Δ𝑅 .This free path determines the location of the next scattering event. (iv) After each scattering event, the direction of the scattered photon k𝑠 and its wavelength 𝜆 𝑠 are determined by the scattering phase function and the frequency redistribution function, respec-tively. Since Ly 𝛼 and C IV have similar resonance scattering struc-tures, we adopt the Ly 𝛼 scattering phase function and frequency re-distribution function (Chang et al. 2023), following the methodology of Chang & Gronke (2024) for the Mg II resonance doublet. (v) Steps (iii)-(iv) are repeated until the photon escapes the whole grid. Once it escapes, 𝜆 𝑠 is converted to the observed-frame wave-length, and the escaping photon is collected for the spectrum and surface brightness. The calculation then returns to Step (ii) to gener-ate and propagate the next photon. The Monte Carlo simulation ends once the number of generated photons reaches the specified target total number. In this study, we neglect polarization or dust effects 2 in the C IV resonance lines, although RT-scat is capable of modeling both effects, as demonstrated in a previous Mg II study (Chang & Gronke 2024). 
+
+3 RESULT 
+
+In this section, we present the results of our C IV radiative transfer modeling. Section 3.1 describes the formation of the C IV spectrum in a static medium with a monochromatic source. Section 3.2 examines the C IV spectrum for a Gaussian source in two cases: (i) a static medium and (ii) an outflowing medium. For the outflowing medium case, we also explore the C IV doublet ratio as a diagnostic of fast outflows. In Section 3.3, we investigate the spatial distribution of C IV emission, including photoionization and scattering effects. 
+
+3.1 Line formation of C IV–Monochromatic source 
+
+To study the fundamental effects of radiative transfer on the C IV doublet, we begin with idealized conditions: a static medium (𝑉 out = 0 km s −1) and a monochromatic source ( 𝜎 int = 0 km s −1). Figure 4 presents C IV spectra of scattered photons for different C IV column densities 𝑁 CIV and velocity dispersions 𝜎 R .In the left panels of Figure 4, the spectrum broadens as 𝑁 CIV 
+
+increases. At 𝑁 CIV = 5 × 10 12 cm −2, the K and H components of the C IV doublet are optically thin at line center, and each scattered component exhibits a single Gaussian profile. In this regime, single scattering is dominant, and the line width is primarily determined by the velocity dispersion 𝜎 R . In contrast, at 𝑁 CIV ≥ 10 14 cm −2, the line-center optical depth exceeds 10 for both lines. As a result, scat-tered photons undergo multiple scattering and produce clear double-peaked profiles with a central dip. In the right panels of Figure 4, the K and H line profiles also broaden with increasing 𝜎 R , because the scale of frequency shift in each scattering depends on the velocity dispersion (see Equation 3). Additionally, the central suppression becomes less pronounced be-cause the line center optical depth, 𝜏 0 , decreases as 𝜎 R increases (see Equation 6). The K and H line profiles in Figure 4 differ even at fixed 𝜎 R for 𝑁 CIV 
+
+= 5 × 10 14 cm −2, owing to their different scattering cross sections.   
+
+> 2In our framework, dust effects arise from the difference in path lengths between the K- and H-lines, which can be significant for monochromatic sources. However, for broader input spectra, the dust optical depth has little effect on the doublet ratio because the K and H lines experience similar path lengths. In addition, dust in warm gas is expected to be minor. MNRAS 000 , 1–17 (2026)
+
+# Tracing warm gas with C IV 5−0.4 −0.3 −0.2 −0.1 0.0 0.1 0.2 0.3 0.4∆λ [˚A] 0.00.20.40.60.81.0
+
+> Normalized Flux
+
+NCIV [×5.0 cm −2]
+
+τ0,K < 110 12 
+
+τ0,K > 110 13 
+
+10 14 
+
+10 15 
+
+10 16 
+
+−80 −60 −40 −20 0 20 40 60 80 ∆V [km/s] 
+
+# C IV 1548 
+
+σR = 11 .8 km s −1
+
+−0.6 −0.4 −0.2 0.0 0.2 0.4 0.6∆λ [˚A] 0.00.20.40.60.81.0 σR[km s −1]
+
+11.8 30 50 
+
+−150 −100 −50 0 50 100 150 ∆V [km/s] 
+
+## NCIV = 5 × 10 14 cm −2−0.4 −0.3 −0.2 −0.1 0.0 0.1 0.2 0.3 0.4∆λ [˚A] 0.00.20.40.60.81.0
+
+> Normalized Flux
+
+NCIV [×5.0 cm −2]
+
+τ0,H < 110 12 
+
+10 13 
+
+τ0,H > 110 14 
+
+10 15 
+
+10 16 
+
+−80 −60 −40 −20 0 20 40 60 80 ∆V [km/s] 
+
+# C IV 1551 
+
+σR = 11 .8 km s −1
+
+−0.6 −0.4 −0.2 0.0 0.2 0.4 0.6∆λ [˚A] 0.00.20.40.60.81.0 σR[km s −1]
+
+11.8 30 50 
+
+−150 −100 −50 0 50 100 150 ∆V [km/s] 
+
+## NCIV = 5 × 10 14 cm −2
+
+Figure 4. C IV spectra of scattered photons in a spherical geometry with monochromatic emission and a static medium. The top and bottom panels show the C IV 𝜆 1548 (K line) and C IV 𝜆 1551 (H line), respectively, as functions of 𝑁 CIV and 𝜎 R . The left panels show the spectra for 𝑁 CIV = 5 × 10 12 –10 16 cm −2 at 
+
+𝜎 R = 11 .8 km s −1. 𝜏 0,K and 𝜏 0,H denote the optical depths at the line center of the K- and H-lines (Equation 6). The dashed lines indicate the optically thin regime ( 𝜏 0 < 1), while the solid lines show the optically thick regime ( 𝜏 0 > 1). The right panels illustrate the spectra for 𝜎 R = 11 .8, 30, and 50 km s −1 at 
+
+𝑁 CIV = 5.0 × 10 14 cm −2. All spectra are normalized to a peak value of unity. 
+
+However, at higher 𝑁 CIV (> 10 15 cm −2, i.e., 𝜏 0 > 100), the spectral profile of the K line becomes similar to that of the H line. For example, in the left panels of Figure 4, the K line profile at 𝑁 CIV =5 × 10 16 cm −2 in the top panel closely resembles the H line profile in the bottom panel. As shown in Figure 4, the scattered C IV spectrum broadens with increasing 𝑁 CIV and 𝜎 R . The line profile also changes from a single-peaked to a double-peaked as 𝑁 CIV increases, while the double-peaked structure becomes less pronounced as 𝜎 R increases. Given that 𝜏 0 is jointly determined by 𝑁 CIV and 𝜎 R (see Equation 6), the optical depth at the line center plays a key role in shaping the line profile. As described in Section 2.2, scattered photons escape directly at the line center in the optically thin regime ( 𝜏 0 < 1), whereas in the optically thick regime ( 𝜏 0 > 1), they are trapped near the line center and undergo multiple scatterings. This indicates that multiple scattering is the primary mechanism driving the variation of the C IV spectrum. In the following section, we investigate the impact of multiple scattering on line broadening. 
+
+3.1.1 Line Broadening 
+
+To investigate line broadening, we measure the full width at half maximum (FWHM) of the scattered C IV spectrum as a function of 𝜏 0 . Since the shape of the C IV spectrum depends on 𝜏 0 , we adopt different definitions of the FWHM depending on the optical depth. For 𝜏 0 < 1, the scattered C IV profile is well described by a Gaussian, and the FWHM is measured in the standard manner. For 𝜏 0 > 1, however, the profile exhibits a double-peaked structure, making the standard definition of the FWHM ambiguous. In this regime, we define the FWHM as the width between the outermost points at half the peak intensity. In Figure 5, we present the FWHM for different velocity dispersions, 𝜎 R = 11 .8, 30, and 50 km s −1. In addition, we present the ratio FWHM /𝜎 R to highlight the effect of line broadening. Both 𝜏 0 and the FWHM are calculated using the C IV K line. The top panel of Figure 5 shows that the FWHM increases with both 𝜏 0 and 𝜎 R . In the optically thin regime ( 𝜏 0 < 1), where sin-gle scattering dominates, the FWHM remains nearly constant. In contrast, in the optically thick regime ( 𝜏 0 > 1), multiple scattering becomes dominant and the FWHM increases with 𝜏 0 . The FWHM also increases with 𝜎 R , since the frequency shift per scattering is proportional to the velocity dispersion of the medium. The bottom panel of Figure 5 shows the FWHM normalized by 
+
+𝜎 R , highlighting the relative contribution of multiple scatterings to line broadening. The dependence of FWHM/ 𝜎 R on 𝜏 0 is nearly identical for different values of 𝜎 R . When 𝜏 0 < 1, the ratio remains 
+
+MNRAS 000 , 1–17 (2026) 6 Lim et al. 50 100 150 200 250 
+
+> FWHM [km s −1]
+
+σR [km s −1]
+
+11 .830 50 
+
+10 −1 10 0 10 1 10 2
+
+# τ0
+
+123456
+
+> FWHM  / σ R
+
+σR [km s −1]
+
+11 .830 50 
+
+a + b√ln [1 + ( τ0/c )p]
+
+Figure 5. Full width at half maximum (FWHM; top) and the ratio of the FWHM to the velocity dispersion 𝜎 R (bottom) of the C IV K line as a function of the optical depth at the K line center 𝜏 0 . The FWHM is measured differently depending on 𝜏 0 : in the standard manner for 𝜏 0 < 1, and as the width between the outermost half-maximum points of the double-peaked profile for 𝜏 0 > 1. In both panels, the colored symbols denote 𝜎 R = 11.8 (red circles), 30 (blue diamonds), and 50 km s −1 (green triangles). In the bottom panel, the dotted line represents the empirical relation (Equation 7). 
+
+nearly constant and is smaller than that for a Gaussian, for which FWHM /𝜎 = 2√2 ln 2 ≃ 2.35. This suggests that, in the optically thin regime, the line is not broadened to the full extent expected from the velocity dispersion of the medium. The ratio increases with 
+
+𝜏 0 and is well described by the empirical relation FWHM 
+
+𝜎 R
+
+= 𝑎 + 𝑏 √︁ ln [1 + ( 𝜏 0 /𝑐 ) 𝑝 ], (7) where (𝑎, 𝑏, 𝑐, 𝑝 ) = (1.092 , 1.061 , 1.505 , 2.788 ) are the best-fit pa-rameters. In the optically thin limit ( 𝜏 0 ≪ 1), this relation approaches a constant value ( 𝑎 ). In contrast, in the optically thick limit ( 𝜏 0 ≫ 1), it scales as ∼ √ln 𝜏 0 , in analogy with the saturated regime of the curve of growth, where the equivalent width also grows as √ln 𝜏 0
+
+(e.g., Draine 2011). Although 𝜎 R sets the characteristic width, this re-lation indicates that the degree of line broadening is mainly governed 050 100 150 200 250 
+
+> ∆V peaks  [km s −1]
+
+σR [km s −1]
+
+11 .830 50 
+
+10 −1 10 0 10 1 10 2
+
+τ0
+
+10 −2
+
+10 −1
+
+10 0
+
+10 1
+
+10 2
+
+10 3
+
+10 4
+
+> Number of Scattering
+
+σR [km s −1]
+
+11 .830 50 
+
+Figure 6. Peak separation of the double-peaked spectra Δ𝑉 peaks (top) and the mean number of scatterings ⟨ 𝑁 scat ⟩ (bottom). In both panels, the colored symbols denote numerical solutions from RT-scat for the velocity dispersion of the scattering medium: 𝜎 R = 11 .8 (red circles), 30 (blue diamonds), and 50 km s −1 (green triangles). The vertical dashed lines indicate 𝜏 0 = 1 at the K line center. In the top panel, colored dashed lines show the analytic solutions following Equation 9. In the bottom panel, the dotted line presents the analytic mean number of scatterings following Equation 14 and the dashed horizontal line marks ⟨ 𝑁 scat ⟩ = 1. 
+
+by 𝜏 0 . In other words, 𝜏 0 , which reflects the importance of multiple scattering, plays a crucial role in shaping the C IV spectrum. Line broadening caused by multiple scattering has been reported in several observations. For example, Berg et al. (2019b) found that the C IV profile is broader than non-resonance lines such as He II and O III ] in two local star-forming galaxies. They showed that the C IV emission is approximately twice as broad as the non-resonance lines, consistent with 𝜏 0 ∼ 1–10 in our simulations. This suggests that the observed C IV spectrum has undergone significant multiple scattering. In the following section, we compare our numer-ical results with analytic solutions to quantify the effects of multiple scattering. 
+
+MNRAS 000 , 1–17 (2026) Tracing warm gas with C IV 7
+
+3.1.2 Numerical solution compared with analytic solution 
+
+As discussed in Section 3.1.1, the emergent line profile primarily depends on the optical depth. To quantify the effects of multiple scattering, we measure the peak separation Δ𝑉 peaks and the mean number of scatterings ⟨𝑁 scat ⟩ of the C IV K line in our RT simulations and compare them with analytic estimates (e.g., Osterbrock 1962; Adams 1972; Neufeld 1990). To derive analytical estimates for Δ𝑉 peaks and ⟨𝑁 scat ⟩, we first de-fine the threshold frequency beyond which photons can escape the medium after diffusing in frequency space through multiple scatter-ings. Spectral peaks naturally emerge near the frequency at which the medium becomes optically thin. We designate this as the escape frequency, 𝜈 esc , with its corresponding dimensionless frequency pa-rameter denoted as 𝑥 esc . Photons satisfying |𝑥 | > 𝑥 esc can escape the system either directly or after undergoing only ≈ 1–2 scatterings. Photons diffuse simultaneously in both real space and frequency space, as illustrated in § 2.4, while in moderately optically thick me-dia (1 ≲ 𝜏 0 ≲ 10 4), the frequency-space diffusion remains within the Gaussian core regime (Draine 2011). Just prior to their last scattering event, scattered photons reach a frequency parameter of 
+
+𝑥 ≈ 𝑥 esc and establish a characteristic spatial distribution within the sphere. We do not explicitly model the spatial distribution of the last-scattering points. However, by definition, at the location of the last scattering, the medium is effectively optically thin to photons with the escape frequency parameter 𝑥 ≈ 𝑥 esc , even if the system remains optically thick to line-center photons ( 𝑥 = 0). We can in-fer 𝑥 esc from the condition 𝑁 scat (𝑥 esc ) ≈ 1, together with the ex-pressions for the mean number of scatterings, 𝑁 scat (𝑥 esc ), for two limiting spatial distributions of monochromatic photons in an op-tically thin medium. For a central point source emitting photons at a frequency parameter 𝑥 esc , the mean number of scatterings is given by 𝑁 scat (𝑥 esc ) = 𝜏 (𝑥 esc ) (Rybicki & Lightman 1986), where 
+
+𝜏 (𝑥 esc ) = 𝜏 0 𝐻 (𝑥 esc , 𝑎 ) ≃ 𝜏 0𝑒 −𝑥 2esc is the optical depth from the cen-ter of the sphere to its outer boundary in the Gaussian core regime. For a spatially uniform source distribution, the corresponding mean number of scatterings is 𝑁 scat (𝑥 esc ) = (3/4)𝜏 (𝑥 esc ) ≃ ( 3/4)𝜏 0𝑒 −𝑥 2esc 
+
+(Osterbrock & Ferland 2006). These two limiting cases provide a basis for estimating the mean number of scatterings without explic-itly specifying the spatial distribution of the last-scattering points. Specifically, they motivate expressing the generalized mean num-ber of scatterings for an arbitrary spatial distribution of photons with 
+
+𝑥 ≈ 𝑥 esc as 𝑁 scat (𝑥 esc ) = (1/ 𝑓 ∗)𝜏 0𝑒 −𝑥 2esc , where 𝑓 ∗ ≈ 1–2 is a geomet-ric factor that accounts for the spatial distribution of photons at the escape frequency 𝑥 esc . Based on our simulations of the C IV emission line, we find that 𝑓 ∗ = 1.63 provides an appropriate description of our system. For photons at their last-scattering points, we set the mean number of scatterings to 𝑁 scat (𝑥 esc ) ≈ 1, which yields the following estimate for the escape frequency: 
+
+𝑥 esc =
+
+
+
+0 (𝜏 0 ≲ 1),√︁ 
+
+ln (𝜏 0 / 𝑓 ∗) (1 ≲ 𝜏 0 ≲ 10 4; 0 < 𝑥 esc ≲ 3). (8) In the optically thin regime, we set 𝑥 esc = 0 because no double-peaked profile is produced. The second branch applies when a double-peak profile develops and 𝑥 esc remains within the Doppler-core regime, 0 < 𝑥 esc ≲ 3. The corresponding range of 𝜏 0 follows from the above relation, (𝜏 0/ 𝑓 ∗)𝑒 −𝑥 2esc = 1, which gives 𝜏 0 = 𝑓 ∗𝑒 𝑥 2esc . For 𝑓 ∗ = 1.63 and 0 < 𝑥 esc ≲ 3, this corresponds approximately to 1 ≲ 𝜏 0 ≲ 10 4.Because the profile is symmetric about line center, the separation between the two peaks is given by 
+
+Δ𝑉 peaks = 2 𝜎 R |𝑥 esc |. (9) To derive the mean “total” number of scatterings ⟨𝑁 scat ⟩, it is necessary to account for all scatterings experienced by a photon from its initial emission at 𝑥 = 0 to its eventual escape at 𝑥 ≈ 𝑥 esc .Due to the thermal motions, the frequency of a photon after each scattering follows the probability distribution 
+
+𝑝 (𝑥 ) = 1
+
+√𝜋 𝑒 −𝑥 2
+
+, (10) where 𝑒 −𝑥 2
+
+term is from 1D Maxwell Boltzmann distribution (Os-terbrock 1962). A photon escapes once it is re-emitted at a frequency beyond the escape frequency (i.e., |𝑥 | ≥ | 𝑥 esc |), which occurs with probability 
+
+𝑤 = 2
+
+∫ ∞
+
+> 𝑥 esc
+
+𝑝 (𝑥 )𝑑𝑥 = 1 − 2
+
+√𝜋 
+
+∫ | 𝑥 esc |
+
+> 0
+
+𝑒 −𝑥 2
+
+𝑑𝑥 = erfc (| 𝑥 esc |) . (11) Then, the mean number of scatterings before escape is 
+
+⟨𝑁 scat ⟩ = 𝑤 −1 = [erfc (| 𝑥 esc |)] −1 . (12) In the two limiting regimes, this expression reduces to 
+
+⟨𝑁 scat ⟩ ≈ 
+
+
+
+𝜏 0 (𝜏 0 < 1),
+
+ 
+
+> 𝑒 −𝑥 2esc
+> √𝜋 𝑥 esc
+
+ −1
+
+= 𝜏 0√︄ 𝜋 𝑓 2
+
+> ∗
+
+ln 
+
+ 𝜏 0
+
+𝑓 ∗
+
+
+
+(1 < 𝜏 0 ≲ 10 4),
+
+(13) where the optically thin result follows from the scattering probability, 1 − 𝑒 − 𝜏 0 ≈ 𝜏 0 , and the optically thick result is obtained using the asymptotic expansion erfc (𝑥 ) ≈ 𝑒 −𝑥 2
+
+/( √𝜋 𝑥 ). These two limiting cases can be combined into 
+
+⟨𝑁 scat ⟩ ≈ 𝜏 0
+
+
+
+1 + 𝜋 𝑓 2
+
+> ∗
+
+ln 
+
+
+
+1 + 𝜏 0
+
+𝑓 ∗
+
+ 1/2
+
+. (14) Figure 6 compares the RT simulation results for Δ𝑉 peaks and ⟨𝑁 scat ⟩
+
+with their analytic estimates as functions of the line center optical depth, 𝜏 0 . The figure demonstrates that both quantities increase with 
+
+𝜏 0 . In the optically thin regime, Δ𝑉 peaks is consistent with zero and 
+
+⟨𝑁 scat ⟩ is less than unity. This is because most photons escape di-rectly or after a single scattering near line center, implying 𝑥 esc = 0(Equation 8). The line profile is therefore expected to be single-peaked, with zero peak separation, and ⟨𝑁 scat ⟩ is determined by the scattering probability, 1 − 𝑒 − 𝜏 0 ≈ 𝜏 0 (Equation 13). In contrast, in the optically thick regime, photons are trapped near line center and escape only after undergoing frequency diffusion through mul-tiple scatterings, producing a double-peaked profile and significant line broadening. In both regimes, the numerical results are in good agreement with the analytic solutions. Observationally, C IV column densities in astrophysical systems lie in the range 𝑁 CIV ∼ 10 13–15 cm −2 (e.g., Codoreanu et al. 2018; Rudie et al. 2019; Davies et al. 2023), corresponding to 𝜏 0 ∼ 10 −1–10 1.Our simulations show that ⟨𝑁 scat ⟩ spans ∼ 10 −1–10 2 over this range. This indicates that multiple scattering can significantly shape the emergent spectrum, especially at 𝜏 0 ≳ 1 (i.e., 𝑁 CIV ≳ 10 14 cm −2), where ⟨𝑁 scat ⟩ exceeds unity. Therefore, multiple scattering should be taken into account when modeling C IV line profiles. In summary, we explored the effects of resonance scattering on C IV line formation in an idealized case with a monochromatic source and a static medium. We found that multiple scattering plays an important role, producing a double-peaked profile with a central dip and significant line broadening. In the following section, we examine C IV line formation in a more realistic case using a Gaussian source.  
+
+> MNRAS 000 , 1–17 (2026)
+
+# 8 Lim et al. −500 −250 0 250 500 750 1000 
+
+# ∆V [km s −1]
+
+0.00.20.40.60.81.0
+
+> Relative Flux
+
+# σint [km s −1]
+
+50 100 200 500 1000 3000          
+
+> Figure 7. Intrinsic C IV spectra for various intrinsic emission widths 𝜎 int .The colored solid lines represent the C IV spectra for 𝜎 int =50 (blue), 100 (orange), 200 (green), 500 (red), 1000 (purple), and 3000 (brown) km s −1.The dashed vertical lines indicate the line centers of the K and H components. All spectra are normalized at the velocity corresponding to the peak of the C IV profile for 𝜎 int =50 km s −1.
+
+3.2 The formation of the C IV spectrum–Gaussian Source 
+
+In this section, we explore the formation of the C IV doublet for a Gaussian source ( 𝜎 int > 0 km s −1) as a function of the intrinsic line width, 𝜎 int , for two types of scattering media: static and outflowing media. We adopt a fixed velocity dispersion 𝜎 R = 11 .8 km s −1,corresponding to the thermal speed at 𝑇 = 10 5 K. In addition, since the velocity separation between the K and H components is Δ𝑉 K,H ≃
+
+500 km s −1, we define the K and H line regions as the velocity ranges within Δ𝑉 = 250 km s −1 from each line center. 
+
+3.2.1 C IV spectra from a static medium 
+
+As shown in § 2.3, we assume a broad range of an intrinsic width 
+
+𝜎 int from 0 to 3000 km s −1 (cf. Table 1). Unlike a monochromatic source ( 𝜎 int = 0 km s −1), the doublet components of a Gaussian source can be intrinsically blended when 𝜎 int is sufficiently broad relative to their separation, Δ𝑉 K,H ≃ 500 km s −1, even in the ab-sence of radiative transfer effects. To isolate this intrinsic effect, we examine the C IV doublet spectra in a static, optically thin medium. Figure 7 shows C IV doublet spectra for 𝜎 int = 50, 100, 200, 500, 1000, and 3000 km s −1. For narrow intrinsic widths (i.e., 
+
+𝜎 int ≤ 100 km s −1), the K and H components are clearly resolved, as is commonly observed in the spectra of stars and star-forming galaxies. As 𝜎 int increases beyond 100 km s −1, the two lines begin to overlap. When 𝜎 int ≳ Δ𝑉 K,H ≃ 500 km s −1, the two components be-come fully blended, making the doublet structure indistinguishable. This motivates our choice of 𝜎 int = 500 km s −1 as a representative AGN case in the subsequent simulations, even though observed AGN typically exhibit larger intrinsic widths. 
+
+3.2.2 C IV spectra from an outflowing medium 
+
+We now discuss how resonance scattering in an outflowing medium modifies the intrinsically broad, or even blended, C IV spectrum. Figures 8 and 9 show the C IV spectra for two Gaussian sources in an outflowing medium, one with clearly separated K- and H-lines (𝜎 int = 100 km s −1) and the other with fully blended lines ( 𝜎 int =500 km s −1), as functions of 𝑁 CIV and 𝑉 out . Here, we use 𝑁 CIV 
+
+instead of optical depth since 𝜎 R is fixed at 11.8 km s −1.The left panel of Figure 8 shows the C IV spectra for 𝑁 CIV =
+
+10 13 –10 16 cm −2 at an outflow velocity of 𝑉 out = 100 km s −1. When 
+
+𝑁 CIV = 10 13 cm −2, the C IV spectrum retains a symmetric Gaussian profile similar to the intrinsic one, as most photons escape without scattering or after only a single scattering. For 𝑁 CIV ≥ 10 14 cm −2,where multiple scattering becomes significant, both the K- and H-lines exhibit profiles characterized by a blue-side absorption-like feature and an enhanced red peak (i.e., a P-Cygni profile). This occurs because outflows redistribute photons from the blue side to the red side through scattering. The right panel of Figure 8 presents the C IV spectra for 𝑉 out =
+
+100, 300, 500, and 1000 km s −1 at 𝑁 CIV = 10 16 cm −2. When the outflow velocity is smaller than the velocity separation between the K- and H-lines (i.e., 𝑉 out < Δ𝑉 K,H ≈ 500 km s −1), both lines show a blue-side absorption-like feature extending from −𝑉 out to 0 km s −1.At 𝑉 out = 300 km s −1, the absorption feature of the H line encroaches on the K line region since 𝑉 out exceeds the 250 km s −1 criterion for the K and H line regions, causing a steep drop near the red wing of the K line. When 𝑉 out ≥ Δ𝑉 K,H , the C IV spectrum is dramatically modified. The intrinsic emission near the K line is suppressed, and the emergent spectrum exhibits a broad wing around the H line, as seen in the case of 𝑉 out = 1000 km s −1. In this regime, strong outflows allow the H line transition to scatter K line photons, redistributing them around the H line. This result implies that outflows play a key role in mixing K and H line photons, which may account for the observed dominance of the C IV 𝜆 1551 component in star-forming galaxies (Berg et al. 2019a; Schaerer et al. 2022; Topping et al. 2024). Figure 9 presents the C IV spectra with 𝜎 int = 500 km s −1 for var-ious 𝑁 CIV and 𝑉 out . The left panel shows the C IV spectra for 𝑁 CIV =
+
+10 13 –10 16 cm −2 at a fixed outflow velocity of 𝑉 out = 500 km s −1,while the right panel shows the variation of the C IV spectra for 
+
+𝑉 out = 100, 300, 500, and 1000 km s −1 at 𝑁 CIV = 10 16 cm −2. Over-all, the dependence of the C IV spectrum on 𝑁 CIV and 𝑉 out is similar to that in Figure 8. Both transitions exhibit blueshifted absorption features over the velocity range from −𝑉 out to 0 km s −1, and the P-Cygni profile becomes increasingly pronounced with increasing 
+
+𝑁 CIV . Interestingly, the initially mixed K and H components can be partially separated and become distinguishable through scattering in an outflowing medium. When 𝑉 out = 1000 km s −1, the C IV profile is dominated by a strong H component, which can be interpreted as an asymmetric, redshifted single emission line. 
+
+3.2.3 C IV Doublet Ratio 
+
+We assume an intrinsic doublet C IV ratio of 2, defined as the ratio of the K and H line fluxes, based on their atomic transition probabilities (see § 2.1). However, as discussed in the previous section, a fast (≥ 500 km s −1) outflow can mix K- and H-line photons even when the two components are intrinsically well resolved (see Figure 8). In this regime, the emergent spectrum becomes dominated by the H line, reducing the doublet ratio below its intrinsic value. This behavior suggests that the C IV doublet ratio can serve as a useful indicator of fast outflows. To quantify the doublet ratio and assess its effectiveness as an outflow indicator, we define 𝑅 CIV as follows: 
+
+𝑅 C iv =
+
+∫ 𝜆 0,K+𝜆 𝑐   
+
+> 𝜆 0,K−𝜆 𝑐
+
+𝐹 (𝜆 )𝑑𝜆 
+
+∫ 𝜆 0,H+𝜆 𝑐   
+
+> 𝜆 0,H−𝜆 𝑐
+
+𝐹 (𝜆 )𝑑𝜆 , (15)  
+
+> MNRAS 000 , 1–17 (2026)
+
+# Tracing warm gas with C IV 9−500 −250 0 250 500 750 1000 
+
+## ∆V [km s −1]
+
+0.00.51.01.52.02.53.0
+
+> Relative Flux
+
+σint = 100 km s −1
+
+Vout = 100 km s −1
+
+# NCIV [cm −2]
+
+## 10 13 
+
+## 10 14 
+
+## 10 15 
+
+## 10 16 
+
+−500 −250 0 250 500 750 1000 
+
+## ∆V [km s −1]
+
+0.00.51.01.52.02.53.0
+
+> Relative Flux
+
+σint = 100 km s −1
+
+NCIV = 10 16 cm −2
+
+# Vout [km s −1]
+
+## 100 300 500 1000 
+
+Figure 8. C IV spectra for various C IV column densities 𝑁 CIV and outflow velocities 𝑉 out . The velocity dispersion 𝜎 R is fixed at 11.8 km s −1. The left and right panels show the C IV spectra at 𝜎 int = 100 km s −1, where the K- and H-lines are clearly separated. The left panel presents the C IV spectra for 
+
+𝑁 CIV = 10 13 −16 cm −2 at 𝑉 out = 100 km s −1. The right panel shows the spectra for 𝑉 out = 100, 300, 500, and 1000 km s −1 at 𝑁 CIV = 10 16 cm −2. The dashed black line represents the intrinsic Gaussian emission profile for 𝜎 int = 100 km s −1. The dashed vertical lines indicate the line centers of the K- and H-lines at 
+
+Δ𝑉 = 0 and 500 km s −1, respectively. All spectra are normalized to the peak of the intrinsic profile. −1500 −1000 −500 0 500 1000 1500 2000 
+
+## ∆V [km s −1]
+
+0.00.51.01.52.02.53.0
+
+> Relative Flux
+
+## σint = 500 km s −1
+
+## Vout = 500 km s −1
+
+# NCIV [cm −2]
+
+## 10 13 
+
+## 10 14 
+
+## 10 15 
+
+## 10 16 
+
+−1500 −1000 −500 0 500 1000 1500 2000 
+
+## ∆V [km s −1]
+
+0.00.51.01.52.02.53.0
+
+> Relative Flux
+
+## σint = 500 km s −1
+
+## NCIV = 10 16 cm −2
+
+# Vout [km s −1]
+
+## 100 300 500 1000 
+
+Figure 9. C IV spectra for various C IV column densities 𝑁 CIV and outflow velocities 𝑉 out . The left and right panels present the C IV spectra for 𝜎 int =
+
+500 km s −1, where the K- and H-lines are blended. The left panel shows the C IV spectra for 𝑁 CIV = 10 13 –10 16 cm −2 at 𝑉 out = 500 km s −1, while the right panel shows the spectra for 𝑉 out = 100, 300, 500, and 1000 km s −1 at 𝑁 CIV = 10 16 cm −2. The dashed black line represents the intrinsic Gaussian emission profile for 𝜎 int = 500 km s −1. The vertical lines indicate the line centers of the K and H transitions, following the same convention as in Figure 8. 
+
+where 𝐹 (𝜆 ) is the flux as a function of wavelength 𝜆 , and 𝜆 𝑐 = (𝜆 0,H −
+
+𝜆 0,K)/ 2 is the criterion for the K and H line regions, corresponding to Δ𝑉 = 250 km s −1 in Section 3.2. In Figure 10, we show 𝑅 CIV as a function of 𝑉 out for various 𝜎 int and 𝑁 CIV .The left panel of Figure 10 illustrates the dependence of 𝑅 CIV 
+
+on 𝑉 out for different C IV column densities at a fixed intrinsic line width of 𝜎 int = 100 km s −1. At the lowest column density, 𝑁 CIV =
+
+10 13 cm −2, 𝑅 CIV remains close to its intrinsic value of 2 over the entire range of 𝑉 out , indicating that resonance scattering is neg-ligible. At higher column densities ( 𝑁 CIV ≥ 10 14 cm −2), how-ever, the doublet ratio becomes increasingly sensitive to 𝑉 out . For 
+
+𝑉 out ≲ 200 km s −1, 𝑅 CIV remains close to 2 even at the highest column density, 𝑁 CIV = 10 16 cm −2, because the outflow velocity is insufficient to efficiently mix K- and H-line photons through reso-nance scattering. As 𝑉 out approaches or exceeds the doublet veloc-ity separation, 𝑅 CIV decreases sharply, with the decline becoming more pronounced at higher column densities. At 𝑉 out > 600 km s −1,however, 𝑅 CIV becomes nearly constant, particularly at the highest column density. This behavior occurs because most K-line photons undergo multiple scatterings at high column densities. Interestingly, at the intermediate column density of 𝑁 CIV = 10 15 cm −2, 𝑅 CIV in-creases slightly with increasing 𝑉 out beyond 600 km s −1, as higher outflow velocities reduce the effective optical depth 3. This suggests  
+
+> 3
+
+A similar trend is also seen in the Mg II RT simulation by Chang & Gronke (2024). They explained that as 𝑉 out increases, the optical depth decreases, which reduces the probability of scattering (see Equations (14) and (20) in Chang & Gronke 2024). MNRAS 000 , 1–17 (2026) 10 Lim et al. 50 200 400 600 800 1000 
+
+## Vout [km s −1]
+
+0.00.51.01.52.0
+
+> RCIV
+
+## σint = 100 km s −1
+
+# log NCIV [cm −2]
+
+> 13 14 15 16
+
+50 200 400 600 800 1000 
+
+## Vout [km s −1]
+
+0.00.51.01.52.0
+
+> RCIV
+
+## NCIV = 10 15 cm −2
+
+# σint [km s −1]                               
+
+> 50 100 200 500 1000 3000
+> Figure 10. C IV doublet ratio 𝑅 CIV as a function of outflow velocity 𝑉 out for various C IV column densities 𝑁 CIV and intrinsic emission widths 𝜎 int . The velocity dispersion is fixed at 𝜎 R= 11.8 km s −1. The left panel shows 𝑅 CIV at 𝜎 int =100 km s −1to highlight the effect of outflows. The colored solid lines correspond to 𝑁 CIV =10 13 –10 16 cm −2. The right panel shows 𝑅 CIV at 𝑁 CIV =10 15 cm −2, where the ratio is sensitive to outflows. The colored solid lines correspond to
+> 𝜎 int =50–3000 km s −1. In both panels, the dashed lines mark the intrinsic doublet ratio ( 𝑅 CIV = 2) and the limiting value determined by the intrinsic emission width ( 𝑅 CIV = 1).
+
+that the C IV doublet ratio, 𝑅 CIV , has the potential to serve as a tracer of strong outflows. In the right panel of Figure 10, we show 𝑅 CIV for intrinsic line widths of 𝜎 int = 50–3000 km s −1 at a fixed column density of 
+
+𝑁 CIV = 10 15 cm −2. When 𝑉 out ≤ 200 km s −1, the outflow ve-locity is insufficient to efficiently mix the K- and H-line photons through resonance scattering, and 𝑅 CIV depends primarily on 𝜎 int ,approaching unity as 𝜎 int increases (see details in Appendix A). Ac-cordingly, narrow intrinsic profiles retain 𝑅 CIV close to its intrinsic value of 2, whereas broader profiles exhibit lower doublet ratios even at small 𝑉 out because the K and H components are more strongly blended. As 𝑉 out increases to approximately 400–600 km s −1, 𝑅 CIV 
+
+declines rapidly and eventually falls below unity. In most cases, 
+
+𝑅 CIV reaches a minimum near 𝑉 out ∼ 600 km s −1 and then grad-ually increases at higher outflow velocities. These results indicate that a doublet ratio below unity is a useful signature of strong out-flows. When 𝜎 int ≲ 500 km s −1, the doublet ratio is sensitive to 
+
+𝑉 out and can serve as a tracer of outflows with 𝑉 out ≳ 200 km s −1
+
+in systems with relatively low-𝜎 int , such as star-forming galaxies. In contrast, when 𝜎 int ≳ 500 km s −1, 𝑅 CIV remains nearly con-stant at 𝑉 out > 600 km s −1, making it difficult to constrain the out-flow velocity in systems with high-𝜎 int , such as AGNs. Neverthe-less, 𝑅 CIV < 1 remains a useful indicator of strong outflows (i.e., 
+
+𝑉 out ≳ 500 km s −1). We have demonstrated above that the C IV doublet ratio serves as a diagnostic of fast outflows in the optically thick regime (i.e., 𝑁 CIV ≥
+
+10 14 cm −2). In particular, this interpretation is most robust in low-
+
+𝜎 int systems, where the K and H components are clearly separated, allowing a direct assessment of scattering in an outflowing medium. This may help to explain the range of C IV doublet ratios observed in star-forming galaxies, which deviate from the intrinsic value of 2 (e.g., Stark et al. 2015; Vanzella et al. 2016; Senchyna et al. 2017; Berg et al. 2019b; Izotov et al. 2024; Tang et al. 2024; Topping et al. 2025). In Section 4.1, we will further discuss the use of 𝑅 CIV as a tracer of fast, warm outflows at 𝜎 int = 100 km s −1.
+
+3.3 Spatially extended C IV halos around quasars 
+
+Spatially extended nebulae of C IV 𝜆𝜆 1548, 1551 and He II 𝜆 1640 have been observed around quasars at 𝑧 > 2 (Guo et al. 2020; Travas-cio et al. 2020; Fossati et al. 2021; Sabhlok et al. 2024; Galbiati et al. 2026). Because C IV and He II have similar ionization energies, 47.9 and 54.4 eV, respectively, both lines are expected to trace warm, highly ionized gas in the CGM at 𝑇 ∼ 10 5 K. However, their radia-tive properties are fundamentally different. He II 𝜆 1640, the Balmer-
+
+𝛼 transition of He II, is a non-resonance line that traces the lo-cal recombination emissivity of He III, whereas the C IV resonance doublet is predominantly produced by collisional excitation and can additionally undergo resonance scattering by C IV atom. As a re-sult, the spatial distribution of C IV emission does not necessarily need to follow that of He II . C IV photons can be redistributed to larger radii by scattering, while He II photons escape without reso-nance scattering. This distinction is important because photoioniza-tion models alone often struggle to reproduce the observed C IV and He II luminosities and their relative spatial distributions unless crude approximations of resonance scattering are taken into account. For example, Fossati et al. (2021) detected extended C IV emission out to ≃ 50 kpc in a stack of 27 bright quasars at 𝑧 = 3–4 .5, with a ten-tative detection of He II out to ≃ 40 kpc, but found that the observed spatial extents and line ratios are difficult to reproduce with pure photoionization models and require the addition of photon pump-ing. A similar result was also shown by Obreja et al. (2024) when post-processing a cosmological simulation of a massive halo ex-pected to host a 𝑧 ∼ 3 quasar. Only including the approximated treatment of broad-line region photon scattering allowed the authors to simultaneously match the observed levels of extended He II and C IV emission around quasars. In this section, we therefore first com-pute the intrinsic C IV and He II surface-brightness profiles expected from photoionization 4, and then post-process the C IV emission with    
+
+> 4To avoid double-counting scattering effects, we turn off the line-pumping treatment in CLOUDY , which approximates resonance-line scattering as a single-scattering process. MNRAS 000 , 1–17 (2026)
+
+# Tracing warm gas with C IV 11 0 20 40 60 80 100 
+
+## Projected Radius rp [kpc] 
+
+10 −22 
+
+10 −20 
+
+10 −18 
+
+10 −16 
+
+10 −14 
+
+> SB [erg s −1 cm −2 arcsec −2]
+> Intrinsic C IV Intrinsic He II Total scattered C IV C IV from photoionized gas C IV from BLR C IV from AGN continuum
+
+0 20 40 60 80 100 
+
+## Projected Radius rp [kpc] 
+
+10 −17 
+
+10 −16 
+
+10 −15                 
+
+> SB [erg s −1 cm −2 arcsec −2]
+> Intrinsic C IV Intrinsic He II Total scattered C IV C IV from photoionized gas C IV from BLR C IV from AGN continuum
+> Figure 11. Radial surface brightness (SB) profiles of C IV and He II emission. The left and right panels show the ionization-bounded and density-bounded cases, with ionizing luminosities at 1 Ryd of 𝜈𝐿 𝜈 =10 44 and 10 46 erg s −1, respectively. In the left panel, the gray region marks the hydrogen ionization front. In both panels, the intrinsic SB profiles of C IV and He II are shown by black solid and dashed lines, respectively. The colored dash-dotted lines indicate the contributions from the three input photon sources after resonance scattering in an outflow with 𝑉 out =500 km s −1: the in-situ intrinsic C IV emission produced within the photoionized gas (red), broad C IV line emission from the AGN (blue), and continuum radiation near the C IV line (green). The orange solid lines represent the simulated C IV SB profiles obtained by combining all three photon sources. The velocity dispersion and the intrinsic emission-line width of the central source are fixed at 𝜎 R=30 km s −1and 𝜎 int =3000 km s −1, respectively.
+
+radiative transfer simulations to quantify how resonance scattering modifies its spatial distribution. 
+
+3.3.1 Photoionization Modeling 
+
+To characterize the intrinsic spatial distributions of C IV and He II emission, we compute their emissivities using the public pho-toionization code CLOUDY (v17.03; Ferland et al. 2017). We as-sume an exponentially decreasing hydrogen density profile, 𝑛 H (𝑟 ),spanning 1–100 kpc, and fix the total hydrogen column density to 
+
+𝑁 H = 10 22 cm −2. For the central ionizing source, we adopt the QSO spectral energy distribution (SED) used in Arrigoni Battaia et al. (2015b), which is a combination of power-laws obtained from quasar template spectra (Vanden Berk et al. 2001; Strateva et al. 2005; Richards et al. 2006; Lusso et al. 2015). The SED is normalized to ionizing luminosities of 𝜈𝐿 𝜈 = 10 44 and 10 46 erg s −1 at 1 Rydberg for the ionization-bounded and density-bounded cases, respectively. The adopted column density is chosen to reproduce the observed range of He II 𝜆 1640 luminosities, 𝐿 He II = 10 42 –10 43 erg s −1 (e.g., Zhang et al. 2023; Galbiati et al. 2026). Further details of the pho-toionization setup are provided in Appendix B. Figure 11 shows the radial surface-brightness profiles of C IV and He II for the ionization-bounded and density-bounded cases. The in-trinsic profiles predicted by photoionization alone depend strongly on the ionization state of the nebula. In the ionization-bounded case, C IV emission is intrinsically brighter than He II inside the ioniza-tion front, corresponding to projected radii 𝑟 p ≲ 30 kpc. However, its surface brightness declines steeply near the ionization front, mak-ing the intrinsic C IV profile more compact than that of He II . In the density-bounded case, He II remains much brighter than C IV at all radii. Thus, in both photoionization-only models, the intrinsic C IV profile is either more compact than the He II profile or substan-tially fainter than He II . In other words, the photoionization-only models considered above do not naturally reproduce the observation that C IV emission is more spatially extended than He II , and is of-ten detected without any He II counterpart. To address this, we will therefore show the C IV surface brightness considering its resonance scattering in the following section. 
+
+3.3.2 Resonantly scattered C IV halo 
+
+We combine the CLOUDY photoionization models with RT-scat to compute the C IV surface-brightness profile, including the effects of resonance scattering. The scattering geometry is composed of a spherical C IV halo, whose radial C IV distribution is derived from the CLOUDY calculations. The halo is illuminated by three sources of C IV photons: the in-situ intrinsic C IV emission produced within the photoionized gas, broad C IV emission from the broad-line region, and the AGN continuum near the C IV line center. The luminosities of these three components are listed in Table 2. For the RT-scat calcu-lation, we adopt a velocity dispersion of 𝜎 R = 30 km s −1, assuming the C IV -bearing gas has turbulent motions similar to those assumed for Ly 𝛼 emission around AGNs (Prochaska et al. 2013; Arrigoni Battaia et al. 2015b), and a representative maximum outflow veloc-ity of 𝑉 out = 500 km s −1. We note that the scattered C IV surface-brightness profiles are plotted over 0 < 𝑟 p < 100 kpc, since the surface brightness rises steeply toward 𝑟 p = 0 and drops below the  
+
+> MNRAS 000 , 1–17 (2026)
+
+# 12 Lim et al.                                      
+
+> Table 2. Luminosities of He II 𝜆 1640 and three C IV emission components (see details in Appendix B). Luminosity [erg s −1]Ionization-bounded ∗Density-bounded †
+> 𝐿 He II 1.00 ×10 42 1.05 ×10 43
+> 𝐿 CIV ,gas 1.90 ×10 42 5.17 ×10 42
+> 𝐿 CIV ,BLR 1.66 ×10 42 1.64 ×10 44
+> 𝐿 CIV ,cont 5.90 ×10 42 5.90 ×10 44
+> QSO SED is normalized to 𝜈𝐿 𝜈 =10 44 .0erg s −1(∗) and 10 46 .0erg s −1(†) at 1 Ryd.
+
+lower limit of the vertical axis at 𝑟 p = 100 kpc. Further details of the combined CLOUDY and RT-scat setup are provided in Appendix B. Figure 11 shows the C IV surface-brightness profiles after post-processing with resonance scattering. In both the ionization-bounded and density-bounded cases, the scattered C IV profile is brighter and more extended than the intrinsic photoionization-only profile, and its surface brightness exceeds that of He II over most of the radial range. In the ionization-bounded case, the scattering effect is marginal within the ionization front, 𝑟 p ≲ 30 kpc, where the scattered pro-file remains comparable to the photoionization-only model. Beyond the ionization front, however, the scattering effect becomes conspic-uous, as C IV photons are redistributed to larger radii through scatter-ing in the outflowing gas. The resulting profile is more extended than that of the photoionization-only model and remains brighter than He II even at large radii. In the density-bounded case, the scattering effect is prominent at all radii, where the scattered C IV surface-brightness profile lies above the He II profile. Given the fundamental differences in the radiative properties of C IV and He II , resonance scattering provides a viable mechanism for the observed extended C IV halos, which cannot be accounted for by photoionization alone. The relative contributions of the three C IV photon sources depend on the ionization state of the halo. In the ionization-bounded case, the C IV surface brightness within the ionization front, 𝑟 p ≲ 30 kpc, is dominated by photons produced locally in the photoionized gas. At larger radii, however, scattered photons from the photoionized gas, broad-line region, and AGN continuum contribute at comparable levels. In the density-bounded case, the contribution from photoion-ized gas is weak, and the scattered broad-line and continuum photons from the AGN dominate the emergent C IV halo. These results show that resonance scattering of AGN radiation, together with locally pro-duced C IV photons, can play an important role in forming extended C IV nebulae around quasars. In summary, our results demonstrate that resonance scattering can play a central role in shaping the spatial extent of C IV emission around AGNs. While photoionization alone does not naturally pro-duce a C IV halo that is more extended than He II , the inclusion of resonance scattering generates extended C IV surface-brightness pro-files over several tens of kpc, comparable to the observed C IV halos around quasars. This occurs because C IV photons produced in the photoionized gas, together with broad emission and continuum pho-tons from the AGN, can be redistributed to larger radii by resonance scattering. Since the efficiency of this redistribution depends on the outflow velocity of the C IV gas, we discuss the velocity dependence of the C IV surface-brightness profile in Section 4.2. 10 14 10 15 10 16 10 17 
+
+# NCIV [cm −2]
+
+200 300 400 500 600 700 800 900 1000                  
+
+> Vout  [km s −1]
+> Vanzella+16 Senchyna+17 Berg+19a Topping+25
+> 0.00.51.01.52.0
+> RCIV
+> Figure 12. Two-dimensional map of the C IV doublet ratio 𝑅 CIV as a func-tion of C IV column density 𝑁 CIV and outflow velocity 𝑉 out , with veloc-ity dispersion and intrinsic source width fixed at 𝜎 R=30 km s −1and
+> 𝜎 int =100 km s −1, respectively. Contours indicate observed 𝑅 CIV values from star-forming galaxies: 1.79 (blue solid, Vanzella et al. 2016), 1.45 (ma-genta dash-dotted, Senchyna et al. 2017), 0.78 (red dotted, Topping et al. 2025), and 0.35 (black dashed, Berg et al. 2019a). The white dashed contour marks 𝑅 CIV = 1.
+
+4 DISCUSSION 4.1 C IV doublet ratio as a tracer of fast outflow 
+
+In § 3.2, we show that the doublet ratio exhibits significant variation when the outflow velocity is faster than the velocity separation of the doublet (see also Yoo et al. 2002; Chang & Gronke 2024). Even though the C IV doublet ratio 𝑅 CIV depends on the intrinsic width, a ratio less than unity is clear evidence of strong outflow as shown in Figure 10. This small doublet ratio has been observed in various stellar objects (Feibelman 1983; Michalitsianos et al. 1988, 1992; Cauley & Johns-Krull 2016), as well as in the strong, saturated P-Cygni profiles in OB stars and Wolf-Rayet stars (Willis et al. 1986; Crowther 2022), where a strong outflow at 𝑇 ∼ 10 5 K is able to exist. Furthermore, recent C IV observations of star-forming galaxies show a wide range of 𝑅 CIV values from 0.3 to 2.4 (e.g., Stark et al. 2015; Vanzella et al. 2016; Senchyna et al. 2017; Berg et al. 2019a,b; Matthee et al. 2022; Tang et al. 2024; Izotov et al. 2024; Witstok et al. 2021, 2025). Moreover, Berg et al. (2019b) showed that the C IV profile is broader than those of He II and O III ] emission lines, which are non-resonance lines with similar ionization energies. Thus, 
+
+𝑅 CIV can serve as a tracer of warm gas outflows in star-forming galaxies through radiative transfer analysis. Figure 12 presents 𝑅 CIV as a 2D map in the 𝑁 CIV –𝑉 out parameter space, with observed 𝑅 CIV values from star-forming galaxies over-laid to identify the parameter combinations that reproduce the ob-servations. At column densities 𝑁 CIV = 10 14 –10 15 cm −2, relatively strong outflows ( 𝑉 out ≳ 300 km s −1) are required to reproduce the observed values of 𝑅 CIV = 1.79 for ID11 at 𝑧 = 3.12 (Vanzella et al. 2016) and 𝑅 CIV = 1.45 for SB 82 (Senchyna et al. 2017) in the local Universe. However, even with the strongest outflows in our models ( 𝑉 out = 1000 km s −1), 𝑅 CIV does not fall below unity in this 𝑁 CIV regime, as indicated by the white contour in Figure 12. In contrast, at higher column densities ( 𝑁 CIV = 10 15 –10 16 cm −2), scattering becomes significant, and 𝑅 CIV can drop below unity. This  
+
+> MNRAS 000 , 1–17 (2026)
+
+# Tracing warm gas with C IV 13 
+
+regime reproduces the observed values of 𝑅 CIV = 0.78 for A1703-zd6 at 𝑧 = 7.04 (Topping et al. 2025) and 𝑅 CIV = 0.35 for the local galaxy J094530 (Berg et al. 2019a), requiring outflow velocities of 
+
+𝑉 out ≳ 400 km s −1. These results demonstrate that 𝑅 CIV is sensitive to both column density and outflow velocity, and can therefore serve as a tracer of the kinematics and physical properties of outflowing gas. Importantly, the diagnostic power of the C IV doublet ratio is sig-nificantly enhanced when combined with tracers of other gas phases. While C IV probes warm gas ( 𝑇 ∼ 10 5 K), other resonance transi-tions are sensitive to gas at different temperatures. Low-ionization lines such as Mg II and Ly 𝛼 trace the cool gas phase ( 𝑇 ≲ 10 4 K), whereas high-ionization lines such as N V and O VI probe hotter gas (𝑇 ≳ 10 5.5–10 6 K). In addition, the observed doublet ratio, particu-larly when interpreted in conjunction with the velocity separation of the doublet components, can provide insight into the gas phase and its kinematic structure (Chang & Gronke 2024). Given that gas within and around galaxies is intrinsically multiphase, comprising both cool and hot components (Veilleux et al. 2005, 2020; Faucher-Giguère & Oh 2023; Gronke & E. Schneider 2026), the simultaneous analysis of multiple resonance lines would provide a powerful means of con-straining the physical conditions and kinematics of the multiphase gas. 
+
+4.2 C IV surface brightness & outflow 
+
+Resonance scattering plays a crucial role in producing the extended C IV surface brightness around AGNs compared to the non-resonant He II 𝜆 1640 emission, as shown in Section 3.3. The efficiency of scattering is governed by both the kinematics and the physical prop-erties of the scattering medium. In particular, an outflowing, optically thick medium can expose photons to a broad range of line-of-sight velocities when the radial velocity is non-uniform. This effect also allows intrinsically broad emission of resonance lines, such as Ly 𝛼 
+
+and Mg II, to scatter over a wider frequency range (e.g., Zheng & Miralda-Escudé 2002; Verhamme et al. 2006; Chang & Gronke 2024). This is a similar behavior to C IV as shown in Figures 8 and 9. The scattered photons in the broad frequency range contribute to the spatial expansion of Ly 𝛼 nebulae (Chang et al. 2023). Observa-tionally, AGN-driven outflows have also been observed in the CGM in association with extended C IV and He II nebulae (e.g., Sabhlok et al. 2024), and Rueda-Vargas et al. (2026) found strong correla-tions between the ISM-scale outflow velocity and both the size and luminosity of the surrounding Ly 𝛼 nebulae in five QSOs at 𝑧 ∼ 2–3, arguing that similar trends might be expected on CGM scales. Mo-tivated by these results, we explore in this section how the outflow velocity affects the C IV surface-brightness profiles, using models in Section 3.3. Figure 13 shows the C IV surface-brightness profiles of the ionization-bounded and density-bounded cases for outflow veloci-ties 𝑉 out = 0 − 3000 km s −1. The resonantly scattered C IV emission in the outflowing medium is brighter than that in the static case (𝑉 out = 0 km s −1) out to the outskirts. However, the efficiency of scattering shows different behavior depending on the ionization con-dition. In the density-bounded case, the surface-brightness profile of C IV emission brightens with increasing 𝑉 out at most radii. The ionization-bounded case presents similar behavior within the ioniza-tion front ( 𝑟 p ≲ 30 kpc). At larger radii ( > 60 kpc), the profiles in outflowing cases are similar and clearly more extended than those in the static case. These results indicate that resonance scattering in outflow enhances the C IV surface brightness and contributes signif-icantly to spatial expansion. Our results are also directly relevant to observations of extended C IV and He II haloes around AGNs. At current surface brightness limits, He II nebulae are generally more compact and fainter than their C IV counterparts (Guo et al. 2020; Zhang et al. 2023; Sabhlok et al. 2024; Galbiati et al. 2026). In some cases, extended C IV emission is detected with no He II counterpart (Travascio et al. 2020). Res-onance scattering can account for this difference by redistributing C IV photons to larger radii, whereas He II directly traces the local emissivity. In Figure 13, the C IV profiles at 𝑉 out ≥ 300 km s −1 are much brighter than He II in the outer radius > 40 kpc, while the static case profile is comparable to the He II profile. These results show that resonance scattering in outflowing gas can be important for interpreting highly ionized nebular emission. More generally, the spatial expansion of resonance lines is de-termined by both the distribution and kinematics of the scattering gas. Velocity gradients systematically shift resonance photons in fre-quency and reduce trapping (Bonilha et al. 1979). Observationally, the similar distributions of [C II] and Ly 𝛼 haloes, along with the larger Ly 𝛼 velocity offsets associated with extended [C II] emission, connect the kinematics of cold gas to the spatial redistribution of Ly 𝛼 photons (Fujimoto et al. 2020). Our results extend this picture to warm ionized gas. At fixed gas distribution, outflow velocity extends the C IV scattering region. In real systems, however, outflows also change the amount and ionization state of the scattering gas. Costa et al. (2022) found that AGN feedback initially facilitates extended Ly 𝛼 emission by clearing dusty, H I gas from the nucleus, whereas stronger or sustained feedback lowers the H I column density in the halo and makes the Ly 𝛼 emission more compact. C IV may there-fore provide a complementary probe of warm outflows when Ly 𝛼 
+
+scattering becomes less effective. 
+
+4.3 Implications for C IV emission in Little Red Dots 
+
+Recent James Webb Space Telescope ( JWST ) observations have re-vealed a population of compact sources in the early Universe, Little Red Dots (LRDs) with broad, asymmetric Balmer lines and V-shaped spectral energy distributions with blue UV and red optical contin-uum (Harikane et al. 2023; Übler et al. 2023; Kocevski et al. 2023; Maiolino et al. 2024; Matthee et al. 2024; Greene et al. 2024; Ko-cevski et al. 2025). Their compactness and broad emission lines suggest the presence of AGN, but many LRDs lack traditional AGN signatures, such as strong X-ray and radio emission or a prominent infrared excess (Sacchi & Bogdán 2025; Gloudemans et al. 2025; Xiao et al. 2025). This has motivated the idea that the radiative transfer effects of Balmer lines, such as Thomson and resonance scattering, produce broad, asymmetric Balmer lines without AGN properties (Rusakov et al. 2026; Chang et al. 2026; Sneppen et al. 2026). In other words, Thomson-thick gas (i.e., electron column density 𝑁 e > 10 24 cm −2) is required to generate broad wings around Balmer lines. C IV emission has now been detected in several LRDs (Labbe et al. 2024; Akins et al. 2025; Ando et al. 2026; Ji et al. 2026; Tang et al. 2026). Strong C IV accompanied by weak or undetected He II has often been interpreted as evidence for photoionization by low-metallicity massive stars rather than by a typical AGN spectrum. However, current observations do not uniquely determine whether C IV is produced by the compact LRD component or its host galaxy. Moreover, the ionizing source, the intrinsic emission region, and the gas through which the photons propagate are physically different. We show that the relative spatial distributions of C IV and He II can provide additional constraints in Section 4.2. While non-resonant He II approximately traces the emission region, C IV photons can be  
+
+> MNRAS 000 , 1–17 (2026)
+
+# 14 Lim et al. 0 20 40 60 80 100 
+
+## Projected Radius rp [kpc] 
+
+10 −23 
+
+10 −21 
+
+10 −19 
+
+10 −17 
+
+10 −15       
+
+> SB [erg s −1 cm −2 arcsec −2]
+> Intrinsic C IV Intrinsic He II
+> Vout = 0 km s −1
+> Vout = 300 km s −1
+> Vout = 500 km s −1
+> Vout = 800 km s −1
+> Vout = 1000 km s −1
+> Vout = 3000 km s −1
+
+0 20 40 60 80 100 
+
+## Projected Radius rp [kpc] 
+
+10 −17 
+
+10 −16 
+
+10 −15            
+
+> SB [erg s −1 cm −2 arcsec −2]
+> Intrinsic C IV Intrinsic He II
+> Vout = 0 km s −1
+> Vout = 300 km s −1
+> Vout = 500 km s −1
+> Vout = 800 km s −1
+> Vout = 1000 km s −1
+> Vout = 3000 km s −1
+> Figure 13. Radial surface brightness (SB) profiles of C IV and He II emission for various outflow velocities 𝑉 out , following the same convention as in Figure 11. The SB profiles of the total scattered C IV are shown for 𝑉 out = 0 (red), 300 (green), 500 (yellow), 800 (cyan), 1000 (purple), and 3000 (blue) km s −1. The yellow solid line is identical to the total surface-brightness profile in Figure 11, which is represented by the orange solid line.
+
+spatially extended by scattering with warm gas. C IV emission that is more extended than He II may therefore indicate scattering rather than a difference in the intrinsic emission regions alone. Their line profiles provide a complementary diagnostic. If C IV and the Balmer lines propagate through the Thomson-thick gas, they may initially have similar broad wings, and the doublet is mixed by Thomson scattering, whereas subsequent C IV resonance scattering can addi-tionally produce velocity offsets, asymmetry, absorption features, and changes in the doublet ratio. In particular, 𝑅 CIV < 1 would indicate an optically thick, fast warm outflow as shown in Section 4.1. Future observations that resolve both the spatial and spectral dis-tribution of C IV will therefore be important for identifying its origin in LRDs. Joint measurements of C IV, He II, and the Balmer lines can separate the effects of the ionizing spectrum, electron scattering, and C IV resonance transfer, providing a direct probe of the multiphase gas surrounding LRDs. 
+
+5 CONCLUSIONS 
+
+This paper extended the 3D Monte Carlo radiative transfer code 
+
+RT-scat (Chang & Gronke 2024) to include the C IV resonance doublet at 𝜆𝜆 1548 , 1551. Using a simple spherical geometry, we investigated the effects of C IV resonance scattering on the line for-mation, the variation of the doublet ratio, and the spatial distribution of C IV emission. Our main conclusions are summarized as follows: 
+
+• Resonance scattering shapes the C IV spectrum. As the line-center optical depth 𝜏 0 increases, the profile evolves from a single Gaussian to a double-peaked shape with central suppression, broad-ening as FWHM /𝜎 R ≈ 1.092 + 1.061 √︃ ln 1 + ( 𝜏 0 /1.505 )2.788 . In an outflowing medium the doublet develops P-Cygni features, and once 𝑉 out exceeds the K–H separation ( Δ𝑉 K,H ≈ 500 km s −1), K-line photons are redistributed around the H component—naturally ex-plaining the observed dominance of the C IV 𝜆 1551 component in star-forming galaxies. 
+
+• The doublet ratio 𝑅 CIV traces fast, warm outflows. 𝑅 CIV de-creases from its intrinsic value of ∼ 2 as 𝑁 CIV and 𝑉 out increase, falling below unity for strong outflows in the optically thick medium (see § 3.2.3 and Figure 12). Since intrinsic blending alone cannot drive 𝑅 CIV below unity, 𝑅 CIV < 1 can arise from resonance scatter-ing in strong outflows. Our 𝑁 CIV –𝑉 out map reproduces the range of 
+
+𝑅 CIV observed in star-forming galaxies, demonstrating its diagnostic power on real data. 
+
+• Scattering produces extended C IV halos. Photoionization alone cannot make C IV more extended than He II 𝜆 1640: the intrin-sic C IV profile is either more compact or much fainter than He II . Resonance scattering redistributes C IV photons—from in-situ pho-toionized gas, the broad-line region, and AGN continuum—to larger radii, producing extended C IV halos over several tens of kpc that exceed He II and brighten with 𝑉 out , comparable to the C IV halos observed around quasars (see Section 3.3 and Figure 13). Several open questions remain for future work. Other UV metal resonance doublets, such as O VI 𝜆𝜆 1032, 1038 and N V 
+
+𝜆𝜆 1239, 1243, are expected to show similar behavior and, combined with C IV , can constrain the multiphase structure of the warm CGM at 𝑇 ≥ 10 5 K. More realistic geometries—including gas clumpiness, anisotropic optical depths, and polarization effects—may also intro-duce more complex behavior in the emergent doublet ratios (Seon 2024; Chang & Gronke 2024). Integrated models that combine mul-tiple resonance lines with different ionization energies will further help break degeneracies of modeling and trace distinct gas phases of the outflow (Li et al. 2026). Beyond these methodological extensions, alternative powering mechanisms such as shock heating, which can  
+
+> MNRAS 000 , 1–17 (2026)
+
+# Tracing warm gas with C IV 15 
+
+collisionally ionize and heat the CGM to 𝑇 ∼ 10 5–10 6 K and pro-duce C IV and He II emission without an external photoionizing field (Allen et al. 2008; Cabot et al. 2016), deserve exploration. Fully reproducing the observed spatial extent and line ratios of C IV and He II around quasars may require both resonance scattering and shock heating. 
+
+ACKNOWLEDGEMENTS 
+
+SJC acknowledges support from the ERC synergy grant 101166930 - RECAP. J. Lim and K.-I. Seon are supported by the Korea As-tronomy and Space Science Institute (KASI) through the R&D program (Project No. 2026-1-861-02) supervised by the Ministry of Science and ICT. MG thanks the European Union for support through ERC-2024-STG 101165038 (ReMMU). H.-W. Lee grate-fully acknowledges the support of the National Research Foundation of Korea (NRF) grant funded by the Korean government (No. NRF-2023R1A2C1006984). 
+
+DATA AVAILABILITY 
+
+Data related to this work will be shared on reasonable request to the corresponding author. 
+
+REFERENCES 
+
+Adams T. F., 1972, ApJ, 174, 439 Ahn S.-H., Lee H.-W., Lee H. M., 2000, Journal of Korean Astronomical Society, 33, 29 Akins H. B., et al., 2025, ApJ, 980, L29 Allen M. G., Groves B. A., Dopita M. A., Sutherland R. S., Kewley L. J., 2008, ApJS, 178, 20 Ando M., Harikane Y., Katz H., Inayoshi K., Tanaka T. S., 2026, arXiv e-prints, p. arXiv:2606.03522 Arrigoni Battaia F., Yang Y., Hennawi J. F., Prochaska J. X., Matsuda Y., Yamada T., Hayashino T., 2015a, ApJ, 804, 26 Arrigoni Battaia F., Hennawi J. F., Prochaska J. X., Cantalupo S., 2015b, ApJ, 809, 163 Berg D. A., Erb D. K., Henry R. B. C., Skillman E. D., McQuinn K. B. W., 2019a, ApJ, 874, 93 Berg D. A., Chisholm J., Erb D. K., Pogge R., Henry A., Olivier G. M., 2019b, ApJ, 878, L3 Bonilha J. R. M., Ferch R., Salpeter E. E., Slater G., Noerdlinger P. D., 1979, ApJ, 233, 649 Bordoloi R., et al., 2014, ApJ, 796, 136 Cabot S. H. C., Cen R., Zheng Z., 2016, MNRAS, 462, 1076 Cauley P. W., Johns-Krull C. M., 2016, ApJ, 825, 147 Chang S.-J., Gronke M., 2024, MNRAS, 532, 3526 Chang S.-J., Yang Y., Seon K.-I., Zabludoff A., Lee H.-W., 2023, ApJ, 945, 100 Chang S.-J., Gronke M., Matthee J., Mason C., 2026, MNRAS, 545, staf2131 Codoreanu A., Ryan-Weber E. V., García L. Á., Crighton N. H. M., Becker G., Pettini M., Madau P., Venemans B., 2018, MNRAS, 481, 4940 Costa T., Arrigoni Battaia F., Farina E. P., Keating L. C., Rosdahl J., Kimm T., 2022, MNRAS, 517, 1767 Crowther P. A., 2022, arXiv e-prints, p. arXiv:2207.08690 Davies R. L., et al., 2023, MNRAS, 521, 314 Dijkstra M., Haiman Z., Spaans M., 2006, ApJ, 649, 14 Draine B. T., 2011, Physics of the Interstellar and Intergalactic Medium. Princeton University Press, Princeton, NJ, doi:10.1515/9781400839087 Dutta R., et al., 2021, MNRAS, 508, 4573 Faucher-Giguère C.-A., Oh S. P., 2023, ARA&A, 61, 131 Feibelman W. A., 1983, A&A, 122, 335 Ferland G. J., et al., 2017, Rev. Mex. Astron. Astrofis., 53, 385 Fossati M., et al., 2021, MNRAS, 503, 3044 Fujimoto S., et al., 2020, ApJ, 900, 1 Galbiati M., et al., 2026, A&A, 710, A117 Garza S. L., et al., 2024, ApJ, 970, 115 Garza S. L., Werk J. K., Berg T. A. M., Faerman Y., Oppenheimer B. D., Bordoloi R., Ellison S. L., 2025, ApJ, 978, L12 Gloudemans A. J., Duncan K. J., Eilers A.-C., Farina E. P., Harikane Y., Inayoshi K., Lambrides E., Vardoulaki E., 2025, ApJ, 986, 130 Greene J. E., et al., 2024, ApJ, 964, 39 Gronke M., E. Schneider E., 2026, Living Reviews in Computational Astro-physics, 12, 2 Gronke M., Dijkstra M., McCourt M., Oh S. P., 2017, A&A, 607, A71 Guo Y., et al., 2020, ApJ, 898, 26 Harikane Y., et al., 2023, ApJ, 959, 39 Heckman T. M., Lehnert M. D., Miley G. K., van Breugel W., 1991, ApJ, 381, 373 Heckman T., Borthakur S., Wild V., Schiminovich D., Bordoloi R., 2017, ApJ, 846, 151 Izotov Y. I., Schaerer D., Guseva N. G., Thuan T. X., Worseck G., 2024, MNRAS, 528, L10 Ji X., et al., 2026, arXiv e-prints, p. arXiv:2604.03370 Kocevski D. D., et al., 2023, ApJ, 954, L4 Kocevski D. D., et al., 2025, ApJ, 986, 126 Labbe I., et al., 2024, arXiv e-prints, p. arXiv:2412.04557 Laursen P., Razoumov A. O., Sommer-Larsen J., 2009, ApJ, 696, 853 Li Z., et al., 2026, arXiv e-prints, p. arXiv:2603.06546 Liang C. J., Chen H.-W., 2014, MNRAS, 445, 2061 Lusso E., Worseck G., Hennawi J. F., Prochaska J. X., Vignali C., Stern J., O’Meara J. M., 2015, MNRAS, 449, 4204 Maiolino R., et al., 2024, A&A, 691, A145 Matthee J., et al., 2022, A&A, 660, A10 Matthee J., et al., 2024, ApJ, 963, 129 Michalitsianos A. G., Kafatos M., Fahey R. P., Viotti R., Cassatella A., Altamore A., 1988, ApJ, 331, 477 Michalitsianos A. G., Kafatos M., Meier S. R., 1992, ApJ, 389, 649 Neufeld D. A., 1990, ApJ, 350, 216 Obreja A., Arrigoni Battaia F., Macciò A. V., Buck T., 2024, MNRAS, 527, 8078 Osterbrock D. E., 1962, ApJ, 135, 195 Osterbrock D. E., Ferland G. J., 2006, Astrophysics of Gaseous Nebulae and Active Galactic Nuclei, 2nd edn. University Science Books, Sausalito, CA Prochaska J. X., Kasen D., Rubin K., 2011, ApJ, 734, 24 Prochaska J. X., et al., 2013, ApJ, 776, 136 Richards G. T., et al., 2006, ApJS, 166, 470 Rudie G. C., Steidel C. C., Pettini M., Trainor R. F., Strom A. L., Hummels C. B., Reddy N. A., Shapley A. E., 2019, ApJ, 885, 61 Rueda-Vargas S. C., Mainieri V., Tozzi G., Kakkad D., Arrigoni-Battaia F., Costa T., Farina E. P., Harrison C. M., 2026, A&A, 707, A283 Rusakov V., et al., 2026, Nature, 649, 574 Rybicki G. B., Lightman A. P., 1986, Radiative Processes in Astrophysics. Wiley-VCH Sabhlok S., et al., 2024, ApJ, 964, 84 Sacchi A., Bogdán Á., 2025, ApJ, 989, L30 Schaerer D., et al., 2022, A&A, 658, L11 Senchyna P., et al., 2017, MNRAS, 472, 2608 Seon K.-I., 2024, ApJ, 971, 184 Seon K.-I., Kim C.-G., 2020, ApJS, 250, 9 Smith A., Safranek-Shrader C., Bromm V., Milosavljević M., 2015, MNRAS, 449, 4336 Sneppen A., et al., 2026, arXiv e-prints, p. arXiv:2601.18864 Stark D. P., et al., 2015, MNRAS, 454, 1393 Steidel C. C., Erb D. K., Shapley A. E., Pettini M., Reddy N., Bogosavljević M., Rudie G. C., Rakic O., 2010, ApJ, 717, 289 Strateva I. V., Brandt W. N., Schneider D. P., Vanden Berk D. G., Vignali C., 2005, AJ, 130, 387 MNRAS 000 , 1–17 (2026) 16 Lim et al. 0 500 1000 1500 2000 2500 3000 
+
+σint [km s −1]
+
+> 1.01.21.41.61.82.0
+> RCIV
+
+Analytic solution RT simulation 
+
+Figure A1. C IV doublet ratio 𝑅 CIV as a function of the intrinsic emission width for 𝜎 int = 0–3000 km s −1. The black dashed line represents the analytic solution as described in Equation A1, and the blue dashed horizontal lines indicate the limits of 𝑅 CIV from the analytic solution. The red dots denote the doublet ratios computed from the Gaussian emission profiles for each 𝜎 int ,which are in excellent agreement with the analytic solution. Tang M., Stark D. P., Topping M. W., Mason C., Ellis R. S., 2024, ApJ, 975, 208 Tang M., et al., 2026, arXiv e-prints, p. arXiv:2604.03563 Thanathibodee T., et al., 2024, ApJ, 975, 193 Thompson T. A., Heckman T. M., 2024, ARA&A, 62, 529 Topping M. W., et al., 2024, MNRAS, 529, 3301 Topping M. W., et al., 2025, ApJ, 980, 225 Travascio A., et al., 2020, A&A, 635, A157 Tumlinson J., Peeples M. S., Werk J. K., 2017, ARA&A, 55, 389 Übler H., et al., 2023, A&A, 677, A145 Vanden Berk D. E., et al., 2001, AJ, 122, 549 Vanzella E., et al., 2016, ApJ, 821, L27 Veilleux S., Cecil G., Bland-Hawthorn J., 2005, ARA&A, 43, 769 Veilleux S., Maiolino R., Bolatto A. D., Aalto S., 2020, A&ARv, 28, 2 Verhamme A., Schaerer D., Maselli A., 2006, A&A, 460, 397 Willis A. J., van der Hucht K. A., Conti P. S., Garmany D., 1986, A&AS, 63, 417 Witstok J., Smit R., Maiolino R., Curti M., Laporte N., Massey R., Richard J., Swinbank M., 2021, MNRAS, 508, 1686 Witstok J., et al., 2025, MNRAS, 536, 27 Xiao M., et al., 2025, A&A, 700, A231 Yoo J. J., Lee H.-W., Ahn S.-H., 2002, Monthly Notices of the Royal Astro-nomical Society, 334, 974 Zhang S., et al., 2023, ApJ, 952, 124 Zheng Z., Miralda-Escudé J., 2002, ApJ, 578, 33 
+
+APPENDIX A: ANALYTIC SOLUTION FOR C IV DOUBLET RATIO DEPENDING ON INTRINSIC EMISSION WIDTH 
+
+Figure A1 shows the C IV doublet ratio 𝑅 CIV as a function of the intrinsic emission width 𝜎 int . The analytic solution for 𝑅 CIV , derived from Equation 15, can be rewritten as 
+
+𝑅 C iv = 3 erf (𝑎 int ) + erf (𝑏 int )
+
+2 erf (𝑏 int ) , (A1) where 𝑎 int = 250 /√2𝜎 int and 𝑏 int = 750 /√2𝜎 int . When 3 𝜎 int <
+
+Δ𝑉 K,H (i.e., 500 km s −1), 𝑅 CIV has an intrinsic value of 2 since the K and H components are clearly resolved. In contrast, when 3 𝜎 int >
+
+Δ𝑉 K,H, the two components become intrinsically blended, and 𝑅 CIV 
+
+decreases, asymptotically approaching unity with increasing 𝜎 int .Notably, the analytic solution yields 1 ≤ 𝑅 CIV ≤ 2 as a function of 
+
+𝜎 int .
+
+APPENDIX B: COMBINED PHOTOIONIZATION AND RESONANCE SCATTERING MODEL 
+
+In § 3.3, we present the spatial distributions of C IV and He II emission in terms of radial surface brightness. Using the public photoionization code CLOUDY , we compute the intrinsic C IV and He II surface-brightness profiles and then post-process the C IV emission with radiative transfer simulations using RT-scat to quantify how resonance scattering modifies the spatial distribution. In this appendix, we describe the setup of CLOUDY and RT-scat .Figure B1 shows the spectral energy distribution (SED) from Ar-rigoni Battaia et al. (2015b), which is adopted as the incident ra-diation field in our photoionization modeling. The SED is modeled from the stacked spectrum of Lusso et al. (2015), corrected for ab-sorption by the intergalactic medium. From this SED, we compute the equivalent width (EW) of 28 .2 Å for the broad C IV emission 5.This EW is measured over the wavelength range of 1500–1600 Å, with the continuum level fitted within a window of 1450–1470 Å to avoid contamination. From Gaussian fitting, we estimate an intrinsic emission width of 𝜎 int = 3000 km s −1 for the broad C IV emission. Figure B2 presents the radial profiles of the C IV number density 
+
+𝑛 CIV and emissivity 𝜖 CIV , computed using CLOUDY . We assume that the hydrogen number density follows an exponentially decreasing radial profile, 
+
+𝑛 H (𝑟 ) = 𝑛 0 exp (− 𝑟 /𝑟 𝑒 ), (B1) where 𝑟 𝑒 = 50 kpc is the scale length, and the normalization 𝑛 0 is determined by 
+
+𝑛 0 = 𝑁 H
+
+∫ 𝑅 out  
+
+> 𝑅 in
+
+exp (− 𝑟 /𝑟 𝑒 ) 𝑑𝑟 . (B2) Here, 𝑅 in = 1 kpc and 𝑅 out = 100 kpc define the inner and outer boundaries of the halo. As described in § 3.3, we assume a total hydrogen column density of 𝑁 H = 10 22 cm −2 and solar metallicity (𝑍 = 𝑍 ⊙ ) throughout the halo, which allows us to reproduce the observed He II luminosity (i.e., 𝐿 He II = 10 42–43 erg s −1) within the photoionization framework. Furthermore, we consider two ioniza-tion regimes depending on whether an H I ionization front is present (ionization-bounded) or absent (density-bounded), with the SED normalized to two distinct luminosities at 1 Rydberg ( = 13 .6 eV): 
+
+𝜈𝐿 𝜈 = 10 44 .0 and 10 46 .0 erg s −1, respectively. From these assump-tions, the radial distributions of 𝑛 CIV and 𝜖 CIV are derived, in contrast to the uniform density profile adopted in § 2.3. Figure 11 presents the radial surface-brightness profiles of C IV and He II emission. The intrinsic surface brightness is computed from the line emissivities shown in Figure B2 via SB (𝑟 p) = 2
+
+(1 + 𝑧 )4
+
+∫ 𝑅 out 
+
+> 𝑟 p
+
+(𝜖 𝑖 (𝑟 )/ 4𝜋 ) × 𝑟 √︃ 
+
+𝑟 2 − 𝑟 2p
+
+𝑑𝑟, (B3) where 𝑖 denotes C IV or He II , 𝑟 p is the projected radius spanning from 0 to 100 kpc, 𝑅 out = 100 kpc is the outer boundary of the halo,  
+
+> 5
+
+Lusso et al. (2015) reported a lower value of EW = 17 .8 Å for the C IV emission from the same SED; our measurement is higher because we adopt a relatively wide continuum wavelength range of 1500–1600 Å. MNRAS 000 , 1–17 (2026) Tracing warm gas with C IV 17 10 13 10 14 10 15 10 16 10 17 
+
+Frequency [Hz] 10 43 
+
+10 44 
+
+10 45 
+
+> L [erg s  1]
+
+Arrigoni Battaia+15 C IV 1548, 1551 
+
+1500 1520 1540 1560 1580 1600 Wavelength [Å] 0.8 1.0 1.2 1.4 1.6 1.8 2.0 
+
+> 1e44
+
+Continuum EW of broad C IV = 28.15 Å 
+
+Figure B1. Spectral energy distribution (SED) of the AGN used as the incident radiation field in photoionization modeling. The solid line shows the SED from Arrigoni Battaia et al. (2015b), normalized to 𝜈𝐿 𝜈 = 10 44 .0 erg s −1 at 1 Ryd (=13.6 eV). The left panel shows the SED in frequency space, while the right panel presents a zoom-in around the C IV emission feature in wavelength space. The broad C IV emission from the central source has an intrinsic width of 
+
+𝜎 int = 3000 km s −1 and an EW of ≈ 28 .2 Å. The blue line marks the continuum, spanning 1500–1600 Å, which is used for calculating the EW and modeling continuum pumping in our RT calculations. The red vertical dashed lines indicate the line centers of C IV K- and H-lines, respectively. 
+
+and 𝑧 is the redshift of the source. Throughout this work, we adopt 
+
+𝑧 = 0. As discussed in § 3.3, the spatial distribution of the non-resonant He II line follows the emissivity predicted by photoioniza-tion, whereas the resonant C IV line can be redistributed to larger radii through scattering. To incorporate resonance scattering into the photoionization framework, we post-process the C IV emission using 
+
+RT-scat , assuming the halo is illuminated by three distinct sources of C IV photons. The first source is the in-situ intrinsic emission pro-duced within the photoionized gas, which follows the radial distribu-tion shown in Figure B2. The other two sources originate from the central AGN (see Figure B1): a broad-line region (BLR) component emitting broad C IV photons with 𝜎 int = 3000 km s −1, and an AGN continuum component that accounts for continuum pumping over the wavelength range of 1500–1600 Å. The luminosities of all three components are summarized in Table 2. For the RT-scat calcula-tion, we adopt a velocity dispersion of 𝜎 R = 30 km s −1 and a radial outflow velocity that varies as 𝑣 (𝑟 ) = 𝑉 out (𝑟 /𝑅 H), where 𝑟 is the distance from the central source, 𝑅 H is the halo radius (see Figure 3), and the maximum outflow velocity is set to 𝑉 out = 500 km s −1. The resulting surface-brightness profiles, combining contributions from all three C IV photon sources, are presented in Figure 11. 
+
+This paper has been typeset from a TEX/L ATEX file prepared by the author. MNRAS 000 , 1–17 (2026) 18 Lim et al. 0 20 40 60 80 100 
+
+Radius [kpc]       
+
+> 10 36
+> 10 34
+> 10 32
+> 10 30
+> 10 28
+> 10 26
+> CIV  [erg cm  3 s 1]
+
+# Emissivity 
+
+Ionization bounded case Density bounded case      
+
+> 020 40 60 80 100
+
+Radius [kpc]         
+
+> 10 12
+> 10 11
+> 10 10
+> 10 9
+> 10 8
+> 10 7
+> 10 6
+> 10 5
+> nCIV  [cm  3]
+
+# Number density 
+
+nCIV 
+
+nH(r) exp( r)
+
+> 0.00 0.02 0.04 0.06 0.08
+> nH [cm  3]
+
+Figure B2. Radial profiles of the C IV number density ( 𝑛 CIV ) and emissivity ( 𝜖 CIV ) computed with CLOUDY . The left panel presents the radial distributions of 
+
+𝑛 CIV (black) and 𝑛 H (red). The right panel shows 𝜖 CIV as a function of radius. In both panels, the solid and dashed lines correspond to the ionization-bounded (𝜈𝐿 𝜈 = 10 44 .0 erg s −1) and density-bounded ( 𝜈𝐿 𝜈 = 10 46 .0 erg s −1) cases, respectively. MNRAS 000 , 1–17 (2026)
