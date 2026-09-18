@@ -1,0 +1,1357 @@
+Title: An Elementary Expression for Multiple Scattering in Homogeneous Microflake Media
+
+URL Source: https://arxiv.org/pdf/2609.20394v1
+
+Published Time: Fri, 18 Sep 2026 01:20:17 GMT
+
+Number of Pages: 19
+
+Markdown Content:
+# An Elementary Expression for Multiple Scattering in Homogeneous Microflake Media 
+
+## Jonathan Dupuy August 2026 
+
+We derive a novel diffuse-like BRDF based on microfacet theory. Its main novelty lies in the fact that it admits an elementary expression for both evaluation and importance sampling, while accounting exactly for all scattering orders under the Smith shadowing assumption. As such, it is the first to settle the question of whether such a construction was possible. In practice, the BRDF produces Lambertian reflectance at normal incidence and progressively concentrates reflected light around the mirror direction as incidence approaches grazing. We showcase this effect by comparing rendering results against Lam-bertian and state-of-the-art stochastic microfacet BRDFs. 
+
+## 1 Introduction 
+
+Context Microfacet theory is a geometric optics model linking surface reflectance to specific ar-rangements of microscopic facets that compose the surface and deviate incident light 1. This theory was introduced to the computer graphics community by Blinn [2] and has undergone considerable development ever since. In this work, we contribute to this development by deriving a BRDF [13] from the multiple reflections among a microfacet arrangement subject to the state-of-the-art Smith shadowing assumption [14, 9]. 
+
+Smith Microfacets The Smith shadowing assumption treats microfacet orientations as statistically independent of their positions over the surface [4]. In practice, this makes microfacet transport equiv-alent to that of a participating medium, with the BRDF describing the directional distribution of rays escaping the medium’s boundary [10, 8]. Unfortunately, this directional distribution is hard to derive for the complete transport [1, 5], and so microfacet BRDFs either restrict transport to single-scattering effects or rely on a stochastic representation. This dichotomy creates a trade-off between analytic simplicity and physical completeness: single-scattering models admit elementary closed-form expres-sions for evaluation and sampling but lose energy by neglecting inter-reflections, whereas multiple-scattering models preserve energy but lack an elementary closed-form characterization. Whether a Smith microfacet BRDF can combine exact multiple scattering with an elementary closed-form ex-pression has remained an open question. 
+
+> 1This idea is quite old as it dates back to the work of Bouguer [3] according to Trowbridge and Reitz [15].
+
+1arXiv:2609.20394v1 [cs.GR] 17 Sep 2026 Contribution and Outline In this work, we derive a particular Smith microfacet BRDF that answers this question in the affirmative: 
+
+𝑓 𝑟 (𝝎 𝑖 , 𝝎 𝑜 ) = 𝑧 𝑖 + 𝑧 𝑜 
+
+𝜋 (1 + 𝝎 𝑖 · 𝝎 𝑜 ) . (1) This BRDF accounts exactly for all scattering orders and preserves energy, while retaining the elemen-tary evaluation and direct importance sampling usually associated with single-scattering microfacet models. In the remaining sections, we derive this result in a self-contained way as follows: • In Section 2, we introduce the homogeneous semi-infinite microflake model and show how the normal distribution function (NDF) fully specifies its stochastic transport. We then introduce a one-dimensional depth parameterization from which the escape probabilities associated with the first two scattering orders follow directly. • In Section 3, we show that one-sided NDFs reproduce the characteristic transport of mirror heightfields. This structure allows us to derive the escape probability associated with any pre-scribed sequence of directions. By marginalizing this probability over the intermediate direc-tions, we obtain a scattering-order representation of the exit-direction distribution. • In Section 4, we introduce a parameter-free quadratic NDF for which the intermediate path direc-tions can be marginalized analytically and the complete scattering-order series can be summed in closed form, leading to Equation (1). • In Section 5, we interpret the resulting BRDF as the Jacobian of a chordal disk transformation and use this construction to sample both the complete BRDF and its phase function. • In Section 6, we compare rendering results of our BRDF against Lambertian, single-scattering, and stochastic microfacet BRDFs. 
+
+## 2 Homogeneous Semi-Infinite Microflake Media 
+
+In this section we introduce the homogeneous semi-infinite microflake medium as a starting primitive for modelling reflectance. 
+
+2.1 Preliminaries 
+
+Random Walks in Semi-Infinite Media A surface BRDF associates each incident direction with a distribution of reflected energy over outgoing directions. An energy-preserving BRDF can therefore be interpreted as a stochastic mapping from a direction pointing towards the surface to a random direction pointing away from it. A random walk in a semi-infinite medium naturally implements such a mapping because any ray crossing the medium boundary necessarily does so along an upwelling direction. Algorithm 1 implements this construction and is illustrated in Figure 1. Given a surface with normal n := (𝑥 𝑛 , 𝑦 𝑛 , 𝑧 𝑛 ) ∈ S 2 and a ray with downwelling direction 𝝎 1, i.e., (𝝎 1 · n) ≤ 0, the algorithm generates a random walk composed of 𝑘 ≥ 2 free-flight distances 𝜏 𝑘 = (𝑡 1, . . . , 𝑡 𝑘 ) and directions Γ𝑘 = (𝝎 1, . . . , 𝝎 𝑘 ). Such a walk thus contains 𝑘 − 1 collisions, with the last free flight taking the ray outside the medium. The walk terminates when the ray exits the medium and returns the final upwelling direction 𝝎 𝑜 := 𝝎 𝑘 , with (𝝎 𝑜 · n) > 0. 2medium interface incident ray 
+
+> 𝑡 1𝝎 1
+> 𝑡 2𝝎 2
+> 𝑡 3𝝎 3
+> 𝑡 4𝝎 4
+> PAF! PAF! PAF!
+
+Algorithm 1 Random walk in a semi-infinite volume                                
+
+> 1: function StochasticRandomWalk( 𝝎 1,n)
+> 2: 𝝎 ←𝝎 1
+> 3: 𝑡 ←DistanceToNextCollision( 𝝎 )
+> 4: (𝑥, 𝑦, 𝑧 ) ← 𝑡 𝝎
+> 5: while [n· ( 𝑥, 𝑦, 𝑧 )] <0do
+> 6: 𝝎 ←DeviateRay( 𝝎 )
+> 7: 𝑡 ←DistanceToNextCollision( 𝝎 )
+> 8: (𝑥, 𝑦, 𝑧 ) ← ( 𝑥, 𝑦, 𝑧 ) + 𝑡 𝝎
+> 9: end while
+> 10: return 𝝎
+> 11: end function
+
+Figure 1: Random-walk within a semi-infinite volume. 
+
+Stochasticity and Link to the BRDF As long as the collision and deviation laws ensure that the random walk exits the medium with probability one, repeated executions for a fixed input direction 
+
+𝝎 1 define a normalized probability density R ( 𝝎 1, 𝝎 𝑜 ) over the upper hemisphere. This exit density determines an energy-preserving BRDF through 
+
+R ( 𝝎 1, 𝝎 𝑜 ) = 𝑓 𝑟 (− 𝝎 1, 𝝎 𝑜 ) 𝑧 𝑜 , 𝑧 𝑜 := 𝝎 𝑜 · n. (2) Here, 𝑧 𝑜 is the usual cosine factor relating a BRDF to its directional density, while −𝝎 1 accounts for the conventional orientation of the incident BRDF direction. Constructing the BRDF therefore amounts to specifying the probability laws governing the random walk. In Algorithm 1, these laws are imple-mented by DistanceToNextCollision and DeviateRay, which respectively determine the free-flight distances and the directional deviations produced by collisions. Next, we use microflake theory to con-struct both functions and derive their probability distributions from the microflake normal distribution function. 
+
+Microflake Model We now assume that the semi-infinite medium is a homogeneous specular mi-croflake medium [11]. Under this assumption, the ray travels freely until it collides with a microflake, after which it deviates based on the way the flake reflects incident rays. Both of these stochastic pro-cesses depend on the normal distribution function (NDF), which describes how the microflakes are statistically oriented throughout the medium via their normal 𝝎 𝑚 . Letting 𝐷 := 𝐷 (𝝎 𝑚 ) denote the NDF, collisions occur according to the Beer-Lambert law, i.e., the distance to the next microflake col-lision follows the PDF 
+
+𝑝 PAF! (𝑡 | 𝝎 𝑗 ) = 𝜎 𝑗 exp  −𝜎 𝑗 𝑡  , (3) where 𝜎 𝑗 denotes the projected area of the microflake distribution along direction 𝝎 𝑗 
+
+𝜎 𝑗 := 𝜎 (𝝎 𝑗 ) =
+
+∫
+
+> S2
+
+(− 𝝎 𝑗 · 𝝎 𝑚 )+ 𝐷 (𝝎 𝑚 ) d𝝎 𝑚 . (4) Once the collision point is determined, the ray’s direction 𝝎 𝑗 ∈ S 2 deviates towards 𝝎 𝑗 +1 ∈ S 2. This deviation is done according to the microflake specular phase function, which is also a PDF over deviated directions 
+
+Ψ(𝝎 𝑗 , 𝝎 𝑗 +1) = 𝐷 (h)
+
+4 𝜎 𝑗 
+
+, h := 𝝎 𝑗 +1 − 𝝎 𝑗 
+
+∥𝝎 𝑗 +1 − 𝝎 𝑗 ∥ . (5) We emphasize that Equations (3) and (5) are solely parameterized by the NDF. The NDF thus fully de-termines the stochastic transport that occurs within the medium. As long as 𝜎 > 0 for any downwelling direction, the random walks are guaranteed to escape the medium. 32.2 Vertical-Depth Parameterization and First Two Scattering Orders 
+
+> medium interface incident ray
+> Δ1
+> Δ2
+> Δ4
+> Δ3
+> 𝑡 1𝝎 1
+> 𝑡 2𝝎 2
+> 𝑡 3𝝎 3
+> 𝑡 4𝝎 4
+> PAF! PAF! PAF!
+
+Figure 2: Depth parameterization for random walks within the medium. 
+
+Depth Parameterization Equations (3) and (5) describe the random walk in three dimensions. Since the medium is homogeneous parallel to its boundary, lateral collision coordinates have no influence on whether a ray escapes. Therefore, similarly to Bitterli and d’Eon [1], we only track the vertical depth of the walk. For a ray traveling along 𝝎 𝑗 , the projected area of Equation (4) gives the collision rate per unit vertical depth 
+
+𝜅 𝑗 := 𝜅 (𝝎 𝑗 ) = 𝜎 𝑗 
+
+|𝑧 𝑗 | . (6) Consequently, the vertical distance Δ ≥ 0 to the next potential collision is exponentially distributed: 
+
+𝑝 𝑗 (Δ) := 𝑝 (Δ | 𝝎 𝑗 ) = 𝜅 𝑗 𝑒 −𝜅 𝑗 Δ. (7) This one-dimensional reduction allows us to integrate the collision depths analytically for the first two scattering orders. 
+
+> −Δ1
+> +Δ2
+> 𝑡 1𝝎 1
+> 𝑡 2𝝎 2
+> PAF!
+
+Δ1 ≤ Δ2
+
+> −Δ1
+> −Δ2
+> +Δ3
+> 𝑡 1𝝎 1
+> 𝑡 2𝝎 2
+> 𝑡 3𝝎 3
+
+Δ1 + Δ2 ≤ Δ3
+
+> PAF! PAF!
+> −Δ1
+> +Δ2
+> +Δ3
+> 𝑡 1𝝎 1
+> 𝑡 2𝝎 2
+> 𝑡 3𝝎 3
+
+Δ2 ≤ Δ1 ≤ Δ2 + Δ3
+
+> PAF! PAF!
+
+(a) (b) (c) Figure 3: All possible path configurations for escaping the medium after (a) one collision and (b, c) two collisions. 4Escape Probability After One Collision Consider an incident direction 𝝎 1 and an escaping direc-tion 𝝎 2. If the first collision occurs at depth Δ1, the outgoing segment must then travel at least the same vertical distance without another collision. The probability of escaping the medium after exactly one collision is therefore 
+
+𝑃 1 (𝝎 1, 𝝎 2) =
+
+∫ ∞
+
+> 0
+
+𝑝 1 (Δ1)
+
+| {z } 
+
+> move down by Δ1
+
+∫ ∞
+
+> Δ1
+
+𝑝 2 (Δ2)
+
+| {z } 
+
+> now up by at least Δ1
+
+dΔ2 dΔ1
+
+=
+
+∫ ∞
+
+> 0
+
+𝜅 1 𝑒 −𝜅 1 Δ1
+
+∫ ∞
+
+> Δ1
+
+𝜅 2 𝑒 −𝜅 2 Δ2 dΔ2
+
+
+
+dΔ1
+
+=
+
+∫ ∞
+
+> 0
+
+𝜅 1 𝑒 − ( 𝜅 1+𝜅 2 ) Δ1 dΔ1
+
+= 𝜅 1
+
+𝜅 1 + 𝜅 2
+
+. (8) 
+
+Single-Scattering Exit-Direction Density Multiplying the single-collision escape probability by the phase function gives the single-scattering contribution to the exit-direction density 
+
+R1 (𝝎 1, 𝝎 2) = 𝜅 1
+
+𝜅 1 + 𝜅 2
+
+Ψ(𝝎 1, 𝝎 2). (9) Since both 𝜅 and Ψ are determined by the NDF, so is this single-scattering exit-direction density. 
+
+Escape Probability After Two Collisions An escaping path with two scattering events has two possible configurations, depending on the sign of the intermediate direction 𝝎 2, as illustrated in Fig-ure 3. If the intermediate direction 𝝎 2 is downwelling, then the ray must escape from the accumulated depth: 
+
+𝑃 2 (𝝎 1, 𝝎 2, 𝝎 3) 𝑧 2 <0 =
+
+∫ ∞
+
+> 0
+
+𝑝 1 (Δ1)
+
+| {z } 
+
+> move down by Δ1
+
+∫ ∞
+
+> 0
+
+𝑝 2 (Δ2)
+
+| {z } 
+
+> further down by Δ2
+
+∫ ∞
+
+> Δ1+Δ2
+
+𝑝 3 (Δ3)
+
+| {z }     
+
+> now up by Δ3≥Δ1+Δ2
+
+dΔ3 dΔ2 dΔ1
+
+= 𝜅 1
+
+𝜅 1 + 𝜅 3
+
+𝜅 2
+
+𝜅 2 + 𝜅 3
+
+. (10) If instead the intermediate direction 𝝎 2 is upwelling, it must collide before reaching the boundary so that the final ray can escape: 
+
+𝑃 2 (𝝎 1, 𝝎 2, 𝝎 3) 𝑧 2 >0 =
+
+∫ ∞
+
+> 0
+
+𝑝 1 (Δ1)
+
+| {z } 
+
+> move down by Δ1
+
+∫ Δ1
+
+> 0
+
+𝑝 2 (Δ2)
+
+| {z }   
+
+> now up by Δ2≤Δ1
+
+∫ ∞ 
+
+> Δ1−Δ2
+
+𝑝 3 (Δ3)
+
+| {z }     
+
+> further up by Δ3≥Δ1−Δ2
+
+dΔ3 dΔ2 dΔ1
+
+= 𝜅 1
+
+𝜅 1 + 𝜅 3
+
+𝜅 2
+
+𝜅 1 + 𝜅 2
+
+. (11) Using the single-scattering escape probability to combine both cases gives 
+
+𝑃 2 (𝝎 1, 𝝎 2, 𝝎 3) = 1𝑧 2 <0 𝜅 1 𝑃 1 (𝝎 2, 𝝎 3) + 1𝑧 2 >0 𝜅 2 𝑃 1 (𝝎 1, 𝝎 2)
+
+𝜅 1 + 𝜅 3
+
+. (12) 
+
+Double-Scattering Exit-Direction Density Marginalizing the resulting path density over the in-termediate direction gives the double-scattering contribution to the exit-direction density 
+
+R2 (𝝎 1, 𝝎 3) =
+
+∫
+
+> S2
+
+𝑃 2 (𝝎 1, 𝝎 2, 𝝎 3) Ψ(𝝎 1, 𝝎 2) Ψ(𝝎 2, 𝝎 3) d𝝎 2. (13) 52.3 Optional – Isotropic Scattering Orders 
+
+The derivation in this subsection is not required for the rest of the paper. Its goal is to illustrate how the framework developed so far efficiently recovers known results. 
+
+Isotropic Scattering We apply it to the simplest case of isotropic scattering, obtained from a con-stant microflake NDF: 
+
+𝐷 (𝝎 𝑚 ) = 14𝜋 ⇒ Ψ(𝝎 𝑗 , 𝝎 𝑗 +1) = 14𝜋 , 𝜅 (𝝎 𝑗 ) = 14|𝑧 𝑗 | . (14) We now derive the first two scattering orders of the corresponding BRDF. 
+
+Single-scattering BRDF Inserting Equation (14) into Equation (9) gives 
+
+R1 (𝝎 1, 𝝎 𝑜 ) = 14𝜋 𝑧 𝑜 
+
+𝑧 𝑜 − 𝑧 1
+
+. (15) We then retrieve the single-scattering BRDF from Equation (2): 
+
+𝑓 𝑟 1 (𝝎 𝑖 , 𝝎 𝑜 ) = R1 (− 𝝎 𝑖 , 𝝎 𝑜 )
+
+𝑧 𝑜 
+
+= 14𝜋 
+
+1
+
+𝑧 𝑜 + 𝑧 𝑖 
+
+. (16) 
+
+Double-scattering BRDF Inserting Equations (12) and (14) into Equation (13) gives 
+
+R2 (𝝎 1, 𝝎 𝑜 ) = 1
+
+(4𝜋 )2
+
+∫
+
+> S2
+
+𝑧 𝑜 
+
+𝑧 𝑜 − 𝑧 1
+
+
+
+1𝑧 2 <0
+
+𝑧 𝑜 
+
+𝑧 𝑜 − 𝑧 2
+
++ 1𝑧 2 >0
+
+−𝑧 1
+
+𝑧 2 − 𝑧 1
+
+
+
+d𝝎 2
+
+= 1
+
+(4𝜋 )2
+
+𝑧 𝑜 
+
+𝑧 𝑜 − 𝑧 1
+
+∫ 2𝜋 
+
+> 0
+
+∫ 0
+
+> −1
+
+𝑧 𝑜 
+
+𝑧 𝑜 − 𝑧 2
+
+d𝑧 2 +
+
+∫ 10
+
+−𝑧 1
+
+𝑧 2 − 𝑧 1
+
+d𝑧 2
+
+
+
+d𝜙 2
+
+= R1 (𝝎 1, 𝝎 𝑜 ) 12
+
+∫ 0
+
+> −1
+
+𝑧 𝑜 
+
+𝑧 𝑜 − 𝑧 2
+
+d𝑧 2 +
+
+∫ 10
+
+−𝑧 1
+
+𝑧 2 − 𝑧 1
+
+d𝑧 2
+
+
+
+= R1 (𝝎 1, 𝝎 𝑜 ) 12
+
+
+
+𝑧 𝑜 log 
+
+𝑧 𝑜 + 1
+
+𝑧 𝑜 
+
+
+
+− 𝑧 1 log 
+
+𝑧 1 − 1
+
+𝑧 1
+
+ 
+
+. (17) We then retrieve the double-scattering BRDF from Equation (2): 
+
+𝑓 𝑟 2 (𝝎 𝑖 , 𝝎 𝑜 ) = R2 (− 𝝎 𝑖 , 𝝎 𝑜 )
+
+𝑧 𝑜 
+
+= 𝑓 𝑟 1 (𝝎 𝑖 , 𝝎 𝑜 ) 12
+
+
+
+𝑧 𝑖 log 
+
+𝑧 𝑖 + 1
+
+𝑧 𝑖 
+
+
+
++ 𝑧 𝑜 log 
+
+𝑧 𝑜 + 1
+
+𝑧 𝑜 
+
+ 
+
+= 18𝜋 𝑧 𝑖 log 
+
+ 𝑧 𝑖 +1
+
+> 𝑧 𝑖
+
+
+
++ 𝑧 𝑜 log 
+
+ 𝑧 𝑜 +1
+
+> 𝑧 𝑜
+
+
+
+𝑧 𝑖 + 𝑧 𝑜 
+
+. (18) Equations (16) and (18) are known: they correspond to the first two scattering orders of the Chan-drasekhar BRDF [6, Sec. 43.4, p. 239]. The novelty here is that we were able to derive them straight-forwardly from the geometry of the transport. 
+
+## 3 Specialization to Heightfield-Like Transport 
+
+We now specialize the semi-infinite microflake medium so that it produces heightfield-like transport. We show that this particular configuration allows us to derive the escape probability for any scattering order and express reflectance as a series based on this probability. 6𝑧 1 < 0      
+
+> 𝑧 2>𝑧 1
+> 𝑧 3>𝑧 2
+> 𝑧 4 > 𝑧 3
+> PAF! PAF! PAF! PAF! PAF! PAF!
+> =phase function domain
+
+(a) (b) Figure 4: (a) Heightfield versus (b) one-sided microflake medium. The characteristic transport is the same between the two. The volume preserves heightfield transport by requiring the phase function to output directions within the spherical cap located above the incident direction. 
+
+3.1 One-Sided Microflake Distribution 
+
+Transport from Specular Heightfield A specular heightfield produces a characteristic transport, which is illustrated in Figure 4: rays initially travel downwards, then each successive reflection in-creases their elevation until they escape. 
+
+One-Sided NDFs and Specular Reflection The characteristic transport described above results from two properties acting together. First, every normal of a heightfield is strictly upwelling, which is represented by a one-sided NDF 
+
+𝐷 (𝝎 𝑚 ) = 0 for 𝑧 𝑚 ≤ 0. (19) Any microflake normal sampled from this distribution therefore satisfies 𝑧 𝑚 > 0. Second, each collision follows the specular reflection law 
+
+𝝎 𝑗 +1 = 𝝎 𝑗 − 2(𝝎 𝑗 · 𝝎 𝑚 )𝝎 𝑚 . (20) The only way for a ray travelling along 𝝎 𝑗 to be reflected towards 𝝎 𝑗 +1 at a lower elevation 𝑧 𝑗 +1 < 𝑧 𝑗 is to encounter a downwelling normal, which is excluded by the one-sided NDF. Hence, every reflection necessarily increases the ray elevation. 
+
+Path Sequences in the Microflake Volume The characteristic directional structure of heightfield transport depends only on the two properties identified above. Both are directly available in our mi-croflake volume: collisions are already specular, and their normal support is controlled by the NDF. Reproducing this structure therefore requires nothing more than choosing a one-sided NDF. Then, just as for a specular heightfield, any path within the microflake volume subject to 𝑘 − 1 collisions has an ordered direction sequence 
+
+Γ𝑘 = (𝝎 1, 𝝎 2, . . . , 𝝎 𝑘 ), 𝑧 1 < 𝑧 2 < · · · < 𝑧 𝑘 , (21) with 𝑧 1 < 0 and 𝑧 𝑘 > 0. One-sided microflake volumes thus reproduce the ordered directional transport of a specular heightfield. 7Spherical-Cap Support of the Phase Function The one-sided restriction also determines the ad-missible outgoing domain of the microflake phase function: Since every reflection increases elevation, the phase function vanishes outside the spherical cap defined by the elevation of the incident direction 
+
+Ψ(𝝎 𝑗 , 𝝎 𝑗 +1) = 0 for 𝑧 𝑗 +1 ≤ 𝑧 𝑗 ⇒ 𝝎 𝑗 +1 ∈ C( 𝝎 𝑗 ) = 𝑧 𝑗 +1 > 𝑧 𝑗 ⊂ S 2. (22) The spherical cap therefore defines the admissible support of the phase function, while the NDF deter-mines how probability is distributed within it. 
+
+3.2 Escape Probabilities and Scattering Orders 
+
+> −Δ1
+> −Δ2
+> −Δ3
+> +Δ4
+> 𝑡 1𝝎 1
+> 𝑡 2𝝎 2
+> 𝑡 3𝝎 3
+> 𝑡 4𝝎 4
+
+Δ1 + Δ2 + Δ3 ≤ Δ4
+
+> PAF! PAF! PAF!
+> −Δ1
+> +Δ2
+> +Δ3
+> +Δ4
+> 𝑡 1𝝎 1
+> 𝑡 2𝝎 2
+> 𝑡 3𝝎 3
+> 𝑡 4𝝎 4
+
+Δ2 + Δ3 ≤ Δ1 ≤ Δ2 + Δ3 + Δ4 
+
+> PAF! PAF! PAF!
+> −Δ1
+> −Δ2+Δ3
+> +Δ4
+> 𝑡 1𝝎 1
+> 𝑡 2𝝎 2
+> 𝑡 3𝝎 3
+> 𝑡 4𝝎 4
+
+Δ3 ≤ Δ1 + Δ2 ≤ Δ3 + Δ4
+
+> PAF! PAF! PAF!
+
+(a) (b) (c) Figure 5: All three possible path configurations for escaping the medium after 3 collisions. 
+
+Escape Probability After Three Collisions The characteristic motion of heightfield-like transport makes it possible to enumerate the cases that occur to determine the exit probability of, e.g., triple scattering. As illustrated in Figure 5, only three regimes are possible: 
+
+𝑧 2 < 𝑧 3 < 0, 𝑧 2 < 0 < 𝑧 3, 0 < 𝑧 2 < 𝑧 3. (23) The two pure regimes factor into simple products, 
+
+𝑃 3 (𝝎 1, · · · , 𝝎 4) 𝑧 3 <0 = 𝜅 1
+
+𝜅 1 + 𝜅 4
+
+𝜅 2
+
+𝜅 2 + 𝜅 4
+
+𝜅 3
+
+𝜅 3 + 𝜅 4
+
+, (24) and 
+
+𝑃 3 (𝝎 1, · · · , 𝝎 4) 𝑧 2 >0 = 𝜅 1
+
+𝜅 1 + 𝜅 4
+
+𝜅 2
+
+𝜅 1 + 𝜅 2
+
+𝜅 3
+
+𝜅 1 + 𝜅 3
+
+. (25) Finally, the mixed regime gives 
+
+𝑃 3 (𝝎 1, · · · , 𝝎 4) 𝑧 2 <0<𝑧 3 =
+
+∫ ∞
+
+> 0
+
+𝑝 1 (Δ1)
+
+∫ ∞
+
+> 0
+
+𝑝 2 (Δ2)
+
+∫ Δ1+Δ2
+
+> 0
+
+𝑝 3 (Δ3)
+
+∫ ∞ 
+
+> Δ1+Δ2−Δ3
+
+𝑝 4 (Δ4) dΔ4 dΔ3 dΔ2 dΔ1
+
+= 𝜅 1𝜅 2𝜅 3
+
+(𝜅 1 + 𝜅 4)( 𝜅 2 + 𝜅 3)
+
+ 1
+
+𝜅 2 + 𝜅 4
+
++ 1
+
+𝜅 1 + 𝜅 3
+
+
+
+. (26) 8General Escape Probability Noticing that Equation (26) can be re-written in the same spirit as Equation (12) 
+
+𝑃 3 (𝝎 1, 𝝎 2, 𝝎 3, 𝝎 4) = 1𝑧 2 <0 𝜅 1 𝑃 2 (𝝎 2, 𝝎 3, 𝝎 4) + 1𝑧 3 >0 𝜅 3 𝑃 2 (𝝎 1, 𝝎 2, 𝝎 3)
+
+𝜅 1 + 𝜅 4
+
+, (27) we obtain the escape probability for any number of collisions 
+
+𝑃 𝑘 (𝝎 1, . . . , 𝝎 𝑘 +1) =
+
+
+
+𝜅 1
+
+𝜅 1 + 𝜅 2
+
+, 𝑘 = 1,
+
+1𝑧 2 <0 𝜅 1 𝑃 𝑘 −1 (𝝎 2, . . . , 𝝎 𝑘 +1) + 1𝑧 𝑘 >0 𝜅 𝑘 𝑃 𝑘 −1 (𝝎 1, . . . , 𝝎 𝑘 )
+
+𝜅 1 + 𝜅 𝑘 +1
+
+, otherwise .
+
+(28) Equation (28) is a special case of the semi-infinite exit probability of Bitterli and d’Eon [1, Eq. (22)]. It is also closely related to the path recurrence of Cui et al. [5, Eq. (14)], which is derived from the invariance principle (whereas ours follows directly from the geometry of the transport paths). 
+
+General Exit-Direction Density For a fixed incident direction, the order-𝑘 contribution to the exit-direction density is obtained by marginalizing all intermediate directions: 
+
+R𝑘 (𝝎 1, 𝝎 𝑘 +1) =
+
+∫  
+
+> 𝑧 1<𝑧 2<··· <𝑧 𝑘 +1
+
+𝑃 𝑘 (𝝎 1, . . . , 𝝎 𝑘 +1)
+
+> 𝑘
+
+Ö
+
+> 𝑗 =1
+
+Ψ(𝝎 𝑗 , 𝝎 𝑗 +1)
+
+> 𝑘
+
+Ö
+
+> 𝑗 =2
+
+d𝝎 𝑗 . (29) For 𝑘 = 1 and 𝑘 = 2, this expression recovers Equations (9) and (13); together with the escape proba-bility derived above, it also defines the third-order density. The complete outgoing-direction density is the physical scattering-order series 
+
+R ( 𝝎 1, 𝝎 𝑜 ) =
+
+> ∞
+
+∑︁ 
+
+> 𝑘 =1
+
+R𝑘 (𝝎 1, 𝝎 𝑜 ). (30) Solving Equation (30) is now a matter of finding an NDF for which the intermediate directions in Eq. (29) can be marginalized analytically and the resulting order series can be summed in closed form. 
+
+3.3 Optional – Uniform-Cap Scattering Orders 
+
+The derivation in this subsection is not required for the rest of the paper. Its goal is to illustrate how the framework developed so far efficiently recovers known results for heightfield transport. 
+
+Uniform-Cap Scattering We apply it to the simplest one-sided microflake NDF, obtained by using a constant distribution over the upwelling hemisphere: 
+
+𝐷 (𝝎 𝑚 ) = 1𝑧 𝑚 >0
+
+𝜋 ⇒ 𝜎 (𝝎 𝑗 ) = 1 − 𝑧 𝑗 
+
+2 , 𝜅 (𝝎 𝑗 ) = 1 − 𝑧 𝑗 
+
+2|𝑧 𝑗 | . (31) Inserting Equation (31) into the microflake phase function of Equation (5) gives 
+
+Ψ(𝝎 𝑗 , 𝝎 𝑗 +1) = 1𝑧 𝑗 +1 >𝑧 𝑗 
+
+2𝜋 (1 − 𝑧 𝑗 ) . (32) This phase function is uniform over the spherical cap C( 𝝎 𝑗 ) as defined in Equation (22) and leads to the configuration of a GGX microfacet distribution with roughness 𝛼 = 1 [7]. We now derive the first two scattering orders of the corresponding BRDF. 9Single-scattering BRDF Inserting Equations (31) and (32) into Equation (9) gives 
+
+R1 (𝝎 1, 𝝎 𝑜 ) = 𝜅 1
+
+𝜅 1 + 𝜅 𝑜 
+
+12𝜋 (1 − 𝑧 1)
+
+= 12𝜋 𝑧 𝑜 
+
+𝑧 𝑜 − 𝑧 1
+
+. (33) We then retrieve the single-scattering BRDF from Equation (2): 
+
+𝑓 𝑟 1 (𝝎 𝑖 , 𝝎 𝑜 ) = R1 (− 𝝎 𝑖 , 𝝎 𝑜 )
+
+𝑧 𝑜 
+
+= 12𝜋 
+
+1
+
+𝑧 𝑖 + 𝑧 𝑜 
+
+. (34) This single-scattering BRDF is exactly twice the Chandrasekhar single-scattering term of Equation (16). 
+
+Double-scattering BRDF Inserting Equations (12), (31), and (32) into Equation (13) gives 
+
+R2 (𝝎 1, 𝝎 𝑜 ) = R1 (𝝎 1, 𝝎 𝑜 )
+
+
+
+𝑧 𝑜 
+
+∫ 0
+
+> 𝑧 1
+
+1
+
+𝑧 𝑜 − 𝑧 2
+
+d𝑧 2 − 𝑧 1
+
+∫ 𝑧 𝑜 
+
+> 0
+
+1
+
+𝑧 2 − 𝑧 1
+
+d𝑧 2
+
+
+
+= R1 (𝝎 1, 𝝎 𝑜 )
+
+
+
+𝑧 𝑜 log 
+
+𝑧 𝑜 − 𝑧 1
+
+𝑧 𝑜 
+
+
+
+− 𝑧 1 log 
+
+𝑧 𝑜 − 𝑧 1
+
+−𝑧 1
+
+ 
+
+. (35) We then retrieve the double-scattering BRDF from Equation (2): 
+
+𝑓 𝑟 2 (𝝎 𝑖 , 𝝎 𝑜 ) = R2 (− 𝝎 𝑖 , 𝝎 𝑜 )
+
+𝑧 𝑜 
+
+= 𝑓 𝑟 1 (𝝎 𝑖 , 𝝎 𝑜 )
+
+
+
+𝑧 𝑖 log 
+
+𝑧 𝑖 + 𝑧 𝑜 
+
+𝑧 𝑖 
+
+
+
++ 𝑧 𝑜 log 
+
+𝑧 𝑖 + 𝑧 𝑜 
+
+𝑧 𝑜 
+
+ 
+
+= 12𝜋 𝑧 𝑖 log 
+
+ 𝑧 𝑖 +𝑧 𝑜 
+
+> 𝑧 𝑖
+
+
+
++ 𝑧 𝑜 log 
+
+ 𝑧 𝑖 +𝑧 𝑜 
+
+> 𝑧 𝑜
+
+
+
+𝑧 𝑖 + 𝑧 𝑜 
+
+. (36) Equation (34) is the known single-scattering GGX BRDF at unit roughness, whereas Equation (36) provides, to our knowledge, a new closed-form expression for its double-scattering order. This new result follows directly from the framework developed above. 
+
+Higher-Order Densities Unfortunately, subsequent scattering orders become increasingly compli-cated despite the simplicity of the phase function. This is also true for the Chandrasekhar scattering laws derived in Section 2.3. Consequently, the uniform-cap NDF does not yield an elementary closed form for the complete scattering-order series. In the next section, we derive another one-sided NDF for which all intermediate directions can be marginalized and the complete series can be summed in closed form. 
+
+## 4 Elementary Solution Using a Quadratic NDF 
+
+Here we introduce an NDF that leads to an elementary expression for the BRDF. 10 4.1 The Quadratic NDF 
+
+Definition We specialize the transport model to the parameter-free quadratic NDF: 
+
+𝐷 (𝝎 𝑚 ) = 2
+
+𝜋 𝑧 2
+
+> 𝑚
+
+1𝑧 𝑚 >0 ⇒ 𝜎 (𝝎 𝑗 ) = (1 − 𝑧 𝑗 )2
+
+4 , 𝜅 (𝝎 𝑗 ) = (1 − 𝑧 𝑗 )2
+
+4|𝑧 𝑗 | . (37) Inserting Equation (37) into the microflake phase function of Equation (5) gives 
+
+Ψ(𝝎 𝑗 , 𝝎 𝑗 +1) = 14𝜎 (𝝎 𝑗 )
+
+2
+
+𝜋 
+
+ 𝑧 𝑗 +1 − 𝑧 𝑗 
+
+∥𝝎 𝑗 +1 − 𝝎 𝑗 ∥
+
+2
+
+= 14𝜎 (𝝎 𝑗 )
+
+2
+
+𝜋 
+
+(𝑧 𝑗 +1 − 𝑧 𝑗 )2
+
+2(1 − 𝝎 𝑗 · 𝝎 𝑗 +1)
+
+= (𝑧 𝑗 +1 − 𝑧 𝑗 )2
+
+𝜋 (1 − 𝑧 𝑗 )2 (1 − 𝝎 𝑗 · 𝝎 𝑗 +1) . (38) 
+
+Link to the Poisson Kernel Equation (38) can be factorized as 
+
+Ψ(𝝎 𝑗 , 𝝎 𝑗 +1) = ℎ(𝑧 𝑗 +1 | 𝑧 𝑗 ) P 𝑟 𝑗 (𝜙 𝑗 +1 − 𝜙 𝑗 ), (39) where ℎ is the univariate density over the elevation 𝑧 𝑗 +1 ∈ [ 𝑧 𝑗 , 1] of the outgoing direction 
+
+ℎ(𝑧 𝑗 +1 | 𝑧 𝑗 ) = 2(𝑧 𝑗 +1 − 𝑧 𝑗 )(1 − 𝑧 𝑗 )2 , (40) and P𝑟 𝑗 is the circular Poisson kernel whose parameter is obtained from the elevations through 
+
+P𝑟 𝑗 (𝜙 𝑗 +1 − 𝜙 𝑗 ) = 1 − 𝑟 2
+
+> 𝑗
+
+2𝜋 
+
+
+
+1 − 2𝑟 𝑗 cos (𝜙 𝑗 +1 − 𝜙 𝑗 ) + 𝑟 2
+
+> 𝑗
+
+ = 𝑧 𝑗 +1 − 𝑧 𝑗 
+
+2𝜋 (1 − 𝝎 𝑗 · 𝝎 𝑗 +1) ,𝑟 𝑗 = 𝑞 (𝑧 𝑗 +1)
+
+𝑞 (𝑧 𝑗 ) ,𝑞 (𝑧 ) =√︂ 1 − 𝑧 
+
+1 + 𝑧 .
+
+(41) By construction, 𝑟 𝑗 ∈ [ 0, 1] for every valid transition 𝑧 𝑗 +1 > 𝑧 𝑗 . We now exploit this factorization to solve the exit-direction density of Equation (29) and its scattering-order series in Equation (30). 
+
+4.2 Azimuthal Marginalization of an Arbitrary Path 
+
+Stability under Circular Convolution The Poisson kernel is stable under circular convolution: 
+
+P𝑟 ∗ P 𝑠 = P𝑟𝑠 , (42) This property allows us to marginalize the azimuthal domain of Equation (29) analytically. 11 Azimuthal Marginalization Since the NDF is radially symmetric, the escape probability 𝑃 𝑘 depends only on the elevations of the path directions. This is also true for the elevation density ℎ. Letting 
+
+𝝎 𝑘 +1 = 𝝎 𝑜 , we insert the factorization of Equation (39) into Equation (29) and obtain 
+
+R𝑘 (𝝎 1, 𝝎 𝑜 ) =
+
+∫   
+
+> 𝑧 1<𝑧 2<··· <𝑧 𝑘 <𝑧 𝑜
+
+𝑃 𝑘 (𝑧 1, . . . , 𝑧 𝑘 , 𝑧 𝑜 )
+
+> 𝑘
+
+Ö
+
+> 𝑗 =1
+
+ℎ(𝑧 𝑗 +1 | 𝑧 𝑗 )×
+
+"∫ 2𝜋 
+
+> 0
+
+· · · 
+
+∫ 2𝜋 
+
+> 0
+> 𝑘
+
+Ö
+
+> 𝑗 =1
+
+P𝑟 𝑗 (𝜙 𝑗 +1 − 𝜙 𝑗 )d𝜙 2 · · · d𝜙 𝑘 
+
+#| {z }
+
+> circular convolutions
+> 𝑘
+
+Ö
+
+> 𝑗 =2
+
+d𝑧 𝑗 , (43) where 𝑧 𝑘 +1 = 𝑧 𝑜 and 𝜙 𝑘 +1 = 𝜙 𝑜 . Thanks to the stability property of the Poisson kernel, the sequence of circular convolutions reduces to 
+
+ P𝑟 1 ∗ · · · ∗ P 𝑟 𝑘 
+
+ (𝜙 𝑜 − 𝜙 1) = PÎ𝑘 𝑗 =1 𝑟 𝑗 (𝜙 𝑜 − 𝜙 1). (44) 
+
+Telescoping along the Path Equation (44) can be simplified further since 
+
+> 𝑘
+
+Ö
+
+> 𝑗 =1
+
+𝑟 𝑗 =
+
+> 𝑘
+
+Ö
+
+> 𝑗 =1
+
+𝑞 (𝑧 𝑗 +1)
+
+𝑞 (𝑧 𝑗 ) = 𝑞 (𝑧 𝑜 )
+
+𝑞 (𝑧 1) =: 𝜂. (45) The sequence of circular convolutions thus only depends on the elevations of the incident and outgoing directions. It follows that the Poisson kernel can be taken outside the remaining elevation integral. 
+
+R𝑘 (𝝎 1, 𝝎 𝑜 ) = 𝑧 𝑜 𝐹 𝑘 (𝑧 1, 𝑧 𝑜 ) P 𝜂 (𝜙 𝑜 − 𝜙 1)
+
+= 𝑧 𝑜 𝐹 𝑘 (𝑧 1, 𝑧 𝑜 ) 𝑧 𝑜 − 𝑧 1
+
+2𝜋 (1 − 𝝎 1 · 𝝎 𝑜 ) , (46) where 
+
+𝑧 𝑜 𝐹 𝑘 (𝑧 1, 𝑧 𝑜 ) =
+
+∫   
+
+> 𝑧 1<𝑧 2<··· <𝑧 𝑘 <𝑧 𝑜
+
+𝑃 𝑘 (𝑧 1, . . . , 𝑧 𝑘 , 𝑧 𝑜 )
+
+> 𝑘
+
+Ö
+
+> 𝑗 =1
+
+ℎ(𝑧 𝑗 +1 | 𝑧 𝑗 )
+
+> 𝑘
+
+Ö
+
+> 𝑗 =2
+
+d𝑧 𝑗 . (47) 
+
+4.3 One-Dimensional Scattering-Order Series 
+
+Single-Scattering Amplitude After the azimuthal marginalization, it remains only to determine the elevation amplitudes defined in Equation (47). We parameterize their endpoint dependence by 
+
+𝑝 := −𝑧 1𝑧 𝑜 ∈ [ 0, 1]. (48) For 𝑘 = 1, Equation (47) gives 
+
+𝑧 𝑜 𝐹 1 (𝑧 1, 𝑧 𝑜 ) = 𝑃 1 (𝑧 1, 𝑧 𝑜 )ℎ(𝑧 𝑜 | 𝑧 1)
+
+= 𝜅 1
+
+𝜅 1 + 𝜅 𝑜 
+
+2(𝑧 𝑜 − 𝑧 1)(1 − 𝑧 1)2
+
+= 2𝑧 𝑜 
+
+1 − 𝑧 1𝑧 𝑜 
+
+,𝐹 1 (𝑧 1, 𝑧 𝑜 ) = 𝑆 1 (𝑝 ) = 21 + 𝑝 . (49) The factor 𝑧 𝑜 therefore cancels, leaving an amplitude that depends on the endpoint elevations only through 𝑝 .12 Scattering-Order Recurrence We now show that this dependence is preserved at every scattering order. Assume for some 𝑘 ≥ 1 that 
+
+𝐹 𝑘 (𝑧 1, 𝑧 𝑜 ) = 𝑆 𝑘 (− 𝑧 1𝑧 𝑜 ). (50) Substituting the escape-probability recurrence of Equation (28) into the elevation integral of Equa-tion (47) gives the amplitude 𝐹 𝑘 +1. For the quadratic NDF, the factors involving the newly integrated elevation 𝑧 simplify to 
+
+𝜅 1 + 𝜅 𝑜 = (𝑧 𝑜 − 𝑧 1)( 1 − 𝑧 1𝑧 𝑜 )−4𝑧 1𝑧 𝑜 
+
+, 𝜅 1ℎ(𝑧 | 𝑧 1) = 𝑧 − 𝑧 1
+
+−2𝑧 1
+
+, 𝜅 (𝑧 )ℎ(𝑧 𝑜 | 𝑧 ) = 𝑧 𝑜 − 𝑧 
+
+2𝑧 . (51) Using 𝑡 = −𝑧𝑧 𝑜 on the downwelling branch and 𝑡 = −𝑧 1𝑧 on the upwelling branch maps both contri-butions to the interval 0 < 𝑡 < 𝑝 . Combining them gives the scalar recurrence 
+
+𝑆 𝑘 +1 (𝑝 ) = 2
+
+𝑝 (1 + 𝑝 )
+
+∫ 𝑝 
+
+> 0
+
+(𝑝 − 𝑡 )𝑆 𝑘 (𝑡 )d𝑡 
+
+= 2𝑝 
+
+1 + 𝑝 
+
+∫ 10
+
+(1 − 𝑢 )𝑆 𝑘 (𝑝𝑢 )d𝑢 =: (T 𝑆 𝑘 )( 𝑝 ). (52) Since the result depends only on 𝑝 , the induction closes and every scattering order has the form 
+
+R𝑘 (𝝎 1, 𝝎 𝑜 ) = 𝑧 𝑜 𝑆 𝑘 (𝑝 )P 𝜂 (𝜙 𝑜 − 𝜙 1). (53) 
+
+Telescoping Scattering-Order Series The source term 𝑆 1 can itself be expressed using the recur-rence operator. Indeed, applying T to the constant function 2 gives 
+
+(T 2)( 𝑝 ) = 2𝑝 
+
+1 + 𝑝 , 𝑆 1 (𝑝 ) = 2 − (T 2)( 𝑝 ), (54) or equivalently 
+
+𝑆 1 = (𝐼 − T ) 2. (55) Since 𝑆 𝑘 = T 𝑘 −1𝑆 1, each order can be written as the difference 
+
+𝑆 𝑘 = T 𝑘 −12 − T 𝑘 2,
+
+> 𝐾
+
+∑︁ 
+
+> 𝑘 =1
+
+𝑆 𝑘 (𝑝 ) = 2 − T 𝐾 2(𝑝 ). (56) For any bounded function 𝑓 and 0 ≤ 𝑝 ≤ 1, the operator satisfies 
+
+|(T 𝑓 )( 𝑝 )| ≤ 𝑝 
+
+1 + 𝑝 ∥𝑓 ∥∞ ≤ 12 ∥𝑓 ∥∞. (57) Since T preserves non-negativity, the truncation error is bounded by 0 ≤ 2 −
+
+> 𝐾
+
+∑︁ 
+
+> 𝑘 =1
+
+𝑆 𝑘 (𝑝 ) = T 𝐾 2(𝑝 ) ≤ 21−𝐾 . (58) The scattering-order series therefore converges uniformly to 
+
+𝑆 (𝑝 ) :=
+
+> ∞
+
+∑︁ 
+
+> 𝑘 =1
+
+𝑆 𝑘 (𝑝 ) = 2. (59) 13 Complete BRDF Combining this result with Equations (30) and (46) gives the complete transport response 
+
+R ( 𝝎 1, 𝝎 𝑜 ) = 𝑧 𝑜 
+
+" ∞∑︁ 
+
+> 𝑘 =1
+
+𝑆 𝑘 (𝑝 )
+
+#
+
+P𝜂 (𝜙 𝑜 − 𝜙 1)
+
+= 2𝑧 𝑜 P𝜂 (𝜙 𝑜 − 𝜙 1)
+
+= 2𝑧 𝑜 
+
+𝑧 𝑜 − 𝑧 1
+
+2𝜋 (1 − 𝝎 1 · 𝝎 𝑜 ) . (60) Returning to the conventional outward-pointing incident direction with 𝝎 𝑖 = −𝝎 1 and 𝑧 𝑖 = −𝑧 1, we retrieve the BRDF from Equation (2): 
+
+𝑓 𝑟 (𝝎 𝑖 , 𝝎 𝑜 ) = R (− 𝝎 𝑖 , 𝝎 𝑜 )
+
+𝑧 𝑜 
+
+= 2P𝜂 (𝜙 𝑜 − 𝜙 𝑖 − 𝜋 )
+
+= 2 𝑧 𝑖 + 𝑧 𝑜 
+
+2𝜋 (1 + 𝝎 𝑖 · 𝝎 𝑜 )
+
+= 𝑧 𝑖 + 𝑧 𝑜 
+
+𝜋 (1 + 𝝎 𝑖 · 𝝎 𝑜 ) . (61) 
+
+## 5 Importance Sampling 
+
+We exploit the connection established in Equation (61) between the BRDF and the Poisson kernel to derive a direct sampling routine. 
+
+5.1 Sampling the BRDF 
+
+Poisson-Kernel Sampling Let 𝑣 = 𝑒 i𝜙 be a point on the unit circle and let 𝜂 = 𝑥 + i𝑦 be a complex parameter such that |𝜂 | < 1. The circular Poisson kernel with parameter 𝜂 is 
+
+P ( 𝑣 ; 𝜂 ) := 1 − | 𝜂 |2
+
+2𝜋 |𝑣 − 𝜂 |2 . (62) Its magnitude |𝜂 | controls the concentration and its argument arg 𝜂 the orientation. McCullagh [12] samples this kernel geometrically by using 𝜂 as a pivot inside the disk. Given a uniform point 𝑐 = 𝑒 i𝜃 
+
+on the unit circle, the line passing through 𝑐 and 𝜂 intersects the circle again at 
+
+𝑣 = 𝜂 − 𝑐 
+
+1 − 𝜂 𝑐 . (63) This transformation maps the unit circle onto itself and its angular Jacobian is 12𝜋 
+
+𝜕𝜃 𝜕𝜙 = 1 − | 𝜂 |2
+
+2𝜋 |𝑣 − 𝜂 |2 = P ( 𝑣 ; 𝜂 ). (64) Thus, the transformed point 𝑣 follows the Poisson kernel of parameter 𝜂 .14 𝝎 𝑖      
+
+> ∼ D =pivot (𝝎 𝑖 ,radius )∼𝑓 𝑟
+
+Figure 6: Direct BRDF sampling using radius-dependent azimuthal warps of the orthographic disk. 
+
+BRDF Sampling We leverage the McCullagh parameterization to sample the BRDF as illustrated in Figure 6. The transformed point on the orthographic disk is 
+
+𝜁 𝑜 := 𝑥 𝑜 + i𝑦 𝑜 = 𝑟 𝜂 − 𝑐 
+
+1 − 𝜂 𝑐 . (65) Here, the disk radius, the uniform point on its azimuthal isocontour, and the outgoing elevation are 
+
+𝑟 =√︁ 𝜉 1, 𝑐 = 𝑒 2𝜋 i𝜉 2 , 𝑧 𝑜 = √1 − 𝑟 2, (66) where 𝜉 1, 𝜉 2 ∈ [ 0, 1) are independent uniform random variables. The Poisson parameter is constructed from the incident direction and the sampled radius as 
+
+𝑎 𝑖 := 𝑥 𝑖 + i𝑦 𝑖 
+
+1 + 𝑧 𝑖 
+
+= 𝑞 (𝑧 𝑖 )𝑒 i𝜙 𝑖 , 𝜂 := −𝑞 (𝑧 𝑜 )𝑎 𝑖 = − 𝑟 
+
+1 + 𝑧 𝑜 
+
+𝑎 𝑖 . (67) Its magnitude and argument are 𝑞 (𝑧 𝑖 )𝑞 (𝑧 𝑜 ) and 𝜙 𝑖 + 𝜋 , respectively, as required by Equation (61). Equation (65) preserves 𝑟 and warps only the associated azimuthal isocontour. The angular Jacobian is exactly the BRDF density with respect to disk area: 1
+
+𝜋 
+
+𝜕𝜃 𝜕𝜙 𝑜 
+
+= 2P
+
+𝜁 𝑜 
+
+𝑟 ; 𝜂 
+
+
+
+= 𝑓 𝑟 (𝝎 𝑖 , 𝝎 𝑜 ). (68) Finally, we lift 𝜁 𝑜 to the hemisphere: 
+
+𝝎 𝑜 = ©«
+
+ℜ( 𝜁 𝑜 )ℑ( 𝜁 𝑜 )
+
+𝑧 𝑜 
+
+ª®¬
+
+. (69) The resulting direction follows the target density 
+
+𝑓 𝑟 (𝝎 𝑖 , 𝝎 𝑜 ) 𝑧 𝑜 = R (− 𝝎 𝑖 , 𝝎 𝑜 ). (70) Algorithm 2 provides a possible implementation. 
+
+Algorithm 2 Direct BRDF sampling  
+
+> 1:
+
+function SampleBRDF( 𝜉 1, 𝜉 2, 𝝎 𝑖 ) 
+
+> 2:
+
+(𝑥 𝑖 , 𝑦 𝑖 , 𝑧 𝑖 ) ← 𝝎 𝑖  
+
+> 3:
+
+𝑟 ←√︁ 𝜉 1 
+
+> 4:
+
+𝑧 𝑜 ← √1 − 𝑟 2 
+
+> 5:
+
+𝑐 ← 𝑒 2𝜋 i𝜉 2 
+
+> 6:
+
+𝑎 𝑖 ← ( 𝑥 𝑖 + i𝑦 𝑖 )/( 1 + 𝑧 𝑖 ) 
+
+> 7:
+
+𝜂 ← − 𝑟𝑎 𝑖 /( 1 + 𝑧 𝑜 ) 
+
+> 8:
+
+𝜁 𝑜 ← 𝑟 (𝜂 − 𝑐 )/( 1 − 𝜂 𝑐 ) 
+
+> 9:
+
+return (ℜ( 𝜁 𝑜 ), ℑ( 𝜁 𝑜 ), 𝑧 𝑜 ) 
+
+> 10:
+
+end function 
+
+15 5.2 Sampling the Phase Function 
+
+Elevation Sampling For the sake of completeness, we also use the same construction to sample the quadratic phase function. Only the radial map and the resulting Poisson pivot need to be changed. Let 
+
+𝝎 1 = (𝑥 1, 𝑦 1, 𝑧 1) be the current direction and let 𝜉 1, 𝜉 2 ∈ [ 0, 1) be two independent uniform random variables. We sample 
+
+𝑟 =√︁ 𝜉 1, 𝑧 2 = 𝑧 1 + ( 1 − 𝑧 1)𝑟, 𝑟 2 =√︃ 1 − 𝑧 22 . (71) Since 𝑟 has density 2 𝑟 , this radial map produces the elevation density 2𝑟 𝜕𝑟 𝜕𝑧 2
+
+= 2(𝑧 2 − 𝑧 1)(1 − 𝑧 1)2 = ℎ(𝑧 2 | 𝑧 1). (72) 
+
+Azimuthal Sampling For the sampled elevation, the transformed point on the corresponding az-imuthal isocontour is 
+
+𝜁 2 := 𝑥 2 + i𝑦 2 = 𝑟 2
+
+𝜂 − 𝑐 
+
+1 − 𝜂 𝑐 . (73) Here, the uniform point on the unit circle and the Poisson parameter are 
+
+𝑐 = 𝑒 2𝜋 i𝜉 2 , 𝜂 := 𝑞 (𝑧 2)
+
+𝑞 (𝑧 1)
+
+𝑥 1 + i𝑦 1√︃ 
+
+1 − 𝑧 21
+
+= 𝑞 (𝑧 2)
+
+𝑞 (𝑧 1) 𝑒 i𝜙 1 . (74) Finally, we lift 𝜁 2 to the sphere: 
+
+𝝎 2 = ©«
+
+ℜ( 𝜁 2)ℑ( 𝜁 2)
+
+𝑧 2
+
+ª®¬
+
+. (75) The full Jacobian is therefore exactly the phase-function density 
+
+ℎ(𝑧 2 | 𝑧 1)P 
+
+𝜁 2
+
+𝑟 2
+
+; 𝜂 
+
+
+
+= Ψ(𝝎 1, 𝝎 2). (76) 
+
+## 6 Validation and Results 
+
+Numerical Validation We validate Equation (1) against random-walk histograms obtained with Algorithm 1 using the quadratic NDF. Figure 7 compares these histograms with the closed-form ex-pression for incident angles 𝜃 𝑖 = 0◦, 45 ◦, and 80 ◦. The expression agrees closely with the simulated data in all three configurations. Note that at normal incidence, the BRDF behaves exactly like a Lam-bertian BRDF, i.e., a constant. As incidence becomes increasingly grazing, the BRDF becomes more asymmetric and reflects more energy towards the opposite side of the disk. 
+
+Directional Illumination We compare our BRDF with Lambertian reflectance and GGX microfacet BRDFs, in both single- and multiple-scattering variants. The GGX models use unit roughness, 𝛼 =
+
+1, and all microfacets are perfectly reflecting. The single scattering model evaluates Equation (34). Figure 8 shows these comparisons as a directional light rotates around the sphere. Note that we also provide a comparison between Equation (1) and a random walk using Algorithm 1 to further validate our results. As can be seen, both renderings are in close agreement, with the difference residing in the variance of the random-walk approach. 16 −101
+
+−10100.20.4
+
+𝑥 𝑜 𝑦 𝑜 
+
+> 𝑓 𝑟
+
+𝜃 𝑖 = 0◦−101
+
+−10100.5
+
+𝑥 𝑜 𝑦 𝑜 
+
+> 𝑓 𝑟
+
+𝜃 𝑖 = 45 ◦−101
+
+−101012
+
+𝑥 𝑜 𝑦 𝑜 
+
+> 𝑓 𝑟
+
+𝜃 𝑖 = 80 ◦
+
+Random walks Closed form Figure 7: Random-walk histograms and the closed-form BRDF for three incident angles. 
+
+𝜃 = 0◦ 𝜃 = 90 ◦ 𝜃 = 130 ◦ 𝜃 = 160 ◦
+
+> Eq. (1) random walk
+> Eq. (1) diffuse
+> Eq. (1) GGX (single-scattering)
+> Eq. (1) GGX (multiple-scattering)
+
+Figure 8: BRDF comparisons under directional illumination. 17 Diffuse Eq. (1) GGX (single-scattering) GGX (multiple-scattering) 
+
+Figure 9: BRDF comparisons under image-based lighting using uffizi.hdr . Light probe cour-tesy of Paul Debevec, distributed by USC ICT at https://vgl.ict.usc.edu/Data/ HighResProbes/ .
+
+Image-Based Lighting Figure 9 compares the same four BRDFs under image-based lighting. Under this illumination, our BRDF produces a diffuse-like appearance close to the Lambertian reference, while retaining a direction-dependent response. The single-scattering GGX model appears darker because it neglects inter-reflections, whereas its multiple-scattering counterpart recovers the energy carried by these paths. 
+
+## 7 Conclusion 
+
+Contributions We have introduced a one-sided quadratic NDF for which the complete random-walk response of a homogeneous semi-infinite microflake medium admits an elementary closed form. Analytically marginalizing the intermediate directions and summing all scattering orders yields the energy-preserving BRDF of Equation (1). Its connection with the Poisson kernel provides direct im-portance sampling of both the BRDF and the phase function. We validated our BRDF via random-walk histograms and rendering comparisons. 
+
+Limitation and Outlook These results settle the existence of an NDF capable of producing an el-ementary closed-form response for random walks in homogeneous microflake media. However, the proposed NDF is limited in the range of appearances it can represent as it lacks the typical roughness parameters of a microfacet NDF. It thus remains to be determined whether a parametric model can preserve such a kind of closed form while offering a parameter that plays the role of roughness. 
+
+## Acknowledgements and Backstory 
+
+This paper concludes a project I started in March 2022. I thank Eugene d’Eon for encouraging me to pursue this work at that time when I had most of the derivations in place, except for the quadratic NDF. Back then, I believed that if an elementary closed form could not be obtained from the simplest uniform one-sided NDF, there was no hope for any other NDF. I failed to find such a closed form and stopped working on the project. On the positive side, I realised that the uniform NDF was the GGX at unit roughness, and that led me to write an importance sampling algorithm for the GGX VNDF. A few years later came ChatGPT 5.6, and I decided to challenge it using my notes. It proved my original assumption wrong: after its own unsuccessful attempts with GGX, ChatGPT 5.6 found the quadratic NDF when I asked it to find any NDF that leads to a closed-form BRDF. Credit to OpenAI for finding this NDF: your product is changing the way knowledge is made. I thank my wife for letting me write the (very many!) prompts that led to this finding during my parental leave and dedicate the article to my children as it settles a question that was important to me. 18 References 
+
+[1] Benedikt Bitterli and Eugene d’Eon. A position-free path integral for homogeneous slabs and multiple scattering on smith microfacets. Computer Graphics Forum , 41(4):93–104, 2022. [2] James F. Blinn. Models of light reflection for computer synthesized pictures. In Proceedings of SIGGRAPH ’77 , pages 192–198, 1977. [3] Pierre Bouguer. Traité d’optique sur la gradation de la lumière . De l’imprimerie de HL Guerin & LF Delatour, 1760. [4] G. Brown. Shadowing by non-gaussian random surfaces. IEEE Trans. on Antennas and Propagation ,28(6):788 – 790, nov 1980. [5] Yuang Cui, Gaole Pan, Jian Yang, Lei Zhang, Ling-Qi Yan, and Beibei Wang. Multiple-bounce smith microfacet brdfs using the invariance principle. In SIGGRAPH Asia 2023 Conference Papers ,page Article 39, 2023. [6] Eugene d’Eon. A Hitchhiker’s Guide to Multiple Scattering: Exact Analytic, Monte Carlo and Ap-proximate Solutions in Transport Theory . Self-published, 2022. Version 0.3.2. [7] Jonathan Dupuy and Anis Benyoub. Sampling visible ggx normals with spherical caps. Computer Graphics Forum , 42(8):e14867, 2023. [8] Jonathan Dupuy, Eric Heitz, and Eugene d’Eon. Additional progress towards the unification of microfacet and microflake theories. In Eurographics Symposium on Rendering – Experimental Ideas & Implementations , pages 55–63, 2016. [9] Eric Heitz. Understanding the masking-shadowing function in microfacet-based brdfs. Journal of Computer Graphics Techniques (JCGT) , 3(2):48–107, June 2014. [10] Eric Heitz, Johannes Hanika, Eugene d’Eon, and Carsten Dachsbacher. Multiple-scattering mi-crofacet bsdfs with the smith model. ACM Transactions on Graphics , 35(4):58:1–58:14, 2016. [11] Wenzel Jakob, Adam Arbree, Jonathan T. Moon, Kavita Bala, and Steve Marschner. A radia-tive transfer framework for rendering materials with anisotropic structure. ACM Transactions on Graphics , 29(4):53:1–53:13, 2010. [12] Peter McCullagh. Möbius transformation and cauchy parameter estimation. The Annals of Statis-tics , 24(2):787–808, 1996. [13] Fred E. Nicodemus, Joseph C. Richmond, J.J. Hsia, W.I. Ginsberg, and T. Limperis. Geometrical Considerations and Nomenclature for Reflectance. Applied Optics , 9:1474–1475, 1977. [14] B. Smith. Geometrical shadowing of a random rough surface. IEEE Trans. on Antennas and Prop-agation , 15(5):668–671, 1967. [15] T. S. Trowbridge and K. P. Reitz. Average irregularity representation of a rough surface for ray reflection. J. Opt. Soc. Am. , 65(5):531–536, May 1975. 19
