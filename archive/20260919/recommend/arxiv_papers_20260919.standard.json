@@ -1,0 +1,93 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-19T21:11:06.685962+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2609.19421v1",
+      "title": "RGS: Reflection-aware Gaussian Splatting via Learning Geometry Continuity for Reflective Objects",
+      "abstract": "Gaussian Splatting has significantly improved the quality of novel view synthesis with explicit Gaussian representation. However, we observed that existing 3D Gaussian Splatting methods (3DGS) often suffer from surface collapse issues on reflective regions, and thus produce inferior geometry and low-quality specular. In this work, we propose a physically-based deferred rendering framework, named Reflection-aware Gaussian Splatting (RGS), that can accurately model specular regions and improve novel view synthesis performance. Specifically, we found that a powerful 3D foundation model can provide a strong 3D geometric prior to foster correct geometric modeling. Based on this, we propose a cross-view shape consistency regularization to regularize the geometry surface with the large model prior and cross-view constraints. In this manner, our RGS can produce smoother geometric surfaces on reflective regions while reducing geometric hollows. To further improve rendering results on reflective regions, we present a reflection-aware densification strategy that is designed to capture specular variations across various views. With this strategy, our RGS is able to render novel views of objects in higher quality. Extensive experiments demonstrate our method consistently renders high-quality reflective objects, achieving state-of-the-art performance.",
+      "authors": [
+        "Xiaobiao Du",
+        "Yida Wang",
+        "Cheng Bi",
+        "Kun Zhan",
+        "Xin Yu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-16T20:55:24+00:00",
+      "link": "https://arxiv.org/pdf/2609.19421v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Physically-based deferred rendering framework for Gaussian Splatting",
+      "llm_evidence_cn": "用于高斯泼溅的基于物理的延迟渲染框架",
+      "llm_evidence": "用于高斯泼溅的基于物理的延迟渲染框架",
+      "canonical_evidence": "用于高斯泼溅的基于物理的延迟渲染框架",
+      "llm_tldr_en": "RGS improves specular rendering in Gaussian Splatting using a deferred rendering framework.",
+      "llm_tldr_cn": "RGS通过延迟渲染框架改进了高斯泼溅中的镜面反射渲染效果。",
+      "llm_tldr": "RGS通过延迟渲染框架改进了高斯泼溅中的镜面反射渲染效果。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.18898v1",
+      "title": "NormLift: From Lifted Features To Semantic Reliability In 3D Gaussian Splatting",
+      "abstract": "Training-free weighted aggregation is widely used to lift 2D semantic features onto 3D Gaussians for open-vocabulary scene understanding, yet its theoretical role remains insufficiently understood. Existing analyses typically justify this operation from the rendering side, treating Gaussian features as linearly composable Euclidean variables for reconstructing 2D feature maps. However, this view does not match downstream 3D usage, where each Gaussian is often queried independently in a cosine-based embedding space. We revisit feature lifting from the 3D side and formulate per-Gaussian assignment as a cosine alignment problem on the CLIP unit sphere. Under this objective, the L2-normalized semantic back-projected feature emerges as the closed-form solution, providing a complementary interpretation of the standard lifting rule from the perspective of per-Gaussian semantic assignment. The same formulation further yields a norm decomposition into intra-view and inter-view consistency, suggesting that feature magnitude itself can serve as a semantic reliability signal. Calibrated by effective multi-view support, this reliability score guides a mode-voting refinement that preserves CLIP feature validity by avoiding linear averaging. Experiments on open-vocabulary 3D semantic segmentation show that NormLift is an efficient, training-free framework that achieves strong performance across evaluation protocols.",
+      "authors": [
+        "Yihan Zang",
+        "Da Li",
+        "Dominik Engel",
+        "Shinkyu Park",
+        "Ivan Viola"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-16T16:35:35+00:00",
+      "link": "https://arxiv.org/pdf/2609.18898v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Lifting 2D features to 3D Gaussians for rendering and understanding",
+      "llm_evidence_cn": "将2D特征提升至3D高斯以进行渲染与理解",
+      "llm_evidence": "将2D特征提升至3D高斯以进行渲染与理解",
+      "canonical_evidence": "将2D特征提升至3D高斯以进行渲染与理解",
+      "llm_tldr_en": "NormLift provides a theoretical framework for semantic feature lifting in 3D Gaussian Splatting.",
+      "llm_tldr_cn": "NormLift为3D高斯泼溅中的语义特征提升提供了理论框架。",
+      "llm_tldr": "NormLift为3D高斯泼溅中的语义特征提升提供了理论框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

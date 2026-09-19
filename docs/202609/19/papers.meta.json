@@ -1,0 +1,37 @@
+{
+  "label": "2026-09-19",
+  "date": "2026-09-19",
+  "generated_at": "2026-09-19T21:11:28",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202609/19/2609.19421v1-rgs-reflection-aware-gaussian-splatting-via-learning-geometry-continuity-for-reflective-objects",
+      "section": "deep",
+      "title_en": "RGS: Reflection-aware Gaussian Splatting via Learning Geometry Continuity for Reflective Objects",
+      "authors": "Xiaobiao Du, Yida Wang, Cheng Bi, Kun Zhan, Xin Yu",
+      "date": "2026-09-16",
+      "pdf": "https://arxiv.org/pdf/2609.19421v1",
+      "score": "8.0",
+      "evidence": "用于高斯泼溅的基于物理的延迟渲染框架",
+      "tldr": "针对3D高斯泼溅（3DGS）在处理反射物体时常出现的表面塌陷和镜面反射质量差的问题，本文提出了RGS框架。该方法引入3D基础模型作为几何先验，通过跨视图形状一致性正则化优化几何表面，并设计了反射感知致密化策略，有效提升了反射区域的几何连续性和新视角合成质量，在反射物体渲染任务中达到了SOTA水平。",
+      "tags": "query:q1",
+      "abstract_en": "Gaussian Splatting has significantly improved the quality of novel view synthesis with explicit Gaussian representation. However, we observed that existing 3D Gaussian Splatting methods (3DGS) often suffer from surface collapse issues on reflective regions, and thus produce inferior geometry and low-quality specular. In this work, we propose a physically-based deferred rendering framework, named Reflection-aware Gaussian Splatting (RGS), that can accurately model specular regions and improve novel view synthesis performance. Specifically, we found that a powerful 3D foundation model can provide a strong 3D geometric prior to foster correct geometric modeling. Based on this, we propose a cross-view shape consistency regularization to regularize the geometry surface with the large model prior and cross-view constraints. In this manner, our RGS can produce smoother geometric surfaces on reflective regions while reducing geometric hollows. To further improve rendering results on reflective regions, we present a reflection-aware densification strategy that is designed to capture specular variations across various views. With this strategy, our RGS is able to render novel views of objects in higher quality. Extensive experiments demonstrate our method consistently renders high-quality reflective objects, achieving state-of-the-art performance.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/19/2609.18898v1-normlift-from-lifted-features-to-semantic-reliability-in-3d-gaussian-splatting",
+      "section": "quick",
+      "title_en": "NormLift: From Lifted Features To Semantic Reliability In 3D Gaussian Splatting",
+      "authors": "Yihan Zang, Da Li, Dominik Engel, Shinkyu Park, Ivan Viola",
+      "date": "2026-09-16",
+      "pdf": "https://arxiv.org/pdf/2609.18898v1",
+      "score": "6.0",
+      "evidence": "将2D特征提升至3D高斯以进行渲染与理解",
+      "tldr": "NormLift 提出了一种针对 3D 高斯泼溅（3DGS）的免训练语义提升框架。该研究从 3D 视角出发，将特征提升建模为 CLIP 单位球面上的余弦对齐问题，推导出 L2 归一化特征的闭式解。通过引入基于特征模长的语义可靠性度量，NormLift 实现了多视图一致性优化，在无需额外训练的情况下显著提升了开放词汇 3D 语义分割的性能。",
+      "tags": "query:q1",
+      "abstract_en": "Training-free weighted aggregation is widely used to lift 2D semantic features onto 3D Gaussians for open-vocabulary scene understanding, yet its theoretical role remains insufficiently understood. Existing analyses typically justify this operation from the rendering side, treating Gaussian features as linearly composable Euclidean variables for reconstructing 2D feature maps. However, this view does not match downstream 3D usage, where each Gaussian is often queried independently in a cosine-based embedding space. We revisit feature lifting from the 3D side and formulate per-Gaussian assignment as a cosine alignment problem on the CLIP unit sphere. Under this objective, the L2-normalized semantic back-projected feature emerges as the closed-form solution, providing a complementary interpretation of the standard lifting rule from the perspective of per-Gaussian semantic assignment. The same formulation further yields a norm decomposition into intra-view and inter-view consistency, suggesting that feature magnitude itself can serve as a semantic reliability signal. Calibrated by effective multi-view support, this reliability score guides a mode-voting refinement that preserves CLIP feature validity by avoiding linear averaging. Experiments on open-vocabulary 3D semantic segmentation show that NormLift is an efficient, training-free framework that achieves strong performance across evaluation protocols.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
