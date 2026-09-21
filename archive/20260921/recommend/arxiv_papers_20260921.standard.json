@@ -1,0 +1,322 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-21T22:53:20.679961+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2609.21391v1",
+      "title": "WS-NeRF: A Mamba-Driven World-State-Aware Adaptive Deblurring Neural Radiance Field",
+      "abstract": "Neural Radiance Fields (NeRF) have attracted extensive attention in recent years due to their strong capability for high-quality 3D reconstruction and novel view synthesis from multi-view images. Existing methods usually rely on high-quality sharp inputs, while real-world image acquisition is highly susceptible to blur degradation, which severely affects the reconstruction quality of NeRF. In this paper, we propose a novel Mamba-driven world-state-aware adaptive deblurring neural radiance field, termed WS-NeRF, to address image degradation and 3D inconsistency. We formulate the alternating optimization of radiance fields as a dynamic evolution process with temporal memory, and jointly exploit comprehensive multi-dimensional world states and a mixture-of-experts mechanism to dynamically adjust the confidence of deblurring priors. Experimental results show that WS-NeRF significantly improves blurry radiance field reconstruction quality, achieving better performance on PSNR, SSIM, and LPIPS, while exhibiting more stable iterative recovery behavior.",
+      "authors": [
+        "Hang Jiang",
+        "Jinghao Wang",
+        "Yiming Zhang",
+        "Xinhong Wang",
+        "Luwei Ran",
+        "Yinfeng Yu"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-09-18T07:00:35+00:00",
+      "link": "https://arxiv.org/pdf/2609.21391v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Neural Radiance Fields (NeRF) for high-quality 3D reconstruction",
+      "llm_evidence_cn": "用于高质量3D重建的神经辐射场 (NeRF)",
+      "llm_evidence": "用于高质量3D重建的神经辐射场 (NeRF)",
+      "canonical_evidence": "用于高质量3D重建的神经辐射场 (NeRF)",
+      "llm_tldr_en": "Introduces WS-NeRF, a Mamba-driven deblurring neural radiance field for robust 3D reconstruction.",
+      "llm_tldr_cn": "引入WS-NeRF，一种由Mamba驱动的去模糊神经辐射场，用于鲁棒的3D重建。",
+      "llm_tldr": "引入WS-NeRF，一种由Mamba驱动的去模糊神经辐射场，用于鲁棒的3D重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.21054v1",
+      "title": "Physically Based Rendering in the Latent Space",
+      "abstract": "Image diffusion models have shown impressive image generation capabilities but are often hard to control, in contrast to classical computer graphics pipelines such as physically based rendering. However, we observe that there is a bridge between light transport phenomena and the distribution of latent space values produced by such models. Thus, we introduce physically based rendering in the feature space learned by the variational autoencoders in generative models, enabling light transport simulation in the latent space. This allows us to leverage physically based rendering techniques to output latent maps for physically guided content generation. We propose modifications to the rendering equation, which, when paired with a differentiable renderer, can yield an optimal set of scene parameters that require only minimal refinement to accurately render into the pretrained latent space. We train our method on a single rendered image, and then demonstrate the generalization of the method to scene geometry changes, lighting changes, and camera view changes.",
+      "authors": [
+        "Vuk Radovanovic",
+        "Vishesh Gupta",
+        "Adrien Gruson",
+        "Binh-Son Hua"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-09-17T20:14:41+00:00",
+      "link": "https://arxiv.org/pdf/2609.21054v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Physically based rendering and light transport simulation in latent space",
+      "llm_evidence_cn": "潜空间中的物理渲染与光线传输模拟",
+      "llm_evidence": "潜空间中的物理渲染与光线传输模拟",
+      "canonical_evidence": "潜空间中的物理渲染与光线传输模拟",
+      "llm_tldr_en": "Introduces light transport simulation in latent space to bridge diffusion models and PBR pipelines.",
+      "llm_tldr_cn": "在潜空间中引入光线传输模拟，将扩散模型与物理渲染管线相结合。",
+      "llm_tldr": "在潜空间中引入光线传输模拟，将扩散模型与物理渲染管线相结合。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.21176v1",
+      "title": "4DGS-Fixer: Generative Sparse-View 4D Gaussian Splatting with Iterative Refinement Guided by Video Diffusion Priors",
+      "abstract": "This paper addresses the challenges of dynamic scene synthesis from sparse-view videos. Existing methods employ geometric priors, adaptive optimization, or density-control strategies to improve 4D Gaussian modeling under sparse observations. However, they cannot fundamentally resolve the ill-posed problem caused by insufficient observations and missing scene information. Moreover, sparse-view 4D Gaussian Splatting (4DGS) often suffers from poor geometric initialization: with only a few input views, COLMAP typically reconstructs sparse and incomplete point clouds, leaving large scene regions without sufficient Gaussian support and making them difficult to recover through subsequent optimization. To address these limitations, we propose a novel iterative refinement framework based on a video diffusion model to improve the completeness and consistency of dynamic 4D scenes. Specifically, we first estimate multi-view depth maps and fuse them into dense point clouds to provide more complete geometric initialization for a dynamic 4DGS representation. We then employ a pretrained video restoration model to refine sequences rendered along novel camera trajectories at different time steps. The restored sequences serve as pseudo-supervision to regularize and iteratively refine the 4DGS representation. Experiments on a widely used benchmark dataset demonstrate that our method substantially outperforms existing baselines, achieving nearly a 2 dB PSNR improvement over the previous best-performing method.",
+      "authors": [
+        "Haitao Huang",
+        "Shenghao Zhao",
+        "Boyuan Tian",
+        "Shin-Fang Chng",
+        "Songlin Yang",
+        "Sheila Lim",
+        "Huangying Zhan",
+        "Yi Xu",
+        "Anyi Rao",
+        "Frank Guan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-18T00:37:53+00:00",
+      "link": "https://arxiv.org/pdf/2609.21176v1",
+      "tags": [
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "4D Gaussian Splatting for dynamic scene synthesis",
+      "llm_evidence_cn": "用于动态场景合成的4D高斯泼溅 (Gaussian Splatting)",
+      "llm_evidence": "用于动态场景合成的4D高斯泼溅 (Gaussian Splatting)",
+      "canonical_evidence": "用于动态场景合成的4D高斯泼溅 (Gaussian Splatting)",
+      "llm_tldr_en": "Refines 4D Gaussian Splatting using video diffusion priors for sparse-view dynamic scene synthesis.",
+      "llm_tldr_cn": "利用视频扩散先验改进4D高斯泼溅，用于稀疏视图动态场景合成。",
+      "llm_tldr": "利用视频扩散先验改进4D高斯泼溅，用于稀疏视图动态场景合成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.20964v1",
+      "title": "Warp-Geo: Differentiable Geometry Representation for Dynamic-Boundary Simulation and Shape Optimization",
+      "abstract": "Modern inverse problems and adaptive simulations require efficient and differentiable representations of complex geometries that can be updated frequently for gradient-based optimization. Existing methods cannot simultaneously achieve both. We present Warp-Geo, a differentiable GPU-accelerated framework for reconstructing signed distance fields and evaluating surface normals from point clouds of complex 3D geometries. Warp-Geo combines uniform grids for GPU parallelism with implicit differentiation through the Poisson solve, enabling frequent geometry recomputation while maintaining full differentiability. We demonstrate Warp-Geo on forward SDF reconstruction, dynamic fluid--structure interaction with moving boundaries, and inverse shape optimization via automatic differentiation with gradient validation. GPU scalability analysis confirms practical feasibility for frequent geometry updates. The framework, implemented in Warp and JAX, enables seamless integration with differentiable physics solvers for end-to-end shape optimization.",
+      "authors": [
+        "Weijie Zhang",
+        "Xiantao Fan",
+        "Jian-Xun Wang"
+      ],
+      "primary_category": "physics.comp-ph",
+      "categories": [
+        "physics.comp-ph"
+      ],
+      "published": "2026-09-17T18:18:20+00:00",
+      "link": "https://arxiv.org/pdf/2609.20964v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "differentiable geometry representation for dynamic simulations",
+      "llm_evidence_cn": "用于动态模拟的可微几何表示",
+      "llm_evidence": "用于动态模拟的可微几何表示",
+      "canonical_evidence": "用于动态模拟的可微几何表示",
+      "llm_tldr_en": "A GPU-accelerated framework for differentiable SDF reconstruction and dynamic boundary simulation.",
+      "llm_tldr_cn": "一个用于可微SDF重建和动态边界模拟的GPU加速框架。",
+      "llm_tldr": "一个用于可微SDF重建和动态边界模拟的GPU加速框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.15032v1",
+      "title": "Tele360: Real-Time Feed-Forward Human Reconstruction from Sparse Unposed Cameras",
+      "abstract": "Live free-viewpoint visualization of real humans is critical for immersive communication and interactive digital experiences. Existing methods either rely on computationally expensive optimization or require calibrated cameras and low-resolution inputs, making real-time high-resolution deployment impractical. In this work, we present Tele360, the first real-time feed-forward system for dynamic human reconstruction and live free-viewpoint visualization from sparse, unposed RGB streams. Our system jointly estimates camera poses and reconstructs a dynamic 3D Gaussian representation for each time instance in a single forward pass. To achieve this, we start by designing a lightweight sparsity-aware multi-view transformer backbone that tokenizes foreground human regions while preserving global context through a shared scene token. We then employ a fully transformer-based Gaussian decoder to mitigate convolution-induced over-smoothing while keeping decoding sparse and efficient. In addition, we introduce a hybrid feature pyramid that injects multi-scale appearance cues into geometry prediction. We further introduce a lightweight differentiable Levenberg-Marquardt camera refinement layer to enhance multi-view consistency and geometric alignment. Moreover, to stabilize learning under sparse, unposed inputs, we transfer multi-view geometry priors from a large visual-geometry foundation model via teacher-student distillation. Finally, the predicted Gaussian maps are streamed with video codecs to remote devices for interactive free-viewpoint rendering. Extensive experiments show that Tele360 achieves state-of-the-art visual quality on studio benchmarks while supporting real-time 2K input-to-rendering at over 25 FPS on a single consumer GPU. Additional captured sequences illustrate its performance across varied subjects, clothing, and motions under our multi-camera setup.",
+      "authors": [
+        "Hanzhang Tu",
+        "Zhanfeng Liao",
+        "Wei Min",
+        "Jiajun Zhang",
+        "Yebin Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-14T04:50:52+00:00",
+      "link": "https://arxiv.org/pdf/2609.15032v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Real-time dynamic 3D Gaussian representation for visualization",
+      "llm_evidence_cn": "用于可视化实时动态3D高斯表示",
+      "llm_evidence": "用于可视化实时动态3D高斯表示",
+      "canonical_evidence": "用于可视化实时动态3D高斯表示",
+      "llm_tldr_en": "A real-time system for dynamic human reconstruction using 3D Gaussian Splatting from sparse views.",
+      "llm_tldr_cn": "一种利用稀疏视角下的3D高斯泼溅进行动态人体重建的实时系统。",
+      "llm_tldr": "一种利用稀疏视角下的3D高斯泼溅进行动态人体重建的实时系统。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.21498v1",
+      "title": "VoxelTTO: Voxel-Aligned Feed-Forward 3D Gaussian Splatting with Test-Time Optimization",
+      "abstract": "Recent feed-forward 3D Gaussian Splatting (3DGS) methods typically regress pixel-aligned Gaussian primitives, often causing excessive overlap and artifacts, while inaccuracies in predicted camera poses can lead to misalignment in novel-view synthesis (NVS). We present VoxelTTO, a feed-forward framework for reconstructing geometrically accurate 3DGS scenes from an arbitrary number of images and optional camera parameters. VoxelTTO aggregates dense image features into a global voxel representation and decodes Gaussians from voxel features, breaking the pixel-to-Gaussian correspondence. To exploit known camera parameters while keeping the pretrained visual foundation model (VFM) parameters frozen, we introduce test-time optimization (TTO) that adapts lightweight LoRA modules using pose supervision. We further replace vanilla 3DGS rasterization with stochastic solid volume rendering during training and inference, improving geometric fidelity. Training updates only the voxel-aligned Gaussian reconstruction modules, requiring 80 GPU hours. Experiments on Replica, Tanks and Temples, and DTU demonstrate improved RGB-D NVS and camera-pose estimation relative to prior methods.",
+      "authors": [
+        "Yibin Zhao",
+        "Yihan Pan",
+        "Yangwen Li",
+        "Jun Nan",
+        "Jianjun Yi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-18T08:48:57+00:00",
+      "link": "https://arxiv.org/pdf/2609.21498v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Voxel-aligned feed-forward 3D Gaussian Splatting for scene reconstruction",
+      "llm_evidence_cn": "用于场景重建的体素对齐前馈 3D 高斯泼溅",
+      "llm_evidence": "用于场景重建的体素对齐前馈 3D 高斯泼溅",
+      "canonical_evidence": "用于场景重建的体素对齐前馈 3D 高斯泼溅",
+      "llm_tldr_en": "Combines voxel representations with 3D Gaussian Splatting for accurate feed-forward 3D reconstruction.",
+      "llm_tldr_cn": "将体素表示与 3D 高斯泼溅相结合，实现准确的前馈 3D 重建。",
+      "llm_tldr": "将体素表示与 3D 高斯泼溅相结合，实现准确的前馈 3D 重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.16853v1",
+      "title": "Can Deep Learning Achieve Cross-Physics Mapping?",
+      "abstract": "Can deep learning translate physical fields governed by fundamentally different equations? We address this question by introducing Cross-Physics Mapping (CPM), an operator-learning framework for mappings between heterogeneous physical domains. We formulate sufficient conditions for such mappings through compatible latent representations and propose a dimensionless scaling principle that aligns the characteristic evolution scales of the source and target systems without assuming their dynamical equivalence. As a representative test, paired diffusion and wave fields are generated independently from their respective parabolic and hyperbolic equations while sharing the same latent geometry, material heterogeneity, excitation, and dimensionless scale. Seven architectures-ResUNet, DeepONet, Fourier, latent, wavelet, U-shaped, and Galerkin neural operators-are evaluated for both diffusion-to-wave and wave-to-diffusion mappings. The results reveal a strong directional asymmetry. Diffusion-to-wave reconstruction is more challenging because it requires recovering wavefront, phase, and time-of-flight information attenuated by diffusion; U-NO performs best in this direction, achieving a relative $\\ell_2$ error of $0.307$ and an $R^2$ of $0.905$. Wave-to-diffusion mapping is considerably more stable, with GNO attaining a relative $\\ell_2$ error of $0.154$ and an $R^2$ of $0.935$. Neural operators generally outperform the conventional convolutional baseline, highlighting the nonlocal nature of cross-physics transformations. These findings demonstrate that deep learning can establish useful mappings between distinct physical modalities on a shared latent manifold, while the achievable accuracy remains fundamentally constrained by the direction-dependent information content of the governing physics.",
+      "authors": [
+        "Pengfei Zhu",
+        "Julien Lecompagnon",
+        "Mathias Ziegler"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "physics.app-ph"
+      ],
+      "published": "2026-09-15T08:45:23+00:00",
+      "link": "https://arxiv.org/pdf/2609.16853v1",
+      "tags": [
+        "keyword:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "operator-learning for mappings between heterogeneous physical fields",
+      "llm_evidence_cn": "异构物理场映射的算子学习",
+      "llm_evidence": "异构物理场映射的算子学习",
+      "canonical_evidence": "异构物理场映射的算子学习",
+      "llm_tldr_en": "Explores deep learning for cross-physics mapping between different physical field equations.",
+      "llm_tldr_cn": "探索深度学习在不同物理场方程之间的跨物理映射应用。",
+      "llm_tldr": "探索深度学习在不同物理场方程之间的跨物理映射应用。",
+      "llm_tags": [
+        "query:q5"
+      ],
+      "matched_query_tag": "query:q5",
+      "matched_query_text": "deep learning methods for volumetric cloud rendering and simulation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.20323v1",
+      "title": "NeuSOGA3D: A Neuro-Symbolic Framework for Explainable 3D Geometric Reconstruction",
+      "abstract": "Three-dimensional reconstruction from unorganized point clouds remains a challenging problem in computer vision, geometric modeling, and computer-aided design. While neural implicit methods achieve impressive reconstruction accuracy, geometry is typically encoded in latent representations that limit interpretability and reuse within engineering workflows.   We present NeuSOGA3D (Neuro-Symbolic Geometric Abstraction in 3D), a hybrid framework that combines learned perceptual priors inherited from NeuSOGA with explicit symbolic geometric reasoning. The method projects point clouds onto principal orthographic planes, constructs symbolic implicit spline representations from the resulting observations, and fuses them through shape-preserving constructive solid geometry operations to generate a coarse visual hull. Additional geometric detail is recovered through cross-sectional decomposition and volumetric reconstruction using Partial Shape-Preserving Splines.   Unlike conventional neural implicit approaches, NeuSOGA3D progressively transforms observations into explicit symbolic entities, including control polygons, implicit spline fields, cross-sections, and volumetric lofts. Experiments on all forty categories of the ModelNet40 benchmark demonstrate the ability of the framework to recover structurally meaningful and CAD-compatible geometric representations from diverse point-cloud observations. The results highlight the potential of combining learned perception with symbolic geometric reasoning for explainable geometric intelligence.",
+      "authors": [
+        "Qingde Li",
+        "Qingqi Hong",
+        "Zihan Li",
+        "Jie Tian"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-17T12:57:24+00:00",
+      "link": "https://arxiv.org/pdf/2609.20323v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "neural implicit methods for 3D geometric reconstruction",
+      "llm_evidence_cn": "用于3D几何重建的神经隐式方法",
+      "llm_evidence": "用于3D几何重建的神经隐式方法",
+      "canonical_evidence": "用于3D几何重建的神经隐式方法",
+      "llm_tldr_en": "NeuSOGA3D combines neural implicit methods with symbolic reasoning for explainable 3D reconstruction.",
+      "llm_tldr_cn": "NeuSOGA3D将神经隐式方法与符号推理相结合，用于可解释的3D重建。",
+      "llm_tldr": "NeuSOGA3D将神经隐式方法与符号推理相结合，用于可解释的3D重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
