@@ -1,0 +1,79 @@
+{
+  "label": "2026-09-23",
+  "date": "2026-09-23",
+  "generated_at": "2026-09-23T22:32:10",
+  "count": 5,
+  "papers": [
+    {
+      "paper_id": "202609/23/2609.25907v1-nacr-visual-localization-via-nerf-aided-camera-ray-regression",
+      "section": "deep",
+      "title_en": "NaCR: Visual Localization via NeRF-aided Camera Ray Regression",
+      "authors": "Yesheng Zhang, Xiang Dai, Xu Zhao, Chongyang Zhang",
+      "date": "2026-09-22",
+      "pdf": "https://arxiv.org/pdf/2609.25907v1",
+      "score": "8.0",
+      "evidence": "通过可微射线步进连接NeRF与射线回归",
+      "tldr": "针对视觉定位中相机射线回归（CRR）精度受限的问题，本文提出了NaCR框架。该方法利用NeRF与CRR的互补性，通过引入三项增强技术、利用NeRF合成训练数据以及构建基于光度渲染误差的闭环监督机制，实现了射线层面的深度融合，显著提升了视觉定位的准确性与鲁棒性。",
+      "tags": "query:q3",
+      "abstract_en": "Visual localization (VL) is a fundamental technology for vision applications such as virtual reality. Recently, a novel VL paradigm, Camera Ray Regression (CRR), has emerged, which maps 2D image patches to 3D camera rays, but its accuracy is limited. To improve CRR accuracy, we notice a compelling duality: the inverse of this mapping is inherently performed by the novel view synthesis model, \\ie, Neural Radiance Fields (NeRF). While NeRF renders image patches from camera rays via differentiable ray marching, CRR predicts the rays from image patches. Motivated by this complementary relationship, we propose NeRF-aided Camera Ray Regression (NaCR), a unified framework that seamlessly bridges NeRF and CRR at the ray level. First, NaCR incorporates three simple yet effective enhancements into the CRR baseline. Second, leveraging a pre-trained NeRF, NaCR augments the training data by synthesizing novel views tailored for efficient, patch-level consumption. Finally, exploiting the differentiability of NeRF, NaCR forms a closed-loop supervision pipeline where photometric rendering errors are back-propagated to optimize the predicted camera rays. To ensure stable convergence within the highly non-convex image space, we introduce a two-stage training curriculum. Extensive experiments across indoor and outdoor benchmarks demonstrate that NaCR achieves competitive accuracy. Comprehensive ablation studies validate the efficacy of each proposed component.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/23/2609.21176v2-4dgs-fixer-generative-sparse-view-4d-gaussian-splatting-with-iterative-refinement-guided-by-video-diffusion-priors",
+      "section": "quick",
+      "title_en": "4DGS-Fixer: Generative Sparse-View 4D Gaussian Splatting with Iterative Refinement Guided by Video Diffusion Priors",
+      "authors": "Haitao Huang, Shenghao Zhao, Boyuan Tian, Shin-Fang Chng, Songlin Yang, Sheila Lim, Huangying Zhan, Yi Xu, Anyi Rao, Frank Guan",
+      "date": "2026-09-18",
+      "pdf": "https://arxiv.org/pdf/2609.21176v2",
+      "score": "7.0",
+      "evidence": "用于动态场景合成和渲染的4D高斯泼溅",
+      "tldr": "针对稀疏视角下动态场景重建中几何信息缺失和初始化不佳的问题，本文提出了4DGS-Fixer框架。该方法通过多视角深度估计生成稠密点云以优化初始化，并利用预训练视频扩散模型对新视角渲染序列进行修复，作为伪监督信号迭代优化4D高斯表征，显著提升了动态场景的重建质量与一致性。",
+      "tags": "query:q1",
+      "abstract_en": "This paper addresses the challenges of dynamic scene synthesis from sparse-view videos. Existing methods employ geometric priors, adaptive optimization, or density-control strategies to improve 4D Gaussian modeling under sparse observations. However, they cannot fundamentally resolve the ill-posed problem caused by insufficient observations and missing scene information. Moreover, sparse-view 4D Gaussian Splatting (4DGS) often suffers from poor geometric initialization: with only a few input views, COLMAP typically reconstructs sparse and incomplete point clouds, leaving large scene regions without sufficient Gaussian support and making them difficult to recover through subsequent optimization. To address these limitations, we propose a novel iterative refinement framework based on a video diffusion model to improve the completeness and consistency of dynamic 4D scenes. Specifically, we first estimate multi-view depth maps and fuse them into dense point clouds to provide more complete geometric initialization for a dynamic 4DGS representation. We then employ a pretrained video restoration model to refine sequences rendered along novel camera trajectories at different time steps. The restored sequences serve as pseudo-supervision to regularize and iteratively refine the 4DGS representation. Experiments on a widely used benchmark dataset demonstrate that our method substantially outperforms existing baselines, achieving nearly a 2 dB PSNR improvement over the previous best-performing method.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/23/2609.25604v1-ultra-fast-neural-inference-for-stochastic-gaussian-splatting-denoising",
+      "section": "quick",
+      "title_en": "Ultra-fast Neural Inference for Stochastic Gaussian Splatting Denoising",
+      "authors": "Chenxiao Hu, Hao Zhang, Yanchen Zhang, Meng Gai, Guoping Wang, Sheng Li",
+      "date": "2026-09-22",
+      "pdf": "https://arxiv.org/pdf/2609.25604v1",
+      "score": "7.0",
+      "evidence": "随机高斯泼溅渲染的神经网络去噪",
+      "tldr": "针对随机高斯溅射（Stochastic Gaussian Splatting）渲染中存在的空间噪声问题，本文提出了一种超快速的神经去噪方案。该方法通过双路径指数移动平均、像素级置信度预测、各向异性空间滤波及方差门控组合，在保持无排序、无混合渲染的高效性能前提下，有效抑制了噪声并实现了自由视角下的时间稳定性，在性能与视觉质量之间取得了极佳平衡。",
+      "tags": "query:q1",
+      "abstract_en": "Stochastic rendering eliminates the sorting and alpha blending process in Gaussian splatting, at the cost of introducing spatial noise. Formulating temporal denoising over the pixel stream shared by view-consistent stochastic splatting renderers, we propose a temporal neural denoiser validated on stochastic 2D Gaussian Splatting rendering, combining dual-path exponential moving average accumulation, per-pixel learned trust prediction for history validation, a fixed anisotropic spatial filter and a variance-gated composition with stabilization. The denoiser suppresses the noise, achieving temporally stable, visually compelling outputs during free camera navigation, all while retaining the sort-free, blend-free rasterization performance. The combined pipeline retains a PSNR gap to sorted alpha-blending renderers, but the denoiser's overhead stays below the time saved by removing sorting and blending.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/23/2609.20323v2-neusoga3d-a-neuro-symbolic-framework-for-explainable-3d-geometric-reconstruction",
+      "section": "quick",
+      "title_en": "NeuSOGA3D: A Neuro-Symbolic Framework for Explainable 3D Geometric Reconstruction",
+      "authors": "Qingde Li, Qingqi Hong, Zihan Li, Jie Tian",
+      "date": "2026-09-17",
+      "pdf": "https://arxiv.org/pdf/2609.20323v2",
+      "score": "6.0",
+      "evidence": "用于点云3D几何重建的神经隐式方法",
+      "tldr": "NeuSOGA3D是一个神经符号框架，旨在解决无序点云的三维重建问题。它结合了神经隐式方法的感知能力与符号几何推理，通过将点云投影至正交平面并构建隐式样条，生成CAD兼容的几何表示。该方法不仅实现了高精度的重建，还通过显式的几何实体（如控制多边形和体积放样）提供了极佳的可解释性，在ModelNet40数据集上展现了其在工程工作流中的应用潜力。",
+      "tags": "query:q1",
+      "abstract_en": "Three-dimensional reconstruction from unorganized point clouds remains a challenging problem in computer vision, geometric modeling, and computer-aided design. While neural implicit methods achieve impressive reconstruction accuracy, geometry is typically encoded in latent representations that limit interpretability and reuse within engineering workflows.   We present NeuSOGA3D (Neuro-Symbolic Observation-Guided Geometric Abstraction in 3D), a hybrid framework that combines learned perceptual priors inherited from NeuSOGA with explicit symbolic geometric reasoning. The method projects point clouds onto principal orthographic planes, constructs symbolic implicit spline representations from the resulting observations, and fuses them through shape-preserving constructive solid geometry operations to generate a coarse visual hull. Additional geometric detail is recovered through cross-sectional decomposition and volumetric reconstruction using Partial Shape-Preserving Splines.   Unlike conventional neural implicit approaches, NeuSOGA3D progressively transforms observations into explicit symbolic entities, including control polygons, implicit spline fields, cross-sections, and volumetric lofts. Experiments on all forty categories of the ModelNet40 benchmark demonstrate the ability of the framework to recover structurally meaningful and CAD-compatible geometric representations from diverse point-cloud observations. The results highlight the potential of combining learned perception with symbolic geometric reasoning for explainable geometric intelligence.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/23/2609.25966v1-grip-gaussian-rendering-as-a-cross-modal-bridge-for-image-to-point-cloud-registration",
+      "section": "quick",
+      "title_en": "GRIP: Gaussian Rendering as a Cross-Modal Bridge for Image-to-Point Cloud Registration",
+      "authors": "Karim Slimani, Catherine Achard, Eric Marchand, Brahim Tamadazte",
+      "date": "2026-09-22",
+      "pdf": "https://arxiv.org/pdf/2609.25966v1",
+      "score": "6.0",
+      "evidence": "通过高斯泼溅软渲染学习到的3D点特征",
+      "tldr": "GRIP是一个用于图像到点云配准的位姿细化框架。针对图像网格与无序点云之间的结构差异，该方法利用高斯特征溅射将3D点特征渲染至图像网格，通过像素对齐的Transformer融合视觉语义与几何信息，实现高精度的密集对应关系估计与位姿细化，在多个数据集上达到SOTA水平。",
+      "tags": "query:q1",
+      "abstract_en": "This paper introduces GRIP, a pose-conditioned refinement framework for pixel-to-point matching and 2D to 3D registration. Given an initial coarse pose estimate, GRIP addresses the structural mismatch between grid based image descriptors and unordered point cloud descriptors by softly rendering learned 3D point features onto the image grid through Gaussian feature splatting. The rendered point derived feature map is then fused with image features by a pixel aligned transformer, enabling visual semantic and geometric cues to interact in a shared 2D representation. The refined features are decoded and propagated to finer resolutions for dense correspondence estimation and final pose refinement. Experiments on RGB D Scenes V2 and 7 Scenes demonstrate state of the art inlier ratio and competitive registration recall, with stronger performance under stricter evaluation thresholds.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

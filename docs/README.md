@@ -6,42 +6,37 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-09-22
-- 运行时间：2026-09-22 22:34:56 UTC
+- 最新运行日期：2026-09-23
+- 运行时间：2026-09-23 22:32:07 UTC
 - 运行状态：成功
-- 本次总论文数：7
+- 本次总论文数：5
 - 精读区：1
-- 速读区：6
+- 速读区：4
 
 ### 今日简报（AI）
-3D 神经渲染重建技术。
-    最推荐关注 8.0 分高分论文提出的 GARO 几何感知冗余优化，
-- 详情：[/202609/22/README](/202609/22/README)
+今日聚焦 3D 视觉前沿，精选 5 篇论文涵盖 NeRF 定位、4D 高斯溅射及神经符号重建技术。
+重点关注 NeRF 辅助相机射线回归在视觉定位中的应用，以及视频扩散先验对 4D 高斯溅射质量的显著提升。
+建议优先研读《NaCR》以掌握定位新范式，并持续关注高斯溅射在动态场景与去噪任务中的实时化进展。
+- 详情：[/202609/23/README](/202609/23/README)
 
 ### 精读区论文标签
-1. [GARO: Geometry-Aware Redundancy Optimization for Real-Time and High-Fidelity Dynamic Gaussian Splatting](/202609/22/2609.23509v1-garo-geometry-aware-redundancy-optimization-for-real-time-and-high-fidelity-dynamic-gaussian-splatting)  
-   标签：评分：8.0/10、query:q7
-   evidence：加速动态高斯泼溅的渲染效率
+1. [NaCR: Visual Localization via NeRF-aided Camera Ray Regression](/202609/23/2609.25907v1-nacr-visual-localization-via-nerf-aided-camera-ray-regression)  
+   标签：评分：8.0/10、query:q3
+   evidence：通过可微射线步进连接NeRF与射线回归
 
 ### 速读区论文标签
-1. [2D GauSS-MI: Efficient Active Scene Reconstruction with Balanced Visual and Geometric Quality](/202609/22/2609.21516v1-2d-gauss-mi-efficient-active-scene-reconstruction-with-balanced-visual-and-geometric-quality)  
-   标签：评分：7.0/10、query:q7
-   evidence：高效的在线 2D 高斯泼溅映射与重建
-2. [C$^{2}$-INR: Customized Convolutional Implicit Neural Representation](/202609/22/2609.22807v1-c2-inr-customized-convolutional-implicit-neural-representation)  
+1. [4DGS-Fixer: Generative Sparse-View 4D Gaussian Splatting with Iterative Refinement Guided by Video Diffusion Priors](/202609/23/2609.21176v2-4dgs-fixer-generative-sparse-view-4d-gaussian-splatting-with-iterative-refinement-guided-by-video-diffusion-priors)  
    标签：评分：7.0/10、query:q1
-   evidence：卷积隐式神经表示架构
-3. [D3GS: Depth, DINO, and RGB Diffusion Co-Guided 3D Gaussian Splatting for Sparse-View Reconstruction](/202609/22/2609.22941v1-d3gs-depth-dino-and-rgb-diffusion-co-guided-3d-gaussian-splatting-for-sparse-view-reconstruction)  
+   evidence：用于动态场景合成和渲染的4D高斯泼溅
+2. [Ultra-fast Neural Inference for Stochastic Gaussian Splatting Denoising](/202609/23/2609.25604v1-ultra-fast-neural-inference-for-stochastic-gaussian-splatting-denoising)  
    标签：评分：7.0/10、query:q1
-   evidence：用于稀疏视图重建和渲染的 3D 高斯泼溅
-4. [GAPS: Generative Active Pseudo-view Selection for Sparse-View 3D Gaussian Splatting](/202609/22/2609.23436v1-gaps-generative-active-pseudo-view-selection-for-sparse-view-3d-gaussian-splatting)  
-   标签：评分：7.0/10、query:q1
-   evidence：用于实时渲染和新视角合成的3D高斯泼溅技术
-5. [Compressing 3D Gaussian Splatting via Cross-Representation Priors](/202609/22/2609.23005v1-compressing-3d-gaussian-splatting-via-cross-representation-priors)  
-   标签：评分：6.0/10、query:q7
-   evidence：压缩3D高斯泼溅以实现高效传输
-6. [GAE: Learning a Geometry-Native Latent Space for 3D-Consistent World Generation](/202609/22/2609.24981v1-gae-learning-a-geometry-native-latent-space-for-3d-consistent-world-generation)  
+   evidence：随机高斯泼溅渲染的神经网络去噪
+3. [NeuSOGA3D: A Neuro-Symbolic Framework for Explainable 3D Geometric Reconstruction](/202609/23/2609.20323v2-neusoga3d-a-neuro-symbolic-framework-for-explainable-3d-geometric-reconstruction)  
    标签：评分：6.0/10、query:q1
-   evidence：用于3D一致性生成的几何原生潜空间
+   evidence：用于点云3D几何重建的神经隐式方法
+4. [GRIP: Gaussian Rendering as a Cross-Modal Bridge for Image-to-Point Cloud Registration](/202609/23/2609.25966v1-grip-gaussian-rendering-as-a-cross-modal-bridge-for-image-to-point-cloud-registration)  
+   标签：评分：6.0/10、query:q1
+   evidence：通过高斯泼溅软渲染学习到的3D点特征
 
 
 <div class="dpr-home-promo-card">

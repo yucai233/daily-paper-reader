@@ -1,0 +1,211 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-23T22:31:46.433771+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2609.25907v1",
+      "title": "NaCR: Visual Localization via NeRF-aided Camera Ray Regression",
+      "abstract": "Visual localization (VL) is a fundamental technology for vision applications such as virtual reality. Recently, a novel VL paradigm, Camera Ray Regression (CRR), has emerged, which maps 2D image patches to 3D camera rays, but its accuracy is limited. To improve CRR accuracy, we notice a compelling duality: the inverse of this mapping is inherently performed by the novel view synthesis model, \\ie, Neural Radiance Fields (NeRF). While NeRF renders image patches from camera rays via differentiable ray marching, CRR predicts the rays from image patches. Motivated by this complementary relationship, we propose NeRF-aided Camera Ray Regression (NaCR), a unified framework that seamlessly bridges NeRF and CRR at the ray level. First, NaCR incorporates three simple yet effective enhancements into the CRR baseline. Second, leveraging a pre-trained NeRF, NaCR augments the training data by synthesizing novel views tailored for efficient, patch-level consumption. Finally, exploiting the differentiability of NeRF, NaCR forms a closed-loop supervision pipeline where photometric rendering errors are back-propagated to optimize the predicted camera rays. To ensure stable convergence within the highly non-convex image space, we introduce a two-stage training curriculum. Extensive experiments across indoor and outdoor benchmarks demonstrate that NaCR achieves competitive accuracy. Comprehensive ablation studies validate the efficacy of each proposed component.",
+      "authors": [
+        "Yesheng Zhang",
+        "Xiang Dai",
+        "Xu Zhao",
+        "Chongyang Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-22T09:13:21+00:00",
+      "link": "https://arxiv.org/pdf/2609.25907v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "bridges NeRF and ray regression via differentiable ray marching",
+      "llm_evidence_cn": "通过可微射线步进连接NeRF与射线回归",
+      "llm_evidence": "通过可微射线步进连接NeRF与射线回归",
+      "canonical_evidence": "通过可微射线步进连接NeRF与射线回归",
+      "llm_tldr_en": "Integrates NeRF's ray marching with camera ray regression to improve visual localization accuracy.",
+      "llm_tldr_cn": "将NeRF的射线步进与相机射线回归结合，以提高视觉定位精度。",
+      "llm_tldr": "将NeRF的射线步进与相机射线回归结合，以提高视觉定位精度。",
+      "llm_tags": [
+        "query:q3"
+      ],
+      "matched_query_tag": "query:q3",
+      "matched_query_text": "neural acceleration of volume ray marching",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.21176v2",
+      "title": "4DGS-Fixer: Generative Sparse-View 4D Gaussian Splatting with Iterative Refinement Guided by Video Diffusion Priors",
+      "abstract": "This paper addresses the challenges of dynamic scene synthesis from sparse-view videos. Existing methods employ geometric priors, adaptive optimization, or density-control strategies to improve 4D Gaussian modeling under sparse observations. However, they cannot fundamentally resolve the ill-posed problem caused by insufficient observations and missing scene information. Moreover, sparse-view 4D Gaussian Splatting (4DGS) often suffers from poor geometric initialization: with only a few input views, COLMAP typically reconstructs sparse and incomplete point clouds, leaving large scene regions without sufficient Gaussian support and making them difficult to recover through subsequent optimization. To address these limitations, we propose a novel iterative refinement framework based on a video diffusion model to improve the completeness and consistency of dynamic 4D scenes. Specifically, we first estimate multi-view depth maps and fuse them into dense point clouds to provide more complete geometric initialization for a dynamic 4DGS representation. We then employ a pretrained video restoration model to refine sequences rendered along novel camera trajectories at different time steps. The restored sequences serve as pseudo-supervision to regularize and iteratively refine the 4DGS representation. Experiments on a widely used benchmark dataset demonstrate that our method substantially outperforms existing baselines, achieving nearly a 2 dB PSNR improvement over the previous best-performing method.",
+      "authors": [
+        "Haitao Huang",
+        "Shenghao Zhao",
+        "Boyuan Tian",
+        "Shin-Fang Chng",
+        "Songlin Yang",
+        "Sheila Lim",
+        "Huangying Zhan",
+        "Yi Xu",
+        "Anyi Rao",
+        "Frank Guan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-18T00:37:53+00:00",
+      "link": "https://arxiv.org/pdf/2609.21176v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "4D Gaussian Splatting for dynamic scene synthesis and rendering",
+      "llm_evidence_cn": "用于动态场景合成和渲染的4D高斯泼溅",
+      "llm_evidence": "用于动态场景合成和渲染的4D高斯泼溅",
+      "canonical_evidence": "用于动态场景合成和渲染的4D高斯泼溅",
+      "llm_tldr_en": "Refines 4D Gaussian Splatting for dynamic scenes using video diffusion priors in sparse-view settings.",
+      "llm_tldr_cn": "在稀疏视图设置下，利用视频扩散先验优化动态场景的4D高斯泼溅。",
+      "llm_tldr": "在稀疏视图设置下，利用视频扩散先验优化动态场景的4D高斯泼溅。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.20323v2",
+      "title": "NeuSOGA3D: A Neuro-Symbolic Framework for Explainable 3D Geometric Reconstruction",
+      "abstract": "Three-dimensional reconstruction from unorganized point clouds remains a challenging problem in computer vision, geometric modeling, and computer-aided design. While neural implicit methods achieve impressive reconstruction accuracy, geometry is typically encoded in latent representations that limit interpretability and reuse within engineering workflows.   We present NeuSOGA3D (Neuro-Symbolic Observation-Guided Geometric Abstraction in 3D), a hybrid framework that combines learned perceptual priors inherited from NeuSOGA with explicit symbolic geometric reasoning. The method projects point clouds onto principal orthographic planes, constructs symbolic implicit spline representations from the resulting observations, and fuses them through shape-preserving constructive solid geometry operations to generate a coarse visual hull. Additional geometric detail is recovered through cross-sectional decomposition and volumetric reconstruction using Partial Shape-Preserving Splines.   Unlike conventional neural implicit approaches, NeuSOGA3D progressively transforms observations into explicit symbolic entities, including control polygons, implicit spline fields, cross-sections, and volumetric lofts. Experiments on all forty categories of the ModelNet40 benchmark demonstrate the ability of the framework to recover structurally meaningful and CAD-compatible geometric representations from diverse point-cloud observations. The results highlight the potential of combining learned perception with symbolic geometric reasoning for explainable geometric intelligence.",
+      "authors": [
+        "Qingde Li",
+        "Qingqi Hong",
+        "Zihan Li",
+        "Jie Tian"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-17T12:57:24+00:00",
+      "link": "https://arxiv.org/pdf/2609.20323v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "neural implicit methods for 3D geometric reconstruction from point clouds",
+      "llm_evidence_cn": "用于点云3D几何重建的神经隐式方法",
+      "llm_evidence": "用于点云3D几何重建的神经隐式方法",
+      "canonical_evidence": "用于点云3D几何重建的神经隐式方法",
+      "llm_tldr_en": "Combines neural implicit methods with symbolic reasoning for explainable 3D geometric reconstruction.",
+      "llm_tldr_cn": "结合神经隐式方法与符号推理，实现可解释的3D几何重建。",
+      "llm_tldr": "结合神经隐式方法与符号推理，实现可解释的3D几何重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.25604v1",
+      "title": "Ultra-fast Neural Inference for Stochastic Gaussian Splatting Denoising",
+      "abstract": "Stochastic rendering eliminates the sorting and alpha blending process in Gaussian splatting, at the cost of introducing spatial noise. Formulating temporal denoising over the pixel stream shared by view-consistent stochastic splatting renderers, we propose a temporal neural denoiser validated on stochastic 2D Gaussian Splatting rendering, combining dual-path exponential moving average accumulation, per-pixel learned trust prediction for history validation, a fixed anisotropic spatial filter and a variance-gated composition with stabilization. The denoiser suppresses the noise, achieving temporally stable, visually compelling outputs during free camera navigation, all while retaining the sort-free, blend-free rasterization performance. The combined pipeline retains a PSNR gap to sorted alpha-blending renderers, but the denoiser's overhead stays below the time saved by removing sorting and blending.",
+      "authors": [
+        "Chenxiao Hu",
+        "Hao Zhang",
+        "Yanchen Zhang",
+        "Meng Gai",
+        "Guoping Wang",
+        "Sheng Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-09-22T02:51:29+00:00",
+      "link": "https://arxiv.org/pdf/2609.25604v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural denoising for stochastic Gaussian splatting rendering",
+      "llm_evidence_cn": "随机高斯泼溅渲染的神经网络去噪",
+      "llm_evidence": "随机高斯泼溅渲染的神经网络去噪",
+      "canonical_evidence": "随机高斯泼溅渲染的神经网络去噪",
+      "llm_tldr_en": "Proposes a temporal neural denoiser for stochastic Gaussian splatting to achieve fast, stable rendering.",
+      "llm_tldr_cn": "提出一种用于随机高斯泼溅的实时神经网络去噪器，实现稳定且快速的渲染。",
+      "llm_tldr": "提出一种用于随机高斯泼溅的实时神经网络去噪器，实现稳定且快速的渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.25966v1",
+      "title": "GRIP: Gaussian Rendering as a Cross-Modal Bridge for Image-to-Point Cloud Registration",
+      "abstract": "This paper introduces GRIP, a pose-conditioned refinement framework for pixel-to-point matching and 2D to 3D registration. Given an initial coarse pose estimate, GRIP addresses the structural mismatch between grid based image descriptors and unordered point cloud descriptors by softly rendering learned 3D point features onto the image grid through Gaussian feature splatting. The rendered point derived feature map is then fused with image features by a pixel aligned transformer, enabling visual semantic and geometric cues to interact in a shared 2D representation. The refined features are decoded and propagated to finer resolutions for dense correspondence estimation and final pose refinement. Experiments on RGB D Scenes V2 and 7 Scenes demonstrate state of the art inlier ratio and competitive registration recall, with stronger performance under stricter evaluation thresholds.",
+      "authors": [
+        "Karim Slimani",
+        "Catherine Achard",
+        "Eric Marchand",
+        "Brahim Tamadazte"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-22T10:22:32+00:00",
+      "link": "https://arxiv.org/pdf/2609.25966v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "softly rendering learned 3D point features via Gaussian splatting",
+      "llm_evidence_cn": "通过高斯泼溅软渲染学习到的3D点特征",
+      "llm_evidence": "通过高斯泼溅软渲染学习到的3D点特征",
+      "canonical_evidence": "通过高斯泼溅软渲染学习到的3D点特征",
+      "llm_tldr_en": "Uses Gaussian rendering as a bridge for cross-modal image-to-point cloud registration.",
+      "llm_tldr_cn": "利用高斯渲染作为跨模态图像与点云配准的桥梁。",
+      "llm_tldr": "利用高斯渲染作为跨模态图像与点云配准的桥梁。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
