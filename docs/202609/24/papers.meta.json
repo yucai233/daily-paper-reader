@@ -1,0 +1,37 @@
+{
+  "label": "2026-09-24",
+  "date": "2026-09-24",
+  "generated_at": "2026-09-24T22:25:31",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202609/24/2609.27264v1-gausspde-graph-based-partial-differential-equation-driven-rendering-for-3d-gaussian-splatting",
+      "section": "quick",
+      "title_en": "GaussPDE: Graph-Based Partial Differential Equation-Driven Rendering for 3D Gaussian Splatting",
+      "authors": "Haoyuan Yue, Fengyuan Ye, Ziyin Li",
+      "date": "2026-09-23",
+      "pdf": "https://arxiv.org/pdf/2609.27264v1",
+      "score": "7.0",
+      "evidence": "3D高斯场景的物理结构化渲染",
+      "tldr": "GaussPDE是一个无需网格化或重训练即可为预训练3D高斯场景注入物理PDE动力学的框架。通过引入相机感知正则化优化高斯分布，构建基于协方差和外观的动态图，实现直接在原始高斯基元上的拉普拉斯PDE演化，从而在保持几何与视角依赖特性的同时，生成稳定且具有空间连贯性的动态渲染效果。",
+      "tags": "query:q1",
+      "abstract_en": "We present GaussPDE, a framework that injects physically structured partial differential equation (PDE) dynamics into pretrained 3D Gaussian scenes without mesh extraction, voxelization, or retraining. Our key observation is that PDE rendering requires not only accurate appearance, but also a reliable discrete computational domain. We therefore first introduce camera-aware regularization during 3DGS reconstruction to suppress camera-near floaters and oversized primitives that would create unstable graph topology. We then construct an active Gaussian graph using covariance-aware distances and opacity, appearance, and boundary-aware conductance, enabling mass-weighted graph Laplacian PDE evolution directly over Gaussian primitives. The evolving scalar PDE state is coupled back to rendering by modifying the direct-current spherical harmonic color coefficients while preserving geometry, opacity, and view-dependent rendering behavior. Experiments on real and synthetic scenes show that GaussPDE produces stable, controllable, and spatially coherent dynamic visualizations, with reduced cross-boundary leakage compared with baselines.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/24/2609.19750v1-deluge-decomposed-entropy-coded-live-unstructured-geometry-exchange-for-real-time-particle-streaming",
+      "section": "quick",
+      "title_en": "DELUGE: Decomposed Entropy-coded Live Unstructured Geometry Exchange for Real-time Particle Streaming",
+      "authors": "Hikari Yanagawa, Yuichi Hiroi, Takefumi Hiraki",
+      "date": "2026-09-17",
+      "pdf": "https://arxiv.org/pdf/2609.19750v1",
+      "score": "6.0",
+      "evidence": "基于粒子的烟雾和流体模拟的实时流传输",
+      "tldr": "DELUGE 是一种针对实时粒子流传输的压缩架构，旨在解决 VR/AR 中大规模粒子模拟数据传输延迟高的问题。该方法利用物理模拟中粒子的时间相干性和速度可预测性，实现了亚帧级的编码与解码。实验表明，DELUGE 在保持高质量的同时，显著提升了编解码速度，并成功支持了 Vision Pro 等设备上的实时协作交互体验。",
+      "tags": "query:q5",
+      "abstract_en": "Particle-based physics simulations, including fluids, smoke, and granular media, are fundamental to visual realism in immersive VR and AR. With the growing adoption of social VR and digital twins, demand is increasing for shared experiences in which multiple users interact with the same simulation in real time. Realizing such experiences requires low-latency streaming of large-scale particle data from a server to each client, yet existing point cloud compression methods such as G-PCC (TMC13) and Draco assume static geometric structures; when applied to dynamic particle streaming, their encoding latency exceeds the frame period, failing to meet real-time delivery requirements. We propose DELUGE, a streaming compression architecture that exploits the temporal coherence and velocity predictability inherent in physics simulation particles, achieving sub-frame-latency encoding and decoding through three complementary techniques. Evaluation on dynamic point cloud datasets demonstrates that DELUGE achieves approximately $20\\times$ faster decoding than G-PCC (TMC13) and $6\\times$ faster encoding than Draco. We further build end-to-end client implementations for both web browsers and Apple Vision Pro, and confirm through a within-participants perceptual quality evaluation and a two-person collaborative task study on Vision Pro that the proposed method supports real-time collaborative experiences with hand-tracked fluid interaction.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

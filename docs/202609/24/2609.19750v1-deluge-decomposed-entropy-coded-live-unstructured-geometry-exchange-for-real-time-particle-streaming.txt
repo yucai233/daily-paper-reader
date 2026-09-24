@@ -1,0 +1,678 @@
+Title: DELUGE: Decomposed Entropy-coded Live Unstructured Geometry Exchange for Real-time Particle Streaming
+
+URL Source: https://arxiv.org/pdf/2609.19750v1
+
+Published Time: Fri, 18 Sep 2026 00:40:55 GMT
+
+Number of Pages: 14
+
+Markdown Content:
+© 2026 IEEE. This is the author’s version of the article that has been published in IEEE Transactions on Visualization and Computer Graphics. The final version of this record is available at: xx.xxxx/TVCG.202x.xxxxxxx/ 
+
+# DELUGE: Decomposed Entropy-coded Live Unstructured Geometry Exchange for Real-time Particle Streaming 
+
+Hikari Yanagawa , Yuichi Hiroi , and Takefumi Hiraki (b) Server 
+
+> Interaction Broadcast Particles
+
+(c) Clients (a) Client 
+
+> Interaction (Force / Ray) Broadcast Particles (65 K) decoded in
+
+8.4 ms  
+
+> Encode Particles (65K) in
+
+4.4 ms 
+
+> ……
+
+Figure 1: DELUGE enables real-time multi-user interaction with streaming particle simulations. (a) A user on Apple Vision Pro manipulates 65K fluid particles with bare-hand tracking. (b) The server runs an MLS-MPM simulation and encodes each keyframe in 4.4 ms via the DELUGE codec. The compressed stream is broadcast to all connected clients via WebSocket. (c) The encoded packet is broadcast to an arbitrary number of clients without additional encoding cost; each client independently decodes it in 8.4 ms on the Vision Pro device and interacts simultaneously, with hand inputs reflected back into the shared simulation. 
+
+Abstract — Particle-based physics simulations, including fluids, smoke, and granular media, are fundamental to visual realism in immersive VR and AR. With the growing adoption of social VR and digital twins, demand is increasing for shared experiences in which multiple users interact with the same simulation in real time. Realizing such experiences requires low-latency streaming of large-scale particle data from a server to each client, yet existing point cloud compression methods such as G-PCC (TMC13) and Draco assume static geometric structures; when applied to dynamic particle streaming, their encoding latency exceeds the frame period, failing to meet real-time delivery requirements. We propose DELUGE, a streaming compression architecture that exploits the temporal coherence and velocity predictability inherent in physics simulation particles, achieving sub-frame-latency encoding and decoding through three complementary techniques. Evaluation on dynamic point cloud datasets demonstrates that DELUGE achieves approximately 20 × faster decoding than G-PCC (TMC13) and 6× faster encoding than Draco. We further build end-to-end client implementations for both web browsers and Apple Vision Pro, and confirm through a within-participants perceptual quality evaluation and a two-person collaborative task study on Vision Pro that the proposed method supports real-time collaborative experiences with hand-tracked fluid interaction. 
+
+Index Terms —data compression, multi-user virtual environments, particle-based simulation, real-time streaming, virtual reality 
+
+1 INTRODUCTION 
+
+Particle-based physics simulations, including fluids, smoke, and gran-ular media, are indispensable across a range of domains: improving visual realism in immersive VR and AR [36], visualizing urban flooding through digital twins [11, 45], and industrial fluid analysis [7], among other applications. The growing adoption of social VR platforms [19] has increased the demand for shared experiences in which multiple users can interact bidirectionally with the same physical phenom-ena [31]. These shared physics experiences improve co-presence [28] and enable real-time collaboration among geographically distributed participants [22]. However, realizing these experiences requires deliv-ering large-scale particle data to multiple clients at low latency while reflecting each client’s input into the simulation without delay. Existing approaches all face fundamental limitations in meeting this requirement. Running the simulation on the client [36] is heavily constrained by the computational capacity of mobile devices, making 
+
+• Hikari Yanagawa is with Cluster Metaverse Lab and University of Tsukuba. E-mail: h.yanagawa@cluster.mu. • Yuichi Hiroi is with Cluster Metaverse Lab. E-mail: y.hiroi@cluster.mu. • Takefumi Hiraki is with University of Tsukuba and Cluster Metaverse Lab. E-mail: hiraki@slis.tsukuba.ac.jp. Manuscript received xx xxx. 202x; accepted xx xxx. 202x. Date of Publication xx xxx. 202x; date of current version xx xxx. 202x. For information on obtaining reprints of this article, please send e-mail to: reprints@ieee.org. Digital Object Identifier: xx.xxxx/TVCG.202x.xxxxxxx 
+
+large-scale particle processing infeasible. Although video streaming approaches such as cloud gaming reduce client workload, they intro-duce motion-to-photon (M2P) latency, the delay from a user’s physical motion to the corresponding visual update, that degrades interaction responsiveness [17]. By contrast, geometry streaming lets the client retain the latest geometry and re-render head-motion-induced view-point changes locally without waiting for the server, while simulation-state updates still require server communication. This makes the point cloud codec the latency-critical component, however, octree-based intra coders such as MPEG G-PCC [42] rely on spatial partitioning designed for static point distributions and do not exploit the per-particle velocity inherent in physics simulation particles. Consequently, applying these standards to dynamic particle streaming requires reconstructing the spa-tial structure at every frame, resulting in encoding latency that exceeds the frame period. We focus on temporal coherence and velocity predictability, two properties inherent in dynamic particle data that prior codecs leave underused for low-latency interactive decoding. We propose DEL-UGE (Decomposed Entropy-coded Live Unstructured Geometry Exchange), a streaming compression architecture that extends the keyframe/delta-frame structure of MPEG video compression [44, 47] to three-dimensional particle data. DELUGE combines three comple-mentary techniques: (i) Velocity-adaptive bit allocation dynamically controls the Octree depth according to the velocity of each particle, which equalizes the quantization residual distribution across leaves. (ii) Axis-separated entropy coding encodes the quantized x, y, and 1arXiv:2609.19750v1 [cs.GR] 17 Sep 2026 z symbol sequences as independent streams, exploiting axis-specific statistical structure while enabling fully parallel three-axis decoding. (iii) A flat inverse-quantization look-up table (LUT) pre-expands per-leaf dequantization parameters into a per-particle flat array, replac-ing tree traversal with O(N) single-loop reconstruction. Together, these techniques reduce both encoding and decoding latency below the frame period. DELUGE is designed to optimize decoding latency rather than rate-distortion efficiency. In evaluations on dynamic point cloud datasets, DELUGE achieves approximately 20 × faster decoding than G-PCC (TMC13) and 6 × faster encoding than Draco, when all codecs are measured in-process via FFI. We further build end-to-end client im-plementations for web browsers and Apple Vision Pro, and confirm through a within-participants perceptual quality evaluation and a two-person collaborative task study on Vision Pro that the proposed method enables real-time collaborative experiences with hand-tracked fluid interaction. The main contributions of this work are as follows: • DELUGE, a streaming compression method that exploits the tem-poral coherence and velocity predictability of physics simulation particles across every stage of the codec pipeline. • The design and integration of three techniques, velocity-adaptive bit allocation, axis-separated entropy coding, and a flat inverse-quantization LUT, that jointly improve coding efficiency and de-coding throughput. • Multi-platform end-to-end streaming client implementations, includ-ing a web browser client and an Apple Vision Pro client with hand tracking. • A comprehensive evaluation combining rate-distortion comparison with G-PCC and Draco, perceptual quality assessment via subjective testing, and a two-user collaborative task study in an immersive environment. 
+
+2 RELATED WORK 
+
+2.1 Point Cloud and Particle Interaction in VR/AR 
+
+Particle-based fluid simulation has evolved considerably since Müller et al. [36] introduced interactive SPH (Smoothed Particle Hydrodynam-ics). GPU parallelism now enables real-time processing of hundreds of thousands of particles, and MLS-MPM by Hu et al. [21] has broadened the design space further by eliminating neighbor searches, making large-scale simulations feasible even within web browsers. Never-theless, techniques for delivering such simulation results to multiple remote clients in real time remain largely unexplored. Fluid visualization in VR/AR [3,49] and digital-twin-based flood risk assessment [11, 45] have also progressed, but these efforts target single-user settings or precomputed results and do not support bidirectional user intervention in a live simulation. No existing framework enables multiple users to simultaneously observe and manipulate dynamic particle fields streamed at interactive rates. 
+
+2.2 Point Cloud and Volumetric Content Compression 
+
+MPEG has standardized two point cloud compression approaches [42]: V-PCC [23], which projects points onto 2D video and thus precludes per-point random access needed for interactive manipulation, and G-PCC [24], which encodes 3D geometry via octree-based spatial par-titioning [33] but requires reconstructing the octree at every frame when applied to dynamic particles, incurring substantial encoding la-tency. Lightweight single-frame codecs such as Google Draco [16] also target static point clouds. For dynamic point clouds, V-PCC ex-ploits motion through 2D video codecs, while de Queiroz and Chou [6] proposed block-wise motion-compensated compression of voxelized point clouds (MCIC). MCIC excludes motion estimation, relying on an external RGBD pipeline for correspondences, and evaluates a lossy MATLAB prototype requiring artifact repair without reporting encod-ing time. DELUGE instead uses simulator-provided IDs and continuous coordinates, avoiding motion estimation and repair; it meets the 60 fps Web and 90 fps Vision Pro budgets and reaches near-lossless quality at high rates. Learning-based point cloud compression has also received consid-erable attention. VoxelDNN [37] surpasses G-PCC in compression efficiency. For dynamic point clouds, neural motion compensation [39], D-DPCC with end-to-end motion estimation and compensation [9], and hierarchical inter-frame correlation [12] have been proposed. However, these methods require hundreds of milliseconds to seconds of GPU inference per frame (e.g. D-DPCC reports ∼1.7 s/frame [9]), which is orders of magnitude above the 16.67 ms budget at 60 fps, precluding real-time decoding. To achieve lightweight decoding while exploiting temporal coherence, we combine traditional entropy coding with statis-tical properties specific to dynamic particle data instead of relying on learned models. For 6 degrees-of-freedom (DoF) point cloud streaming experiences, integration with HTTP adaptive streaming (DASH) [46], live transcod-ing of V-PCC streams (RABBIT) [40], and patch-based 3D compres-sion frameworks [4] have been proposed. While these efforts focus on quality adaptation for passive viewing, this work targets bidirectional streaming, wherein user interventions are immediately reflected in the shared simulation state. 
+
+2.3 Cloud-Based Graphics and Low-Latency Interaction 
+
+Remote rendering [43] delivers server-side rendered output to clients, and commercial services such as NVIDIA CloudXR [38] are available. While this approach minimizes client-side computation, it relies on video stream delivery and therefore cannot eliminate M2P latency upon viewpoint changes [2]. To reconcile low M2P latency with high visual quality, head motion prediction for latency compensation [17] and integration of remote neural rendering with streaming [20] have been proposed. Taking a different approach, LiveRender [29] transmits drawing commands and geometry instead of video frames, thereby reducing bandwidth and response latency. While our work and LiveRender both transmit scene state for client-side rendering, our approach differs in that it exploits the temporal coherence of dynamic particle data through velocity-adaptive spatial partitioning. On social VR platforms, real-time synchronization among users is central to the quality of the experience [19, 32], which is fundamental to the formation of co-presence [18] and supports deeper understanding through shared observation of physical phenomena [22]. Our system provides a framework in which multiple users can interact with the same fluid simulation and observe the results together in real time, enabling collaborative physical tasks that were previously impossible in conventional social VR settings. 
+
+3 PROPOSED ALGORITHM 
+
+This section introduces the DELUGE compression algorithm, which enables the low-latency streaming of large-scale particle simulations. DELUGE uses the keyframe/delta-frame structure, which is commonly used in video compression [44, 47] to three-dimensional particle data. A keyframe (analogous to I-frame) transmits the full spatial structure along with absolute quantized coordinates, while a delta frame (anal-ogous to P-frame) transmits only the differences from the preceding frame. DELUGE consists of a three-stage encoding pipeline (Fig. 2). 1. Velocity-adaptive bit allocation (Sec. 3.1): dynamically controls octree depth according to particle velocity, equalizing the quantiza-tion residual distribution across the tree and thereby allocating the bit budget adaptively. 2. Axis-separated entropy coding (Sec. 3.2): encodes quantized sym-bol sequences as independent streams for the x, y, and z axes, accel-erating processing through parallel decoding of all three axes. 3. Flat inverse-quantization LUT (Sec. 3.3): pre-expands per-leaf inverse-quantization parameters into a per-particle flat array, elimi-nating tree traversal and enabling O(N) access. The overall decoding process is described in Sec. 3.4, with packet details in supplementary Sec. E. 2© 2026 IEEE. This is the author’s version of the article that has been published in IEEE Transactions on Visualization and Computer Graphics. The final version of this record is available at: xx.xxxx/TVCG.202x.xxxxxxx/ Server (Encoding Pipeline) 
+
+Network      
+
+> Velocity-Adaptive Octree (Sec. 3.1.2)
+> Delta-frame
+> X: rANS encode
+> (Sec. 3.2.1)
+> Input : Particle Positions
+> Depth-Dependent Quantization (Sec. 3.1.3)
+> Circular differencing
+> Axis-separated Encoding
+> (Sec. 3.2.2)
+> Y: rANS encode
+> Z: rANS encode
+> Occupancy
+> Mask
+> Binary Packet
+> Y: Freq. Mask & Data
+> Z: Freq. Mask & Data
+> X: Freq. Mask & Data
+> Keyframe
+> Reuse
+> Depth-dependent Adaptive Quantization (Sec. 3.1.3)
+> Zigzag encoding
+> Occupancy
+> Mask
+> Y: Freq. Mask & Data
+> Z: Freq. Mask & Data
+> X: Freq. Mask & Data
+> Y: rANS decode
+> Z: rANS decode
+> X: rANS decode
+> Parallel
+> Decoding
+> Circular adding
+> Construct
+> Flat Inverse-Quantization LUT (Sec. 3.3)
+> Inverse Quantization
+> Output : Reconstructed
+> Particle Positions
+> Zigzag decoding
+> Delta-frame
+> Key
+> frame
+
+Client (Decoding Pipeline) 
+
+Figure 2: DELUGE encoding and decoding pipeline. Left: the server constructs a velocity-adaptive octree, applies depth-dependent quantization, and compresses with axis-separated rANS. Keyframe paths (blue) carry the full spatial structure including the Occupancy Mask, while delta-frame paths (orange) transmit only ZigZag-coded coordinate differences. Right: the client decodes the three axes in parallel. On keyframe reception, the flat inverse-quantization LUT is built from the octree structure, reducing subsequent inverse quantization. Delta frames reuse the LUT and skip spatial reconstruction. 
+
+3.1 Velocity-Adaptive Octree and Depth-Dependent Quanti-zation 
+
+3.1.1 Octree Construction and Particle Reordering 
+
+In a fluid simulation, particles are not uniformly distributed; fast-moving particles coexist with nearly stationary ones in the same volume. Consecutive frames exhibit strong temporal correlation, and the effi-ciency of delta-frame coding depends on two conditions: (i) particle correspondence between a keyframe and subsequent delta frames is preserved, and (ii) the entropy of the quantized coordinate residual distribution remains low. We quantize each particle’s position as local coordinates within an octree leaf [33]. The octree is chosen for two properties that the rest of the pipeline builds on. First, its cells are isotropic cubes whose bounds are fully determined by the Global ID alone: leaf depth thus becomes a direct proxy for world-space resolution, the property that depth-dependent quantization (Sec. 3.1.3) relies on, and no per-leaf geometry needs to be transmitted. A KD-tree forfeits both: its data-dependent anisotropic leaves break the depth–resolution correspondence and re-quire explicit per-leaf bounds on the wire, inflating keyframe headers in proportion to the leaf count. Second, binary splits need roughly 3× the octree’s depth to reach the same leaf count, which erodes the per-leaf bit budget under depth-dependent allocation. A preliminary comparison bears this out: even at its best setting, a KD-tree variant incurred +17 .4% ( d=3) / +19 .4% ( d=4) BD-Rate against Octree d=3(supplementary Sec. C.4). Rather than constructing the tree through recursive node subdivi-sion, we compute the leaf assignment directly from each particle’s coordinates [14]. First, we construct a cubic bounding box from the minimum and maximum per-axis values of all particles and normalize each coordinate to [0, 1). Using the normalized coordinate, denoted as ˆ pi,a for particle i along axis a ∈ { x, y, z}, the octant number at each level d is expressed with three bits: 
+
+bi,d = bx + 2 by + 4 bz, ba = ⌊ ˆpi,a · 2d+1⌋ mod 2 (1) Using the path index from the root k = ∑di−1 
+
+> d′=0
+
+bi,d′ · 8di−1−d′
+
+, we define a Global ID that uniquely identifies every node. 
+
+G(d, k) = 8d − 17 + k (2) The particles are then sorted by their Global IDs to ensure that particles in close proximity occupy contiguous positions in the array. This improves the locality of differences in delta frames. We define a leaf node containing at least one particle as an active node and denote the count of such nodes by Nleaf . The prefix sum of the particle counts nℓ of each active node is defined as S0 = 0, Sℓ =
+
+∑ℓ 
+
+> j=1
+
+n j.
+
+3.1.2 Velocity-Adaptive Depth Decision 
+
+When particles with different velocities are placed at the same octree depth, the post-quantization residual distributions vary widely across nodes. To address this, we dynamically determine the octree depth di
+
+(Fig. 3) (0 ≤ di ≤ Dmax , where Dmax is the maximum depth) for each particle according to its velocity. Fast particles are assigned to shallow nodes with larger cell sizes, while slow particles are assigned to deep nodes with smaller cell sizes. This maintains a consistent ratio of node size to displacement magnitude across the tree. Since quantization is normalized to each node’s cell size (e.g. the range 0–255), matching the node size to the displacement magnitude keeps the quantized residuals of all particles within a narrow range, reducing the entropy of the residual distribution. An inter-frame displacement scalar is computed from the recent position history: 
+
+∆pi = p(t) 
+
+> i
+
+− p(t−w)  
+
+> i2
+
+(3) where w is the history window width ( w = 5 in this paper). The displacement ∆pi is normalized by the cell size at the deepest level, 
+
+s = E/2Dmax (E is the half-extent of the root node), and the depth di is determined by a step function with two thresholds α1 and α2.
+
+di =
+
+
+
+Dmax if ∆pi ≤ α1 · sDmax − 1 if α1 · s < ∆pi ≤ α2 · sDmax − 2 if ∆pi > α2 · s
+
+(4) 3Particles 
+
+> Naïve quantization
+> (in delta-frame)
+> High-speed
+> Low-speed
+> High-entropy Distribution
+> Proposed
+> Velocity-aware Octree
+> …
+> depth
+> Low-entropy
+> Distribution
+> …Figure 3: Velocity-adaptive depth assignment and its effect on quantized-residual entropy.
+
+subject to di ≥ 0. Because α1 and α2 are defined as ratios of displace-ment to the deepest cell size s, they are independent of the simulation space scale. In our implementation we set α1 = 0.05 and α2 = 0.10. A sensitivity analysis confirms the robustness of this choice: sweep-ing 11 configurations from (α1, α2) = ( 0, 0) (adaptive depth disabled) to (0.5, 1.0) on a 262K-particle MLS-MPM simulation (300 frames) yields a bppf range of 2.60–2.70 (4% variation) and a D1 PSNR range of 63.53–63.69 dB (0.16 dB variation). This robustness arises because delta frames, which constitute 98.3% of all frames at kf_interval = 60, are unaffected by depth reassignment. 
+
+3.1.3 Depth-Dependent Adaptive Quantization 
+
+An octree is constructed based on the per-particle depths {di}Ni=1, and the particle coordinates within each leaf node ℓ are quantized in the leaf’s local coordinate system. The number of quantization bits is de-termined adaptively according to the leaf depth DL. The base precision is B bits ( B = 12 in this paper), 
+
+bℓ = max (1, B − DL) (5) Because sℓ ∝ 2−DL and, for DL < B, bℓ = B − DL, Eq. (5) assigns more bits to larger, shallow cells and fewer to smaller, deep cells, yielding a depth-independent world-space quantization step sℓ/2bℓ ∝ 2−B. Thus, shallow assignment does not coarsen quantization; fast particles in shallow leaves are also expected to tolerate greater instantaneous error through perceptual masking of motion. The maximum quantization value at depth DL is qmax = 2bℓ − 1. Let [lmin , lmax ] be the bounds of leaf ℓ and sℓ = lmax − lmin its cell size. The quantized value for each axis a ∈ { x, y, z} is computed as 
+
+qi,a = clamp 
+
+j pi,a − lmin ,a
+
+sℓ, a
+
+· qmax + 0.5
+
+k
+
+, 0, qmax 
+
+
+
+(6) 
+
+3.2 Axis-Separated Entropy Coding 
+
+The spatial partitioning and quantization described in the preceding section convert three-dimensional floating-point coordinates into inte-ger symbol sequences {s j}3Nj=1 (s j ∈ [0, 4095 ]). This section describes axis-separated coding, the method used to compress these symbol sequences. The main benefit of axis-separated coding is faster decoding. Split-ting the symbol sequence into independent streams for the x, y, and z
+
+axes enables decoding of all three axes simultaneously. Additionally, constructing per-axis frequency tables captures axis-specific statistical bias more accurately. 
+
+3.2.1 rANS 
+
+We adopt the range variant of Asymmetric Numeral Systems (rANS) [8] as the entropy coding method. rANS achieves compression ratios comparable to arithmetic coding at amortized O(1) cost per symbol and is widely used in modern high-performance compression libraries such as Zstandard [5]. Unlike CABAC [30] in G-PCC, which processes one bit at a time and creates an inherently sequential feedback loop, rANS operates at the symbol level and permits parallel decoding of multiple interleaved streams. We operate rANS in a semi-static mode [34]: a per-frame frequency table ( M = 4096) is built from the full symbol statistics, making the coder immediately adaptive to abrupt distribution changes. For delta frames, the quantized coordinate difference from the previous frame is converted to a non-negative integer via circular differencing (mod 4096) and ZigZag encoding [15], concentrating values near zero and reducing entropy. 
+
+3.2.2 Axis-Separated Encoding 
+
+Three-dimensional particle coordinates exhibit distinct statistical dis-tributions along each axis. In physics simulations, gravity causes the 
+
+y-axis (vertical) distribution to differ markedly from the x and z (hori-zontal) distributions. An interleaved layout x0y0z0x1 . . . mixes these dis-tinct statistics so that the resulting frequency table becomes a weighted average of the per-axis distributions, reducing compression efficiency. To exploit this inter-axis statistical independence, we apply the semi-static rANS procedure (detailed in the supplementary material, Sec. D) independently to each axis’s symbol sequence s(a) (a ∈ { x, y, z}), con-structing a per-axis frequency table { f (a) 
+
+> s
+
+} and generating axis-specific rANS-coded byte streams. 
+
+{s j}3Nj=1deinterleave 
+
+−−−−−−−→ s(x), s(y), s(z) (|s(a)| = N) (7) A central design element of axis-separated rANS is placing the three axes’ payloads as physically independent contiguous regions within the packet. Denoting the packed payloads of each axis as Px, Py, Pz, the entropy payload takes the following form: 
+
+[ |Px| (4B ) ] [ |Py| (4B ) ] [ Px ] [ Py ] [ Pz ] (8) Here |Px| and |Py| are headers storing the byte length of each payload as 4-byte (32-bit) unsigned integers. This physical separation allows the decoder to determine the starting positions of all three payloads by reading only |Px| and |Py|, enabling fully parallel decoding of the three axes. Each payload is self-contained: it includes the frequency table, the ANS initial state, and the renor-malized byte stream, so decoding completes independently without referencing any other axis’s data. 
+
+3.3 Flat Inverse-Quantization LUT 
+
+Inverse quantization corresponding to Eq. (6) requires each particle’s leaf bounds lmin ,a, cell size sℓ, a, and bit count bℓ. A naïve nested loop over up to 8 7 ≈ 2 × 10 6 leaves at Dmax = 7 makes branch prediction difficult. To resolve this issue, we create a flat inverse-quantization LUT upon receiving a keyframe. This LUT expands the parameters from leaf-level to particle-level granularity. We define two floating-point arrays of length 3 N, where the element index for particle i along axis a is 3i + a. The offset array A, and the scale array B are given by 
+
+A[3i + a] = l(ℓ) 
+
+> min ,a
+
+(9) 
+
+B[3i + a] = sℓ, a
+
+2bℓ − 1 (10) where ℓ is the leaf to which particle i belongs. A stores the leaf boundary origin and B stores the world-coordinate width per quantiza-tion step. The division sℓ, a/qmax in the inverse-quantization formula ˆpi,a = lmin ,a + qi,a · sℓ, a/qmax is precomputed and stored in B, com-pletely eliminating division from the decoding loop. 4© 2026 IEEE. This is the author’s version of the article that has been published in IEEE Transactions on Visualization and Computer Graphics. The final version of this record is available at: xx.xxxx/TVCG.202x.xxxxxxx/ 
+
+3.3.1 Single-Loop Inverse Quantization 
+
+Once the LUT is built, inverse quantization completes in a single loop of length 3 N with no reference to the leaf structure. ˆpi,a = A[3i + a] + qi,a · B[3i + a] (11) This structure yields a fixed-length loop of 3 N iterations, eliminates all branches, and reduces the loop body to multiply-add operations. The arrays A, B, and q are laid out contiguously in particle order, maximizing cache efficiency and making the loop an ideal candidate for SIMD auto-vectorization. The LUT is built in O(N) upon keyframe reception (once every 60 frames); the additional memory cost is 24 N
+
+bytes, which is approximately 1.6 MB for N = 65 ,536. A keyframe packet contains the bounding box, an octree occupancy mask, a prefix sum of per-leaf particle counts, the frequency table, and the rANS stream. Delta frames omit the spatial structure and transmit only the frequency table and the rANS stream, reusing the structure from the most recent keyframe. 
+
+3.4 Decoding Process 
+
+On the client side, coordinates are reconstructed from the received packet through the following steps. 1. Spatial structure reconstruction (keyframe only): the Occupancy Mask is parsed to recover the octree hierarchy. Each node’s bounds are uniquely determined from its Global ID. The flat inverse-quantization LUT is built at this point. 2. Statistical model reconstruction: the frequency table is rebuilt from the Frequency Mask and Frequency Values. 3. ANS decoding: in axis-separated rANS, the three axes’ payloads are decoded in parallel to obtain the integer symbol sequence {s j}.Each symbol is identified in O(1) via a slot-to-symbol conversion table of M = 4096 entries. 4. Inverse quantization: for keyframes, quantized values are directly inverse-quantized. For delta frames, the difference is first recovered as δ = ( z ≫ 1) ⊕ − (z & 1 ), the current frame’s quantized value is obtained as q(t) = ( q(t−1) + δ ) mod 4096, and the flat LUT then restores floating-point coordinates via ˆ pi,a = A[3i + a] + qi,a · B[3i +
+
+a].
+
+4 SYSTEM ARCHITECTURE 
+
+To validate the practicality of the proposed method, we implemented end-to-end streaming clients on two platforms: a web browser (WASM+SIMD) and Apple Vision Pro (native Swift with Rust FFI). The system comprises three layers: a back-end that executes the sim-ulation, a streaming layer that handles efficient communication, and clients that perform rendering. 
+
+4.1 Server and Simulation 
+
+The server comprises two configurations: a Rust server (axum + tokio) for the DELUGE condition and a Python server (FastAPI/Uvicorn) for the the Control condition (TMC13-based), both communicating with multiple clients via WebSocket [10]. The Rust server uses a tokio::time::interval timer with drift correction (MissedTickBehav-ior::Skip) to drive the 16.6 ms simulation–encoding loop; the encoded packet is broadcast to all clients, making encoding cost independent of client count. The physics engine uses MLS-MPM [21] with Met-al/CUDA GPU kernels invoked via C FFI, driving 10 4 ∼ 10 5-scale particle simulations. 
+
+4.2 Web Client 
+
+The web client compiles the same Rust codec to WebAssembly (WASM+SIMD) for decoding. Decoding runs in a web worker to avoid blocking the main thread, and the reconstructed coordinates are rendered via Three.js (WebGPU). This client requires no plugins and runs in standard web browsers. 
+
+4.3 visionOS Client 
+
+The user experiments (Sec. 5.4, 5.5) were conducted using a native visionOS client on Apple Vision Pro. The decoder invokes the same Rust codebase as the web client, linked as a static library via C FFI (identical algorithms, different execution environment only). The vi-sionOS client renders particles as GPU-instanced icosphere meshes. Each decoded particle position drives one instance of a subdivided icosphere (42 vertices, 80 triangles), and ARKit hand tracking at 90 Hz enables direct fluid interaction. In the multi-user setting, image-marker-based coordinate alignment unifies the simulation space across devices. Implementation details are provided in the supplementary material (Sec. G). 
+
+5 EXPERIMENTS 
+
+This section evaluates the proposed method from four perspectives. We first describe the experimental setup (Sec. 5.1), then report compression performance on standard dynamic point cloud datasets (Sec. 5.2), abla-tion experiments isolating the contribution of each technique (Sec. 5.3), perceptual quality evaluation in real-time fluid interaction (Sec. 5.4), and a two-person collaborative task evaluation (Sec. 5.5). 
+
+5.1 Experimental Setup 
+
+5.1.1 Datasets 
+
+To evaluate compression performance on fluid simulation data, we use datasets generated from MLS-MPM simulations. 
+
+Simulation setup The fluid simulation uses the Moving Least Squares Material Point Method (MLS-MPM) [21] with an Affine Particle-In-Cell (APIC) transfer scheme [25] and quadratic B-spline weight functions. The simulation domain is a cubic box of side length L = 100 × (N/65 ,536 )1/3 (dimensionless units), yielding 
+
+L=100 , 126 , 159 for the three particle counts so that particle density remains constant. An Eulerian background grid of min (128 , ⌊L⌋)3 cells (cell size h = L/gridDim; h=1.0 for 65K, h=1.0 for 131K, h=1.24 for 262K) is used for particle–grid transfers. At the initial frame, N particles are placed uniformly at random within 90% of the domain volume (10% wall margin), with zero initial velocity. The time step is ∆t = 0.006 s, and the simulation advances at 60 fps. 
+
+Constitutive model The fluid is modeled as a weakly compress-ible Newtonian fluid. Pressure is computed via the Tait equation of state: p = K(ρ/ρ0)γ − 1+, with bulk modulus K=2000, rest density ρ0=1.0, and exponent γ=5. The Cauchy stress tensor is 
+
+σ = −p I + 2μ sym (C), where μ=0.01 is the dynamic viscosity and C
+
+is the APIC affine velocity matrix. Gravity is g = ( 0, −9.8, 0) m/s2.
+
+Boundary conditions No-slip walls are enforced on all six faces of the domain by clamping grid velocities to zero within a 2-cell mar-gin. A predictive wall correction (stiffness kw=0.3, lookahead 3 ∆t)is additionally applied during the G2P transfer to prevent boundary penetration. Solid obstacles are represented as signed distance field (SDF) primitives; particles within 1 .5h of a surface receive penalty forces, and penetrating particles are projected outward with velocity reflection along the surface normal. 
+
+Dataset composition We generate 10 sequences of 600 frames (10 s each) with distinct random seeds for three particle counts N ∈{65 ,536 , 131 ,072 , 262 ,144 } (L=100 , 126 , 159), yielding 30 sequences in total. The domain size L is scaled with N to maintain a constant particle density per unit volume, ensuring fair scalability comparisons across particle counts. RD curve evaluation uses the 65K and 262K datasets; the 131K dataset is used only for processing time evaluation. 
+
+5.1.2 Baselines 
+
+We compare against the following methods. • G-PCC (TMC13 v23.0-rc2) [24]: the MPEG standard octree-based geometry codec. We follow the Common Test Conditions (CTC) Lossy profile and set positionQuantizationScale (pqs) 5Table 1: Evaluation environment. 
+
+Role Configuration 
+
+Server / Desktop Apple M2 Max (12-core CPU, 38-core GPU), 64 GB RAM VR client Apple Vision Pro (visionOS 2.2) 5 10 15 20 25 
+
+> bppf (bits per point per frame)
+> 50 60 70 80 90 100
+> D1 PSNR (dB)
+> MLS-MPM fluid, 262,144 particles, L=159
+> Draco G-PCC (TMC13) Baseline (Global ANS) w/o Planar ANS w/o Velocity-adaptive DELUGE Full (Proposed)
+
+Figure 4: Rate–distortion curves on MLS-MPM fluid simulation at 262K particles ( L=159 ; 10-sequence average over all 600 frames; D1 PSNR every 10th frame; Dmax =7, keyframe interval 60). The corresponding 65K curves are shown in Supplementary Fig. S1. 
+
+∈ { 0.015625 , 0.03125 , 0.0625 , 0.125 , 0.25 , 0.5, 1.0} to obtain seven RD operating points. • Draco [16]: a lightweight kd-tree-based point cloud compression library designed primarily for web deployment. RD points are ob-tained at seven quantization levels qp ∈ { 6, 7, 8, 10 , 11 , 12 , 14 }.G-PCC and Draco encode each frame independently (intra-frame only). Because DELUGE exploits temporal redundancy through its I/P-frame structure, we report both I-frame-only and combined I+P-frame performance for fairness. 
+
+5.1.3 Evaluation Metrics 
+
+• D1 PSNR (Point-to-Point PSNR): an objective geometry quality metric, D1 PSNR = 10 log 10 (3 · peak 2/MSE ), where peak is the bounding-box diagonal length. Measured with the pc_error tool following the MPEG G-PCC CTC. To reduce computational cost, D1 PSNR is evaluated on every 10th frame (60 evaluation frames per 600-frame sequence). • bits/point/frame (bppf) : the number of coded bits per point per frame. • BD-Rate : Bjøntegaard Delta Rate [42], quantifying the bitrate differ-ence (%) at equal D1 PSNR. G-PCC serves as the anchor. • Processing time : encoding and decoding time (ms/frame). DELUGE decoding is measured natively and additionally on WebAssembly (WASM+SIMD). 
+
+5.1.4 Environment 
+
+Table 1 lists the evaluation environment. Compression and ablation experiments are conducted on the Desktop configuration; processing time is measured on both the Desktop and VR-client platforms. 
+
+5.2 Compression Performance 
+
+5.2.1 Rate–Distortion Comparison 
+
+Table 2 reports the rate–distortion performance on MLS-MPM fluid simulation data (262,144 particles, 10-sequence average). DELUGE uses Dmax =7 with a keyframe interval of 60, sweeping root bits B from 8 to 14 to produce seven rate points. Three observations emerge from the RD curves in Fig. 4. First, DELUGE matches or exceeds G-PCC in PSNR across its entire evalu-ated bitrate range (1.8–9.2 bppf) and reaches ∼100 dB (near-lossless) 
+
+Table 2: DELUGE rate–distortion on MLS-MPM fluid simulation (262,144 particles, 10-sequence average, 600 frames each, Dmax =7, keyframe interval 60). BD-Rate (Bjøntegaard with PCHIP interpolation) is reported for the full system (I+P) and for the intra-only I-frame representation; G-PCC/Draco RD curves are shown in Fig. 4. At 65K particles, the I+P BD-Rate is −78 .4% vs. G-PCC and −76 .7% vs. Draco. 
+
+Config bppf I bppf P bppf D1 PSNR (dB) 
+
+B=8 1.82 11.26 1.66 61.53 
+
+B=9 2.46 14.58 2.25 68.49 
+
+B=10 3.27 17.61 3.03 74.91 
+
+B=11 4.36 20.60 4.08 81.13 
+
+B=12 5.77 23.55 5.47 87.24 
+
+B=13 7.41 26.43 7.09 93.30 
+
+B=14 9.17 29.43 8.82 99.35 
+
+BD-Rate vs. G-PCC (full I+P): −73 .5% (I only: +29 .5%) 
+
+BD-Rate vs. Draco (full I+P): −72 .8% (I only: +27 .0%) 
+
+Table 3: Processing time per frame (ms) on MLS-MPM fluid simulation (DELUGE at Dmax =7, B=12 , ANS Planar, kf_interval =60 ; measurement conditions are described in the text). 
+
+Desktop Vision Pro Method Process 65K 131K 262K 65K 
+
+G-PCC Encode 46.6 96.4 204.9 —G-PCC Decode 28.2 57.4 117.6 31.0 Draco Encode 9.8 20.0 41.0 —Draco Decode 3.4 6.8 13.6 —DELUGE Encode (I) 4.4 8.5 16.2 —DELUGE Encode (P) 1.7 3.3 6.6 —DELUGE Decode (I) 2.3 4.3 8.1 2.5 DELUGE Decode (P) 1.4 2.8 5.5 1.6 DELUGE Decode (I, WASM) 2.7 5.0 9.4 —DELUGE Decode (P, WASM) 1.7 3.3 6.6 —
+
+at higher rates, whereas G-PCC stays around ∼95 dB within the evalu-ated range. The I/P-frame structure and particle-ID-based delta coding allow DELUGE to sustain PSNR gains further into the high-bitrate regime. Second, Draco underperforms both DELUGE and G-PCC at low bitrates but reaches ∼100 dB at higher rates. Third, the benefit of the I/P-frame structure is evident from the per-type bppf columns in Table 2: P-frame bppf is 15–30% of the corresponding I-frame bppf, confirming that delta coding is highly effective for simulation data in which particle IDs are preserved across frames. Fig. 4 shows the 262K-particle RD curves, with the 65K result in Supplementary Fig. S1. Both particle counts show the same trends; RD efficiency improves at 262K because the fixed octree header cost is amortized over more particles. 
+
+5.2.2 Processing Time 
+
+Real-time streaming requires the encoding and decoding processes to complete within the 60 fps budget of 16.67 ms per frame. Table 3 lists the processing times of DELUGE, G-PCC, and Draco on MLS-MPM simulations at 65K, 131K, and 262K particles. All codecs are measured in-process through native harnesses (one encode/decode call per frame, no subprocess overhead) to ensure a fair comparison. All codecs process the same dataset as Table 2 (10 sequences × 600 frames) on the same machine under an identical protocol, and we report per-frame means (separated by I/P frame type for DELUGE). G-PCC uses 
+
+pqs = 0.25 and Draco uses qp = 8 , chosen to approximately match DELUGE’s PSNR operating point (Sec. 5.1.2). The G-PCC FFI runs on a dedicated thread with a 64 MB stack to accommodate deep octree recursion. The 65K configuration ( L=100) corresponds to the user study setup (Sec. 5.4); the 131K and 262K configurations ( L=126 , 159) correspond to the RD evaluation. The Vision Pro column is measured on-device through the deployed client’s in-process FFI decoders, on the same dataset and aggregation as Desktop (65K particles, 10 sequences 
+
+× 600 frames). Because DELUGE decoding relies entirely on table lookups and bitwise operations inherent to rANS, it runs efficiently in WebAssembly: 6© 2026 IEEE. This is the author’s version of the article that has been published in IEEE Transactions on Visualization and Computer Graphics. The final version of this record is available at: xx.xxxx/TVCG.202x.xxxxxxx/                                          
+
+> Table 4: Ablation over the full Cartesian product of velocity-adaptive depth (V), axis-separated Planar ANS (P), and the flat inverse-quantization LUT (L) on MLS-MPM fluid simulation (262,144 particles, Dmax =7,B=12 ,10 sequences, all 600 frames). bppf/PSNR and Enc./Dec. are measured on the same packet streams under the measurement protocol of Table 3.
+> bppf PSNR Enc. (ms) Dec. (ms) V P L avg IP(dB) avg IP avg IP
+> Y Y Y 5.77 23.55 5.47 87.24 6.7 16.2 6.6 5.6 8.1 5.5 Y Y N 5.77 23.55 5.47 87.24 6.7 16.2 6.6 6.1 8.1 6.0 Y N Y 6.87 23.52 6.58 87.24 7.0 16.2 6.9 5.9 7.9 5.9 Y N N 6.87 23.52 6.58 87.24 7.0 16.2 6.8 6.4 7.9 6.4 N Y Y 5.81 29.06 5.41 87.06 7.3 21.0 7.0 5.7 13.1 5.5 N Y N 5.81 29.06 5.41 87.06 7.3 21.0 7.0 7.4 13.9 7.3 N N Y 6.91 29.02 6.53 87.06 7.6 21.0 7.3 5.9 12.8 5.8 N N N 6.91 29.02 6.53 87.06 7.6 20.9 7.3 7.8 13.7 7.7
+
+the WASM rows of Table 3 run the identical decoder compiled to WebAssembly (WASM+SIMD) on the same machine and data (decoded output bit-identical to native), at about 1 .2× the native decoding time. Delta frames are particularly fast: the spatial structure need not be rebuilt, so coordinate reconstruction reduces to ANS decoding followed by ZigZag inversion. 
+
+5.2.3 Preliminary Evaluation on Captured Point Clouds 
+
+Because DELUGE presumes simulator-provided particle IDs, cap-tured point clouds without frame-to-frame correspondence can exer-cise only its I-frame path. To probe this boundary, we ran a pre-liminary evaluation on 8iVSLF Thaidancer [27] and Owlii basket-ball_player/dancer [48] (3-sequence mean, 300 frames each). The decode-path advantage transfers directly: across the three 2.6–3.2M-point sequences, DELUGE decodes I-frames in 47–57 ms versus 1,019– 1,166 ms for G-PCC (per-frame means over the same 300 frames), 
+
+∼21 × faster (19.9–21.5 × per sequence), matching the ∼20 × advan-tage on simulation data (per-sequence breakdown and detailed setup in supplementary Sec. F). The delta-coding gains, however, disappear because only I-frames can be used (average bppf 15.46 at 60.12 dB), leaving DELUGE behind the intra-only baselines in rate. This identifies ID assignment—not the compression algorithm—as the bottleneck for extending DELUGE to captured data. 
+
+5.3 Ablation Study 
+
+To isolate the contribution of each core technique, velocity-adaptive bit allocation, axis-separated ANS, and the flat inverse-quantization LUT, we conduct an ablation study on the MLS-MPM fluid simulation data (Fig. 4). we evaluate the full 2 3 product of the three techniques. From Table 4 and Fig. 4, velocity-adaptive depth assignment pro-motes fast-moving particles to shallower nodes, equalizing the quanti-zation residual distribution: at the same base quantization ( B=12) it improves D1 PSNR by 0.18 dB, cuts keyframe bppf by 19.0% (29.06 →23.55), and shortens I-frame encoding/decoding (21.0 →16.2 / 13.1 →8.1 ms). On the RD curves, its matched-bppf gain is +1.2– 1.5 dB at the lowest rate ( B=8) and shrinks to ∼+0.3 dB for B ≥ 12 (BD-PSNR +0.5 dB / BD-Rate −2% against the w/o-Velocity anchor; Fig. 4). Thus, its primary benefits are reductions in keyframe size and I-frame latency rather than average RD efficiency. Axis-separated ANS captures the per-axis distributions individually, cutting average bppf by 16.0% at equal PSNR (6.87 →5.77) while enabling three-way parallel decoding. The bppf/PSNR interactions between the two are negligible, so their contributions are separable. In terms of processing time, P-frames (98.3% of all frames at kf_interval =60) fit the 60 fps budget (16.67 ms) in all eight variants (worst case dec(P) 7.7 ms; enc(P) stays at 6.6–7.3 ms), and I-frames occur only once every 60 frames, so their higher cost (up to 21.0 ms enc / 13.9 ms dec) does not affect the per-frame average. The flat inverse-quantization LUT does not affect compression ratio; it accelerates the dequantization step alone by about 8× by eliminating tree traversal (262K particles, Dmax =7). End-to-end, disabling the LUT consistently lengthens P-frame decoding in every configuration, from 9% in the Full configuration (5.5 →6.0 ms) up to 
+
+∼32% in the velocity-off configurations (5.5 →7.3 / 5.8 →7.7 ms). 
+
+5.4 Perceptual Quality Evaluation 
+
+5.4.1 Experimental Design 
+
+To assess how compression-induced degradation affects the experi-ence of real-time fluid interaction, we conducted a within-participants subjective quality experiment comparing two streaming system con-ditions. The study was approved by the Cluster, Inc. Research Ethics Committee (approval No. 2025-015). An a priori power analysis for a two-condition within-subjects design (paired t-test, Cohen’s dz,
+
+α = .05, two-tailed, power = .80) indicated a minimum sample size of N = 19. Because parametric assumptions may not hold for ordinal Likert data, we use the Wilcoxon signed-rank test for the actual analysis (Sec. 5.4.2); the t-test-based estimate serves as a conservative lower bound on the required sample size. We recruited 22 participants; six were excluded (eyeglasses incom-patible with headset: 3, software bugs: 2, connectivity: 1). The fi-nal valid sample comprised 16 participants (14 male, 2 female; age 
+
+M = 30 .3, SD = 8.2, range 21–48), all with normal or corrected-to-normal vision. Each participant received a gift card worth approxi-mately 13 USD. The experiment was conducted across three venues over three days. This reduction from 22 to 16 lowers the achieved power to approximately .72 for the target effect size ( dz = 0.68). However, the observed effect sizes for significant items ( r = .62–.80) substan-tially exceed this threshold, and non-significant items (Q2, Q4) showed small effect sizes ( r = .33–.41), suggesting that the null results reflect genuinely small effects rather than insufficient power. The independent variable was the streaming system condition with two levels: the DELUGE system ( Dmax =7, B=12; Rust codec invoked via direct FFI) and the Control system (a TMC13-based streaming pipeline). Condition order was counterbalanced. In each condition, participants wore an Apple Vision Pro and interacted freely with a real-time fluid simulation of 65,536 particles ( ∆t = 0.003 s) streamed via WebSocket (Sec. 4.3), using hand tracking to touch and manip-ulate the fluid. They then rated six items on a 7-point Likert scale: Q1 Smoothness, Q2 Visual Distortion (reverse-scored), Q3 Low La-tency, Q4 Realism, Q5 Consistency, and Q6 Overall Satisfaction (see Sec. H for the full item wording). Note that the Control condition invoked the TMC13 reference soft-ware as a subprocess. The process-launch (fork/exec) cost itself is small: comparing subprocess and C FFI in-process invocations under the same conditions (65,536 particles) shows a difference of 8.1 ms in the inter-frame interval (IFR median 69.5 ms vs. 61.4 ms). This launch cost, however, does not account for the overhead of the full deployed pipeline: the user-study condition additionally includes the wrapper’s file I/O and serialization, network transport, and system integration costs. The per-stage medians measured during the experiment were, for the Control condition, encode 640.8 ms / network 335.6 ms / decode 75.3 ms / E2E 1065.1 ms (DELUGE E2E median: 71.5 ms), whereas the codec-only in-process FFI measurement (Table 3) reports TMC13 encoding at 46.6 ms. On-device decode medians recorded on Vision Pro during the same sessions were 8.4 ms for DELUGE and 80.0 ms for TMC13, reflecting the study-time client implementation; the current implementation’s codec-only on-device figures appear in the Vision Pro column of Table 3. 
+
+5.4.2 Results 
+
+We used the Wilcoxon signed-rank test (two-tailed) for paired ordinal data with Holm correction across six items; effect size is reported as 
+
+r = Z/√N. Fig. 5(a) shows the results. Four of the six items (Q1 Smoothness, Q3 Low Latency, Q5 Consistency, Q6 Overall Satisfac-tion) showed a significant advantage for DELUGE ( r = .62–.80), with Q3 and Q6 reaching r = .80. Q2 (Visual Distortion) and Q4 (Realism) showed no significant difference, suggesting that latency rather than rendering quality is the primary driver of the observed perceptual differ-ences. All 16 participants preferred DELUGE in subjective preference (binomial test, p < . 001). 7Q1 Smoothness Q2 Visual Distortion    
+
+> Q3 Low Latency Q4 Realism Q5 Consistency Q6 Overall Satisfaction
+> 1234567
+> Rating (1 7)
+> p = .009 * r = 0.65 n.s. (p = .105)
+> p = .001 ** r = 0.80 n.s. (p = .181)
+> p = .012 * r = 0.62 p = .001 ** r = 0.80
+
+(a)   
+
+> Q1 Real-time Reflection Q2 Visual Influence Q3 Perceived Delay
+> Q4 State Consistency Q5 Interaction Sense Q6 Action Influence Q7 Intent Recognition Q8 Co-play Sense
+> 1234567
+> Rating (1 7)
+> p < .001 ** r = 0.83 p = .001 ** r = 0.81
+> p < .001 ** r = 0.83 n.s. (p = .221)
+> n.s. (p = .050)
+> n.s. (p = .791)
+> n.s. (p = .285)
+> n.s. (p = .118)
+
+(b) DELUGE Control Figure 5: User-study ratings for DELUGE and the TMC13-based Control ( N = 16 , within-participants; Wilcoxon signed-rank tests with Holm correction): (a) perceptual quality and (b) collaborative task. Arrows ( ↑/↓) indicate the favorable direction. 
+
+Figure 6: Collaborative task experiment on Apple Vision Pro. (A) Two participants wearing Vision Pro headsets face each other and simultane-ously interact with the same streaming fluid simulation via hand tracking. (B) First-person view from one participant’s headset: both users’ hands (green skeleton overlays) manipulate the shared fluid particles in real time, with each user’s actions immediately visible to the other. 
+
+Mann-Whitney U tests for order effects showed no significant dif-ferences for any of the six items ( p > . 13), confirming effective coun-terbalancing. Kruskal-Wallis tests for venue effects likewise revealed no significant differences ( p > . 11), supporting the robustness of the results across venues. 
+
+5.5 Collaborative Task Evaluation 
+
+5.5.1 Experimental Design 
+
+The same 16 participants performed a collaborative task in which the participant and an experimenter simultaneously interacted with the same fluid simulation on two clients connected via WebSocket (Fig. 6). The independent variable was the streaming system condition (DEL-UGE vs. Control, identical configurations to the perceptual evaluation). Participants rated eight items on a 7-point Likert scale: Q1 Real-time Reflection, Q2 Visual Influence, Q3 Perceived Delay (reverse-scored), Q4 State Consistency, Q5 Interaction Sense, Q6 Action Influence, Q7 Intent Recognition, and Q8 Co-play Sense (see Sec. H for the full item wording). 
+
+5.5.2 Results 
+
+Fig. 5(b) shows the results. Q1–Q3, relating to temporal responsiveness, were all significant with large effect sizes ( r = .81–.83). In contrast, higher-order social items Q4–Q8 (state consistency, interaction sense, action influence, intent recognition, co-play) showed no significant differences. Q5 (Interaction Sense) was borderline ( p = .051 before Holm correction); we report the Wilcoxon result as the conservative choice for ordinal data. Subjective preference was DELUGE: 12, no difference: 4, Control: 0 (binomial test, p < . 001). A significant order effect was observed only for Q3 (Perceived De-lay; Mann-Whitney U, p = .010): the DELUGE-first group perceived a larger contrast, but both groups showed significant within-group differences, so the direction of the effect is order-independent. Venue analysis revealed significant effects for Q2, Q5, and Q7 (Kruskal-Wallis, 
+
+p < . 04): one venue maintained high collaborative scores even under the Control condition, while the other venues showed larger DELUGE advantages. 
+
+6 DISCUSSION 
+
+6.1 Rate–Distortion Characteristics and Design Trade-offs 
+
+Unlike general-purpose point cloud codecs such as G-PCC and Draco, DELUGE prioritizes decoding latency over RD efficiency. As Fig. 4 and Table 2 show, DELUGE matches or exceeds G-PCC in PSNR across its entire evaluated bitrate range (1.8–9.2 bppf); at higher rates, G-PCC stays around ∼95 dB within the evaluated range whereas DEL-UGE reaches ∼100 dB (near-lossless), owing to the I/P-frame structure and particle-ID-based delta coding that compresses P-frame bppf to 15–30% of I-frame bppf. Draco achieves the best intra-frame RD ef-ficiency among the three codecs but its encoding exceeds the 60 fps budget beyond 65K (Table 3). DELUGE reduces decoding time to roughly 1 /20 of G-PCC’s (Table 3) while maintaining practical RD efficiency. The gains decompose into three separable contributions. (i) The architectural insight of the ME-free, ID-preserving regime: structurally eliminating motion estimation is what makes real-time coding possible in the first place, and identifying the data domain that admits this regime is itself a contribution. (ii) With (i) fixed, velocity-adaptive allocation adds +0.18 dB D1 PSNR at the same base quantization (B=12) and cuts keyframe bppf by 19 .0% (Table 4; +0.5 dB BD-PSNR on the full-frame RD curve). (iii) With (i) and (ii) fixed, axis-separated ANS cuts bppf by 16 .0% at equal PSNR. Because (ii) and (iii) are measured under a fixed (i), they are not absorbed by the ID premise. For intra-only coding, where IDs contribute nothing, DELUGE trails G-PCC/Draco by +29 .5% / + 27 .0% BD-Rate (Table 2), corroborating the intentional design trade-off of sacrificing static coding efficiency to exploit temporal coherence. 
+
+6.2 Decoding Speed and Real-time Feasibility 
+
+Table 3 shows that G-PCC exceeds the 60 fps budget (16.67 ms) for both encoding and decoding at all particle counts, with CABAC’s se-quential processing as the bottleneck. Draco decodes within budget at all particle counts (3.4–13.6 ms), but its encoding exceeds the budget beyond 65K (20.0–41.0 ms). DELUGE stays within the budget for P-frames—98.3% of all frames at keyframe interval 60—with 6.6 ms encoding and 5.5 ms decoding even at 262K. For I-frames (once every 60 frames), decoding takes 8.1 ms and remains within budget, while encoding takes 16.2 ms, on par with the frame period and occasionally exceeding it; this is limited to one frame in 60, the per-frame average encoding time stays at 6.7 ms, and the server’s drift-correcting timer (Sec. 4) absorbs the isolated overrun. On the Apple Vision Pro device, DELUGE decoding takes 2.5 ms for I-frames and 1.6 ms for P-frames, 8© 2026 IEEE. This is the author’s version of the article that has been published in IEEE Transactions on Visualization and Computer Graphics. The final version of this record is available at: xx.xxxx/TVCG.202x.xxxxxxx/ 
+
+well within the 90 fps budget of 11.1 ms (Table 3). End-to-end latency of the deployed system—including encoding, transport, and decoding— had a pooled median of 71.5 ms for DELUGE versus 1065.1 ms for the TMC13-based Control condition across the user-study sessions (Sec. 6.4). In terms of scalability, encoding time scales nearly linearly with particle count (mean 1.7 →6.7 ms for the 4 × increase from 65K to 262K, ∼3.9×), and larger spatial coverage is absorbed by increasing 
+
+Dmax . The 16-bit representation of quantized values ( B ≤ 16), how-ever, bounds the achievable precision once the ratio of coverage to the required cell size exceeds 2 16 .
+
+6.3 Influence of Dataset Characteristics 
+
+The MLS-MPM fluid simulation data maintains a constant particle count across all frames, eliminating the need for null-point handling and providing ideal conditions for DELUGE’s I/P-frame structure. Evaluation across two particle counts (65K and 262K) enables scal-ability analysis. The I/P-frame structure becomes more effective as temporal coherence increases; particle density and motion magnitude distributions directly influence P-frame compression efficiency. The RD sweep results show that P-frame bppf is 15–30% of I-frame bppf, with negligible variance across the 10 sequences (standard deviation < 0.5%). This indicates that the statistical properties of inter-frame particle displacements remain stable regardless of the random seed used for initial particle placement in the MLS-MPM simulation. Scalability is also favorable: a 4 × particle count increase (65K to 262K) yields only ∼2× bppf increase at matched PSNR, as the fixed octree header is amortized over more particles (Fig. 4). 
+
+6.4 Relationship Between Subjective Scores and Latency 
+
+We extracted per-session latency metrics (encode, network, decode, and end-to-end, i.e., E2E) from server logs and analyzed their correlation with subjective scores. The pooled median E2E latency across all study sessions was 71.5 ms for DELUGE and 1065.1 ms for the Control con-dition (a ∼15 × difference). The bottleneck in the Control condition was encoding latency: the tmc3 reference software was invoked as a blocking subprocess, so the measured latency includes the wrapper’s file I/O, serialization, and process startup overhead in addition to the algorithmic cost (see Sec. 5.4 for the per-stage breakdown; the codec-only comparison is provided by the FFI measurements in Table 3). The comparison in this section is thus between two deployed system conditions. The correlation analysis below examines how latency dif-ferences affect the user experience, and its validity does not depend on the source of the latency gap. Across both codecs, Spearman correlations between median E2E latency and subjective scores were significant for latency-sensitive items (perceptual Q1, Q3, Q6 and collaborative Q1–Q3; ρ = −0.43 to 
+
++0.58, p < . 05) but not for rendering quality items (perceptual Q2, Q4) or higher-order collaborative items (Q4–Q8). Critically, within each condition these correlations vanished almost entirely, indicating that the overall correlations were driven by the between-condition latency gap (71.5 ms vs. 1065.1 ms) rather than within-condition variability. This suggests the existence of a perceptual latency threshold: DELUGE’s range (4–483 ms) and the Control condition’s range (491–2104 ms) lie on opposite sides of this threshold, while within-condition variance does not cross it. Venue analysis revealed that V3 showed 2.4 × higher DELUGE latency than V1/V2 (Kruskal-Wallis, p = .002), attributable to net-work infrastructure differences. Control-condition collaborative scores remained high at Venue V1 but dropped at Venues V2/V3, possibly reflecting a moderating effect of pre-existing social familiarity between participants on the perceived impact of latency. 
+
+7 LIMITATIONS AND FUTURE WORK 
+
+7.1 Codec Limitations 
+
+The contribution of this work is scoped to interactive simulation streams in which the simulator preserves particle IDs—i.e., streams with sta-ble frame-to-frame point correspondence. First, DELUGE assumes a fixed particle count with preserved IDs across frames; supporting vari-able point counts, topology changes (splitting, merging), and captured data without IDs would require keyframe re-initialization, inter-frame correspondence search, and null-point handling, which remain future work. As the preliminary evaluation on captured point clouds shows (Sec. 5.2.3), this bottleneck is ID assignment—not the compression algorithm; reusing our Global ID (Morton ordering) to accelerate corre-spondence search is a natural starting point. 
+
+7.2 User Study Limitations 
+
+User experiments were conducted over a LAN; the effects of packet loss and jitter in WAN settings remain unevaluated. Collaborative pairs always consisted of one experimenter and one participant; at one venue, participants had pre-existing familiarity with the experimenter, and this social proximity may have contributed to the observed venue effects on collaborative scores. 
+
+7.3 Future Directions 
+
+Improving inter-frame prediction through motion vectors, adapting the keyframe interval dynamically, and introducing multi-resolution transmission for bandwidth adaptation are important directions for further compression gains. Extending DELUGE to other 3D point cloud domains such as avatar poses and environmental objects is also worth investigating. 
+
+8 CONCLUSION 
+
+We have presented DELUGE, a streaming compression architecture that enables real-time bidirectional interaction with large-scale par-ticle simulations in multi-user VR environments. The core of DEL-UGE lies in three ideas that systematically exploit properties specific to physics-simulation particles at each stage of compression. First, velocity-adaptive bit allocation takes advantage of the perceptual mask-ing of fast-moving particles to reduce the keyframe bit budget and latency while preserving perceived quality Second, axis-separated en-tropy coding captures per-axis distribution biases independently and enables three-way parallel decoding. Third, the flat inverse-quantization LUT replaces tree traversal with O(N) array access, enabling single-loop decoding amenable to SIMD auto-vectorization. Evaluation on dynamic point cloud and fluid simulation datasets showed that DELUGE achieves approximately 20 × faster decoding than G-PCC (TMC13) and 6 × faster encoding than Draco when mea-sured in-process via FFI. The BD-Rate cost relative to Draco is an intentional design trade-off that prioritizes decoding latency, and DELUGE satisfies the 60 fps real-time streaming requirement on both WebAssembly and native plat-forms. A within-participants experiment on Apple Vision Pro ( N = 16), comparing the two deployed interaction conditions, demonstrated that the DELUGE-based streaming system significantly outperforms the TMC13-based deployed system on latency-related perceptual and col-laborative items (Wilcoxon signed-rank, r = .62–.83), confirming that reducing E2E latency directly enables real-time collaborative experi-ences. 
+
+ACKNOWLEDGMENTS 
+
+This work was partially supported by JST Moonshot Research & De-velopment Program Grant Number JPMJMS2013 and JST ASPIRE Grant Number JPMJAP2327. 
+
+REFERENCES      
+
+> [1] J. K. Bonfield, J. Marshall, P. Danecek, H. Li, V. Ohan, A. Whitwham et al. HTSlib: C library for reading/writing high-throughput sequencing data.
+> GigaScience , 10(2), 2021. doi: 10.1093/gigascience/giab007 13 [2] W. Cai, R. Shea, C.-Y. Huang, K.-T. Chen, J. Liu, V. C. M. Leung et al. A survey on cloud gaming: Future of computer games. IEEE Access ,4:7605–7620, 2016. doi: 10.1109/ACCESS.2016.2590500 2 [3] Y. Cen, H. Deng, Y. Ma, and X. Liang. A real-time and interactive fluid modeling system for mixed reality. IEEE Transactions on Visualization and Computer Graphics , 30(11):7310–7320, 2024. doi: 10.1109/TVCG. 2024.3456140 2
+
+9[4] R. Chen, M. Xiao, D. Yu, G. Zhang, and Y. Liu. patchvvc: A real-time compression framework for streaming volumetric videos. In Proceed-ings of the 14th ACM Multimedia Systems Conference , MMSys ’23, pp. 119–129. Association for Computing Machinery, New York, NY, USA, 2023. doi: 10.1145/3587819.3590983 2 [5] Y. Collet and M. Turner. Smaller and faster data compression with Zstan-dard. Facebook Engineering Blog, 2016. 4 [6] R. L. de Queiroz and P. A. Chou. Motion-compensated compression of dynamic voxelized point clouds. IEEE Trans. Image Process. , 26(8):3886– 3895, 2017. doi: 10.1109/TIP.2017.2707807 2 [7] M. Diewald, P. Burggr"af, J. O. Wagner, S. Dold, and J. Metternich. Challenges and opportunities in integrating augmented reality and com-putational fluid dynamics for digitalized manufacturing in the context of industry 4.0. Procedia CIRP , 107:800–804, 2022. doi: 10.1016/j.procir. 2022.02.181 1 [8] J. Duda. Asymmetric numeral systems: entropy coding combining speed of huffman coding with compression rate of arithmetic coding, 2014. 4 [9] T. Fan, L. Gao, Y. Xu, Z. Li, and D. Wang. D-dpcc: Deep dynamic point cloud compression via 3d motion prediction. In L. D. Raedt, ed., 
+
+Proceedings of the Thirty-First International Joint Conference on Artificial Intelligence, IJCAI-22 , pp. 898–904. International Joint Conferences on Artificial Intelligence Organization, 7 2022. Main Track. doi: 10.24963/ ijcai.2022/126 2 [10] I. Fette and A. Melnikov. The WebSocket Protocol. Technical Report RFC6455, RFC Editor, Dec. 2011. doi: 10.17487/rfc6455 5 [11] D. N. Ford and C. M. Wolf. Smart cities with digital twin systems for disas-ter management. Journal of Management in Engineering , 36(4):04020027, 2020. doi: 10.1061/(ASCE)ME.1943-5479.0000779 1, 2 [12] Y. Gao and Q. Zhang. Hint: hierarchical inter-frame correlation for one-shot point cloud sequence compression, 2026. 2 [13] I. Gargantini. An effective way to represent quadtrees. Commun. ACM ,25(12):905–910, 1982. doi: 10.1145/358728.358741 12 [14] I. Gargantini. Linear octtrees for fast processing of three-dimensional objects. Computer Graphics and Image Processing , 20(4):365–374, 1982. doi: 10.1016/0146-664X(82)90058-2 3 [15] Google. Protocol buffers — encoding. https://protobuf.dev/ programming-guides/encoding/ , 2024. Accessed: 2025-05-01. 4, 13 [16] Google. Draco: 3d data compression. GitHub repository, 2026. accessed 2026-01-28. 2, 6 [17] S. Gül, D. Podborski, T. Buchholz, T. Schierl, and C. Hellge. Low-latency cloud-based volumetric video streaming using head motion prediction. In Proceedings of the 30th ACM Workshop on Network and Operating Systems Support for Digital Audio and Video , NOSSDAV ’20, pp. 27–33. Association for Computing Machinery, New York, NY, USA, 2020. doi: 10.1145/3386290.3396933 1, 2 [18] E. Han and J. N. Bailenson. Social interaction in VR. In Oxford Research Encyclopedia of Communication . Oxford University Press, 2024. doi: 10. 1093/acrefore/9780190228613.013.1489 2 [19] E. Han, M. R. Miller, C. DeVeaux, H. Jun, K. L. Nowak, J. T. Hancock et al. People, places, and time: a large-scale, longitudinal study of transformed avatars and environmental context in group interaction in the metaverse. 
+
+Journal of Computer-Mediated Communication , 28(2):zmac031, 2023. doi: 10.1093/jcmc/zmac031 1, 2 [20] Y. Hiroi, Y. Itoh, and J. Rekimoto. Nearportation: A remote real-time neural rendering framework. In Proceedings of the 28th ACM Symposium on Virtual Reality Software and Technology , VRST ’22, art. no. 23, 5 pp. Association for Computing Machinery, New York, NY, USA, 2022. doi: 10.1145/3562939.3565616 2 [21] Y. Hu, Y. Fang, Z. Ge, Z. Qu, Y. Zhu, A. Pradhana et al. A moving least squares material point method with displacement discontinuity and two-way rigid body coupling. ACM Trans. Graph. , 37(4), art. no. 150, 14 pp., July 2018. doi: 10.1145/3197517.3201293 2, 5 [22] M. Ibara, Y. Hiroi, T. Kamegai, and T. Hiraki. Implementation and appli-cation of multi-format 3d data integration in a cross-device commercial metaverse platform. In 2025 IEEE International Symposium on Emerging Metaverse (ISEMV) , pp. 104–113, 2025. doi: 10.1109/ISEMV67326.2025 .00027 1, 2 [23] ISO/IEC. Information technology — Coded representation of immersive media — Part 5: Video-based point cloud compression. Technical Report 23090-5, ISO/IEC, 2020. 2 [24] ISO/IEC. Information technology — Coded representation of immersive media — Part 9: Geometry-based point cloud compression. Technical Report 23090-9, ISO/IEC, 2020. 2, 5 [25] C. Jiang, C. Schroeder, A. Selle, J. Teran, and A. Stomakhin. The affine particle-in-cell method. ACM Transactions on Graphics , 34(4):1–10, July 2015. doi: 10.1145/2766996 5 [26] T. Karras. Maximizing parallelism in the construction of BVHs, octrees, and k-d trees. In Proc. High-Perf. Graphics , pp. 33–37, 2012. doi: 10. 2312/EGGH/HPG12/033-037 12 [27] M. Krivoku´ ca, P. A. Chou, and P. Savill. 8i Voxelized Surface Light Field (8iVSLF) Dataset. ISO/IEC JTC1/SC29 WG11 (MPEG) input document m42914, July 2018. 7, 13 [28] C. Kyrlitsias and D. Michael-Grigoriou. Social interaction with agents and avatars in immersive virtual environments: A survey. Frontiers in Virtual Reality , Volume 2 - 2021, 2022. doi: 10.3389/frvir.2021.786665 1 [29] L. Lin, X. Liao, G. Tan, H. Jin, X. Yang, W. Zhang et al. Liverender: A cloud gaming system based on compressed graphics streaming. In 
+
+Proceedings of the 22nd ACM International Conference on Multimedia ,MM ’14, pp. 347–356. Association for Computing Machinery, New York, NY, USA, 2014. doi: 10.1145/2647868.2654943 2 [30] D. Marpe, H. Schwarz, and T. Wiegand. Context-based adaptive binary arithmetic coding in the H.264/AVC video compression standard. IEEE Transactions on Circuits and Systems for Video Technology , 13(7):620– 636, July 2003. doi: 10.1109/TCSVT.2003.815173 4 [31] J. McVeigh-Schultz, A. Kolesnichenko, and K. Isbister. Shaping pro-social interaction in vr: An emerging design framework. In Proceedings of the 2019 CHI Conference on Human Factors in Computing Systems , CHI ’19, pp. 1–12. Association for Computing Machinery, New York, NY, USA, 2019. doi: 10.1145/3290605.3300794 1 [32] J. McVeigh-Schultz, E. Márquez Segura, N. Merrill, and K. Isbister. What’s it mean to "be social" in vr? mapping the social vr design ecology. In Proceedings of the 2018 ACM Conference Companion Publication on Designing Interactive Systems , DIS ’18 Companion, pp. 289–294. Asso-ciation for Computing Machinery, New York, NY, USA, 2018. doi: 10. 1145/3197391.3205451 2 [33] D. Meagher. Geometric modeling using octree encoding. Computer Graphics and Image Processing , 19(2):129–147, 1982. doi: 10.1016/0146 -664X(82)90104-6 2, 3 [34] A. Moffat and A. Turpin. On the implementation of minimum redundancy prefix codes. IEEE Trans. Commun. , 45(10):1200–1207, 1997. doi: 10. 1109/26.634683 4, 12 [35] G. M. Morton. A computer oriented geodetic data base and a new tech-nique in file sequencing. Technical report, IBM Canada Ltd., 1966. 12 [36] M. Müller, D. Charypar, and M. Gross. Particle-based fluid simulation for interactive applications. In Proceedings of the 2003 ACM SIGGRAPH/Eu-rographics Symposium on Computer Animation , SCA ’03, pp. 154–159. Eurographics Association, Goslar, DEU, 2003. doi: 10.2312/SCA03/154 -159 1, 2 [37] D. T. Nguyen, M. Quach, G. Valenzise, and P. Duhamel. Learning-based lossless compression of 3d point cloud geometry. In ICASSP 2021 -2021 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP) , pp. 4220–4224, 2021. doi: 10.1109/ICASSP39728. 2021.9414763 2 [38] NVIDIA. Nvidia cloudxr sdk. NVIDIA Developer, 2026. Accessed: 2026-03-10. 2 [39] F. Pereira, A. Dricot, J. Ascenso, and C. Brites. Point cloud coding: A privileged view driven by a classification taxonomy. Signal Processing: Image Communication , 85:115862, 2020. doi: 10.1016/j.image.2020. 115862 2 [40] M. Rudolph, S. Schneegass, and A. Rizk. Rabbit: Live transcoding of v-pcc point cloud streams. In Proceedings of the 14th ACM Multimedia Systems Conference , MMSys ’23, pp. 97–107. Association for Computing Machinery, New York, NY, USA, 2023. doi: 10.1145/3587819.3590978 2 [41] H. Samet. Foundations of Multidimensional and Metric Data Structures .Morgan Kaufmann, 2006. 12 [42] S. Schwarz, M. Preda, V. Baroncini, M. Budagavi, P. Cesar, P. A. Chou et al. Emerging mpeg standards for point cloud compression. IEEE Journal on Emerging and Selected Topics in Circuits and Systems , 9(1):133–148, 2019. doi: 10.1109/JETCAS.2018.2885981 1, 2, 6 [43] S. Shi and C.-H. Hsu. A survey of interactive remote rendering systems. 
+
+ACM Comput. Surv. , 47(4), art. no. 57, 29 pp., May 2015. doi: 10.1145/ 2719921 2 [44] G. J. Sullivan, J.-R. Ohm, W.-J. Han, and T. Wiegand. Overview of the high efficiency video coding (hevc) standard. IEEE Transactions on Circuits and Systems for Video Technology , 22(12):1649–1668, 2012. doi: 
+
+10 © 2026 IEEE. This is the author’s version of the article that has been published in IEEE Transactions on Visualization and Computer Graphics. The final version of this record is available at: xx.xxxx/TVCG.202x.xxxxxxx/ 
+
+10.1109/TCSVT.2012.2221191 1, 2 [45] R. Tsujimoto, T. Fukuda, and N. Yabuki. Server-enabled mixed reality for flood risk communication: On-site visualization with digital twins and multi-client support. Environmental Modelling & Software , 177:106054, 2024. doi: 10.1016/j.envsoft.2024.106054 1, 2 [46] J. van der Hooft, T. Wauters, F. De Turck, C. Timmerer, and H. Hellwagner. Towards 6dof http adaptive streaming through point cloud compression. In Proceedings of the 27th ACM International Conference on Multimedia ,MM ’19, pp. 2405–2413. Association for Computing Machinery, New York, NY, USA, 2019. doi: 10.1145/3343031.3350917 2 [47] T. Wiegand, G. Sullivan, G. Bjontegaard, and A. Luthra. Overview of the h.264/avc video coding standard. IEEE Transactions on Circuits and Systems for Video Technology , 13(7):560–576, 2003. doi: 10.1109/TCSVT .2003.815165 1, 2 [48] Y. Xu, Y. Lu, and Z. Wen. Owlii Dynamic Human Mesh Sequence Dataset. ISO/IEC JTC1/SC29/WG11 m41658, 120th MPEG Meeting, Oct. 2017. 7, 13 [49] Z. Zhibin, Y. Hiroi, and Y. Itoh. Towards spatial airflow interaction: Schlieren imaging for augmented reality. In 2022 IEEE International Symposium on Mixed and Augmented Reality (ISMAR) , pp. 215–223, 2022. doi: 10.1109/ISMAR55827.2022.00036 2 
+
+11 Supplementary Material for “DELUGE: Decomposed Entropy-coded Live Unstructured Geometry Exchange for Real-time Particle Streaming” 5 10 15 20 25 
+
+> bppf (bits per point per frame)
+> 50 60 70 80 90 100
+> D1 PSNR (dB)
+> MLS-MPM fluid, 65,536 particles, L=100
+> Draco G-PCC (TMC13) Baseline (Global ANS) w/o Planar ANS w/o Velocity-adaptive DELUGE Full (Proposed)
+
+Figure S1: Rate–distortion curves on MLS-MPM fluid simulation at 65K particles ( L=100 ; 10-sequence average over all 600 frames; D1 PSNR every 10th frame; Dmax =7, keyframe interval 60). 
+
+A ADDITIONAL RATE –D ISTORTION RESULT 
+
+Figure S1 complements the 262K-particle result in main-text Fig. 4 with the corresponding 65K-particle curves. Both particle counts show the same codec ordering; the improved RD efficiency at 262K results from amortizing the fixed octree-header cost over more particles. 
+
+B CODEC PARAMETERS 
+
+Table 5 lists the tunable parameters of DELUGE for reproducibility. 
+
+Table 5: DELUGE tunable parameters. 
+
+Parameter Symbol Value Explored range 
+
+Keyframe interval — 60 30–120 Max octree depth Dmax 7 4–8 Base quantization bits B 12 8–14 (RD sweep) Velocity thresholds α1, α2 0.05, 0.10 0–0.5, 0–1.0 History window w 5 3–10 Frequency table size M 4096 ( = 212 ) 210 –2 13 
+
+ANS state lower bound L 32768 ( = 215 ) 214 –2 16 
+
+C OCTREE CONSTRUCTION DETAILS 
+
+C.1 Bounding Box Construction 
+
+Given an input particle set P = {pi}Ni=1 (pi ∈ R3), we construct a cubic bounding box that serves as the root node of the octree. The per-axis extrema, center c, and half-extent E are computed as: 
+
+pmin =  min  
+
+> i
+
+pi,x, min  
+
+> i
+
+pi,y, min  
+
+> i
+
+pi,z
+
+ (12) 
+
+pmax =  max  
+
+> i
+
+pi,x, max  
+
+> i
+
+pi,y, max  
+
+> i
+
+pi,z
+
+ (13) 
+
+c = pmin +pmax  
+
+> 2
+
+(14) 
+
+E = max   pmax ,x −pmin ,x 
+
+> 2
+
+, pmax ,y−pmin ,y 
+
+> 2
+
+, pmax ,z−pmin ,z 
+
+> 2
+
+, ε (15) The maximum of the three half-widths is used because the octree sub-divides space isotropically, requiring a cubic (not rectangular) domain. 
+
+ε = 10 −3 prevents degenerate zero-extent boxes when all particles coincide. 
+
+C.2 Occupancy Mask 
+
+The occupancy mask is logically a bit array of T = ( 8Dmax +1 − 1)/7bits, one bit per node in the full octree. Bits corresponding to the Global IDs of active nodes (leaves containing at least one particle) are set to 1; all others are 0. This mask is transmitted only in keyframes. On the wire, the sparse bit array is serialized as a delta-varint com-pressed list of the active Global IDs in ascending order, which is com-pact because active IDs are sparse ( Nleaf ≪ T ) and sorted. Since the Global ID (Eq. (2)) increases with depth level and follows Morton order within each level, ascending Global ID order coincides with a breadth-first (BFS) traversal of the octree. On the decoder side, parsing the delta-varint list—logically equivalent to scanning the bit array in BFS order—recovers the active nodes, and the bounds of each node are geometrically reconstructed from its Global ID using the inverse of Eq. (2) in the main text. 
+
+C.3 Morton Code Equivalence 
+
+The octree path index k = ∑di−1 
+
+> d′=0
+
+bi,d′ · 8di−1−d′
+
+is mathematically equiv-alent to a Morton code (Z-order curve) [35]. Each level’s octant number 
+
+bi,d = bx + 2by + 4bz interleaves one bit from each axis; concatenating these from root to leaf produces the bit-interleaved Morton code of the particle’s normalized coordinates. Morton-code-based spatial ordering is a foundational technique used in linear quadtrees [13], spatial data structure taxonomies [41], GPU BVH construction [26], and octree geometry coding in MPEG G-PCC. 
+
+C.4 Octree vs. KD-Tree 
+
+Two structural properties favor the octree over a KD-tree for our codec. First, octree cells are isotropic cubes whose bounds are fully deter-mined by the Global ID (Eq. (2)), so leaf depth is a direct proxy for world-space resolution—the property that depth-dependent quantiza-tion (Eq. (5)) relies on—and no per-leaf bounds need to be transmitted. KD-tree leaves are data-dependent anisotropic rectangles: the depth– resolution correspondence breaks down, and each leaf requires explicit AABB metadata (6 × f32 = 24 bytes per leaf), which inflates keyframe headers as the leaf count grows. Second, the binary split requires roughly 3 × the depth of an octree for the same leaf count, and because the per-leaf bit budget follows bℓ = max (1, B − DL) (Eq. (5)), deep KD-trees collapse the effective coordinate precision. A preliminary comparison (8,192 particles, 10 delta frames, root-bits sweep 6–10) confirms this: against the Octree d=3 anchor, the best KD-tree configuration ( d=3) incurs +17 .4% overall BD-Rate ( +19 .4% at 
+
+d=4; +40 .2% on keyframes alone), and at d=12 (4,096 leaves) the per-leaf AABB metadata by itself exceeds the raw data size (135.9 bppf keyframes). 
+
+D ENTROPY CODING DETAILS 
+
+D.1 Semi-Static rANS Encoding 
+
+We use rANS in a semi-static mode [34]. The entire frame is scanned to collect symbol occurrence frequencies, and the resulting probability ta-ble is used for batch encoding. This probability table is then transmitted alongside the compressed data. The semi-static approach is robust against abrupt changes in parti-cle motion. Adaptive methods, which update the probability model sequentially as CABAC does, can suffer a temporary but significant drop in coding efficiency when the simulation state changes rapidly. In contrast, the semi-static approach builds a probability table that re-flects the statistics of the entire frame, adapting immediately to abrupt distribution changes and maintaining stable coding efficiency. 12 © 2026 IEEE. This is the author’s version of the article that has been published in IEEE Transactions on Visualization and Computer Graphics. The final version of this record is available at: xx.xxxx/TVCG.202x.xxxxxxx/ 
+
+Because quantized values with B = 12 occupy [0, 4095 ], each value is first split into its high and low bytes, which are entropy-coded in-dependently (for bℓ ≤ 8 the high bytes are all zero and compress to negligible size). Each rANS stream therefore operates on a 256-symbol alphabet. Note that the alphabet size (256) and the normalized fre-quency sum M are distinct quantities: the former is the number of codable symbols, the latter the granularity of the ANS state space. The frequency table is normalized to a power of two, M = 212 = 4096, and the ANS state lower bound is set to L = 215 = 32768. For each byte stream of the symbol sequence {s j}3Nj=1 obtained from N particles, en-coding proceeds as follows: (1) the occurrence count cs of each symbol 
+
+s ∈ [0, 255 ] is tallied;(2) every symbol is assigned a minimum frequency of 1, and the remainder is distributed proportionally to the observed ratios, with rounding errors corrected in descending frequency order to ensure ∑ fs = M; (3) the rANS algorithm compresses the data using this table, processing symbols in reverse order and folding the information of symbol s into the state via x′ = ⌊x/ fs⌋ · M + ( x mod fs) + Fs (where 
+
+Fs = ∑s′<s fs′ is the cumulative frequency), with the lower 8 bits output to a byte stream for renormalization when the state exceeds its upper bound; and finally (4) a 256-bit Frequency Mask (a fixed 32-byte flag indicating non-zero-frequency symbols) together with the frequency values (16 bits each) of flagged symbols are appended to the packet [1]. 
+
+D.2 ZigZag Encoding and Circular Differencing 
+
+Delta frames encode the difference in quantized coordinates from the preceding frame. With B = 12, quantized values lie in [0, 4095 ]. We treat these 4096 values as a ring (mod 4096) and use circular differenc-ing to keep the shortest-path difference within [−2048 , 2047 ]:
+
+δ =  (q(t) − q(t−1) + 2048 ) mod 4096  − 2048 (16) The signed difference δ is then converted to a non-negative integer z
+
+via ZigZag encoding [15], which bijects signed integers to non-negative integers as 0 → 0, −1 → 1, 1 → 2, −2 → 3, . . . :
+
+z = ( δ ≪ 1) ⊕ (δ ≫ 11 ) (17) The resulting z values concentrate near zero, improving entropy coding efficiency. For keyframes, the quantized coordinates qi,a are used directly as symbols. 
+
+D.3 Frequency Mask 
+
+rANS decoding requires the same frequency table used by the encoder. Transmitting all 256 symbol frequencies directly at 16 bits each costs 256 × 16 = 4,096 bits (512 bytes). We reduce this overhead with a Frequency Mask [1]: a fixed 32-byte (256-bit) bitmask indicates which symbols have fs > 0, and only the frequencies of flagged symbols are transmitted at 16 bits each. If K symbols are present, the table overhead is 256 + 16 K bits (32 + 2K bytes). In delta frames, ZigZag encoding concentrates difference symbols near zero, so K ≪ 256 is typical and the savings are substantial. 
+
+E PACKET FORMAT AND DECODING PROCESS 
+
+E.1 Packet Format 
+
+Packets are designed in a compact binary format that uses bandwidth efficiently and enables low-latency decoding. Table 6 shows the detailed bit-packing layout for keyframes and delta frames. Keyframes include spatial structure information. The Occupancy Mask is logically a bit array of T = ( 8Dmax +1 − 1)/7 bits, where Dmax 
+
+is the maximum depth of the octree; the bits corresponding to the active-node Global IDs are set to 1, and all the others are set to 0. On the wire it is serialized as a delta-varint compressed list of the active Global IDs in ascending order, which coincides with BFS order (Morton order within each depth level; Sec. C.2). The decoder parses this list—logically equivalent to scanning the bit array in BFS order—to reconstruct the active nodes and geometrically recover the bounds of each node from its Global ID. The Prefix Sum stores the cumulative particle counts across active nodes as K + 1 values, likewise delta-varint coded. Delta frames omit the spatial structure entirely, relying on the assumption that the structure established by the most recent keyframe has not changed.                                                      
+
+> Table 6: Packet Format for Keyframe and Delta Frame. ✓indicates fields included in both the delta frame and the keyframe; unmarked fields are transmitted only in the keyframe.
+> Field Type B Delta Description
+> Packed Type U8 1✓4-bit encoding type + 4-bit packet type Frame ID U16 2✓Sequence index (little endian) Timestamp F64 8✓Server timestamp (Unix epoch) Center (x,y,z) F32 ×312 Bounding box center Extent F32 4Bounding box half-extent Max Depth U8 1Octree maximum depth Total Nodes U32 4Total nodes in full tree Active Nodes U32 4Active (non-empty) nodes Occ. Mask B[] var. Occupancy bitmask (BFS order) Prefix Sum U32[] var. Cumulative particle counts per active node Payload Len U32 4✓Byte length of compressed payload Freq Mask U8[32] 32 ✓Presence flags for symbols 0–255 Freq Values U16[] var. ✓Frequencies for present symbols ANS Stream B[] var. ✓rANS-coded residual stream
+
+F CAPTURED -D ATA EVALUATION DETAILS 
+
+Table 7 details the preliminary evaluation on captured point clouds summarized in Sec. 5.2.3 of the main text. 
+
+Setup. We use the first 300 frames of each sequence (Thaid-ancer comprises 300 frames in total): 8iVSLF Thaidancer_viewdep (vox12) [27] and Owlii basketball_player / dancer (vox11) [48], at their native per-frame point counts without subsampling. Because these sequences carry no frame-to-frame point correspondence, DELUGE operates all-intra (every frame coded as a keyframe) with Dmax =3and B=8, axis-separated Planar rANS; this shallow-octree operating point matches the voxelized data resolution. G-PCC is TMC13 v23.0-rc2 with pqs = 0.25 , likewise intra-only. Both codecs run in-process (Rust/C FFI, one call per frame, no subprocess) on Apple M2 Max, fol-lowing the measurement protocol of main-text Table 3; decoding times are per-frame means over the 300 frames, with data loading excluded from all timed regions. bppf is aggregated over the same 300 frames from the encoded packet sizes, and D1 PSNR is evaluated on every frame with the MPEG pc_error tool.                      
+
+> Table 7: Preliminary evaluation on captured point clouds: 8iVSLF Thaid-ancer and Owlii basketball_player / dancer (all-intra; DELUGE Dmax =3,
+> B=8; G-PCC pqs = 0.25 ; first 300 frames of each sequence).
+> D1 PSNR Decode (ms) Sequence Points bppf (dB) DELUGE G-PCC Ratio
+> Thaidancer 3.08M 15.46 59.89 56.8 1,131 19.9 ×
+> basketball_player 2.91M 15.46 60.26 55.2 1,166 21.1 ×
+> dancer 2.60M 15.46 60.21 47.4 1,019 21.5 ×
+> Mean 15.46 60.12 20.9 ×
+
+G VISION OS C LIENT IMPLEMENTATION DETAILS 
+
+G.1 Hand Tracking and Fluid Interaction 
+
+The visionOS client uses ARKit’s HandTrackingProvider to ob-tain the skeleton of both hands at each frame. Each hand consists of 27 joints (wrist, metacarpal, knuckle, intermediate, and tip for each of five fingers, plus two forearm joints). The world-space po-sition of each joint is computed as originFromAnchorTransform ×
+
+anchorFromJointTransform .The joint positions are transmitted to the server as a JSON message at each rendering frame (90 Hz). Each joint is represented as a four-element tuple (x, y, z, r) encoding its position and collision radius ( r =
+
+8 mm). Bones connecting adjacent joints are represented as start–end pairs (xa, ya, za, ra, xb, yb, zb, rb).On the server, the received skeleton data is transformed into the simulation coordinate system and converted into colliders. Joints be-come sphere colliders and bones become capsule colliders; these are 13 uploaded to the MLS-MPM GPU kernel every frame. Within the ker-nel, the signed distance from each particle to the nearest collider is evaluated, and a repulsive force is applied when a particle penetrates a collider surface. This enables real-time fluid interaction in which users can push, scoop, and redirect the fluid with their bare hands. 
+
+G.2 Coordinate Alignment 
+
+In the multi-user setting, the coordinate systems of multiple Vi-sion Pro devices must be aligned with the server’s simulation space. We use image-marker-based coordinate alignment via ARKit’s 
+
+ImageTrackingProvider . Each device detects a pre-registered refer-ence image of known physical size and obtains its world-space trans-form. This transform serves as an anchor from which a model matrix is constructed to map the simulation origin, rotation, and scale into world space. Marker detection is performed once at startup; subsequent tracking relies on the device’s spatial tracking system. On the server, the skeleton-to-collider conversion applies the inverse of the marker transform to convert world coordinates to simulation coordinates. This ensures that skeleton data from different devices is correctly resolved in the same simulation space. In addition to its own skeleton, each client receives the skeleton data of other clients broadcast via the server, and renders remote users’ hands. This enables a collaborative experience in which multiple users visually share and simultaneously manipulate the same fluid. 
+
+H QUESTIONNAIRE ITEMS 
+
+H.1 Perceptual Quality Evaluation (Sec. 5.4) 
+
+All items were rated on a 7-point Likert scale (1: strongly disagree – 7: strongly agree). • Q1 (Smoothness): The fluid motion appeared smooth and continuous. • Q2 (Visual Distortion; reverse-scored): I noticed visual distortion or unnaturalness in the fluid. • Q3 (Low Latency): The fluid responded immediately to my hand movements. • Q4 (Realism): The fluid behavior looked natural and realistic. • Q5 (Consistency): The shape and density of the fluid appeared spatially coherent. • Q6 (Overall Satisfaction): Overall, I was satisfied with the visual quality of the fluid. 
+
+H.2 Collaborative Task Evaluation (Sec. 5.5) 
+
+All items were rated on a 7-point Likert scale (1: strongly disagree – 7: strongly agree). • Q1 (Real-time Reflection): My partner’s actions were reflected in the fluid in real time. • Q2 (Visual Influence): I could clearly see my partner’s influence on the fluid. • Q3 (Perceived Delay; reverse-scored): I noticed a noticeable delay in the shared environment. • Q4 (State Consistency): The fluid state appeared consistent between both users. • Q5 (Interaction Sense): I felt like I was interacting with my partner through the fluid. • Q6 (Action Influence): My partner’s actions influenced my own actions. • Q7 (Intent Recognition): I could understand what my partner was trying to do. • Q8 (Co-play Sense): I felt like we were playing together. 14

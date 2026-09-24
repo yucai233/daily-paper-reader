@@ -1,0 +1,91 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-24T22:25:21.236302+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.27264v1",
+      "title": "GaussPDE: Graph-Based Partial Differential Equation-Driven Rendering for 3D Gaussian Splatting",
+      "abstract": "We present GaussPDE, a framework that injects physically structured partial differential equation (PDE) dynamics into pretrained 3D Gaussian scenes without mesh extraction, voxelization, or retraining. Our key observation is that PDE rendering requires not only accurate appearance, but also a reliable discrete computational domain. We therefore first introduce camera-aware regularization during 3DGS reconstruction to suppress camera-near floaters and oversized primitives that would create unstable graph topology. We then construct an active Gaussian graph using covariance-aware distances and opacity, appearance, and boundary-aware conductance, enabling mass-weighted graph Laplacian PDE evolution directly over Gaussian primitives. The evolving scalar PDE state is coupled back to rendering by modifying the direct-current spherical harmonic color coefficients while preserving geometry, opacity, and view-dependent rendering behavior. Experiments on real and synthetic scenes show that GaussPDE produces stable, controllable, and spatially coherent dynamic visualizations, with reduced cross-boundary leakage compared with baselines.",
+      "authors": [
+        "Haoyuan Yue",
+        "Fengyuan Ye",
+        "Ziyin Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-23T02:48:35+00:00",
+      "link": "https://arxiv.org/pdf/2609.27264v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "physically structured rendering for 3D Gaussian scenes",
+      "llm_evidence_cn": "3D高斯场景的物理结构化渲染",
+      "llm_evidence": "3D高斯场景的物理结构化渲染",
+      "canonical_evidence": "3D高斯场景的物理结构化渲染",
+      "llm_tldr_en": "Injects PDE dynamics into 3D Gaussian Splatting for physically-driven rendering without retraining.",
+      "llm_tldr_cn": "将偏微分方程动力学注入3D高斯泼溅，实现无需重新训练的物理驱动渲染。",
+      "llm_tldr": "将偏微分方程动力学注入3D高斯泼溅，实现无需重新训练的物理驱动渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.19750v1",
+      "title": "DELUGE: Decomposed Entropy-coded Live Unstructured Geometry Exchange for Real-time Particle Streaming",
+      "abstract": "Particle-based physics simulations, including fluids, smoke, and granular media, are fundamental to visual realism in immersive VR and AR. With the growing adoption of social VR and digital twins, demand is increasing for shared experiences in which multiple users interact with the same simulation in real time. Realizing such experiences requires low-latency streaming of large-scale particle data from a server to each client, yet existing point cloud compression methods such as G-PCC (TMC13) and Draco assume static geometric structures; when applied to dynamic particle streaming, their encoding latency exceeds the frame period, failing to meet real-time delivery requirements. We propose DELUGE, a streaming compression architecture that exploits the temporal coherence and velocity predictability inherent in physics simulation particles, achieving sub-frame-latency encoding and decoding through three complementary techniques. Evaluation on dynamic point cloud datasets demonstrates that DELUGE achieves approximately $20\\times$ faster decoding than G-PCC (TMC13) and $6\\times$ faster encoding than Draco. We further build end-to-end client implementations for both web browsers and Apple Vision Pro, and confirm through a within-participants perceptual quality evaluation and a two-person collaborative task study on Vision Pro that the proposed method supports real-time collaborative experiences with hand-tracked fluid interaction.",
+      "authors": [
+        "Hikari Yanagawa",
+        "Yuichi Hiroi",
+        "Takefumi Hiraki"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.HC",
+        "cs.IT"
+      ],
+      "published": "2026-09-17T06:20:05+00:00",
+      "link": "https://arxiv.org/pdf/2609.19750v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "real-time streaming of particle-based smoke and fluid simulations",
+      "llm_evidence_cn": "基于粒子的烟雾和流体模拟的实时流传输",
+      "llm_evidence": "基于粒子的烟雾和流体模拟的实时流传输",
+      "canonical_evidence": "基于粒子的烟雾和流体模拟的实时流传输",
+      "llm_tldr_en": "Proposes a compression architecture for real-time streaming of large-scale dynamic particle simulations.",
+      "llm_tldr_cn": "提出了一种用于大规模动态粒子模拟实时流传输的压缩架构。",
+      "llm_tldr": "提出了一种用于大规模动态粒子模拟实时流传输的压缩架构。",
+      "llm_tags": [
+        "query:q5"
+      ],
+      "matched_query_tag": "query:q5",
+      "matched_query_text": "deep learning methods for volumetric cloud rendering and simulation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
