@@ -1,0 +1,326 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-25T21:52:27.657617+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [
+    {
+      "id": "2609.29963v1",
+      "title": "ADATEX4D: adaptive texture capacity allocation for 4D gaussian splatting",
+      "abstract": "Textured Gaussians improve local appearance capacity, but assigning the same texture resolution to every primitive wastes storage on low-detail or weakly visible regions. We introduce AdaTex4D, an adaptive texture-capacity module for deformation-based 4D Gaussian Splatting. Each Gaussian carries packed RGBA triplanes whose two axes grow independently according to visibility normalized screen-space gradients and deformed local scales. Experiments on N3DV and PanopticSports show that AdaTex4D reduces texture storage by more than half while preserving reconstruction quality. Under fixed memory budgets, adaptive allocation also improves quality over uniform texture assignment and reduces overall model and peak memory. These results show that dynamic, anisotropic texture allocation provides a more efficient way to distribute local appearance capacity in 4D Gaussian representations.",
+      "authors": [
+        "De Jiang",
+        "Peiqiang Wang",
+        "Kehong Yuan",
+        "Shaohua Ma"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-09-24T15:19:23+00:00",
+      "link": "https://arxiv.org/pdf/2609.29963v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "adaptive texture allocation for 4D Gaussian Splatting rendering",
+      "llm_evidence_cn": "4D高斯泼溅渲染的自适应纹理分配",
+      "llm_evidence": "4D高斯泼溅渲染的自适应纹理分配",
+      "canonical_evidence": "4D高斯泼溅渲染的自适应纹理分配",
+      "llm_tldr_en": "AdaTex4D optimizes memory for 4D Gaussian Splatting by adaptively allocating texture capacity.",
+      "llm_tldr_cn": "AdaTex4D通过自适应分配纹理容量，优化了4D高斯泼溅的内存占用。",
+      "llm_tldr": "AdaTex4D通过自适应分配纹理容量，优化了4D高斯泼溅的内存占用。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.23436v2",
+      "title": "GAPS: Generative Active Pseudo-view Selection for Sparse-View 3D Gaussian Splatting",
+      "abstract": "Novel view synthesis from sparse observations is severely under-constrained. Although 3D Gaussian Splatting (3DGS) enables real-time rendering, it produces floaters, broken geometry, and washed-out backgrounds when trained with few views. We propose an alternating optimization framework that uses a pre-trained image diffusion model to generate geometrically consistent pseudo-views for additional 3DGS supervision. Generation is constrained by depth-conditioned ControlNet, IP-Adapter style transfer, LoRA scene adaptation, and img2img structural anchoring. We introduce Generative Active Pseudo-view Selection (GAPS) to balance reconstruction informativeness and generative reliability when choosing target views. Its annealing schedule shifts from conservative interpolation early in training to exploratory extrapolation later, gradually covering unobserved regions. A dual-criterion admission gate and uncertainty-weighted losses reject unreliable generations, while density-adaptive DropGaussian reduces overfitting in complex scenes. On LLFF with 3/6/9 views, our method improves average PSNR over vanilla 3DGS by 0.40/0.89/0.70 dB. On Mip-NeRF 360 with 12/24 views, the gains are 1.18/0.80 dB. SSIM improves and LPIPS decreases in every setting. Ablations show that active selection and density-adaptive regularization are both necessary; only the full method reduces LPIPS below the no-pseudo-view baseline on unbounded 360-degree scenes.",
+      "authors": [
+        "Hongfei Zhu",
+        "Haochen Deng",
+        "Sitao Zhang",
+        "Ling Zhou"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-20T08:13:18+00:00",
+      "link": "https://arxiv.org/pdf/2609.23436v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting with generative pseudo-view supervision",
+      "llm_evidence_cn": "带有生成式伪视图监督的3D高斯泼溅",
+      "llm_evidence": "带有生成式伪视图监督的3D高斯泼溅",
+      "canonical_evidence": "带有生成式伪视图监督的3D高斯泼溅",
+      "llm_tldr_en": "Uses diffusion models to provide pseudo-view supervision for sparse-view 3D Gaussian Splatting reconstruction.",
+      "llm_tldr_cn": "利用扩散模型为稀疏视图下的3D高斯泼溅重建提供伪视图监督。",
+      "llm_tldr": "利用扩散模型为稀疏视图下的3D高斯泼溅重建提供伪视图监督。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.23733v1",
+      "title": "VGGT-Prime: Compute-Adaptive Mixture-of-Heads for Efficient Visual Geometry Transformers",
+      "abstract": "Feed-forward visual geometry models such as the Visual Geometry Grounded Transformer (VGGT) have recently enabled direct 3D reconstruction from multi-view images. Despite their promising performance, these models scale quadratically with the number of input views due to their global attention mechanism, resulting in substantial latency for long sequence inputs. There have been some recent efforts to accelerate VGGT, but they primarily focus on reducing \\emph{token redundancy} through token merging or key/value sparsification. Our work resolves this bottleneck from a different perspective by investigating \\emph{architectural redundancy} in visual geometry transformers. We show that the multi-head attention modules in VGGT's global-attention layers contain substantial architectural redundancy, with only a subset of heads carrying critical geometric information. In light of this observation, we propose VGGT-Prime, a compute-adaptive mixture-of-heads model that resolves this redundancy to accelerate visual geometry transformers while maintaining competitive reconstruction quality. The key idea of VGGT-Prime is to estimate the appropriate computation level for each global-attention head using a lightweight router and then dynamically assign each head to different computation modes. Extensive experiments on multiple datasets demonstrate that VGGT-Prime can achieve an {$8\\times$} inference speedup over VGGT while maintaining competitive performance on camera pose, depth, and point-cloud predictions. We further show that VGGT-Prime is complementary to existing acceleration methods, such as token merging, further improving inference speed by up to $14{\\times}$ over VGGT. An overview of our work is available on our \\href{https://vggt-prime.github.io}{project page}.",
+      "authors": [
+        "Abteen Arab",
+        "Guile Wu",
+        "Chengjie Huang",
+        "Dongfeng Bai"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-20T16:22:15+00:00",
+      "link": "https://arxiv.org/pdf/2609.23733v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "efficient visual geometry transformers for 3D reconstruction",
+      "llm_evidence_cn": "用于3D重建的高效视觉几何Transformer",
+      "llm_evidence": "用于3D重建的高效视觉几何Transformer",
+      "canonical_evidence": "用于3D重建的高效视觉几何Transformer",
+      "llm_tldr_en": "Optimizes visual geometry transformers for efficient 3D reconstruction by reducing architectural redundancy.",
+      "llm_tldr_cn": "通过减少架构冗余来优化视觉几何Transformer，实现高效3D重建。",
+      "llm_tldr": "通过减少架构冗余来优化视觉几何Transformer，实现高效3D重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.28645v1",
+      "title": "PePESeg3D: Perception Prior Enhances Multi-Scale Segmentation for 3D Gaussian Splatting",
+      "abstract": "Recent advancements in 3D Gaussian Splatting (3DGS) have extended its capabilities to multi-scale segmentation. Existing methods reconstruct a scene with Gaussian primitives and learn multi-scale segmentation features separately, which leaves the geometry unaware of semantic structure and the feature learning dependent on incomplete mask supervision. To address these limitations, we present PePESeg3D, a novel framework that injects perception priors into a multi-scale 3D Gaussian segmentation pipeline. To fully exploit perception priors, we integrate them not only into contrastive feature learning but also into the upstream geometry reconstruction. Specifically, PePE Reconstruction incorporates monocular depth and mask constraints to ensure semantically coherent object structures. Building on this aligned geometry, PePE Contrastive Learning leverages dense depth-color cues and view-consistent centroid supervision to compensate for the incompleteness of multi-scale masks obtained from a 2D foundation model. Extensive experiments on the SPIn-NeRF, LERF-Mask, and NVOS benchmarks demonstrate that PePESeg3D achieves state-of-the-art performance in both multi-scale segmentation and scene reconstruction, highlighting the importance of integrating perception priors into both geometry optimization and feature learning for accurate multi-scale 3D segmentation. Our code is available at https://github.com/BeCow5X5/PePESeg3D.",
+      "authors": [
+        "Sungjae Choi",
+        "Seunghee Koh",
+        "Junmo Kim"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-23T18:00:11+00:00",
+      "link": "https://arxiv.org/pdf/2609.28645v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting geometry reconstruction and rendering",
+      "llm_evidence_cn": "3D高斯泼溅几何重建与渲染",
+      "llm_evidence": "3D高斯泼溅几何重建与渲染",
+      "canonical_evidence": "3D高斯泼溅几何重建与渲染",
+      "llm_tldr_en": "PePESeg3D integrates perception priors into 3D Gaussian Splatting for multi-scale segmentation.",
+      "llm_tldr_cn": "PePESeg3D将感知先验集成到3D高斯泼溅中，用于多尺度分割。",
+      "llm_tldr": "PePESeg3D将感知先验集成到3D高斯泼溅中，用于多尺度分割。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.29041v1",
+      "title": "From Scattered Gaussians to Structured Maps: Efficient Gaussian Splatting Coding via Dual-phase Morton Sorting",
+      "abstract": "3D Gaussian Splatting (3DGS) enables high fidelity novel view synthesis but suffers from excessive storage and bandwidth requirements due to its unstructured representation. To address this, a projection based video coding framework has emerged as a leading approach, supported by MPEG's ongoing standardization, where 3DGS attributes are converted into 2D maps to take advantage of efficient compression using established video codecs such as HEVC and VVC. However, the effectiveness of this approach depends heavily on the spatial coherence of the projected video, which current sorting strategies such as PLAS and Morton ordering fail to preserve adequately, either incurring high computational cost or achieving limited correlation retention. To overcome these limitations, we propose a dual phase Morton spatial sorting algorithm that improves both coding efficiency and processing speed. In the first phase, Morton based 1D indexing is applied to high dimensional attributes to enhance spatial locality. The second phase further refines layout continuity through a structured 2D Morton mapping table that enforces spatial adjacency. This hierarchical strategy generates highly regular, block wise feature maps with strong local correlation, making them well suited for compression via conventional block based coding tools. Experimental results show that our method significantly outperforms existing approaches in both compression performance and runtime efficiency, providing a practical and standard compatible solution for 3DGS data coding.",
+      "authors": [
+        "Bolin Chen",
+        "Shanzhi Yin",
+        "Ru-Ling Liao",
+        "Yibo Fan",
+        "Yan Ye"
+      ],
+      "primary_category": "cs.MM",
+      "categories": [
+        "cs.MM"
+      ],
+      "published": "2026-09-24T05:17:22+00:00",
+      "link": "https://arxiv.org/pdf/2609.29041v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Efficient coding of 3D Gaussian Splatting attributes",
+      "llm_evidence_cn": "3D高斯泼溅属性的高效编码",
+      "llm_evidence": "3D高斯泼溅属性的高效编码",
+      "canonical_evidence": "3D高斯泼溅属性的高效编码",
+      "llm_tldr_en": "Develops an efficient coding framework for 3D Gaussian Splatting using dual-phase Morton sorting.",
+      "llm_tldr_cn": "开发了一种利用双相莫顿排序进行3D高斯泼溅属性高效编码的框架。",
+      "llm_tldr": "开发了一种利用双相莫顿排序进行3D高斯泼溅属性高效编码的框架。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.28684v1",
+      "title": "M-plicits: Neural Implicit Surfaces via Nested Multiscale Residuals",
+      "abstract": "Encoding input coordinates with sinusoidal functions into multi-layer perceptrons (MLPs) has proven effective for implicit neural representations (INRs) of surfaces defined as zero-level sets. However, existing methods often struggle to balance training efficiency, rendering speed, and noise robustness: single-MLP approaches are expensive at inference, grid-based representations are fast but can limit surface smoothness and overfit input noise, and previous multiscale approaches frequently capture noise and produce artifacts due to hard spectral truncation. To address these limitations, we propose M-plicits, a multiscale framework that models surfaces as a residual sum of MLPs trained via a sequence of nested neighborhoods. Unlike existing residual approaches that rely on standard domain-wide sampling and require costly mesh extraction for visualization, our method strictly localizes supervision to narrow bands around the previous zero-level sets. This nested design naturally provides robustness against noisy input data: the coarse network acts as a low-pass filter that establishes a clean geometric prior, while subsequent residuals progressively refine the geometry without fitting to high-frequency artifacts. We further introduce a multiscale sphere-tracing algorithm and a GEMM-based analytical normal computation that bypasses auto-differentiation entirely, yielding high-fidelity real-time rendering. On Stanford and Thingi32, M-plicits achieves the best mean Chamfer distance in the coarse configuration and the best median Chamfer distance and IoU in the fine configuration, with substantially better noise robustness than iNGP, BACON, and IDF, while using an order of magnitude fewer parameters than grid-based baselines. Code, models, and data will be released at https://github.com/dsilvavinicius/m-plicits.",
+      "authors": [
+        "Vinícius da Silva",
+        "Isabelle Melo",
+        "Matheus Bessa",
+        "Guilherme Schardong",
+        "Luiz Schirmer",
+        "André Araújo",
+        "Nuno Gonçalves",
+        "Hélio Lopes",
+        "Alberto Raposo",
+        "Luiz Velho",
+        "Tiago Novello"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR",
+        "cs.LG"
+      ],
+      "published": "2026-09-23T18:26:17+00:00",
+      "link": "https://arxiv.org/pdf/2609.28684v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural implicit surfaces and rendering speed optimization",
+      "llm_evidence_cn": "神经隐式表面与渲染速度优化",
+      "llm_evidence": "神经隐式表面与渲染速度优化",
+      "canonical_evidence": "神经隐式表面与渲染速度优化",
+      "llm_tldr_en": "Proposes a multiscale MLP framework to balance training efficiency, rendering speed, and surface smoothness.",
+      "llm_tldr_cn": "提出多尺度MLP框架，平衡训练效率、渲染速度与表面平滑度。",
+      "llm_tldr": "提出多尺度MLP框架，平衡训练效率、渲染速度与表面平滑度。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.28930v1",
+      "title": "PlenoCI: Plenoptic CharacterIstics for View Dependence Aware Change Classification",
+      "abstract": "Radiance field representations such as 3D Gaussian Splatting (3DGS) natively encode complex visual phenomena such as occlusions and view dependence, but they are inherently underconstrained. Independently optimized reconstructions converge to different primitive configurations, even in unchanged regions. We introduce Plenoptic CharacterIstics (PlenoCI), a novel feature built from the plenoptic field these representations approximate. PlenoCI directly captures rich visual behaviors while ignoring Lambertian textures. By deriving closed-form analytic plenoptic derivatives from a 3DGS representation, we efficiently detect these 5D structures. Our approach is robust to underconstrained representations by construction, reporting two orders of magnitude fewer false positives between independent reconstructions of unchanged scenes than concurrent work. We demonstrate PlenoCI's utility on change classification. First, we detect changes with an instance-aware 3DGS pipeline, achieving state-of-the-art results on CL-Splats with a 25.7% mIoU gain over the strongest competitor, while remaining competitive on the more challenging PASLCD benchmark. Leveraging PlenoCI, we classify changes as geometric or appearance-based with a balanced accuracy of 0.735, comparable to the best performing baseline. We believe plenoptic derivatives and PlenoCI open new directions for view dependence aware understanding in visually complex environments. Code and data are available at https://js0n-lai.github.io/plenoci.",
+      "authors": [
+        "Jason Lai",
+        "Chamuditha Jayanga Galappaththige",
+        "Niko Suenderhauf",
+        "Dimity Miller",
+        "Donald G. Dansereau"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-24T02:27:24+00:00",
+      "link": "https://arxiv.org/pdf/2609.28930v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting representation for view dependence",
+      "llm_evidence_cn": "用于视图依赖的3D高斯泼溅表示",
+      "llm_evidence": "用于视图依赖的3D高斯泼溅表示",
+      "canonical_evidence": "用于视图依赖的3D高斯泼溅表示",
+      "llm_tldr_en": "Introduces PlenoCI to capture view-dependent visual behaviors in 3D Gaussian Splatting for change classification.",
+      "llm_tldr_cn": "引入PlenoCI以捕获3D高斯泼溅中的视图依赖视觉行为，用于变化分类。",
+      "llm_tldr": "引入PlenoCI以捕获3D高斯泼溅中的视图依赖视觉行为，用于变化分类。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.29373v1",
+      "title": "Shadow Reduction in Ultrasound Imaging Using Differentiable Simulation and Radiance Field Decomposition",
+      "abstract": "Acoustic shadows from bone and other highly attenuating tissues obscure clinically important structures in ultrasound. In fetal brain imaging, skull-induced artefacts disproportionately degrade the hemisphere closer to the transducer (proximal), limiting symmetric assessment of the two hemispheres. Existing correction methods require raw scanner data, impose restrictive assumptions on tissue properties, or rely on generative models that may hallucinate anatomy. We present RFlash, a physics-informed post-processing method that decomposes beamformed ultrasound images into explicit attenuation and scatter-intensity maps using a differentiable radiance-field formulation of image formation. Attenuation-adaptive re-rendering then removes the dependence of the signal at each depth on the intervening tissue, equivalent to virtually advancing the transducer into the tissue. Across 1,261 3D fetal brain volumes, 143 real 2D curvilinear abdominal scans, and 1,200 simulated 2D linear-probe liver scans, RFlash reduces shadow-related intensity differences more effectively than classical Hughes-Duck attenuation correction. For a gestational-age model trained on the distal hemisphere (further from the transducer) and applied to the proximal hemisphere, prediction error decreases by 5.1 days (40%) relative to the original images. The estimated attenuation maps also yield shadow-confidence maps that improve random-forest bone-shadow segmentation over the image alone and receive greater SHAP importance than an existing neural confidence-map baseline, suggesting greater physical consistency. RFlash requires neither hardware modification nor access to raw scanner data and supports 2D and 3D acquisitions with linear and curvilinear probes, making it widely applicable allowing clinicians to use our method on their already acquired scanners and images.",
+      "authors": [
+        "Valentin Bacher",
+        "Pak Hei Yeung",
+        "Bernhard Kainz",
+        "Madeleine K. Wyburd",
+        "Nicola K. Dinsdale",
+        "Michael Gray",
+        "Ana I. L. Namburete"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-24T10:55:49+00:00",
+      "link": "https://arxiv.org/pdf/2609.29373v1",
+      "tags": [
+        "keyword:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Differentiable radiance-field formulation for ultrasound image formation and scattering maps",
+      "llm_evidence_cn": "用于超声图像生成和散射图的可微辐射场公式",
+      "llm_evidence": "用于超声图像生成和散射图的可微辐射场公式",
+      "canonical_evidence": "用于超声图像生成和散射图的可微辐射场公式",
+      "llm_tldr_en": "Uses a differentiable radiance-field formulation to decompose ultrasound images into attenuation and scatter maps.",
+      "llm_tldr_cn": "利用可微辐射场公式将超声图像分解为衰减图和散射图，实现物理感知的阴影消除。",
+      "llm_tldr": "利用可微辐射场公式将超声图像分解为衰减图和散射图，实现物理感知的阴影消除。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
