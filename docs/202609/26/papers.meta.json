@@ -1,0 +1,37 @@
+{
+  "label": "2026-09-26",
+  "date": "2026-09-26",
+  "generated_at": "2026-09-26T21:39:36",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202609/26/2609.23380v1-litetex-gs-fast-and-lightweight-texturing-for-gaussian-splatting",
+      "section": "quick",
+      "title_en": "LiteTex-GS: Fast and Lightweight Texturing for Gaussian Splatting",
+      "authors": "Zhiwei Li, Yijia Guo, Yishi Lu, Liwen Hu, Hong Rao, Shengbo Chen, Lei Ma",
+      "date": "2026-09-20",
+      "pdf": "https://arxiv.org/pdf/2609.23380v1",
+      "score": "7.0",
+      "evidence": "通过轻量化纹理加速高斯泼溅",
+      "tldr": "LiteTex-GS是一种针对高斯溅射（Gaussian Splatting）的轻量化纹理框架。针对传统方法中几何与外观耦合导致的内存与计算开销问题，该方法通过为高斯基元分配极简局部纹理，并结合误差驱动的动态分辨率分配与贡献度感知剪枝策略，在保持高效渲染的同时，显著降低了参数量与训练时间，实现了纹理细节与计算效率的平衡。",
+      "tags": "query:q7",
+      "abstract_en": "Gaussian Splatting has enabled real-time novel view synthesis, but its tightly coupled geometry and appearance representation often require a large number of primitives to reproduce high-frequency texture details, leading to substantial memory and optimization costs. Recent textured 2D Gaussian methods alleviate this limitation by attaching texture maps to Gaussian primitives. However, bridging the fundamental structural gap between discrete Gaussians and continuous 2D grids requires complex parameterizations that introduce severe computational overhead. This overhead fundamentally compromises the original efficiency of Gaussian Splatting, making the balance between detailed texturing and computational agility an unresolved challenge. To address these challenges, we propose LiteTex-GS, a fast and lightweight texturing framework for Gaussian Splatting. Our method initializes an extremely compact representation, assigning minimal local texture to each Gaussian and progressively allocates higher resolution only to primitives with significant reconstruction errors. To maintain a streamlined geometric scaffold, we introduce a contribution- and area-aware pruning strategy that eliminates low-utility Gaussians. Furthermore, to mitigate the gradient dilution caused by texture upsampling, we design a resolution-aware update rule that preserves rapid and stable convergence. Extensive experiments on standard novel view synthesis benchmarks demonstrate that our method achieves competitive or superior rendering quality while using substantially fewer parameters and less training time than existing textured Gaussian baselines.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/26/2609.29836v1-splatlabel-pseudo-labelling-through-4d-gaussian-splatting",
+      "section": "quick",
+      "title_en": "SplatLabel: Pseudo-Labelling through 4D Gaussian Splatting",
+      "authors": "Nitya Nanvani, Andras Palffy, Holger Caesar",
+      "date": "2026-09-24",
+      "pdf": "https://arxiv.org/pdf/2609.29836v1",
+      "score": "6.0",
+      "evidence": "用于语义占据网格和体素分辨率的四维高斯表示",
+      "tldr": "SplatLabel 是一种利用 4D 高斯溅射技术实现自动 3D 语义伪标签生成的框架。它通过显式的时间流形建模动态环境，无需预标注的 3D 边界框即可实现 LiDAR 分割与语义占用预测。该方法通过融合 2D 视觉基础模型与 360 度 LiDAR 数据，有效解决了语义歧义，并在 SemanticKITTI 数据集上展现了优于现有技术的性能。",
+      "tags": "query:q1",
+      "abstract_en": "While 2D Vision Foundation Models offer a pathway to automate 3D semantic pseudo-labelling, translating these priors into robust 3D representations typically requires complex heuristics or multi-model ensembles. We introduce SplatLabel, an automated pipeline that leverages a 4D Gaussian representation to extract LiDAR segmentation with predictive confidence, as well as semantic occupancy grids at arbitrary voxel resolutions. At its core, SplatLabel handles dynamic environments through an explicit temporal manifold that models the trajectories and lifespans of individual 3D primitives. This allows the system to accurately track moving actors and strictly define when objects appear and disappear, completely eliminating the need for pre-annotated 3D bounding boxes. To robustly support this dynamic tracking, the representation is grounded by structural and semantic priors: we guide scene geometry in unobserved regions by integrating 360-degree LiDAR via virtual depth maps, and rather than relying on domain-specific prompt engineering, we directly distill continuous soft probabilities from 2D models to inherently resolve semantic ambiguities over time and space. Finally, to accurately reflect the real-world trade-off between precision and recall, we reframe pseudo-label evaluation as a selective classification task using a generalized risk-recall metric. Experiments on SemanticKITTI demonstrate that SplatLabel consistently outperforms state-of-the-art baselines across multiple recall levels, establishing a highly robust framework for both 3D LiDAR segmentation and occupancy prediction.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
