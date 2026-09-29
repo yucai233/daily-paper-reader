@@ -1,0 +1,542 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-29T23:25:45.970668+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 19,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2609.33969v1",
+      "title": "Gaussian Splatting-based Volumetric Video Compression with Sparse 4D Anchors",
+      "abstract": "Immersive video communication requires photorealistic, render-efficient, and compact dynamic scene representations. 3D Gaussian Splatting (3DGS) offers a promising representation, but dynamic 3DGS remains difficult to compress due to dense primitives and spatiotemporal redundancy. Anchor-based formulations improve compactness with sparse scaffolds that share geometry and appearance across primitives. However, existing designs often rely on deforming a single canonical scaffold and condition each primitive on its associated anchor in isolation, limiting their ability to handle non-local dynamics and disocclusion while under-exploiting inter-anchor correlations, particularly in motion- or texture-dense regions. To address these limitations, we propose SAGA, a volumetric video codec built upon Sparse Anchor-assisted GAussian splatting representations. SAGA represents dynamic 3D scenes using hierarchically organized sparse 4D anchors, where coordinate-based INR decoders generate fine anchors and Gaussian primitives from inter-anchor interpolations, enabling compact parameter sharing across spatiotemporal structures. For long-range dependencies among unstructured anchors, we further introduce fixed-size memory slots with orthogonality-informed updates for accurate entropy-context modeling. Experiments show that SAGA achieves strong rate-distortion performance against GIFStream, with PSNR BD-rate reductions of 80.39% and 83.94% on Neu3D and MPEG MIV, respectively.",
+      "authors": [
+        "Ge Gao",
+        "Siyue Teng",
+        "Chanqgi Wang",
+        "Fan Zhang",
+        "Nantheera Anantrasirichai",
+        "Jui Chiu Chiang",
+        "Wen-Hsiao Peng",
+        "David Bull"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-27T22:14:31+00:00",
+      "link": "https://arxiv.org/pdf/2609.33969v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "volumetric video compression using Gaussian splatting and sparse anchors",
+      "llm_evidence_cn": "使用高斯泼溅和稀疏锚点的体积视频压缩",
+      "llm_evidence": "使用高斯泼溅和稀疏锚点的体积视频压缩",
+      "canonical_evidence": "使用高斯泼溅和稀疏锚点的体积视频压缩",
+      "llm_tldr_en": "Proposes an anchor-based Gaussian splatting method for efficient volumetric video compression and rendering.",
+      "llm_tldr_cn": "提出一种基于锚点的高斯泼溅方法，用于高效的体积视频压缩与渲染。",
+      "llm_tldr": "提出一种基于锚点的高斯泼溅方法，用于高效的体积视频压缩与渲染。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.32920v1",
+      "title": "Constant-Memory Differentiable Light Tracing",
+      "abstract": "Reverse-mode differentiation of Monte Carlo light transport naively requires storing a computation graph whose size grows with path length, making it impractical for deep or high-sample simulations. Path Replay Backpropagation (PRB) eliminates this memory complexity for viewpoint path tracing by reconstructing paths from their random seeds and performing a constant-memory backward replay. However, this formulation relies on a one-path-one-pixel property that does not hold for light tracing: a single light path can contribute to many pixels, and the corresponding per-vertex adjoints cannot be recovered during replay from constant-size state.   We demonstrate that this structural difference prevents a direct extension of PRB to light tracing in constant memory, and that buffered two-pass variants retain linear memory scaling with path length. We then introduce two constant-memory reverse-mode formulations for differentiable light tracing. The first, Reservoir Light Replay Backpropagation (ResLRB), compresses the set of per-path sensor connections into a single stochastically selected representative using weighted reservoir sampling, preserving a two-pass structure at the cost of increased gradient variance. The second, LRB-3-pass, introduces an additional traversal that accumulates downstream adjoint contributions prior to backpropagation, retaining all connections and matching naive reverse-mode AD in expectation.   Both methods support detached and attached formulations, including differentiation of sensor splat positions induced by geometric perturbations. We validate correctness against naive AD, characterize memory and runtime trade-offs, and demonstrate inverse rendering of specular caustics driven entirely by light tracing.",
+      "authors": [
+        "Linas Beresna",
+        "Eugene Fiume"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR"
+      ],
+      "published": "2026-09-26T20:13:35+00:00",
+      "link": "https://arxiv.org/pdf/2609.32920v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "differentiable light transport and path tracing for deep simulations",
+      "llm_evidence_cn": "用于深度模拟的可微分光线传输与路径追踪",
+      "llm_evidence": "用于深度模拟的可微分光线传输与路径追踪",
+      "canonical_evidence": "用于深度模拟的可微分光线传输与路径追踪",
+      "llm_tldr_en": "Develops a constant-memory differentiable light tracing method for complex light transport simulations.",
+      "llm_tldr_cn": "开发了一种用于复杂光传输模拟的常数内存可微光线追踪方法。",
+      "llm_tldr": "开发了一种用于复杂光传输模拟的常数内存可微光线追踪方法。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "deep learning for multiple scattering in volumes",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.28684v2",
+      "title": "M-plicits: Neural Implicit Surfaces via Nested Multiscale Residuals",
+      "abstract": "Encoding input coordinates with sinusoidal functions into multi-layer perceptrons (MLPs) has proven effective for implicit neural representations (INRs) of surfaces defined as zero-level sets. However, existing methods often struggle to balance training efficiency, rendering speed, and noise robustness: single-MLP approaches are expensive at inference, grid-based representations are fast but can limit surface smoothness and overfit input noise, and previous multiscale approaches frequently capture noise and produce artifacts due to hard spectral truncation. To address these limitations, we propose M-plicits, a multiscale framework that models surfaces as a residual sum of MLPs trained via a sequence of nested neighborhoods. Unlike existing residual approaches that rely on standard domain-wide sampling and require costly mesh extraction for visualization, our method strictly localizes supervision to narrow bands around the previous zero-level sets. This nested design naturally provides robustness against noisy input data: the coarse network acts as a low-pass filter that establishes a clean geometric prior, while subsequent residuals progressively refine the geometry without fitting to high-frequency artifacts. We further introduce a multiscale sphere-tracing algorithm and a GEMM-based analytical normal computation that bypasses auto-differentiation entirely, yielding high-fidelity real-time rendering. On Stanford and Thingi32, M-plicits achieves the best mean Chamfer distance in the coarse configuration and the best median Chamfer distance and IoU in the fine configuration, with substantially better noise robustness than iNGP, BACON, and IDF, while using an order of magnitude fewer parameters than grid-based baselines. Code, models, and data are available at https://github.com/dsilvavinicius/m-plicits.",
+      "authors": [
+        "Vinícius da Silva",
+        "Isabelle Melo",
+        "Matheus Bessa",
+        "Guilherme Schardong",
+        "Luiz Schirmer",
+        "André Araújo",
+        "Nuno Gonçalves",
+        "Hélio Lopes",
+        "Alberto Raposo",
+        "Luiz Velho",
+        "Tiago Novello"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR",
+        "cs.LG"
+      ],
+      "published": "2026-09-23T18:26:17+00:00",
+      "link": "https://arxiv.org/pdf/2609.28684v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural implicit representations and multiscale framework for rendering",
+      "llm_evidence_cn": "用于渲染的神经隐式表示和多尺度框架",
+      "llm_evidence": "用于渲染的神经隐式表示和多尺度框架",
+      "canonical_evidence": "用于渲染的神经隐式表示和多尺度框架",
+      "llm_tldr_en": "Introduces M-plicits, a multiscale MLP framework for efficient and robust neural implicit surface representation.",
+      "llm_tldr_cn": "提出M-plicits，一种多尺度MLP框架，用于高效且鲁棒的神经隐式表面表示。",
+      "llm_tldr": "提出M-plicits，一种多尺度MLP框架，用于高效且鲁棒的神经隐式表面表示。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.24158v1",
+      "title": "Relightable 3D Avatar Reconstruction with Semantic-Adaptive Motion-Illumination Responses",
+      "abstract": "Reconstructing expressive and relightable 3D head avatars from monocular videos remains challenging in computer vision, as it requires accurate modeling of both non-rigid facial motion and illumination-dependent appearance. Existing Gaussian avatar methods commonly rely on globally coupled representations, in which Gaussian primitives share a unified motion or illumination response model. Such uniform modeling neglects the distinct motion patterns and material/reflectance properties of different facial semantic regions, thereby limiting fine-grained animation accuracy and reducing relighting plausibility. To address this limitation, we propose SAMIRA, a 3D Gaussian avatar framework for semantic-adaptive motion-illumination response modeling. For motion response modeling, the Semantic-Adaptive Motion Response module rasterizes current-to-reference mesh displacements into a topology-consistent UV space and leverages facial semantics to route displacement features through semantic-specific modulators, predicting localized Gaussian geometric residuals beyond coarse mesh binding. For illumination response modeling, the Semantic-Adaptive Illumination Response module learns compact diffuse and specular response factors for each facial region, allowing Gaussians in different regions to adapt their illumination responses to novel environment lighting. These response factors are incorporated into deferred physically based shading, providing a lightweight approximation of semantic-dependent illumination effects. Extensive experiments on self-reenactment, cross-reenactment, and relighting demonstrate that SAMIRA improves both fine-grained expression reconstruction and relighting realism over existing methods.",
+      "authors": [
+        "Jiankuo Zhao",
+        "Xiangyu Zhu",
+        "Jijie Li",
+        "Baiqin Wang",
+        "Shukai Chen",
+        "Zhen Lei"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-21T06:18:27+00:00",
+      "link": "https://arxiv.org/pdf/2609.24158v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "3D Gaussian avatar framework for motion-illumination response",
+      "llm_evidence_cn": "用于运动-光照响应的3D高斯头像框架",
+      "llm_evidence": "用于运动-光照响应的3D高斯头像框架",
+      "canonical_evidence": "用于运动-光照响应的3D高斯头像框架",
+      "llm_tldr_en": "SAMIRA enables relightable 3D avatar reconstruction using semantic-adaptive Gaussian primitives.",
+      "llm_tldr_cn": "SAMIRA利用语义自适应高斯原语实现了可重光照的3D头像重建。",
+      "llm_tldr": "SAMIRA利用语义自适应高斯原语实现了可重光照的3D头像重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.30741v1",
+      "title": "From Mono to Stereo: Accelerating Binocular Gaussian Splatting via Reprojection and Selective Patching",
+      "abstract": "Binocular rendering requires two nearby views of the same scene and therefore repeats substantial visibility and shading work. We present a 2D Gaussian Splatting (2DGS) pipeline that fully renders a dominant-eye RGB image and an alpha-weighted depth proxy, reprojects that image to the affiliated eye, and repairs uncovered pixels. Small interior gaps are interpolated, whereas larger disoccluded regions are identified as regions of interest (ROIs) and selectively re-rendered. The depth proxy reuses the alpha-blending weights computed during dominant-eye rasterization, avoiding a separate depth-rendering pass. An adaptive ROI generator localizes the required updates using reprojected image boundaries and optional connected center-hole detection. On DTU, Tanks and Temples, and MipNeRF-360, the method reduces the measured time of a sequential two-pass binocular reference by 15.5\\% to 28.8\\% and peak GPU memory by 6\\% to 11\\%. The corresponding affiliated-eye quality degradation is at most 1.3 dB PSNR, 0.02 SSIM, and 0.02 LPIPS, representing a measurable trade-off that requires application-specific perceptual validation. These results establish a practical efficiency-quality trade-off for controlled static-scene stereo rendering and motivate future evaluation under continuous motion and on physical VR hardware.",
+      "authors": [
+        "Hongfei Zhu",
+        "Ling Zhou"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-25T03:11:46+00:00",
+      "link": "https://arxiv.org/pdf/2609.30741v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "accelerating binocular rendering via reprojection and selective patching in Gaussian Splatting",
+      "llm_evidence_cn": "通过重投影和选择性修补加速高斯泼溅中的双目渲染",
+      "llm_evidence": "通过重投影和选择性修补加速高斯泼溅中的双目渲染",
+      "canonical_evidence": "通过重投影和选择性修补加速高斯泼溅中的双目渲染",
+      "llm_tldr_en": "Accelerates binocular 2D Gaussian Splatting by reprojecting dominant-eye images and selectively re-rendering gaps.",
+      "llm_tldr_cn": "通过重投影主眼图像并选择性重新渲染缺口，加速双目2D高斯泼溅渲染。",
+      "llm_tldr": "通过重投影主眼图像并选择性重新渲染缺口，加速双目2D高斯泼溅渲染。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.24981v2",
+      "title": "GAE: Learning a Geometry-Native Latent Space for 3D-Consistent World Generation",
+      "abstract": "We present a compact geometry-native latent space as a shared foundation for perception and generation. Visual generators can produce photorealistic frames without preserving a consistent 3D scene. We argue that this is not only a modeling problem but also a representation problem: generators typically evolve appearance-centric latents, while perception models recover geometry in a semantically rich space that encodes cross-view structure. Rather than adding geometry as another output, we reparameterize a geometry foundation model's features into a compact latent space for generation. We realize this shift with the geometry-native autoencoder (GAE), whose latent is jointly decodable to appearance, depth, cameras, and point maps. With this state, a standard conditional flow supports diverse generation tasks. In controlled comparisons that hold the generator and training protocol fixed, replacing the latent with GAE improves both visual quality and independently measured 3D coherence: FVD falls by $12.7\\%$ and $23.1\\%$ on RealEstate10K and DL3DV, and camera-trajectory error is halved on RealEstate10K. Together, these results show that the latent space is central to geometry-consistent generation and can serve as a shared interface between perception and generation.",
+      "authors": [
+        "Jiahao Lu",
+        "Minghao Yin",
+        "Wenbo Hu",
+        "Hengyu Liu",
+        "Wang Zhao",
+        "Sai-Kit Yeung",
+        "Ying Shan",
+        "Yuan Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-21T17:56:25+00:00",
+      "link": "https://arxiv.org/pdf/2609.24981v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "geometry-native latent space for 3D-consistent generation and rendering",
+      "llm_evidence_cn": "用于3D一致性生成和渲染的几何原生潜空间",
+      "llm_evidence": "用于3D一致性生成和渲染的几何原生潜空间",
+      "canonical_evidence": "用于3D一致性生成和渲染的几何原生潜空间",
+      "llm_tldr_en": "Introduces a geometry-native autoencoder to create a shared latent space for 3D-consistent world generation.",
+      "llm_tldr_cn": "引入几何原生自编码器，为3D一致性世界生成创建共享的潜空间。",
+      "llm_tldr": "引入几何原生自编码器，为3D一致性世界生成创建共享的潜空间。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.30941v1",
+      "title": "Spackle: Completing Large View Single Image NVS with Adaptive Gaussians",
+      "abstract": "Single-image novel view synthesis (NVS) enables photorealistic rendering of un- observed viewpoints from a single input. Practical NVS systems require two key capabilities: robust reconstruction of occluded regions and high inference effi- ciency. While hybrid decoupled frameworks combining feedforward 3D Gaussian Splatting (3DGS) and diffusion models show promise for large-view-deviation NVS, they suffer from capacity competition: a fixed number of Gaussians forces resource shifts from visible to newly disoccluded areas, degrading original scene fidelity when the target view deviates significantly from the input. To address this, we propose Spackle, a lightweight residual learning framework that mit- igates capacity competition without sacrificing efficiency. Spackle operates in three stages: predicting base 3DGS attributes from given views, automatically identifying poorly reconstructed regions, and learning a residual 3DGS optimized exclusively for these areas. At inference, we combine the baseline and aug- mented Gaussians for NVS. We conduct comprehensive experiments and show that Spackle achieves state-of-the-art performance on large-view-deviation cases.",
+      "authors": [
+        "Xuanzhi Liu",
+        "Yuhe Zhou",
+        "Xinyi Wu",
+        "Zhenyao Wu",
+        "Jinghao Chen",
+        "Ruize Han",
+        "Song Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-09-25T07:56:03+00:00",
+      "link": "https://arxiv.org/pdf/2609.30941v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural volume rendering techniques using adaptive Gaussians for novel view synthesis",
+      "llm_evidence_cn": "使用自适应高斯的神经体渲染技术进行新视角合成",
+      "llm_evidence": "使用自适应高斯的神经体渲染技术进行新视角合成",
+      "canonical_evidence": "使用自适应高斯的神经体渲染技术进行新视角合成",
+      "llm_tldr_en": "Proposes a residual learning framework for single-image NVS using adaptive Gaussians to handle occlusions.",
+      "llm_tldr_cn": "提出一种残差学习框架，利用自适应高斯处理单图新视角合成中的遮挡问题。",
+      "llm_tldr": "提出一种残差学习框架，利用自适应高斯处理单图新视角合成中的遮挡问题。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.27600v1",
+      "title": "ARS-Avatar: Animatable and Relightable Surfel Avatars with Learnable Ambient Occlusion",
+      "abstract": "Creating animatable and relightable human avatars from multi-view images remains challenging, as pose-dependent deformation, materials, and light visibility are intrinsically coupled in images. In this paper, we present ARS-Avatar, a novel method using surfel representation for high-quality, animatable, and relightable human avatars from multi-view images captured under unknown illumination. We first extract deformation priors from the template mesh and leverage as additional details beyond driving poses to facilitate faithful estimation of surfel attributes and reconstruction of animatable avatar. To support relighting, the deferred shading is employed to estimate BRDF materials. We further introduce a differentiable screen-space ambient occlusion formulation that enables gradient-based optimization of body-part specific occlusion radii through finite differences, providing an efficient approximation of light visibility that can be jointly optimized with the avatar. Extensive experiments demonstrate that ARS-Avatar achieves high-fidelity appearance reconstruction and physically-based material estimation, while enabling realistic animation and relighting under novel poses and illuminations.",
+      "authors": [
+        "Jiateng Liu",
+        "Hao Gao",
+        "Junxin Sun",
+        "Mengqi Liu",
+        "Jiu-Cheng Xie",
+        "Jucheng Song",
+        "Feng Xu"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR"
+      ],
+      "published": "2026-09-23T09:15:36+00:00",
+      "link": "https://arxiv.org/pdf/2609.27600v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "neural rendering of animatable and relightable avatars using surfels",
+      "llm_evidence_cn": "使用surfel进行可动画和可重光照化的人体化身神经渲染",
+      "llm_evidence": "使用surfel进行可动画和可重光照化的人体化身神经渲染",
+      "canonical_evidence": "使用surfel进行可动画和可重光照化的人体化身神经渲染",
+      "llm_tldr_en": "Presents a surfel-based neural rendering method for creating animatable and relightable human avatars.",
+      "llm_tldr_cn": "提出了一种基于surfel的神经渲染方法，用于创建可动画和可重光照的人体化身。",
+      "llm_tldr": "提出了一种基于surfel的神经渲染方法，用于创建可动画和可重光照的人体化身。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.31198v1",
+      "title": "Light Field Primitive for Novel View Synthesis",
+      "abstract": "We present Light Field Primitives (LFP), a formulation for novel view synthesis that replaces the dense ray database with a compact set of differentiable primitives in the classical two-plane parameterization. Each primitive condenses a group of rays into one learned record, and its response to a query is governed by how closely that query belongs to the group. Rendering a camera ray then reduces to compositing all responses it elicits, and a scene can be optimized directly from posed images and rendered in real time with rays. Beyond its competitive performance on standard benchmarks, the main advantage of LFP is structural: its primitives reside directly in the 4D ray space, so optical and appearance effects that are already operations on the light field become behaviors of a single shared renderer. With minimal changes to that renderer, LFP supports multi-scale anti-aliasing, defocus deblurring with refocusing, rendering for fisheye cameras, and even transparent object reconstruction with ray refraction, matching specialized frameworks that devote substantial machinery to these effects.",
+      "authors": [
+        "Liang Chen",
+        "Jiahui Ning",
+        "Xun Jiang",
+        "Xing Xu",
+        "Jimmy Ren",
+        "Fenglei Fan",
+        "Heng Tao Shen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-25T12:35:00+00:00",
+      "link": "https://arxiv.org/pdf/2609.31198v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "differentiable primitives for novel view synthesis and ray compositing",
+      "llm_evidence_cn": "用于新视角合成和光线合成的可微基元",
+      "llm_evidence": "用于新视角合成和光线合成的可微基元",
+      "canonical_evidence": "用于新视角合成和光线合成的可微基元",
+      "llm_tldr_en": "Proposes Light Field Primitives for real-time novel view synthesis by compositing learned ray responses.",
+      "llm_tldr_cn": "提出光场基元，通过组合学习到的光线响应实现实时新视角合成。",
+      "llm_tldr": "提出光场基元，通过组合学习到的光线响应实现实时新视角合成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.32323v1",
+      "title": "FoundDSR: A Generalizable Foundation Model with Guided 2D Gaussian Splatting for Depth Super-Resolution",
+      "abstract": "We introduce FoundDSR, a generalizable foundation model for robust depth reconstruction across unseen data distributions using RGB-D pairs. FoundDSR begins with a guided 2D Gaussian Splatting strategy to model depth representations with Gaussian primitives. This strategy employs high-resolution RGB as prompts to optimize the Gaussian parameters, thereby encouraging each Gaussian primitive to anisotropically deform along high-frequency structural directions. The resulting Gaussian-upsampled representations are then mapped to high-resolution depth through an effective depth reconstruction branch. Furthermore, to mitigate training instability and bias toward dominant sources caused by distribution gaps in large-scale heterogeneous data, we introduce heterogeneous federated learning that allocates each data source to an independent client for local optimization and global aggregation. This design effectively endows FoundDSR with stable scalability to diverse and large-scale training data. Extensive zero-shot evaluations on synthetic, real-world, arbitrary-scale, and noisy conditions demonstrate that FoundDSR consistently outperforms existing state-of-the-art approaches, confirming its strong robustness and generalization to unknown scenes.",
+      "authors": [
+        "Zhengxue Wang",
+        "Zhiqiang Yan",
+        "Yuan Wu",
+        "Guangwei Gao",
+        "Xiang Li",
+        "Jian Yang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-26T07:35:05+00:00",
+      "link": "https://arxiv.org/pdf/2609.32323v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "guided 2D Gaussian Splatting for depth reconstruction",
+      "llm_evidence_cn": "用于深度重建的引导式2D高斯泼溅",
+      "llm_evidence": "用于深度重建的引导式2D高斯泼溅",
+      "canonical_evidence": "用于深度重建的引导式2D高斯泼溅",
+      "llm_tldr_en": "FoundDSR uses Gaussian Splatting as a representation for generalizable depth super-resolution.",
+      "llm_tldr_cn": "FoundDSR使用高斯泼溅作为表示法，实现可泛化的深度超分辨率重建。",
+      "llm_tldr": "FoundDSR使用高斯泼溅作为表示法，实现可泛化的深度超分辨率重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.32038v1",
+      "title": "ControlGS: Conditioning Neural Gaussians for Downstream-Processing-Aware XR Rendering",
+      "abstract": "Extended Reality (XR) users do not directly perceive the output of a rendering engine. Instead, rendered images pass through a post-processing pipeline and the physical display-optics path before reaching the eye. Critically, the exact downstream processing can vary significantly at run time, influenced by, for instance, camera pose and display power budget. Traditional 3DGS methods either implicitly assume that this downstream pipeline preserves image quality or cannot adapt to downstream processing changes. To bridge this gap, we present ControlGS, an XR Gaussian rendering pipeline that optimizes end-to-end visual quality. ControlGS models and integrates the entire downstream processing, between the rendering output and the human eye, into the optimization objective. To adapt to downstream processing at run time, ControlGS dynamically generates Gaussian primitives conditioned upon the downstream processing parameters. Experiments show that ControlGS consistently improves end-to-end post-optics XR quality across different neural Gaussian backbones and datasets, with minimal overhead. Code is available at https://horizon-lab.org/controlgs/.",
+      "authors": [
+        "Weikai Lin",
+        "Junjie Zhao",
+        "Carl Marshall",
+        "Sushant Kondguli",
+        "Yuhao Zhu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-09-25T22:10:42+00:00",
+      "link": "https://arxiv.org/pdf/2609.32038v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "optimizing neural Gaussian rendering for XR display pipelines",
+      "llm_evidence_cn": "针对XR显示流水线优化神经高斯渲染",
+      "llm_evidence": "针对XR显示流水线优化神经高斯渲染",
+      "canonical_evidence": "针对XR显示流水线优化神经高斯渲染",
+      "llm_tldr_en": "Presents an end-to-end Gaussian rendering pipeline that adapts to downstream XR processing for better visual quality.",
+      "llm_tldr_cn": "提出一种端到端高斯渲染流水线，可适应XR下游处理以提升视觉质量。",
+      "llm_tldr": "提出一种端到端高斯渲染流水线，可适应XR下游处理以提升视觉质量。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.33253v1",
+      "title": "VGGT-Diff: Visual Geometry Meets Diffusion for Sparse-View Novel View Synthesis",
+      "abstract": "We present VGGT-Diff, a geometry-routed multi-view diffusion model for sparse-view novel view synthesis. Existing novel view synthesis (NVS) methods face a fundamental trade-off: reconstruction-based approaches preserve observed geometry but struggle to synthesize unseen regions, while diffusion-based methods provide strong generative priors yet rely on implicit source-to-query correspondence. VGGT-Diff bridges these regimes by routing visual geometry latents from VGGT-Ω into a pretrained video diffusion model. Each visual token is associated with a 3D point and confidence, then transformed into query-aligned latent conditions through a confidence-aware Visual Geometry Router (VGR) that preserves front and back surface evidence. These conditions guide joint target-view denoising, while Point-Track Residual Consistency (PTRC) regularizes predicted-clean residuals along reliable 3D tracks, improving multi-view stability. We further introduce robust geometry conditioning, combining training-time regularization with inference-time guidance for improved robustness. Experiments show competitive or state-of-the-art performance across interpolation and extrapolation under different viewpoint difficulties. Our code is available at https://github.com/chenkangjie1123/VGGT-Diff.",
+      "authors": [
+        "Kangjie Chen",
+        "Xiangyu Li",
+        "Dongbin Zhang",
+        "Chaoda Zheng",
+        "Shijia Chen",
+        "Jinhao Deng",
+        "Hongbin Lin",
+        "Choo Sin Wai",
+        "Minqi Wang",
+        "Minghao Yang",
+        "Dake Zhong",
+        "Guorui Song",
+        "Yu Zhang",
+        "Xianming Liu",
+        "Boyang Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-09-27T05:57:25+00:00",
+      "link": "https://arxiv.org/pdf/2609.33253v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "geometry-routed diffusion for novel view synthesis",
+      "llm_evidence_cn": "用于新视角合成的几何路由扩散模型",
+      "llm_evidence": "用于新视角合成的几何路由扩散模型",
+      "canonical_evidence": "用于新视角合成的几何路由扩散模型",
+      "llm_tldr_en": "Combines visual geometry latents with diffusion models for high-quality sparse-view synthesis.",
+      "llm_tldr_cn": "将视觉几何潜变量与扩散模型结合，用于高质量的稀疏视角合成。",
+      "llm_tldr": "将视觉几何潜变量与扩散模型结合，用于高质量的稀疏视角合成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.32177v1",
+      "title": "Federated 3D Gaussian Splatting for Large-Scale Scene Reconstruction at Wireless Edge",
+      "abstract": "Three-dimensional (3D) Gaussian splatting (3D-GS) has emerged as a promising technique for large-scale scene reconstruction due to its high rendering efficiency and fidelity. However, the training of large-scale 3D-GS models at wireless edge faces various technical challenges including the limited communication, computation, and graphics processing unit (GPU) memory resources at edge devices, the structural inconsistency issue across local models hindering their effective aggregation, as well as privacy leakage risks associated with raw visual content and camera parameters. To address these challenges, this paper proposes a novel resource-efficient federated learning framework for efficiently training 3D-GS models of large scenes under severe resource constraints. First, we propose an on-device model lightweighting mechanism that adaptively selects and prunes Gaussian points to balance the rendering quality and training efficiency. In this mechanism, we quantitatively evaluate the importance of different Gaussian points at each device to facilitate the pruning, and use a novel importance-to-latency ratio criterion to determine the number of pruned Gaussian points under GPU memory and computation/communication latency constraints. Furthermore, we develop a 3D-GS model recovery mechanism that restores structural consistency across local 3D-GS models without accessing private camera parameters, enabling their effective aggregation towards a global model. Finally, extensive experiments show that our approach significantly accelerates convergence, maintains high rendering quality, and reduces training latency compared to state-of-the-art federated 3D-GS baselines.",
+      "authors": [
+        "Guanlin Wu",
+        "Chao Hu",
+        "Pu Chen",
+        "Juyong Zhang",
+        "Han Hu",
+        "Shuguang Cui",
+        "Jie Xu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.DC"
+      ],
+      "published": "2026-09-26T02:59:00+00:00",
+      "link": "https://arxiv.org/pdf/2609.32177v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "resource-efficient federated learning for training 3D Gaussian Splatting models",
+      "llm_evidence_cn": "用于训练3D高斯泼溅模型的资源高效联邦学习",
+      "llm_evidence": "用于训练3D高斯泼溅模型的资源高效联邦学习",
+      "canonical_evidence": "用于训练3D高斯泼溅模型的资源高效联邦学习",
+      "llm_tldr_en": "Proposes a federated learning framework to efficiently train large-scale 3D Gaussian Splatting models at the edge.",
+      "llm_tldr_cn": "提出一种联邦学习框架，用于在边缘端高效训练大规模3D高斯泼溅模型。",
+      "llm_tldr": "提出一种联邦学习框架，用于在边缘端高效训练大规模3D高斯泼溅模型。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
