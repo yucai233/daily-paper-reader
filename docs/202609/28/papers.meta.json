@@ -1,0 +1,51 @@
+{
+  "label": "2026-09-28",
+  "date": "2026-09-28",
+  "generated_at": "2026-09-29T00:00:05",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202609/28/2609.30658v1-diffusionshadow-diffusion-based-shadow-caching-for-neural-volume-rendering",
+      "section": "deep",
+      "title_en": "DiffusionShadow: Diffusion-based Shadow Caching for Neural Volume Rendering",
+      "authors": "Kai-Chen Tung, Qi Wu, David Bauer, Mengjiao Han, Silvio Rizzi, Kwan-Liu Ma",
+      "date": "2026-09-25",
+      "pdf": "https://arxiv.org/pdf/2609.30658v1",
+      "score": "10.0",
+      "evidence": "通过阴影缓存加速神经体渲染",
+      "tldr": "该论文提出了一种基于扩散模型的阴影缓存框架DiffusionShadow，旨在解决神经体积渲染中实时阴影计算的高昂成本问题。通过将预计算的阴影隐式神经表示（INR）压缩进扩散模型，该方法实现了对多种光照条件下阴影的高效重建，在保持高质量渲染效果的同时，显著降低了存储需求并提升了渲染速度。",
+      "tags": "query:q7",
+      "abstract_en": "Implicit neural representations (INRs) have gained momentum in scientific visualization due to their compactness and scalability to large datasets, making them well suited for integration with direct volume rendering (DVR). However, real-time volume rendering of INR with advanced illumination effects, such as shadows, remains computationally expensive, as evaluating shadow terms via ray marching is costly. Alternatively, precomputing and storing shadows for many lighting directions is prohibitive in both memory and storage. To address this, we introduce a diffusion-based shadow caching framework that compresses a vast set of pre-calculated shadow INRs into a single diffusion model. Rather than focusing on generalizing to unseen directions, our method effectively memorizes and reconstructs a dense set of pre-trained lighting conditions on the fly. We first encode a collection of shadow coefficient volumes as shadow INRs, and then train a diffusion model conditioned on lighting direction to predict the corresponding shadow INR weights at inference time. This design integrates directly with standard INR renderers without additional runtime sampling. Experiments show that our approach achieves faster rendering than traditional methods while bypassing the massive storage bloat of independent INRs, producing shadows that closely match most of the reference results.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/28/2609.29788v1-oreo-fidelity-alignment-in-3d-generation-via-on-the-fly-rendering-editing-optimization",
+      "section": "quick",
+      "title_en": "OREO: Fidelity Alignment in 3D Generation via On-the-fly Rendering-Editing Optimization",
+      "authors": "Zhiyuan Ma, Wenbo Hu, Wang Zhao, Pengfei Wang, Ying Shan, Lei Zhang",
+      "date": "2026-09-24",
+      "pdf": "https://arxiv.org/pdf/2609.29788v1",
+      "score": "6.0",
+      "evidence": "3D生成的即时渲染编辑优化",
+      "tldr": "OREO是一个旨在提升3D生成模型视觉保真度的对齐框架。针对现有模型生成资产真实感不足的问题，该方法通过动态优化循环，利用2D扩散模型对3D渲染图进行实时编辑，生成高质量伪目标，引导3D生成器在自我迭代中不断提升几何一致性与视觉细节，显著增强了生成资产的真实感。",
+      "tags": "query:q1",
+      "abstract_en": "Despite recent advancements in 3D generation, models often struggle to produce assets with high visual fidelity. To bridge this gap, we propose OREO, an alignment framework that enhances the realism of 3D generators by leveraging rich 2D diffusion priors. Instead of relying on static datasets, OREO establishes a dynamic optimization loop that produces on-the-fly edited renderings as 2D pseudo-targets. At its core, we introduce Reinforced Editing, which utilizes a 2D model to refine rendered views of the 3D output, enhancing their overall visual fidelity while preserving the underlying geometry, viewpoint, and content. These refined views serve as high-quality supervision targets, enabling the 3D generator to learn from its own generated samples and progressively improve its visual quality. Experiments demonstrate that OREO effectively improves upon pre-trained baselines, producing 3D assets with enhanced visual realism.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/28/2609.30393v1-lite-gs-oracle-efficient-next-best-view-selection-for-3d-gaussian-splatting",
+      "section": "quick",
+      "title_en": "LiTe-GS: Oracle-Efficient Next Best View Selection for 3D Gaussian Splatting",
+      "authors": "Vivek Pandey, Amirhossein Mollaei Khass, Nader Motee",
+      "date": "2026-09-24",
+      "pdf": "https://arxiv.org/pdf/2609.30393v1",
+      "score": "6.0",
+      "evidence": "3D高斯泼溅视图选择以实现高效训练",
+      "tldr": "LiTe-GS 是一种针对 3D 高斯溅射（3DGS）的高效下一视角选择方法。针对传统信息增益评估计算成本高的问题，该方法通过随机子集评估策略，在保证重建质量的同时，将视角选择的预言机复杂度降低至 O(Mlog(1/ε))，实现了计算效率与近似质量的平衡。",
+      "tags": "query:q1",
+      "abstract_en": "Selecting informative camera views is critical for efficient training and adaptive refinement in 3D Gaussian Splatting, where each observation significantly influences model parameters. However, information-driven view-selection strategies can require repeated evaluations of expensive information-gain oracles as the number of candidate views increases. We propose LiTe-GS, an oracle-efficient method for next best view selection in 3D Gaussian Splatting. LiTe-GS reduces the number of information-oracle evaluations by performing randomized subset evaluation of candidate views rather than exhaustively scoring the full candidate pool. The resulting approach achieves expected $O(M\\log(1/ε))$ oracle complexity with respect to the number of candidate views $M$, independent of the selection cardinality $K$, while providing an explicit trade-off between oracle efficiency and approximation quality through $ε$. We provide theoretical guarantees on oracle complexity and approximation performance under the proposed selection scheme. Experiments on Blender and Mip-NeRF 360 demonstrate that LiTe-GS maintains reconstruction quality comparable to Fisher-information-based baselines while substantially reducing the number of Fisher-oracle evaluations across different acquisition settings.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -6,29 +6,31 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-09-27
-- 运行时间：2026-09-27 22:18:47 UTC
+- 最新运行日期：2026-09-28
+- 运行时间：2026-09-29 00:00:01 UTC
 - 运行状态：成功
-- 本次总论文数：2
-- 精读区：0
+- 本次总论文数：3
+- 精读区：1
 - 速读区：2
 
 ### 今日简报（AI）
-今日聚焦 3D 视觉前沿，涵盖八叉树残差网络实时建图与高斯溅射压缩技术。
-重点关注 OREN-X 在多模态实时建图中的高效表现，以及 3D 高斯溅射的实用化压缩方案。
-建议关注实时建图与模型轻量化趋势，为后续三维重建应用积累技术储备。
-- 详情：[/202609/27/README](/202609/27/README)
+今日聚焦 3D 渲染前沿，重点解析 DiffusionShadow 如何通过扩散模型实现高效阴影缓存。
+核心推荐关注 DiffusionShadow 在神经体积渲染中的阴影优化表现，以及 OREO 与 LiTe-GS 在 3D 生成与视角选择上的新思路。
+建议优先精读 DiffusionShadow 论文，深入理解其技术细节，其余两篇可根据研究兴趣进行针对性速读。
+- 详情：[/202609/28/README](/202609/28/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [DiffusionShadow: Diffusion-based Shadow Caching for Neural Volume Rendering](/202609/28/2609.30658v1-diffusionshadow-diffusion-based-shadow-caching-for-neural-volume-rendering)  
+   标签：评分：10.0/10、query:q7
+   evidence：通过阴影缓存加速神经体渲染
 
 ### 速读区论文标签
-1. [OREN-X: Octree Residual Network for Real-Time Multi-Modal Mapping](/202609/27/2609.29157v1-oren-x-octree-residual-network-for-real-time-multi-modal-mapping)  
-   标签：评分：7.0/10、query:q1
-   evidence：基于八叉树的辐射场与几何渲染共享结构
-2. [Towards Practical Compression of 3D Gaussian Splatting](/202609/27/2609.30245v1-towards-practical-compression-of-3d-gaussian-splatting)  
-   标签：评分：6.0/10、query:q7
-   evidence：3D高斯泼溅压缩以实现高效渲染
+1. [OREO: Fidelity Alignment in 3D Generation via On-the-fly Rendering-Editing Optimization](/202609/28/2609.29788v1-oreo-fidelity-alignment-in-3d-generation-via-on-the-fly-rendering-editing-optimization)  
+   标签：评分：6.0/10、query:q1
+   evidence：3D生成的即时渲染编辑优化
+2. [LiTe-GS: Oracle-Efficient Next Best View Selection for 3D Gaussian Splatting](/202609/28/2609.30393v1-lite-gs-oracle-efficient-next-best-view-selection-for-3d-gaussian-splatting)  
+   标签：评分：6.0/10、query:q1
+   evidence：3D高斯泼溅视图选择以实现高效训练
 
 
 <div class="dpr-home-promo-card">
