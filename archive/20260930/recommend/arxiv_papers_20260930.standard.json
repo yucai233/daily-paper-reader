@@ -1,0 +1,282 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-30T22:58:29.982479+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.32711v1",
+      "title": "ProDyGS: Dynamic Gaussian Splatting from a Single Static Monocular Camera",
+      "abstract": "We present ProDyGS, a novel dynamic 3D Gaussian Splatting framework for high-quality novel view synthesis from videos captured by a single static camera. While existing methods rely on multi-view setups or significant camera motion for geometric constraints, our approach addresses the challenging scenario where multi-view supervision is completely absent. We overcome this limitation by generating synthetic multi-view supervision through depth-guided proxy image synthesis. Specifically, we estimate temporally consistent depth maps using foundational monocular depth networks, then construct 3D Gaussian representations that generate proxy images from arbitrary viewpoints. A deformation network learns temporal dynamics by warping canonical Gaussians using this augmented supervision. Experiments on the DyNeRF dataset demonstrate that our method achieves state-of-the-art performance while requiring only monocular depth estimation as external supervision, outperforming approaches that rely on stronger priors such as scene flow.",
+      "authors": [
+        "Ugo Leone Cavalcanti",
+        "Fabio Tosi",
+        "Matteo Poggi",
+        "Andrea Conti",
+        "Vladimir Zlokolica",
+        "Valerio Cambareri",
+        "Stefano Mattoccia"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-26T15:20:54+00:00",
+      "link": "https://arxiv.org/pdf/2609.32711v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "dynamic 3D Gaussian Splatting for novel view synthesis",
+      "llm_evidence_cn": "用于新视角合成的动态3D高斯泼溅",
+      "llm_evidence": "用于新视角合成的动态3D高斯泼溅",
+      "canonical_evidence": "用于新视角合成的动态3D高斯泼溅",
+      "llm_tldr_en": "Enables dynamic scene synthesis from a single camera using depth-guided proxy images and Gaussian Splatting.",
+      "llm_tldr_cn": "利用深度引导的代理图像和高斯泼溅实现单摄像头的动态场景合成。",
+      "llm_tldr": "利用深度引导的代理图像和高斯泼溅实现单摄像头的动态场景合成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.34579v1",
+      "title": "GenNVS: Geometry-enhanced Novel View Synthesis via Disentangled 3D Prior",
+      "abstract": "Single-image novel view synthesis remains challenging because the underlying 3D geometry is highly ambiguous. Recent diffusion-based approaches produce plausible results, but they often struggle to preserve the geometric structure and spatial coherence of foreground objects. We present GenNVS, a framework for geometry-enhanced novel view synthesis via a disentangled 3D prior. Specifically, GenNVS models foreground objects and the background with 3D Gaussian Splatting and aligns them through a coarse-to-fine geometric optimization process to form a unified 3D scene. This scene conditions a video diffusion model through the proposed Dual-Stream Masking mechanism, which guides synthesis by jointly exploiting rendered validity masks and geometry-aware warping. Experimental results show that GenNVS performs favorably against recent methods in both visual quality and geometric accuracy, while naturally supporting flexible scene editing.",
+      "authors": [
+        "Yajiao Xiong",
+        "Youyu Luan",
+        "Xiaoyu Zhou",
+        "Yongtao Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-09-28T08:23:48+00:00",
+      "link": "https://arxiv.org/pdf/2609.34579v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Geometry-enhanced novel view synthesis using 3D Gaussian Splatting",
+      "llm_evidence_cn": "使用3D高斯泼溅进行几何增强的新视角合成",
+      "llm_evidence": "使用3D高斯泼溅进行几何增强的新视角合成",
+      "canonical_evidence": "使用3D高斯泼溅进行几何增强的新视角合成",
+      "llm_tldr_en": "Combines 3D Gaussian Splatting with diffusion models for geometry-aware novel view synthesis.",
+      "llm_tldr_cn": "将3D高斯泼溅与扩散模型结合，实现几何感知的新视角合成。",
+      "llm_tldr": "将3D高斯泼溅与扩散模型结合，实现几何感知的新视角合成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.33330v1",
+      "title": "FeCoSplat: Feedback-Guided Compression for Feed-Forward 3D Gaussian Splatting",
+      "abstract": "Feed-forward 3D Gaussian Splatting (3DGS) enables efficient novel-view synthesis from sparse multi-view images, yet its representations remain costly to store and transmit. Existing approaches compress either the input images, incurring heavy receiver-side reconstruction, or the reconstructed Gaussian primitives, which are difficult to compress due to their heterogeneous and irregular attributes. We instead compress compact intermediate features, providing a better balance between compression efficiency and receiver-side complexity. Based on this paradigm, we propose FeCoSplat, a feedback-guided compression framework for feed-forward 3DGS. FeCoSplat first compresses multi-view features to obtain an intermediate 3DGS, whose rendered views are used as feedback to guide a second-stage compression for further refinement. The resulting bitstreams are decoded into a compact implicit state, from which the final Gaussian primitives are reconstructed with a lightweight predictor. Experiments demonstrate that FeCoSplat achieves favorable rate--distortion performance, particularly at low bitrates, while requiring only 3.45M parameters for receiver-side Gaussian reconstruction. Code will be released soon.",
+      "authors": [
+        "Yuxuan Li",
+        "Yihang Chen",
+        "Yufeng Zhang",
+        "Jianfei Cai",
+        "Weiyao Lin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-27T08:01:29+00:00",
+      "link": "https://arxiv.org/pdf/2609.33330v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Compression for feed-forward 3D Gaussian Splatting rendering",
+      "llm_evidence_cn": "前馈3D高斯泼溅渲染的压缩技术",
+      "llm_evidence": "前馈3D高斯泼溅渲染的压缩技术",
+      "canonical_evidence": "前馈3D高斯泼溅渲染的压缩技术",
+      "llm_tldr_en": "Proposes a feedback-guided compression framework for efficient 3D Gaussian Splatting and novel-view synthesis.",
+      "llm_tldr_cn": "提出一种反馈引导的压缩框架，用于高效的3D高斯泼溅和新视角合成。",
+      "llm_tldr": "提出一种反馈引导的压缩框架，用于高效的3D高斯泼溅和新视角合成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.34367v1",
+      "title": "Rate-Distortion Adaptive Primitive Selection for Omnidirectional Gaussian Splatting",
+      "abstract": "Learned image codecs (LICs) achieve high reconstruction quality, but their decoding speed is often insufficient for immersive virtual reality (VR). Gaussian splatting (GS) codecs render much faster, yet still lag in reconstruction quality and typically decide primitive allocation without considering the coding cost of each primitive. We introduce OIC-GS, an omnidirectional GS codec with a new hierarchical HEALPix primitive grid representation. Gaussian primitives are anchored at predefined spherical locations, eliminating explicit coordinate coding. Finer levels refine their coarser ancestors, naturally supporting coarse-to-fine reconstruction and layered transmission. The predefined grid also enables efficient viewport decoding by selecting only view-relevant primitives. We further introduce a lightweight entropy model for quantized primitives and optimize the codec under a spherical rate-distortion objective. Primitives with insufficient rate-distortion benefit are automatically removed when their quantized opacity becomes zero, allowing OIC-GS to adapt both primitive density and level of detail without a fixed primitive budget. A single bitstream supports full-sphere, viewport-dependent, and progressive decoding. The first viewport reaches final quality after decoding only 52% of the bitstream, and is then rendered at 1,270 FPS. On a 100-image omnidirectional benchmark, OIC-GS outperforms all evaluated GS codecs, reducing WS-PSNR BD-rate by 49.6% over GaussianImage++ and 68.6% over SGI, which uses a learned entropy model.",
+      "authors": [
+        "Yulong Cheng",
+        "Youneng Bao",
+        "Junfeng Zhou",
+        "Mu Li",
+        "Jie Wen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-28T05:44:08+00:00",
+      "link": "https://arxiv.org/pdf/2609.34367v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural rendering with Gaussian primitives and hierarchical grid representation",
+      "llm_evidence_cn": "使用高斯原语和分层网格表示的神经渲染",
+      "llm_evidence": "使用高斯原语和分层网格表示的神经渲染",
+      "canonical_evidence": "使用高斯原语和分层网格表示的神经渲染",
+      "llm_tldr_en": "Introduces an omnidirectional Gaussian Splatting codec using a hierarchical grid for efficient VR rendering.",
+      "llm_tldr_cn": "引入了一种使用分层网格的全向高斯泼溅编解码器，用于高效的VR渲染。",
+      "llm_tldr": "引入了一种使用分层网格的全向高斯泼溅编解码器，用于高效的VR渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.34579v2",
+      "title": "GenNVS: Geometry-enhanced Novel View Synthesis via Disentangled 3D Prior",
+      "abstract": "Single-image novel view synthesis remains challenging because the underlying 3D geometry is highly ambiguous. Recent diffusion-based approaches produce plausible results, but they often struggle to preserve the geometric structure and spatial coherence of foreground objects. We present GenNVS, a framework for geometry-enhanced novel view synthesis via a disentangled 3D prior. Specifically, GenNVS models foreground objects and the background with 3D Gaussian Splatting and aligns them through a coarse-to-fine geometric optimization process to form a unified 3D scene. This scene conditions a video diffusion model through the proposed Dual-Stream Masking mechanism, which guides synthesis by jointly exploiting rendered validity masks and geometry-aware warping. Experimental results show that GenNVS performs favorably against recent methods in both visual quality and geometric accuracy, while naturally supporting flexible scene editing.",
+      "authors": [
+        "Yajiao Xiong",
+        "Youyu Luan",
+        "Xiaoyu Zhou",
+        "Yongtao Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-09-28T08:23:48+00:00",
+      "link": "https://arxiv.org/pdf/2609.34579v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "modeling scenes with 3D Gaussian Splatting for novel view synthesis",
+      "llm_evidence_cn": "使用3D高斯喷溅建模场景以进行新视角合成",
+      "llm_evidence": "使用3D高斯喷溅建模场景以进行新视角合成",
+      "canonical_evidence": "使用3D高斯喷溅建模场景以进行新视角合成",
+      "llm_tldr_en": "Combines 3D Gaussian Splatting with diffusion models for geometry-enhanced novel view synthesis.",
+      "llm_tldr_cn": "结合3D高斯喷溅与扩散模型，实现几何增强的新视角合成。",
+      "llm_tldr": "结合3D高斯喷溅与扩散模型，实现几何增强的新视角合成。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.34733v1",
+      "title": "SurgGMF: Fully Causal Gaussian Motion Forecasting for Anticipatory Surgical Scene Rendering",
+      "abstract": "Dynamic surgical scene modeling is essential for robotic perception, simulation, and decision support. Although existing neural rendering methods enable efficient reconstruction and rendering of deformable surgical scenes, they remain primarily focused on observed-frame reconstruction rather than forecasting future scene states. To this end, we present SurgGMF, a fully causal Gaussian motion forecasting framework for anticipatory surgical scene rendering. Rather than predicting future RGB images directly, SurgGMF forecasts future Gaussian motion states represented by position, scale, and rotation residuals (X/S/R) from historical Gaussian motion fields. To prevent target leakage, we introduce a full-causal-last rendering protocol, where future Gaussian states are rendered without accessing target-frame Gaussian attributes while preserving causal appearance propagation. We evaluate SurgGMF on 12 EndoNeRF and StereoMIS video slices using neural temporal learners and classical dynamics baselines under a unified forecasting protocol. Learned Gaussian motion forecasting consistently outperforms classical dynamics baselines in render space, demonstrating gains beyond hand-crafted state extrapolation. Latency analysis further reveals an accuracy--efficiency trade-off: under the current implementations, TKAN achieves the highest accuracy, whereas GRU and LSTM provide more favorable module-level latency profiles. These results establish SurgGMF as a reproducible framework for causal Gaussian motion forecasting and advance surgical Gaussian representations from retrospective reconstruction toward predictive scene modeling.",
+      "authors": [
+        "Jingqian Sun",
+        "Yichao Tang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-28T09:31:12+00:00",
+      "link": "https://arxiv.org/pdf/2609.34733v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural rendering methods for deformable surgical scenes using Gaussian motion fields",
+      "llm_evidence_cn": "使用高斯运动场的变形手术场景神经渲染方法",
+      "llm_evidence": "使用高斯运动场的变形手术场景神经渲染方法",
+      "canonical_evidence": "使用高斯运动场的变形手术场景神经渲染方法",
+      "llm_tldr_en": "Forecasts future Gaussian motion states for anticipatory neural rendering of dynamic surgical scenes.",
+      "llm_tldr_cn": "预测未来高斯运动状态，用于动态手术场景的前瞻性神经渲染。",
+      "llm_tldr": "预测未来高斯运动状态，用于动态手术场景的前瞻性神经渲染。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.34900v1",
+      "title": "FILIGREE3D: Scaling Sparse Latent Flow Matching for Ultra-High-Resolution Image-to-3D Generation",
+      "abstract": "Scaling image-to-3D generation to ultra-high resolutions requires controlling rapidly growing computational costs without sacrificing fine geometric detail. We present \\textbf{Filigree3D}, a sparse latent flow-matching framework that generates 3D geometry from a single image at voxel resolutions up to $2048^3$, with straightforward extensibility to $4096^3$. To make training tractable, we introduce Structure-Aware Sparse Scaling, which combines spatial bounding with alternating local-global attention to constrain token growth while preserving both fine-scale details and long-range structural context. To enhance detail reconstruction, we curate training samples based on their high-resolution geometric gains and inject multi-scale image features into a sparse 3D DiT, effectively coupling structural semantics with fine-grained visual cues. Furthermore, a visibility-aware voxel regularization strategy improves robustness against sparse perturbations and facilitates the completion of unobserved geometry. Under our default configuration, Filigree3D maintains peak GPU memory consumption within practical limits for contemporary hardware, enabling the generation of highly intricate 3D geometry in approximately one minute. Extensive experiments demonstrate that our method yields substantial improvements in overall geometric fidelity and fine-detail preservation compared to existing baselines, validating practical, detail-preserving 3D generation at unprecedented resolutions.",
+      "authors": [
+        "Hongjie Li",
+        "Xinran Yang",
+        "Xiuchao Wu",
+        "Jiangjing Lyu",
+        "Chengfei Lv"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-28T11:05:49+00:00",
+      "link": "https://arxiv.org/pdf/2609.34900v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Sparse latent flow matching for high-resolution 3D voxel generation",
+      "llm_evidence_cn": "用于高分辨率3D体素生成的稀疏潜流匹配",
+      "llm_evidence": "用于高分辨率3D体素生成的稀疏潜流匹配",
+      "canonical_evidence": "用于高分辨率3D体素生成的稀疏潜流匹配",
+      "llm_tldr_en": "Generates ultra-high-resolution 3D geometry using a sparse latent flow-matching framework.",
+      "llm_tldr_cn": "使用稀疏潜流匹配框架生成超高分辨率的3D几何体素。",
+      "llm_tldr": "使用稀疏潜流匹配框架生成超高分辨率的3D几何体素。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

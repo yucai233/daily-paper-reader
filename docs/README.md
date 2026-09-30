@@ -6,61 +6,44 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-09-29
-- 运行时间：2026-09-29 23:26:16 UTC
+- 最新运行日期：2026-09-30
+- 运行时间：2026-09-30 22:58:42 UTC
 - 运行状态：成功
-- 本次总论文数：13
-- 精读区：2
-- 速读区：11
+- 本次总论文数：7
+- 精读区：0
+- 速读区：7
 
 ### 今日简报（AI）
-今日精选 13 篇图形学前沿论文，聚焦光线追踪与高斯溅射技术的最新突破。
-重点关注恒定内存光线追踪算法及基于稀疏 4D 锚点的高斯溅射视频压缩方案，展现了渲染效率与存储优化的核心进展。
-建议关注 3D 视觉与实时渲染的结合趋势，通过精读两篇高分论文快速掌握行业技术风向。
-- 详情：[/202609/29/README](/202609/29/README)
+今日聚焦 3D 高斯泼溅（3DGS）前沿，涵盖动态建模、压缩优化及全景适配三大技术突破。
+重点关注 FeCoSplat 的反馈引导压缩与 ProDyGS 的单目动态重建方案，展现了高效渲染与动态捕捉的最新进展。
+建议关注 3DGS 在轻量化与动态场景下的应用趋势，通过对比不同压缩策略理解其在实时渲染中的性能平衡。
+- 详情：[/202609/30/README](/202609/30/README)
 
 ### 精读区论文标签
-1. [Constant-Memory Differentiable Light Tracing](/202609/29/2609.32920v1-constant-memory-differentiable-light-tracing)  
-   标签：评分：8.0/10、query:q4
-   evidence：用于深度模拟的可微分光线传输与路径追踪
-2. [Gaussian Splatting-based Volumetric Video Compression with Sparse 4D Anchors](/202609/29/2609.33969v1-gaussian-splatting-based-volumetric-video-compression-with-sparse-4d-anchors)  
-   标签：评分：8.0/10、query:profile-1
-   evidence：使用高斯泼溅和稀疏锚点的体积视频压缩
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [M-plicits: Neural Implicit Surfaces via Nested Multiscale Residuals](/202609/29/2609.28684v2-m-plicits-neural-implicit-surfaces-via-nested-multiscale-residuals)  
+1. [ProDyGS: Dynamic Gaussian Splatting from a Single Static Monocular Camera](/202609/30/2609.32711v1-prodygs-dynamic-gaussian-splatting-from-a-single-static-monocular-camera)  
    标签：评分：7.0/10、query:q1
-   evidence：用于渲染的神经隐式表示和多尺度框架
-2. [From Mono to Stereo: Accelerating Binocular Gaussian Splatting via Reprojection and Selective Patching](/202609/29/2609.30741v1-from-mono-to-stereo-accelerating-binocular-gaussian-splatting-via-reprojection-and-selective-patching)  
-   标签：评分：7.0/10、query:q7
-   evidence：通过重投影和选择性修补加速高斯泼溅中的双目渲染
-3. [Spackle: Completing Large View Single Image NVS with Adaptive Gaussians](/202609/29/2609.30941v1-spackle-completing-large-view-single-image-nvs-with-adaptive-gaussians)  
+   evidence：用于新视角合成的动态3D高斯泼溅
+2. [FeCoSplat: Feedback-Guided Compression for Feed-Forward 3D Gaussian Splatting](/202609/30/2609.33330v1-fecosplat-feedback-guided-compression-for-feed-forward-3d-gaussian-splatting)  
    标签：评分：7.0/10、query:q1
-   evidence：使用自适应高斯的神经体渲染技术进行新视角合成
-4. [Light Field Primitive for Novel View Synthesis](/202609/29/2609.31198v1-light-field-primitive-for-novel-view-synthesis)  
+   evidence：前馈3D高斯泼溅渲染的压缩技术
+3. [Rate-Distortion Adaptive Primitive Selection for Omnidirectional Gaussian Splatting](/202609/30/2609.34367v1-rate-distortion-adaptive-primitive-selection-for-omnidirectional-gaussian-splatting)  
    标签：评分：7.0/10、query:q1
-   evidence：用于新视角合成和光线合成的可微基元
-5. [ControlGS: Conditioning Neural Gaussians for Downstream-Processing-Aware XR Rendering](/202609/29/2609.32038v1-controlgs-conditioning-neural-gaussians-for-downstream-processing-aware-xr-rendering)  
-   标签：评分：7.0/10、query:q7
-   evidence：针对XR显示流水线优化神经高斯渲染
-6. [Federated 3D Gaussian Splatting for Large-Scale Scene Reconstruction at Wireless Edge](/202609/29/2609.32177v1-federated-3d-gaussian-splatting-for-large-scale-scene-reconstruction-at-wireless-edge)  
-   标签：评分：7.0/10、query:q7
-   evidence：用于训练3D高斯泼溅模型的资源高效联邦学习
-7. [Relightable 3D Avatar Reconstruction with Semantic-Adaptive Motion-Illumination Responses](/202609/29/2609.24158v1-relightable-3d-avatar-reconstruction-with-semantic-adaptive-motion-illumination-responses)  
+   evidence：使用高斯原语和分层网格表示的神经渲染
+4. [GenNVS: Geometry-enhanced Novel View Synthesis via Disentangled 3D Prior](/202609/30/2609.34579v2-gennvs-geometry-enhanced-novel-view-synthesis-via-disentangled-3d-prior)  
+   标签：评分：7.0/10、query:q1
+   evidence：使用3D高斯喷溅建模场景以进行新视角合成
+5. [SurgGMF: Fully Causal Gaussian Motion Forecasting for Anticipatory Surgical Scene Rendering](/202609/30/2609.34733v1-surggmf-fully-causal-gaussian-motion-forecasting-for-anticipatory-surgical-scene-rendering)  
+   标签：评分：7.0/10、query:q1
+   evidence：使用高斯运动场的变形手术场景神经渲染方法
+6. [FILIGREE3D: Scaling Sparse Latent Flow Matching for Ultra-High-Resolution Image-to-3D Generation](/202609/30/2609.34900v1-filigree3d-scaling-sparse-latent-flow-matching-for-ultra-high-resolution-image-to-3d-generation)  
+   标签：评分：7.0/10、query:q1
+   evidence：用于高分辨率3D体素生成的稀疏潜流匹配
+7. [GenNVS: Geometry-enhanced Novel View Synthesis via Disentangled 3D Prior](/202609/30/2609.34579v1-gennvs-geometry-enhanced-novel-view-synthesis-via-disentangled-3d-prior)  
    标签：评分：6.0/10、query:q1
-   evidence：用于运动-光照响应的3D高斯头像框架
-8. [GAE: Learning a Geometry-Native Latent Space for 3D-Consistent World Generation](/202609/29/2609.24981v2-gae-learning-a-geometry-native-latent-space-for-3d-consistent-world-generation)  
-   标签：评分：6.0/10、query:q1
-   evidence：用于3D一致性生成和渲染的几何原生潜空间
-9. [ARS-Avatar: Animatable and Relightable Surfel Avatars with Learnable Ambient Occlusion](/202609/29/2609.27600v1-ars-avatar-animatable-and-relightable-surfel-avatars-with-learnable-ambient-occlusion)  
-   标签：评分：6.0/10、query:q1
-   evidence：使用surfel进行可动画和可重光照化的人体化身神经渲染
-10. [FoundDSR: A Generalizable Foundation Model with Guided 2D Gaussian Splatting for Depth Super-Resolution](/202609/29/2609.32323v1-founddsr-a-generalizable-foundation-model-with-guided-2d-gaussian-splatting-for-depth-super-resolution)  
-   标签：评分：6.0/10、query:q1
-   evidence：用于深度重建的引导式2D高斯泼溅
-11. [VGGT-Diff: Visual Geometry Meets Diffusion for Sparse-View Novel View Synthesis](/202609/29/2609.33253v1-vggt-diff-visual-geometry-meets-diffusion-for-sparse-view-novel-view-synthesis)  
-   标签：评分：6.0/10、query:q1
-   evidence：用于新视角合成的几何路由扩散模型
+   evidence：使用3D高斯泼溅进行几何增强的新视角合成
 
 
 <div class="dpr-home-promo-card">
