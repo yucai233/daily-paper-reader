@@ -1,0 +1,37 @@
+{
+  "label": "2026-10-01",
+  "date": "2026-10-01",
+  "generated_at": "2026-10-01T23:43:52",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202610/01/2609.35612v1-remote-sensing-sparse-view-3d-gaussian-splatting-via-depth-image-based-rendering",
+      "section": "quick",
+      "title_en": "Remote Sensing Sparse-View 3D Gaussian Splatting via Depth Image-Based Rendering",
+      "authors": "Jiaming Kang, Zhengxia Zou, Zhenwei Shi",
+      "date": "2026-09-28",
+      "pdf": "https://arxiv.org/pdf/2609.35612v1",
+      "score": "7.0",
+      "evidence": "用于新视角合成的神经高斯泼溅框架",
+      "tldr": "针对遥感图像稀疏视角下三维重建易过拟合及几何模糊的问题，本文提出了DIBR-GS框架。该方法通过结合深度图像渲染（DIBR）生成伪视角进行跨视角监督，利用单目深度先验初始化几何结构，并引入高度约束的锚点生长策略，显著提升了稀疏视角下的重建质量与几何一致性。",
+      "tags": "query:q1",
+      "abstract_en": "Remote sensing novel view synthesis under sparse observations remains challenging due to insufficient geometric constraints and limited cross-view supervision. Existing Neural Radiance Fields (NeRF) and 3D Gaussian Splatting (3DGS) methods are prone to overfitting and face challenges of depth ambiguities, missing cross-view information, and insufficient constraints in under-observed regions. To address these challenges, we propose DIBR-GS, a neural Gaussian Splatting framework that exploits Depth Image-Based Rendering (DIBR) to generate pseudo views for cross-view consistency supervision. Specifically, reliable geometric initialization is constructed by aligning monocular depth priors with sparse SfM reconstruction, and cross-view appearance priors are incorporated into neural Gaussian representations to enhance appearance modeling under sparse observations. Furthermore, we introduce a progressive DIBR-based pseudo-view supervision strategy to provide additional geometric and appearance constraints, enabling more complete reconstruction of weakly observed regions. In addition, a height-constrained anchor growth strategy is designed to suppress unreasonable Gaussian expansion. Experiments demonstrate that the proposed method achieves superior performance over existing approaches when training with only 3 input views. Compared with the previous best-performing method, it improves PSNR by 6.83 dB, with relative gains of 14\\% in SSIM and 60\\% in LPIPS, while maintaining competitive computational efficiency. Our code is available at https://github.com/kanehub/DIBR-GS",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202610/01/2609.34176v1-agile-gs-anchor-guided-fast-next-best-view-selection-for-active-3d-gaussian-splatting",
+      "section": "quick",
+      "title_en": "AGILE-GS: Anchor-Guided Fast Next-Best-View Selection for Active 3D Gaussian Splatting",
+      "authors": "Amirhossein Mollaei Khass, Nader Motee",
+      "date": "2026-09-28",
+      "pdf": "https://arxiv.org/pdf/2609.34176v1",
+      "score": "6.0",
+      "evidence": "主动3D高斯泼溅与视角选择",
+      "tldr": "针对3D高斯溅射（3DGS）中下一最佳视角（NBV）选择计算成本高的问题，本文提出了AGILE-GS方法。该方法通过黎曼梯度上升优化虚拟锚点以定位模型不确定性区域，并利用贪婪岭杠杆策略从候选池中筛选出非冗余视角，从而在无需渲染候选视角的情况下实现高效的视角选择，显著降低了计算延迟。",
+      "tags": "query:q1",
+      "abstract_en": "Radiance fields need hundreds of views, and their placement matters as much as their number. Next-best-view (NBV) selection for 3D Gaussian Splatting (3DGS) usually scores every candidate in the pool and keeps one. Searching for information and choosing a camera, however, are separable problems. We present AGILE-GS, an anchor-guided NBV method that separates the two. A virtual anchor pose is optimized on SE(3) by Riemannian gradient ascent on expected information gain. It need not be reachable or in the pool; it marks where the model is most uncertain. Candidates are scored against the anchor's viewing geometry, and a greedy ridge-leverage step distills the pool into a small, non-redundant shortlist without rendering any candidate. The shortlist can be used in two ways. AGILE-GS takes the first view on it as the next view, so no Fisher information is computed for any candidate. AGILE-GS+ computes the Fisher information gain of each shortlisted view and picks the best, so the expensive evaluation runs on a handful of views rather than the whole pool. On standard benchmarks and in closed-loop embodied acquisition, both match or exceed existing baselines while cutting selection latency by one to two orders of magnitude.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

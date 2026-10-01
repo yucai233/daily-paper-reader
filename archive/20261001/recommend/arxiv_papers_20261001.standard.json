@@ -1,0 +1,89 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-10-01T23:43:32.871757+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.35612v1",
+      "title": "Remote Sensing Sparse-View 3D Gaussian Splatting via Depth Image-Based Rendering",
+      "abstract": "Remote sensing novel view synthesis under sparse observations remains challenging due to insufficient geometric constraints and limited cross-view supervision. Existing Neural Radiance Fields (NeRF) and 3D Gaussian Splatting (3DGS) methods are prone to overfitting and face challenges of depth ambiguities, missing cross-view information, and insufficient constraints in under-observed regions. To address these challenges, we propose DIBR-GS, a neural Gaussian Splatting framework that exploits Depth Image-Based Rendering (DIBR) to generate pseudo views for cross-view consistency supervision. Specifically, reliable geometric initialization is constructed by aligning monocular depth priors with sparse SfM reconstruction, and cross-view appearance priors are incorporated into neural Gaussian representations to enhance appearance modeling under sparse observations. Furthermore, we introduce a progressive DIBR-based pseudo-view supervision strategy to provide additional geometric and appearance constraints, enabling more complete reconstruction of weakly observed regions. In addition, a height-constrained anchor growth strategy is designed to suppress unreasonable Gaussian expansion. Experiments demonstrate that the proposed method achieves superior performance over existing approaches when training with only 3 input views. Compared with the previous best-performing method, it improves PSNR by 6.83 dB, with relative gains of 14\\% in SSIM and 60\\% in LPIPS, while maintaining competitive computational efficiency. Our code is available at https://github.com/kanehub/DIBR-GS",
+      "authors": [
+        "Jiaming Kang",
+        "Zhengxia Zou",
+        "Zhenwei Shi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-28T16:55:27+00:00",
+      "link": "https://arxiv.org/pdf/2609.35612v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neural Gaussian Splatting framework for novel view synthesis",
+      "llm_evidence_cn": "用于新视角合成的神经高斯泼溅框架",
+      "llm_evidence": "用于新视角合成的神经高斯泼溅框架",
+      "canonical_evidence": "用于新视角合成的神经高斯泼溅框架",
+      "llm_tldr_en": "Proposes DIBR-GS to improve sparse-view 3D Gaussian Splatting using depth-based pseudo views.",
+      "llm_tldr_cn": "提出DIBR-GS，通过基于深度的伪视图改进稀疏视角下的3D高斯泼溅效果。",
+      "llm_tldr": "提出DIBR-GS，通过基于深度的伪视图改进稀疏视角下的3D高斯泼溅效果。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.34176v1",
+      "title": "AGILE-GS: Anchor-Guided Fast Next-Best-View Selection for Active 3D Gaussian Splatting",
+      "abstract": "Radiance fields need hundreds of views, and their placement matters as much as their number. Next-best-view (NBV) selection for 3D Gaussian Splatting (3DGS) usually scores every candidate in the pool and keeps one. Searching for information and choosing a camera, however, are separable problems. We present AGILE-GS, an anchor-guided NBV method that separates the two. A virtual anchor pose is optimized on SE(3) by Riemannian gradient ascent on expected information gain. It need not be reachable or in the pool; it marks where the model is most uncertain. Candidates are scored against the anchor's viewing geometry, and a greedy ridge-leverage step distills the pool into a small, non-redundant shortlist without rendering any candidate. The shortlist can be used in two ways. AGILE-GS takes the first view on it as the next view, so no Fisher information is computed for any candidate. AGILE-GS+ computes the Fisher information gain of each shortlisted view and picks the best, so the expensive evaluation runs on a handful of views rather than the whole pool. On standard benchmarks and in closed-loop embodied acquisition, both match or exceed existing baselines while cutting selection latency by one to two orders of magnitude.",
+      "authors": [
+        "Amirhossein Mollaei Khass",
+        "Nader Motee"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-09-28T02:53:40+00:00",
+      "link": "https://arxiv.org/pdf/2609.34176v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Active 3D Gaussian Splatting and view selection",
+      "llm_evidence_cn": "主动3D高斯泼溅与视角选择",
+      "llm_evidence": "主动3D高斯泼溅与视角选择",
+      "canonical_evidence": "主动3D高斯泼溅与视角选择",
+      "llm_tldr_en": "Introduces AGILE-GS for fast next-best-view selection in 3D Gaussian Splatting radiance fields.",
+      "llm_tldr_cn": "提出AGILE-GS，用于3D高斯泼溅辐射场中的快速最佳视角选择。",
+      "llm_tldr": "提出AGILE-GS，用于3D高斯泼溅辐射场中的快速最佳视角选择。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
