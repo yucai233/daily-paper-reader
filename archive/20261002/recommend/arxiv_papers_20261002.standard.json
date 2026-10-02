@@ -1,0 +1,591 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-10-02T22:33:04.894387+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 4,
+    "deep_cap": 6,
+    "deep_selected": 4,
+    "quick_candidates": 13,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2609.37509v1",
+      "title": "ScaGNN: a Graph Neural Network for Multiple Scattering Simulations",
+      "abstract": "The boundary element method (BEM) provides an efficient numerical framework for solving multiple scattering problems in unbounded homogeneous domains. By restricting the discretization to the domain boundaries, it substantially reduces computational complexity. The procedure first consists in determining the solution trace on the boundaries of the domain by solving a boundary integral equation. Then, the volumetric solution can be recovered at low computational cost using a boundary integral representation. As the first step of the BEM represents the main computational bottleneck, we present ScaGNN, a learning-based approach designed to approximate the solution trace. It relies on a graph neural network architecture that incorporates a dynamic adaptive edge sampling mechanism for selecting the most relevant interactions to model. Guided by intermediate predictions of expected error and edge length, this mechanism selects, at various stages of the forward pass, the most relevant distant interactions to model. The proposed method is tailored to achieve linear complexity with the number of nodes in the input graph. To train and evaluate our network, we present a benchmark consisting of several datasets with different types of multiple scattering problems. Our experiments show that our approach surpasses existing state-of-the-art learning-based methods on the considered tasks and investigate the generalization capabilities to settings with an increased number of obstacles and out-of-distribution obstacle shapes. github.com/LARIAD/ScaGNN",
+      "authors": [
+        "Rémi Marsal",
+        "Stéphanie Chaillat",
+        "Alexandre Chapoutot"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-09-29T13:06:11+00:00",
+      "link": "https://arxiv.org/pdf/2609.37509v1",
+      "tags": [
+        "keyword:神经体渲染"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Graph Neural Network for Multiple Scattering Simulations",
+      "llm_evidence_cn": "用于多次散射模拟的图神经网络",
+      "llm_evidence": "用于多次散射模拟的图神经网络",
+      "canonical_evidence": "用于多次散射模拟的图神经网络",
+      "llm_tldr_en": "ScaGNN uses graph neural networks to approximate solution traces for efficient multiple scattering simulations.",
+      "llm_tldr_cn": "ScaGNN利用图神经网络近似解迹，实现高效的多次散射模拟。",
+      "llm_tldr": "ScaGNN利用图神经网络近似解迹，实现高效的多次散射模拟。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "deep learning for multiple scattering in volumes",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.40090v1",
+      "title": "PTNO: Training Neural Operators with Noisy Monte Carlo Estimates for Particle Transport Problems",
+      "abstract": "Particle transport under multiple scattering is central to radiative transfer and plasma physics, yet high-fidelity Monte Carlo (MC) simulations must trace prohibitively many particles. Learning-based surrogates can amortize this cost, but typically train on expensive, well-converged MC solutions. We propose the Particle Transport Neural Operator (PTNO), a neural operator that learns particle transport surrogates directly from noisy, low-cost MC labels. Such labels pose two challenges: (1) high variance, which destabilizes standard supervised learning, and (2) a high dynamic range (HDR) spanning many orders of magnitude. For the first, we learn the solution operator from noisy labels of many configurations, amortizing MC cost and generalizing to unseen configurations. Because MC labels are unbiased, we show that the squared loss on them shares its minimizer with the loss on converged solutions, and our budget-allocation study over training scenes $M$, MC samples per render $N$, and independent renders per scene $K$ shows that many noisy scenes beat fewer converged ones. For the second, a nonlinear transform such as the logarithm biases noisy supervision. Instead, PTNO keeps labels in physical space and enforces positivity with a softplus output layer that represents small values effectively. We further train with a pointwise relative $L_2$ loss (PRelL2), the stop-gradient relative loss of HDR denoising and neural rendering, which normalizes each residual by the stop-gradient prediction instead of the noisy label. We demonstrate PTNO on neutron transport in fusion reactors and radiative transfer in participating media. On the two neutronics tasks, PTNO is $10^4$-$10^5\\times$ faster than converged MC on the same CPU and $10^3$-$10^5\\times$ cheaper than MC at matched accuracy; on the two radiative-transfer tasks, MC at matched accuracy costs $0.8$-$11\\times$ as much as PTNO.",
+      "authors": [
+        "Yubo Cao",
+        "Xi Deng",
+        "Mengqi Xia",
+        "Vignesh Gopakumar",
+        "Ander Gray",
+        "Anima Anandkumar"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-09-30T16:31:40+00:00",
+      "link": "https://arxiv.org/pdf/2609.40090v1",
+      "tags": [
+        "keyword:神经体渲染"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "particle transport under multiple scattering using neural operators",
+      "llm_evidence_cn": "使用神经算子处理多次散射下的粒子传输",
+      "llm_evidence": "使用神经算子处理多次散射下的粒子传输",
+      "canonical_evidence": "使用神经算子处理多次散射下的粒子传输",
+      "llm_tldr_en": "Proposes PTNO to learn particle transport surrogates for multiple scattering from noisy MC estimates.",
+      "llm_tldr_cn": "提出PTNO，从噪声MC估计中学习多次散射下的粒子传输代理模型。",
+      "llm_tldr": "提出PTNO，从噪声MC估计中学习多次散射下的粒子传输代理模型。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "deep learning for multiple scattering in volumes",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.37115v1",
+      "title": "NRF-GS: Neural Residual Fields for Expressive and Compact Gaussian Splatting",
+      "abstract": "We revisit the role of appearance modeling in 3D Gaussian Splatting (3DGS) and show that limited expressiveness in view-dependent reflectance is a key driver of representation redundancy. In standard 3DGS, low-order spherical harmonics (SH) are used, restricting the splats' ability to model high-frequency directional effects, which is typically compensated by increasing the number of splats. We propose \\emph{NRF-GS: Neural Residual Fields for Gaussian Splatting}, a hybrid representation that replaces per-splat SH-bases with a shared neural residual field. Each Gaussian encodes a compact set of appearance features and a lambertian base color, while a lightweight \\emph{global scene-level MLP} predicts view-dependent residuals conditioned on viewing direction, distance, and per-splat features. This formulation enhances directional reflectance modeling by combining diffuse per-splat reflectance representations with a shared global function for high-frequency details, enabling both higher expressiveness and parameter sharing across splats. Our key insight is that by accurately capturing high-frequency directional reflectance, especially in specular regions, the GS-representation becomes more expressive, reducing the need for geometrically redundant splats. As a result, NRF-GS achieves comparable or better rendering quality while reducing the number of Gaussians by up to 50\\%, and produces visibly improved specular and high-frequency details.",
+      "authors": [
+        "Pratik Singh Bisht",
+        "Andreas Kolb"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-09-29T09:27:44+00:00",
+      "link": "https://arxiv.org/pdf/2609.37115v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "neural residual fields for expressive and compact Gaussian Splatting",
+      "llm_evidence_cn": "用于表达性强且紧凑的高斯泼溅的神经残差场",
+      "llm_evidence": "用于表达性强且紧凑的高斯泼溅的神经残差场",
+      "canonical_evidence": "用于表达性强且紧凑的高斯泼溅的神经残差场",
+      "llm_tldr_en": "Introduces NRF-GS, using a shared neural residual field to improve view-dependent appearance in 3DGS.",
+      "llm_tldr_cn": "引入NRF-GS，使用共享神经残差场改进3DGS中随视角变化的渲染效果。",
+      "llm_tldr": "引入NRF-GS，使用共享神经残差场改进3DGS中随视角变化的渲染效果。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.36547v1",
+      "title": "Single-Voxel Wireless NeRF for Spatial Spectrum Prediction",
+      "abstract": "Wireless channel measurements across multiple spatial directions are crucial for AI-driven applications, such as RF digital twins and integrated communication and sensing. However, collecting channel data across large scenes is labor-intensive. Wireless NeRFs address this challenge by learning propagation behavior from sparse measurements and synthesizing channel spatial spectrum magnitude at unseen locations. However, existing wireless NeRFs inherit dense volumetric sampling from vision NeRFs, which requires substantial computation. This paper asks whether such dense sampling is necessary for predicting magnitudes of the wireless spatial spectrum. We empirically show that wireless NeRFs are over-parameterized for this task and introduce SV-INGP, a sparse volumetric sampling variant of Instant Neural Graphics Primitives (INGP). Across real-world and simulated datasets, SV-INGP matches the median Structural Similarity Index Measure (SSIM) of the NeRF2 baseline while reducing training time by 184x. These results generalize across LoS and NLoS scenes, sub-6 and millimeter-wave frequencies, and antenna array tapering configurations, suggesting a simpler and more efficient design path for RF digital twins",
+      "authors": [
+        "Raj Bakhunchhe",
+        "Arun Paidimarri",
+        "Sara Garcia Sanchez",
+        "Asaf Tzadok",
+        "Ali Tajer",
+        "Ish Kumar Jain"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP"
+      ],
+      "published": "2026-09-29T02:34:01+00:00",
+      "link": "https://arxiv.org/pdf/2609.36547v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "sparse volumetric sampling for wireless NeRF acceleration",
+      "llm_evidence_cn": "用于无线NeRF加速的稀疏体积采样",
+      "llm_evidence": "用于无线NeRF加速的稀疏体积采样",
+      "canonical_evidence": "用于无线NeRF加速的稀疏体积采样",
+      "llm_tldr_en": "Introduces sparse volumetric sampling to accelerate NeRF-based wireless spatial spectrum prediction.",
+      "llm_tldr_cn": "引入稀疏体积采样，以加速基于NeRF的无线空间频谱预测。",
+      "llm_tldr": "引入稀疏体积采样，以加速基于NeRF的无线空间频谱预测。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.34367v2",
+      "title": "Rate-Distortion Adaptive Primitive Selection for Omnidirectional Gaussian Splatting",
+      "abstract": "Learned image codecs (LICs) achieve high reconstruction quality, but their decoding speed is often insufficient for immersive virtual reality (VR). Gaussian splatting (GS) codecs render much faster, yet still lag in reconstruction quality and typically decide primitive allocation without considering the coding cost of each primitive. We introduce OIC-GS, an omnidirectional GS codec with a new hierarchical HEALPix primitive grid representation. Gaussian primitives are anchored at predefined spherical locations, eliminating explicit coordinate coding. Finer levels refine their coarser ancestors, naturally supporting coarse-to-fine reconstruction and layered transmission. The predefined grid also enables efficient viewport decoding by selecting only view-relevant primitives. We further introduce a lightweight entropy model for quantized primitives and optimize the codec under a spherical rate-distortion objective. Primitives with insufficient rate-distortion benefit are automatically removed when their quantized opacity becomes zero, allowing OIC-GS to adapt both primitive density and level of detail without a fixed primitive budget. A single bitstream supports full-sphere, viewport-dependent, and progressive decoding. The first viewport reaches final quality after decoding only 52% of the bitstream, and is then rendered at 1,270 FPS. On a 100-image omnidirectional benchmark, OIC-GS outperforms all evaluated GS codecs, reducing WS-PSNR BD-rate by 49.6% over GaussianImage++ and 68.6% over SGI, which uses a learned entropy model.",
+      "authors": [
+        "Yulong Cheng",
+        "Youneng Bao",
+        "Junfeng Zhou",
+        "Mu Li",
+        "Jie Wen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-28T05:44:08+00:00",
+      "link": "https://arxiv.org/pdf/2609.34367v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "accelerating rendering with hierarchical Gaussian Splatting primitive selection",
+      "llm_evidence_cn": "通过层级高斯泼溅基元选择加速渲染",
+      "llm_evidence": "通过层级高斯泼溅基元选择加速渲染",
+      "canonical_evidence": "通过层级高斯泼溅基元选择加速渲染",
+      "llm_tldr_en": "OIC-GS optimizes Gaussian Splatting for omnidirectional video with a hierarchical grid for faster decoding.",
+      "llm_tldr_cn": "OIC-GS通过层级网格优化全景视频的高斯泼溅，实现了更快的解码速度。",
+      "llm_tldr": "OIC-GS通过层级网格优化全景视频的高斯泼溅，实现了更快的解码速度。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.33100v1",
+      "title": "Octree-based Video Representation",
+      "abstract": "Video models commonly use uniform grids even though visual complexity varies substantially across space and time. We introduce OctVideo, which approximates a video clip with an octree. This hierarchy recursively partitions a spatio-temporal volume into eight subvolumes, so that smooth regions remain coarse while detailed regions receive finer cells. Each leaf stores local RGB values and spatio-temporal gradients, supplemented by a lightweight learned residual. For reconstruction, a Conv1D VAE maps the serialized cells to a regular latent grid and selectively refines details during decoding. Our VAE achieves 36.12 dB PSNR with 38.2M parameters and 189.4 GFLOPs per clip on Kinetics-400 (K400). It also generalizes zero-shot to the high-resolution Densely Annotated VIdeo Segmentation (DAVIS) 2016 dataset with reconstruction quality comparable to the best evaluated models. On both datasets, it requires the fewest model FLOPs and achieves the fastest encoding and decoding among the evaluated models. OctVideo also supports video understanding, achieving competitive recognition performance with few input tokens when trained from scratch. By exploiting the redundancy already present in video signals and efficiently processing sparse structures, OctVideo provides an efficient representation for video.",
+      "authors": [
+        "Rungui Zhou",
+        "Chuanzhi Zhou",
+        "Yuk-Kit Hou",
+        "Peng-Shuai Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-27T02:14:35+00:00",
+      "link": "https://arxiv.org/pdf/2609.33100v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "octree-based spatio-temporal volume partitioning for efficient representation",
+      "llm_evidence_cn": "基于八叉树的时空体划分用于高效表示",
+      "llm_evidence": "基于八叉树的时空体划分用于高效表示",
+      "canonical_evidence": "基于八叉树的时空体划分用于高效表示",
+      "llm_tldr_en": "OctVideo uses an octree hierarchy to efficiently represent and reconstruct spatio-temporal video volumes.",
+      "llm_tldr_cn": "OctVideo利用八叉树层级结构高效地表示和重建时空视频体积。",
+      "llm_tldr": "OctVideo利用八叉树层级结构高效地表示和重建时空视频体积。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.36693v1",
+      "title": "AESplat: Advancing Pose-Free Feed-Forward 3D Gaussian Splatting via Decoupled Appearance Modeling",
+      "abstract": "Pose-free feed-forward 3D Gaussian Splatting (3DGS) has demonstrated remarkable potential for generalized novel view synthesis. However, existing methods typically predict Gaussian appearance attributes represented by spherical harmonics (SH) in the same manner, overlooking the fundamental distinction between view-independent and view-dependent appearance, which results in suboptimal rendering quality. In this paper, we present AESplat, a novel and general framework for pose-free feed-forward 3DGS that introduces an effective decoupled appearance modeling strategy based on an analysis of SH, enabling higher-quality rendering. Specifically, AESplat directly derives the zeroth-order SH coefficient, which represents the base view-independent appearance component, from the input images without training. The higher-order SH coefficients are subsequently predicted by a shallow multilayer perceptron equipped with two efficient 3D-aware inductive biases to model view-dependent appearance variations. Extensive experiments across multiple datasets demonstrate that our method significantly outperforms state-of-the-art approaches, achieving a $0.8$ dB improvement in PSNR over the pose-free method NAS3R and a $1.1$ dB improvement over the pose-required method DepthSplat on the RealEstate10K dataset. Project page: https://aesplat.github.io/.",
+      "authors": [
+        "Shiwei Ren",
+        "Zhiang Liu",
+        "Yongchun Fang",
+        "Hongwei Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-29T04:33:05+00:00",
+      "link": "https://arxiv.org/pdf/2609.36693v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting and decoupled appearance modeling",
+      "llm_evidence_cn": "3D高斯泼溅与解耦外观建模",
+      "llm_evidence": "3D高斯泼溅与解耦外观建模",
+      "canonical_evidence": "3D高斯泼溅与解耦外观建模",
+      "llm_tldr_en": "AESplat improves 3D Gaussian Splatting quality through decoupled view-dependent appearance modeling.",
+      "llm_tldr_cn": "AESplat通过解耦视角相关的外观建模提升了3D高斯泼溅的渲染质量。",
+      "llm_tldr": "AESplat通过解耦视角相关的外观建模提升了3D高斯泼溅的渲染质量。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.35734v1",
+      "title": "GeoVerse: World-Consistent Novel View Synthesis in Geometric Latent Space",
+      "abstract": "Novel view synthesis from sparse images must reconcile faithful reconstruction of observed regions with plausible completion of unseen content, while maintaining world consistency across viewpoints. Existing geometry-based methods preserve observed scene structure but often struggle to complete unseen regions, whereas video generative models offer rich appearance priors but accumulate inconsistencies during sequential view generation. We propose GeoVerse, a framework that synthesizes world-consistent novel views by performing generation within the geometric latent space of a pretrained 3D foundation model and injecting appearance priors from a video generative model. Specifically, GeoVerse extracts multilevel features from Wan2.2 VACE and injects them into the geometric latent diffusion model via a ControlNet-style adapter, incorporating video-learned appearance priors to enhance structural completion. To enforce cross-view coherence, a global spatial memory continuously aggregates observed and synthesized content, reprojecting target-aligned guidance to anchor subsequent predictions to a shared scene representation. Extensive experiments across diverse datasets demonstrate improved visual quality and geometric consistency, with a 2.23 dB higher PSNR on DL3DV and 32.4% lower ATE on Mip-NeRF360 compared to GLD.",
+      "authors": [
+        "Kerui Ren",
+        "Tao Lu",
+        "Linning Xu",
+        "Changjian Jiang",
+        "Mu Huang",
+        "Chunhua Shen",
+        "Mulin Yu",
+        "Bo Dai"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-28T17:51:48+00:00",
+      "link": "https://arxiv.org/pdf/2609.35734v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "novel view synthesis in geometric latent space",
+      "llm_evidence_cn": "几何潜空间中的新视角合成",
+      "llm_evidence": "几何潜空间中的新视角合成",
+      "canonical_evidence": "几何潜空间中的新视角合成",
+      "llm_tldr_en": "Synthesizes world-consistent novel views by combining geometric latent spaces with video generative priors.",
+      "llm_tldr_cn": "通过结合几何潜空间和视频生成先验，合成世界一致的新视角。",
+      "llm_tldr": "通过结合几何潜空间和视频生成先验，合成世界一致的新视角。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.38488v1",
+      "title": "Gaussian Stippling: Efficient Sorting-Free 3D Gaussian Rendering through Hybrid Sampling and Spatiotemporal Reconstruction",
+      "abstract": "Conventional 3D Gaussian Splatting (3DGS) requires depth sorting and ordered alpha blending to correctly render overlapping Gaussian primitives. Stochastic transparency enables sorting-free rendering by replacing fractional alpha contributions with discrete stochastic visibility samples, but produces substantial spatial and temporal noise at low sample counts. We refer to this conversion from continuous Gaussian splats to discrete visibility samples as \\textit{Gaussian Stippling}. Based on this, we present an efficient order-independent rendering and reconstruction framework that operates directly on unmodified 3DGS assets. Our method adaptively integrates primitive-based and fragment-based stippling, leveraging their complementary strengths across different rendering regimes to significantly improve rendering throughput. To recover high-quality images from sparse stochastic samples, we further introduce a lightweight Gaussian-aware spatiotemporal reconstruction network. By exploiting the Gaussian attributes retained by each stipple, the network aggregates structured stochastic clues across both space and time, effectively suppressing stippling noise. Experiments show that our hybrid Gaussian stippling method, coupled with a spatiotemporal reconstruction network trained on diverse scenes, generalizes to unseen scenes and enables interactive, temporally stable, and visually plausible rendering on mobile devices without retraining or preprocessing. With scene-specific training and appropriately scaled sampling and network capacity, our method further outperforms the baselines in visual quality, offering a high-fidelity configuration for quality-prioritized applications.",
+      "authors": [
+        "Zijian Huang",
+        "Suiliang Mai",
+        "Chuankun Zheng",
+        "Yuan Meng",
+        "Yuchi Huo"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "cs.CV"
+      ],
+      "published": "2026-09-29T20:15:59+00:00",
+      "link": "https://arxiv.org/pdf/2609.38488v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "efficient sorting-free 3D Gaussian rendering and stochastic transparency",
+      "llm_evidence_cn": "高效免排序3D高斯渲染与随机透明度",
+      "llm_evidence": "高效免排序3D高斯渲染与随机透明度",
+      "canonical_evidence": "高效免排序3D高斯渲染与随机透明度",
+      "llm_tldr_en": "Presents an efficient, sorting-free 3D Gaussian rendering framework using stochastic transparency.",
+      "llm_tldr_cn": "提出了一种利用随机透明度实现的高效免排序3D高斯渲染框架。",
+      "llm_tldr": "提出了一种利用随机透明度实现的高效免排序3D高斯渲染框架。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.35734v2",
+      "title": "GeoVerse: World-Consistent Novel View Synthesis in Geometric Latent Space",
+      "abstract": "Novel view synthesis from sparse images must reconcile faithful reconstruction of observed regions with plausible completion of unseen content, while maintaining world consistency across viewpoints. Existing geometry-based methods preserve observed scene structure but often struggle to complete unseen regions, whereas video generative models offer rich appearance priors but accumulate inconsistencies during sequential view generation. We propose GeoVerse, a framework that synthesizes world-consistent novel views by performing generation within the geometric latent space of a pretrained 3D foundation model and injecting appearance priors from a video generative model. Specifically, GeoVerse extracts multilevel features from Wan2.2 VACE and injects them into the geometric latent diffusion model via a ControlNet-style adapter, incorporating video-learned appearance priors to enhance structural completion. To enforce cross-view coherence, a global spatial memory continuously aggregates observed and synthesized content, reprojecting target-aligned guidance to anchor subsequent predictions to a shared scene representation. Extensive experiments across diverse datasets demonstrate improved visual quality and geometric consistency, with a 2.23 dB higher PSNR on DL3DV and 32.4% lower ATE on Mip-NeRF360 compared to GLD.",
+      "authors": [
+        "Kerui Ren",
+        "Tao Lu",
+        "Linning Xu",
+        "Changjian Jiang",
+        "Mu Huang",
+        "Chunhua Shen",
+        "Mulin Yu",
+        "Bo Dai"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-28T17:51:48+00:00",
+      "link": "https://arxiv.org/pdf/2609.35734v2",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "novel view synthesis in geometric latent space",
+      "llm_evidence_cn": "几何潜空间中的新视角合成",
+      "llm_evidence": "几何潜空间中的新视角合成",
+      "canonical_evidence": "几何潜空间中的新视角合成",
+      "llm_tldr_en": "Synthesizes world-consistent novel views by combining geometric latent spaces with video generative priors.",
+      "llm_tldr_cn": "通过结合几何潜空间和视频生成先验，合成世界一致的新视角。",
+      "llm_tldr": "通过结合几何潜空间和视频生成先验，合成世界一致的新视角。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.38592v1",
+      "title": "StereoGaussians: Feed-Forward 3D Gaussian Splatting from Stereo Images",
+      "abstract": "Feed-forward 3D Gaussian Splatting (3DGS) enables reconstruction without per- scene optimisation, but practical stereo-camera applications require nearby-view extrapolation beyond the input views. Stereo depth anchors visible surfaces, yet rendering newly exposed regions also requires learned appearance and additional scene capacity. We introduce StereoGaussians, which predicts a metric 3DGS representation from a single calibrated stereo pair. It reuses intermediate repre- sentations from frozen pretrained stereo networks to predict Gaussian attributes, while calibrated disparity anchors the geometry. A second Gaussian layer and an expanded image canvas provide capacity for disoccluded and outside-field-of- view content. For training, we construct SceneSplat-Stereo from quality-filtered 3DGS teachers, pairing stereo inputs with nearby target views across 803 training scenes. Experiments on unseen real and photorealistic stereo benchmarks demon- strate improvements over strong view-synthesis baselines, while ablation studies support our main design choices.",
+      "authors": [
+        "Boyuan Tian",
+        "Huangying Zhan",
+        "Zhan Li",
+        "Shin-Fang Chng",
+        "Hanwen Yang",
+        "Zirui Wang",
+        "Yi Xu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-29T21:51:37+00:00",
+      "link": "https://arxiv.org/pdf/2609.38592v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "feed-forward 3D Gaussian Splatting from stereo images",
+      "llm_evidence_cn": "基于立体图像的前馈3D高斯泼溅",
+      "llm_evidence": "基于立体图像的前馈3D高斯泼溅",
+      "canonical_evidence": "基于立体图像的前馈3D高斯泼溅",
+      "llm_tldr_en": "Predicts metric 3DGS representations from stereo pairs using pretrained networks and disparity anchors.",
+      "llm_tldr_cn": "利用预训练网络和视差锚点从立体图像对预测度量3DGS表示。",
+      "llm_tldr": "利用预训练网络和视差锚点从立体图像对预测度量3DGS表示。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.38343v1",
+      "title": "Learning Semantic Inpainting for Animatable Gaussian Head Avatars",
+      "abstract": "We present SInGA, a novel method for learning Semantic Inpainting for animatable Gaussian head Avatars from a single image. Existing avatar approaches often rely on multi-view observations and lack effective handling of unobserved regions in single-view settings, limiting their applicability in such scenarios. To address this, we propose a semantic inpainting framework defined in UV space for completing unobserved facial regions. Our key insight lies in the structured topology of the UV representation, which provides consistent spatial correspondences and enables reliable completion of identity-specific features using the inherent symmetry cues of human faces. We extract features from observed regions and use them to complete unobserved regions. The completed representation is then used to regress Gaussian attributes, effectively performing Gaussian inpainting. In addition, instead of relying on a single Gaussian at each surface or pixel location, we stack multiple Gaussians to enhance detail. The resulting avatar generalizes across identities without requiring per-identity optimization and can be animated with driving inputs. Experimental results show that our method generates high-quality head avatars with improved completeness and identity preservation, while supporting realistic animation and consistent rendering from unobserved views.",
+      "authors": [
+        "Pilseo Park",
+        "Fizza Rubab",
+        "Yiying Tong"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-29T18:07:26+00:00",
+      "link": "https://arxiv.org/pdf/2609.38343v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "animatable Gaussian head avatars",
+      "llm_evidence_cn": "可驱动的高斯头部头像",
+      "llm_evidence": "可驱动的高斯头部头像",
+      "canonical_evidence": "可驱动的高斯头部头像",
+      "llm_tldr_en": "Learns semantic inpainting in UV space to create animatable Gaussian avatars from a single image.",
+      "llm_tldr_cn": "在UV空间学习语义修复，从而从单张图像创建可驱动的高斯头像。",
+      "llm_tldr": "在UV空间学习语义修复，从而从单张图像创建可驱动的高斯头像。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.39089v1",
+      "title": "UGOD: Uncertainty-Guided Opacity and Dropout for Sparse-View 3D Gaussian Splatting",
+      "abstract": "Sparse-view 3D Gaussian Splatting is prone to overfitting because limited observations leave many Gaussian primitives weakly constrained, yet their contributions are still accumulated through alpha blending. Without uncertainty estimation, the renderer cannot distinguish unreliable primitives from well-constrained ones, allowing their erroneous contributions to corrupt novel-view synthesis. We introduce UGOD, an uncertainty-guided framework that estimates a view-dependent uncertainty score for each Gaussian and uses it to regulate its rendering contribution. A lightweight uncertainty head conditioned on Gaussian attributes and viewing direction predicts this score, which then drives a differentiable opacity-modulation mechanism that attenuates high-uncertainty primitives before compositing. During training, a detached soft-dropout branch applies an uncertainty-controlled continuous keep mask to discourage the model from relying on poorly constrained Gaussians and thereby reduce overfitting. Crucially, detaching the uncertainty score prevents gradients from this stochastic regulariser from biasing or collapsing the uncertainty prediction. Experiments on Mip-NeRF~360 and LLFF show that UGOD improves sparse-view novel-view synthesis while producing more compact Gaussian representations than the compared methods. These results demonstrate that Gaussian uncertainty provides an effective rendering-time control for sparse-view reconstruction.",
+      "authors": [
+        "Zhihao Guo",
+        "Peng Wang",
+        "Zidong Chen",
+        "Xiangyu Kong",
+        "Yan Lyu",
+        "Guanyu Gao",
+        "Chenghao Qian",
+        "Ziyang Wang",
+        "Xinqi Fan",
+        "Liangxiu Han"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-30T06:27:05+00:00",
+      "link": "https://arxiv.org/pdf/2609.39089v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uncertainty-guided opacity modulation for neural rendering",
+      "llm_evidence_cn": "神经渲染中的不确定性引导不透明度调节",
+      "llm_evidence": "神经渲染中的不确定性引导不透明度调节",
+      "canonical_evidence": "神经渲染中的不确定性引导不透明度调节",
+      "llm_tldr_en": "Introduces an uncertainty-guided framework to regulate Gaussian contributions in sparse-view rendering.",
+      "llm_tldr_cn": "引入了一种不确定性引导框架，用于调节稀疏视图渲染中的高斯贡献。",
+      "llm_tldr": "引入了一种不确定性引导框架，用于调节稀疏视图渲染中的高斯贡献。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2610.01013v1",
+      "title": "VASC: Value-Aware Sparse Attention with Cross-Layer Memory for Efficient 3D Reconstruction",
+      "abstract": "Feed-forward 3D vision models such as VGGT have achieved remarkable progress, unifying camera estimation and dense scene reconstruction in a single pass. However, their quadratic global attention makes long image sequences expensive, while existing sparse methods may favor highly attended yet value-redundant regions. To address these limitations, we introduce VASC, a training-free sparse attention method combining value-aware block selection and execution-aware cross-layer memory. Our value-aware block selection integrates pooled query--key relevance with neighboring value contrast, reducing redundancy while preserving query-relevant and distinctive content. Cross-layer memory tracks unserved demand across layers and updates this state according to actual execution, enabling previously underserved blocks to compete under a fixed computation budget. Experiments on 7Scenes and NeuralRGB-D with VGGT and $π^3$ demonstrate improved pose estimation and reconstruction quality compared with FasterVGGT, together with up to $2.29\\times$ faster inference than dense VGGT. Code is available at https://github.com/kosakayamahoo-design/VASC.",
+      "authors": [
+        "Junyi Wu",
+        "Fanqing Kong",
+        "Leyang Chen",
+        "Shaoqiu Zhang",
+        "Yulun Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-10-01T03:57:47+00:00",
+      "link": "https://arxiv.org/pdf/2610.01013v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "efficient 3D reconstruction with sparse attention",
+      "llm_evidence_cn": "利用稀疏注意力进行高效3D重建",
+      "llm_evidence": "利用稀疏注意力进行高效3D重建",
+      "canonical_evidence": "利用稀疏注意力进行高效3D重建",
+      "llm_tldr_en": "Introduces value-aware sparse attention to improve efficiency in feed-forward dense scene reconstruction.",
+      "llm_tldr_cn": "引入值感知稀疏注意力，提高前馈稠密场景重建的效率。",
+      "llm_tldr": "引入值感知稀疏注意力，提高前馈稠密场景重建的效率。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.39553v1",
+      "title": "EffGS: Efficient and High-Fidelity Gaussian Splatting",
+      "abstract": "3D Gaussian Splatting (3DGS) enables real-time novel view synthesis, but existing general-purpose acceleration methods suffer severe rendering quality degradation when extended to more complex, large-scale scenes. To address this issue, we propose EffGS, a more general acceleration framework that improves training and rendering efficiency while maintaining reconstruction quality comparable to or better than vanilla 3DGS across bounded and large-scale scenes. EffGS combines frequency-aware guidance, localized density control, and adaptive primitive scale modulation. First, an importance scoring mechanism combines pixel-wise reconstruction errors with a difference-of-Gaussians mask scheduled over training to provide stage-dependent spatial guidance. Second, localized densification and pruning restricts density modifications to Gaussians with valid projected footprints in the sampled views. Third, learnable per-Gaussian scale modulation adjusts effective primitive extent during optimization while retaining the Compact Box rasterization rule. Extensive experiments on bounded and large-scale scene datasets demonstrate a favorable balance between reconstruction quality, training time, and primitive count. Component ablations and matched-primitive-budget comparisons further support the effectiveness of the framework.",
+      "authors": [
+        "Changbai Li",
+        "Shuo Yang",
+        "Yichen Yang",
+        "Shuwei Shao",
+        "Huobin Tan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-30T11:52:18+00:00",
+      "link": "https://arxiv.org/pdf/2609.39553v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "accelerating rendering efficiency in Gaussian Splatting",
+      "llm_evidence_cn": "加速高斯泼溅的渲染效率",
+      "llm_evidence": "加速高斯泼溅的渲染效率",
+      "canonical_evidence": "加速高斯泼溅的渲染效率",
+      "llm_tldr_en": "EffGS improves training and rendering efficiency for large-scale 3D Gaussian Splatting scenes.",
+      "llm_tldr_cn": "EffGS 提高了大规模 3D 高斯泼溅场景的训练和渲染效率。",
+      "llm_tldr": "EffGS 提高了大规模 3D 高斯泼溅场景的训练和渲染效率。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
