@@ -1,0 +1,79 @@
+{
+  "label": "2026-10-03",
+  "date": "2026-10-03",
+  "generated_at": "2026-10-03T21:46:40",
+  "count": 5,
+  "papers": [
+    {
+      "paper_id": "202610/03/2609.38635v1-tsgl-teacher-student-graph-learning-for-3dgs-compression",
+      "section": "quick",
+      "title_en": "TSGL: Teacher-Student Graph Learning for 3DGS Compression",
+      "authors": "Matin Bani Saedi, Matthew Kyan, Gene Cheung",
+      "date": "2026-09-29",
+      "pdf": "https://arxiv.org/pdf/2609.38635v1",
+      "score": "7.0",
+      "evidence": "用于新视角合成的3D高斯泼溅压缩",
+      "tldr": "针对3D高斯泼溅（3DGS）模型文件过大的问题，本文提出了一种基于师生图学习（TSGL）的压缩方法。该方法无需重新训练模型或访问原始图像，通过构建信号依赖的几何图并利用图傅里叶变换（GFT）对高斯属性进行压缩，在保持高质量渲染的同时实现了显著的存储空间缩减。",
+      "tags": "query:q1",
+      "abstract_en": "3D Gaussian Splatting (3DGS) is a popular representation for novel view synthesis. However, 3DGS contains millions of Gaussian primitives, each with rich attributes, resulting in large file sizes. We propose a novel 3DGS compression method based on Teacher-Student Graph Learning (TSGL) that operates directly on a trained model, without 3DGS retraining or access to training images. Specifically, for each block of Gaussian primitives, using decoded positions and DC spherical harmonic (SH) coefficients as predictors, we learn a signal-dependent geometry graph G encoding the pairwise similarities between neighbouring Gaussians via a teacher-student model. Given G, we perform Graph Fourier Transform (GFT) on the remaining attributes, so that signal energies are predominantly projected into the low-frequency coefficients for compact representation. On three standard benchmarks, the method reaches 27x to 33x compression with less than 0.6 dB of PSNR loss, improving on recent post-training compression methods in both size and rendering quality.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202610/03/2609.33070v1-a-model-informed-deep-learning-algorithm-for-solving-the-phaseless-inverse-scattering-problem",
+      "section": "quick",
+      "title_en": "A Model-Informed Deep Learning Algorithm for Solving the Phaseless Inverse Scattering Problem",
+      "authors": "Dinh-Liem Nguyen, Nhung H. Nguyen, Aravinth Ravi",
+      "date": "2026-09-27",
+      "pdf": "https://arxiv.org/pdf/2609.33070v1",
+      "score": "6.0",
+      "evidence": "用于逆散射问题的深度学习",
+      "tldr": "本文提出了一种用于求解无相位逆散射问题的两步式无监督模型驱动深度学习框架。该方法首先将无相位测量数据转化为成像函数，随后利用Lippmann-Schwinger积分方程和谱域方程构建物理约束，通过两个独立的神经网络同步优化散射体和对比源函数。该框架在保证高精度和鲁棒性的同时，通过谱域变换显著降低了计算成本，在二维和三维场景下均表现出优异的重构性能。",
+      "tags": "query:q4",
+      "abstract_en": "We study in this paper an unsupervised, two-step, model-informed deep learning framework for solving the phaseless inverse scattering problem. The objective is to reconstruct a compactly supported function that characterizes a scatterer from boundary measurements of the modulus of the total wave corresponding to multiple incident waves. In the first step, the phaseless data are transformed into an imaging function that is directly related to the underlying scatterer. Motivated by the contrast source method, we derive a coupled system of model equations using the Lippmann-Schwinger integral equation and a spectral-based equation involving the imaging function. In the second step, the unknown scatterer and contrast source function are each parameterized as independent feedforward neural networks, which are trained simultaneously at each iteration using the derived system of model equations. The Lippmann-Schwinger integral equation enforces the underlying physics as a model constraint, while the spectral-based equation incorporating the imaging function supplies geometric information on the shape and location of the unknown scatterer. The resulting framework achieves accurate and efficient reconstructions while maintaining robustness to measurement noise. Furthermore, transforming some aspects of the problem to the spectral domain enables an effective reduction in the computational cost, allowing us to recover the unknown scatterer quickly. Numerical experiments in both two- and three-dimensional settings demonstrate the effectiveness, stability, and practical potential of the proposed approach.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202610/03/2609.36898v1-volcanite-commodity-hardware-segmentation-volume-visualization-for-connectomics-and-beyond",
+      "section": "quick",
+      "title_en": "Volcanite: Commodity-Hardware Segmentation Volume Visualization for Connectomics and Beyond",
+      "authors": "Max Piochowiak, Reiner Dolp, Julian Herold, Eric Behle, Carsten Dachsbacher, Alexander Schug",
+      "date": "2026-09-29",
+      "pdf": "https://arxiv.org/pdf/2609.36898v1",
+      "score": "6.0",
+      "evidence": "针对大型分割数据的GPU加速体可视化",
+      "tldr": "Volcanite是一个开源的密集分割渲染框架，旨在解决现代成像中TB级分割数据难以直接交互的问题。它通过压缩感知数据处理、Vulkan GPU后端及专用渲染技术，无需预处理或分布式基础设施，即可在普通硬件上实现对海量体素的低延迟、高质量实时渲染，显著提升了连接组学等领域的数据探索与分析效率。",
+      "tags": "query:q7",
+      "abstract_en": "Modern imaging produces terabyte-scale segmentation volumes, assigning each voxel an object label. These categorical, boundary-sensitive and label-rich data underpin connectomics and other imaging-driven fields, yet their scale often forces interpretation through slices, approximate meshes or distributed workflows that obscure spatial context and voxel-level defects. Here we show that such volumes can be explored directly on commodity hardware with Volcanite, an open-source framework for dense-segmentation rendering. Combining compression-aware data handling, a Vulkan GPU backend and segmentation-specific rendering, Volcanite enables low-latency exploration without meshing or distributed infrastructure, including for unpublished, sensitive or proprietary data. Across multi-domain datasets, it preserves voxel labels, adds shadows and global illumination, and renders up to half a trillion voxels at 100 frames per second. By replacing lengthy preprocessing with direct inspection, Volcanite decouples hypothesis generation from data preparation and turns teravoxel label fields into interactive evidence for discovery, validation and cross-domain spatial analysis",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202610/03/2610.01229v1-a-compact-explicit-4d-representation-for-dynamic-scenes",
+      "section": "quick",
+      "title_en": "A Compact Explicit 4D Representation for Dynamic Scenes",
+      "authors": "Di Yang, Zhihao Li, Yanhai Xiong, Yufei Wang",
+      "date": "2026-10-01",
+      "pdf": "https://arxiv.org/pdf/2610.01229v1",
+      "score": "6.0",
+      "evidence": "使用高斯面元进行4D场景表示和渲染",
+      "tldr": "Sparc4D是一种用于动态场景的紧凑型4D表示方法。它通过前馈自编码器将单目视频编码为稀疏的4D场景状态，利用共享静态特征和空间锚定时间槽压缩时变信息。结合稀疏高斯表面和几何重投影技术，该方法在保持高质量渲染的同时，显著降低了存储需求，并在多个数据集上展现了优于现有方法的性能。",
+      "tags": "query:q1",
+      "abstract_en": "A compact dynamic-scene representation must retain both the surfaces seen over time and the appearance needed to render them from new viewpoints. We present Sparc4D, a feed-forward autoencoder that encodes a monocular video with known cameras into a sparse 4D scene state. Static features are shared across the clip, while spatially anchored temporal slots compress time-varying features. A sparse decoder produces 2D Gaussian surfels, while stored source pixels preserve fine texture through geometric re-projection. The state includes one full source frame and dynamic-region pixels sampled every fourth frame, alongside learned features and sparse occupancy. For a 32-frame MultiCamVideo clip, it averages 0.95M 32-bit-equivalent values on random windows and 0.92M on the first-32 protocol. On first-32, Sparc4D reaches 21.70\\,dB, compared with 20.40\\,dB for MoVieS. On randomly placed windows, their PSNR scores are comparable. With stored texture disabled, temporal slots compress the time-varying feature state by a median $4.0\\times$ and reduce the mean state from 1.04M to 0.42M values, with essentially unchanged target-view reconstruction quality. Without fine-tuning on real data, Sparc4D transfers to DyCheck and Neu3D, where stored texture improves LPIPS while slightly reducing PSNR.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202610/03/2610.01707v1-mega-object-level-mesh-extraction-from-3d-gaussian-splatting-via-spatial-visual-distillation",
+      "section": "quick",
+      "title_en": "MEGA: Object-Level Mesh Extraction from 3D Gaussian Splatting via Spatial Visual Distillation",
+      "authors": "Liwei Liao, Yingkui Zhang, Qianqian Tong, Ronggang Wang",
+      "date": "2026-10-01",
+      "pdf": "https://arxiv.org/pdf/2610.01707v1",
+      "score": "6.0",
+      "evidence": "从3D高斯泼溅中提取网格",
+      "tldr": "MEGA是一种从3D高斯泼溅（3DGS）中提取物体级、封闭网格的框架。针对现有方法仅限于场景级提取且难以生成封闭表面的问题，MEGA通过空间视觉蒸馏（SVD）和掩码引导的神经表面重建，实现了高精度的物体级几何重建，支持物理交互与逼真渲染。",
+      "tags": "query:q1",
+      "abstract_en": "Mesh extraction from 3D Gaussian Splatting (3DGS) aims to endow 3D Gaussians with accurate geometric structures, enabling explicit and precise 3D occupancy. However, existing methods primarily focus on scene-level mesh extraction, making them unable to represent object-level occupancy and often resulting in non-watertight surfaces. To overcome these limitations, we propose \\textbf{MEGA} (\\underline{M}esh \\underline{E}xtraction from \\underline{GA}ussians), a ``segment-then-mesh'' framework for extracting object-level, watertight meshes from complex 3DGS scenes. At the core of MEGA are \\textbf{Spatial Visual Distillation (SVD)} and a mask-guided neural surface reconstruction module. SVD treats the 3DGS model as a teacher, sampling diverse camera poses and rendering the corresponding views of each segmented object. These observations are then used to train a mesh reconstruction model through photometric supervision. Extensive experiments on several widely used benchmarks demonstrate that MEGA achieves state-of-the-art performance in recovering accurate object-level 3D occupancy. Moreover, MEGA enables complex physical interactions by combining high-quality object-level meshes for geometric occupancy with 3DGS representations for photorealistic rendering.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

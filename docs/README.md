@@ -6,67 +6,38 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-10-02
-- 运行时间：2026-10-02 22:33:38 UTC
+- 最新运行日期：2026-10-03
+- 运行时间：2026-10-03 21:46:38 UTC
 - 运行状态：成功
-- 本次总论文数：15
-- 精读区：4
-- 速读区：11
+- 本次总论文数：5
+- 精读区：0
+- 速读区：5
 
 ### 今日简报（AI）
-今日精选 15 篇前沿论文，重点解析 ScaGNN 与 PTNO 在粒子输运及多重散射模拟中的突破性进展。
-图神经网络与神经算子在复杂物理模拟任务中表现卓越，展现了处理高维科学计算的高效潜力。
-建议关注物理驱动的 AI 建模趋势，深入阅读这两篇高分论文以掌握计算物理与深度学习结合的核心逻辑。
-- 详情：[/202610/02/README](/202610/02/README)
+今日精选 5 篇前沿论文，涵盖 3D 高斯压缩、反向散射算法及体数据可视化等领域。
+重点关注 TSGL 框架在 3DGS 压缩中的高效表现，以及模型驱动深度学习在反向散射问题中的应用潜力。
+建议优先阅读 TSGL 相关论文，以掌握 3D 场景渲染与压缩的前沿技术趋势。
+- 详情：[/202610/03/README](/202610/03/README)
 
 ### 精读区论文标签
-1. [ScaGNN: a Graph Neural Network for Multiple Scattering Simulations](/202610/02/2609.37509v1-scagnn-a-graph-neural-network-for-multiple-scattering-simulations)  
-   标签：评分：9.0/10、query:q4
-   evidence：用于多次散射模拟的图神经网络
-2. [PTNO: Training Neural Operators with Noisy Monte Carlo Estimates for Particle Transport Problems](/202610/02/2609.40090v1-ptno-training-neural-operators-with-noisy-monte-carlo-estimates-for-particle-transport-problems)  
-   标签：评分：9.0/10、query:q4
-   evidence：使用神经算子处理多次散射下的粒子传输
-3. [Single-Voxel Wireless NeRF for Spatial Spectrum Prediction](/202610/02/2609.36547v1-single-voxel-wireless-nerf-for-spatial-spectrum-prediction)  
-   标签：评分：8.0/10、query:q7
-   evidence：用于无线NeRF加速的稀疏体积采样
-4. [NRF-GS: Neural Residual Fields for Expressive and Compact Gaussian Splatting](/202610/02/2609.37115v1-nrf-gs-neural-residual-fields-for-expressive-and-compact-gaussian-splatting)  
-   标签：评分：8.0/10、query:q1
-   evidence：用于表达性强且紧凑的高斯泼溅的神经残差场
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Rate-Distortion Adaptive Primitive Selection for Omnidirectional Gaussian Splatting](/202610/02/2609.34367v2-rate-distortion-adaptive-primitive-selection-for-omnidirectional-gaussian-splatting)  
-   标签：评分：7.0/10、query:q7
-   evidence：通过层级高斯泼溅基元选择加速渲染
-2. [AESplat: Advancing Pose-Free Feed-Forward 3D Gaussian Splatting via Decoupled Appearance Modeling](/202610/02/2609.36693v1-aesplat-advancing-pose-free-feed-forward-3d-gaussian-splatting-via-decoupled-appearance-modeling)  
+1. [TSGL: Teacher-Student Graph Learning for 3DGS Compression](/202610/03/2609.38635v1-tsgl-teacher-student-graph-learning-for-3dgs-compression)  
    标签：评分：7.0/10、query:q1
-   evidence：3D高斯泼溅与解耦外观建模
-3. [Gaussian Stippling: Efficient Sorting-Free 3D Gaussian Rendering through Hybrid Sampling and Spatiotemporal Reconstruction](/202610/02/2609.38488v1-gaussian-stippling-efficient-sorting-free-3d-gaussian-rendering-through-hybrid-sampling-and-spatiotemporal-reconstruction)  
-   标签：评分：7.0/10、query:q7
-   evidence：高效免排序3D高斯渲染与随机透明度
-4. [StereoGaussians: Feed-Forward 3D Gaussian Splatting from Stereo Images](/202610/02/2609.38592v1-stereogaussians-feed-forward-3d-gaussian-splatting-from-stereo-images)  
-   标签：评分：7.0/10、query:q1
-   evidence：基于立体图像的前馈3D高斯泼溅
-5. [UGOD: Uncertainty-Guided Opacity and Dropout for Sparse-View 3D Gaussian Splatting](/202610/02/2609.39089v1-ugod-uncertainty-guided-opacity-and-dropout-for-sparse-view-3d-gaussian-splatting)  
-   标签：评分：7.0/10、query:q1
-   evidence：神经渲染中的不确定性引导不透明度调节
-6. [EffGS: Efficient and High-Fidelity Gaussian Splatting](/202610/02/2609.39553v1-effgs-efficient-and-high-fidelity-gaussian-splatting)  
-   标签：评分：7.0/10、query:q7
-   evidence：加速高斯泼溅的渲染效率
-7. [Octree-based Video Representation](/202610/02/2609.33100v1-octree-based-video-representation)  
+   evidence：用于新视角合成的3D高斯泼溅压缩
+2. [A Model-Informed Deep Learning Algorithm for Solving the Phaseless Inverse Scattering Problem](/202610/03/2609.33070v1-a-model-informed-deep-learning-algorithm-for-solving-the-phaseless-inverse-scattering-problem)  
+   标签：评分：6.0/10、query:q4
+   evidence：用于逆散射问题的深度学习
+3. [Volcanite: Commodity-Hardware Segmentation Volume Visualization for Connectomics and Beyond](/202610/03/2609.36898v1-volcanite-commodity-hardware-segmentation-volume-visualization-for-connectomics-and-beyond)  
    标签：评分：6.0/10、query:q7
-   evidence：基于八叉树的时空体划分用于高效表示
-8. [GeoVerse: World-Consistent Novel View Synthesis in Geometric Latent Space](/202610/02/2609.35734v1-geoverse-world-consistent-novel-view-synthesis-in-geometric-latent-space)  
+   evidence：针对大型分割数据的GPU加速体可视化
+4. [A Compact Explicit 4D Representation for Dynamic Scenes](/202610/03/2610.01229v1-a-compact-explicit-4d-representation-for-dynamic-scenes)  
    标签：评分：6.0/10、query:q1
-   evidence：几何潜空间中的新视角合成
-9. [GeoVerse: World-Consistent Novel View Synthesis in Geometric Latent Space](/202610/02/2609.35734v2-geoverse-world-consistent-novel-view-synthesis-in-geometric-latent-space)  
+   evidence：使用高斯面元进行4D场景表示和渲染
+5. [MEGA: Object-Level Mesh Extraction from 3D Gaussian Splatting via Spatial Visual Distillation](/202610/03/2610.01707v1-mega-object-level-mesh-extraction-from-3d-gaussian-splatting-via-spatial-visual-distillation)  
    标签：评分：6.0/10、query:q1
-   evidence：几何潜空间中的新视角合成
-10. [Learning Semantic Inpainting for Animatable Gaussian Head Avatars](/202610/02/2609.38343v1-learning-semantic-inpainting-for-animatable-gaussian-head-avatars)  
-   标签：评分：6.0/10、query:q1
-   evidence：可驱动的高斯头部头像
-11. [VASC: Value-Aware Sparse Attention with Cross-Layer Memory for Efficient 3D Reconstruction](/202610/02/2610.01013v1-vasc-value-aware-sparse-attention-with-cross-layer-memory-for-efficient-3d-reconstruction)  
-   标签：评分：6.0/10、query:q1
-   evidence：利用稀疏注意力进行高效3D重建
+   evidence：从3D高斯泼溅中提取网格
 
 
 <div class="dpr-home-promo-card">

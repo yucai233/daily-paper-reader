@@ -1,0 +1,974 @@
+Title: A Model-Informed Deep Learning Algorithm for Solving the Phaseless Inverse Scattering Problem
+
+URL Source: https://arxiv.org/pdf/2609.33070v1
+
+Published Time: Tue, 29 Sep 2026 01:36:52 GMT
+
+Number of Pages: 20
+
+Markdown Content:
+# A Model-Informed Deep Learning Algorithm for Solving the Phaseless Inverse Scattering Problem 
+
+Dinh-Liem Nguyen ∗ Nhung H. Nguyen † Aravinth Ravi ‡
+
+Abstract 
+
+We study in this paper an unsupervised, two-step, model-informed deep learning framework for solv-ing the phaseless inverse scattering problem. The objective is to reconstruct a compactly supported function that characterizes a scatterer from boundary measurements of the modulus of the total wave corresponding to multiple incident waves. In the first step, the phaseless data are transformed into an imaging function that is directly related to the underlying scatterer. Motivated by the contrast source method, we derive a coupled system of model equations using the Lippmann–Schwinger integral equa-tion and a spectral-based equation involving the imaging function. In the second step, the unknown scatterer and contrast source function are each parameterized as independent feedforward neural net-works, which are trained simultaneously at each iteration using the derived system of model equations. The Lippmann-Schwinger integral equation enforces the underlying physics as a model constraint, while the spectral-based equation incorporating the imaging function supplies geometric information on the shape and location of the unknown scatterer. The resulting framework achieves accurate and efficient reconstructions while maintaining robustness to measurement noise. Furthermore, transforming some aspects of the problem to the spectral domain enables an effective reduction in the computational cost, allowing us to recover the unknown scatterer quickly. Numerical experiments in both two- and three-dimensional settings demonstrate the effectiveness, stability, and practical potential of the proposed approach. 
+
+Keywords: inverse scattering problem, phaseless data, deep learning, model-informed network, imaging function, 3D reconstructions 
+
+# 1 Introduction 
+
+Consider an inhomogeneous medium that fills up a bounded Lipschitz domain D ⊂ Rn for n = 2 or 3. Suppose that the medium is characterized by bounded function q, satisfying q = 0 in Rn\D. Consider the incident plane wave 
+
+uin (x, d ) = eikx ·d, x ∈ Rn, d ∈ Sn−1 := {x ∈ Rn : |x| = 1 },
+
+> ∗
+
+Department of Mathematics, Kansas State University, Manhattan, KS 66506 (dlnguyen@ksu.edu) 
+
+> †
+
+Department of Mathematics, Kansas State University, Manhattan, KS 66506 (nhungnh@ksu.edu) 
+
+> ‡
+
+Department of Mathematics, Kansas State University, Manhattan, KS 66506 (arav0006@ksu.edu) 
+
+1arXiv:2609.33070v1 [math.NA] 27 Sep 2026 where k > 0 is the wave number and d is the direction vector of propagation. The scattering of uin by the inhomogeneous medium is described by the following model problem: ∆u + k2(1 + q(x)) u = 0 , x ∈ Rn, (1.1) 
+
+u = uin + usc , (1.2) lim  
+
+> r→∞
+
+r n−12
+
+ ∂u sc 
+
+∂r − iku sc 
+
+
+
+= 0 , r = |x|, (1.3) where u is the total field, usc is the scattered field, and the Sommerfeld radiation condition (1.3) holds uniformly for all directions x/ |x| ∈ Sn−1. If Rn\D is connected and Re( q) ≥ 0, this scattering problem is known to have a unique weak solution usc ∈ H1loc (Rn), see [9]. Let Ω be a ball of sufficiently large radius 
+
+RΩ with boundary ∂Ω such that D ⊂ Ω. We are interested in the following inverse problem. 
+
+Inverse Problem. Determine q, given |u| on ∂Ω associated with all incident directions d ∈ Sn−1.Results involving the uniqueness and stability of solution to the inverse scattering problem with phase-less data has been established in [37, 43] for multiple incident directions and in [22, 23, 30] for multiple frequencies. Inverse scattering problems are concerned with the recovery of geometric and physical prop-erties of unknown scatterers from boundary measurement data. Such problems arise naturally in a wide range of scientific and engineering disciplines, including subsurface reservoir identification, medical imag-ing, geophysical prospecting, and microwave remote sensing [4, 31]. A variety of numerical methods have been developed over the past few decades to address inverse scattering problems with phased data [9, 3, 5, 16]. However, acquiring phased data in practice is often difficult and expensive. In many applications, phaseless data are considerably easier and more cost-effective to obtain, which makes phaseless recon-struction particularly attractive. On the other hand, the absence of phase information renders the inverse problem more nonlinear and severely ill-posed. For numerical methods for inverse scattering problems with phaseless data, we refer to [2, 11, 17, 8, 41, 40] for qualitative reconstruction results, including the recovery of the shape and location of the scatterer. In contrast, results on coefficient reconstruction are relatively limited. A widely used approach is to first recover the phase information from phase-less measurements and then apply existing numerical methods for phased inverse scattering problems to reconstruct the coefficient q; see [21, 20, 19, 1, 25]. Recent advances in machine learning, particularly deep learning, have pioneered new paths for address-ing the inverse scattering problem [6, 34]. Deep learning’s capacity to capture nonlinearity and complexity from observed data, generalize from computationally inexpensive synthetic data to costly real-world mea-surements, and handle incomplete data through techniques such as dropout, regularization, and data augmentation makes it an attractive framework for algorithm design. Deep learning approaches can broadly be classified into two categories: physics-agnostic approaches [13, 12, 42, 45, 27], in which the loss function is determined solely by classical error measures with optional regularization [18] and no explicit physical prior; and physics-informed approaches, in which knowledge of the underlying physics is explicitly incorporated into the loss function or embedded into the neural network architecture [7, 32, 44, 28, 39, 15] . Despite this broader progress, corresponding advances in solving inverse problems with phaseless data have been comparatively limited, as reflected in the sparse available literature. The papers [14] and [38] propose two-step supervised deep learning methods for the inverse obstacle problem, while [29] develops a two-step supervised deep learning approach for the inverse scattering problem. All of these methods rely on supervised learning frameworks that require large, labeled datasets for training. As a result, 2their performance is strongly tied to the distribution of the training data: while they often achieve high-resolution reconstructions when the true parameters lie within this distribution, performance may degrade substantially for out-of-distribution inputs. Hence, in this paper, we propose a novel unsupervised Fourier-accelerated method which only requires the phaseless boundary measurement data. Our approach integrates a system of approximate equations derived from the Lippmann-Schwinger integral equation and an equation relating the imaging function to the contrast, with a model-based deep learning framework and is inspired by the physics-informed deep learning method [33, 10]. The imaging function utilizes the phaseless boundary measurement data to characterize the unknown scatterer and provide a stable geometric estimate of its location and shape. Furthermore, its approximation can be reformulated as an equation relating the imaging function data to the scatterer, which forms the second equation of the model system. We exploit the convolutional structure of the two above mentioned equations and apply the Fourier transform to derive the state-data equations, which form the objective function in the model-based deep learning algorithm. This derivation of the objective function has been inspired by the contrast source method [36]. Next, using this system of approximate model equations as an objective function, we concurrently optimize two neural networks to approximate the Fourier coefficients of the contrast source function and the unknown scatterer. A related framework was previously developed by the authors for the acoustic inverse source problem [26], where an imaging function capturing the location and shape of the unknown source was integrated in a model equation to recover the Fourier coefficients of the source function. The present work extends this idea to the significantly more challenging setting of phaseless inverse scattering. In contrast to the linear inverse source problem, the lack of phase information in phaseless inverse scattering greatly amplifies both the nonlinearity and ill-posedness of the reconstruction problem. To overcome these additional challenges, we introduce a new framework based on a system of approximate model equations and jointly train two independent neural networks through a coupled bi-objective loss function, rather than relying on a single network as in the previous work. This algorithm achieves a stable and rapid reconstruction of the scatterer while requiring the neural network to approximate the contrast source function using far fewer inputs, rather than estimating the parameter over the entire computational domain. Moreover, applying the Fourier transform converts the convolutional structure of the volume integral into pointwise multiplication of Fourier coefficients, drastically reducing computational cost and avoiding the singularity of the Green’s function in the state equation. Furthermore, since our method does not rely on an input-output training dataset, the algorithm is free from the constraints imposed by such datasets. The paper is organized as follows. The imaging function and its analysis are presented in Section 2. Section 3 is dedicated to derivation of the Fourier-accelerated system of approximate model equations. Section 4 describes the model-based neural network. The numerical study for simulated data is presented in Section 5. 
+
+# 2 A stable imaging function 
+
+In this section, we present an imaging function designed to efficiently process phaseless data measured on a sufficiently distant boundary. In addition to furnishing an equation within the model-informed system, which is discussed in Section 3, this imaging function provides an initial estimate of the geometric characteristics of the unknown contrast q.It is well known that the solution of (1.1)-(1.3) can be characterized equivalently as the solution of 3the Lippmann–Schwinger integral equation 
+
+usc (x, d ) = k2
+
+Z
+
+> Ω
+
+Φ( x, y )q(y)u(y, d )dy, x ∈ Rn, d ∈ Sn−1, (2.1) where Φ is the Green’s function of the scattering problem (1.1)-(1.3) which is given by Φ( x, y ) = Φ( x − y) = 
+
+
+
+i
+
+4 H(1) 0
+
+ k|x − y|, n = 2 ,
+
+exp  ik |x − y|
+
+4π|x − y| , n = 3 .
+
+for x, y ∈ Rn and x̸ = y. Following the approach studied in [8] we define up as follows 
+
+up(x, d ) = |u(x, d )|2 − | uin (x, d )|2
+
+uin (x, d ) . (2.2) Inspired by [24], for z ∈ Rn, we define the imaging function with phaseless data as follows 
+
+I(z, d ) := 
+
+Z
+
+> ∂Ω
+
+Ψ( x, z )up(x, d )dS (x),
+
+with Ψ( x, z ) := ∂ Im Φ( x, z )
+
+∂ν (x) − ik Im Φ( x, z ),
+
+where ν is the outward normal unit vector of ∂Ω and Im Φ( x, z ) = 
+
+( 14 J0(k|x − z|), n = 2 , 
+
+> k
+> 4π
+
+j0(k|x − z|), n = 3 .
+
+The test function Ψ was introduced in [24] for constructing a stable imaging functional in inverse scattering problems with phased data. A key advantage of Ψ over test functions commonly used in direct sampling methods is that it does not have a singularity. As with other imaging functions in sampling-based approaches, we will partially justify in the following that the imaging function I(z, d ) attains small values when the sampling point z lies outside the scatterer, and significantly larger values when z is located inside the scatterer. Consequently, by evaluating and visualizing I(z, d ) over a sampling domain, one can reconstruct the location and shape of the scatterer. With the observation that 
+
+up(x, d ) = usc (x, d ) + |usc (x, d )|2
+
+uin (x, d ) + usc (x, d )uin (x, d )
+
+uin (x, d ) ,
+
+we can expand I as 
+
+I(z, d ) = 
+
+Z
+
+> ∂Ω
+
+Ψ( x, z )usc (x, d )dS (x)+
+
+Z
+
+> ∂Ω
+
+Ψ( x, z ) |usc (x, d )|2
+
+uin (x, d ) dS (x) + 
+
+Z
+
+> ∂Ω
+
+Ψ( x, z ) usc (x, d )uin (x, d )
+
+uin (x, d ) dS (x). (2.3) Now let us define 
+
+eI(z, d ) := 
+
+Z
+
+> ∂Ω
+
+Ψ( x, z )usc (x, d )dS (x).
+
+The next theorem shows that the last two integrals in (2.3) become negligible as RΩ ≫ 1, where RΩ is the radius of the measurement boundary ∂Ω. Consequently, for sufficiently large RΩ, we have I ≈ eI.4Theorem 2.1. For any z ∈ Ω, we have 
+
+I(z, d ) = eI(z, d ) + O
+
+
+
+R(1 −n)/2Ω
+
+
+
+. (2.4) 
+
+Proof. Following a similar argument used in [29, 8], we can prove that 
+
+Z
+
+> ∂Ω
+
+Ψ( x, z ) |usc (x, d )|2
+
+uin (x, d ) dS (x) ≤ CR (1 −n)/2Ω ,
+
+and Z
+
+> ∂Ω
+
+Ψ( x, z ) usc (x, d )uin (x, d )
+
+uin (x, d ) dS (x) ≤ CR (1 −n)/2Ω .
+
+where C > 0. These results directly imply (2.4). The preceding theorem establishes that, for sufficiently large RΩ, the imaging function I admits the approximation eI. It is therefore essential to examine the behavior of eI. Since the measurement data are collected on ∂Ω with sufficiently large radius RΩ, the Sommerfeld radiation condition (1.3) implies that 
+
+∂u/∂ν ≈ iku . Consequently, the imaging function can equivalently be expressed as follows 
+
+eI(z, d ) = 
+
+Z
+
+> ∂Ω
+
+ ∂ImΦ( x, z )
+
+∂ν (x) usc (x) − ImΦ( x, z ) ∂u sc (x)
+
+∂ν (x)
+
+
+
+dS (x). (2.5) As studied in [24], eI(z, d ) satisfies 
+
+eI(z, d ) = k2
+
+Z
+
+> D
+
+ImΦ( z, x )q(x)u(x)dx. 
+
+This result helps us understand the resolution of the imaging function eI(z, d ) through the localization properties of J0(k|y − z|) and j0(k|y − z|). Specifically, these functions exhibit a peak at z = y and decay rapidly as |y − z| increases. Together with Theorem 2.1, we can partly justify the desired behavior of 
+
+I(z, d ) as an imaging performance by 
+
+I(z, d ) = k2
+
+Z
+
+> D
+
+ImΦ( z, x )q(x)u(x)dx + O
+
+
+
+R(1 −n)/2Ω
+
+
+
+. (2.6) In Figure 1 we can see that the summation of I(z, d ) over multiple directions of incident waves d provides a reasonable estimate for the location and shape of the scatterer.         
+
+> (a) True q(b) P
+> d|I| with 24 evenly distributed d∈S1
+
+Figure 1: True contrast q and an estimate of its support using I.5The next theorem demonstrates the stability of the imaging function against noise. 
+
+Theorem 2.2. For d ∈ Sn−1, we assume that uδ(·, d ) satisfies 
+
+|u(·, d )| − | uδ(·, d )| L2(∂Ω) ≤ δ < 1.
+
+Let Iδ(z, d ) denote the imaging function defined as in (2.3) , with |u(·, d )| replaced by its noisy counterpart 
+
+|uδ(·, d )|. The following stability estimate holds 
+
+I(z, d ) − I δ(z, d ) ≤ Cδ, for all z ∈ Ω, (2.7) 
+
+where C > 0 is independent of z and δ.Proof. For z ∈ Ω, we have 
+
+|I (z, d ) − I δ(z, d )| =
+
+Z
+
+> ∂Ω
+
+Ψ( x, z )
+
+"
+
+|u(x, d )|2 − | uin (x, d )|2
+
+uin (x, d ) − |uδ(x, d )|2 − | uin (x, d )|2
+
+uin (x, d )
+
+#
+
+dS (x)
+
+≤
+
+Z
+
+> ∂Ω
+
+Ψ( x, z ) |u(x, d )|2 − | uδ(x, d )|2
+
+uin (x, d ) dS (x)
+
+=
+
+Z
+
+> ∂Ω
+
+Ψ( x, z )
+
+uin (x, d )
+
+h
+
+|u(x, d )|2 − | uδ(x, d )|2i
+
+dS (x)
+
+≤ ∥ Ψ( ·, z )∥L2(∂Ω) 
+
+
+
+2|u(·, d )| + ( |uδ(·, d )| − | u(·, d )|)
+
+  
+
+|u(·, d )| − | uδ(·, d )|
+
+
+
+> L2(∂Ω)
+
+≤ ∥ Ψ( ·, z )∥L2(∂Ω) 
+
+2∥u(·, d )∥L2(∂Ω) δ + δ2
+
+≤ ∥ Ψ( ·, z )∥L2(∂Ω) 
+
+2∥u(·, d )∥L2(∂Ω) + 1  δ. 
+
+The last inequality is obtain using δ < 1. The proof is concluded by defining 
+
+C := sup 
+
+> z∈Ω
+
+ ∥Ψ( ·, z )∥L2(∂Ω) 
+
+2∥u(·, d )∥L2(∂Ω) + 1  .
+
+# 3 A system of approximate model equations 
+
+In this section, we construct a system of approximate model equations. These equations are motivated by the results obtained in Section 2 and are combined with their representation in the Fourier domain to improve computational efficiency. The system utilizes the equations (2.1) and (2.6). For (2.6), when the measurement radius RΩ is sufficiently large, the term O
+
+
+
+R(1 −n)/2Ω
+
+
+
+can be neglected. Consequently, we obtain that 
+
+I(z, d ) ≈ k2
+
+Z
+
+> D
+
+ImΦ( z, y )q(y)u(y, d )dy. 
+
+6We will treat this approximation as an equation in the subsequent implementation. For d ∈ Sn−1 and 
+
+x, z ∈ Ω, the following equations relate the unknown contrast q and total field uu(x, d ) = uin (x, d ) + k2
+
+Z
+
+> Ω
+
+Φ( x, y )q(y)u(y, d )dy, x̸ = y, 
+
+I(z, d ) = k2
+
+Z
+
+> D
+
+ImΦ( z, y )q(y)u(y, d )dy. 
+
+Multiplying the first equation by q and denoting qu (·, d ) as ω(·, d ), we obtain the system of equations 
+
+ω(x, d ) = q(x)uin (x, d ) + k2q(x)
+
+Z
+
+> Ω
+
+Φ( x, y )ω(y, d )dy, x̸ = y, (3.1) 
+
+I(z, d ) = k2
+
+Z
+
+> D
+
+ImΦ( z, y )ω(z, d )dy. (3.2) The equations (3.1) and (3.2) will be referred to as the state equation and the data equation, respectively. 
+
+Remark. The system (3.1)-(3.2) can be adopted as the model system for the inverse scattering problem with phased boundary measurement data. In this setting, the corresponding imaging function is given by eId, so (3.2) holds as an exact equation. Consequently, in the presence of phased data, the system constitutes an exact formulation rather than an approximation, particularly with respect to the data equation. The system of state - data equations (3.1)-(3.2) can be considered as a set of model equations. However, direct discretization of this equation generally results in a large number of parameters, especially in three dimensions. To improve computational efficiency, the equation is transformed into the spectral domain, with functions expressed through their Fourier coefficients. In this setting, the dominant behavior of the solution is often captured by a small subset of Fourier modes, allowing for a reduced computational cost without compromising essential characteristics. Moreover, turning the state equation allows us to avoid the singularity of the Green’s function Φ in the state equation. To this end, we employ a periodization technique for equations (3.1) and (3.2). An additional computational advantage of this approach is that it transforms the equations into algebraic relations in the Fourier domain, where the Fourier coefficients of the periodized kernels can be computed explicitly. This periodization technique is motivated by the work in [35]. Let B0(ρ) be the ball with radius ρ that is centered at the origin such that supp( q) ⊂ B0(ρ). We define 
+
+P(x) = 
+
+(
+
+Φ( x), |x| ≤ R, 
+
+0, x ∈ GR \ B0(R), R ≥ 2ρ, 
+
+where GR is the open cube centered at the origin with side length 2 R,
+
+GR = {x = ( x1, . . . , x n) ∈ Rn : |xℓ| < R, ℓ = 1 , . . . , n }.
+
+Then we extend P from GR to Rn as a 2 R-periodic function. The contrast q and contrast source function 
+
+ω are also periodized in the same way, obtaining qper and ωper , respectively. By this, the periodized version of the system of equations (3.1)-(3.2) is given by 
+
+ωper (x, d ) = qper (x)uin (x, d ) + k2qper (x)
+
+Z
+
+> GR
+
+P(x − y)ωper (x, d )dy, x̸ = y, 
+
+I(z, d ) = k2
+
+Z
+
+> GR
+
+K(z − y)ωper (y, d )dy, 
+
+7where x, z ∈ Ω and K = Im( P). We next reformulate this system in Fourier domain. First, recall that the trigonometric orthonormal basis of L2(GR) is given by 
+
+φj (x) = (2 R)−n/ 2eiπj · xR , j = ( j1, . . . , j n) ∈ Zn.
+
+For g ∈ L2(GR) and j ∈ Zn, the Fourier coefficients of g are given by 
+
+bg(j) = 
+
+Z
+
+> GR
+
+g(x)φj (x)dx. 
+
+Now, observe that the right-hand sides of the equations exhibit a convolution structure. From this, we derive the set of model equations 
+
+F−1[bωper (j, d )]( x, d ) = qper (x) uin (x, d ) + k2qper (x)(2 R)n/ 2F−1h bP(j) bωper (j, d )
+
+i
+
+(x), x ∈ Ω. (3.3) 
+
+I(z, d ) = k2 (2 R)n/ 2F−1h bK(j) bωper (j, d )
+
+i
+
+(z), z ∈ B0(ρ).
+
+(3.4) where F is the Fourier transform. To use this system of model equations, we need explicit Fourier coefficients of K and P and their behavior, which we now present. 
+
+Theorem 3.1. For j ∈ Zn, the Fourier coefficients of K are given as follows. 
+
+• For n = 2 ,
+
+bK(j) = 
+
+
+
+πR 
+
+8
+
+J20 (kR ) + J21 (kR ) , π|j| = kR, 
+
+− 14 · πR k2R2 − π2|j|2 [π|j|J0(kR )J1(π|j|) − kRJ 1(kR )J0(π|j|)] , π|j|̸ = kR. 
+
+• For n = 3 ,
+
+bK(j) = 
+
+
+
+(2 R)−3/2 R2
+
+2
+
+kR j20 (kR ) + j21 (kR ) − j0(kR )j1(kR ) , π|j| = kR, kR (2 R)−3/2 R2
+
+k2R2 − π2|j|2 [kRj 0(π|j|)j1(kR ) − π|j|j0(kR )j1(π|j|)] , π|j|̸ = kR, |j|̸ = 0 ,
+
+1
+
+k (2 R)−3/2
+
+ 1
+
+k sin( kR ) − R cos( kR )
+
+
+
+, |j| = 0 .
+
+Consequently, as |j| → ∞ ,
+
+bK(j) = 
+
+(
+
+O  |j|−3/2 , if n = 2 ,
+
+O  |j|−2 , if n = 3 .
+
+Furthermore, for all j ∈ Zn such that π|j| ≥ kR ≥ 1, we have | bK(j)| ≤ μ, where 
+
+μ =
+
+( πR 
+
+> 8
+
+J20 (kR ) + J21 (kR ) , if n = 2 ,
+
+(2 R)−3/2 R2
+
+> 2
+
+kR [j20 (kR ) + j21 (kR )] − j0(kR )j1(kR ) , if n = 3 .
+
+Proof. The proof of this theorem can be found in [26] and is therefore omitted here. 8Besides providing an explicit representation of bK(j), the theorem indicates that | bK(j)| attains its maximum value on the ring |j| = kR/π . Moreover, | bK(j)| decays sharply as |j| moves away from that ring. As shown in Figure 2, the dominant coefficients of | bK(j)| are concentrated along the ring |j| = kR/π ,where they attain significantly larger magnitudes, while rapidly decreasing away from it. 
+
+(a) k = 6 (b) k = 8 (c) k = 10 
+
+Figure 2: bK with the circle |j| = kR/π (black ring) for n = 2 The following theorem presents a detailed analysis of Fourier coefficients bP.
+
+Theorem 3.2. For j ∈ Zn, the Fourier coefficients of P are given as follows. 
+
+• For n = 2 ,
+
+bP(j) = 
+
+
+
+iπR 
+
+8
+
+h
+
+H(1) 0 (kR )J0(kR ) + H(1) 1 (kR )J1(kR )
+
+i
+
+, π|j| = kR, R
+
+2( k2R2 − π2|j|2)
+
+
+
+−1 + iπ 
+
+2
+
+h
+
+−π|j|H(1) 0 (kR )J1(π|j|) + kRH (1) 1 (kR )J0(π|j|)
+
+i
+
+,π|j|̸ = kR, j ̸ = 0 ,
+
+−12k2R + iπ 
+
+4k H(1) 1 (kR ), j = 0 .
+
+(3.5) 
+
+• For n = 3 ,
+
+bP(j) = 
+
+
+
+iR 
+
+2k (2 R)−3/2
+
+
+
+1 − eikR 
+
+kR sin( kR )
+
+
+
+, π|j| = kR, R2
+
+k2R2 − π2|j|2 (2 R)−3/2
+
+
+
+−1 + eikR 
+
+
+
+cos( π|j|) − ikR π|j| sin( π|j|)
+
+ 
+
+, π|j|̸ = kR, |j|̸ = 0 ,
+
+1
+
+k2 (2 R)−3/2  −1 + eikR (1 − ikR ) , j = 0 .
+
+(3.6) 
+
+Moreover, if π|j| > kR ≥ 1, then we have 
+
+| bP(j)| ≤ 
+
+
+
+C(π|j|)1/2
+
+π2|j|2 − k2R2 , if n = 2 ,R2
+
+π2|j|2 − k2R2 · 3(2 R)3/2 , if n = 3 .
+
+9where C > 0. Consequently, as |j| → ∞ ,
+
+| bP(j)| =
+
+(
+
+O  |j|−3/2 , if n = 2 ,
+
+O  |j|−2 , if n = 3 . (3.7) 
+
+Proof. The derivation of Fourier coefficients bP can be found in [35]. Regarding the boundedness of 
+
+| bP(j)|, assume that π|j| > kR ≥ 1. When n = 2, since |H(1)  
+
+> α
+
+(π|j|)| is bounded when π|j| ≥ 1 and 
+
+|Jα(π|j|)| = O(π|j|−1/2) as |j| → ∞ for α = 0 , 1, we have 
+
+| bP(j)| = R
+
+2( π2|j|2 − k2R2) −1 + iπ 
+
+2
+
+h
+
+−π|j|H(1) 0 (kR )J1(π|j|) + kRH (1) 1 (kR )J0(π|j|)
+
+i
+
+≤ R
+
+2( π2|j|2 − k2R2)
+
+n
+
+1 + π
+
+2
+
+h
+
+π|j|| H(1) 0 (kR )|| J1(π|j|)| + kR |H(1) 1 (kR )|| J0(π|j|)|
+
+io 
+
+≤ R
+
+2( π2|j|2 − k2R2)
+
+h
+
+1 + C′(( π|j|)1/2 + ( π|j|)−1/2)
+
+i
+
+≤ C(π|j|)1/2
+
+π2|j|2 − k2R2 .
+
+where C′, C > 0. Similarly, when n = 3, 
+
+| bP(j)| = R2
+
+π2|j|2 − k2R2
+
+1(2 R)3/2 −1 + eikR 
+
+
+
+cos( π|j|) − ikR π|j| sin( π|j|)
+
+
+
+≤ R2
+
+π2|j|2 − k2R2
+
+1(2 R)3/2
+
+
+
+1 + 
+
+
+
+| cos( π|j|)| + kR π|j| | sin( π|j|)|
+
+ 
+
+≤ R2
+
+π2|j|2 − k2R2 · 3(2 R)3/2 .
+
+The asymptotic behavior of | bP(j)| in (3.7) can be directly deduced from the estimates above. The theorem above demonstrates that | bP(j)| decays rapidly, with a rate of with the rate of |j|−3/2 for 
+
+n = 2 and of |j|−2 for n = 3 as |j| → ∞ . Although the maximum value of | bP(j)| is not established in this work, we are able to indicate that | bP(j)| can still be controlled by a strictly decreasing upper bound, despite its oscillatory behavior arising from the properties of Bessel functions. Furthermore, these bounds attain relatively large values in a neighborhood of the ring |j| = kR/π . Hence, it is reasonable to expect that | bP(j)| attains large values when |j| ≈ kR/π . This behavior is illustrated in Figure 3.         
+
+> (a) k= 6 (b) k= 8 (c) k= 10
+
+Figure 3: bP with the circle |j| = kR/π (black ring) for n = 2 10 The characterization of the dominant coefficients of both bP(j) and bK(j) informs the selection of an appropriate truncation level in the Fourier series representation when implementing the system (3.3)-(3.4). This provides a lower bound reduction in the number of Fourier coefficients required by the model to capture the dominant coefficients of ω, and hence plays a crucial role in improving the computational efficiency of the neural network training procedure, as discussed in the next section. In particular, we truncate the series to the index set j ∈ [−J + 1 , J ]n ⊂ Zn, where J is taken larger but not too far from 
+
+kR/π .
+
+# 4 Model-based deep learning algorithm 
+
+In this section, we present a formulation of the proposed model-informed deep learning algorithm. The central principle of this approach is the optimization of parametric hypothesis spaces governed by the system of equations (3.3)-(3.4). To formulate the optimization problem, we specify the hypothesis spaces 
+
+H and bH, along with the corresponding objective function. This optimization problem requires two hypothesis spaces: the first hypothesis space bH approximates the Fourier coefficients of the contrast source function bωΦ, and the second hypothesis space H approximates the contrast function qΘ in free space. Both hypothesis spaces are taken to be the class of fully-connected feedforward neural networks, wherein the parameter sets Φ and Θ are independent. The optimization procedure is predicated on the following assumptions: 1. There exist models qΘ ∈ H and bωΦ ∈ bH for which the loss function L defined in (4.1) attains a sufficiently small value. 2. Under the preceding assumption, the corresponding relative error E defined in (5.1) is likewise small. The ultimate objective is to identify a model q∗ 
+
+> Θ
+
+∈ H such that q∗ 
+
+> Θ
+
+≈ qper . In conjunction with the hypothesis spaces H and bH, the system of model equations (3.3)-(3.4) gives rise to the model-based loss function 
+
+L : bH × H → R (4.1) (bωΦ, q Θ) 7 → 1
+
+M
+
+> M
+
+X
+
+> m=1
+
+
+
+I(z, d m) − k2(2 R)n/ 2F−1 h bK(j)bωΦ(j, d m)
+
+i
+
+(z, d m) 2
+
++ F−1 [bωΦ(j, d m)] ( x, d m) − qΘ(x)uin (x, d m) − k2qΘ(x)(2 R)n/ 2F−1 h bP(j)bωΦ(j, d m)
+
+i
+
+(x, d m) 2 
+
+,
+
+where j ∈ Zn, x ∈ Ω, and z ∈ B0(ρ). With the loss function L, the training objective is formulated as the following minimization problem min  
+
+> bωΦ∈bH, q Θ∈H
+
+L[bωΦ, q Θ] := min  
+
+> bωΦ∈bH, q Θ∈H
+
+ 1
+
+M
+
+> M
+
+X
+
+> m=1
+
+
+
+I(z, d m) − k2(2 R)n/ 2F−1 h bK(j)bωΦ(j, d m)
+
+i
+
+(z, d m) 2
+
++ F−1 [bωΦ(j, d m)] ( x, d m) − qΘ(x)uin (x, d m) − k2qΘ(x)(2 R)n/ 2F−1 h bP(j)bωΦ(j, d m)
+
+i
+
+(x, d m) 2  
+
+,
+
+where j ∈ Zn, x ∈ Ω, and z ∈ B0(ρ). Two neural networks are initialized in parallel: one to approximate bωΦ , which operates in the frequency domain and takes the frequency variables j1, j 2, j 3 and the unit direction vector dm 
+
+> 1
+
+, d m 
+
+> 2
+
+, d m 
+
+> 3
+
+as inputs, and 11 one to approximate qΘ, which operates in the physical domain and takes the spatial variables x1, x 2, x 3
+
+as inputs. Both networks are optimized concurrently at each iteration via simultaneous gradient updates Θ ← Θ − τ ∇ΘL, Φ ← Φ − τ ∇ΦL, sharing a common learning rate τ . The total loss L is defined as the equal-weighted sum of the data equation loss and the state equation loss. To minimize the data equation loss, bωΦ is learned using the imaging function I(z, d m), which is produced in the first stage and serves as a direct input to the data equation loss term, encoding prior information about the scatterer’s shape and location. This estimate then informs the recovery of qΘ through the state equation loss. That is, bωΦ,obtained by minimizing the data equation loss, is substituted into the state equation loss to recover qΘ.The objective is to find parameters Φ and Θ that jointly minimize L, as described in Algorithm 1. A schematic for the training process for n = 3 can be seen in Figure 4, where N and ˜N denotes the number of points in the discretization of Ω and B0(ρ) respectively. 
+
+Choice of hyperparameters. The neural network approximating bωΦ takes as input the set of quadra-ture points 
+
+{j = ( j1, j 2)T ∈ Z2 : j1, j 2 = −12 , −11 , ..., 12 , 13 }, {dm = ( dm 
+
+> 1
+
+, d m 
+
+> 2
+
+)T ∈ S1 : m = 1 , 2, ..., M },
+
+for n = 2 and 
+
+{j = ( j1, j 2, j 3)T ∈ Z3 : j1, j 2, j 3 = −11 , ..., 12 }, {dm = ( dm 
+
+> 1
+
+, d m 
+
+> 2
+
+, d m 
+
+> 3
+
+)T ∈ S2 : m = 1 , 2, ..., M },
+
+for n = 3, with complex-valued output. The neural network approximating qΘ takes as input the set of sampling points obtained by uniformly discretizing [ −2, 2] n into 64 points along each axis, with output dimension corresponding to 1. Both networks share the same architecture: depth 4, width 64, and the tanh activation function in the hidden layers. The parameters of each network are initialized independently using the Glorot normal initializer, and each network is trained via a dedicated Adam optimizer with a learning rate of 0 .001, for 100 , 000 iterations in the case n = 2 and 70 , 000 iterations in the case n = 3. Convergence of the algorithm is assessed by monitoring the stabilization of the relative error E in (5.1). In the numerical experiments presented below, the relative error is observed to stabilize after 70 , 000 iterations (see Figure 7). 
+
+Figure 4: A schematic for the training process as n = 3. 12 Algorithm 1: Model-informed Deep Learning Algorithm 
+
+Input: N : number of collocation points in Ω ˜N : number of collocation points in B0(ρ)
+
+M : number of incident directions 
+
+iter : number of iterations 
+
+τ : learning rate  
+
+> 1
+
+Initialize the hypothesis spaces bH and H with the hyperparameters given above.  
+
+> 2
+
+for i = 1 : iter do  
+
+> 3
+
+Compute: 
+
+L(bωΦ, q Θ) = 1
+
+M
+
+> M
+
+X
+
+> m=1
+
+ 1
+
+N
+
+X
+
+> z∈B0(ρ)
+
+I(z, d m) − (2 R)n/ 2F−1h bK(j) bωΦ(j, d m)
+
+i
+
+(z, d m) 2
+
++ 1˜N
+
+X
+
+> x∈Ω
+
+F−1[bωΦ(j, d m)]( x, d m) − qΘ(x) uin (x, d m) − k2qΘ(x) (2 R)n/ 2F−1h bP(j) bωΦ(j, d m)
+
+i
+
+(x, d m) 2 
+
+; 
+
+> 45
+
+Update Φ ← Φ − τ ∇Φ L(bωΦ, q Θ);  
+
+> 6
+
+Update Θ ← Θ − τ ∇Θ L(bωΦ, q Θ); 
+
+Output: q∗
+
+> Θ
+
+# 5 Numerical results 
+
+In this section, we illustrate the effectiveness of our proposed Algorithm 1 in reconstructing the unknown scatterer from boundary field data with numerical examples across the 2D and 3D settings. For the 2D case, the wave number is set to be 7 and the number of incident waves is 24. The measurement boundary 
+
+∂Ω is taken to be the circle of radius 50, centered at 0, uniformly discretized into 64 points. For the 3D case, the wave number is set to be 7 and the number of incident waves is 16. The measurement boundary 
+
+∂Ω is taken to be the sphere of radius 50, centered at 0, uniformly discretized into 24 azimuthal and 24 polar points. The scattered field data on the boundary domain, usc , is generated via the Lippmann-Schwinger equation (2.1), from which the phaseless data, up, is subsequently computed using (2.2). To demonstrate the stability of our algorithm, 10% noise is added to the boundary data according to the formula 
+
+up = up + 0 .1 × N∥N ∥ F
+
+∥up∥F ,
+
+where N is the noise matrix whose entries are of the form a + bi with a, b ∈ (−1, 1) drawn independently from an uniform distribution, and || · || F denotes the Frobenius norm. The sampling domain Ω is taken to be the grid [ −2, 2] n uniformly discretized into 64 points along each axis. To quantitatively assess the performance of the algorithm, we introduce the relative error metric 
+
+E [q∗
+
+> Θ
+
+] = ∥q∗
+
+> Θ
+
+(z) − qper (z)∥F
+
+∥qper (z)∥F
+
+. (5.1) This metric quantifies the discrepancy between the true and reconstructed scatterer, thereby serving as a direct measure of the reconstruction accuracy of the algorithm. 13 5.1 2D numerical examples 
+
+We demonstrate the reconstruction ability of the algorithm for the following scatterers: a square, a kite, an austria profile, a smiley face (Figure 5), and a two-disk configuration (Figure 6) . The relative errors reported in Table 1 are consistently low, indicative of accurate reconstructions across all test cases. The algorithm effectively determines the boundaries, locations, sizes, and coefficient values of each scatterer, despite the problem’s non-linear and ill-posed nature. The numerical results demonstrate the method’s versatility in recovering functions with a wide range of characteristics: it successfully reconstructs func-tions with convex compact support, such as the square, as well as non-convex geometries, such as the kite. Furthermore, it handles functions with sharp corners such as the square, and can recover disconnected domains containing holes, as illustrated by the austria profile example. In particular, our algorithm successfully reconstructs the two-disk scatterer even though the distance between the two disks is less than λ/ 2, the physical resolution limit. The first disk is centered at (0 .35 , 0), and the second disk is centered at ( −0.3, 0), both with a radius of 0 .3. At wave number k = 7, the physical resolution is (2 π/k )/2 = 0 .4488, which exceeds this gap, making the two disks particularly challenging to resolve. As seen in Figure 6 the close proximity of the two disks means that the imaging function is not able to completely recover their shapes. Nevertheless, stage 2 of our algorithm successfully distinguishes and recover both scatterers. This is unlike the case for the kite, where the imaging function provides clearer geometrical information (Figure 1). All four scatterers show a sharp initial decrease in relative error within the first 10 , 000 to 30 , 000 iterations, after which the errors stabilize and plateau for the remainder of the iterations (Figure 7). The 70 , 000 iterations appears to mark a transition point (represent by the dotted vertical line in Figure 7), after which all errors remain essentially stable. The logarithmic loss curves for all scatterers decrease rapidly in the early iterations, consistent with the relative error behavior. The logarithmic curves show some oscillatory behavior in the initial iterations before smoothing out, indicating initial instability in the optimization that resolves as training progresses. Lastly, satisfactory reconstructions are retained even in the presence of boundary data contaminated with noise. 
+
+Figure 5: Reconstruction results for the 2D case. Top row: true scatterers. Bottom row: reconstruction by our algorithm. 14 Figure 6: Reconstruction results for the inhomogeneous two-disk scatterer. Left: true scatterer. Center: P10  
+
+> m=1
+
+|I (z, d m)|. Right: reconstruction by our algorithm. Scatterer E [q∗
+
+> Θ
+
+] Computation time Square 36 .4% 33 min 7 sec Kite 35 .9% 32 min 22 sec Austria 42 .8% 43 min 2 sec Smiley face 41 .0% 32 min 58 sec Two-disk 40 .4% 41 min 46 sec Table 1: Relative error and computation time for 2D reconstructions  
+
+> (a) Relative error (b) Log loss
+
+Figure 7: (a) Relative errors between the true and predicted scatterers plotted against iteration number. (b) Evolution of the loss functions plotted against iteration number. 
+
+5.2 3D numerical examples 
+
+Consistent with the 2D results, the algorithm yields accurate reconstructions for the following 3D scatter-ers: a cube, a sphere, and a pyramid (Figure 9). In Figures 9, 10, the computational domain is [ −2, 2] 3,while the results are displayed over the subdomain [ −1, 1] 3. For visualization purposes, the iso-surface plots are rendered at an iso-value of 30% of the peak reconstruction value (Figure 8). 15 The algorithm successfully resolves the boundaries, locations, sizes, and coefficient values of each scat-terer, as numerically substantiated by the low relative errors reported in Table 2. Figure 8 highlights the algorithm’s robustness across a range of geometries, demonstrating accurate recovery of both smooth scatterers (sphere) and non-smooth scatterers (cube, pyramid), as well as convex geometries. The algo-rithm further demonstrates versatility in handling more challenging configurations: Figure 10 presents reconstructions of non-convex and disconnected scatterers, including a scatterer with an interior hole, which the algorithm resolves with high fidelity. The successful recovery of such topologically complex features underscores the method’s ability to go beyond simple convex geometries and handle practically relevant, intricate scatterer shapes. Scatterer E [q∗
+
+> Θ
+
+] Computation time Cube 45 .7% 10 hrs 45 min 38 sec Sphere 43 .4% 10 hrs 42 min 44 sec Pyramid 50 .1% 10 hrs 24 min 41 sec Cube with hole 52 .6% 8 hrs 12 min 21 sec Double sphere 53 .6% 10 hrs 22 min 10 sec Table 2: Relative error and computation time for 3D reconstructions 
+
+Figure 8: Iso-surface reconstruction results for the 3D case. Top row: true scatterers. Bottom row: reconstruction by our algorithm. 16 Figure 9: Slices reconstruction results for the 3D case with phaseless boundary data. Top row: true scatterers. Bottom row: reconstruction by our algorithm. 
+
+Figure 10: Reconstruction results for more complex geometries in 3D case. 
+
+# 6 Conclusion 
+
+We proposed a novel unsupervised deep learning algorithm for solving two- and three-dimensional inverse scattering problems using phaseless boundary measurement data. First, we constructed a system of ap-proximate model equations. We verified that this imaging function provides reliable initial information about the location and geometry of the unknown scatterers. To improve computational efficiency and eliminate the Green’s function singularity, we reformulated the system in the Fourier domain, where we 17 also establish a theoretical lower bound for Fourier series truncation, allowing fast computation while maintaining the accuracy. The resulting model equations then guide the concurrent training of two neu-ral networks, which independently approximate the contrast source function and the unknown scatterer. Numerical experiments demonstrate that the proposed method achieves fast, accurate, and stable recon-structions, maintains robustness against noise. Future work will extend this framework to electromagnetic scattering problems. 
+
+Acknowledgment. The research is partially supported by NSF Grant DMS-2243854. 
+
+# References 
+
+[1] H. M. Ammari, J. Garnier, and K. Sølna. “Partial Data Resolving Power of Conductivity Imaging from Boundary Measurements”. In: SIAM J. Math. Anal. 45 (2013), pp. 1704–1722. [2] G. Bao, P. Li, and J. Lv. “Numerical solution of an inverse diffraction grating problem from phaseless data.” In: J. Opt. Soc. Am. A 30.3 (2013), pp. 293–9. [3] L. Beilina and M. V. Klibanov. Approximate global convergence and adaptivity for coefficient inverse problems . Springer Science & Business Media, 2012. [4] A. E. Bulyshev, A. E. Souvorov, S. Y. Semenov, V. G. Posukh, and Y. E. Sizov. “Three-dimensional vector microwave tomography: theory and computational experiments”. In: Inverse Problems 20.4 (2004), pp. 1239–1259. [5] F. Cakoni, D. Colton, and H. Haddar. Inverse scattering theory and transmission eigenvalues . SIAM, 2022. [6] X. Chen, Z. Wei, M. Li, and P. Rocca. “A Review of Deep Learning approaches for Inverse Scattering Problems (Invited Review)”. In: Prog. Electromagn. Res. 167 (2020), pp. 67–81. [7] Y. Chen, L. Lu, G. E. Karniadakis, and L. D. Negro. “Physics-informed neural networks for inverse problems in nano-optics and metamaterials.” In: Opt. Express 28.8 (2019), pp. 11618–11633. [8] Z. Chen and G. Huang. “Phaseless imaging by reverse time migration: acoustic waves”. In: Numer. Math. Theor. Meth. Appl. 10.1 (2017), pp. 1–21. [9] D. L. Colton and R. Kress. Inverse acoustic and electromagnetic scattering theory . Vol. 93. Springer, 1998. [10] S. Cuomo, V. S. Di Cola, F. Giampaolo, G. Rozza, M. Raissi, and F. Piccialli. “Scientific machine learning through physics–informed neural networks: Where we are and what’s next”. In: Journal of Scientific Computing 92.3 (2022), p. 88. [11] H. Dong, D. Zhang, and Y. Guo. “A reference ball based iterative algorithm for imaging acoustic obstacle from phaseless far-field data”. In: Inverse Probl. Imaging 13.1 (2019), pp. 177–195. [12] Y. Fan and L. Ying. “Solving electrical impedance tomography with deep learning”. In: J. Comput. Phys. 404 (2020), p. 109119. [13] Y. Gao, H. Liu, X. Wang, and K. Zhang. “On an artificial neural network for inverse scattering problems”. In: J. Comput. Phys. 448 (2021), p. 110771. [14] Y. Gao and K. Zhang. “Machine learning based data retrieval for inverse scattering problems with incomplete data”. In: J. Inverse Ill-posed Probl. 29 (2019), pp. 249–266. 18 [15] R. Guo, Z. Lin, T. Shan, X. Song, M. Li, F. Yang, S. Xu, and A. Abubakar. “Physics Embedded Deep Neural Network for Solving Full-Wave Inverse Scattering Problems”. In: IEEE Transactions on Antennas and Propagation 70 (2021), pp. 6148–6159. [16] K. Ito and B. Jin. Inverse problems: Tikhonov theory and algorithms . Vol. 22. World Scientific, 2014. [17] X. Ji, X. Liu, and B. Zhang. “Inverse Acoustic Scattering with Phaseless Far Field Data: Uniqueness, Phase Retrieval, and Direct Sampling Methods”. In: SIAM J. Imaging Sci. 12 (2019), pp. 1163– 1189. [18] Y. Khoo and L. Ying. “SwitchNet: a neural network model for forward and inverse scattering problems”. In: SIAM J. Sci. Comput. 41 (2018), A3182–A3201. [19] M. V. Klibanov, N. A. Koshev, D.-L. Nguyen, L. H. Nguyen, A. Brettin, and V. N. Astratov. “A numerical method to solve a phaseless coefficient inverse problem from a single measurement of experimental data”. In: SIAM J. Imaging Sci. 11.4 (2018), pp. 2339–2367. [20] M. V. Klibanov, D.-L. Nguyen, and L. H. Nguyen. “A coefficient inverse problem with a single measurement of phaseless scattering data”. In: SIAM J. Appl. Math. 79.1 (2019), pp. 1–27. [21] M. V. Klibanov and V. G. Romanov. “Two reconstruction procedures for a 3D phaseless inverse scat-tering problem for the generalized Helmholtz equation”. In: Inverse Problems 32.1 (2016), p. 015005. [22] M. V. Klibanov. “Phaseless Inverse Scattering Problems in Three Dimensions”. In: SIAM J. Appl. Math. 74.2 (2014), pp. 392–410. [23] M. V. Klibanov and V. G. Romanov. “Reconstruction Procedures for Two Inverse Scattering Prob-lems Without the Phase Information”. In: SIAM J. Appl. Math. 76.1 (2015), pp. 178–196. [24] T. Le, D.-L. Nguyen, V. Nguyen, and T. Truong. “Sampling type method combined with deep learning for inverse scattering with one incident wave”. In: Contemp. Math. 784 (2023), pp. 63–80. [25] T. T. Le, P. M. Nguyen, and L. H. Nguyen. “Inverse scattering without phase: Carleman convexifi-cation and phase retrieval via the Wentzel–Kramers–Brillouin approximation”. In: Comput. Meth. Appl. Mech. Eng. 448 (2026), p. 118439. [26] D.-L. Nguyen, N. H. Nguyen, and A. Ravi. “A Spectral Model-Informed Neural Network for Inverse Source Problems”. In: submitted (2026). [27] H. V. Nguyen and T. Bui-Thanh. “TNET: A model-constrained Tikhonov network approach for inverse problems”. In: SIAM J. Sci. Comput. 46.1 (2024), pp. C77–C100. [28] H. V. Nguyen, T. Bui-Thanh, and C. Dawson. “TAEN: A Model-Constrained Tikhonov Autoencoder Network for Forward and Inverse Problems”. In: Comput. Methods Appl. Mech. Eng. 446 (2025), p. 118245. [29] J. Ning, F. Han, and J. Zou. “A direct sampling method and its integration with deep learning for inverse scattering problems with phaseless data”. In: SIAM J. Sci. Comput. 47.2 (2025), pp. C343– C368. [30] R. G. Novikov. “Formulas for phase recovering from phaseless scattering data at fixed frequency”. In: Bull. Sci. Math. 139.8 (2015), pp. 923–936. [31] R. Persico. Introduction to ground penetrating radar: inverse scattering and data processing . John Wiley & Sons, 2014. 19 [32] A. Pokkunuru, P. Rooshenas, T. Strauss, A. Abhishek, and T. R. Khan. “Improved Training of Physics-Informed Neural Networks Using Energy-Based Priors: a Study on Electrical Impedance Tomography”. In: International Conference on Learning Representations . 2023. [33] M. Raissi, P. Perdikaris, and G. E. Karniadakis. “Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equa-tions”. In: J. Comput. Phys. 378 (2019), pp. 686–707. [34] S. R´ ezio, P. Guimar˜ aes, and P. Serranho. “A Review of Recent Machine Learning Approaches for Inverse Scattering Problems”. In: Archives of Computational Methods in Engineering (2026). [35] G. Vainikko. “Fast solvers of the Lippmann-Schwinger equation”. In: Direct and inverse problems of mathematical physics . Springer, 2000, pp. 423–440. [36] P. M. Van den Berg and A. Abubakar. “Contrast Source Inversion Method: State of Art”. In: Prog. Electromagn. Res. 34 (2001), pp. 189–218. [37] X. Xu, B. Zhang, and H. Zhang. “Uniqueness in Inverse Scattering Problems with Phaseless Far-Field Data at a Fixed Frequency”. In: SIAM J. Appl. Math. 78.3 (2017), pp. 1737–1753. [38] W. Yin, W. Yang, and H. Liu. “A neural network scheme for recovering scattering obstacles with limited phaseless far-field data”. In: J. Comput. Phys. 417 (2020), p. 109594. [39] Y. Yin and L. Yan. “Physics-aware deep learning framework for the limited aperture inverse obstacle scattering problem”. In: SIAM J Math Anal 56(3) (2024). [40] B. Zhang and H. Zhang. “An Approximate Factorization Method for Inverse Acoustic Scattering with Phaseless Total-Field Data”. In: SIAM J. Appl. Math. 80 (2020), pp. 2271–2298. [41] B. Zhang and H. Zhang. “Fast imaging of scattering obstacles from phaseless far-field measurements at a fixed frequency”. In: Inverse Problems 34.10 (2018), p. 104005. [42] B. Zhang, L. Zepeda-N’unez, and Q. Li. “Solving the Wide-band Inverse Scattering Problem via Equivariant Neural Networks”. In: J of Comput Appl Math 451 (2024). [43] D. Zhang, Y. Guo, F. Sun, and H. Liu. “Unique determinations in inverse scattering problems with phaseless near-field measurements”. In: Inverse Probl. Imaging 14.3 (2020). [44] H. Zhang and J. Liu. “Solving an inverse source problem by deep neural network method with convergence and error analysis”. In: Inverse Problems 39.7 (2023), p. 075013. [45] M. Zhou, J. Han, M. Rachh, and C. Borges. “A neural network warm-start approach for the inverse acoustic obstacle scattering problem”. In: J. Comput. Phys. 490 (2023), p. 112341. 20

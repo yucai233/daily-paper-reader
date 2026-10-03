@@ -1,0 +1,204 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-10-03T21:46:20.363946+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.38635v1",
+      "title": "TSGL: Teacher-Student Graph Learning for 3DGS Compression",
+      "abstract": "3D Gaussian Splatting (3DGS) is a popular representation for novel view synthesis. However, 3DGS contains millions of Gaussian primitives, each with rich attributes, resulting in large file sizes. We propose a novel 3DGS compression method based on Teacher-Student Graph Learning (TSGL) that operates directly on a trained model, without 3DGS retraining or access to training images. Specifically, for each block of Gaussian primitives, using decoded positions and DC spherical harmonic (SH) coefficients as predictors, we learn a signal-dependent geometry graph G encoding the pairwise similarities between neighbouring Gaussians via a teacher-student model. Given G, we perform Graph Fourier Transform (GFT) on the remaining attributes, so that signal energies are predominantly projected into the low-frequency coefficients for compact representation. On three standard benchmarks, the method reaches 27x to 33x compression with less than 0.6 dB of PSNR loss, improving on recent post-training compression methods in both size and rendering quality.",
+      "authors": [
+        "Matin Bani Saedi",
+        "Matthew Kyan",
+        "Gene Cheung"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.CV"
+      ],
+      "published": "2026-09-29T22:52:06+00:00",
+      "link": "https://arxiv.org/pdf/2609.38635v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D Gaussian Splatting compression for novel view synthesis",
+      "llm_evidence_cn": "用于新视角合成的3D高斯泼溅压缩",
+      "llm_evidence": "用于新视角合成的3D高斯泼溅压缩",
+      "canonical_evidence": "用于新视角合成的3D高斯泼溅压缩",
+      "llm_tldr_en": "Proposes a teacher-student graph learning method to compress 3D Gaussian Splatting models.",
+      "llm_tldr_cn": "提出一种基于教师-学生图学习的方法来压缩3D高斯泼溅模型。",
+      "llm_tldr": "提出一种基于教师-学生图学习的方法来压缩3D高斯泼溅模型。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.33070v1",
+      "title": "A Model-Informed Deep Learning Algorithm for Solving the Phaseless Inverse Scattering Problem",
+      "abstract": "We study in this paper an unsupervised, two-step, model-informed deep learning framework for solving the phaseless inverse scattering problem. The objective is to reconstruct a compactly supported function that characterizes a scatterer from boundary measurements of the modulus of the total wave corresponding to multiple incident waves. In the first step, the phaseless data are transformed into an imaging function that is directly related to the underlying scatterer. Motivated by the contrast source method, we derive a coupled system of model equations using the Lippmann-Schwinger integral equation and a spectral-based equation involving the imaging function. In the second step, the unknown scatterer and contrast source function are each parameterized as independent feedforward neural networks, which are trained simultaneously at each iteration using the derived system of model equations. The Lippmann-Schwinger integral equation enforces the underlying physics as a model constraint, while the spectral-based equation incorporating the imaging function supplies geometric information on the shape and location of the unknown scatterer. The resulting framework achieves accurate and efficient reconstructions while maintaining robustness to measurement noise. Furthermore, transforming some aspects of the problem to the spectral domain enables an effective reduction in the computational cost, allowing us to recover the unknown scatterer quickly. Numerical experiments in both two- and three-dimensional settings demonstrate the effectiveness, stability, and practical potential of the proposed approach.",
+      "authors": [
+        "Dinh-Liem Nguyen",
+        "Nhung H. Nguyen",
+        "Aravinth Ravi"
+      ],
+      "primary_category": "math.NA",
+      "categories": [
+        "math.NA"
+      ],
+      "published": "2026-09-27T01:02:17+00:00",
+      "link": "https://arxiv.org/pdf/2609.33070v1",
+      "tags": [
+        "keyword:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Deep learning for inverse scattering problems",
+      "llm_evidence_cn": "用于逆散射问题的深度学习",
+      "llm_evidence": "用于逆散射问题的深度学习",
+      "canonical_evidence": "用于逆散射问题的深度学习",
+      "llm_tldr_en": "Solves phaseless inverse scattering using a model-informed deep learning framework.",
+      "llm_tldr_cn": "使用模型告知的深度学习框架解决无相位逆散射问题。",
+      "llm_tldr": "使用模型告知的深度学习框架解决无相位逆散射问题。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "deep learning for multiple scattering in volumes",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.36898v1",
+      "title": "Volcanite: Commodity-Hardware Segmentation Volume Visualization for Connectomics and Beyond",
+      "abstract": "Modern imaging produces terabyte-scale segmentation volumes, assigning each voxel an object label. These categorical, boundary-sensitive and label-rich data underpin connectomics and other imaging-driven fields, yet their scale often forces interpretation through slices, approximate meshes or distributed workflows that obscure spatial context and voxel-level defects. Here we show that such volumes can be explored directly on commodity hardware with Volcanite, an open-source framework for dense-segmentation rendering. Combining compression-aware data handling, a Vulkan GPU backend and segmentation-specific rendering, Volcanite enables low-latency exploration without meshing or distributed infrastructure, including for unpublished, sensitive or proprietary data. Across multi-domain datasets, it preserves voxel labels, adds shadows and global illumination, and renders up to half a trillion voxels at 100 frames per second. By replacing lengthy preprocessing with direct inspection, Volcanite decouples hypothesis generation from data preparation and turns teravoxel label fields into interactive evidence for discovery, validation and cross-domain spatial analysis",
+      "authors": [
+        "Max Piochowiak",
+        "Reiner Dolp",
+        "Julian Herold",
+        "Eric Behle",
+        "Carsten Dachsbacher",
+        "Alexander Schug"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR",
+        "q-bio.NC",
+        "q-bio.QM"
+      ],
+      "published": "2026-09-29T07:23:30+00:00",
+      "link": "https://arxiv.org/pdf/2609.36898v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "GPU-accelerated volume visualization for large segmentation data",
+      "llm_evidence_cn": "针对大型分割数据的GPU加速体可视化",
+      "llm_evidence": "针对大型分割数据的GPU加速体可视化",
+      "canonical_evidence": "针对大型分割数据的GPU加速体可视化",
+      "llm_tldr_en": "A framework for low-latency exploration of terabyte-scale segmentation volumes on commodity hardware.",
+      "llm_tldr_cn": "一个用于在通用硬件上低延迟探索太字节级分割体数据的框架。",
+      "llm_tldr": "一个用于在通用硬件上低延迟探索太字节级分割体数据的框架。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2610.01229v1",
+      "title": "A Compact Explicit 4D Representation for Dynamic Scenes",
+      "abstract": "A compact dynamic-scene representation must retain both the surfaces seen over time and the appearance needed to render them from new viewpoints. We present Sparc4D, a feed-forward autoencoder that encodes a monocular video with known cameras into a sparse 4D scene state. Static features are shared across the clip, while spatially anchored temporal slots compress time-varying features. A sparse decoder produces 2D Gaussian surfels, while stored source pixels preserve fine texture through geometric re-projection. The state includes one full source frame and dynamic-region pixels sampled every fourth frame, alongside learned features and sparse occupancy. For a 32-frame MultiCamVideo clip, it averages 0.95M 32-bit-equivalent values on random windows and 0.92M on the first-32 protocol. On first-32, Sparc4D reaches 21.70\\,dB, compared with 20.40\\,dB for MoVieS. On randomly placed windows, their PSNR scores are comparable. With stored texture disabled, temporal slots compress the time-varying feature state by a median $4.0\\times$ and reduce the mean state from 1.04M to 0.42M values, with essentially unchanged target-view reconstruction quality. Without fine-tuning on real data, Sparc4D transfers to DyCheck and Neu3D, where stored texture improves LPIPS while slightly reducing PSNR.",
+      "authors": [
+        "Di Yang",
+        "Zhihao Li",
+        "Yanhai Xiong",
+        "Yufei Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-10-01T07:31:31+00:00",
+      "link": "https://arxiv.org/pdf/2610.01229v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "4D scene representation and rendering using Gaussian surfels",
+      "llm_evidence_cn": "使用高斯面元进行4D场景表示和渲染",
+      "llm_evidence": "使用高斯面元进行4D场景表示和渲染",
+      "canonical_evidence": "使用高斯面元进行4D场景表示和渲染",
+      "llm_tldr_en": "Sparc4D is a compact 4D representation for dynamic scenes using sparse Gaussian surfels and autoencoders.",
+      "llm_tldr_cn": "Sparc4D是一种利用稀疏高斯面元和自编码器实现的紧凑动态场景4D表示方法。",
+      "llm_tldr": "Sparc4D是一种利用稀疏高斯面元和自编码器实现的紧凑动态场景4D表示方法。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2610.01707v1",
+      "title": "MEGA: Object-Level Mesh Extraction from 3D Gaussian Splatting via Spatial Visual Distillation",
+      "abstract": "Mesh extraction from 3D Gaussian Splatting (3DGS) aims to endow 3D Gaussians with accurate geometric structures, enabling explicit and precise 3D occupancy. However, existing methods primarily focus on scene-level mesh extraction, making them unable to represent object-level occupancy and often resulting in non-watertight surfaces. To overcome these limitations, we propose \\textbf{MEGA} (\\underline{M}esh \\underline{E}xtraction from \\underline{GA}ussians), a ``segment-then-mesh'' framework for extracting object-level, watertight meshes from complex 3DGS scenes. At the core of MEGA are \\textbf{Spatial Visual Distillation (SVD)} and a mask-guided neural surface reconstruction module. SVD treats the 3DGS model as a teacher, sampling diverse camera poses and rendering the corresponding views of each segmented object. These observations are then used to train a mesh reconstruction model through photometric supervision. Extensive experiments on several widely used benchmarks demonstrate that MEGA achieves state-of-the-art performance in recovering accurate object-level 3D occupancy. Moreover, MEGA enables complex physical interactions by combining high-quality object-level meshes for geometric occupancy with 3DGS representations for photorealistic rendering.",
+      "authors": [
+        "Liwei Liao",
+        "Yingkui Zhang",
+        "Qianqian Tong",
+        "Ronggang Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-10-01T13:52:12+00:00",
+      "link": "https://arxiv.org/pdf/2610.01707v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "mesh extraction from 3D Gaussian Splatting",
+      "llm_evidence_cn": "从3D高斯泼溅中提取网格",
+      "llm_evidence": "从3D高斯泼溅中提取网格",
+      "canonical_evidence": "从3D高斯泼溅中提取网格",
+      "llm_tldr_en": "Extracts object-level watertight meshes from 3D Gaussian Splatting scenes via visual distillation.",
+      "llm_tldr_cn": "通过视觉蒸馏从3D高斯泼溅场景中提取物体级的水密网格。",
+      "llm_tldr": "通过视觉蒸馏从3D高斯泼溅场景中提取物体级的水密网格。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
