@@ -1,0 +1,94 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-10-04T22:22:20.457195+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2610.01056v1",
+      "title": "HierGF: Hierarchical Gaussian Fields via Geometry-perception Message Passing for Sparse-view 3D Reconstruction",
+      "abstract": "Sparse view 3D reconstruction is an important and common scenario in multimedia applications, such as augmented reality/virtual reality (AR/VR) content creation, cultural heritage digitization, and certain robotic applications, where only a limited number of randomly captured views may be available. However, sparse views contain only limited 3D information, posing two major challenges:1) too few images are available for matching, making it difficult to build multi-view consistency; 2) insufficient view coverage leads to a lack of information in under-sampled regions, resulting in missing parts of object structure. Existing methods mostly still rely on limited reprojection errors and regularization terms, which are prone to overfitting to a single view and inconsistent appearances across views. In geometrically under-sampled regions, they often rely on heuristic density control, lacking reliable guidance and often resulting in blurring and structural holes.To address these issues, this paper proposes Hierarchical Gaussian Fields (HierGF), which revisits sparse-view reconstruction from a hierarchical geometry-perception perspective and converts limited observations into reliable self-generated supervision beyond fixed priors and heuristic density control. In particular, we transform coarse 3D geometric information and additional 2D generative priors into structured pseudo-supervision through a two-stage geometry-perception backbone network, thereby enhancing multi-view consistency with very few input views. In addition, we introduce a learnable confidence network to guide gradients toward cross-view consistent content, and a geometrically consistent densification module to improve the reconstruction of multi-view alignment and under-sampled regions.",
+      "authors": [
+        "Bi'an Du",
+        "Zhimin Zhang",
+        "Daizong Liu",
+        "Baoquan Chen",
+        "Wei Hu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "eess.IV"
+      ],
+      "published": "2026-10-01T04:50:55+00:00",
+      "link": "https://arxiv.org/pdf/2610.01056v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Hierarchical Gaussian Fields for 3D reconstruction",
+      "llm_evidence_cn": "用于三维重建的分层高斯场",
+      "llm_evidence": "用于三维重建的分层高斯场",
+      "canonical_evidence": "用于三维重建的分层高斯场",
+      "llm_tldr_en": "Develops Hierarchical Gaussian Fields for sparse-view 3D reconstruction using geometry-perception message passing.",
+      "llm_tldr_cn": "开发了分层高斯场，通过几何感知消息传递实现稀疏视图三维重建。",
+      "llm_tldr": "开发了分层高斯场，通过几何感知消息传递实现稀疏视图三维重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.32789v1",
+      "title": "Hierarchical Frequency-Domain Compression of Implicit Geometric Representations for Large-Scale Point Clouds",
+      "abstract": "Large-scale point cloud representations of complex geome tries incur prohibitive computational and memory costs, necessitating compressed implicit representations. To ad dress this, we propose a unified framework comprising im plicit geometric field representation, hierarchical frequency domain compression, and conditional high-frequency predic tion. Specifically, an unordered point cloud is mapped to an implicit field defined within its physical bounding box. A smooth Fourier pyramid is then constructed, where com pact low-frequency components capture the global geometry. Inter-scale high-frequency residuals are encoded to preserve the spatial information required for reconstructing fine geo metric details. To restore the high-frequency information lost during compression, we develop a hierarchical 3D neural net work. The reconstructed implicit field is converted back into a point cloud through isosurface extraction. Experiments on a complex-boundary point cloud with more than eight mil lion points demonstrate that the proposed method achieves a higher compression ratio than existing point cloud compres sion methods while maintaining comparable reconstruction quality.",
+      "authors": [
+        "Manlin Yao",
+        "Jiabin Liu",
+        "Guan Wang",
+        "Haixu Liu",
+        "Hui Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-26T17:04:27+00:00",
+      "link": "https://arxiv.org/pdf/2609.32789v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "implicit geometric field representation for large-scale point clouds",
+      "llm_evidence_cn": "大规模点云的隐式几何场表示",
+      "llm_evidence": "大规模点云的隐式几何场表示",
+      "canonical_evidence": "大规模点云的隐式几何场表示",
+      "llm_tldr_en": "Develops a hierarchical frequency-domain compression method for implicit geometric representations.",
+      "llm_tldr_cn": "开发了一种用于隐式几何表示的分层频域压缩方法。",
+      "llm_tldr": "开发了一种用于隐式几何表示的分层频域压缩方法。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

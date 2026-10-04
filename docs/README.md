@@ -6,38 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-10-03
-- 运行时间：2026-10-03 21:46:38 UTC
+- 最新运行日期：2026-10-04
+- 运行时间：2026-10-04 22:22:29 UTC
 - 运行状态：成功
-- 本次总论文数：5
+- 本次总论文数：2
 - 精读区：0
-- 速读区：5
+- 速读区：2
 
 ### 今日简报（AI）
-今日精选 5 篇前沿论文，涵盖 3D 高斯压缩、反向散射算法及体数据可视化等领域。
-重点关注 TSGL 框架在 3DGS 压缩中的高效表现，以及模型驱动深度学习在反向散射问题中的应用潜力。
-建议优先阅读 TSGL 相关论文，以掌握 3D 场景渲染与压缩的前沿技术趋势。
-- 详情：[/202610/03/README](/202610/03/README)
+今日聚焦 3D 重建与点云压缩技术，探索稀疏视角下的几何建模新方案。
+HierGF 通过几何感知消息传递优化稀疏视角重建，同时频域压缩算法为大规模点云存储提供了新思路。
+建议关注三维视觉领域在轻量化与高保真重建上的进展，可从稀疏视角重建的几何优化入手深入了解。
+- 详情：[/202610/04/README](/202610/04/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [TSGL: Teacher-Student Graph Learning for 3DGS Compression](/202610/03/2609.38635v1-tsgl-teacher-student-graph-learning-for-3dgs-compression)  
+1. [HierGF: Hierarchical Gaussian Fields via Geometry-perception Message Passing for Sparse-view 3D Reconstruction](/202610/04/2610.01056v1-hiergf-hierarchical-gaussian-fields-via-geometry-perception-message-passing-for-sparse-view-3d-reconstruction)  
    标签：评分：7.0/10、query:q1
-   evidence：用于新视角合成的3D高斯泼溅压缩
-2. [A Model-Informed Deep Learning Algorithm for Solving the Phaseless Inverse Scattering Problem](/202610/03/2609.33070v1-a-model-informed-deep-learning-algorithm-for-solving-the-phaseless-inverse-scattering-problem)  
-   标签：评分：6.0/10、query:q4
-   evidence：用于逆散射问题的深度学习
-3. [Volcanite: Commodity-Hardware Segmentation Volume Visualization for Connectomics and Beyond](/202610/03/2609.36898v1-volcanite-commodity-hardware-segmentation-volume-visualization-for-connectomics-and-beyond)  
-   标签：评分：6.0/10、query:q7
-   evidence：针对大型分割数据的GPU加速体可视化
-4. [A Compact Explicit 4D Representation for Dynamic Scenes](/202610/03/2610.01229v1-a-compact-explicit-4d-representation-for-dynamic-scenes)  
+   evidence：用于三维重建的分层高斯场
+2. [Hierarchical Frequency-Domain Compression of Implicit Geometric Representations for Large-Scale Point Clouds](/202610/04/2609.32789v1-hierarchical-frequency-domain-compression-of-implicit-geometric-representations-for-large-scale-point-clouds)  
    标签：评分：6.0/10、query:q1
-   evidence：使用高斯面元进行4D场景表示和渲染
-5. [MEGA: Object-Level Mesh Extraction from 3D Gaussian Splatting via Spatial Visual Distillation](/202610/03/2610.01707v1-mega-object-level-mesh-extraction-from-3d-gaussian-splatting-via-spatial-visual-distillation)  
-   标签：评分：6.0/10、query:q1
-   evidence：从3D高斯泼溅中提取网格
+   evidence：大规模点云的隐式几何场表示
 
 
 <div class="dpr-home-promo-card">
