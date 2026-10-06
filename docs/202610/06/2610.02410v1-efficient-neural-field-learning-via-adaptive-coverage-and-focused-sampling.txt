@@ -1,0 +1,1205 @@
+Title: Efficient Neural Field Learning via Adaptive Coverage and Focused Sampling
+
+URL Source: https://arxiv.org/pdf/2610.02410v1
+
+Published Time: Mon, 05 Oct 2026 00:16:39 GMT
+
+Number of Pages: 22
+
+Markdown Content:
+# Efficient Neural Field Learning via Adaptive Coverage and Focused Sampling 
+
+Guang Zhao Xihaier Luo Huan-Hsin Tseng Seungjun Lee Shinjae Yoo Yihui Ren Wei Xu 
+
+Computing and Data Sciences, Brookhaven National Laboratory Upton, NY 11973, USA https://www.bnl.gov/compsci/ gzhao@bnl.gov, xluo@bnl.gov, htseng@bnl.gov, slee19@bnl.gov sjyoo@bnl.gov, yren@bnl.gov, xuw@bnl.gov 
+
+Abstract 
+
+Implicit neural representations (INRs) provide a flexible framework for modeling high-dimensional continuous fields, but their training is often inefficient due to uniform subsampling that ignores spatial heterogeneity. Existing adaptive sampling methods partially address this issue by prioritizing high-error samples, but typically operate at the point level, often leading to redundant sampling in localized regions and insufficient coverage of the domain. We propose 
+
+ACES (Adaptive Coverage-aware Efficient Sampling) , a structured sampling framework that improves training efficiency by decoupling coverage and importance. ACES constructs adaptive spatial partitions to ensure domain coverage and reduce redundancy, and applies region-level importance weighting to prioritize informative regions during training. We provide a theoretical analysis showing that adaptive partitioning reduces gradient variance by increasing within-region homogeneity, and that controlled bias in region-level weighting may improve optimization efficiency relative to standard unbiased estimators. Experiments on scientific field learning tasks demonstrate that ACES achieves faster convergence and lower error than uniform and pointwise adaptive sampling baselines, with the largest gains in fields with highly localized complexity. 
+
+# 1 Introduction 
+
+Modern scientific discovery increasingly relies on accurate, efficient, and flexible representations of high-dimensional continuous fields, such as spatiotemporal physical states, material microstructures, and environmental transport processes (Park et al., 2025; Qu et al., 2026). Many of these systems are naturally defined on continuous, irregular, or evolving domains, where measurements and simulations provide large collections of pointwise evaluations rather than a single fixed grid. This has motivated implicit neural representations (INRs), a growing class of machine learning methods that optimize pointwise objectives over continuous spaces (Sitzmann et al., 2020; Mildenhall et al., 2020; Park et al., 2019). These methods are flexible and resolution-independent, naturally handle complex geometry, remain compatible with gradient-based optimization, and are well suited to surrogate modeling, inverse problems, and accelerating simulation-driven science. Despite their conceptual elegance, INRs often suffer from significant training inefficiency when learning continuous fields. In many practical settings, millions to billions of candidate points are available from simulations, sensors, or trajectory evaluations of the field, yet computational and memory constraints limit how many can be used per iteration. Uniform sampling from this large pool treats all regions of the field as equally informative, while in many scientific systems, complexity is not 1arXiv:2610.02410v1 [cs.LG] 1 Oct 2026 Figure 1: Qualitative comparison of sampling strategies on a Navier–Stokes vorticity field at a training iteration. Uniform sampling provides broad coverage but allocates many samples to low-error regions, while pointwise importance sampling over-concentrates in localized high-error areas. ACES performs adaptive region-level sampling, balancing domain coverage and focused refinement. Point size indicates the region-level sampling weight. uniformly distributed: sharp interfaces, localized dynamics, and multi-scale structures lead to highly uneven error landscapes during training. Uniform sampling fails to account for this heterogeneity, allocating excessive computation to simple regions while under-resolving the complex regions that dominate approximation error. This observation naturally motivates adaptive sampling, where training points are selected or reweighted to prioritize informative regions and improve efficiency. A range of methods have been proposed along this direction, typically using local criteria such as prediction error, residual magnitude, or gradient norm to guide sampling (Zhang et al., 2024; Kheradmand et al., 2024; Zhang et al., 2025; Tack et al., 2023). While these approaches can accelerate convergence in simple settings, they remain largely heuristic and exhibit two fundamental limitations. First, most treat samples independently and ignore the spatiotemporal structure of the loss field, often causing over-concentration in localized regions where nearby points provide redundant training signals, at the expense of global coverage. Second, while many methods implicitly introduce biased gradient estimators through non-uniform sampling (Zhang et al., 2024; Kheradmand et al., 2024), this bias is neither explicitly analyzed nor systematically exploited. In practice, such bias often accelerates convergence, yet existing work lacks a principled understanding of why this occurs or how to design it effectively. To address these issues, we propose ACES (Adaptive Coverage-aware Efficient Sampling) ,a structured adaptive sampling framework that explicitly accounts for the heterogeneity of the loss field. ACES combines structure-aware domain partitioning with bias-controlled sampling. First, ACES shifts from point-level to region-level sampling: it adaptively partitions the domain according to the evolving loss structure, enabling sampling decisions that respect spatial organization rather than purely local signals. This partitioning enforces coverage while reducing redundancy, preventing excessive clustering. Second, within each adaptive region, ACES further incorporates a bias-controlled importance weighting mechanism to prioritize informative samples. We provide theoretical insights into the role of bias in gradient estimation, suggesting how controlled bias may improve optimization efficiency, and use this analysis to guide the design of our estimator. Together, these components yield a sampling strategy that balances coverage, variance reduction, and fast convergence for learning high-dimensional continuous fields. Figure 1 illustrates the key intuition behind ACES. Uniform sampling provides broad coverage but allocates many samples to low-error regions, while pointwise importance sampling over-concentrates in localized high-error areas. In contrast, ACES performs adaptive region-level sampling that maintains domain coverage while allocating larger sampling weights to informative regions. 22 Related Work 
+
+Adaptive sampling for implicit neural representations. Given the continuous coordinate-based nature of INRs, prior work has explored adaptive sampling for INR training by prioritizing samples with high residuals, uncertainty, or other local importance signals (Zhang et al., 2024, 2025; Kheradmand et al., 2024; Tack et al., 2023). These approaches primarily operate at the individual point level and largely ignore higher-level spatial structure. ACES differs by using adaptive partitioning and region-level weighting to better balance coverage and focus. 
+
+Variance reduction through structured mini-batches. Variance reduction in stochastic optimization has been widely studied through importance sampling and structured mini-batch con-struction. Importance-sampling methods prioritize informative samples using smoothness, gradient norm, or loss-based criteria (Needell et al., 2014; Katharopoulos and Fleuret, 2018), while stratified sampling reduces variance by partitioning data into more homogeneous groups (Zhao and Zhang, 2014). However, these methods are primarily designed for fixed datasets with independently sampled examples and do not exploit the spatial structure of continuous neural fields. In contrast, ACES adaptively partitions continuous domains to jointly improve coverage and variance reduction. 
+
+Weighted sampling and controlled bias. Beyond unbiased variance reduction, recent studies have shown that optimization performance depends not only on raw gradient variance but also on the relationship between gradient variance and update quality (Faghri et al., 2020). ACES performs adaptive region-level sampling over continuous domains and explicitly studies the role of controlled bias through region-level weighting and gradient-alignment analysis. 
+
+# 3 Methodology 
+
+3.1 Problem Setting 
+
+We consider the problem of learning a continuous field from a large set of pointwise evaluations. Let 
+
+Ω ⊂ Rd denote a spatial or spatiotemporal domain. We assume access to a dataset D = {(xi, yi)}Ni=1 
+
+with xi ∈ Ω and yi ∈ Rm, where yi may represent physical quantities such as velocity, pressure, or vorticity. We aim to learn a coordinate-based model (implicit neural representation) fθ : Ω → Rm,
+
+parameterized by θ, that approximates the underlying continuous field. Consider the empirical risk: 
+
+bL(θ) = 1
+
+N
+
+X
+
+> (xi,yi)∈D
+
+ℓ fθ(xi), yi
+
+, (1) where ℓ(·) is a pointwise loss function. The full gradient is g = ∇θ bL(θ) = 1
+
+> N
+
+PNi=1 gi, where 
+
+gi = ∇θℓ(fθ(xi), yi). In many scientific applications, the dataset size N can be extremely large, making full-gradient computation expensive in both computation and memory. In practice, we instead use a minibatch B of size n ≪ N at each iteration, yielding the stochastic gradient estimator: 
+
+ˆgRS = 1
+
+n
+
+> n
+
+X
+
+> i=1
+
+gi. (2) This estimator is effective when gradient contributions are relatively homogeneous across samples. However, in many physical systems, the learning signal is highly heterogeneous, leading to inefficient use of computation under uniform sampling. 3To improve training efficiency, we consider sampling minibatches according to a non-uniform distribution. Let q(i) denote the probability of selecting sample i from the dataset D. A general stochastic gradient estimator under distribution q takes the form 
+
+ˆgq = 1
+
+n
+
+> n
+
+X
+
+> i=1
+
+wi
+
+q(i) gi, i ∼ q, (3) where wi is a weight associated with sample i. When wi = 1 
+
+> N
+
+, the estimator reduces to standard importance sampling and is an unbiased estimator of the full gradient. More generally, we allow wi
+
+to deviate from 1 
+
+> N
+
+, resulting in a biased estimator: ¯g = E[ˆ gq]̸ = g. This perspective treats adaptive sampling not as a mechanism for strictly approximating the full gradient, but as a way to potentially accelerate optimization by prioritizing informative samples. Existing adaptive sampling methods operate at the level of individual points by assigning importance scores to each xi ∈ D , based on residual or gradient statistics. While effective in some settings, pointwise sampling may over-concentrate in localized regions, leading to redundant updates and poor domain coverage. It can also incur substantial overhead due to frequent importance estimation over large candidate sets. These limitations motivate region-level adaptive sampling. 
+
+ACES Overview As illustrated in Fig. 2, ACES performs adaptive region-level sampling over the continuous domain. It begins with a coarse partition and recursively refines regions that remain highly variable, producing more homogeneous regions in which sampled points better represent their local neighborhoods. Sampling and weighting are then applied at the region level rather than independently per point, improving coverage while reducing redundant sampling in spatially correlated areas. Regions with greater remaining variability receive larger sampling budgets, while samples from regions with poorer predictions are assigned greater weights. ACES uses a two-timescale implementation. The partition is updated periodically on a slow timescale, while region weights are updated every iteration using lightweight residual statistics. This is because the spatial structure of the loss field evolves gradually during training, while the sampling weights directly influence which regions contribute most strongly to the parameter update. This separation amortizes partitioning cost while allowing the sampling distribution to adapt online. The following sections answer two questions: First, how should the domain be partitioned so that stochastic gradient estimates have low variance? Second, how should samples or weights be assigned across regions when the goal is not only unbiased gradient estimation, but also faster optimization? We address these questions through a variance-reduction analysis of adaptive partitioning, followed by a bias–variance analysis of region-level weighted sampling. 
+
+3.2 Variance Reduction via Partitioning 
+
+To connect the sampling strategy with optimization efficiency, we analyze the stochastic gradient estimators induced by different sampling schemes through a one-step optimization analysis. Assume L is β-smooth, i.e., ∥∇L (θ1)−∇L (θ2)∥ ≤ β∥θ1 −θ2∥, ∀θ1, θ 2. For the update θ+ = θ−ηˆg
+
+with g = ∇L (θ), the standard smoothness inequality gives (Zhao and Zhang, 2014): 
+
+E[L(θ+)] ≤ L (θ) − η⟨g, ¯g⟩ + βη 2
+
+2 E∥ˆg∥2, (4) where E(·) denotes expectation over stochastic gradient and ¯g = E[ˆ g]. Using 
+
+E∥ˆg∥2 = ∥¯g∥2 + E∥ˆg − ¯g∥2, (5) 4Figure 2: Overview of ACES. (a) The loss field is highly heterogeneous, with localized high-error regions. (b) ACES builds an adaptive partition that allocates finer resolution to complex regions and coarser resolution elsewhere. (c) Region-based sampling ensures structured coverage of the domain while avoiding redundant samples. (d) Bias-controlled weighting emphasizes informative regions by assigning larger weights to high-error areas, leading to more effective optimization. we see that in the unbiased case ( ¯g = g), local optimization behavior is influenced primarily by the variance term E∥ˆg − g∥2. This motivates constructing partitions that reduce the variance of the stochastic gradient estimator. Under uniform random sampling, the minibatch estimator has variance 
+
+E∥ˆgRS − g∥2 = σ2
+
+n , (6) where σ2 is the variance of per-sample gradients. To reduce this variance, we partition the dataset into K disjoint regions, where region k contains 
+
+Nk samples and PKk=1 Nk = N . From each region k, we draw nk samples, with PKk=1 nk = n. The resulting stratified gradient estimator is 
+
+ˆgst =
+
+> K
+
+X
+
+> k=1
+
+Nk
+
+N · 1
+
+nk
+
+X
+
+> i∈B k
+
+gi, (7) where Bk ⊂ D k denotes the sampled subset from region k. This estimator is unbiased, and its variance is given by (Botev and Ridder, 2017): 
+
+E ∥ˆgst − g∥2 =
+
+> K
+
+X
+
+> k=1
+
+ Nk
+
+N
+
+2 1
+
+nk
+
+σ2
+
+> k
+
+, (8) where σ2 
+
+> k
+
+denotes the within-region gradient variance. For a fixed partition, the optimal allocation that minimizes the estimator variance is given by the Neyman allocation: 
+
+nk ∝ Nkσk, (9) Based on Eq. 8, variance reduction depends critically on constructing regions with low internal gradient heterogeneity. We therefore use an adaptive partitioning strategy that recursively refines high-variance regions, producing more homogeneous regions and further reducing estimator variance. 5Partition Rule. To guide adaptive refinement, we estimate the variance contribution of each region under stratified sampling. For a region k containing Nk samples and assigned sampling budget 
+
+nk, the contribution to the estimator variance is 
+
+∆Vk =
+
+ Nk
+
+N
+
+2 1
+
+nk
+
+σ2
+
+> k
+
+. (10) To relate adaptive refinement to variance reduction, we assume that gradients vary smoothly within a spatially coherent region, so that nearby samples produce more similar gradients than distant samples. Specifically, within region k, following a local variogram model for the gradient field (Cressie, 2015), 
+
+E∥gi − gj ∥2 ≈ ak∥xi − xj ∥ν , xi, xj ∈ D k, (11) where ak > 0 captures the local roughness of the sample-gradient field and ν > 0 describes how gradient discrepancy grows with spatial distance. Under this scaling, subdividing a region reduces its characteristic spatial diameter and is therefore expected to reduce its within-region gradient variance. Thus, the expected benefit of refining region k is proportional to its current variance contribution, 
+
+∆Vk − ∆V split  
+
+> k
+
+∝ ∆Vk. (12) The proof of this relationship is included in Appendix A. Under Neyman allocation, the sampling budget satisfies nk ∝ Nkσk. Substituting this relation into ∆Vk gives 
+
+∆Vk ∝ N 2
+
+> k
+
+N 2
+
+σ2
+
+> k
+
+Nkσk
+
+= 1
+
+N 2 Nkσk. (13) This motivates the refinement score 
+
+sk = Nkσk, (14) and ACES recursively subdivides regions with large sk. The criterion favors regions of both large size (large number of points) and internally heterogeneous regions, making it a practical proxy for potential variance reduction. 
+
+3.3 Bias–Variance Tradeoff and Acceleration 
+
+We now consider an additional mechanism for improving optimization efficiency: region-level weighting. Rather than minimizing the variance of an unbiased gradient estimator, we allow biased weights that emphasize informative regions and aim to yield larger expected local improvement. Let pk = Nk 
+
+> N
+
+, ¯gk = 1
+
+> Nk
+
+P 
+
+> i∈D k
+
+gi and ˆgk = 1
+
+> nk
+
+P 
+
+> i∈B k
+
+gi, where ¯gk is the mean gradient in region 
+
+k and ˆgk is its minibatch estimate. We define the weighted stratified estimator as 
+
+ˆgw =
+
+> K
+
+X
+
+> k=1
+
+pkwk ˆgk =
+
+> K
+
+X
+
+> k=1
+
+Nk
+
+Nwk
+
+nk
+
+X
+
+> i∈B k
+
+gi. (15) For nonuniform wk, the estimator is generally biased: ¯gw = E[ˆ gw] = PKk=1 pkwk ¯gk̸ = g.
+
+To understand the effect of this bias, we rewrite the one-step smoothness bound in Eq. 4 as 
+
+E[L(θ+)] ≤ L (θ) − ηwSw + βη 2 
+
+> w
+> 2
+
+Gw, where Sw := ⟨g, ¯gw⟩, Gw := E∥ˆgw∥2.
+
+6Here, Sw measures the alignment between the expected weighted estimator and the full gradient, while Gw measures the estimator energy. For Sw > 0 and Gw > 0, minimizing the bound over ηw
+
+yields: 
+
+E[L(θ+)] ≤ L (θ) − S2
+
+> w
+
+2βG w
+
+. (16) Thus, the ratio S2
+
+> w
+
+Gw
+
+(17) acts as a local proxy for the expected one-step improvement, which can be used to compare biased gradient estimators. To expose the tradeoff between directional alignment and relative variance, we rewrite the improvement proxy as 
+
+S2
+
+> w
+
+Gw
+
+= ⟨g, ¯gw/∥¯gw∥⟩ 2
+
+1 + E∥ˆgw − ¯gw∥2/∥¯gw∥2 = ∥g∥2 cos 2 ϕw
+
+1 + ρw
+
+. (18) Here, ϕw is the angle between the nonzero vectors g and ¯gw, and ρw := E∥ˆgw − ¯gw∥2/∥¯gw∥2 is the relative variance. At a fixed checkpoint, ∥g∥2 is common to all estimators, so the proxy depends only on directional alignment and relative variance. For Sw > 0, unbiased estimation maximizes the directional term, but need not minimize relative variance. A biased estimator can therefore achieve a higher proxy value if its reduction in relative variance outweighs the loss in squared directional alignment. We use inexpensive residual statistics to construct practical weights and analyze the resulting weighting family directly below. 
+
+3.4 Practical Implementation 
+
+The analysis above motivates two components of ACES: adaptive partitioning based on region-level gradient variability and region-level weighting based on informativeness. In practice, directly estimating gradient statistics for all regions is computationally expensive. We therefore use lightweight residual-based approximations that preserve the main design principles while remaining efficient. 
+
+Residual statistics as proxies for gradient variance. The partitioning criterion depends on the region score Nkσk, where σk denotes the within-region gradient standard deviation. Since estimating σk requires per-sample gradients, we instead approximate gradient variability using residual statistics. For the scalar-output squared-loss setting used in our experiments, let ℓi = 12 r2 
+
+> i
+
+, where ri =
+
+fθ(xi) − yi, and Ji = ∇θfθ(xi). Then the per-sample gradient is 
+
+gi = J⊤ 
+
+> i
+
+ri.
+
+In this section, we denote the total variance of gi within region k as σ2
+
+> g,k
+
+, which can be approximated as 
+
+σ2 
+
+> g,k
+
+≈ ∥ ¯Jk∥22 σ2 
+
+> r,k
+
++ ¯ r2 
+
+> k
+
+σ2
+
+> J,k
+
+,
+
+where σ2 
+
+> r,k
+
+= E(ri − ¯rk)2 is the variance of the residual ri, and σ2 
+
+> J,k
+
+= tr(Cov( Ji)) is the variance of the Jacobian Ji within the region. Here, ¯rk = E[ri] and ¯Jk = E[Ji] denote the mean residual and mean Jacobian over region k, respectively. This approximation is obtained by neglecting the cross term in the variance decomposition; the scalar-output derivation is provided in Appendix B. 7For vector outputs, an analogous decomposition uses residual and Jacobian covariance matrices. If we further assume within-region smoothness such that Ji varies slowly in region k, we can ignore Jacobian variation inside the region and obtain σ2 
+
+> g,k
+
+≈ ∥ ¯Jk∥22 σ2
+
+> r,k
+
+.
+
+In practice, we estimate the variance of the residual bσ2 
+
+> r,k
+
+within each region using Monte Carlo samples. We then define the practical partition score as 
+
+spart  
+
+> k
+
+= Nk bσr,k (19) Regions with larger spart  
+
+> k
+
+are selected for refinement. This criterion favors regions that are both large and difficult to approximate, while avoiding the cost of computing explicit gradient variance. 
+
+Region-level weighting for biased sampling. The theoretical criterion in Eq. 17 suggests that regions should be emphasized when their gradients are well aligned with the full-gradient direction and do not introduce excessive variance. However, the full gradient is unavailable in stochastic training. We therefore use region-level statistics to design the weights. Intuitively, weights should be large for regions with a large mean residual ¯rk and small variance σ2
+
+> r,k
+
+. However, accurately estimating σ2 
+
+> r,k
+
+at the sampling stage in every training iteration would require evaluating multiple samples per region, which introduces substantial overhead and becomes unreliable when some regions receive only a small number of samples. Therefore, we use only ¯rk as a lightweight proxy for informativeness. We define the unnormalized region weight as 
+
+˜wk = |¯rk|α,
+
+where α ≥ 0 controls the strength of the sampling bias. The normalized weight is 
+
+wk = |¯rk|α
+
+PKj=1 pj |¯rj |α , (20) so that PKk=1 pkwk = 1 . When α = 0 , Eq. (20) recovers the unbiased weighting w = 1. For this weighting family, we show in Appendix C.1 that 
+
+dF (w(α)) 
+
+dα α=0 
+
+= C
+
+> K
+
+X
+
+> k=1
+
+tk log |¯rk|, C > 0, (21) where tk measures the relative alignment–variance advantage of region k (defined in Appendix C.1). Hence, when the right-hand side is positive, residual-based weighting follows a local ascent direction of 
+
+F , and a sufficiently small α > 0 strictly improves the proxy over unbiased weighting. We verify this condition empirically and find dF/dα |α=0 > 0 at all evaluated training checkpoints (Appendix C.2). Overall, ACES combines a slow-timescale adaptive partition with fast-timescale region-level weighting. The partition step improves sample representativeness by reducing within-region hetero-geneity, while the weighting step accelerates optimization by biasing computation toward informative regions. 
+
+# 4 Experiments 
+
+We evaluate ACES on spatial and joint spatiotemporal field reconstruction tasks with heterogeneous structure. Our experiments examine sample efficiency, the trade-off between convergence and wall-clock cost, the complementary roles of adaptive partitioning and residual-aware weighting, and generalization from independent snapshots to joint space-time reconstruction. 8Datasets and tasks. For spatial reconstruction, we consider Navier–Stokes vorticity fields at Reynolds number Re = 10 ,000 (NS2D; 1024 ×1024 ) and boiling-process fields from BubbleML (Hassan et al., 2023) (PoolBoiling2D; 384 × 384 ). The former contain multiscale vortices and thin shear layers, while the latter contain sparse localized interfaces in relatively smooth backgrounds. We uniformly select five temporal snapshots from each simulation trajectory and fit each snapshot independently. For joint spatiotemporal reconstruction, we train a single INR over continuous (x, y, t ) coordinates spanning 64 consecutive frames: PoolBoiling3D contains 384 × 384 × 64 points, and NS3D contains 
+
+512 × 512 × 64 points. Here, the third coordinate is time. 
+
+Sampling baselines. We compare ACES with uniform random sampling, Implicit Neural Teaching (INT) (Zhang et al., 2024), EVOlutionary Selector (EVOS) (Zhang et al., 2025), and Fixed Stratified ,which uses a static uniform grid with a matched stratified allocation to isolate the benefit of adaptive partitioning. In the joint spatiotemporal experiments, EVOS is omitted because the evaluated implementation is not directly applicable to this setting. 
+
+Evaluation protocol. Our main experiments use a SIREN (Sitzmann et al., 2020) backbone and SGD. The spatial experiments sample a fraction 2 × 10 −3 of the candidate points per iteration, while the larger joint spatiotemporal experiments use 7 × 10 −4. Learning rates are selected by a coarse search for each dataset and method. Because each task reconstructs a known field, training draws coordinates from that field and evaluation computes relative mean squared error (relative MSE) over the full coordinate grid; no conventional train/test split is used. Relative MSE is normalized by the squared norm of the ground-truth field. Results are averaged over three random seeds, and tables report mean ± standard deviation. Appendix F evaluates an additional Fourier Feature Network backbone; further implementation and training details are provided in Appendix G. 
+
+4.1 Reconstruction Efficiency 
+
+Spatial reconstruction. Figure 3 compares reconstruction error against training iterations and wall-clock time. ACES achieves the lowest final relative MSE on both datasets under both evaluation budgets. At equal iteration budgets, it outperforms uniform random sampling, fixed stratification, and the pointwise adaptive baselines, with particularly pronounced gains on PoolBoiling2D. These improvements also translate into wall-clock benefits. On NS2D, uniform sampling initially reduces error faster, but ACES overtakes it later in training despite its sampling overhead. On Pool-Boiling2D, ACES establishes an early advantage and maintains substantially lower error throughout most of training. Fixed stratification performs similarly to uniform sampling per iteration but offers no wall-clock advantage. The larger gains on PoolBoiling2D are consistent with the benefits of adaptive region-level sampling in fields with localized interfaces. A detailed runtime breakdown on NS2D is reported in Appendix H. It separates model training, sampling, and amortized partition-update costs under the current ACES configuration. 9Uniform INT Uniform INT (a) NS2D:distributed structures Uniform INT Uniform INT 
+
+(b) PoolBoiling2D: localized interfaces 
+
+Figure 3: Training efficiency comparison. Left: one representative snapshot per dataset. Middle: full-grid evaluation relative MSE versus iteration. Right: full-grid evaluation relative MSE versus runtime. ACES achieves substantially faster convergence per iteration than Uniform, INT, and EVOS on both datasets. Under equal runtime budgets, ACES remains competitive on NS2D and achieves the largest gains on PoolBoiling2D, where informative regions are highly localized. 10 Table 1: Joint spatiotemporal reconstruction on PoolBoiling3D and NS3D. All methods are evaluated at matched training checkpoints over 64 consecutive frames. Relative MSE (lower is better) is reported as mean ± standard deviation over three random seeds. Within each dataset, bold denotes the lowest mean error at each checkpoint. INT results are reported through 1,200 epochs.                                                                                             
+
+> Method 200 epochs 1,200 epochs 2,400 epochs 5,000 epochs
+> PoolBoiling3D
+> INT 0.8378 ±0.1320 0.2600 ±0.0026 ——Uniform 0.2948 ±0.0012 0.1396 ±0.0014 0.1133 ±0.0004 0.0914 ±0.0016
+> Fixed Stratified 0.2760 ±0.0042 0.1359 ±0.0085 0.1231 ±0.0099 0.0914 ±0.0043
+> ACES (partition) 0.2484 ±0.0073 0.1181 ±0.0010 0.0941 ±0.0011 0.0718 ±0.0007
+> NS3D
+> INT 0.5378 ±0.0013 0.3448 ±0.0110 ——Uniform 0.3170 ±0.0004 0.2120 ±0.0017 0.1826 ±0.0017 0.1572 ±0.0018
+> Fixed Stratified 0.3163 ±0.0008 0.2132 ±0.0008 0.1837 ±0.0007 0.1584 ±0.0008
+> ACES (partition) 0.3171 ±0.0020 0.2049 ±0.0018 0.1763 ±0.0021 0.1520 ±0.0016
+
+Joint spatiotemporal reconstruction. Table 1 reports reconstruction error on PoolBoiling3D and NS3D across matched training checkpoints (200–5,000 epochs), evaluated identically for both datasets. In this higher-dimensional setting, we evaluate the adaptive-partitioning component of ACES without residual-powered loss weighting. It achieves the lowest mean relative MSE at nearly every checkpoint, reducing error relative to uniform sampling by 21.4% and 3.3%, respectively, by 5,000 epochs. The sole exception is NS3D’s earliest checkpoint (200 epochs), where Fixed Stratified is marginally better; adaptive partitioning overtakes it from 1,200 epochs onward. Fixed Stratified otherwise performs similarly to uniform sampling throughout. These results show that the coverage component of ACES extends beyond individual snapshots. 
+
+4.2 Ablation Study 
+
+We perform ablation studies on the PoolBoiling2D dataset to evaluate the contributions of adaptive partitioning and region-level weighting through three variants: (1) Fixed + Weighting, which applies residual-aware region weighting on top of the fixed partition, (2) Partition Only (Unbiased), which uses adaptive partitioning without residual-aware weighting, and (3) Full ACES, which combines adaptive partitioning with residual-aware weighting. Figure 4 shows that both adaptive partitioning and residual-aware weighting contribute to the final performance. Adaptive partitioning alone already improves convergence over Fixed + Weighting, indicating that structured coverage and reduced sampling redundancy are important for efficient optimization. Adding residual-aware weighting further improves convergence speed, suggesting that adaptive partitioning and focused weighting provide complementary benefits. Appendix H additionally studies sensitivity to the weighting exponent α and partition-update interval. 
+
+4.3 Empirical Correlation with Optimization Behavior 
+
+To evaluate whether the proposed optimization proxy reflects practical training behavior, we compare different sampling strategies using the bound-derived quantity S2
+
+> w
+
+/G w from Section 3.3, where Sw
+
+measures alignment with the full gradient and Gw captures the estimator energy. We report a 11 0 1000 2000 3000 4000 5000 
+
+> Iteration
+> 10 0
+> Test Relative Loss
+> Uniform Partition Only (Unbiased) Fixed + Weighting
+> ACES (Proposed)
+
+Figure 4: Component ablation. We compare region-level weighting with a fixed partition, adaptive partitioning without weighting, and full ACES on PoolBoil-ing2D. Combining adaptive partitioning and residual-aware weighting yields the fastest convergence, indicating that the two components provide complementary benefits. 0 500 1000 1500 2000 2500 
+
+> Training step
+> 1.0
+> 0.5
+> 0.0 0.5 1.0
+> Normalised One-step improvement score
+> Sampler Full Gradient (Oracle) Uniform (Baseline) INT Partition Only (Unbiased) ACES (Proposed)
+
+Figure 5: Empirical Validation of the Optimiza-tion Proxy. Normalized values of the one-step improve-ment proxy S2
+
+> w
+
+/G w across training iterations. Higher values indicate better predicted optimization improve-ment. ACES achieves consistently higher scores than unbiased partitioning and uniform sampling, consistent with its faster empirical convergence. normalized version of this quantity using uniform sampling and the full-gradient oracle as reference points, where higher values indicate better predicted one-step optimization improvement. To ensure a controlled comparison, all samplers are evaluated on the same set of checkpoints obtained from uniform-sampling training. At each checkpoint, we estimate the stochastic gradient statistics using six independently sampled minibatches for each sampling strategy, and evaluate the corresponding proxy values using the full gradient. Figure 5 shows that the ordering induced by the proxy is consistent with empirical convergence: methods with higher proxy values generally converge faster and achieve lower final error. In particular, ACES consistently achieves higher scores than both the Partition Only (Unbiased) variant and uniform sampling, while Partition Only also outperforms uniform sampling. These results support the theoretical motivation of ACES, suggesting that the proposed proxy captures a meaningful aspect of optimization efficiency. Additional analyses of the proxy quality, including rank-correlation and top-K overlap evaluations, are provided in Appendix E. 
+
+# 5 Conclusion 
+
+We introduced ACES, a region-level adaptive sampling framework for efficient training of implicit neural representations on heterogeneous continuous fields. ACES combines adaptive spatial par-titioning with residual-aware weighting to balance domain coverage and focused refinement. Our analysis shows that adaptive partitioning reduces stochastic gradient variance through increased within-region homogeneity, while biased region-level weighting can improve optimization efficiency. Experiments on scientific field learning tasks demonstrate faster convergence and improved sample efficiency over uniform and pointwise adaptive sampling baselines, particularly in settings with highly localized complexity. The current implementation incurs additional sampling overhead, and the analysis characterizes local one-step behavior rather than long-term nonconvex dynamics. These results suggest that structured region-level sampling is a promising direction for efficient neural field 12 learning. 
+
+Code availability. The source code and reproduction scripts are publicly available at https: //github.com/guangzhao27/ACES-Adaptive-Coverage-aware-Efficient-Sampling .
+
+# Acknowledgments and Disclosure of Funding 
+
+Funding. This material is based upon work supported by the U.S. Department of Energy, Office of Science, Office of Advanced Scientific Computing Research and Office of Biological and Environmental Research, via the RAPIDS Institute under the Scientific Discovery through Advanced Computing (SciDAC) program and the project of Improving Projections of AMOC and its Collapse Through Advanced Simulations (ImPACTS), under Contract No. DE-SC0012704 and FWP No. CC122 and CC127, and award B&R-KJ0401010 and FWP-CC147. 
+
+Competing interests. The authors declare no competing interests. 
+
+# References 
+
+Zdravko Botev and Ad Ridder. Variance reduction. Wiley statsRef: Statistics reference online , 136: 476, 2017. Noel Cressie. Statistics for spatial data . John Wiley & Sons, 2015. Fartash Faghri, David Duvenaud, David J Fleet, and Jimmy Ba. A study of gradient variance in deep learning. arXiv preprint arXiv:2007.04532 , 2020. Sheikh Md Shakeel Hassan, Arthur Feeney, Akash Dhruv, Jihoon Kim, Youngjoon Suh, Jaiyoung Ryu, Yoonjin Won, and Aparna Chandramowlishwaran. BubbleML: A multi-physics dataset and benchmarks for machine learning. In Advances in Neural Information Processing Systems , 2023. URL https://openreview.net/forum?id=0Wmglu8zak .Angelos Katharopoulos and François Fleuret. Not all samples are created equal: Deep learning with importance sampling. In Proceedings of the 35th International Conference on Machine Learning ,volume 80 of Proceedings of Machine Learning Research , pages 2525–2534, 2018. Shakiba Kheradmand, Daniel Rebain, Gopal Sharma, Hossam Isack, Abhishek Kar, Andrea Tagliasac-chi, and Kwang Moo Yi. Accelerating neural field training via soft mining. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 20071–20080, 2024. Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ramamoorthi, and Ren Ng. Nerf: Representing scenes as neural radiance fields for view synthesis. arXiv preprint arXiv:2003.08934 , 2020. Deanna Needell, Nathan Srebro, and Rachel Ward. Stochastic gradient descent, weighted sampling, and the randomized kaczmarz algorithm. In Advances in Neural Information Processing Systems ,volume 27, 2014. David Keetae Park, Xihaier Luo, Guang Zhao, Seungjun Lee, Miruna Oprescu, and Shinjae Yoo. Scent: Robust spatiotemporal learning for continuous scientific data via scalable conditioned neural fields. In Proceedings of the 42nd International Conference on Machine Learning , 2025. 13 Jeong Joon Park, Peter Florence, Julian Straub, Richard Newcombe, and Steven Lovegrove. Deepsdf: Learning continuous signed distance functions for shape representation. arXiv preprint arXiv:1901.05103 , 2019. Helen Qu, Rudy Morel, Michael McCabe, Alberto Bietti, François Lanusse, Shirley Ho, and Yann Le-Cun. Representation learning for spatiotemporal physical systems. arXiv preprint arXiv:2603.13227 ,2026. Vincent Sitzmann, Julien Martel, Alexander Bergman, David Lindell, and Gordon Wetzstein. Implicit neural representations with periodic activation functions. Advances in neural information processing systems , 33:7462–7473, 2020. Jihoon Tack, Subin Kim, Sihyun Yu, Jaeho Lee, Jinwoo Shin, and Jonathan Richard Schwarz. Learning large-scale neural fields via context pruned meta-learning. Advances in Neural Information Processing Systems , 36:72624–72647, 2023. Matthew Tancik, Pratul P. Srinivasan, Ben Mildenhall, Sara Fridovich-Keil, Nithin Raghavan, Utkarsh Singhal, Ravi Ramamoorthi, Jonathan T. Barron, and Ren Ng. Fourier features let networks learn high frequency functions in low dimensional domains. arXiv preprint arXiv:2006.10739 , 2020. Chen Zhang, Steven Tin Sui Luo, Jason Chun Lok Li, Yik-Chung Wu, and Ngai Wong. Nonparametric teaching of implicit neural representations. arXiv preprint arXiv:2405.10531 , 2024. Weixiang Zhang, Shuzhao Xie, Chengwei Ren, Siyi Xie, Chen Tang, Shijia Ge, Mingzi Wang, and Zhi Wang. Evos: Efficient implicit neural training via evolutionary selector. In Proceedings of the Computer Vision and Pattern Recognition Conference , pages 30472–30482, 2025. Peilin Zhao and Tong Zhang. Accelerating minibatch stochastic gradient descent using stratified sampling. arXiv preprint arXiv:1405.3080 , 2014. 
+
+# A Proof of Variance Reduction 
+
+We show that, under a local variogram model for the gradient field, refining a d-dimensional cell uniformly into md subcells reduces its contribution to the sampling variance by a fixed multiplicative factor. This justifies choosing the cell with the largest current variance contribution for refinement. 
+
+Setup. Let Dk be a hypercubic cell with side length hk, containing Nk points and allocated nk
+
+samples. Its contribution to the stratified sampling variance is 
+
+∆Vk =
+
+ Nk
+
+N
+
+2 σ2
+
+> k
+
+nk
+
+, (22) where σ2 
+
+> k
+
+denotes the within-cell variance of the gradient field. Suppose Dk is split into md congruent hypercubic subcells {D k,i }md
+
+> i=1
+
+. Under a uniform refinement, each subcell contains 
+
+Nk,i = Nk
+
+md , nk,i = nk
+
+md , i = 1 , . . . , m d, (23) and has side length hk/m .14 Local variogram model. Assume that within cell k, the gradient field satisfies the local variogram relation (Cressie, 2015) 
+
+12 E∥g(x) − g(y)∥2 = ak∥x − y∥ν , 0 < ν ≤ 2, (24) where ak may depend on the cell, while the exponent ν is shared across cells. Using the standard identity 
+
+σ2 
+
+> k
+
+= 12 Ex,y ∈D k
+
+∥g(x) − g(y)∥2, (25) we obtain 
+
+σ2 
+
+> k
+
+= akEx,y ∈D k
+
+∥x − y∥ν . (26) For a hypercubic cell of side length hk, the expectation above scales as hνk, so 
+
+σ2 
+
+> k
+
+∝ akhνk. (27) Similarly, each refined subcell Dk,i has side length hk/m , and therefore 
+
+σ2 
+
+> k,i
+
+∝ ak
+
+ hk
+
+m
+
+ν
+
+= m−ν σ2
+
+> k
+
+. (28) 
+
+Variance after refinement. The total variance contribution of the refined cell is the sum over all subcells: 
+
+∆V split  
+
+> k
+
+=
+
+> md
+
+X
+
+> i=1
+
+ Nk,i 
+
+N
+
+2 σ2
+
+> k,i
+
+nk,i 
+
+. (29) Substituting Nk,i = Nk/m d, nk,i = nk/m d, and σ2 
+
+> k,i
+
+= m−ν σ2 
+
+> k
+
+gives 
+
+∆V split  
+
+> k
+
+=
+
+> md
+
+X
+
+> i=1
+
+ Nk
+
+mdN
+
+2 m−ν σ2
+
+> k
+
+nk/m d (30) 
+
+=
+
+> md
+
+X
+
+> i=1
+
+m−ν−d
+
+ Nk
+
+N
+
+2 σ2
+
+> k
+
+nk
+
+(31) 
+
+= md · m−ν−d∆Vk (32) 
+
+= m−ν ∆Vk. (33) Hence the variance reduction induced by refining cell k is 
+
+∆Vk − ∆V split  
+
+> k
+
+=  1 − m−ν  ∆Vk. (34) In particular, the expected gain from refinement is proportional to the current variance contribution 
+
+∆Vk. Therefore, among candidate cells, the maximally beneficial split is obtained by selecting the cell with the largest ∆Vk.15 B Derivation of the Gradient Variance Approximation 
+
+Starting from 
+
+gi = J⊤ 
+
+> i
+
+ri,
+
+we assume that the residual ri is a scalar and that Ji is a vector-valued Jacobian within region k.We define the regional means as 
+
+¯rk := E[ri | k], ¯Jk := E[Ji | k].
+
+Let the centered variables be 
+
+δr i := ri − ¯rk, δJi := Ji − ¯Jk.
+
+Then 
+
+gi = ( ¯Jk + δJi)⊤(¯ rk + δr i).
+
+Expanding this expression gives 
+
+gi = ¯J⊤ 
+
+> k
+
+¯rk + ¯J⊤ 
+
+> k
+
+δr i + δJ⊤ 
+
+> i
+
+¯rk + δJ⊤ 
+
+> i
+
+δr i.
+
+Using a first-order approximation, we neglect the second-order term δJ⊤ 
+
+> i
+
+δr i, so that 
+
+gi − ¯gk ≈ ¯J⊤ 
+
+> k
+
+δr i + ¯ rk δJ⊤ 
+
+> i
+
+,
+
+where 
+
+¯gk := E[gi | k] ≈ ¯J⊤ 
+
+> k
+
+¯rk.
+
+The total variance of gi in region k is defined as 
+
+σ2 
+
+> g,k
+
+:= tr   Cov( gi | k) = E∥gi − ¯gk∥22 | k .
+
+Substituting the first-order approximation yields 
+
+σ2 
+
+> g,k
+
+≈ E
+
+
+
+¯J⊤ 
+
+> k
+
+δr i + ¯ rk δJ⊤ 
+
+> i
+> 22
+
+k
+
+
+
+(35) 
+
+= E
+
+h
+
+∥¯J⊤ 
+
+> k
+
+δr i∥22 | k
+
+i
+
++ E
+
+h
+
+∥¯rk δJ⊤ 
+
+> i
+
+∥22 | k
+
+i
+
++ 2 E
+
+hD ¯J⊤ 
+
+> k
+
+δr i, ¯rk δJ⊤
+
+> i
+
+E
+
+k
+
+i
+
+. (36) If we neglect the cross term, then 
+
+σ2 
+
+> g,k
+
+≈ ∥ ¯Jk∥22 E[δr 2 
+
+> i
+
+| k] + ¯ r 2 
+
+> k
+
+E∥δJi∥22 | k .
+
+Finally, defining 
+
+σ2 
+
+> r,k
+
+:= Var( ri | k) = E[δr 2 
+
+> i
+
+| k], σ2 
+
+> J,k
+
+:= tr   Cov( Ji | k) = E∥δJi∥22 | k ,
+
+we obtain 
+
+σ2 
+
+> g,k
+
+≈ ∥ ¯Jk∥22 σ2 
+
+> r,k
+
++ ¯ r 2 
+
+> k
+
+σ2
+
+> J,k
+
+.
+
+16 C Local Improvement Along the Residual-Power Family 
+
+C.1 A Sufficient Condition for Local Improvement with Residual-Power Weight-ing 
+
+We analyze the residual-power weighting family used by ACES directly. Fix a partition with region proportions pk, regional mean gradients ¯gk, and independent regional minibatch estimates ˆgk. Let 
+
+g =
+
+> K
+
+X
+
+> k=1
+
+pk ¯gk, ck = p2 
+
+> k
+
+E∥ˆgk − ¯gk∥2, V =
+
+> K
+
+X
+
+> k=1
+
+ck.
+
+For normalized weights satisfying P 
+
+> k
+
+pkwk = 1 , define 
+
+¯gw =
+
+> K
+
+X
+
+> k=1
+
+pkwk ¯gk, F (w) = ⟨g, ¯gw⟩2
+
+∥¯gw∥2 + PKk=1 w2
+
+> k
+
+ck
+
+.
+
+This is the one-step proxy S2
+
+> w
+
+/G w from Eq. (17). We further define 
+
+ak = pk⟨g, ¯gk⟩, tk = akV − ∥ g∥2ck.
+
+Because P 
+
+> k
+
+ak = ∥g∥2 and P 
+
+> k
+
+ck = V , we have P 
+
+> k
+
+tk = 0 .The residual-power family in Eq. (20) is 
+
+wk(α) = |¯rk|α
+
+PKj=1 pj |¯rj |α , α ≥ 0,
+
+which satisfies P 
+
+> k
+
+pkwk(α) = 1 and recovers unbiased weighting at α = 0 .
+
+Proposition 1 (Local improvement under residual-score correlation) . Assume g̸ = 0, ck > 0, and 
+
+|¯rk| > 0 for all k. Let ℓk = log |¯rk|. Then 
+
+ddα F  w(α)
+
+> α=0
+
+= 2∥g∥2
+
+(∥g∥2 + V )2
+
+> K
+
+X
+
+> k=1
+
+tk ℓk.
+
+In particular, if the region improvement scores and log-residual magnitudes are positively correlated in the sense that KX
+
+> k=1
+
+tk log |¯rk| > 0,
+
+then there exists ¯α > 0 such that F (w(α)) > F (w(0)) = F (1) for all α ∈ (0 , ¯α): a small residual-power bias strictly improves the one-step proxy over the unbiased stratified estimator. Proof. Write wk(α) = eαℓ k /Z (α) with Z(α) = P 
+
+> j
+
+pj eαℓ j , so Z(0) = 1 and Z′(0) = P 
+
+> j
+
+pj ℓj =: ¯ℓ.Differentiating, 
+
+dw k
+
+dα α=0 
+
+= ℓkeαℓ k Z(α) − eαℓ k Z′(α)
+
+Z(α)2 α=0 
+
+= ℓk − ¯ℓ. 
+
+At w = 1, the numerator components of F satisfy 
+
+S1 = ∥g∥2, G1 = ∥g∥2 + V, ∂S w
+
+∂w k 1
+
+= ak, ∂G w
+
+∂w k 1
+
+= 2( ak + ck).
+
+17 The quotient rule therefore gives 
+
+∂F ∂w k 1
+
+= 2∥g∥2
+
+(∥g∥2 + V )2
+
+ akV − ∥ g∥2ck
+
+ = 2∥g∥2
+
+(∥g∥2 + V )2 tk.
+
+Applying the chain rule, 
+
+ddα F  w(α)
+
+> α=0
+
+=
+
+> K
+
+X
+
+> k=1
+
+∂F ∂w k 1
+
+(ℓk − ¯ℓ) = 2∥g∥2
+
+(∥g∥2 + V )2
+
+> K
+
+X
+
+> k=1
+
+tk(ℓk − ¯ℓ).
+
+Since PKk=1 tk = 0 , the term ¯ℓ P 
+
+> k
+
+tk vanishes, yielding the stated derivative. If the sufficient condition holds, this derivative is strictly positive, and continuity of α 7 → F (w(α)) gives the claimed strict improvement on an interval (0 , ¯α).
+
+C.2 Empirical Verification of the Ascent Condition 
+
+We test the sufficient condition of Proposition 1, PKk=1 tk log |¯rk| > 0, directly on trained checkpoints. For each of PoolBoiling2D and NS2D, we take five independently trained ACES runs (one per time frame) and freeze the model at six checkpoints spanning training (epochs 100, 300, 1,000, 2,000, 4,000, and 4,999). Across all 2 datasets ×5 runs ×6 checkpoints = 60 configurations, the identity P 
+
+> k
+
+tk = 0 holds to within 3 × 10 −16 relative error (a correctness check on the construction), and the sufficient condition P 
+
+> k
+
+tk log |¯rk| > 0 holds in every configuration: 60 /60 . The underlying Spearman rank correlation 
+
+ρ(tk, log |¯rk|) stays positive throughout training on both datasets, ranging over [0 .225 , 0.606] on PoolBoiling2D and [0 .312 , 0.774] on NS2D. Figure 6 plots, for both datasets and across training, (a) the resulting ascent slope dF/dα |α=0 from Proposition 1 (log-scale, since it spans several orders of magnitude between the two datasets, and is guaranteed positive by the result above) and (b) the underlying rank correlation. Together with Appendix E, this confirms that the first-order condition licensing a small residual-power bias holds throughout training, on both evaluated datasets, not merely at initialization. 
+
+# D Original One-Step Improvement Score 
+
+In the main text, we affinely normalize the proxy so that uniform sampling has value 0 and the full-gradient oracle has value 1 at each checkpoint. For reference, Figure 7 shows the original one-step improvement score corresponding directly to S2
+
+> w
+
+/G w.
+
+# E Validity of Residual Variance as a Proxy 
+
+To justify our proxy choice, we compare residual variance σ2 
+
+> r,k
+
+with gradient variance σ2 
+
+> g,k
+
+at the region level on NS2D using checkpoints from uniform sampling. We evaluate two cell granularities (16 × 16 and 32 × 32 regions) and report two diagnostics over training: (1) Spearman rank correlation between region scores, and (2) top-K overlap between the highest-scoring regions under σ2 
+
+> g,k
+
+and 
+
+σ2
+
+> r,k
+
+.Figure 8 shows strong agreement between residual variance and gradient variance throughout training. The mean Spearman correlation remains high for both granularities, reaching ρ =0.807 ± 0.031 (16 × 16 ) and ρ = 0 .820 ± 0.054 (32 × 32 ). In addition, top-K overlap remains substantially above the random baseline across all evaluated thresholds. For example, at top-20%, 18 0 1000 2000 3000 4000 5000               
+
+> Training Epoch
+> 10 5
+> 10 3
+> 10 1
+> 10 1
+> 10 3
+> dF /d | = 0
+> tkvs log rk: Ascent Slope
+> PoolBoiling2D (iter 5) NS1024 (iter 5) 01000 2000 3000 4000 5000
+> Training Epoch
+> 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8
+> Spearman Rank Correlation
+> tkvs log rk: Rank Correlation
+> PoolBoiling2D (iter 5) NS1024 (iter 5)
+
+Figure 6: Empirical verification of the sufficient condition in Proposition 1 on PoolBoiling2D and NS2D using a budget-matched ACES partition ( α = 0 , i.e. w = 1). The curves show the mean with the min–max range over five time-frame runs per dataset. (a) The ascent slope dF/dα |α=0 = 
+
+> 2∥g∥2
+> (∥g∥2+V)2
+
+P 
+
+> k
+
+tk log |¯rk| stays strictly positive at every training checkpoint on both datasets ( 60 /60 
+
+configurations). (b) The underlying Spearman rank correlation ρ(tk, log |¯rk|) also stays positive throughout training, confirming that regions with larger residual magnitude tend to have a more favorable alignment-to-variance ratio tk, not only near initialization. Table 2: Relative MSE on PoolBoiling2D using a Fourier Feature Network backbone (mean ±
+
+standard deviation over three seeds). Lower is better; bold denotes the lowest mean at each checkpoint.                                                                               
+
+> Method 200 400 800 2,000 5,000
+> Uniform random 0.9537 ±0.0047 0.9435 ±0.0141 0.8656 ±0.0730 0.5759 ±0.1898 0.2866 ±0.0411
+> INT 1.1370 ±0.0818 0.9045 ±0.0573 0.7092 ±0.0425 0.5009 ±0.0324 0.3359 ±0.0231
+> EVOS 2.6540 ±0.2279 1.1808 ±0.0780 0.7930 ±0.0544 0.4755 ±0.0292 0.3363 ±0.0189
+> Fixed stratified 0.9564 ±0.0014 0.9483 ±0.0093 0.9050 ±0.0366 0.6387 ±0.1542 0.3262 ±0.0590
+> ACES 1.4906 ±0.1301 1.1236 ±0.4569 0.6154 ±0.3184 0 .2453 ±0.0469 0 .1536 ±0.0263
+
+the overlap reaches 0.719 ± 0.059 (16 × 16 ) and 0.660 ± 0.070 (32 × 32 ), compared to the random baseline of 0.20 . These results indicate that residual variance largely identifies the same informative regions as direct gradient variance while being much cheaper to estimate, supporting its use as a scalable proxy in ACES. 
+
+# F Generalization to a Fourier Feature Network 
+
+To test whether the benefits of ACES depend on the SIREN architecture used in the main experiments, we replace SIREN with a Fourier Feature Network (FFN) (Tancik et al., 2020) and repeat the PoolBoiling2D comparison. All sampling methods use the same FFN backbone and evaluation protocol. Table 2 reports relative MSE throughout training, averaged over three random seeds. Uniform sampling and INT obtain lower mean error during the earliest checkpoints, whereas ACES obtains the lowest mean error from 800 iterations onward. At 5,000 iterations, ACES reaches a relative MSE of 0.1536 ± 0.0263 , compared with 0.2866 ± 0.0411 for uniform sampling. This result indicates that the later-stage advantage of adaptive region-level sampling is not specific to the SIREN backbone, while also showing that ACES can have a slower initial phase with this architecture. 19 0 500 1000 1500 2000 2500 
+
+> Training step
+> 0500 1000 1500 2000
+> One-step improvement score
+> Sampler Full Gradient (Oracle) Uniform (Baseline) INT Partition Only (Unbiased) ACES (Proposed)
+
+Figure 7: Original one-step improvement score across training steps, corresponding to S2
+
+w/G w before normalization/sign transformation. 0 2000 4000 6000 8000 10000               
+
+> Training Step
+> 0.0 0.2 0.4 0.6 0.8 1.0
+> Spearman Rank Correlation
+> 2
+> g,kvs 2
+> r,k: Rank Correlation
+> 16×16 cells (mean = 0.807)
+> 32×32 cells (mean = 0.820)
+> 10 20 30 40 50
+> Top-K (%)
+> 0.0 0.2 0.4 0.6 0.8 1.0
+> Overlap Ratio
+> 2
+> g,kvs 2
+> r,k: Top-K Region Overlap
+> 16×16 cells 32×32 cells Random baseline
+
+Figure 8: Validation of residual variance as a proxy for gradient variance on NS2D. Left: Spearman rank correlation between σ2
+
+g,k and σ2
+
+r,k across checkpoints for random 16 × 16 and 32 × 32 region sets. Right: top-K overlap between regions selected by σ2
+
+g,k and σ2
+
+r,k . Both curves stay well above the random baseline, showing that residual variance preserves region ranking and high-importance region retrieval. 
+
+# G Experimental Settings and Hardware 
+
+This section summarizes the practical training setup used for the experiments in this paper. 
+
+Common training setup. Unless otherwise stated, we use a SIREN INR backbone. The spatial experiments draw a fraction 2 × 10 −3 of the candidate points per iteration, and the joint spatiotemporal experiments draw 7 × 10 −4. The FFN experiment in Appendix F changes only the backbone comparison described there. We report relative MSE and average results over three random seeds. 
+
+Experiment configuration. All SIREN experiments use SGD with momentum 0.9, Nesterov acceleration, zero weight decay, and zero dampening. The spatial experiments use depth 3, hidden width 155 , and w0 = 30 ; their learning rates are 10 −5 for NS2D and 10 −3 for PoolBoiling2D. The joint spatiotemporal experiments use depth 10 , hidden width 384 , and w0 = 60 . Their learning rates 20 Table 3: Runtime breakdown on NS2D in milliseconds per training iteration (mean ± standard deviation over three seeds). Partition construction is excluded from the sampling column and reported separately as an amortized cost. The final column gives the cost of one partition update.                                
+
+> Method Training Sampling Partition Total Per update
+> Uniform 1.2474 ±0.0002 0.4140 ±0.0008 —1.6615 ±0.0010 —ACES 1.4688 ±0.0051 1.3547 ±0.0051 0.1609 ±0.0007 2.9844 ±0.0037 32 .184 ±0.144
+
+Table 4: Sensitivity to the weighting exponent α. Lower relative MSE is better; bold denotes the lowest value in each row.                         
+
+> α0.1 0.2 0.5 1.0 2.0 3.0 4.0 5.0 PoolBoiling2D 0.1425 0.1363 0.1258 0.1097 0.1084 0.1096 0.1123 0.1117 NS2D 0.2816 0.2744 0.2605 0.2367 0.2196 0.2163 0.2156 0.2163
+
+are 2 × 10 −3 on NS3D and 5 × 10 −3 on PoolBoiling3D for Uniform, Fixed Stratified, and ACES, and 
+
+10 −4 for INT. Learning rates are selected by a coarse search over values from 10 −6 to 10 −2. In the joint experiments, ACES uses adaptive partitioning without residual-powered loss weighting; this configuration isolates whether adaptive coverage scales to the (x, y, t ) domain. 
+
+Hardware and software environment. All reported runs were executed on a single NVIDIA A100-SXM4-80GB GPU (80 GB memory). The runtime environment reported by nvidia-smi is: Driver Version 580.105.08 , CUDA Version 13.0 , with GPU model NVIDIA A100-SXM4-80GB . This hardware specification is used for runtime and wall-clock comparisons in the paper. 
+
+# H Runtime and Hyperparameter Sensitivity 
+
+H.1 Runtime and Overhead Analysis 
+
+We re-profile the current NS2D configuration on a single NVIDIA A100-SXM4-80GB GPU. For each of three random seeds, we first run 20 warm-up iterations and then measure 1,000 training iterations. We synchronize CUDA before and after every timed region and separately measure the model-training stage, ordinary sampling, and adaptive partition construction. The model-training stage includes the weighted loss, forward and backward passes, gradient processing, and optimizer update. ACES rebuilds its partition every 200 iterations; therefore, each measured run contains five partition updates. Table 3 reports the mean and standard deviation across the three runs. ACES costs approximately 1.80 × as much per iteration as uniform sampling. Most of the difference comes from region-wise sample allocation and construction of the weighted minibatch; periodic partition construction contributes only 0.161 ms per iteration after amortization. The larger training-stage cost reflects the weighted loss operations. 
+
+H.2 Sensitivity to Weighting and Partition Updates 
+
+We first vary the residual weighting exponent α while keeping the remaining sampler settings fixed. Table 4 reports relative MSE averaged over five frames. Increasing α from a weak weighting regime improves reconstruction on both datasets, while the improvement saturates in a moderate range. Very strong concentration provides no further consistent gain. 21 Table 5: Sensitivity to the partition-update interval. Relative MSE is reported as mean ± standard deviation; lower is better. “Initial only” constructs the partition at initialization and does not refresh it during the 5,000-iteration run.                                       
+
+> Update interval PoolBoiling2D NS2D
+> 50 0.1228 ±0.0041 0.2368 ±0.0015
+> 100 0.1242 ±0.0046 0.2374 ±0.0025
+> 200 0.1235 ±0.0071 0.2373 ±0.0019
+> 500 0.1235 ±0.0039 0.2380 ±0.0021
+> 1,000 0.1243 ±0.0037 0.2387 ±0.0019
+> Initial only 0.1396 ±0.0077 0.2457 ±0.0021
+
+We next vary the number of iterations between partition updates. As shown in Table 5, performance changes little for intervals between 50 and 1,000 iterations. In contrast, constructing the partition only at initialization (the 5,000-iteration setting) increases error on both datasets. These results indicate that periodic adaptation matters, while performance is not sensitive to the exact update frequency over a broad range. 22

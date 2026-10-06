@@ -1,0 +1,292 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-10-06T01:11:46.535462+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2609.40090v2",
+      "title": "PTNO: Training Neural Operators with Noisy Monte Carlo Estimates for Particle Transport Problems",
+      "abstract": "Particle transport under multiple scattering is central to radiative transfer and plasma physics, yet high-fidelity Monte Carlo (MC) simulations must trace prohibitively many particles. Learning-based surrogates can amortize this cost, but typically train on expensive, well-converged MC solutions. We propose the Particle Transport Neural Operator (PTNO), a neural operator that learns particle transport surrogates directly from noisy, low-cost MC labels. Such labels pose two challenges: (1) high variance, which destabilizes standard supervised learning, and (2) a high dynamic range (HDR) spanning many orders of magnitude. For the first, we learn the solution operator from noisy labels of many configurations, amortizing MC cost and generalizing to unseen configurations. Because MC labels are unbiased, we show that the squared loss on them shares its minimizer with the loss on converged solutions, and our budget-allocation study over training scenes $M$, MC samples per render $N$, and independent renders per scene $K$ shows that many noisy scenes beat fewer converged ones. For the second, a nonlinear transform such as the logarithm biases noisy supervision. Instead, PTNO keeps labels in physical space and enforces positivity with a softplus output layer that represents small values effectively. We further train with a pointwise relative $L_2$ loss (PRelL2), the stop-gradient relative loss of HDR denoising and neural rendering, which normalizes each residual by the stop-gradient prediction instead of the noisy label. We demonstrate PTNO on neutron transport in fusion reactors and radiative transfer in participating media. On the two neutronics tasks, PTNO is $10^4$-$10^5\\times$ faster than converged MC on the same CPU and $10^3$-$10^5\\times$ cheaper than MC at matched accuracy; on the two radiative-transfer tasks, MC at matched accuracy costs $0.8$-$11\\times$ as much as PTNO.",
+      "authors": [
+        "Yubo Cao",
+        "Xi Deng",
+        "Mengqi Xia",
+        "Vignesh Gopakumar",
+        "Ander Gray",
+        "Anima Anandkumar"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-09-30T16:31:40+00:00",
+      "link": "https://arxiv.org/pdf/2609.40090v2",
+      "tags": [
+        "keyword:神经体渲染"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "neural operator for particle transport under multiple scattering",
+      "llm_evidence_cn": "用于多次散射下粒子传输的神经算子",
+      "llm_evidence": "用于多次散射下粒子传输的神经算子",
+      "canonical_evidence": "用于多次散射下粒子传输的神经算子",
+      "llm_tldr_en": "Learns particle transport surrogates for multiple scattering problems using noisy Monte Carlo labels.",
+      "llm_tldr_cn": "利用噪声蒙特卡洛标签学习多次散射问题的粒子传输代理模型。",
+      "llm_tldr": "利用噪声蒙特卡洛标签学习多次散射问题的粒子传输代理模型。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "deep learning for multiple scattering in volumes",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2610.02382v1",
+      "title": "FactorSplat: Appearance-Controllable Gaussian Proxies for Medical Volume Rendering",
+      "abstract": "Transfer functions (TFs) control color and visibility in medical volume rendering, but image-trained Gaussian proxies typically bake one transfer function into their appearance. We present FactorSplat, a per-scene N-dimensional Gaussian splatting (N-DGS) proxy that accepts region-specific intensity-to-RGBA curves at inference. A local lookup applies the authored color and opacity change, while a shared functional encoder and low-rank per-Gaussian factors learn the residual appearance response. Geometry and directional appearance remain shared across presets, with visibility control and TF-aware pruning preserving the ability to hide and reveal structures. On seven CT and MR scans, FactorSplat improves mean PSNR and changed-region error over region-aware VEG across validation, interpolation, unseen composition, and out-of-distribution (OOD) edits. Across these four splits, seven-scan mean PSNR gains over VEG range from 1.10 to 1.52 dB. One checkpoint per scan supports unseen edits without retraining. At $1600^2$, the cached fast renderer averages 524 FPS with 1.17 ms TF switches. Project page: https://gaozhongpai.github.io/FactorSplat/.",
+      "authors": [
+        "Zhongpai Gao",
+        "Benjamin Planche",
+        "Meng Zheng",
+        "Anwesa Choudhuri",
+        "Terrence Chen",
+        "Ziyan Wu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-10-01T19:04:30+00:00",
+      "link": "https://arxiv.org/pdf/2610.02382v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Gaussian proxies for medical volume rendering with controllable transfer functions",
+      "llm_evidence_cn": "具有可控传输函数的医学体渲染高斯代理",
+      "llm_evidence": "具有可控传输函数的医学体渲染高斯代理",
+      "canonical_evidence": "具有可控传输函数的医学体渲染高斯代理",
+      "llm_tldr_en": "Presents FactorSplat, a Gaussian splatting proxy that enables controllable appearance in medical volume rendering.",
+      "llm_tldr_cn": "提出FactorSplat，一种高斯泼溅代理，可在医学体渲染中实现可控的外观表现。",
+      "llm_tldr": "提出FactorSplat，一种高斯泼溅代理，可在医学体渲染中实现可控的外观表现。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2610.02410v1",
+      "title": "Efficient Neural Field Learning via Adaptive Coverage and Focused Sampling",
+      "abstract": "Implicit neural representations (INRs) provide a flexible framework for modeling high-dimensional continuous fields, but their training is often inefficient due to uniform subsampling that ignores spatial heterogeneity. Existing adaptive sampling methods partially address this issue by prioritizing high-error samples, but typically operate at the point level, often leading to redundant sampling in localized regions and insufficient coverage of the domain. We propose ACES (Adaptive Coverage-aware Efficient Sampling), a structured sampling framework that improves training efficiency by decoupling coverage and importance. ACES constructs adaptive spatial partitions to ensure domain coverage and reduce redundancy, and applies region-level importance weighting to prioritize informative regions during training. We provide a theoretical analysis showing that adaptive partitioning reduces gradient variance by increasing within-region homogeneity, and that controlled bias in region-level weighting may improve optimization efficiency relative to standard unbiased estimators. Experiments on scientific field learning tasks demonstrate that ACES achieves faster convergence and lower error than uniform and pointwise adaptive sampling baselines, with the largest gains in fields with highly localized complexity.",
+      "authors": [
+        "Guang Zhao",
+        "Xihaier Luo",
+        "Huan-Hsin Tseng",
+        "Seungjun Lee",
+        "Shinjae Yoo",
+        "Yihui Ren",
+        "Wei Xu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-10-01T19:35:59+00:00",
+      "link": "https://arxiv.org/pdf/2610.02410v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "efficient training of implicit neural representations for continuous fields",
+      "llm_evidence_cn": "连续场隐式神经表示的高效训练",
+      "llm_evidence": "连续场隐式神经表示的高效训练",
+      "canonical_evidence": "连续场隐式神经表示的高效训练",
+      "llm_tldr_en": "Improves neural field training efficiency through adaptive spatial partitions and importance sampling.",
+      "llm_tldr_cn": "通过自适应空间划分和重要性采样提高神经场训练效率。",
+      "llm_tldr": "通过自适应空间划分和重要性采样提高神经场训练效率。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2610.02851v1",
+      "title": "ByteSplat: Efficient Distributed 3D Gaussian Splatting Training via Intra- and Inter-GPU communication reduction",
+      "abstract": "3D Gaussian Splatting (3DGS) enables photorealistic scene reconstruction, but training large-scale scenes requires substantial memory and computation. Distributing training across multiple GPUs increases available memory capacity, yet its performance is strictly constrained by data movement. We identify two dominant bottlenecks: repeated off-chip memory accesses during forward and backward rasterization, and inter-GPU communication of partial Gaussian gradients. To address these bottlenecks, we present ByteSplat, a distributed 3DGS training framework that jointly reduces intra- and inter-GPU data movement. First, ByteSplat fuses forward rasterization and backward rasterization into a single GPU kernel, retaining intermediate results on-chip to eliminate redundant off-chip transfers. Second, to alleviate the increased on-chip storage by fused rasterization, ByteSplat introduces hardware-aware pruning that considers both rendering quality and per-tile shared-memory constraints, increasing the overall performance of fused execution. Lastly, ByteSplat exploits gradient sparsity to eliminate zero partial gradients from inter-GPU communication. GPU-efficient encoder and decoder kernels compact the remaining records and directly aggregate the received gradients on their owner GPUs, reducing both communication volume and local aggregation overhead. We evaluate ByteSplat across six datasets. Compared with the baseline, ByteSplat reduces intra-GPU off-chip traffic and backward inter-GPU communication volume by 63.4% and 65.8%, respectively. On eight GPUs, ByteSplat achieves up to 6.1$\\times$ training speedup while preserving reconstruction quality.",
+      "authors": [
+        "Shuo Wu",
+        "He Zhu",
+        "Han Zhao",
+        "Xiaohui Zhang",
+        "Yaqian Zhao",
+        "Hui Wei",
+        "Ruyang Li",
+        "Hongzhi Shi",
+        "Lihua Lu",
+        "Jingwen Leng",
+        "Yu Feng",
+        "Minyi Guo"
+      ],
+      "primary_category": "cs.DC",
+      "categories": [
+        "cs.DC"
+      ],
+      "published": "2026-10-02T05:37:59+00:00",
+      "link": "https://arxiv.org/pdf/2610.02851v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Efficient 3D Gaussian Splatting training and rasterization optimization",
+      "llm_evidence_cn": "高效的3D高斯泼溅训练与光栅化优化",
+      "llm_evidence": "高效的3D高斯泼溅训练与光栅化优化",
+      "canonical_evidence": "高效的3D高斯泼溅训练与光栅化优化",
+      "llm_tldr_en": "ByteSplat optimizes distributed 3D Gaussian Splatting training by reducing memory access and communication.",
+      "llm_tldr_cn": "ByteSplat通过减少内存访问和通信开销，优化了分布式3D高斯泼溅训练。",
+      "llm_tldr": "ByteSplat通过减少内存访问和通信开销，优化了分布式3D高斯泼溅训练。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2610.02322v1",
+      "title": "SCION: Scene Composition with Instanced Neural Primitives",
+      "abstract": "Real-world scenes are compositional: bricks, blades of grass, pebbles, and tree leaves recur across human-built and natural environments. Existing neural scene representations model these elements independently. Most 3D Gaussian Splatting and follow-up abstraction and compression methods treat each element as unique, fitting millions of independent Gaussians per scene. Prior methods like Splat and Replace fit template objects, but they require mostly manual selection of repeated elements. As a result, these representations store redundant parameters and provide weak manipulation handles for downstream tasks. We introduce SCION, a hier- archical compositional scene representation that replaces independent Gaussians with a compact vocabulary of reusable primitives and lightweight world-space instances that place transformed copies throughout the scene. We fit this represen- tation to multi-view captures via a joint optimization over discrete and continuous scene parameters, combining two-level densification over splats and instances with an adversarial loss that preserves detail across shared primitives. The recovered structure yields a compact, controllable representation while maintaining high quality even at 1.2 MB. SCION achieves rate-distortion favorable to existing Gaussian compression methods, and it enables instance-level scene editing and animation without retraining. Our results show that neural scene representations need not memorize scenes as independent primitives; they can discover reusable parts. Project webpage: https://light.princeton.edu/SCION",
+      "authors": [
+        "William Koch",
+        "Amogh Joshi",
+        "Cyrus Vachha",
+        "Cheng Zheng",
+        "Felix Heide"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-10-01T18:00:06+00:00",
+      "link": "https://arxiv.org/pdf/2610.02322v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "neural scene representation and 3D Gaussian Splatting optimization",
+      "llm_evidence_cn": "神经场景表示与3D高斯泼溅优化",
+      "llm_evidence": "神经场景表示与3D高斯泼溅优化",
+      "canonical_evidence": "神经场景表示与3D高斯泼溅优化",
+      "llm_tldr_en": "Introduces a hierarchical compositional scene representation using instanced neural primitives for efficiency.",
+      "llm_tldr_cn": "引入了一种层次化组合场景表示，通过实例化神经基元提高场景建模效率。",
+      "llm_tldr": "引入了一种层次化组合场景表示，通过实例化神经基元提高场景建模效率。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2610.03522v1",
+      "title": "Feedforward Novel View Synthesis for Heterogeneous Cameras",
+      "abstract": "Feed-forward novel view synthesis has recently shown promising results from sparse posed images, but most existing methods assume that context and target views share a fixed camera family. This homogeneous-camera assumption breaks in practical multi-sensor systems, where perspective, fisheye, and panoramic cameras may coexist and where the target projection may be unseen during training. We study feed-forward NVS across heterogeneous central cameras and identify a key ambiguity introduced by tokenization: a visual token aggregates a projection-dependent bundle of pixel rays, while existing camera encodings mainly expose absolute rays or token-center relations. To address this, we combine token-center relative Camera Positional Encodings and proposed local raymaps, a token-level representation that explicitly describes the intra-patch ray distribution summarized by each token. We further propose projection-aware 2D RoPE, which replaces raw image-grid coordinates with ray-induced angular coordinates so that relative positional reasoning is aligned across camera projections. Together, these components treat diverse cameras as calibrated samplings of a shared ray space rather than separate visual domains. On ScanNet++ with heterogeneous-camera system, our method improves over camera-conditioned baselines under mixed-camera evaluation and demonstrates zero-shot generalization to panoramic views.",
+      "authors": [
+        "Meng Wei",
+        "Cheng Zhang",
+        "Boying Li",
+        "Yihang Chen",
+        "Jianmin Zheng",
+        "Hamid Rezatofighi",
+        "Jianfei Cai"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-10-02T16:13:22+00:00",
+      "link": "https://arxiv.org/pdf/2610.03522v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "feedforward novel view synthesis across heterogeneous cameras",
+      "llm_evidence_cn": "跨异构相机的前馈新视图合成",
+      "llm_evidence": "跨异构相机的前馈新视图合成",
+      "canonical_evidence": "跨异构相机的前馈新视图合成",
+      "llm_tldr_en": "Addresses novel view synthesis for heterogeneous camera systems using local raymaps and positional encodings.",
+      "llm_tldr_cn": "利用局部射线图和位置编码解决了异构相机系统的新视图合成问题。",
+      "llm_tldr": "利用局部射线图和位置编码解决了异构相机系统的新视图合成问题。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2610.03441v1",
+      "title": "ChromaGS: Text-Driven Semantic Editing of 4D Gaussian Avatars",
+      "abstract": "We present ChromaGS, a method for real-time, language-guided color editing of animatable 3D Gaussian head avatars. Given a trained animatable avatar, users can instantly modify the color of semantic regions through natural language, with edits applied at render time and no retraining required. Our key insight is to augment each Gaussian primitive with learned soft assignments to semantic regions and decompose colors into region-level base colors and Gaussian-level residuals. This decomposition enables coherent color transfer: modifying a region's base color propagates naturally through all associated Gaussians while preserving fine appearance details encoded in residuals. A two-stage language pipeline translates text instructions into target colors, supporting both absolute specifications and relative adjustments. Unlike generative editing methods that may introduce unintended modifications, our approach provides deterministic, precisely localized semantic control. Experiments demonstrate faithful appearance preservation and intuitive interaction across diverse subjects. Project page and code are available at: https://a-canela.github.io/chromags/",
+      "authors": [
+        "Antonio Canela",
+        "Jordi Sànchez-Riera"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-10-02T15:24:34+00:00",
+      "link": "https://arxiv.org/pdf/2610.03441v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "semantic editing of 4D Gaussian avatars",
+      "llm_evidence_cn": "4D高斯头像的语义编辑",
+      "llm_evidence": "4D高斯头像的语义编辑",
+      "canonical_evidence": "4D高斯头像的语义编辑",
+      "llm_tldr_en": "Enables real-time, language-guided color editing of animatable 3D Gaussian head avatars.",
+      "llm_tldr_cn": "实现了可动画3D高斯头部头像的实时语言引导颜色编辑。",
+      "llm_tldr": "实现了可动画3D高斯头部头像的实时语言引导颜色编辑。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
