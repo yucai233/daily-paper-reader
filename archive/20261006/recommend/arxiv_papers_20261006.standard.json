@@ -1,55 +1,17 @@
 {
   "mode": "standard",
-  "generated_at": "2026-10-06T01:11:46.535462+00:00",
+  "generated_at": "2026-10-06T22:52:50.674422+00:00",
   "stats": {
     "mode": "standard",
     "tag_count": 1,
-    "deep_divecandidates": 3,
+    "deep_divecandidates": 6,
     "deep_cap": 6,
-    "deep_selected": 3,
-    "quick_candidates": 4,
+    "deep_selected": 6,
+    "quick_candidates": 10,
     "quick_skim_target": 11,
-    "quick_selected": 4
+    "quick_selected": 10
   },
   "deep_dive": [
-    {
-      "id": "2609.40090v2",
-      "title": "PTNO: Training Neural Operators with Noisy Monte Carlo Estimates for Particle Transport Problems",
-      "abstract": "Particle transport under multiple scattering is central to radiative transfer and plasma physics, yet high-fidelity Monte Carlo (MC) simulations must trace prohibitively many particles. Learning-based surrogates can amortize this cost, but typically train on expensive, well-converged MC solutions. We propose the Particle Transport Neural Operator (PTNO), a neural operator that learns particle transport surrogates directly from noisy, low-cost MC labels. Such labels pose two challenges: (1) high variance, which destabilizes standard supervised learning, and (2) a high dynamic range (HDR) spanning many orders of magnitude. For the first, we learn the solution operator from noisy labels of many configurations, amortizing MC cost and generalizing to unseen configurations. Because MC labels are unbiased, we show that the squared loss on them shares its minimizer with the loss on converged solutions, and our budget-allocation study over training scenes $M$, MC samples per render $N$, and independent renders per scene $K$ shows that many noisy scenes beat fewer converged ones. For the second, a nonlinear transform such as the logarithm biases noisy supervision. Instead, PTNO keeps labels in physical space and enforces positivity with a softplus output layer that represents small values effectively. We further train with a pointwise relative $L_2$ loss (PRelL2), the stop-gradient relative loss of HDR denoising and neural rendering, which normalizes each residual by the stop-gradient prediction instead of the noisy label. We demonstrate PTNO on neutron transport in fusion reactors and radiative transfer in participating media. On the two neutronics tasks, PTNO is $10^4$-$10^5\\times$ faster than converged MC on the same CPU and $10^3$-$10^5\\times$ cheaper than MC at matched accuracy; on the two radiative-transfer tasks, MC at matched accuracy costs $0.8$-$11\\times$ as much as PTNO.",
-      "authors": [
-        "Yubo Cao",
-        "Xi Deng",
-        "Mengqi Xia",
-        "Vignesh Gopakumar",
-        "Ander Gray",
-        "Anima Anandkumar"
-      ],
-      "primary_category": "cs.AI",
-      "categories": [
-        "cs.AI",
-        "cs.LG"
-      ],
-      "published": "2026-09-30T16:31:40+00:00",
-      "link": "https://arxiv.org/pdf/2609.40090v2",
-      "tags": [
-        "keyword:神经体渲染"
-      ],
-      "llm_score": 9.0,
-      "llm_evidence_en": "neural operator for particle transport under multiple scattering",
-      "llm_evidence_cn": "用于多次散射下粒子传输的神经算子",
-      "llm_evidence": "用于多次散射下粒子传输的神经算子",
-      "canonical_evidence": "用于多次散射下粒子传输的神经算子",
-      "llm_tldr_en": "Learns particle transport surrogates for multiple scattering problems using noisy Monte Carlo labels.",
-      "llm_tldr_cn": "利用噪声蒙特卡洛标签学习多次散射问题的粒子传输代理模型。",
-      "llm_tldr": "利用噪声蒙特卡洛标签学习多次散射问题的粒子传输代理模型。",
-      "llm_tags": [
-        "query:q4"
-      ],
-      "matched_query_tag": "query:q4",
-      "matched_query_text": "deep learning for multiple scattering in volumes",
-      "matched_requirement_id": "req-4",
-      "selection_source": "fresh_fetch"
-    },
     {
       "id": "2610.02382v1",
       "title": "FactorSplat: Appearance-Controllable Gaussian Proxies for Medical Volume Rendering",
@@ -73,13 +35,13 @@
         "query:神经体渲染"
       ],
       "llm_score": 9.0,
-      "llm_evidence_en": "Gaussian proxies for medical volume rendering with controllable transfer functions",
-      "llm_evidence_cn": "具有可控传输函数的医学体渲染高斯代理",
-      "llm_evidence": "具有可控传输函数的医学体渲染高斯代理",
-      "canonical_evidence": "具有可控传输函数的医学体渲染高斯代理",
-      "llm_tldr_en": "Presents FactorSplat, a Gaussian splatting proxy that enables controllable appearance in medical volume rendering.",
-      "llm_tldr_cn": "提出FactorSplat，一种高斯泼溅代理，可在医学体渲染中实现可控的外观表现。",
-      "llm_tldr": "提出FactorSplat，一种高斯泼溅代理，可在医学体渲染中实现可控的外观表现。",
+      "llm_evidence_en": "neural volume rendering for medical data using Gaussian Splatting",
+      "llm_evidence_cn": "使用高斯泼溅进行医学数据的神经体渲染",
+      "llm_evidence": "使用高斯泼溅进行医学数据的神经体渲染",
+      "canonical_evidence": "使用高斯泼溅进行医学数据的神经体渲染",
+      "llm_tldr_en": "Presents a Gaussian splatting proxy for medical volume rendering with controllable transfer functions.",
+      "llm_tldr_cn": "提出一种用于医学体渲染的高斯泼溅代理，支持可控的传输函数。",
+      "llm_tldr": "提出一种用于医学体渲染的高斯泼溅代理，支持可控的传输函数。",
       "llm_tags": [
         "query:q1"
       ],
@@ -87,6 +49,274 @@
       "matched_query_text": "neural volume rendering techniques and architectures",
       "matched_requirement_id": "req-1",
       "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2610.04007v1",
+      "title": "VolS-GS: Relightable Gaussian Splatting with Volumetric Subsurface Scattering",
+      "abstract": "We present VolS-GS, a relightable Gaussian splatting framework that reconstructs objects from one-light-at-a-time (OLAT) captures and renders them under novel lighting and viewpoints. Relightable Gaussian Splatting methods typically model appearance independently at each primitive, which makes non-local effects difficult to represent. This limitation is particularly apparent for subsurface scattering, where light entering the object at one location can emerge at another. Rather than modeling this effect solely with a neural network or a local kernel at each primitive, we use the spatial support of the Gaussian scene as the domain of a differentiable finite-volume transport solver, so that light can propagate through the object's interior. A small network predicts scattering and absorption coefficients for each Gaussian, and the solve redistributes incident light through the resulting field. The coefficients are fit to images rather than measured, so the solve supplies a transport-shaped path for aggregating per-primitive appearance, not a measurement of the material. To keep the learned shadow and specular terms from taking over the other components, our shadow term is predicted from visibility together with the transmittances and the scattering the solve produces, and a regularizer suppresses specular highlights in regions the shadow term predicts to be unlit. Experiments on three OLAT benchmarks show that VolS-GS consistently improves relighting quality on held-out lights and views.",
+      "authors": [
+        "Junyeong Ahn",
+        "Jaegul Choo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-10-02T20:09:16+00:00",
+      "link": "https://arxiv.org/pdf/2610.04007v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "neural volume rendering with volumetric subsurface scattering and finite-volume transport",
+      "llm_evidence_cn": "结合体积次表面散射和有限体积传输的神经体渲染",
+      "llm_evidence": "结合体积次表面散射和有限体积传输的神经体渲染",
+      "canonical_evidence": "结合体积次表面散射和有限体积传输的神经体渲染",
+      "llm_tldr_en": "Combines Gaussian Splatting with a finite-volume transport solver for relightable volumetric scattering.",
+      "llm_tldr_cn": "将高斯泼溅与有限体积传输求解器结合，实现可重光照的体积散射渲染。",
+      "llm_tldr": "将高斯泼溅与有限体积传输求解器结合，实现可重光照的体积散射渲染。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2610.06762v1",
+      "title": "Real-time Rendering of Pre-integrated Neural Emitters",
+      "abstract": "Direct illumination from non-trivial emitters with occluding housing, high-polygon emissive meshes, spatially varying emission, or deformable assemblies is a persistent bottleneck in real-time rendering. Current real-time solutions either rely on simplified analytical representations or fall back to runtime sampling. Analytical methods are restricted to simple emitter geometry, pure sampling-based estimators need high sampling budgets to be noise-free, and proxy representations still require runtime integration over outgoing radiance around the emitter. We present Neural Emission Fields (NEF), a representation that eliminates runtime integration by precomputing the illumination in the volume around the emitter. This neural field is parameterized by position, normal, view direction, and material parameters. Using a two-headed diffuse/glossy architecture, it yields noise-free unoccluded direct illumination from a single network evaluation per shading point. Because training is performed in the emitter's local frame, a trained NEF acts as a portable lighting asset reusable across scenes under rigid transforms. Internal interreflections, self-occlusion, spatially varying emission, and deformations are absorbed into the learned representation at zero additional runtime cost.",
+      "authors": [
+        "Arno Coomans",
+        "Floor Verhoeven",
+        "Edoardo A. Dominici",
+        "Markus Steinberger"
+      ],
+      "primary_category": "cs.GR",
+      "categories": [
+        "cs.GR"
+      ],
+      "published": "2026-10-05T17:35:36+00:00",
+      "link": "https://arxiv.org/pdf/2610.06762v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Neural fields for pre-integrated volumetric illumination",
+      "llm_evidence_cn": "用于预积分体积照明的神经场",
+      "llm_evidence": "用于预积分体积照明的神经场",
+      "canonical_evidence": "用于预积分体积照明的神经场",
+      "llm_tldr_en": "Uses neural emission fields to precompute and accelerate volumetric illumination rendering in real-time.",
+      "llm_tldr_cn": "利用神经发射场预计算并加速实时体积照明渲染，消除运行时积分开销。",
+      "llm_tldr": "利用神经发射场预计算并加速实时体积照明渲染，消除运行时积分开销。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2610.04606v1",
+      "title": "Sparse-View 4D Gaussian Splatting via Spatiotemporal Priors and Generative Assistance",
+      "abstract": "We present a 4D Gaussian Splatting framework for the Sparse-View Track of the SIGGRAPH Asia 2026 Volumetric Video Challenge, which requires dynamic scene reconstruction from only six cameras with wide baselines. To achieve robust dynamic reconstruction under such sparse views, our framework integrates three components. (1) Region-adaptive spatial priors: We use foreground masks to guide Gaussian initialization and mask voting to control densification separately for the dynamic foreground and static background. Background geometry is regularized using monocular depth aligned to metric scale. (2) Motion-consistent temporal priors: We provide supervision at intermediate times through frame interpolation and constrain projected Gaussian motion with estimated optical flow. (3) Generative assistance: We place virtual cameras in the widest angular gaps and restore their rendered images using a diffusion-based model conditioned on camera poses. The restored images are iteratively incorporated into training as pseudo-supervision. On the validation set, our framework improves full-frame PSNR from 25.60 dB for the baseline to 29.75 dB. On the official test benchmark, it achieves 30.04 dB full-frame PSNR and 27.88 dB foreground PSNR, ranking first overall in the Sparse-View Track.",
+      "authors": [
+        "Shengqi Wang",
+        "Zhengxian Yang",
+        "Kaiwen Tian",
+        "Yang Liu",
+        "Bowen Liu",
+        "Hua Du",
+        "Taicheng Huang",
+        "Jiamin Wu",
+        "Tao Yu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-10-03T15:48:50+00:00",
+      "link": "https://arxiv.org/pdf/2610.04606v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "4D Gaussian Splatting for volumetric video challenge",
+      "llm_evidence_cn": "用于体积视频挑战的4D高斯喷激",
+      "llm_evidence": "用于体积视频挑战的4D高斯喷激",
+      "canonical_evidence": "用于体积视频挑战的4D高斯喷激",
+      "llm_tldr_en": "Integrates spatiotemporal priors into 4D Gaussian Splatting for dynamic scene reconstruction.",
+      "llm_tldr_cn": "将时空先验集成到4D高斯喷激中，用于动态场景重建。",
+      "llm_tldr": "将时空先验集成到4D高斯喷激中，用于动态场景重建。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.40090v2",
+      "title": "PTNO: Training Neural Operators with Noisy Monte Carlo Estimates for Particle Transport Problems",
+      "abstract": "Particle transport under multiple scattering is central to radiative transfer and plasma physics, yet high-fidelity Monte Carlo (MC) simulations must trace prohibitively many particles. Learning-based surrogates can amortize this cost, but typically train on expensive, well-converged MC solutions. We propose the Particle Transport Neural Operator (PTNO), a neural operator that learns particle transport surrogates directly from noisy, low-cost MC labels. Such labels pose two challenges: (1) high variance, which destabilizes standard supervised learning, and (2) a high dynamic range (HDR) spanning many orders of magnitude. For the first, we learn the solution operator from noisy labels of many configurations, amortizing MC cost and generalizing to unseen configurations. Because MC labels are unbiased, we show that the squared loss on them shares its minimizer with the loss on converged solutions, and our budget-allocation study over training scenes $M$, MC samples per render $N$, and independent renders per scene $K$ shows that many noisy scenes beat fewer converged ones. For the second, a nonlinear transform such as the logarithm biases noisy supervision. Instead, PTNO keeps labels in physical space and enforces positivity with a softplus output layer that represents small values effectively. We further train with a pointwise relative $L_2$ loss (PRelL2), the stop-gradient relative loss of HDR denoising and neural rendering, which normalizes each residual by the stop-gradient prediction instead of the noisy label. We demonstrate PTNO on neutron transport in fusion reactors and radiative transfer in participating media. On the two neutronics tasks, PTNO is $10^4$-$10^5\\times$ faster than converged MC on the same CPU and $10^3$-$10^5\\times$ cheaper than MC at matched accuracy; on the two radiative-transfer tasks, MC at matched accuracy costs $0.8$-$11\\times$ as much as PTNO.",
+      "authors": [
+        "Yubo Cao",
+        "Xi Deng",
+        "Mengqi Xia",
+        "Vignesh Gopakumar",
+        "Ander Gray",
+        "Anima Anandkumar"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-09-30T16:31:40+00:00",
+      "link": "https://arxiv.org/pdf/2609.40090v2",
+      "tags": [
+        "keyword:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "neural operator for particle transport and multiple scattering",
+      "llm_evidence_cn": "用于粒子传输和多次散射的神经算子",
+      "llm_evidence": "用于粒子传输和多次散射的神经算子",
+      "canonical_evidence": "用于粒子传输和多次散射的神经算子",
+      "llm_tldr_en": "Introduces a neural operator to learn particle transport surrogates under multiple scattering from noisy MC data.",
+      "llm_tldr_cn": "引入了一种神经算子，用于从噪声蒙特卡洛数据中学习多次散射下的粒子传输代理模型。",
+      "llm_tldr": "引入了一种神经算子，用于从噪声蒙特卡洛数据中学习多次散射下的粒子传输代理模型。",
+      "llm_tags": [
+        "query:q4"
+      ],
+      "matched_query_tag": "query:q4",
+      "matched_query_text": "deep learning for multiple scattering in volumes",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2610.05576v1",
+      "title": "SteadySplats: Resampling of Low-Variance Gaussians for High-Fidelity Stochastic Rendering",
+      "abstract": "Stochastic order-independent transparency enables efficient and elegant rendering of primitive-based radiance fields like 3D Gaussian Splatting models, but remains impractical due to the inherent visible noise in the output. We propose a principled approach to minimize high-frequency noise, addressing its sources at the representation and image synthesis level. During stochastic rendering, our history-based spatial resampling scheme drastically accelerates image convergence, while temporal importance resampling ensures coherence under camera movement. During training, a color regularizer implicitly reduces the variance along view rays in the 3DGS models. With these properties, our optimized, Vulkan-based renderer effectively mitigates output noise at low and high sample counts, achieving a substantial 13~dB PSNR increase in quality over previous stochastic methods at 1 sample per pixel and quickly converging to sorted 3DGS with an average L1 error of less than $10^{-4}$.",
+      "authors": [
+        "Felix Windisch",
+        "Thomas Köhler",
+        "Lukas Radl",
+        "Chris Wyman",
+        "Georgios Kopanas",
+        "Bernhard Kerb",
+        "Markus Steinberger"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-10-04T22:25:18+00:00",
+      "link": "https://arxiv.org/pdf/2610.05576v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "accelerating stochastic rendering of radiance fields",
+      "llm_evidence_cn": "加速辐射场的随机渲染",
+      "llm_evidence": "加速辐射场的随机渲染",
+      "canonical_evidence": "加速辐射场的随机渲染",
+      "llm_tldr_en": "SteadySplats optimizes stochastic rendering for 3D Gaussian Splatting to reduce noise and accelerate convergence.",
+      "llm_tldr_cn": "SteadySplats 优化了 3D 高斯泼溅的随机渲染，减少了噪声并加速了收敛。",
+      "llm_tldr": "SteadySplats 优化了 3D 高斯泼溅的随机渲染，减少了噪声并加速了收敛。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2610.02322v1",
+      "title": "SCION: Scene Composition with Instanced Neural Primitives",
+      "abstract": "Real-world scenes are compositional: bricks, blades of grass, pebbles, and tree leaves recur across human-built and natural environments. Existing neural scene representations model these elements independently. Most 3D Gaussian Splatting and follow-up abstraction and compression methods treat each element as unique, fitting millions of independent Gaussians per scene. Prior methods like Splat and Replace fit template objects, but they require mostly manual selection of repeated elements. As a result, these representations store redundant parameters and provide weak manipulation handles for downstream tasks. We introduce SCION, a hier- archical compositional scene representation that replaces independent Gaussians with a compact vocabulary of reusable primitives and lightweight world-space instances that place transformed copies throughout the scene. We fit this represen- tation to multi-view captures via a joint optimization over discrete and continuous scene parameters, combining two-level densification over splats and instances with an adversarial loss that preserves detail across shared primitives. The recovered structure yields a compact, controllable representation while maintaining high quality even at 1.2 MB. SCION achieves rate-distortion favorable to existing Gaussian compression methods, and it enables instance-level scene editing and animation without retraining. Our results show that neural scene representations need not memorize scenes as independent primitives; they can discover reusable parts. Project webpage: https://light.princeton.edu/SCION",
+      "authors": [
+        "William Koch",
+        "Amogh Joshi",
+        "Cyrus Vachha",
+        "Cheng Zheng",
+        "Felix Heide"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-10-01T18:00:06+00:00",
+      "link": "https://arxiv.org/pdf/2610.02322v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "instanced neural primitives for compositional scene representation",
+      "llm_evidence_cn": "用于组合场景表示的实例化神经基元",
+      "llm_evidence": "用于组合场景表示的实例化神经基元",
+      "canonical_evidence": "用于组合场景表示的实例化神经基元",
+      "llm_tldr_en": "Introduces SCION, a hierarchical scene representation using reusable neural primitives to reduce redundancy.",
+      "llm_tldr_cn": "引入SCION，一种使用可重用神经基元来减少冗余的分层场景表示方法。",
+      "llm_tldr": "引入SCION，一种使用可重用神经基元来减少冗余的分层场景表示方法。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.35023v1",
+      "title": "Proxy2World: Learning to Generate Worlds From Lightweight Proxies without Seeing Them",
+      "abstract": "Lightweight scene proxies let creators control scene layout and motion while leaving room for imagination in appearance, lighting, and visual effects. However, a suitable proxy is not uniquely defined, making paired proxy-video data difficult to construct automatically at scale. We present Proxy2World, a controllable world model that learns these complementary capabilities from ordinary posed RGBD videos, without training on authored proxy-video pairs. The model jointly learns depth-conditioned RGB generation and joint RGBD generation through cross-modal flow matching. Learning both tasks enables proxy-camera hybrid denoising at inference to follow the proxy structure while producing natural, detailed visuals. We further introduce ProxyBench to evaluate this capability across a diverse set of scenes, camera trajectories, and subject motions. Experiments on ProxyBench show that Proxy2World achieves a better balance between structural adherence and visual quality than camera-controlled and geometry-conditioned methods, supported by quantitative metrics, VLM assessments, human evaluations and diverse qualitative results.",
+      "authors": [
+        "Hongli Xu",
+        "Weilong Yan",
+        "Anbang Wang",
+        "Chunyu Zou",
+        "Siyu Hong",
+        "Jingwei Huang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-28T12:22:35+00:00",
+      "link": "https://arxiv.org/pdf/2609.35023v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "depth-conditioned RGB generation and world modeling from RGBD videos",
+      "llm_evidence_cn": "基于RGBD视频的深度条件RGB生成与世界建模",
+      "llm_evidence": "基于RGBD视频的深度条件RGB生成与世界建模",
+      "canonical_evidence": "基于RGBD视频的深度条件RGB生成与世界建模",
+      "llm_tldr_en": "Presents Proxy2World, a model for generating detailed visuals from lightweight scene proxies and depth data.",
+      "llm_tldr_cn": "提出Proxy2World，一个从轻量级场景代理和深度数据生成详细视觉效果的模型。",
+      "llm_tldr": "提出Proxy2World，一个从轻量级场景代理和深度数据生成详细视觉效果的模型。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
     },
     {
       "id": "2610.02410v1",
@@ -112,24 +342,64 @@
         "keyword:神经体渲染",
         "query:神经体渲染"
       ],
-      "llm_score": 8.0,
-      "llm_evidence_en": "efficient training of implicit neural representations for continuous fields",
-      "llm_evidence_cn": "连续场隐式神经表示的高效训练",
-      "llm_evidence": "连续场隐式神经表示的高效训练",
-      "canonical_evidence": "连续场隐式神经表示的高效训练",
-      "llm_tldr_en": "Improves neural field training efficiency through adaptive spatial partitions and importance sampling.",
-      "llm_tldr_cn": "通过自适应空间划分和重要性采样提高神经场训练效率。",
-      "llm_tldr": "通过自适应空间划分和重要性采样提高神经场训练效率。",
+      "llm_score": 7.0,
+      "llm_evidence_en": "Adaptive sampling for implicit neural fields",
+      "llm_evidence_cn": "隐式神经场的自适应采样",
+      "llm_evidence": "隐式神经场的自适应采样",
+      "canonical_evidence": "隐式神经场的自适应采样",
+      "llm_tldr_en": "Proposes a structured sampling framework to improve training efficiency of implicit neural representations.",
+      "llm_tldr_cn": "提出一种结构化采样框架，通过解耦覆盖范围和重要性来提高隐式神经表示的训练效率。",
+      "llm_tldr": "提出一种结构化采样框架，通过解耦覆盖范围和重要性来提高隐式神经表示的训练效率。",
       "llm_tags": [
         "query:q1"
       ],
       "matched_query_tag": "query:q1",
       "matched_query_text": "neural volume rendering techniques and architectures",
       "matched_requirement_id": "req-1",
-      "selection_source": "fresh_fetch"
-    }
-  ],
-  "quick_skim": [
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.37246v1",
+      "title": "Silicon nitride nanophotonics for low-redundancy 3D convolution",
+      "abstract": "Three-dimensional (3D) convolution extracts correlations in high-dimensional data, but overlapping receptive fields introduce substantial redundant data movement. Here, we demonstrate a silicon nitride 3D optical convolution accelerator (3D-OCA) that reconstructs receptive fields through coordinate-aware wavelength-to-group-delay mapping. A deterministically serialized input tensor is broadcast onto multiple wavelength channels, and a chirped waveguide Bragg grating (CWBG) compensates the temporal offsets associated with 3D kernel coordinates. This arrangement continuously forms neighboring receptive fields without repeatedly rearranging and loading their shared input samples. The integrated CWBG provides a differential group delay of 2691 ps and a dispersion of 124.8 ps/nm. At 20 Gbaud, spatial-spectral processing of Indian Pines data yields convolution agreement with a coefficient of determination up to 0.997 and 97.9% classification accuracy, compared with 98.9% digitally. At 10 Gbaud, the optical convolution layer preserves spatiotemporal features and achieves 92.5% accuracy on a four-class KTH video-recognition task. These results establish low-redundancy streaming 3D convolution across spectral and temporal data dimensions using the same optical delay architecture.",
+      "authors": [
+        "Shuai Hu",
+        "Jingcheng Li",
+        "Qichao Ding",
+        "Hongli Wang",
+        "Hailong Zhou",
+        "Chi Zhang",
+        "Jianji Dong",
+        "Xinliang Zhang"
+      ],
+      "primary_category": "physics.optics",
+      "categories": [
+        "physics.optics"
+      ],
+      "published": "2026-09-29T10:59:33+00:00",
+      "link": "https://arxiv.org/pdf/2609.37246v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "optical convolution accelerator for 3D data movement",
+      "llm_evidence_cn": "用于3D数据移动的光学卷积加速器",
+      "llm_evidence": "用于3D数据移动的光学卷积加速器",
+      "canonical_evidence": "用于3D数据移动的光学卷积加速器",
+      "llm_tldr_en": "Demonstrates a nanophotonic accelerator to reduce redundancy in 3D convolution operations.",
+      "llm_tldr_cn": "演示了一种纳米光子加速器，用于减少3D卷积操作中的冗余。",
+      "llm_tldr": "演示了一种纳米光子加速器，用于减少3D卷积操作中的冗余。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
     {
       "id": "2610.02851v1",
       "title": "ByteSplat: Efficient Distributed 3D Gaussian Splatting Training via Intra- and Inter-GPU communication reduction",
@@ -159,13 +429,48 @@
         "query:神经体渲染"
       ],
       "llm_score": 7.0,
-      "llm_evidence_en": "Efficient 3D Gaussian Splatting training and rasterization optimization",
-      "llm_evidence_cn": "高效的3D高斯泼溅训练与光栅化优化",
-      "llm_evidence": "高效的3D高斯泼溅训练与光栅化优化",
-      "canonical_evidence": "高效的3D高斯泼溅训练与光栅化优化",
-      "llm_tldr_en": "ByteSplat optimizes distributed 3D Gaussian Splatting training by reducing memory access and communication.",
-      "llm_tldr_cn": "ByteSplat通过减少内存访问和通信开销，优化了分布式3D高斯泼溅训练。",
-      "llm_tldr": "ByteSplat通过减少内存访问和通信开销，优化了分布式3D高斯泼溅训练。",
+      "llm_evidence_en": "Accelerating 3D Gaussian Splatting training and rasterization",
+      "llm_evidence_cn": "加速3D高斯泼溅的训练与光栅化",
+      "llm_evidence": "加速3D高斯泼溅的训练与光栅化",
+      "canonical_evidence": "加速3D高斯泼溅的训练与光栅化",
+      "llm_tldr_en": "ByteSplat reduces data movement to accelerate distributed 3D Gaussian Splatting training.",
+      "llm_tldr_cn": "ByteSplat通过减少GPU内外的数据传输，显著加速了分布式3D高斯泼溅的训练过程。",
+      "llm_tldr": "ByteSplat通过减少GPU内外的数据传输，显著加速了分布式3D高斯泼溅的训练过程。",
+      "llm_tags": [
+        "query:q7"
+      ],
+      "matched_query_tag": "query:q7",
+      "matched_query_text": "accelerating volume rendering with neural networks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.38348v1",
+      "title": "Function-Space Transformer with Adaptive Anchors",
+      "abstract": "Many forms of data, including physical fields, geometric shapes, and visual signals, are naturally described by functions over continuous domains but are observed through discrete samples. Representing these functions on fixed uniform grids imposes a trade-off between resolving localized variation and increasing computation across the domain. Neural operators address this mismatch by learning mappings between functions, while latent-attention architectures provide flexible processing of sampled observations. We introduce the Function-Space Transformer (FST), a framework for learning from functions through a spatially adaptive continuous latent representation. FST stores features at anchors whose locations are predicted from the input observations and recursively refines these anchor features through function-space interactions. This allows the representation to adapt its spatial organization to each input rather than inherit that of the observation grid, while supporting both spatially resolved and finite-dimensional outputs. On PDE solution prediction using PDEBench Burgers and Darcy flow, FST substantially outperforms the Perceiver IO baseline, whose latent representation lacks explicit spatial organization, and is highly competitive with the Fourier Neural Operator. On ImageNet-1K, FST achieves higher classification accuracy than the Vision Transformer baseline, with fewer parameters across these comparisons. Ablations further support the benefits of function-space updates and recursive refinement. Together, these results highlight the potential of adaptive continuous representations for both scientific prediction and visual recognition.",
+      "authors": [
+        "Guorui Sang",
+        "Pedram Rooshenas"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-09-29T18:10:22+00:00",
+      "link": "https://arxiv.org/pdf/2609.38348v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "continuous latent representation for physical fields",
+      "llm_evidence_cn": "物理场的连续潜变量表示",
+      "llm_evidence": "物理场的连续潜变量表示",
+      "canonical_evidence": "物理场的连续潜变量表示",
+      "llm_tldr_en": "Introduces a Function-Space Transformer for learning continuous representations of physical fields.",
+      "llm_tldr_cn": "引入函数空间Transformer，用于学习物理场的连续表示。",
+      "llm_tldr": "引入函数空间Transformer，用于学习物理场的连续表示。",
       "llm_tags": [
         "query:q1"
       ],
@@ -173,12 +478,54 @@
       "matched_query_text": "neural volume rendering techniques and architectures",
       "matched_requirement_id": "req-1",
       "selection_source": "fresh_fetch",
-      "quick_tier": "7"
+      "quick_tier": "6"
     },
     {
-      "id": "2610.02322v1",
+      "id": "2609.39590v1",
+      "title": "SPOON: Towards Coherent Compositional 3D Scene Generation from Uncalibrated Multi-view Images",
+      "abstract": "Compositional 3D scene generation aims to recover complete 3D object shapes and their spatial arrangement from visual observations. Recent image-conditioned 3D generators provide strong priors for producing high-quality object geometry, making the generation of complex scenes increasingly practical. A central challenge is therefore to spatially organize these generated assets into a globally coherent scene while remaining consistent with multi-view observations. Existing approaches either entangle scene layout with object generation or separately estimate spatial placement from view-specific observations, where pose hypotheses may remain ambiguous and inconsistent across views, often resulting in an incoherent object-camera soup. We introduce SPOON, a framework that reformulates multi-view compositional 3D generation as scene-level, geometry-grounded pose reasoning. Rather than treating view-specific object pose hypotheses independently, SPOON coordinates them using reconstruction-derived multi-view geometry through a Guide-Route-Reconcile paradigm. This progressively organizes object poses and camera configurations into a coherent scene-level spatial arrangement. Extensive experiments on ARSG-110K and MIDI-3D-Front demonstrate consistent improvements in object placement and scene composition across varying numbers of input views. On ARSG-110K, SPOON reduces scene-level and object-level Chamfer distances by 12.7% and 17.7%, respectively, compared with a strong baseline.",
+      "authors": [
+        "Guibiao Liao",
+        "Mochu Xiang",
+        "Heng Li",
+        "Ken Deng",
+        "Zijie Wang",
+        "Guanbin Li",
+        "Ping Tan",
+        "Shenghua Gao",
+        "Yizhou Yu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-30T12:16:23+00:00",
+      "link": "https://arxiv.org/pdf/2609.39590v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "compositional 3D scene generation from multi-view images",
+      "llm_evidence_cn": "基于多视图图像的组合式 3D 场景生成",
+      "llm_evidence": "基于多视图图像的组合式 3D 场景生成",
+      "canonical_evidence": "基于多视图图像的组合式 3D 场景生成",
+      "llm_tldr_en": "SPOON recovers 3D object shapes and spatial arrangements for coherent compositional scene generation.",
+      "llm_tldr_cn": "SPOON 恢复 3D 物体形状和空间排列，用于生成连贯的组合式场景。",
+      "llm_tldr": "SPOON 恢复 3D 物体形状和空间排列，用于生成连贯的组合式场景。",
+      "llm_tags": [
+        "query:profile-1:composite"
+      ],
+      "matched_query_tag": "query:profile-1:composite",
+      "matched_query_text": "Papers central to 使用神经网络或深度学习方法进行体积云与体渲染的相关论文, especially work that connects or combines: neural volume rendering techniques and architectures; deep learning for volumetric cloud rendering; neural acceleration of volume ray marching; deep learning for multiple scattering in volumes; deep learning methods for volumetric cloud rendering and simulation; state of the art in neural volume rendering for clouds; accelerating volume rendering with neural networks.",
+      "matched_requirement_id": "req-composite-profile-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2610.02322v2",
       "title": "SCION: Scene Composition with Instanced Neural Primitives",
-      "abstract": "Real-world scenes are compositional: bricks, blades of grass, pebbles, and tree leaves recur across human-built and natural environments. Existing neural scene representations model these elements independently. Most 3D Gaussian Splatting and follow-up abstraction and compression methods treat each element as unique, fitting millions of independent Gaussians per scene. Prior methods like Splat and Replace fit template objects, but they require mostly manual selection of repeated elements. As a result, these representations store redundant parameters and provide weak manipulation handles for downstream tasks. We introduce SCION, a hier- archical compositional scene representation that replaces independent Gaussians with a compact vocabulary of reusable primitives and lightweight world-space instances that place transformed copies throughout the scene. We fit this represen- tation to multi-view captures via a joint optimization over discrete and continuous scene parameters, combining two-level densification over splats and instances with an adversarial loss that preserves detail across shared primitives. The recovered structure yields a compact, controllable representation while maintaining high quality even at 1.2 MB. SCION achieves rate-distortion favorable to existing Gaussian compression methods, and it enables instance-level scene editing and animation without retraining. Our results show that neural scene representations need not memorize scenes as independent primitives; they can discover reusable parts. Project webpage: https://light.princeton.edu/SCION",
+      "abstract": "Real-world scenes are compositional: bricks, blades of grass, pebbles, and tree leaves recur across human-built and natural environments. Existing neural scene representations model these elements independently. Most 3D Gaussian Splatting and follow-up abstraction and compression methods treat each element as unique, fitting millions of independent Gaussians per scene. Prior methods like Splat and Replace fit template objects, but they require mostly manual selection of repeated elements. As a result, these representations store redundant parameters and provide weak manipulation handles for downstream tasks. We introduce SCION, a hierarchical compositional scene representation that replaces independent Gaussians with a compact vocabulary of reusable primitives and lightweight world-space instances that place transformed copies throughout the scene. We fit this representation to multi-view captures via a joint optimization over discrete and continuous scene parameters, combining two-level densification over splats and instances with an adversarial loss that preserves detail across shared primitives. The recovered structure yields a compact, controllable representation while maintaining high quality even at 1.2 MB. SCION achieves rate-distortion favorable to existing Gaussian compression methods, and it enables instance-level scene editing and animation without retraining. Our results show that neural scene representations need not memorize scenes as independent primitives; they can discover reusable parts. Project webpage: https://light.princeton.edu/SCION",
       "authors": [
         "William Koch",
         "Amogh Joshi",
@@ -191,19 +538,19 @@
         "cs.CV"
       ],
       "published": "2026-10-01T18:00:06+00:00",
-      "link": "https://arxiv.org/pdf/2610.02322v1",
+      "link": "https://arxiv.org/pdf/2610.02322v2",
       "tags": [
         "keyword:神经体渲染",
         "query:神经体渲染"
       ],
       "llm_score": 6.0,
-      "llm_evidence_en": "neural scene representation and 3D Gaussian Splatting optimization",
-      "llm_evidence_cn": "神经场景表示与3D高斯泼溅优化",
-      "llm_evidence": "神经场景表示与3D高斯泼溅优化",
-      "canonical_evidence": "神经场景表示与3D高斯泼溅优化",
-      "llm_tldr_en": "Introduces a hierarchical compositional scene representation using instanced neural primitives for efficiency.",
-      "llm_tldr_cn": "引入了一种层次化组合场景表示，通过实例化神经基元提高场景建模效率。",
-      "llm_tldr": "引入了一种层次化组合场景表示，通过实例化神经基元提高场景建模效率。",
+      "llm_evidence_en": "neural scene representation using reusable primitives and Gaussian Splatting",
+      "llm_evidence_cn": "使用可重用基元和高斯泼溅的神经场景表示",
+      "llm_evidence": "使用可重用基元和高斯泼溅的神经场景表示",
+      "canonical_evidence": "使用可重用基元和高斯泼溅的神经场景表示",
+      "llm_tldr_en": "Introduces a hierarchical compositional scene representation using a vocabulary of reusable neural primitives.",
+      "llm_tldr_cn": "引入了一种使用可重用神经基元词汇表的层次化组合场景表示方法。",
+      "llm_tldr": "引入了一种使用可重用神经基元词汇表的层次化组合场景表示方法。",
       "llm_tags": [
         "query:q1"
       ],
@@ -212,46 +559,6 @@
       "matched_requirement_id": "req-1",
       "selection_source": "fresh_fetch",
       "quick_tier": "6"
-    },
-    {
-      "id": "2610.03522v1",
-      "title": "Feedforward Novel View Synthesis for Heterogeneous Cameras",
-      "abstract": "Feed-forward novel view synthesis has recently shown promising results from sparse posed images, but most existing methods assume that context and target views share a fixed camera family. This homogeneous-camera assumption breaks in practical multi-sensor systems, where perspective, fisheye, and panoramic cameras may coexist and where the target projection may be unseen during training. We study feed-forward NVS across heterogeneous central cameras and identify a key ambiguity introduced by tokenization: a visual token aggregates a projection-dependent bundle of pixel rays, while existing camera encodings mainly expose absolute rays or token-center relations. To address this, we combine token-center relative Camera Positional Encodings and proposed local raymaps, a token-level representation that explicitly describes the intra-patch ray distribution summarized by each token. We further propose projection-aware 2D RoPE, which replaces raw image-grid coordinates with ray-induced angular coordinates so that relative positional reasoning is aligned across camera projections. Together, these components treat diverse cameras as calibrated samplings of a shared ray space rather than separate visual domains. On ScanNet++ with heterogeneous-camera system, our method improves over camera-conditioned baselines under mixed-camera evaluation and demonstrates zero-shot generalization to panoramic views.",
-      "authors": [
-        "Meng Wei",
-        "Cheng Zhang",
-        "Boying Li",
-        "Yihang Chen",
-        "Jianmin Zheng",
-        "Hamid Rezatofighi",
-        "Jianfei Cai"
-      ],
-      "primary_category": "cs.CV",
-      "categories": [
-        "cs.CV"
-      ],
-      "published": "2026-10-02T16:13:22+00:00",
-      "link": "https://arxiv.org/pdf/2610.03522v1",
-      "tags": [
-        "keyword:神经体渲染",
-        "query:神经体渲染"
-      ],
-      "llm_score": 7.0,
-      "llm_evidence_en": "feedforward novel view synthesis across heterogeneous cameras",
-      "llm_evidence_cn": "跨异构相机的前馈新视图合成",
-      "llm_evidence": "跨异构相机的前馈新视图合成",
-      "canonical_evidence": "跨异构相机的前馈新视图合成",
-      "llm_tldr_en": "Addresses novel view synthesis for heterogeneous camera systems using local raymaps and positional encodings.",
-      "llm_tldr_cn": "利用局部射线图和位置编码解决了异构相机系统的新视图合成问题。",
-      "llm_tldr": "利用局部射线图和位置编码解决了异构相机系统的新视图合成问题。",
-      "llm_tags": [
-        "query:q1"
-      ],
-      "matched_query_tag": "query:q1",
-      "matched_query_text": "neural volume rendering techniques and architectures",
-      "matched_requirement_id": "req-1",
-      "selection_source": "fresh_fetch",
-      "quick_tier": "7"
     },
     {
       "id": "2610.03441v1",
@@ -272,13 +579,52 @@
         "query:神经体渲染"
       ],
       "llm_score": 6.0,
-      "llm_evidence_en": "semantic editing of 4D Gaussian avatars",
-      "llm_evidence_cn": "4D高斯头像的语义编辑",
-      "llm_evidence": "4D高斯头像的语义编辑",
-      "canonical_evidence": "4D高斯头像的语义编辑",
-      "llm_tldr_en": "Enables real-time, language-guided color editing of animatable 3D Gaussian head avatars.",
-      "llm_tldr_cn": "实现了可动画3D高斯头部头像的实时语言引导颜色编辑。",
-      "llm_tldr": "实现了可动画3D高斯头部头像的实时语言引导颜色编辑。",
+      "llm_evidence_en": "Semantic editing of 4D Gaussian avatars",
+      "llm_evidence_cn": "4D高斯化身的语义编辑",
+      "llm_evidence": "4D高斯化身的语义编辑",
+      "canonical_evidence": "4D高斯化身的语义编辑",
+      "llm_tldr_en": "Enables real-time color editing of 3D Gaussian avatars using learned semantic assignments.",
+      "llm_tldr_cn": "利用学习到的语义分配实现3D高斯化身的实时颜色编辑。",
+      "llm_tldr": "利用学习到的语义分配实现3D高斯化身的实时颜色编辑。",
+      "llm_tags": [
+        "query:q1"
+      ],
+      "matched_query_tag": "query:q1",
+      "matched_query_text": "neural volume rendering techniques and architectures",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2610.04722v1",
+      "title": "NAMVIS: Next-Scale Autoregressive Multi-View Image Synthesis",
+      "abstract": "Sparse-view novel view synthesis is a central problem in 3D content creation, but diffusion-based approaches remain limited by iterative denoising, making multi-view generation expensive at inference time. We introduce NAMVIS, a diffusion-free framework that reformulates multi-view image synthesis as geometry-conditioned next-scale autoregression. Instead of generating target views through repeated denoising, NAMVIS predicts discrete visual tokens through a small number of coarse-to-fine scale steps, while sampling all tokens within each scale and across target views in parallel. To anchor this generation process to explicit camera geometry, we propose Multi-scale Projective Pose Encoding, which injects source and target camera transformations into both target-view self-attention and source-to-target cross-attention at every resolution. NAMVIS further combines global conditioning with dense geometry-aware cross-attention, enabling the model to preserve source-view appearance while maintaining target-view consistency. Across Objaverse, GSO, and OmniObject3D, NAMVIS outperforms diffusion-based baselines in PSNR, SSIM, and LPIPS, while running over 3 times faster than the evaluated diffusion baselines under the same evaluation setting. These results suggest that geometry-conditioned next-scale autoregression is a promising and efficient alternative to diffusion for sparse-view multi-view synthesis. Additional qualitative results, videos, and resources are available at https://corl-team.github.io/namvis/",
+      "authors": [
+        "Ramil Khafizov",
+        "Ilya Statsenko",
+        "Ruslan Rakhimov",
+        "Artem Komarichev",
+        "Peter Wonka",
+        "Evgeny Burnaev"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-10-03T19:22:02+00:00",
+      "link": "https://arxiv.org/pdf/2610.04722v1",
+      "tags": [
+        "keyword:神经体渲染",
+        "query:神经体渲染"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "geometry-conditioned multi-view image synthesis",
+      "llm_evidence_cn": "几何条件的视角图像合成",
+      "llm_evidence": "几何条件的视角图像合成",
+      "canonical_evidence": "几何条件的视角图像合成",
+      "llm_tldr_en": "A diffusion-free framework for multi-view synthesis using geometry-conditioned autoregression.",
+      "llm_tldr_cn": "一种基于几何条件自回归的无扩散多视图合成框架。",
+      "llm_tldr": "一种基于几何条件自回归的无扩散多视图合成框架。",
       "llm_tags": [
         "query:q1"
       ],
